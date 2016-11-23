@@ -1,14 +1,8 @@
-
 # coding: utf-8
-
-# In[293]:
 
 import requests
 import os
 import os.path
-
-
-# In[310]:
 
 class Mastodon:
     """ Super basic but thorough and easy to use mastodon.social 
@@ -302,25 +296,6 @@ class Mastodon:
                 del params[key]
                 
         return params
-
-
-# In[311]:
-
-mastodon = Mastodon(client_id = "quasibot_client_credentials.txt", access_token = 'quasibot_user_credentials.txt')
-
-
-# In[312]:
-
-#mastodon.account_relationships(12355)
-mastodon.media_post('D:\\img\\google.png')
-
-
-# In[127]:
-
-
-
-
-# In[ ]:
 
 
 
