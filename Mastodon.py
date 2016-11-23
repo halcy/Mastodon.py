@@ -6,7 +6,7 @@ import os.path
 
 class Mastodon:
     """ 
-	Super basic but thorough and easy to use mastodon.social 
+    Super basic but thorough and easy to use mastodon.social 
     api wrapper in python.
         
     If anything is unclear, check the official API docs at
@@ -25,7 +25,7 @@ class Mastodon:
     @staticmethod    
     def create_app(client_name, scopes = ['read', 'write', 'follow'], redirect_uris = None, to_file = None, api_base_url = __DEFAULT_BASE_URL):                 
         """
-		Creates a new app with given client_name and scopes (read, write, follow)
+        Creates a new app with given client_name and scopes (read, write, follow)
         
         Specify redirect_uris if you want users to be redirected to a certain page after authenticating.
         Specify to_file to persist your apps info to a file so you can use them in the constructor.
@@ -57,7 +57,7 @@ class Mastodon:
     ###
     def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL):
         """
-		Creates a new API wrapper instance based on the given client_secret and client_id. If you
+        Creates a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
            
         You can also directly specify an access_token, directly or as a file.
@@ -84,7 +84,7 @@ class Mastodon:
                 
     def log_in(self, username, password, scopes = ['read', 'write', 'follow'], to_file = None):
         """
-		Logs in and sets access_token to what was returned.
+        Logs in and sets access_token to what was returned.
         Can persist access token to file.
         
         Returns the access_token, as well.
@@ -109,9 +109,9 @@ class Mastodon:
     ##
     def timeline(self, timeline = 'home', max_id = None, since_id = None, limit = None):
         """
-		Returns statuses, most recent ones first. Timeline can be home, mentions, public
+        Returns statuses, most recent ones first. Timeline can be home, mentions, public
         or tag/:hashtag
-		"""
+        """
         params = self.__generate_params(locals(), ['timeline'])
         return self.__api_request('GET', '/api/v1/timelines/' + timeline, params)
     
@@ -120,26 +120,26 @@ class Mastodon:
     ###
     def status(self, id):
         """
-		Returns a status.
-		"""
+        Returns a status.
+        """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id))
 
     def status_context(self, id):
         """
-		Returns ancestors and descendants of the status.
-		"""
+        Returns ancestors and descendants of the status.
+        """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/context')
     
     def status_reblogged_by(self, id):
         """
-		Returns a list of users that have reblogged a status.
-		"""
+        Returns a list of users that have reblogged a status.
+        """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/reblogged_by')
     
     def status_favourited_by(self, id):
         """
-		Returns a list of users that have favourited a status.
-		"""
+        Returns a list of users that have favourited a status.
+        """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/favourited_by')
     
     ###
@@ -147,54 +147,54 @@ class Mastodon:
     ###
     def account(self, id):
         """
-		Returns account.
-		"""
+        Returns account.
+        """
         return self.__api_request('GET', '/api/v1/accounts/' + str(id))
 
     def account_verify_credentials(self):
         """
-		Returns authenticated user's account.
-		"""
+        Returns authenticated user's account.
+        """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
     
     def account_statuses(self, id, max_id = None, since_id = None, limit = None):
         """
-		Returns statuses by user. Same options as timeline are permitted.
-		"""
+        Returns statuses by user. Same options as timeline are permitted.
+        """
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/statuses')
 
     def account_following(self, id):
         """
-		Returns users the given user is following.
-		"""
+        Returns users the given user is following.
+        """
         return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following')
 
     def account_followers(self, id):
         """
-		Returns users the given user is followed by.
-		"""
+        Returns users the given user is followed by.
+        """
         return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/followers')
 
     def account_relationships(self, id):
         """
-		Returns relationships (following, followed_by, blocking) of the logged in user to 
+        Returns relationships (following, followed_by, blocking) of the logged in user to 
         a given account. id can be a list.
-		"""
+        """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/relationships', params)
     
     def account_suggestions(self):
         """
-		Returns accounts that the system suggests the authenticated user to follow.
-		"""
+        Returns accounts that the system suggests the authenticated user to follow.
+        """
         return self.__api_request('GET', '/api/v1/accounts/suggestions') 
 
     def account_search(self, q, limit = None):
         """
-		Returns matching accounts. Will lookup an account remotely if the search term is 
+        Returns matching accounts. Will lookup an account remotely if the search term is 
         in the username@domain format and not yet in the database.
-		"""
+        """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
     
@@ -203,24 +203,24 @@ class Mastodon:
     ###
     def status_post(self, status, in_reply_to_id = None, media_ids = None):
         """
-		Posts a status. Can optionally be in reply to another status and contain
+        Posts a status. Can optionally be in reply to another status and contain
         up to four pieces of media (Uploaded via media_post()).
            
         Returns the new status.
-		"""
+        """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/statuses', params)
     
     def toot(self, status):
         """
-		Synonym for status_post that only takes the status text as input.
-		"""
+        Synonym for status_post that only takes the status text as input.
+        """
         return self.status_post(status)
         
     def status_delete(self, id):
         """
-		Deletes a status
-		"""
+        Deletes a status
+        """
         return self.__api_request('DELETE', '/api/v1/statuses/' + str(id))
 
     def status_reblog(self, id):
@@ -231,25 +231,25 @@ class Mastodon:
 
     def status_unreblog(self, id):
         """
-		Un-reblogs a status.
+        Un-reblogs a status.
         
         Returns the status that used to be reblogged.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/unreblog")
 
     def status_favourite(self, id):
         """
-		Favourites a status.
+        Favourites a status.
         
         Returns the favourited status.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/favourite")
     
     def status_unfavourite(self, id):
         """Favourites a status.
         
         Returns the un-favourited status.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/unfavourite")
     
     ###
@@ -257,34 +257,34 @@ class Mastodon:
     ###
     def account_follow(self, id):
         """
-		Follows a user.
+        Follows a user.
         
         Returns the updated relationship to the user.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/follow")
     
     def account_unfollow(self, id):
         """
-		Unfollows a user.
+        Unfollows a user.
         
         Returns the updated relationship to the user.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unfollow")
     
     def account_block(self, id):
         """
-		Blocks a user.
+        Blocks a user.
         
         Returns the updated relationship to the user.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/block")
     
     def account_unblock(self, id):
         """
-		Unblocks a user.
+        Unblocks a user.
         
         Returns the updated relationship to the user.
-		"""
+        """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unblock")
 
     ###
@@ -292,11 +292,11 @@ class Mastodon:
     ###
     def media_post(self, media_file):
         """
-		Posts an image. media_file can either be image data or
+        Posts an image. media_file can either be image data or
         a file name.
            
         Returns the ID of the media that can then be used in status_post().
-		"""
+        """
         if os.path.isfile(media_file):
             media_file = open(media_file, 'rb')
 
@@ -307,8 +307,8 @@ class Mastodon:
     ###
     def __api_request(self, method, endpoint, params = {}, files = {}):
         """
-		Internal API request helper.
-		"""
+        Internal API request helper.
+        """
         response = None
         headers = None
         
@@ -334,8 +334,8 @@ class Mastodon:
     
     def __generate_params(self, params, exclude = []):
         """
-		Internal named-parameters-to-dict helper.
-		"""
+        Internal named-parameters-to-dict helper.
+        """
         params = dict(params)
         
         del params['self']
