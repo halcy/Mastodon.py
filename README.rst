@@ -1,11 +1,12 @@
-# Mastodon.py
+Mastodon.py
+===========
+.. code-block::
 
-    mastodon = Mastodon(
-        client_id = 'pytooter_clientcred.txt',
-        access_token = 'pytooter_usercred.txt'
-    )
-    mastodon.toot('Tooting from python!')
-
+   mastodon = Mastodon(
+       client_id = 'pytooter_clientcred.txt',
+       access_token = 'pytooter_usercred.txt'
+   )
+   mastodon.toot('Tooting from python!')
 
 Python wrapper for the Mastodon ( https://github.com/Gargron/mastodon/ ) API. 
 Feature complete for public API version v1 and easy to get started with.
