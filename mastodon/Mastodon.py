@@ -351,6 +351,3 @@ class Mastodon:
                 del params[key]
                 
         return params
-
-
-
