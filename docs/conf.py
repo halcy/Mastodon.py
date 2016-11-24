@@ -1,5 +1,4 @@
 import sys
-import sys.path
 import os
 
 extensions = ['sphinx.ext.autodoc']
