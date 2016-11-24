@@ -101,8 +101,8 @@ class Mastodon:
         except:
             raise ValueError('Invalid user name, password or scopes.')
         
-        requested_scopes = " ".join(scopes)
-        received_scopes = " ".join(sorted(response["scopes"].split(" ")))
+        requested_scopes = " ".join(sorted(scopes))
+        received_scopes = " ".join(sorted(response["scope"].split(" ")))
         
         if requested_scopes != received_scopes:
             raise ValueError('Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
