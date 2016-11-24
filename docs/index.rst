@@ -118,7 +118,8 @@ Writing data: Media
 -------------------
 This function allows you to upload media to Mastodon. Except it 
 doesn't, because it is currently broken. But it will.
-.. automethod:: media_post
+
+.. automethod:: Mastodon.media_post
 
 .. _Mastodon: https://github.com/Gargron/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/
