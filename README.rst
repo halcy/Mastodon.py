@@ -1,6 +1,6 @@
 Mastodon.py
 ===========
-.. code-block::
+.. code-block:: python
 
    mastodon = Mastodon(
        client_id = 'pytooter_clientcred.txt',
@@ -10,6 +10,16 @@ Mastodon.py
 
 Python wrapper for the Mastodon ( https://github.com/Gargron/mastodon/ ) API. 
 Feature complete for public API version v1 and easy to get started with.
+
+You can install Mastodon.py via pypi:
+
+.. code-block:: Bash
+
+   # Python 2
+   pip install Mastodon.py
+   
+   # Python 3
+   pip3 install Mastodon.py
 
 Full documentation and basic "how to post a toot" usage example can be found 
 at http://mastodonpy.readthedocs.io/en/latest/ .
