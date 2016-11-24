@@ -116,8 +116,9 @@ These functions allow you to interact with other accounts: To (un)follow and
 
 Writing data: Media
 -------------------
-This function allows you to upload media to Mastodon. Except it 
-doesn't, because it is currently broken. But it will.
+This function allows you to upload media to Mastodon. The returned
+media IDs (Up to 4 at the same time) can then be used with post_status
+to attach media to statuses.
 
 .. automethod:: Mastodon.media_post
 
