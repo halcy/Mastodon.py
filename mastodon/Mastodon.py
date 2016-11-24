@@ -253,7 +253,7 @@ class Mastodon:
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/unfavourite")
     
     ###
-    # Writing data: Statuses
+    # Writing data: Accounts
     ###
     def account_follow(self, id):
         """
