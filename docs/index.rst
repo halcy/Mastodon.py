@@ -84,6 +84,7 @@ These functions allow you to get information about accounts and
 their relationships.
 
 .. automethod:: Mastodon.account
+.. automethod:: Mastodon.account_verify_credentials
 .. automethod:: Mastodon.account_statuses
 .. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_followers
