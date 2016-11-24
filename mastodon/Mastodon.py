@@ -3,6 +3,10 @@
 import requests
 import os
 import os.path
+import mimetypes
+import time
+import random
+import string
 
 class Mastodon:
     """ 
@@ -302,17 +306,31 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    def media_post(self, media_file):
+    def media_post(self, media_file, mime_type = None):
         """
         Posts an image. media_file can either be image data or
-        a file name.
-           
+        a file name. If image data is passed directly, the mime
+        type has to be specified manually, otherwise, it is
+        determined from the file name.
+        
         Returns the ID of the media that can then be used in status_post().
+        
+        Throws a ValueError if the mime type of the passed data or file can
+        not be determined properly.
         """
+        
         if os.path.isfile(media_file):
+            mime_type = mimetypes.guess_type(media_file)[0]
             media_file = open(media_file, 'rb')
-
-        return self.__api_request('POST', '/api/v1/media', files = {'file': media_file})
+            
+        if mime_type == None:
+            raise ValueError('Could not determine mime type or data passed directly without mime type.')
+        
+        random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+        file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
+        
+        media_file_description = (file_name, media_file, mime_type)
+        return self.__api_request('POST', '/api/v1/media', files = {'file': media_file_description})
     
     ###
     # Internal helpers, dragons probably
