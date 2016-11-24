@@ -95,8 +95,17 @@ class Mastodon:
         params['grant_type'] = 'password'
         params['scope'] = " ".join(scopes)
         
-        response = self.__api_request('POST', '/oauth/token', params)      
-        self.access_token = response['access_token']
+        try:
+            response = self.__api_request('POST', '/oauth/token', params)      
+            self.access_token = response['access_token']
+        except:
+            raise ValueError('Invalid user name, password or scopes.')
+        
+        requested_scopes = " ".join(scopes)
+        received_scopes = " ".join(sorted(response["scopes"].split(" ")))
+        
+        if requested_scopes != received_scopes:
+            raise ValueError('Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
         
         if to_file != None:
             with open(to_file, 'w') as token_file:
@@ -330,7 +339,12 @@ class Mastodon:
         if response.status_code == 500:
             raise IOError('General API problem.')
         
-        return response.json()
+        try:
+            response = response.json()
+        except:
+            raise ValueError("Could not parse response as JSON, respose code was " + str(response.status_code))
+        
+        return response
     
     def __generate_params(self, params, exclude = []):
         """
