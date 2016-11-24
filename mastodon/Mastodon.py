@@ -18,10 +18,9 @@ class Mastodon:
         
     Presently, only username-password login is supported, somebody please
     patch in Real Proper OAuth if desired.
-        
-    KNOWN BUGS: Media api does not work, reason unclear.
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
+    __DEBUG_REQUESTS = False
     
     ###
     # Registering apps
@@ -178,7 +177,7 @@ class Mastodon:
         Returns statuses by user. Same options as timeline are permitted.
         """
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/statuses')
+        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/statuses', params)
 
     def account_following(self, id):
         """
@@ -342,9 +341,16 @@ class Mastodon:
         response = None
         headers = None
         
+
         if self.access_token != None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
         
+        if __DEBUG_REQUESTS = True:
+            print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
+            print('Parameters: ' + str(params))
+            print('Headers: ' + str(headers))
+            print('Files: ' + str(files))
+
         if method == 'GET':
             response = requests.get(self.api_base_url + endpoint, data = params, headers = headers, files = files)
         
