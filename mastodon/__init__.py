@@ -1,2 +1,2 @@
-from Mastodon import Mastodon
+from mastodon.Mastodon import Mastodon
 __all__ = ['Mastodon']
