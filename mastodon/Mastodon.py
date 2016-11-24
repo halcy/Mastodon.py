@@ -20,7 +20,6 @@ class Mastodon:
     patch in Real Proper OAuth if desired.
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
-    __DEBUG_REQUESTS = False
     
     ###
     # Registering apps
@@ -58,7 +57,7 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL):
+    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False):
         """
         Creates a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
@@ -72,6 +71,7 @@ class Mastodon:
         self.client_id = client_id                      
         self.client_secret = client_secret
         self.access_token = access_token
+        self.debug_requests = debug_requests
         
         if os.path.isfile(self.client_id):
             with open(self.client_id, 'r') as secret_file:
@@ -345,7 +345,7 @@ class Mastodon:
         if self.access_token != None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
         
-        if __DEBUG_REQUESTS = True:
+        if self.debug_requests == True:
             print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
             print('Parameters: ' + str(params))
             print('Headers: ' + str(headers))
