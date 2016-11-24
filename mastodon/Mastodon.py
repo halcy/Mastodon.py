@@ -87,6 +87,9 @@ class Mastodon:
         Logs in and sets access_token to what was returned.
         Can persist access token to file.
         
+        Will throw an exception if username / password are wrong, scopes are not
+        valid or granted scopes differ from requested.
+        
         Returns the access_token, as well.
         """
         params = self.__generate_params(locals())
