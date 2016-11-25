@@ -93,7 +93,6 @@ Returns a single toot dict for the given status.
      'descendants': A list of toot dicts
      'ancestors': A list of toot dicts
     }
-Note that this can only be called on statuses belonging to the currently logged-in user.
 
 .. automethod:: Mastodon.status_reblogged_by
 .. automethod:: Mastodon.status_favourited_by
