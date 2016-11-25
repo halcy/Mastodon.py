@@ -7,6 +7,10 @@ import mimetypes
 import time
 import random
 import string
+import pytz
+import datetime
+import dateutil
+import dateutil.parser
 
 class Mastodon:
     """ 
@@ -21,6 +25,7 @@ class Mastodon:
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     
+    
     ###
     # Registering apps
     ###
@@ -32,6 +37,9 @@ class Mastodon:
         Specify redirect_uris if you want users to be redirected to a certain page after authenticating.
         Specify to_file to persist your apps info to a file so you can use them in the constructor.
         Specify api_base_url if you want to register an app on an instance different from the flagship one.
+        
+        Presently, app registration is open by default, but this is not guaranteed to be the case for all
+        future mastodon instances or even the flagship instance in the future.
            
         Returns client_id and client_secret.
         """
@@ -57,13 +65,22 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False):
+    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False, ratelimit_method = "wait", ratelimit_pacefactor = 1.1):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
            
-        You can also directly specify an access_token, directly or as a file.
-            
+        You can also specify an access_token, directly or as a file (as written by log_in).
+        
+        Mastodon.py can try to respect rate limits in several ways, controlled by ratelimit_method.
+        "throw" makes functions throw a MastodonRatelimitError when the rate
+        limit is hit. "wait" mode will, once the limit is hit, wait and retry the request as soon
+        as the rate limit resets, until it succeeds. "pace" works like throw, but tries to wait in
+        between calls so that the limit is generally not hit (How hard it tries to not hit the rate 
+        limit can be controlled by ratelimit_pacefactor). The default setting is "wait". Note that
+        even in "wait" and "pace" mode, requests can still fail due to network or other problems! Also
+        note that "pace" and "wait" are NOT thread safe.
+        
         Specify api_base_url if you wish to talk to an instance other than the flagship one.
         If a file is given as client_id, read client ID and secret from that file
         """
@@ -72,6 +89,13 @@ class Mastodon:
         self.client_secret = client_secret
         self.access_token = access_token
         self.debug_requests = debug_requests
+        self.ratelimit_method = ratelimit_method
+        
+        self.ratelimit_limit = 150
+        self.ratelimit_reset = time.time()
+        self.ratelimit_remaining = 150
+        self.ratelimit_lastcall = time.time()
+        self.ratelimit_pacefactor = ratelimit_pacefactor
         
         if os.path.isfile(self.client_id):
             with open(self.client_id, 'r') as secret_file:
@@ -79,7 +103,7 @@ class Mastodon:
                 self.client_secret = secret_file.readline().rstrip()
         else:
             if self.client_secret == None:
-                raise ValueError('Specified client id directly, but did not supply secret')
+                raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
                 
         if self.access_token != None and os.path.isfile(self.access_token):
             with open(self.access_token, 'r') as token_file:
@@ -87,13 +111,15 @@ class Mastodon:
                 
     def log_in(self, username, password, scopes = ['read', 'write', 'follow'], to_file = None):
         """
-        Log in and set access_token to what was returned.
-        Can persist access token to file.
+        Log in and sets access_token to what was returned. Note that your
+        username is the e-mail you use to log in into mastodon.
         
-        Will throw an exception if username / password are wrong, scopes are not
-        valid or granted scopes differ from requested.
+        Can persist access token to file, to be used in the constructor.
         
-        Returns the access_token, as well.
+        Will throw a MastodonIllegalArgumentError if username / password 
+        are wrong, scopes are not valid or granted scopes differ from requested.
+        
+        Returns the access_token.
         """
         params = self.__generate_params(locals())
         params['client_id'] = self.client_id
@@ -102,16 +128,16 @@ class Mastodon:
         params['scope'] = " ".join(scopes)
         
         try:
-            response = self.__api_request('POST', '/oauth/token', params)      
+            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting = False)      
             self.access_token = response['access_token']
         except:
-            raise ValueError('Invalid user name, password or scopes.')
+            raise MastodonIllegalArgumentError('Invalid user name, password or scopes.')
         
         requested_scopes = " ".join(sorted(scopes))
         received_scopes = " ".join(sorted(response["scope"].split(" ")))
         
         if requested_scopes != received_scopes:
-            raise ValueError('Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
+            raise MastodonAPIError('Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
         
         if to_file != None:
             with open(to_file, 'w') as token_file:
@@ -381,19 +407,18 @@ class Mastodon:
         type has to be specified manually, otherwise, it is
         determined from the file name.
         
-        Throws a ValueError if the mime type of the passed data or file can
-        not be determined properly.
+        Throws a MastodonIllegalArgumentError if the mime type of the 
+        passed data or file can not be determined properly.
 
         Returns a media dict. This contains the id that can be used in
         status_post to attach the media file to a toot.
         """
-        
         if os.path.isfile(media_file) and mime_type == None:
             mime_type = mimetypes.guess_type(media_file)[0]
             media_file = open(media_file, 'rb')
             
         if mime_type == None:
-            raise ValueError('Could not determine mime type or data passed directly without mime type.')
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
         
         random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
         file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
@@ -404,14 +429,50 @@ class Mastodon:
     ###
     # Internal helpers, dragons probably
     ###
-    def __api_request(self, method, endpoint, params = {}, files = {}):
+    def __datetime_to_epoch(self, date_time):
+        """
+        Converts a python datetime to unix epoch, accounting for
+        time zones and such.
+        
+        Assumes UTC if timezone is not given.
+        """
+        date_time_utc = None
+        if date_time.tzinfo == None:
+            date_time_utc = date_time.replace(tzinfo = pytz.utc)
+        else:
+            date_time_utc = date_time.astimezone(pytz.utc)
+        
+        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo = pytz.utc)
+        
+        return (date_time_utc - epoch_utc).total_seconds()
+    
+    def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True):
         """
         Internal API request helper.
         """
         response = None
         headers = None
         
-
+        # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
+        # would take to not hit the rate limit at that request rate.
+        if do_ratelimiting and self.ratelimit_method == "pace":
+            if self.ratelimit_remaining == 0:
+                to_next = self.ratelimit_reset - time.time()
+                if to_next > 0:
+                    # As a precaution, never sleep longer than 5 minutes
+                    to_next = min(to_next, 5 * 60)
+                    time.sleep(to_next)
+            else:
+                time_waited = time.time() - self.ratelimit_lastcall
+                time_wait = float(self.ratelimit_reset - time.time()) / float(self.ratelimit_remaining)
+                remaining_wait = time_wait - time_waited
+            
+            if remaining_wait > 0:
+                to_next = remaining_wait / self.ratelimit_pacefactor
+                to_next = min(to_next, 5 * 60)
+                time.sleep(to_next)
+                
+        # Generate request headers
         if self.access_token != None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
         
@@ -421,26 +482,74 @@ class Mastodon:
             print('Headers: ' + str(headers))
             print('Files: ' + str(files))
 
-        if method == 'GET':
-            response = requests.get(self.api_base_url + endpoint, data = params, headers = headers, files = files)
-        
-        if method == 'POST':
-            response = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+        # Make request
+        request_complete = False
+        while not request_complete:
+            request_complete = True
             
-        if method == 'DELETE':
-            response = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+            response_object = None
+            try:
+                if method == 'GET':
+                    response_object = requests.get(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+                
+                if method == 'POST':
+                    response_object = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+                    
+                if method == 'DELETE':
+                    response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+            except:
+                raise MastodonNetworkError("Could not complete request.")
         
-        if response.status_code == 404:
-            raise IOError('Endpoint not found.')
+            if response_object == None:
+                raise MastodonIllegalArgumentError("Illegal request.")
+            
+            # Handle response
+            if self.debug_requests == True:
+                print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
+                print('Respose headers: ' + str(response_object.headers))
+                print('Response text content: ' + str(response_object.text))
+            
+            if response_object.status_code == 404:
+                raise MastodonAPIError('Endpoint not found.')
+            
+            if response_object.status_code == 500:
+                raise MastodonAPIError('General API problem.')
+            
+            try:
+                response = response_object.json()
+            except:
+                raise MastodonAPIError("Could not parse response as JSON, respose code was " + str(response_object.status_code))
         
-        if response.status_code == 500:
-            raise IOError('General API problem.')
-        
-        try:
-            response = response.json()
-        except:
-            raise ValueError("Could not parse response as JSON, respose code was " + str(response.status_code))
-        
+            # Handle rate limiting
+            try:
+                if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
+                    self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
+                    self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
+
+                    ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                    self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
+
+                    # Adjust server time to local clock
+                    server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                    server_time = self.__datetime_to_epoch(server_time_datetime)
+                    server_time_diff = time.time() - server_time
+                    self.ratelimit_reset += server_time_diff
+                    self.ratelimit_lastcall = time.time()
+
+                    if "error" in response and response["error"] == "Throttled":
+                        if self.ratelimit_method == "throw":
+                            raise MastodonRatelimitError("Hit rate limit.")
+
+                        if self.ratelimit_method == "wait" or self.ratelimit_method == "pace":
+                            to_next = self.ratelimit_reset - time.time()
+                            if to_next > 0:
+                                # As a precaution, never sleep longer than 5 minutes
+                                to_next = min(to_next, 5 * 60) 
+                                time.sleep(to_next)
+                            request_complete = False
+            except:
+                raise MastodonRatelimitError("Rate limit time calculations failed.")
+                    
         return response
     
     def __generate_params(self, params, exclude = []):
@@ -462,3 +571,22 @@ class Mastodon:
                 del params[key]
                 
         return params
+
+##
+# Exceptions
+##
+class MastodonIllegalArgumentError(ValueError):
+    pass
+
+class MastodonFileNotFoundError(IOError):
+    pass
+
+class MastodonNetworkError(IOError):
+    pass
+
+class MastodonAPIError(Exception):
+    pass
+
+class MastodonRatelimitError(Exception):
+    pass
+
