@@ -114,7 +114,7 @@ Notification dicts
 ~~~~~~~~~~~~~~~~~~
 .. code-block:: python
 
-    mastodon.notifications()
+    mastodon.notifications()[0]
     # Returns the following dictionary:
     {
         'id': id of the notification.
