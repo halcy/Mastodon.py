@@ -1,5 +1,7 @@
 Mastodon.py
 ===========
+.. py:module:: mastodon
+.. py:class: Mastodon
 
 .. code-block:: python
 
@@ -37,14 +39,96 @@ as a single python module. By default, it talks to the
 `Mastodon flagship instance`_, but it can be set to talk to any 
 node running Mastodon.
 
+Return values
+-------------
+
 Unless otherwise specified, all data is returned as python 
 dictionaries, matching the JSON format used by the API.
-For complete documentation on what every function returns, 
-check the `Mastodon API docs`_, or just play around a bit - the
-format of the data is generally very easy to understand.
 
-.. py:module:: mastodon
-.. py:class: Mastodon
+User dicts
+~~~~~~~~~~
+
+.. code-block:: python
+
+    {
+     'display_name': The user's display name
+     'acct': The user's account name as username@domain (@domain omitted for local users)
+     'following_count': How many people they follow
+     'url': Their URL; usually 'https://mastodon.social/users/<acct>'
+     'statuses_count': How many statuses they have
+     'followers_count': How many followers they have
+     'avatar': URL for their avatar
+     'note': Their bio
+     'header': URL for their header image
+     'id': Same as <numerical id>
+     'username': The username (what you @ them with)
+    }
+
+Toot dicts
+~~~~~~~~~~
+.. code-block:: python
+
+   mastodon.toot("Hello from Python")
+   # Returns the following dictionary:
+   {
+    'sensitive': Denotes whether the toot is marked sensitive
+    'created_at': Creation time
+    'mentions': A list of account dicts mentioned in the toot
+    'uri': Descriptor for the toot
+           EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
+    'tags': A list of hashtag dicts used in the toot
+    'in_reply_to_id': Numerical id of the toot this toot is in response to
+    'id': Numerical id of this toot
+    'reblogs_count': Number of reblogs
+    'favourites_count': Number of favourites
+    'reblog': Denotes whether the toot is a reblog
+    'url': URL of the toot
+    'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
+    'favourited': Denotes whether the logged in user has favourited this toot
+    'account': Account dict for the logged in account
+   }
+
+Relationship dicts
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    mastodon.account_follow(<numerical id>)
+    # Returns
+    {
+     'followed_by': Boolean denoting whether they follow you back
+     'following': Boolean denoting whether you follow them
+     'id': Numerical id (same one as <numerical id>)
+     'blocking': Boolean denoting whether you are blocking them
+    }
+
+Context dicts
+~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    mastodon.status_context(<numerical id>)
+    # Returns
+    {
+     'descendants': A list of toot dicts
+     'ancestors': A list of toot dicts
+    }
+
+Media dicts
+~~~~~~~~~~~
+
+.. code-block:: python
+
+    mastodon.media_post("image.jpg", "image/jpeg")
+    # Returns
+    {
+     'text_url': The display text for the media (what shows up in toots)
+     'preview_url': The URL for the media preview
+     'type': Media type, EG 'image'
+     'url': The URL for the media
+    }
+
+
 
 App registration and user authentication
 ----------------------------------------
@@ -81,20 +165,7 @@ Reading data: Statuses
 These functions allow you to get information about single statuses.
 
 .. automethod:: Mastodon.status
-
-Returns a single toot dict for the given status.
-
 .. automethod:: Mastodon.status_context
-
-.. code-block:: python
-
-    mastodon.status_context(<numerical id>)
-    # Returns
-    {
-     'descendants': A list of toot dicts
-     'ancestors': A list of toot dicts
-    }
-
 .. automethod:: Mastodon.status_reblogged_by
 .. automethod:: Mastodon.status_favourited_by
 
@@ -104,9 +175,6 @@ This function allows you to get information about a users notifications.
 
 .. automethod:: Mastodon.notifications
 
-Returns a list of toot dicts for toots mentioning the current logged-in user.
-
-
 Reading data: Accounts
 ----------------------
 These functions allow you to get information about accounts and
@@ -114,38 +182,11 @@ their relationships.
 
 .. automethod:: Mastodon.account
 .. automethod:: Mastodon.account_verify_credentials
-
-These methods return an account dict:
-
-.. code-block:: python
-
-    mastodon.account(<numerical id>)
-    # Returns
-    {
-     'display_name': The user's display name
-     'acct': The user's account name as username@domain (@domain omitted for local users)
-     'following_count': How many people they follow
-     'url': Their URL; usually 'https://mastodon.social/users/<acct>'
-     'statuses_count': How many statuses they have
-     'followers_count': How many followers they have
-     'avatar': URL for their avatar
-     'note': Their bio
-     'header': URL for their header image
-     'id': Same as <numerical id>
-     'username': The username (what you @ them with)
-    }
-
 .. automethod:: Mastodon.account_statuses
 .. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_followers
 .. automethod:: Mastodon.account_relationships
-
-See following below for format of relationship dicts.
-
-.. automethod:: Mastodon.account_suggestions
 .. automethod:: Mastodon.account_search
-
-Returns a list of user dicts.
 
 Writing data: Statuses
 ----------------------
@@ -158,57 +199,12 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_unreblog
 .. automethod:: Mastodon.status_favourite
 .. automethod:: Mastodon.status_unfavourite
-
-These methods return a toot dict:
-
-.. code-block:: python
-
-   mastodon.toot("Hello from Python")
-   # Returns the following dictionary:
-   {
-    'sensitive': Denotes whether the toot is marked sensitive
-    'created_at': Creation time
-    'mentions': A list of account dicts mentioned in the toot
-    'uri': Descriptor for the toot
-           EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
-    'tags': A list of hashtag dicts used in the toot
-    'in_reply_to_id': Numerical id of the toot this toot is in response to
-    'id': Numerical id of this toot
-    'reblogs_count': Number of reblogs
-    'favourites_count': Number of favourites
-    'reblog': Denotes whether the toot is a reblog
-    'url': URL of the toot
-    'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
-    'favourited': Denotes whether the logged in user has favourited this toot
-    'account': Account dict for the logged in account
-   }
-
 .. automethod:: Mastodon.status_delete
-Returns an empty dict:
-
-.. code-block:: python
-
-   mastodon.delete_status(<numerical id>)
-   # Returns
-   {}
 
 Writing data: Accounts
 ----------------------
 These functions allow you to interact with other accounts: To (un)follow and
 (un)block.
-
-They return a relationship dict:
-
-.. code-block:: python
-
-    mastodon.account_follow(<numerical id>)
-    # Returns
-    {
-     'followed_by': Boolean denoting whether they follow you back
-     'following': Boolean denoting whether you follow them
-     'id': Numerical id (same one as <numerical id>)
-     'blocking': Boolean denoting whether you are blocking them
-    }
 
 .. automethod:: Mastodon.account_follow  
 .. automethod:: Mastodon.account_unfollow
@@ -223,18 +219,6 @@ to attach media to statuses.
 
 .. automethod:: Mastodon.media_post
 
-Returns a media dict:
-
-.. code-block:: python
-
-    mastodon.media_post("image.jpg", "image/jpeg")
-    # Returns
-    {
-     'text_url': The display text for the media (what shows up in toots)
-     'preview_url': The URL for the media preview
-     'type': Media type, EG 'image'
-     'url': The URL for the media
-    }
 
 .. _Mastodon: https://github.com/Gargron/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/
