@@ -39,6 +39,33 @@ as a single python module. By default, it talks to the
 `Mastodon flagship instance`_, but it can be set to talk to any 
 node running Mastodon.
 
+A note about rate limits
+------------------------
+Mastodons API rate limits per IP. Mastodon.py has three modes for dealing
+with rate limiting that you can pass to the constructor, "throw", "wait"
+and "pace", "wait" being the default.
+
+In "throw" mode, Mastodon.py makes no attempt to stick to rate limits. When
+a request hits the rate limit, it simply throws a MastodonRateLimitError. This is
+for applications that need to handle all rate limiting themselves (i.e. interactive apps), 
+or applications wanting to use Mastodon.py in a multi-threaded context ("wait" and "pace" 
+modes are not thread safe).
+
+In "wait" mode, once a request hits the rate limit, Mastodon.py will wait until
+the rate limit resets and then try again, until the request succeeds or an error
+is encountered. This mode is for applications that would rather just not worry about rate limits
+much, don't poll the api all that often, and are okay with a call sometimes just taking
+a while.
+
+In "pace" mode, Mastodon.py will delay each new request after the first one such that, 
+if requests were to continue at the same rate, only a certain fraction (set in the
+constructor as ratelimit_pacefactor) of the rate limit will be used up. The fraction can
+be (and by default, is) greater than one. If the rate limit is hit, "pace" behaves like
+"wait". This mode is probably the most advanced one and allows you to just poll in
+a loop without ever sleeping at all yourself. It is for applications that would rather
+just pretend there is no such thing as a rate limit and are fine with sometimes not
+being very interactive.
+
 A note about IDs
 ----------------
 Mastodons API uses IDs in several places: User IDs, Toot IDs, ...

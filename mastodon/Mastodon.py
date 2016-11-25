@@ -7,7 +7,10 @@ import mimetypes
 import time
 import random
 import string
-from datetime import datetime
+import pytz
+import datetime
+import dateutil
+import dateutil.parser
 
 class Mastodon:
     """ 
@@ -62,12 +65,12 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False, ratelimit_method = "wait", ratelimit_pacefactor = 0.9):
+    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False, ratelimit_method = "wait", ratelimit_pacefactor = 1.1):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
            
-        You can also directly specify an access_token, directly or as a file.
+        You can also specify an access_token, directly or as a file (as written by log_in).
         
         Mastodon.py can try to respect rate limits in several ways, controlled by ratelimit_method.
         "throw" makes functions throw a MastodonRatelimitError when the rate
@@ -92,7 +95,7 @@ class Mastodon:
         self.ratelimit_reset = time.time()
         self.ratelimit_remaining = 150
         self.ratelimit_lastcall = time.time()
-        self.ratelimit_pacefactor = 0.9
+        self.ratelimit_pacefactor = ratelimit_pacefactor
         
         if os.path.isfile(self.client_id):
             with open(self.client_id, 'r') as secret_file:
@@ -426,15 +429,26 @@ class Mastodon:
     ###
     # Internal helpers, dragons probably
     ###
+    def __datetime_to_epoch(self, date_time):
+        """
+        Converts a python datetime to unix epoch, accounting for
+        time zones and such.
+        
+        Assumes UTC if timezone is not given.
+        """
+        date_time_utc = None
+        if date_time.tzinfo == None:
+            date_time_utc = date_time.replace(tzinfo = pytz.utc)
+        else:
+            date_time_utc = date_time.astimezone(pytz.utc)
+        
+        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo = pytz.utc)
+        
+        return (date_time_utc - epoch_utc).total_seconds()
+    
     def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True):
         """
         Internal API request helper.
-        
-        TODO FIXME: time.time() does not match server time neccesarily. Using the time from the request
-        would be correct.
-        
-        TODO FIXME: Date parsing can fail. Should probably use a proper "date parsing" module rather than
-        rely on the server to return the right thing.
         """
         response = None
         headers = None
@@ -445,6 +459,8 @@ class Mastodon:
             if self.ratelimit_remaining == 0:
                 to_next = self.ratelimit_reset - time.time()
                 if to_next > 0:
+                    # As a precaution, never sleep longer than 5 minutes
+                    to_next = min(to_next, 5 * 60)
                     time.sleep(to_next)
             else:
                 time_waited = time.time() - self.ratelimit_lastcall
@@ -452,7 +468,9 @@ class Mastodon:
                 remaining_wait = time_wait - time_waited
             
             if remaining_wait > 0:
-                time.sleep(remaining_wait * self.ratelimit_pacefactor)
+                to_next = remaining_wait / self.ratelimit_pacefactor
+                to_next = min(to_next, 5 * 60)
+                time.sleep(to_next)
                 
         # Generate request headers
         if self.access_token != None:
@@ -503,21 +521,34 @@ class Mastodon:
                 raise MastodonAPIError("Could not parse response as JSON, respose code was " + str(response_object.status_code))
         
             # Handle rate limiting
-            if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
-                self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
-                self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
-                self.ratelimit_reset = (datetime.strptime(response_object.headers['X-RateLimit-Reset'], "%Y-%m-%dT%H:%M:%S.%fZ") - datetime(1970, 1, 1)).total_seconds()
-                self.ratelimit_lastcall = time.time()
+            try:
+                if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
+                    self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
+                    self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
 
-                if "error" in response and response["error"] == "Throttled":
-                    if self.ratelimit_method == "throw":
-                        raise MastodonRatelimitError("Hit rate limit.")
+                    ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                    self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
-                    if self.ratelimit_method == "wait" or self.ratelimit_method == "pace":
-                        to_next = self.ratelimit_reset - time.time()
-                        if to_next > 0:
-                            time.sleep(to_next)
-                        request_complete = False
+                    # Adjust server time to local clock
+                    server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                    server_time = self.__datetime_to_epoch(server_time_datetime)
+                    server_time_diff = time.time() - server_time
+                    self.ratelimit_reset += server_time_diff
+                    self.ratelimit_lastcall = time.time()
+
+                    if "error" in response and response["error"] == "Throttled":
+                        if self.ratelimit_method == "throw":
+                            raise MastodonRatelimitError("Hit rate limit.")
+
+                        if self.ratelimit_method == "wait" or self.ratelimit_method == "pace":
+                            to_next = self.ratelimit_reset - time.time()
+                            if to_next > 0:
+                                # As a precaution, never sleep longer than 5 minutes
+                                to_next = min(to_next, 5 * 60) 
+                                time.sleep(to_next)
+                            request_complete = False
+            except:
+                raise MastodonRatelimitError("Rate limit time calculations failed.")
                     
         return response
     
@@ -545,6 +576,9 @@ class Mastodon:
 # Exceptions
 ##
 class MastodonIllegalArgumentError(ValueError):
+    pass
+
+class MastodonFileNotFoundError(IOError):
     pass
 
 class MastodonNetworkError(IOError):
