@@ -97,6 +97,9 @@ class Mastodon:
         self.ratelimit_lastcall = time.time()
         self.ratelimit_pacefactor = ratelimit_pacefactor
         
+        if not ratelimit_method in ["throw", "wait", "pace"]:
+            raise MastodonIllegalArgumentError("Invalid ratelimit method.")
+        
         if os.path.isfile(self.client_id):
             with open(self.client_id, 'r') as secret_file:
                 self.client_id = secret_file.readline().rstrip()
@@ -521,11 +524,11 @@ class Mastodon:
                 raise MastodonAPIError("Could not parse response as JSON, respose code was " + str(response_object.status_code))
         
             # Handle rate limiting
-            try:
-                if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
-                    self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
-                    self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
+            if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
+                self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
+                self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
 
+                try:
                     ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
                     self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
@@ -535,10 +538,12 @@ class Mastodon:
                     server_time_diff = time.time() - server_time
                     self.ratelimit_reset += server_time_diff
                     self.ratelimit_lastcall = time.time()
-
-                    if "error" in response and response["error"] == "Throttled":
-                        if self.ratelimit_method == "throw":
-                            raise MastodonRatelimitError("Hit rate limit.")
+                except:
+                    raise MastodonRatelimitError("Rate limit time calculations failed.")
+                
+                if "error" in response and response["error"] == "Throttled":
+                    if self.ratelimit_method == "throw":
+                        raise MastodonRatelimitError("Hit rate limit.")
 
                         if self.ratelimit_method == "wait" or self.ratelimit_method == "pace":
                             to_next = self.ratelimit_reset - time.time()
@@ -546,9 +551,7 @@ class Mastodon:
                                 # As a precaution, never sleep longer than 5 minutes
                                 to_next = min(to_next, 5 * 60) 
                                 time.sleep(to_next)
-                            request_complete = False
-            except:
-                raise MastodonRatelimitError("Rate limit time calculations failed.")
+                                request_complete = False
                     
         return response
     
