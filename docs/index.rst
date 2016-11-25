@@ -85,21 +85,21 @@ User dicts
 ~~~~~~~~~~
 .. code-block:: python
 
-    mastodon.account(<numerical id>)
-    # Returns the following dictionary:
-    {
-     'display_name': The user's display name
-     'acct': The user's account name as username@domain (@domain omitted for local users)
-     'following_count': How many people they follow
-     'url': Their URL; usually 'https://mastodon.social/users/<acct>'
-     'statuses_count': How many statuses they have
-     'followers_count': How many followers they have
-     'avatar': URL for their avatar
-     'note': Their bio
-     'header': URL for their header image
-     'id': Same as <numerical id>
-     'username': The username (what you @ them with)
-    }
+   mastodon.account(<numerical id>)
+   # Returns the following dictionary:
+   {
+    'display_name': The user's display name
+    'acct': The user's account name as username@domain (@domain omitted for local users)
+    'following_count': How many people they follow
+    'url': Their URL; usually 'https://mastodon.social/users/<acct>'
+    'statuses_count': How many statuses they have
+    'followers_count': How many followers they have
+    'avatar': URL for their avatar
+    'note': Their bio
+    'header': URL for their header image
+    'id': Same as <numerical id>
+    'username': The username (what you @ them with)
+   }
 
 Toot dicts
 ~~~~~~~~~~
@@ -115,6 +115,8 @@ Toot dicts
            EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
     'tags': A list of hashtag dicts used in the toot
     'in_reply_to_id': Numerical id of the toot this toot is in response to
+    'media_attachments': list of media dicts of attached files. Only present 
+                         when there are attached files.
     'id': Numerical id of this toot
     'reblogs_count': Number of reblogs
     'favourites_count': Number of favourites
