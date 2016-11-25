@@ -209,7 +209,7 @@ class Mastodon:
         Fetch notifications (mentions, favourites, reblogs, follows) for the authenticated
         user.
 
-        Returns: TODO
+        Returns a list of notification dicts.
         """
         return self.__api_request('GET', '/api/v1/notifications')
     

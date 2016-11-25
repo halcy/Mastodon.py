@@ -57,6 +57,8 @@ User dicts
 ~~~~~~~~~~
 .. code-block:: python
 
+    mastodon.account(<numerical id>)
+    # Returns the following dictionary:
     {
      'display_name': The user's display name
      'acct': The user's account name as username@domain (@domain omitted for local users)
@@ -100,7 +102,7 @@ Relationship dicts
 .. code-block:: python
 
     mastodon.account_follow(<numerical id>)
-    # Returns
+    # Returns the following dictionary:
     {
      'followed_by': Boolean denoting whether they follow you back
      'following': Boolean denoting whether you follow them
@@ -108,12 +110,26 @@ Relationship dicts
      'blocking': Boolean denoting whether you are blocking them
     }
 
+Notification dicts
+~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+    mastodon.notifications()
+    # Returns the following dictionary:
+    {
+        'id': id of the notification.
+        'type': "mention", "reblog", "favourite" or "follow".
+        'status': In case of "mention", the mentioning status. 
+                  In case of reblog / favourite, the reblogged / favourited status.
+        'account': User dict of the user from whom the notification originates.
+    }
+
 Context dicts
 ~~~~~~~~~~~~~
 .. code-block:: python
 
     mastodon.status_context(<numerical id>)
-    # Returns
+    # Returns the following dictionary:
     {
      'descendants': A list of toot dicts
      'ancestors': A list of toot dicts
@@ -124,7 +140,7 @@ Media dicts
 .. code-block:: python
 
     mastodon.media_post("image.jpg", "image/jpeg")
-    # Returns
+    # Returns the following dictionary:
     {
      'text_url': The display text for the media (what shows up in toots)
      'preview_url': The URL for the media preview
