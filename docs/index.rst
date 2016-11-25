@@ -39,15 +39,22 @@ as a single python module. By default, it talks to the
 `Mastodon flagship instance`_, but it can be set to talk to any 
 node running Mastodon.
 
+A note about IDs
+----------------
+Mastodons API uses IDs in several places: User IDs, Toot IDs, ...
+
+While debugging, it might be tempting to copy-paste in IDs from the
+web interface into your code. This will not work, as the IDs on the web
+interface and in the URLs are not the same as the IDs used internally
+in the API, so don't do that.
+
 Return values
 -------------
-
 Unless otherwise specified, all data is returned as python 
 dictionaries, matching the JSON format used by the API.
 
 User dicts
 ~~~~~~~~~~
-
 .. code-block:: python
 
     {
@@ -90,7 +97,6 @@ Toot dicts
 
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
-
 .. code-block:: python
 
     mastodon.account_follow(<numerical id>)
@@ -104,7 +110,6 @@ Relationship dicts
 
 Context dicts
 ~~~~~~~~~~~~~
-
 .. code-block:: python
 
     mastodon.status_context(<numerical id>)
@@ -116,7 +121,6 @@ Context dicts
 
 Media dicts
 ~~~~~~~~~~~
-
 .. code-block:: python
 
     mastodon.media_post("image.jpg", "image/jpeg")
@@ -127,8 +131,6 @@ Media dicts
      'type': Media type, EG 'image'
      'url': The URL for the media
     }
-
-
 
 App registration and user authentication
 ----------------------------------------
