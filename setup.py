@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='Mastodon.py',
-      version='1.0.0',
+      version='1.0.1',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       install_requires=['requests'],

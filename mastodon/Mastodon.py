@@ -122,13 +122,39 @@ class Mastodon:
     ###
     # Reading data: Timelines
     ##
-    def timeline(self, timeline = 'home', max_id = None, since_id = None, limit = None):
+    def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
         """
         Returns statuses, most recent ones first. Timeline can be home, mentions, public
-        or tag/:hashtag
+        or tag/hashtag. See the following functions documentation for what those do.
+        
+        The default timeline is the "home" timeline.
         """
         params = self.__generate_params(locals(), ['timeline'])
         return self.__api_request('GET', '/api/v1/timelines/' + timeline, params)
+    
+    def timeline_home(self, max_id = None, since_id = None, limit = None):
+        """
+        Returns the authenticated users home timeline (i.e. followed users and self).
+        """
+        return self.timeline('home', max_id = max_id, since_id = since_id, limit = limit)
+    
+    def timeline_mentions(self, max_id = None, since_id = None, limit = None):
+        """
+        Returns the authenticated users mentions.
+        """
+        return self.timeline('mentions', max_id = max_id, since_id = since_id, limit = limit)
+    
+    def timeline_public(self, max_id = None, since_id = None, limit = None):
+        """
+        Returns the public / visible-network timeline.
+        """
+        return self.timeline('public', max_id = max_id, since_id = since_id, limit = limit)
+    
+    def timeline_hashtag(self, hashtag, max_id = None, since_id = None, limit = None):
+        """
+        Returns all toots with a given hashtag.
+        """
+        return self.timeline('tag/' + str(hashtag), max_id = max_id, since_id = since_id, limit = limit)
     
     ###
     # Reading data: Statuses
@@ -156,6 +182,16 @@ class Mastodon:
         Returns a list of users that have favourited a status.
         """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/favourited_by')
+    
+    ###
+    # Reading data: Notifications
+    ###
+    def notifications(self):
+        """
+        Returns notifications (mentions, favourites, reblogs, follows) for the authenticated
+        user.
+        """
+        return self.__api_request('GET', '/api/v1/notifications')
     
     ###
     # Reading data: Accounts
@@ -312,7 +348,9 @@ class Mastodon:
         type has to be specified manually, otherwise, it is
         determined from the file name.
         
-        Returns the ID of the media that can then be used in status_post().
+        Returns the uploaded media metadata object. Importantly, this contains 
+        the ID that can then be used in status_post() to attach the media to
+        a toot.
         
         Throws a ValueError if the mime type of the passed data or file can
         not be determined properly.

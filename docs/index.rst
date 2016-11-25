@@ -37,8 +37,11 @@ as a single python module. By default, it talks to the
 `Mastodon flagship instance`_, but it can be set to talk to any 
 node running Mastodon.
 
+Unless otherwise specified, all data is returned as python 
+dictionaries, matching the JSON format used by the API.
 For complete documentation on what every function returns, 
-check the `Mastodon API docs`_, or just play around a bit.
+check the `Mastodon API docs`_, or just play around a bit - the
+format of the data is generally very easy to understand.
 
 .. py:module:: mastodon
 .. py:class: Mastodon
@@ -68,6 +71,10 @@ This function allows you to access the timelines a logged in
 user could see, as well as hashtag timelines and the public timeline.
 
 .. automethod:: Mastodon.timeline
+.. automethod:: Mastodon.timeline_home
+.. automethod:: Mastodon.timeline_mentions
+.. automethod:: Mastodon.timeline_public
+.. automethod:: Mastodon.timeline_hashtag
 
 Reading data: Statuses
 ----------------------
@@ -77,6 +84,13 @@ These functions allow you to get information about single statuses.
 .. automethod:: Mastodon.status_context
 .. automethod:: Mastodon.status_reblogged_by
 .. automethod:: Mastodon.status_favourited_by
+
+Reading data: Notifications
+---------------------------
+This function allows you to get information about a users notifications.
+
+.. automethod:: Mastodon.notifications
+
 
 Reading data: Accounts
 ----------------------
