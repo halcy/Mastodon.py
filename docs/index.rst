@@ -87,6 +87,7 @@ Returns a single toot dict for the given status.
 .. automethod:: Mastodon.status_context
 
 .. code-block:: python
+
     mastodon.status_context(<numerical id>)
     # Returns
     {
@@ -115,7 +116,9 @@ their relationships.
 .. automethod:: Mastodon.account_verify_credentials
 
 These methods return an account dict:
+
 .. code-block:: python
+
     mastodon.account(<numerical id>)
     # Returns
     {
@@ -157,7 +160,9 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_unfavourite
 
 These methods return a toot dict:
+
 .. code-block:: python
+
    mastodon.toot("Hello from Python")
    # Returns the following dictionary:
    {
@@ -180,7 +185,9 @@ These methods return a toot dict:
 
 .. automethod:: Mastodon.status_delete
 Returns an empty dict:
+
 .. code-block:: python
+
    mastodon.delete_status(<numerical id>)
    # Returns
    {}
@@ -191,7 +198,9 @@ These functions allow you to interact with other accounts: To (un)follow and
 (un)block.
 
 They return a relationship dict:
+
 .. code-block:: python
+
     mastodon.account_follow(<numerical id>)
     # Returns
     {
@@ -215,7 +224,9 @@ to attach media to statuses.
 .. automethod:: Mastodon.media_post
 
 Returns a media dict:
+
 .. code-block:: python
+
     mastodon.media_post("image.jpg", "image/jpeg")
     # Returns
     {
