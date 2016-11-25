@@ -312,11 +312,28 @@ class Mastodon:
     def status_post(self, status, in_reply_to_id = None, media_ids = None):
         """
         Post a status. Can optionally be in reply to another status and contain
-        up to four pieces of media (Uploaded via media_post()).
+        up to four pieces of media (Uploaded via media_post()). media_ids can
+        also be the media dicts returned by media_post - they are unpacked
+        automatically.
            
         Returns a toot dict with the new status.
         """
-        params = self.__generate_params(locals())
+        params_initial = locals()
+        
+        if media_ids != None:
+            try:
+                media_ids_proper = []
+                for media_id in media_ids:
+                    if isinstance(media_id, dict):
+                        media_ids_proper.append(media_id["id"])
+                    else:
+                        media_ids_proper.append(media_id)
+            except:
+                raise MastodonIllegalArgumentError("Invalid media dict.")
+        
+            params_initial["media_ids"] = media_ids_proper
+            
+        params = self.__generate_params(params_initial)            
         return self.__api_request('POST', '/api/v1/statuses', params)
     
     def toot(self, status):
@@ -558,6 +575,11 @@ class Mastodon:
     def __generate_params(self, params, exclude = []):
         """
         Internal named-parameters-to-dict helper.
+        
+        Note for developers: If called with locals() as params,
+        as is the usual practice in this code, the __generate_params call
+        (or at least the locals() call) should generally be the first thing 
+        in your function.
         """
         params = dict(params)
         
