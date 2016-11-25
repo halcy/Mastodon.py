@@ -121,7 +121,7 @@ These methods return an account dict:
     # Returns
     {
      'display_name': The user's display name
-     'acct': The user's account name (what you @ them with)
+     'acct': The user's account name as username@domain (@domain omitted for local users)
      'following_count': How many people they follow
      'url': Their URL; usually 'https://mastodon.social/users/<acct>'
      'statuses_count': How many statuses they have
@@ -130,7 +130,7 @@ These methods return an account dict:
      'note': Their bio
      'header': URL for their header image
      'id': Same as <numerical id>
-     'username': Usually same as acct
+     'username': The username (what you @ them with)
     }
 
 .. automethod:: Mastodon.account_statuses
@@ -221,9 +221,9 @@ Returns a media dict:
     # Returns
     {
      'text_url': The display text for the media (what shows up in toots)
-     'preview_url': The URL for the media preview on Amazon S3
+     'preview_url': The URL for the media preview
      'type': Media type, EG 'image'
-     'url': The URL for the media on Amazon S3
+     'url': The URL for the media
     }
 
 .. _Mastodon: https://github.com/Gargron/mastodon
