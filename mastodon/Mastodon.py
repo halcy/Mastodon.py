@@ -24,6 +24,7 @@ class Mastodon:
     patch in Real Proper OAuth if desired.
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
+    __DEFAULT_TIMEOUT = 300
     
     
     ###
@@ -48,13 +49,16 @@ class Mastodon:
             'scopes': " ".join(scopes)
         }
         
-        if redirect_uris != None:
-            request_data['redirect_uris'] = redirect_uris;
-        else:
-            request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob';
-        
-        response = requests.post(api_base_url + '/api/v1/apps', data = request_data).json()
-        
+        try:
+            if redirect_uris != None:
+                request_data['redirect_uris'] = redirect_uris;
+            else:
+                request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob';
+            
+            response = requests.post(api_base_url + '/api/v1/apps', data = request_data, timeout = self.request_timeout).json()
+        except:
+            raise MastodonNetworkError("Could not complete request.")
+            
         if to_file != None:
             with open(to_file, 'w') as secret_file:
                 secret_file.write(response['client_id'] + '\n')
@@ -65,7 +69,7 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False, ratelimit_method = "wait", ratelimit_pacefactor = 1.1):
+    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False, ratelimit_method = "wait", ratelimit_pacefactor = 1.1, request_timeout = __DEFAULT_TIMEOUT):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
@@ -82,7 +86,10 @@ class Mastodon:
         note that "pace" and "wait" are NOT thread safe.
         
         Specify api_base_url if you wish to talk to an instance other than the flagship one.
-        If a file is given as client_id, read client ID and secret from that file
+        If a file is given as client_id, read client ID and secret from that file.
+        
+        By defautl, a timeout of 300 seconds is used for all requests. If you wish to change this,
+        pass the desired timeout (in seconds) as request_timeout.
         """
         self.api_base_url = api_base_url
         self.client_id = client_id                      
@@ -96,6 +103,8 @@ class Mastodon:
         self.ratelimit_remaining = 150
         self.ratelimit_lastcall = time.time()
         self.ratelimit_pacefactor = ratelimit_pacefactor
+        
+        self.request_timeout = request_timeout
         
         if not ratelimit_method in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
@@ -510,13 +519,13 @@ class Mastodon:
             response_object = None
             try:
                 if method == 'GET':
-                    response_object = requests.get(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+                    response_object = requests.get(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
                 
                 if method == 'POST':
-                    response_object = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+                    response_object = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
                     
                 if method == 'DELETE':
-                    response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files)
+                    response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
             except:
                 raise MastodonNetworkError("Could not complete request.")
         
