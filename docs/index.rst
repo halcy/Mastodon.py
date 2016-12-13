@@ -85,47 +85,47 @@ User dicts
 ~~~~~~~~~~
 .. code-block:: python
 
-   mastodon.account(<numerical id>)
-   # Returns the following dictionary:
-   {
-    'display_name': The user's display name
-    'acct': The user's account name as username@domain (@domain omitted for local users)
-    'following_count': How many people they follow
-    'url': Their URL; usually 'https://mastodon.social/users/<acct>'
-    'statuses_count': How many statuses they have
-    'followers_count': How many followers they have
-    'avatar': URL for their avatar
-    'note': Their bio
-    'header': URL for their header image
-    'id': Same as <numerical id>
-    'username': The username (what you @ them with)
-   }
+    mastodon.account(<numerical id>)
+    # Returns the following dictionary:
+    {
+        'display_name': The user's display name
+        'acct': The user's account name as username@domain (@domain omitted for local users)
+        'following_count': How many people they follow
+        'url': Their URL; usually 'https://mastodon.social/users/<acct>'
+        'statuses_count': How many statuses they have
+        'followers_count': How many followers they have
+        'avatar': URL for their avatar
+        'note': Their bio
+        'header': URL for their header image
+        'id': Same as <numerical id>
+        'username': The username (what you @ them with)
+    }
 
 Toot dicts
 ~~~~~~~~~~
 .. code-block:: python
 
-   mastodon.toot("Hello from Python")
-   # Returns the following dictionary:
-   {
-    'sensitive': Denotes whether the toot is marked sensitive
-    'created_at': Creation time
-    'mentions': A list of account dicts mentioned in the toot
-    'uri': Descriptor for the toot
-           EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
-    'tags': A list of hashtag dicts used in the toot
-    'in_reply_to_id': Numerical id of the toot this toot is in response to
-    'media_attachments': list of media dicts of attached files. Only present 
-                         when there are attached files.
-    'id': Numerical id of this toot
-    'reblogs_count': Number of reblogs
-    'favourites_count': Number of favourites
-    'reblog': Denotes whether the toot is a reblog
-    'url': URL of the toot
-    'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
-    'favourited': Denotes whether the logged in user has favourited this toot
-    'account': Account dict for the logged in account
-   }
+    mastodon.toot("Hello from Python")
+    # Returns the following dictionary:
+    {
+        'sensitive': Denotes whether the toot is marked sensitive
+        'created_at': Creation time
+        'mentions': A list of account dicts mentioned in the toot
+        'uri': Descriptor for the toot
+            EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
+        'tags': A list of hashtag dicts used in the toot
+        'in_reply_to_id': Numerical id of the toot this toot is in response to
+        'media_attachments': list of media dicts of attached files. Only present 
+                            when there are attached files.
+        'id': Numerical id of this toot
+        'reblogs_count': Number of reblogs
+        'favourites_count': Number of favourites
+        'reblog': Denotes whether the toot is a reblog
+        'url': URL of the toot
+        'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
+        'favourited': Denotes whether the logged in user has favourited this toot
+        'account': Account dict for the logged in account
+    }
 
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
@@ -134,10 +134,10 @@ Relationship dicts
     mastodon.account_follow(<numerical id>)
     # Returns the following dictionary:
     {
-     'followed_by': Boolean denoting whether they follow you back
-     'following': Boolean denoting whether you follow them
-     'id': Numerical id (same one as <numerical id>)
-     'blocking': Boolean denoting whether you are blocking them
+        'followed_by': Boolean denoting whether they follow you back
+        'following': Boolean denoting whether you follow them
+        'id': Numerical id (same one as <numerical id>)
+        'blocking': Boolean denoting whether you are blocking them
     }
 
 Notification dicts
@@ -161,8 +161,8 @@ Context dicts
     mastodon.status_context(<numerical id>)
     # Returns the following dictionary:
     {
-     'descendants': A list of toot dicts
-     'ancestors': A list of toot dicts
+        'descendants': A list of toot dicts
+        'ancestors': A list of toot dicts
     }
 
 Media dicts
@@ -172,10 +172,10 @@ Media dicts
     mastodon.media_post("image.jpg", "image/jpeg")
     # Returns the following dictionary:
     {
-     'text_url': The display text for the media (what shows up in toots)
-     'preview_url': The URL for the media preview
-     'type': Media type, EG 'image'
-     'url': The URL for the media
+        'text_url': The display text for the media (what shows up in toots)
+        'preview_url': The URL for the media preview
+        'type': Media type, EG 'image'
+        'url': The URL for the media
     }
 
 App registration and user authentication
