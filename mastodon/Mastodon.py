@@ -318,7 +318,7 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    def status_post(self, status, in_reply_to_id = None, media_ids = None):
+    def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = "public"):
         """
         Post a status. Can optionally be in reply to another status and contain
         up to four pieces of media (Uploaded via media_post()). media_ids can
@@ -341,17 +341,17 @@ class Mastodon:
                 raise MastodonIllegalArgumentError("Invalid media dict.")
         
             params_initial["media_ids"] = media_ids_proper
-            
-        params = self.__generate_params(params_initial)            
+
+        params = self.__generate_params(params_initial)
         return self.__api_request('POST', '/api/v1/statuses', params)
     
-    def toot(self, status):
+    def toot(self, status, sensitive=False, visibility="public"):
         """
         Synonym for status_post that only takes the status text as input.
 
         Returns a toot dict with the new status.
         """
-        return self.status_post(status)
+        return self.status_post(status, sensitive=sensitive, visibility=visibility)
         
     def status_delete(self, id):
         """
