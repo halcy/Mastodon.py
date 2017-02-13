@@ -1,6 +1,10 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.0.3
+------
+  * Added support for toot privacy.
+
 v1.0.2
 ------
   * Removed functions and documentation for APIs that have been removed
