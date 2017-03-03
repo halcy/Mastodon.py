@@ -31,7 +31,7 @@ class Mastodon:
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name, scopes = ['read', 'write', 'follow'], redirect_uris = None, to_file = None, api_base_url = __DEFAULT_BASE_URL):
+    def create_app(client_name, scopes = ['read', 'write', 'follow'], redirect_uris = None, to_file = None, api_base_url = __DEFAULT_BASE_URL, request_timeout = __DEFAULT_TIMEOUT):
         """
         Create a new app with given client_name and scopes (read, write, follow)
 
