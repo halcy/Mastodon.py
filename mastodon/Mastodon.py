@@ -55,7 +55,7 @@ class Mastodon:
             else:
                 request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob';
 
-            response = requests.post(api_base_url + '/api/v1/apps', data = request_data, timeout = self.request_timeout).json()
+            response = requests.post(api_base_url + '/api/v1/apps', data = request_data, timeout = request_timeout).json()
         except:
             raise MastodonNetworkError("Could not complete request.")
 
