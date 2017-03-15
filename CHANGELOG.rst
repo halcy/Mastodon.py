@@ -1,6 +1,10 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.0.5
+------
+ * Fixed previous fix (Thank you, @tylerb@mastodon.social)
+
 v1.0.4
 ------
  * Fixed an app creation bug (Thank you, @tylerb@mastodon.social)
