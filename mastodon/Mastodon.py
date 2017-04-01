@@ -553,7 +553,7 @@ class Mastodon:
             # Handle response
             if self.debug_requests == True:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
-                print('Respose headers: ' + str(response_object.headers))
+                print('response headers: ' + str(response_object.headers))
                 print('Response text content: ' + str(response_object.text))
 
             if response_object.status_code == 404:
@@ -565,7 +565,7 @@ class Mastodon:
             try:
                 response = response_object.json()
             except:
-                raise MastodonAPIError("Could not parse response as JSON, respose code was " + str(response_object.status_code))
+                raise MastodonAPIError("Could not parse response as JSON, response code was " + str(response_object.status_code))
 
             # Handle rate limiting
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
