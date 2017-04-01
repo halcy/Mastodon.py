@@ -2,8 +2,29 @@ Mastodon.py
 ===========
 .. code-block:: python
 
+   from mastodon import Mastodon
+
+   # Register app - only once!
+   '''
+   Mastodon.create_app(
+        'pytooterapp', 
+         to_file = 'pytooter_clientcred.txt'
+   )
+   '''
+
+   # Log in - either every time, or use persisted
+   '''
+   mastodon = Mastodon(client_id = 'pytooter_clientcred.txt')
+   mastodon.log_in(
+       'my_login_email@example.com',
+       'incrediblygoodpassword', 
+       to_file = 'pytooter_usercred.txt'
+   )
+   '''
+
+   # Create actual instance
    mastodon = Mastodon(
-       client_id = 'pytooter_clientcred.txt',
+       client_id = 'pytooter_clientcred.txt', 
        access_token = 'pytooter_usercred.txt'
    )
    mastodon.toot('Tooting from python!')
