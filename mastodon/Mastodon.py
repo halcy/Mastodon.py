@@ -162,14 +162,20 @@ class Mastodon:
     ##
     def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
         """
-        Fetch statuses, most recent ones first. Timeline can be home, mentions, public
-        or tag/hashtag. See the following functions documentation for what those do.
+        Fetch statuses, most recent ones first. Timeline can be home, mentions, local,
+        public, or tag/hashtag. See the following functions documentation for what those do.
 
         The default timeline is the "home" timeline.
 
         Returns a list of toot dicts.
         """
-        params = self.__generate_params(locals(), ['timeline'])
+        params_initial = locals()
+
+        if timeline == "local":
+            timeline = "public"
+            params_initial['local'] = True
+
+        params = self.__generate_params(params_initial, ['timeline'])
         return self.__api_request('GET', '/api/v1/timelines/' + timeline, params)
 
     def timeline_home(self, max_id = None, since_id = None, limit = None):
@@ -187,6 +193,14 @@ class Mastodon:
         Returns a list of toot dicts.
         """
         return self.timeline('mentions', max_id = max_id, since_id = since_id, limit = limit)
+
+    def timeline_local(self, max_id = None, since_id = None, limit = None):
+        """
+        Fetches the local / instance-wide timeline.
+
+        Returns a list of toot dicts.
+        """
+        return self.timeline('local', max_id = max_id, since_id = since_id, limit = limit)
 
     def timeline_public(self, max_id = None, since_id = None, limit = None):
         """
