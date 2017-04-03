@@ -99,6 +99,7 @@ User dicts
         'header': URL for their header image
         'id': Same as <numerical id>
         'username': The username (what you @ them with)
+        'locked': Denotes whether the account can be followed without a follow request
     }
 
 Toot dicts
@@ -108,7 +109,7 @@ Toot dicts
     mastodon.toot("Hello from Python")
     # Returns the following dictionary:
     {
-        'sensitive': Denotes whether the toot is marked sensitive
+        'sensitive': Denotes whether media attachments to the toot are marked sensitive
         'created_at': Creation time
         'mentions': A list of account dicts mentioned in the toot
         'uri': Descriptor for the toot
@@ -123,6 +124,7 @@ Toot dicts
         'reblog': Denotes whether the toot is a reblog
         'url': URL of the toot
         'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
+        'spoiler_text': Warning text that should be displayed before the toot content
         'favourited': Denotes whether the logged in user has favourited this toot
         'account': Account dict for the logged in account
     }
@@ -138,6 +140,8 @@ Relationship dicts
         'following': Boolean denoting whether you follow them
         'id': Numerical id (same one as <numerical id>)
         'blocking': Boolean denoting whether you are blocking them
+        'muting': Boolean denoting whether you are muting them
+        'requested': Boolean denoting whether you have sent them a follow request
     }
 
 Notification dicts
@@ -205,6 +209,7 @@ user could see, as well as hashtag timelines and the public timeline.
 .. automethod:: Mastodon.timeline
 .. automethod:: Mastodon.timeline_home
 .. automethod:: Mastodon.timeline_mentions
+.. automethod:: Mastodon.timeline_local
 .. automethod:: Mastodon.timeline_public
 .. automethod:: Mastodon.timeline_hashtag
 
@@ -236,6 +241,28 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Reading data: Mutes and blocks
+------------------------------
+These functions allow you to get information about accounts that are
+muted or blocked by the logged in user.
+
+.. automethod:: Mastodon.mutes
+.. automethod:: Mastodon.blocks
+
+Reading data: Favourites
+------------------------
+This function allows you to get information about statuses favourited
+by the authenticated user.
+
+.. authomethod:: Mastodon.favourites
+
+Reading data: Follow requests
+-----------------------------
+This function allows you to get a list of pending incoming follow
+requests for the authenticated user.
+
+.. automethod:: Mastodon.follow_requests
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
@@ -258,6 +285,15 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unfollow
 .. automethod:: Mastodon.account_block
 .. automethod:: Mastodon.account_unblock
+.. automethod:: Mastodon.account_mute
+.. automethod:: Mastodon.account_unmute
+
+Writing data: Follow requests
+-----------------------------
+These functions allow you to accept or reject incoming follow requests.
+
+.. automethod:: Mastodon.follow_request_authorize
+.. automethod:: Mastodon.follow_request_reject
 
 Writing data: Media
 -------------------

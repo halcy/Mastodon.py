@@ -166,14 +166,20 @@ class Mastodon:
     ##
     def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
         """
-        Fetch statuses, most recent ones first. Timeline can be home, mentions, public
-        or tag/hashtag. See the following functions documentation for what those do.
+        Fetch statuses, most recent ones first. Timeline can be home, mentions, local,
+        public, or tag/hashtag. See the following functions documentation for what those do.
 
         The default timeline is the "home" timeline.
 
         Returns a list of toot dicts.
         """
-        params = self.__generate_params(locals(), ['timeline'])
+        params_initial = locals()
+
+        if timeline == "local":
+            timeline = "public"
+            params_initial['local'] = True
+
+        params = self.__generate_params(params_initial, ['timeline'])
         return self.__api_request('GET', '/api/v1/timelines/' + timeline, params)
 
     def timeline_home(self, max_id = None, since_id = None, limit = None):
@@ -191,6 +197,14 @@ class Mastodon:
         Returns a list of toot dicts.
         """
         return self.timeline('mentions', max_id = max_id, since_id = since_id, limit = limit)
+
+    def timeline_local(self, max_id = None, since_id = None, limit = None):
+        """
+        Fetches the local / instance-wide timeline.
+
+        Returns a list of toot dicts.
+        """
+        return self.timeline('local', max_id = max_id, since_id = since_id, limit = limit)
 
     def timeline_public(self, max_id = None, since_id = None, limit = None):
         """
@@ -320,9 +334,51 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
     ###
+    # Reading data: Mutes and Blocks
+    ###
+    def mutes(self):
+        """
+        Fetch a list of users muted by the authenticated user.
+
+        Returns a list of user dicts.
+        """
+        return self.__api_request('GET', '/api/v1/mutes')
+
+    def blocks(self):
+        """
+        Fetch a list of users blocked by the authenticated user.
+
+        Returns a list of user dicts.
+        """
+        return self.__api_request('GET', '/api/v1/blocks')
+
+    ###
+    # Reading data: Favourites
+    ###
+    def favourites(self):
+        """
+        Fetch the authenticated user's favourited statuses.
+
+        Returns a list of toot dicts.
+        """
+        return self.__api_request('GET', '/api/v1/favourites')
+
+    ###
+    # Reading data: Follow requests
+    ###
+    def follow_requests(self, max_id = None, since_id = None, limit = None):
+        """
+        Fetch the authenticated user's incoming follow requests.
+
+        Returns a list of user dicts.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/follow_requests', params)
+
+    ###
     # Writing data: Statuses
     ###
-    def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = ''):
+    def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
         """
         Post a status. Can optionally be in reply to another status and contain
         up to four pieces of media (Uploaded via media_post()). media_ids can
@@ -341,6 +397,10 @@ class Mastodon:
 
         If not passed in, visibility defaults to match the current account's
         privacy setting (private if the account is locked, public otherwise).
+
+        The spoiler_text parameter is a string to be shown as a warning before
+        the text of the status.  If no text is passed in, no warning will be
+        displayed.
 
         Returns a toot dict with the new status.
         """
@@ -409,7 +469,8 @@ class Mastodon:
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/favourite")
 
     def status_unfavourite(self, id):
-        """Favourite a status.
+        """
+        Un-favourite a status.
 
         Returns a toot dict with the un-favourited status.
         """
@@ -449,6 +510,41 @@ class Mastodon:
         Returns a relationship dict containing the updated relationship to the user.
         """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unblock")
+
+    def account_mute(self, id):
+        """
+        Mute a user.
+
+        Returns a relationship dict containing the updated relationship to the user.
+        """
+        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/mute")
+
+    def account_unmute(self, id):
+        """
+        Unmute a user.
+
+        Returns a relationship dict containing the updated relationship to the user.
+        """
+        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unmute")
+
+    ###
+    # Writing data: Follow requests
+    ###
+    def follow_request_authorize(self, id):
+        """
+        Accept an incoming follow request.
+
+        Returns a user dict of the authorized account.
+        """
+        return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/authorize")
+
+    def follow_request_reject(self, id):
+        """
+        Reject an incoming follow request.
+
+        Returns a user dict of the rejected account.
+        """
+        return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/reject")
 
     ###
     # Writing data: Media
