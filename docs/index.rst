@@ -108,7 +108,7 @@ Toot dicts
     mastodon.toot("Hello from Python")
     # Returns the following dictionary:
     {
-        'sensitive': Denotes whether the toot is marked sensitive
+        'sensitive': Denotes whether media attachments to the toot are marked sensitive
         'created_at': Creation time
         'mentions': A list of account dicts mentioned in the toot
         'uri': Descriptor for the toot
@@ -123,6 +123,7 @@ Toot dicts
         'reblog': Denotes whether the toot is a reblog
         'url': URL of the toot
         'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
+        'spoiler_text': Warning text that should be displayed before the toot content
         'favourited': Denotes whether the logged in user has favourited this toot
         'account': Account dict for the logged in account
     }

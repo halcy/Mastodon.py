@@ -318,7 +318,7 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = ''):
+    def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
         """
         Post a status. Can optionally be in reply to another status and contain
         up to four pieces of media (Uploaded via media_post()). media_ids can
@@ -337,6 +337,10 @@ class Mastodon:
 
         If not passed in, visibility defaults to match the current account's
         privacy setting (private if the account is locked, public otherwise).
+
+        The spoiler_text parameter is a string to be shown as a warning before
+        the text of the status.  If no text is passed in, no warning will be
+        displayed.
 
         Returns a toot dict with the new status.
         """
