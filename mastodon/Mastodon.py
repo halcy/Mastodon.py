@@ -360,6 +360,18 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/favourites')
 
     ###
+    # Reading data: Follow requests
+    ###
+    def follow_requests(self, max_id = None, since_id = None, limit = None):
+        """
+        Fetch the authenticated user's incoming follow requests.
+
+        Returns a list of user dicts.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/follow_requests', params)
+
+    ###
     # Writing data: Statuses
     ###
     def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
@@ -508,6 +520,25 @@ class Mastodon:
         Returns a relationship dict containing the updated relationship to the user.
         """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unmute")
+
+    ###
+    # Writing data: Follow requests
+    ###
+    def follow_request_authorize(self, id):
+        """
+        Accept an incoming follow request.
+
+        Returns a user dict of the authorized account.
+        """
+        return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/authorize")
+
+    def follow_request_reject(self, id):
+        """
+        Reject an incoming follow request.
+
+        Returns a user dict of the rejected account.
+        """
+        return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/reject")
 
     ###
     # Writing data: Media

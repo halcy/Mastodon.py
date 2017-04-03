@@ -99,6 +99,7 @@ User dicts
         'header': URL for their header image
         'id': Same as <numerical id>
         'username': The username (what you @ them with)
+        'locked': Denotes whether the account can be followed without a follow request
     }
 
 Toot dicts
@@ -140,6 +141,7 @@ Relationship dicts
         'id': Numerical id (same one as <numerical id>)
         'blocking': Boolean denoting whether you are blocking them
         'muting': Boolean denoting whether you are muting them
+        'requested': Boolean denoting whether you have sent them a follow request
     }
 
 Notification dicts
@@ -254,6 +256,13 @@ by the authenticated user.
 
 .. authomethod:: Mastodon.favourites
 
+Reading data: Follow requests
+-----------------------------
+This function allows you to get a list of pending incoming follow
+requests for the authenticated user.
+
+.. automethod:: Mastodon.follow_requests
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
@@ -278,6 +287,13 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unblock
 .. automethod:: Mastodon.account_mute
 .. automethod:: Mastodon.account_unmute
+
+Writing data: Follow requests
+-----------------------------
+These functions allow you to accept or reject incoming follow requests.
+
+.. automethod:: Mastodon.follow_request_authorize
+.. automethod:: Mastodon.follow_request_reject
 
 Writing data: Media
 -------------------
