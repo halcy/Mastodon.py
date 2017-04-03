@@ -56,8 +56,10 @@ class Mastodon:
                 request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob';
 
             response = requests.post(api_base_url + '/api/v1/apps', data = request_data, timeout = request_timeout).json()
-        except:
-            raise MastodonNetworkError("Could not complete request.")
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            raise MastodonNetworkError("Could not complete request: %s" % e)
 
         if to_file != None:
             with open(to_file, 'w') as secret_file:
@@ -142,8 +144,10 @@ class Mastodon:
         try:
             response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting = False)
             self.access_token = response['access_token']
-        except:
-            raise MastodonIllegalArgumentError('Invalid user name, password or scopes.')
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            raise MastodonIllegalArgumentError('Invalid user name, password or scopes: %s' % e)
 
         requested_scopes = " ".join(sorted(scopes))
         received_scopes = " ".join(sorted(response["scope"].split(" ")))
@@ -355,8 +359,10 @@ class Mastodon:
                         media_ids_proper.append(media_id["id"])
                     else:
                         media_ids_proper.append(media_id)
-            except:
-                raise MastodonIllegalArgumentError("Invalid media dict.")
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                raise MastodonIllegalArgumentError("Invalid media dict: %s" % e)
 
             params_initial["media_ids"] = media_ids_proper
 
@@ -544,8 +550,10 @@ class Mastodon:
 
                 if method == 'DELETE':
                     response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
-            except:
-                raise MastodonNetworkError("Could not complete request.")
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                raise MastodonNetworkError("Could not complete request: %s" % e)
 
             if response_object == None:
                 raise MastodonIllegalArgumentError("Illegal request.")
@@ -565,7 +573,9 @@ class Mastodon:
             try:
                 response = response_object.json()
             except:
-                raise MastodonAPIError("Could not parse response as JSON, respose code was " + str(response_object.status_code))
+                import traceback
+                traceback.print_exc()
+                raise MastodonAPIError("Could not parse response as JSON, respose code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
 
             # Handle rate limiting
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
@@ -582,8 +592,10 @@ class Mastodon:
                     server_time_diff = time.time() - server_time
                     self.ratelimit_reset += server_time_diff
                     self.ratelimit_lastcall = time.time()
-                except:
-                    raise MastodonRatelimitError("Rate limit time calculations failed.")
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
+                    raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
 
                 if "error" in response and response["error"] == "Throttled":
                     if self.ratelimit_method == "throw":
