@@ -19,7 +19,7 @@ Mastodon.py
    '''
    mastodon = Mastodon(client_id = 'pytooter_clientcred.txt')
    mastodon.log_in(
-       'pytooter', 
+       'my_login_email@example.com',
        'incrediblygoodpassword', 
        to_file = 'pytooter_usercred.txt'
    )
