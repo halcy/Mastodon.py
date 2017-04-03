@@ -349,6 +349,17 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/blocks')
 
     ###
+    # Reading data: Favourites
+    ###
+    def favourites(self):
+        """
+        Fetch the authenticated user's favourited statuses.
+
+        Returns a list of toot dicts.
+        """
+        return self.__api_request('GET', '/api/v1/favourites')
+
+    ###
     # Writing data: Statuses
     ###
     def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
@@ -440,7 +451,8 @@ class Mastodon:
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/favourite")
 
     def status_unfavourite(self, id):
-        """Favourite a status.
+        """
+        Un-favourite a status.
 
         Returns a toot dict with the un-favourited status.
         """

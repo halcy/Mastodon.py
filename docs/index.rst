@@ -247,6 +247,13 @@ muted or blocked by the logged in user.
 .. automethod:: Mastodon.mutes
 .. automethod:: Mastodon.blocks
 
+Reading data: Favourites
+------------------------
+This function allows you to get information about statuses favourited
+by the authenticated user.
+
+.. authomethod:: Mastodon.favourites
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
