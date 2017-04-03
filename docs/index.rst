@@ -139,6 +139,7 @@ Relationship dicts
         'following': Boolean denoting whether you follow them
         'id': Numerical id (same one as <numerical id>)
         'blocking': Boolean denoting whether you are blocking them
+        'muting': Boolean denoting whether you are muting them
     }
 
 Notification dicts
@@ -238,6 +239,14 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Reading data: Mutes and blocks
+------------------------------
+These functions allow you to get information about accounts that are
+muted or blocked by the logged in user.
+
+.. automethod:: Mastodon.mutes
+.. automethod:: Mastodon.blocks
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
@@ -260,6 +269,8 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unfollow
 .. automethod:: Mastodon.account_block
 .. automethod:: Mastodon.account_unblock
+.. automethod:: Mastodon.account_mute
+.. automethod:: Mastodon.account_unmute
 
 Writing data: Media
 -------------------

@@ -330,6 +330,25 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
     ###
+    # Reading data: Mutes and Blocks
+    ###
+    def mutes(self):
+        """
+        Fetch a list of users muted by the authenticated user.
+
+        Returns a list of user dicts.
+        """
+        return self.__api_request('GET', '/api/v1/mutes')
+
+    def blocks(self):
+        """
+        Fetch a list of users blocked by the authenticated user.
+
+        Returns a list of user dicts.
+        """
+        return self.__api_request('GET', '/api/v1/blocks')
+
+    ###
     # Writing data: Statuses
     ###
     def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
@@ -461,6 +480,22 @@ class Mastodon:
         Returns a relationship dict containing the updated relationship to the user.
         """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unblock")
+
+    def account_mute(self, id):
+        """
+        Mute a user.
+
+        Returns a relationship dict containing the updated relationship to the user.
+        """
+        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/mute")
+
+    def account_unmute(self, id):
+        """
+        Unmute a user.
+
+        Returns a relationship dict containing the updated relationship to the user.
+        """
+        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unmute")
 
     ###
     # Writing data: Media
