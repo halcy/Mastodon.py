@@ -90,7 +90,7 @@ class Mastodon:
         Specify api_base_url if you wish to talk to an instance other than the flagship one.
         If a file is given as client_id, read client ID and secret from that file.
 
-        By defautl, a timeout of 300 seconds is used for all requests. If you wish to change this,
+        By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
         pass the desired timeout (in seconds) as request_timeout.
         """
         self.api_base_url = api_base_url
