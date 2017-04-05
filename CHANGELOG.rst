@@ -1,6 +1,15 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.0.6
+------
+ * Fixed several bugs (Thanks to Psycojoker, wjt and wxcafe)
+ * Added support for spoiler text (Thanks to Erin Congden)
+ * Added support for mute functionality (Thanks to Erin Congden)
+ * Added support for getting favourites (Thanks to Erin Congden)
+ * Added support for follow requests (Thanks to Erin Congden, again)
+ * Added MANIFEST.in to allow for conda packaging (Thanks, pmlandwehr)
+
 v1.0.5
 ------
  * Fixed previous fix (Thank you, @tylerb@mastodon.social)
@@ -11,7 +20,7 @@ v1.0.4
 
 v1.0.3
 ------
-  * Added support for toot privacy.
+  * Added support for toot privacy (thanks fpietsche)
 
 v1.0.2
 ------
