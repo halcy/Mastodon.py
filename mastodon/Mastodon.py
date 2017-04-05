@@ -387,7 +387,8 @@ class Mastodon:
 
         The 'sensitive' boolean decides whether or not media attached to the post
         should be marked as sensitive, which hides it by default on the Mastodon
-        web front-end.
+        web front-end. It should be None (and not False) for the media not to be
+        marked as sensitive
 
         The visibility parameter is a string value and matches the visibility
         option on the /api/v1/status POST API endpoint. It accepts any of:
