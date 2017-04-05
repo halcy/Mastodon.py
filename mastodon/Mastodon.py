@@ -411,6 +411,9 @@ class Mastodon:
         if params_initial['visibility'].lower() not in valid_visibilities:
             raise ValueError('Invalid visibility value! Acceptable values are %s' % valid_visibilities)
 
+        if params_initial['sensitive'] == False:
+            del[params_initial['sensitive']]
+
         if media_ids != None:
             try:
                 media_ids_proper = []
