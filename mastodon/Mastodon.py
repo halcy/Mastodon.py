@@ -303,7 +303,7 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following')
+        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following',do_fetch_all=True)
 
     def account_followers(self, id):
         """
@@ -598,12 +598,13 @@ class Mastodon:
 
         return (date_time_utc - epoch_utc).total_seconds()
 
-    def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True):
+    def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True, do_fetch_all = False):
         """
         Internal API request helper.
         """
         response = None
         headers = None
+        next_url = None
 
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
@@ -661,7 +662,7 @@ class Mastodon:
             if self.debug_requests == True:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
                 print('response headers: ' + str(response_object.headers))
-                print('Response text content: ' + str(response_object.text))
+                #print('Response text content: ' + str(response_object.text))
 
             if response_object.status_code == 404:
                 raise MastodonAPIError('Endpoint not found.')
@@ -675,6 +676,18 @@ class Mastodon:
                 import traceback
                 traceback.print_exc()
                 raise MastodonAPIError("Could not parse response as JSON, response code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
+
+            if 'Link' in response_object.headers and do_fetch_all:
+                tmp_url = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
+                if tmp_url:
+                    for url in tmp_url:
+                        if url['rel'] == 'next':
+                            next_url = url['url'].replace(self.api_base_url,'')
+                            break
+                if next_url is not None:
+                    tmp_response = self.__api_request(method, next_url, params = params, files = files, do_ratelimiting = do_ratelimiting, do_fetch_all = True)
+                    if type(tmp_response) == type(response):
+                        response += tmp_response
 
             # Handle rate limiting
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
