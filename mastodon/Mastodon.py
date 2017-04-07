@@ -191,12 +191,7 @@ class Mastodon:
             are wrong, scopes are not valid or granted scopes differ from requested.
 
         Returns:
-            {
-                'scope': 'read', 
-                'created_at': 1491599341, 
-                'access_token': 'd8daf46d...', 
-                'token_type': 'bearer'
-            }
+            str @access_token
         """
         if username is not None and password is not None:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
@@ -231,7 +226,7 @@ class Mastodon:
 
         if to_file != None:
             with open(to_file, 'w') as token_file:
-                token_file.write(response + '\n')
+                token_file.write(response['access_token'] + '\n')
 
         return response['access_token']
 
