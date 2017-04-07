@@ -332,6 +332,17 @@ class Mastodon:
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
+   
+
+    def content_search(self, q, resolve = False):
+        """
+        Fetch matching hashtags, accounts and statuses. Will search federated
+        instances if resolve is True.
+
+        Returns a dict of lists.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/search', params)
 
     ###
     # Reading data: Mutes and Blocks
