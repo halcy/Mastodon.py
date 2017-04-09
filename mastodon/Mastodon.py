@@ -565,7 +565,7 @@ class Mastodon:
         Returns a media dict. This contains the id that can be used in
         status_post to attach the media file to a toot.
         """
-        if os.path.isfile(media_file) and mime_type == None:
+        if mime_type == None and os.path.isfile(media_file):
             mime_type = mimetypes.guess_type(media_file)[0]
             media_file = open(media_file, 'rb')
 
