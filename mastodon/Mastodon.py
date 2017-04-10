@@ -17,6 +17,9 @@ import requests
 import dateutil
 import dateutil.parser
 
+from mastodon.exceptions import *
+from mastodon.response import ResponseObject
+
 class Mastodon:
     """
     Super basic but thorough and easy to use mastodon.social
@@ -718,13 +721,12 @@ class Mastodon:
 
         return (date_time_utc - epoch_utc).total_seconds()
 
-    def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True, do_fetch_all = False):
+    def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True, get_r_object=False):
         """
         Internal API request helper.
         """
         response = None
         headers = None
-        next_url = None
 
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
@@ -746,10 +748,10 @@ class Mastodon:
                 time.sleep(to_next)
 
         # Generate request headers
-        if self.access_token != None:
+        if self.access_token is not None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
 
-        if self.debug_requests == True:
+        if self.debug_requests is True:
             print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
             print('Parameters: ' + str(params))
             print('Headers: ' + str(headers))
@@ -791,23 +793,18 @@ class Mastodon:
                 raise MastodonAPIError('General API problem.')
 
             try:
-                response = response_object.json()
+                if get_r_object:
+                    response = ResponseObject._load(response_object, method, params, files, do_ratelimiting, self.api_base_url)
+                else:
+                    temp_r = ResponseObject(response_object.json(), response_object, method, params, files, do_ratelimiting, self.api_base_url)
+                    if temp_r is not None:
+                        response = temp_r.response
+                    else:
+                        print("Big error")
             except:
                 import traceback
                 traceback.print_exc()
                 raise MastodonAPIError("Could not parse response as JSON, response code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
-
-            if 'Link' in response_object.headers and do_fetch_all:
-                tmp_url = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
-                if tmp_url:
-                    for url in tmp_url:
-                        if url['rel'] == 'next':
-                            next_url = url['url'].replace(self.api_base_url,'')
-                            break
-                if next_url is not None:
-                    tmp_response = self.__api_request(method, next_url, params = params, files = files, do_ratelimiting = do_ratelimiting, do_fetch_all = True)
-                    if type(tmp_response) == type(response):
-                        response += tmp_response
 
             # Handle rate limiting
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
@@ -837,9 +834,9 @@ class Mastodon:
                         to_next = self.ratelimit_reset - time.time()
                         if to_next > 0:
                             # As a precaution, never sleep longer than 5 minutes
+                            request_complete = False
                             to_next = min(to_next, 5 * 60)
                             time.sleep(to_next)
-                            request_complete = False
 
         return response
 
@@ -881,22 +878,3 @@ class Mastodon:
                 del params[key]
 
         return params
-
-##
-# Exceptions
-##
-class MastodonIllegalArgumentError(ValueError):
-    pass
-
-class MastodonFileNotFoundError(IOError):
-    pass
-
-class MastodonNetworkError(IOError):
-    pass
-
-class MastodonAPIError(Exception):
-    pass
-
-class MastodonRatelimitError(Exception):
-    pass
-
