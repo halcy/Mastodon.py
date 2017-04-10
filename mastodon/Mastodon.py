@@ -9,10 +9,9 @@ import time
 import random
 import string
 import datetime
-import dateutil.parser
-
-import pytz
 import dateutil
+import dateutil.parser
+from contextlib import closing
 import requests
 
 class Mastodon:
@@ -658,6 +657,37 @@ class Mastodon:
         media_file_description = (file_name, media_file, mime_type)
         return self.__api_request('POST', '/api/v1/media', files = {'file': media_file_description})
 
+    def user_stream(self, listener):
+        """
+        Streams events that are relevant to the authorized user, i.e. home
+        timeline and notifications. 'listener' should be a subclass of
+        StreamListener.
+
+        This method blocks forever, calling callbacks on 'listener' for
+        incoming events.
+        """
+        return self.__stream('/api/v1/streaming/user', listener)
+
+    def public_stream(self, listener):
+        """
+        Streams public events. 'listener' should be a subclass of
+        StreamListener.
+
+        This method blocks forever, calling callbacks on 'listener' for
+        incoming events.
+        """
+        return self.__stream('/api/v1/streaming/public', listener)
+
+    def hashtag_stream(self, tag, listener):
+        """
+        Returns all public statuses for the hashtag 'tag'. 'listener' should be
+        a subclass of StreamListener.
+
+        This method blocks forever, calling callbacks on 'listener' for
+        incoming events.
+        """
+        return self.__stream('/api/v1/streaming/hashtag', listener, params={'tag': tag})
+
     ###
     # Internal helpers, dragons probably
     ###
@@ -789,6 +819,20 @@ class Mastodon:
                             request_complete = False
 
         return response
+
+    def __stream(self, endpoint, listener, params = {}):
+        """
+        Internal streaming API helper.
+        """
+
+        headers = {}
+        if self.access_token != None:
+            headers = {'Authorization': 'Bearer ' + self.access_token}
+
+        url = self.api_base_url + endpoint
+        with closing(requests.get(url, headers = headers, data = params, stream = True)) as r:
+            listener.handle_stream(r.iter_lines())
+
 
     def __generate_params(self, params, exclude = []):
         """
