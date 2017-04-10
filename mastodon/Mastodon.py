@@ -2,18 +2,23 @@
 
 
 import os
-from urllib.parse import urlencode
 import os.path
 import mimetypes
 import time
 import random
 import string
-import pytz
 import datetime
+from contextlib import closing
+from urllib.parse import urlencode
+
+import pytz
+import requests
 import dateutil
 import dateutil.parser
-from contextlib import closing
-import requests
+
+from mastodon.exceptions import *
+from mastodon.response import ResponseObject
+
 
 class Mastodon:
     """
@@ -48,6 +53,7 @@ class Mastodon:
 
         Returns client_id and client_secret.
         """
+        
         request_data = {
             'client_name': client_name,
             'scopes': " ".join(scopes)
@@ -154,9 +160,9 @@ class Mastodon:
         self._refresh_token = value
         return
 
-    def auth_request_url(self, client_id: str = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob") -> str:
+    def auth_request_url(self, client_id: str = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", scopes: list = ['read', 'write', 'follow']) -> str:
         """Returns the url that a client needs to request the grant from the server.
-        https://mastodon.social/oauth/authorize?client_id=XXX&response_type=code&redirect_uris=YYY
+        https://mastodon.social/oauth/authorize?client_id=XXX&response_type=code&redirect_uris=YYY&scope=read+write+follow
         """
         if client_id is None:
             client_id = self.client_id
@@ -169,6 +175,7 @@ class Mastodon:
         params['client_id'] = client_id
         params['response_type'] = "code"
         params['redirect_uri'] = redirect_uris
+        params['scope'] = " ".join(scopes)
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
@@ -203,7 +210,7 @@ class Mastodon:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
             params['grant_type'] = 'refresh_token'
         else:
-            raise MastodonIllegalArgumentError('Invalid user name, password, redirect_uris or scopes')
+            raise MastodonIllegalArgumentError('Invalid arguments given. username and password or code are required.')
         
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
@@ -216,7 +223,12 @@ class Mastodon:
         except Exception as e:
             import traceback
             traceback.print_exc()
-            raise MastodonIllegalArgumentError('Invalid user name, password, redirect_uris or scopes: %s' % e)
+            if username is not None or password is not None:
+                raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
+            elif code is not None:
+                raise MastodonIllegalArgumentError('Invalid access token or redirect_uris: %s' % e)
+            else:
+                raise MastodonIllegalArgumentError('Invalid request: %s' % e)
 
         requested_scopes = " ".join(sorted(scopes))
         received_scopes = " ".join(sorted(response["scope"].split(" ")))
@@ -372,7 +384,7 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following')
+        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following',do_fetch_all=True)
 
     def account_followers(self, id):
         """
@@ -709,7 +721,7 @@ class Mastodon:
 
         return (date_time_utc - epoch_utc).total_seconds()
 
-    def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True):
+    def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True, get_r_object=False):
         """
         Internal API request helper.
         """
@@ -736,10 +748,10 @@ class Mastodon:
                 time.sleep(to_next)
 
         # Generate request headers
-        if self.access_token != None:
+        if self.access_token is not None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
 
-        if self.debug_requests == True:
+        if self.debug_requests is True:
             print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
             print('Parameters: ' + str(params))
             print('Headers: ' + str(headers))
@@ -772,7 +784,7 @@ class Mastodon:
             if self.debug_requests == True:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
                 print('response headers: ' + str(response_object.headers))
-                print('Response text content: ' + str(response_object.text))
+                #print('Response text content: ' + str(response_object.text))
 
             if response_object.status_code == 404:
                 raise MastodonAPIError('Endpoint not found.')
@@ -781,7 +793,14 @@ class Mastodon:
                 raise MastodonAPIError('General API problem.')
 
             try:
-                response = response_object.json()
+                if get_r_object:
+                    response = ResponseObject._load(response_object, method, params, files, do_ratelimiting, self.api_base_url)
+                else:
+                    temp_r = ResponseObject(response_object.json(), response_object, method, params, files, do_ratelimiting, self.api_base_url)
+                    if temp_r is not None:
+                        response = temp_r.response
+                    else:
+                        print("Big error")
             except:
                 import traceback
                 traceback.print_exc()
@@ -815,9 +834,9 @@ class Mastodon:
                         to_next = self.ratelimit_reset - time.time()
                         if to_next > 0:
                             # As a precaution, never sleep longer than 5 minutes
+                            request_complete = False
                             to_next = min(to_next, 5 * 60)
                             time.sleep(to_next)
-                            request_complete = False
 
         return response
 
@@ -859,22 +878,3 @@ class Mastodon:
                 del params[key]
 
         return params
-
-##
-# Exceptions
-##
-class MastodonIllegalArgumentError(ValueError):
-    pass
-
-class MastodonFileNotFoundError(IOError):
-    pass
-
-class MastodonNetworkError(IOError):
-    pass
-
-class MastodonAPIError(Exception):
-    pass
-
-class MastodonRatelimitError(Exception):
-    pass
-
