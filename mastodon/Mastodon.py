@@ -7,7 +7,6 @@ import mimetypes
 import time
 import random
 import string
-import pytz
 import datetime
 from contextlib import closing
 from urllib.parse import urlencode
@@ -19,6 +18,7 @@ import dateutil.parser
 
 from mastodon.exceptions import *
 from mastodon.response import ResponseObject
+
 
 class Mastodon:
     """
