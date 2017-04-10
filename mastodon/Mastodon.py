@@ -223,6 +223,8 @@ class Mastodon:
                 raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
             elif code is not None:
                 raise MastodonIllegalArgumentError('Invalid access token or redirect_uris: %s' % e)
+            else:
+                raise MastodonIllegalArgumentError('Invalid request: %s' % e)
 
         requested_scopes = " ".join(sorted(scopes))
         received_scopes = " ".join(sorted(response["scope"].split(" ")))
