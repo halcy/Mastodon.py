@@ -2,7 +2,6 @@
 
 
 import os
-from urllib.parse import urlencode
 import os.path
 import mimetypes
 import time
@@ -10,10 +9,13 @@ import random
 import string
 import pytz
 import datetime
+from contextlib import closing
+from urllib.parse import urlencode
+
+import pytz
+import requests
 import dateutil
 import dateutil.parser
-from contextlib import closing
-import requests
 
 class Mastodon:
     """
@@ -48,6 +50,7 @@ class Mastodon:
 
         Returns client_id and client_secret.
         """
+        
         request_data = {
             'client_name': client_name,
             'scopes': " ".join(scopes)
@@ -154,9 +157,9 @@ class Mastodon:
         self._refresh_token = value
         return
 
-    def auth_request_url(self, client_id: str = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob") -> str:
+    def auth_request_url(self, client_id: str = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", scopes: list = ['read', 'write', 'follow']) -> str:
         """Returns the url that a client needs to request the grant from the server.
-        https://mastodon.social/oauth/authorize?client_id=XXX&response_type=code&redirect_uris=YYY
+        https://mastodon.social/oauth/authorize?client_id=XXX&response_type=code&redirect_uris=YYY&scope=read+write+follow
         """
         if client_id is None:
             client_id = self.client_id
@@ -169,6 +172,7 @@ class Mastodon:
         params['client_id'] = client_id
         params['response_type'] = "code"
         params['redirect_uri'] = redirect_uris
+        params['scope'] = " ".join(scopes)
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
@@ -203,7 +207,7 @@ class Mastodon:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
             params['grant_type'] = 'refresh_token'
         else:
-            raise MastodonIllegalArgumentError('Invalid user name, password, redirect_uris or scopes')
+            raise MastodonIllegalArgumentError('Invalid arguments given. username and password or code are required.')
         
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
@@ -216,7 +220,10 @@ class Mastodon:
         except Exception as e:
             import traceback
             traceback.print_exc()
-            raise MastodonIllegalArgumentError('Invalid user name, password, redirect_uris or scopes: %s' % e)
+            if username is not None or password is not None:
+                raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
+            elif code is not None:
+                raise MastodonIllegalArgumentError('Invalid access token or redirect_uris: %s' % e)
 
         requested_scopes = " ".join(sorted(scopes))
         received_scopes = " ".join(sorted(response["scope"].split(" ")))
