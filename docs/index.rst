@@ -208,7 +208,6 @@ user could see, as well as hashtag timelines and the public timeline.
 
 .. automethod:: Mastodon.timeline
 .. automethod:: Mastodon.timeline_home
-.. automethod:: Mastodon.timeline_mentions
 .. automethod:: Mastodon.timeline_local
 .. automethod:: Mastodon.timeline_public
 .. automethod:: Mastodon.timeline_hashtag

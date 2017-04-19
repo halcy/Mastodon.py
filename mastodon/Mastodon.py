@@ -244,8 +244,8 @@ class Mastodon:
     ##
     def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
         """
-        Fetch statuses, most recent ones first. Timeline can be home, mentions, local,
-        public, or tag/hashtag. See the following functions documentation for what those do.
+        Fetch statuses, most recent ones first. Timeline can be home, local, public,
+        or tag/hashtag. See the following functions documentation for what those do.
 
         The default timeline is the "home" timeline.
 
@@ -267,14 +267,6 @@ class Mastodon:
         Returns a list of toot dicts.
         """
         return self.timeline('home', max_id = max_id, since_id = since_id, limit = limit)
-
-    def timeline_mentions(self, max_id = None, since_id = None, limit = None):
-        """
-        Fetches the authenticated users mentions.
-
-        Returns a list of toot dicts.
-        """
-        return self.timeline('mentions', max_id = max_id, since_id = since_id, limit = limit)
 
     def timeline_local(self, max_id = None, since_id = None, limit = None):
         """
