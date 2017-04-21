@@ -211,6 +211,7 @@ class Mastodon:
         
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
+        params['scope'] = " ".join(scopes)
         
         try:
             response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting = False)
