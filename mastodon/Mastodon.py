@@ -489,7 +489,7 @@ class Mastodon:
         params_initial = locals()
 
         # Validate visibility parameter
-        valid_visibilities = ['private', 'public', 'unlisted', '']
+        valid_visibilities = ['private', 'public', 'unlisted', 'direct', '']
         if params_initial['visibility'].lower() not in valid_visibilities:
             raise ValueError('Invalid visibility value! Acceptable values are %s' % valid_visibilities)
 
