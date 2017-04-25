@@ -67,8 +67,6 @@ class Mastodon:
             response = requests.post(api_base_url + '/api/v1/apps', data = request_data, timeout = request_timeout)
             response = response.json()
         except Exception as e:
-            import traceback
-            traceback.print_exc()
             raise MastodonNetworkError("Could not complete request: %s" % e)
 
         if to_file != None:
@@ -219,8 +217,6 @@ class Mastodon:
             self.refresh_token = response.get('refresh_token')
             self.token_expired = int(response.get('expires_in', 0))
         except Exception as e:
-            import traceback
-            traceback.print_exc()
             if username is not None or password is not None:
                 raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
             elif code is not None:
@@ -505,8 +501,6 @@ class Mastodon:
                     else:
                         media_ids_proper.append(media_id)
             except Exception as e:
-                import traceback
-                traceback.print_exc()
                 raise MastodonIllegalArgumentError("Invalid media dict: %s" % e)
 
             params_initial["media_ids"] = media_ids_proper
@@ -763,8 +757,6 @@ class Mastodon:
                 if method == 'DELETE':
                     response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
             except Exception as e:
-                import traceback
-                traceback.print_exc()
                 raise MastodonNetworkError("Could not complete request: %s" % e)
 
             if response_object == None:
@@ -785,8 +777,6 @@ class Mastodon:
             try:
                 response = response_object.json()
             except:
-                import traceback
-                traceback.print_exc()
                 raise MastodonAPIError("Could not parse response as JSON, response code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
 
             # Handle rate limiting
@@ -805,8 +795,6 @@ class Mastodon:
                     self.ratelimit_reset += server_time_diff
                     self.ratelimit_lastcall = time.time()
                 except Exception as e:
-                    import traceback
-                    traceback.print_exc()
                     raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
 
                 if "error" in response and response["error"] == "Throttled":
