@@ -267,7 +267,7 @@ class Mastodon:
 
     def timeline_local(self, max_id = None, since_id = None, limit = None):
         """
-        Fetches the local / instance-wide timeline.
+        Fetches the local / instance-wide timeline, not including replies.
 
         Returns a list of toot dicts.
         """
@@ -275,7 +275,7 @@ class Mastodon:
 
     def timeline_public(self, max_id = None, since_id = None, limit = None):
         """
-        Fetches the public / visible-network timeline.
+        Fetches the public / visible-network timeline, not including replies.
 
         Returns a list of toot dicts.
         """
