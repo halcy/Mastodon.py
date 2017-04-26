@@ -214,6 +214,17 @@ class Mastodon:
         return response['access_token']
 
     ###
+    # Reading data: Instance
+    ###
+    def instance(self):
+        """
+        Retrieve basic information about the instance, including the URI and administrative contact email.
+
+        Returns a dict.
+        """
+        return self.__api_request('GET', '/api/v1/instance/')
+
+    ###
     # Reading data: Timelines
     ##
     def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
@@ -276,6 +287,14 @@ class Mastodon:
         Returns a toot dict.
         """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id))
+
+    def status_card(self, id):
+        """
+        Fetch a card associated with a status.
+
+        Returns a card dict.
+        """
+        return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/card')
 
     def status_context(self, id):
         """
@@ -392,7 +411,6 @@ class Mastodon:
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
-   
 
     ###
     # Reading data: Searching
@@ -425,6 +443,17 @@ class Mastodon:
         Returns a list of user dicts.
         """
         return self.__api_request('GET', '/api/v1/blocks')
+
+    ###
+    # Reading data: Reports
+    ###
+    def reports(self):
+        """
+        Fetch a list of reports made by the authenticated user.
+
+        Returns a list of report dicts.
+        """
+        return self.__api_request('GET', '/api/v1/reports')
 
     ###
     # Reading data: Favourites
@@ -610,6 +639,31 @@ class Mastodon:
         Returns a relationship dict containing the updated relationship to the user.
         """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unmute")
+
+    def account_update_credentials(self, display_name = None, note = None, avatar = None, header = None):
+        """
+        Update the profile for the currently authenticated user.
+
+        'note' is the user's bio.
+
+        'avatar' and 'header' are PNG images encoded in base64.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/accounts/update_credentials', params)
+
+    ###
+    # Writing data: Reports
+    ###
+    def report(self, id, toots, comment):
+        """
+        Report a user to the admin.
+
+        Accepts a list of toot IDs associated with the report, and a comment.
+
+        Returns a report dict.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/reports/', params)
 
     ###
     # Writing data: Follow requests
