@@ -364,21 +364,23 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/statuses', params)
 
-    def account_following(self, id):
+    def account_following(self, id, max_id = None, since_id = None, limit = None):
         """
         Fetch users the given user is following.
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following')
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following', params)
 
-    def account_followers(self, id):
+    def account_followers(self, id, max_id = None, since_id = None, limit = None):
         """
         Fetch users the given user is followed by.
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/followers')
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/followers', params)
 
     def follows(self, uri):
         """
