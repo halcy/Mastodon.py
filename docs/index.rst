@@ -109,24 +109,24 @@ Toot dicts
     mastodon.toot("Hello from Python")
     # Returns the following dictionary:
     {
-        'sensitive': Denotes whether media attachments to the toot are marked sensitive
-        'created_at': Creation time
-        'mentions': A list of account dicts mentioned in the toot
-        'uri': Descriptor for the toot
-            EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
-        'tags': A list of hashtag dicts used in the toot
-        'in_reply_to_id': Numerical id of the toot this toot is in response to
-        'media_attachments': list of media dicts of attached files. Only present 
-                            when there are attached files.
-        'id': Numerical id of this toot
-        'reblogs_count': Number of reblogs
-        'favourites_count': Number of favourites
-        'reblog': Denotes whether the toot is a reblog
-        'url': URL of the toot
-        'content': Content of the toot, as HTML: '<p>Hello from Python</p>'
-        'spoiler_text': Warning text that should be displayed before the toot content
-        'favourited': Denotes whether the logged in user has favourited this toot
-        'account': Account dict for the logged in account
+        'sensitive': # Denotes whether media attachments to the toot are marked sensitive
+        'created_at': # Creation time
+        'mentions': # A list of account dicts mentioned in the toot
+        'uri': # Descriptor for the toot
+            # EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
+        'tags': # A list of hashtag dicts used in the toot
+        'in_reply_to_id': # Numerical id of the toot this toot is in response to
+        'media_attachments': # list of media dicts of attached files. Only present 
+                            # when there are attached files.
+        'id': # Numerical id of this toot
+        'reblogs_count': # Number of reblogs
+        'favourites_count': # Number of favourites
+        'reblog': # Denotes whether the toot is a reblog
+        'url': # URL of the toot
+        'content': # Content of the toot, as HTML: '<p>Hello from Python</p>'
+        'spoiler_text': # Warning text that should be displayed before the toot content
+        'favourited': # Denotes whether the logged in user has favourited this toot
+        'account': # Account dict for the logged in account
     }
 
 Relationship dicts
@@ -136,12 +136,12 @@ Relationship dicts
     mastodon.account_follow(<numerical id>)
     # Returns the following dictionary:
     {
-        'followed_by': Boolean denoting whether they follow you back
-        'following': Boolean denoting whether you follow them
-        'id': Numerical id (same one as <numerical id>)
-        'blocking': Boolean denoting whether you are blocking them
-        'muting': Boolean denoting whether you are muting them
-        'requested': Boolean denoting whether you have sent them a follow request
+        'followed_by': # Boolean denoting whether they follow you back
+        'following': # Boolean denoting whether you follow them
+        'id': # Numerical id (same one as <numerical id>)
+        'blocking': # Boolean denoting whether you are blocking them
+        'muting': # Boolean denoting whether you are muting them
+        'requested': # Boolean denoting whether you have sent them a follow request
     }
 
 Notification dicts
@@ -151,11 +151,11 @@ Notification dicts
     mastodon.notifications()[0]
     # Returns the following dictionary:
     {
-        'id': id of the notification.
-        'type': "mention", "reblog", "favourite" or "follow".
-        'status': In case of "mention", the mentioning status. 
-                  In case of reblog / favourite, the reblogged / favourited status.
-        'account': User dict of the user from whom the notification originates.
+        'id': # id of the notification.
+        'type': # "mention", "reblog", "favourite" or "follow".
+        'status': # In case of "mention", the mentioning status. 
+                  # In case of reblog / favourite, the reblogged / favourited status.
+        'account': # User dict of the user from whom the notification originates.
     }
 
 Context dicts
@@ -165,8 +165,8 @@ Context dicts
     mastodon.status_context(<numerical id>)
     # Returns the following dictionary:
     {
-        'descendants': A list of toot dicts
-        'ancestors': A list of toot dicts
+        'descendants': # A list of toot dicts
+        'ancestors': # A list of toot dicts
     }
 
 Media dicts
@@ -176,10 +176,10 @@ Media dicts
     mastodon.media_post("image.jpg", "image/jpeg")
     # Returns the following dictionary:
     {
-        'text_url': The display text for the media (what shows up in toots)
-        'preview_url': The URL for the media preview
-        'type': Media type, EG 'image'
-        'url': The URL for the media
+        'text_url': # The display text for the media (what shows up in toots)
+        'preview_url': # The URL for the media preview
+        'type': # Media type, EG 'image'
+        'url': # The URL for the media
     }
 
 App registration and user authentication
@@ -200,6 +200,7 @@ methods for this are provided.
 .. automethod:: Mastodon.create_app
 .. automethod:: Mastodon.__init__
 .. automethod:: Mastodon.log_in
+.. automethod:: Mastodon.auth_request_url
 
 Reading data: Timelines
 -----------------------
@@ -237,8 +238,16 @@ their relationships.
 .. automethod:: Mastodon.account_statuses
 .. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_followers
+.. automethod:: Mastodon.follows
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
+
+Reading data: Searching
+-----------------------
+This function allows you to search for content.
+
+.. automethod:: Mastodon.search
+
 
 Reading data: Mutes and blocks
 ------------------------------
@@ -253,7 +262,7 @@ Reading data: Favourites
 This function allows you to get information about statuses favourited
 by the authenticated user.
 
-.. authomethod:: Mastodon.favourites
+.. automethod:: Mastodon.favourites
 
 Reading data: Follow requests
 -----------------------------
@@ -301,6 +310,14 @@ media IDs (Up to 4 at the same time) can then be used with post_status
 to attach media to statuses.
 
 .. automethod:: Mastodon.media_post
+
+Streaming
+---------
+These functions allow access to the streaming API.
+
+.. automethod:: Mastodon.user_stream
+.. automethod:: Mastodon.public_stream
+.. automethod:: Mastodon.hashtag_stream
 
 
 .. _Mastodon: https://github.com/Gargron/mastodon

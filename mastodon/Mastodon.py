@@ -133,19 +133,23 @@ class Mastodon:
                 
         
     def __get_token_expired(self):
+        """Internal helper for oauth code"""
         if self._token_expired < datetime.datetime.now():
             return True
         else:
             return False
 
     def __set_token_expired(self, value):
+        """Internal helper for oauth code"""
         self._token_expired = datetime.datetime.now() + datetime.timedelta(seconds=value)
         return
     
     def __get_refresh_token(self):
+        """Internal helper for oauth code"""
         return self._refresh_token
         
     def __set_refresh_token(self, value):
+        """Internal helper for oauth code"""
         self._refresh_token = value
         return
 
@@ -414,7 +418,7 @@ class Mastodon:
     ###
     # Reading data: Searching
     ###
-    def content_search(self, q, resolve = False):
+    def search(self, q, resolve = False):
         """
         Fetch matching hashtags, accounts and statuses. Will search federated
         instances if resolve is True.
@@ -676,6 +680,9 @@ class Mastodon:
         media_file_description = (file_name, media_file, mime_type)
         return self.__api_request('POST', '/api/v1/media', files = {'file': media_file_description})
 
+    ###
+    # Streaming
+    ###
     def user_stream(self, listener):
         """
         Streams events that are relevant to the authorized user, i.e. home
