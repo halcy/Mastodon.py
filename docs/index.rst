@@ -238,7 +238,6 @@ their relationships.
 .. automethod:: Mastodon.account_statuses
 .. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_followers
-.. automethod:: Mastodon.follows
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
@@ -289,7 +288,8 @@ Writing data: Accounts
 These functions allow you to interact with other accounts: To (un)follow and
 (un)block.
 
-.. automethod:: Mastodon.account_follow  
+.. automethod:: Mastodon.account_follow
+.. automethod:: Mastodon.follows
 .. automethod:: Mastodon.account_unfollow
 .. automethod:: Mastodon.account_block
 .. automethod:: Mastodon.account_unblock

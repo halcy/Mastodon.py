@@ -364,15 +364,6 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/followers', params)
 
-    def follows(self, uri):
-        """
-        Follow a remote user by uri (username@domain).
-
-        Returns a user dict.
-        """
-        params = self.__generate_params(locals())
-        return self.__api_request('POST', '/api/v1/follows', params)
-
     def account_relationships(self, id):
         """
         Fetch relationships (following, followed_by, blocking) of the logged in user to
@@ -570,6 +561,15 @@ class Mastodon:
         Returns a relationship dict containing the updated relationship to the user.
         """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/follow")
+
+    def follows(self, uri):
+        """
+        Follow a remote user by uri (username@domain).
+
+        Returns a user dict.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/follows', params)
 
     def account_unfollow(self, id):
         """

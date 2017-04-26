@@ -13,7 +13,6 @@ Here's some general stuff to keep in mind, and some work that needs to be done
 * Documentation that needs to be updated:
     * Toot dicts are missing some fields (cards, applications, visibility)
     * Some others probably are missing stuff also
-    * Follows is missclassified
     
 * Other things missing:
     * Transparent as well as explicit pagination support
