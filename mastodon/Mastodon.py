@@ -646,7 +646,7 @@ class Mastodon:
         'avatar' and 'header' are PNG images encoded in base64.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('POST', '/api/v1/accounts/update_credentials', params)
+        return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
 
     ###
     # Writing data: Reports
