@@ -15,3 +15,4 @@ Here's some general stuff to keep in mind, and some work that needs to be done
 
 * Other things missing:
     * Transparent as well as explicit pagination support
+    * Tests (long-term goal)
