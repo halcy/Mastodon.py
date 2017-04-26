@@ -134,7 +134,6 @@ class Mastodon:
 
     def auth_request_url(self, client_id = None, redirect_uris = "urn:ietf:wg:oauth:2.0:oob", scopes = ['read', 'write', 'follow']):
         """Returns the url that a client needs to request the grant from the server.
-        https://mastodon.social/oauth/authorize?client_id=XXX&response_type=code&redirect_uris=YYY&scope=read+write+follow
         """
         if client_id is None:
             client_id = self.client_id
@@ -155,22 +154,20 @@ class Mastodon:
             code = None, redirect_uri = "urn:ietf:wg:oauth:2.0:oob", refresh_token = None,\
             scopes = ['read', 'write', 'follow'], to_file = None):
         """
-        Docs: https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
+        Your username is the e-mail you use to log in into mastodon.
         
-        Notes:
-            Your username is the e-mail you use to log in into mastodon.
-            
-            Can persist access token to file, to be used in the constructor.
-            
-            Supports refresh_token but Mastodon.social doesn't implement it at the moment.
-    
-            Handles password, authorization_code, and refresh_token authentication.
-            
-            Will throw a MastodonIllegalArgumentError if username / password
-            are wrong, scopes are not valid or granted scopes differ from requested.
+        Can persist access token to file, to be used in the constructor.
+        
+        Supports refresh_token but Mastodon.social doesn't implement it at the moment.
 
-        Returns:
-            str @access_token
+        Handles password, authorization_code, and refresh_token authentication.
+        
+        Will throw a MastodonIllegalArgumentError if username / password
+        are wrong, scopes are not valid or granted scopes differ from requested.
+
+        For OAuth2 documentation, compare https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
+
+        Returns the access token.
         """
         if username is not None and password is not None:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
