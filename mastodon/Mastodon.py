@@ -131,27 +131,6 @@ class Mastodon:
             with open(self.access_token, 'r') as token_file:
                 self.access_token = token_file.readline().rstrip()
                 
-        
-    def __get_token_expired(self):
-        """Internal helper for oauth code"""
-        if self._token_expired < datetime.datetime.now():
-            return True
-        else:
-            return False
-
-    def __set_token_expired(self, value):
-        """Internal helper for oauth code"""
-        self._token_expired = datetime.datetime.now() + datetime.timedelta(seconds=value)
-        return
-    
-    def __get_refresh_token(self):
-        """Internal helper for oauth code"""
-        return self._refresh_token
-        
-    def __set_refresh_token(self, value):
-        """Internal helper for oauth code"""
-        self._refresh_token = value
-        return
 
     def auth_request_url(self, client_id = None, redirect_uris = "urn:ietf:wg:oauth:2.0:oob", scopes = ['read', 'write', 'follow']):
         """Returns the url that a client needs to request the grant from the server.
@@ -878,6 +857,28 @@ class Mastodon:
                 del params[key]
 
         return params
+
+
+    def __get_token_expired(self):
+        """Internal helper for oauth code"""
+        if self._token_expired < datetime.datetime.now():
+            return True
+        else:
+            return False
+
+    def __set_token_expired(self, value):
+        """Internal helper for oauth code"""
+        self._token_expired = datetime.datetime.now() + datetime.timedelta(seconds=value)
+        return
+    
+    def __get_refresh_token(self):
+        """Internal helper for oauth code"""
+        return self._refresh_token
+        
+    def __set_refresh_token(self, value):
+        """Internal helper for oauth code"""
+        self._refresh_token = value
+        return
 
 ##
 # Exceptions
