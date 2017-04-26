@@ -321,14 +321,19 @@ class Mastodon:
     ###
     # Reading data: Notifications
     ###
-    def notifications(self):
+    def notifications(self, id = None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the authenticated
         user.
 
+        Can be passed an id to fetch a single notification.
+
         Returns a list of notification dicts.
         """
-        return self.__api_request('GET', '/api/v1/notifications')
+        if id == None:
+            return self.__api_request('GET', '/api/v1/notifications')
+        else:
+            return self.__api_request('GET', '/api/v1/notifications/' + str(id))
 
     ###
     # Reading data: Accounts
@@ -406,6 +411,9 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/search', params)
    
 
+    ###
+    # Reading data: Searching
+    ###
     def content_search(self, q, resolve = False):
         """
         Fetch matching hashtags, accounts and statuses. Will search federated
@@ -559,6 +567,15 @@ class Mastodon:
         Returns a toot dict with the un-favourited status.
         """
         return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/unfavourite")
+
+    ###
+    # Writing data: Notifications
+    ###
+    def notifications_clear(self):
+        """
+        Clear out a users notifications
+        """
+        return self.__api_request('GET', '/api/v1/notifications/clear')
 
     ###
     # Writing data: Accounts
