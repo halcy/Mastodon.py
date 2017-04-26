@@ -1,6 +1,5 @@
 # coding: utf-8
 
-
 import os
 import os.path
 import mimetypes
@@ -10,10 +9,9 @@ import string
 import pytz
 import datetime
 from contextlib import closing
-from urllib.parse import urlencode
-
 import pytz
 import requests
+from requests.models import urlencode
 import dateutil
 import dateutil.parser
 
@@ -134,28 +132,24 @@ class Mastodon:
                 self.access_token = token_file.readline().rstrip()
                 
         
-    @property
-    def token_expired(self) -> bool:
+    def __get_token_expired(self):
         if self._token_expired < datetime.datetime.now():
             return True
         else:
             return False
-    
-    @token_expired.setter
-    def token_expired(self, value: int):
+
+    def __set_token_expired(self, value):
         self._token_expired = datetime.datetime.now() + datetime.timedelta(seconds=value)
         return
     
-    @property
-    def refresh_token(self) -> str:
+    def __get_refresh_token(self):
         return self._refresh_token
         
-    @refresh_token.setter
-    def refresh_token(self, value):
+    def __set_refresh_token(self, value):
         self._refresh_token = value
         return
 
-    def auth_request_url(self, client_id: str = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", scopes: list = ['read', 'write', 'follow']) -> str:
+    def auth_request_url(self, client_id = None, redirect_uris = "urn:ietf:wg:oauth:2.0:oob", scopes = ['read', 'write', 'follow']):
         """Returns the url that a client needs to request the grant from the server.
         https://mastodon.social/oauth/authorize?client_id=XXX&response_type=code&redirect_uris=YYY&scope=read+write+follow
         """
@@ -174,9 +168,9 @@ class Mastodon:
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
-    def log_in(self, username: str = None, password: str = None,\
-            code: str = None, redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: str = None,\
-            scopes: list = ['read', 'write', 'follow'], to_file: str = None) -> str:
+    def log_in(self, username = None, password = None,\
+            code = None, redirect_uri = "urn:ietf:wg:oauth:2.0:oob", refresh_token = None,\
+            scopes = ['read', 'write', 'follow'], to_file = None):
         """
         Docs: https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
         
@@ -214,8 +208,8 @@ class Mastodon:
         try:
             response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting = False)
             self.access_token = response['access_token']
-            self.refresh_token = response.get('refresh_token')
-            self.token_expired = int(response.get('expires_in', 0))
+            self.__set_refresh_token(response.get('refresh_token'))
+            self.__set_token_expired(int(response.get('expires_in', 0)))
         except Exception as e:
             if username is not None or password is not None:
                 raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
