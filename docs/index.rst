@@ -361,6 +361,6 @@ These functions allow access to the streaming API.
 .. automethod:: Mastodon.hashtag_stream
 
 
-.. _Mastodon: https://github.com/Gargron/mastodon
+.. _Mastodon: https://github.com/tootsuite/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/
-.. _Mastodon api docs: https://github.com/Gargron/mastodon/wiki/API
+.. _Mastodon api docs: https://github.com/tootsuite/documentation/
