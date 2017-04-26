@@ -11,24 +11,24 @@ Mastodon.py
    '''
    Mastodon.create_app(
         'pytooterapp', 
-         to_file = 'pytooter_clientcred.txt'
+         to_file = 'pytooter_clientcred.secret'
    )
    '''
 
    # Log in - either every time, or use persisted
    '''
-   mastodon = Mastodon(client_id = 'pytooter_clientcred.txt')
+   mastodon = Mastodon(client_id = 'pytooter_clientcred.secret')
    mastodon.log_in(
        'my_login_email@example.com',
        'incrediblygoodpassword', 
-       to_file = 'pytooter_usercred.txt'
+       to_file = 'pytooter_usercred.secret'
    )
    '''
 
    # Create actual instance
    mastodon = Mastodon(
-       client_id = 'pytooter_clientcred.txt', 
-       access_token = 'pytooter_usercred.txt'
+       client_id = 'pytooter_clientcred.secret', 
+       access_token = 'pytooter_usercred.secret'
    )
    mastodon.toot('Tooting from python!')
 
@@ -329,7 +329,8 @@ Writing data: Accounts
 These functions allow you to interact with other accounts: To (un)follow and
 (un)block.
 
-.. automethod:: Mastodon.account_follow  
+.. automethod:: Mastodon.account_follow
+.. automethod:: Mastodon.follows
 .. automethod:: Mastodon.account_unfollow
 .. automethod:: Mastodon.account_block
 .. automethod:: Mastodon.account_unblock
