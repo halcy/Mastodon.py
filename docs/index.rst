@@ -88,18 +88,18 @@ User dicts
     mastodon.account(<numerical id>)
     # Returns the following dictionary:
     {
-        'display_name': # The user's display name
-        'acct': # The user's account name as username@domain (@domain omitted for local users)
-        'following_count': # How many people they follow
-        'url': # Their URL; usually 'https://mastodon.social/users/<acct>'
-        'statuses_count': # How many statuses they have
-        'followers_count': # How many followers they have
-        'avatar': # URL for their avatar
-        'note': # Their bio
-        'header': # URL for their header image
         'id': # Same as <numerical id>
         'username': # The username (what you @ them with)
+        'acct': # The user's account name as username@domain (@domain omitted for local users)
+        'display_name': # The user's display name
         'locked': # Denotes whether the account can be followed without a follow request
+        'following_count': # How many people they follow
+        'followers_count': # How many followers they have
+        'statuses_count': # How many statuses they have
+        'note': # Their bio
+        'url': # Their URL; usually 'https://mastodon.social/users/<acct>'
+        'avatar': # URL for their avatar
+        'header': # URL for their header image
     }
 
 Toot dicts
@@ -109,24 +109,28 @@ Toot dicts
     mastodon.toot("Hello from Python")
     # Returns the following dictionary:
     {
-        'sensitive': # Denotes whether media attachments to the toot are marked sensitive
-        'created_at': # Creation time
-        'mentions': # A list of account dicts mentioned in the toot
+        'id': # Numerical id of this toot
         'uri': # Descriptor for the toot
             # EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
-        'tags': # A list of hashtag dicts used in the toot
+        'url': # URL of the toot
+        'account': # Account dict for the account which posted the status
         'in_reply_to_id': # Numerical id of the toot this toot is in response to
-        'media_attachments': # list of media dicts of attached files. Only present 
-                            # when there are attached files.
-        'id': # Numerical id of this toot
+        'in_reply_to_account_id': # Numerical id of the account this toot is in response to
+        'reblog': # Denotes whether the toot is a reblog
+        'content': # Content of the toot, as HTML: '<p>Hello from Python</p>'
+        'created_at': # Creation time
         'reblogs_count': # Number of reblogs
         'favourites_count': # Number of favourites
-        'reblog': # Denotes whether the toot is a reblog
-        'url': # URL of the toot
-        'content': # Content of the toot, as HTML: '<p>Hello from Python</p>'
-        'spoiler_text': # Warning text that should be displayed before the toot content
+        'reblogged': # Denotes whether the logged in user has boosted this toot
         'favourited': # Denotes whether the logged in user has favourited this toot
-        'account': # Account dict for the logged in account
+        'sensitive': # Denotes whether media attachments to the toot are marked sensitive
+        'spoiler_text': # Warning text that should be displayed before the toot content
+        'visibility': # Toot visibility ('public', 'unlisted', 'private', or 'direct')
+        'mentions': # A list of account dicts mentioned in the toot
+        'media_attachments': # list of media dicts of attached files. Only present
+                            # when there are attached files.
+        'tags': # A list of hashtag dicts used in the toot
+        'application': # Application dict for the client used to post the toot
     }
 
 Relationship dicts
@@ -136,9 +140,9 @@ Relationship dicts
     mastodon.account_follow(<numerical id>)
     # Returns the following dictionary:
     {
-        'followed_by': # Boolean denoting whether they follow you back
-        'following': # Boolean denoting whether you follow them
         'id': # Numerical id (same one as <numerical id>)
+        'following': # Boolean denoting whether you follow them
+        'followed_by': # Boolean denoting whether they follow you back
         'blocking': # Boolean denoting whether you are blocking them
         'muting': # Boolean denoting whether you are muting them
         'requested': # Boolean denoting whether you have sent them a follow request
@@ -153,9 +157,10 @@ Notification dicts
     {
         'id': # id of the notification.
         'type': # "mention", "reblog", "favourite" or "follow".
+        'created_at': # The time the notification was created.
+        'account': # User dict of the user from whom the notification originates.
         'status': # In case of "mention", the mentioning status. 
                   # In case of reblog / favourite, the reblogged / favourited status.
-        'account': # User dict of the user from whom the notification originates.
     }
 
 Context dicts
@@ -165,8 +170,8 @@ Context dicts
     mastodon.status_context(<numerical id>)
     # Returns the following dictionary:
     {
-        'descendants': # A list of toot dicts
         'ancestors': # A list of toot dicts
+        'descendants': # A list of toot dicts
     }
 
 Media dicts
@@ -176,10 +181,25 @@ Media dicts
     mastodon.media_post("image.jpg", "image/jpeg")
     # Returns the following dictionary:
     {
-        'text_url': # The display text for the media (what shows up in toots)
-        'preview_url': # The URL for the media preview
+        'id': # The ID of the attachment.
         'type': # Media type, EG 'image'
-        'url': # The URL for the media
+        'url': # The URL for the image in the local cache
+        'remote_url': # The remote URL for the media (if the image is from a remote instance)
+        'preview_url': # The URL for the media preview
+        'text_url': # The display text for the media (what shows up in toots)
+    }
+
+Card dicts
+~~~~~~~~~~
+..code-block:: python
+
+    mastodon.status_card(<numerical id>):
+    # Returns the folowing dictionary
+    {
+        'url': The URL of the card.
+        'title': The title of the card.
+        'description': The description of the card.
+        'image': (optional) The image associated with the card.
     }
 
 App registration and user authentication
@@ -202,6 +222,13 @@ methods for this are provided.
 .. automethod:: Mastodon.log_in
 .. automethod:: Mastodon.auth_request_url
 
+Reading data: Instance
+-----------------------
+This function allows you to fetch information associated with the
+current instance.
+
+.. automethod:: Mastodon.instance
+
 Reading data: Timelines
 -----------------------
 This function allows you to access the timelines a logged in
@@ -221,6 +248,7 @@ These functions allow you to get information about single statuses.
 .. automethod:: Mastodon.status_context
 .. automethod:: Mastodon.status_reblogged_by
 .. automethod:: Mastodon.status_favourited_by
+.. automethod:: Mastodon.status_card
 
 Reading data: Notifications
 ---------------------------
@@ -238,9 +266,13 @@ their relationships.
 .. automethod:: Mastodon.account_statuses
 .. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_followers
-.. automethod:: Mastodon.follows
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
+
+Reading data: Follows
+---------------------
+
+.. automethod:: Mastodon.follows
 
 Reading data: Searching
 -----------------------
@@ -256,6 +288,14 @@ muted or blocked by the logged in user.
 
 .. automethod:: Mastodon.mutes
 .. automethod:: Mastodon.blocks
+
+Reading data: Reports
+------------------------------
+These functions allow you to retrieve information about reports filed
+by the authenticated user, and file a report against a user.
+
+.. automethod:: Mastodon.reports
+.. automethod:: Mastodon.report
 
 Reading data: Favourites
 ------------------------
@@ -295,6 +335,7 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unblock
 .. automethod:: Mastodon.account_mute
 .. automethod:: Mastodon.account_unmute
+.. automethod:: Mastodon.account_update_credentials
 
 Writing data: Follow requests
 -----------------------------
