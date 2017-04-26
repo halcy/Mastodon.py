@@ -88,18 +88,18 @@ User dicts
     mastodon.account(<numerical id>)
     # Returns the following dictionary:
     {
-        'display_name': The user's display name
-        'acct': The user's account name as username@domain (@domain omitted for local users)
-        'following_count': How many people they follow
-        'url': Their URL; usually 'https://mastodon.social/users/<acct>'
-        'statuses_count': How many statuses they have
-        'followers_count': How many followers they have
-        'avatar': URL for their avatar
-        'note': Their bio
-        'header': URL for their header image
-        'id': Same as <numerical id>
-        'username': The username (what you @ them with)
-        'locked': Denotes whether the account can be followed without a follow request
+        'display_name': # The user's display name
+        'acct': # The user's account name as username@domain (@domain omitted for local users)
+        'following_count': # How many people they follow
+        'url': # Their URL; usually 'https://mastodon.social/users/<acct>'
+        'statuses_count': # How many statuses they have
+        'followers_count': # How many followers they have
+        'avatar': # URL for their avatar
+        'note': # Their bio
+        'header': # URL for their header image
+        'id': # Same as <numerical id>
+        'username': # The username (what you @ them with)
+        'locked': # Denotes whether the account can be followed without a follow request
     }
 
 Toot dicts
