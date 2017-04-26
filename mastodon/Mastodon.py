@@ -643,7 +643,8 @@ class Mastodon:
 
         'note' is the user's bio.
 
-        'avatar' and 'header' are PNG images encoded in base64.
+        'avatar' and 'header' are images encoded in base64, prepended by a content-type
+        (for example: 'data:image/png;base64,iVBORw0KGgoAAAA[...]')
         """
         params = self.__generate_params(locals())
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
@@ -651,7 +652,7 @@ class Mastodon:
     ###
     # Writing data: Reports
     ###
-    def report(self, id, toots, comment):
+    def report(self, account_id, status_ids, comment):
         """
         Report a user to the admin.
 
@@ -813,6 +814,9 @@ class Mastodon:
                 if method == 'POST':
                     response_object = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
 
+                if method == 'PATCH':
+                    response_object = requests.patch(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
+
                 if method == 'DELETE':
                     response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
             except Exception as e:
@@ -848,11 +852,12 @@ class Mastodon:
                     self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
                     # Adjust server time to local clock
-                    server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
-                    server_time = self.__datetime_to_epoch(server_time_datetime)
-                    server_time_diff = time.time() - server_time
-                    self.ratelimit_reset += server_time_diff
-                    self.ratelimit_lastcall = time.time()
+                    if 'Date' in response_object.headers:
+                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                        server_time = self.__datetime_to_epoch(server_time_datetime)
+                        server_time_diff = time.time() - server_time
+                        self.ratelimit_reset += server_time_diff
+                        self.ratelimit_lastcall = time.time()
                 except Exception as e:
                     raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
 
