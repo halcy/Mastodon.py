@@ -211,6 +211,17 @@ class Mastodon:
         return response['access_token']
 
     ###
+    # Reading data: Instance
+    ###
+    def instance(self):
+        """
+        Retrieve basic information about the instance, including the URI and administrative contact email.
+
+        Returns a dict.
+        """
+        return self.__api_request('GET', '/api/v1/instance/')
+
+    ###
     # Reading data: Timelines
     ##
     def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
@@ -273,6 +284,14 @@ class Mastodon:
         Returns a toot dict.
         """
         return self.__api_request('GET', '/api/v1/statuses/' + str(id))
+
+    def status_card(self, id):
+        """
+        Fetch a card associated with a status.
+
+        Returns a card dict.
+        """
+        return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/card')
 
     def status_context(self, id):
         """
@@ -380,7 +399,6 @@ class Mastodon:
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
-   
 
     ###
     # Reading data: Searching
@@ -413,6 +431,17 @@ class Mastodon:
         Returns a list of user dicts.
         """
         return self.__api_request('GET', '/api/v1/blocks')
+
+    ###
+    # Reading data: Reports
+    ###
+    def reports(self):
+        """
+        Fetch a list of reports made by the authenticated user.
+
+        Returns a list of report dicts.
+        """
+        return self.__api_request('GET', '/api/v1/reports')
 
     ###
     # Reading data: Favourites
@@ -608,6 +637,32 @@ class Mastodon:
         """
         return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unmute")
 
+    def account_update_credentials(self, display_name = None, note = None, avatar = None, header = None):
+        """
+        Update the profile for the currently authenticated user.
+
+        'note' is the user's bio.
+
+        'avatar' and 'header' are images encoded in base64, prepended by a content-type
+        (for example: 'data:image/png;base64,iVBORw0KGgoAAAA[...]')
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
+
+    ###
+    # Writing data: Reports
+    ###
+    def report(self, account_id, status_ids, comment):
+        """
+        Report a user to the admin.
+
+        Accepts a list of toot IDs associated with the report, and a comment.
+
+        Returns a report dict.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/reports/', params)
+
     ###
     # Writing data: Follow requests
     ###
@@ -759,6 +814,9 @@ class Mastodon:
                 if method == 'POST':
                     response_object = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
 
+                if method == 'PATCH':
+                    response_object = requests.patch(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
+
                 if method == 'DELETE':
                     response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
             except Exception as e:
@@ -794,11 +852,12 @@ class Mastodon:
                     self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
                     # Adjust server time to local clock
-                    server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
-                    server_time = self.__datetime_to_epoch(server_time_datetime)
-                    server_time_diff = time.time() - server_time
-                    self.ratelimit_reset += server_time_diff
-                    self.ratelimit_lastcall = time.time()
+                    if 'Date' in response_object.headers:
+                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                        server_time = self.__datetime_to_epoch(server_time_datetime)
+                        server_time_diff = time.time() - server_time
+                        self.ratelimit_reset += server_time_diff
+                        self.ratelimit_lastcall = time.time()
                 except Exception as e:
                     raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
 
