@@ -1,6 +1,13 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.0.7
+------
+ * Added support for OAuth2 (Thanks to azillon)
+ * Added support for several new endpoints (Thanks phryk, aeonofdiscord, naoyat)
+ * Fixed various bugs (Thanks EliotBerriot, csu, edsu)
+ * Added support for streaming API (Thanks wjt)
+
 v1.0.6
 ------
  * Fixed several bugs (Thanks to Psycojoker, wjt and wxcafe)
