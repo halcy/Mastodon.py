@@ -191,15 +191,15 @@ Media dicts
 
 Card dicts
 ~~~~~~~~~~
-..code-block:: python
+.. code-block:: python
 
     mastodon.status_card(<numerical id>):
     # Returns the folowing dictionary
     {
-        'url': The URL of the card.
-        'title': The title of the card.
-        'description': The description of the card.
-        'image': (optional) The image associated with the card.
+        'url': # The URL of the card.
+        'title': # The title of the card.
+        'description': # The description of the card.
+        'image': # (optional) The image associated with the card.
     }
 
 App registration and user authentication
