@@ -735,6 +735,16 @@ class Mastodon:
         """
         return self.__stream('/api/v1/streaming/public', listener)
 
+    def local_stream(self, listener):
+        """
+        Streams local events. 'listener' should be a subclass of
+        StreamListener.
+
+        This method blocks forever, calling callbacks on 'listener' for
+        incoming events.
+        """
+        return self.__stream('/api/v1/streaming/public/local', listener)
+
     def hashtag_stream(self, tag, listener):
         """
         Returns all public statuses for the hashtag 'tag'. 'listener' should be
