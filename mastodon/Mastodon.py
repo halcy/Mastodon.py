@@ -670,7 +670,7 @@ class Mastodon:
         """
         Accept an incoming follow request.
 
-        Returns a user dict of the authorized account.
+        Returns an empty dict.
         """
         return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/authorize")
 
@@ -678,7 +678,7 @@ class Mastodon:
         """
         Reject an incoming follow request.
 
-        Returns a user dict of the rejected account.
+        Returns an empty dict.
         """
         return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/reject")
 
