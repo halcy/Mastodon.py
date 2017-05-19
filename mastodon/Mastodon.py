@@ -320,7 +320,7 @@ class Mastodon:
     ###
     # Reading data: Notifications
     ###
-    def notifications(self, id = None):
+    def notifications(self, id = None, max_id = None, since_id = None, limit = None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the authenticated
         user.
@@ -330,7 +330,8 @@ class Mastodon:
         Returns a list of notification dicts.
         """
         if id == None:
-            return self.__api_request('GET', '/api/v1/notifications')
+            params = self.__generate_params(locals(), ['id'])
+            return self.__api_request('GET', '/api/v1/notifications', params)
         else:
             return self.__api_request('GET', '/api/v1/notifications/' + str(id))
 
@@ -416,21 +417,23 @@ class Mastodon:
     ###
     # Reading data: Mutes and Blocks
     ###
-    def mutes(self):
+    def mutes(self, max_id = None, since_id = None, limit = None):
         """
         Fetch a list of users muted by the authenticated user.
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/mutes')
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/mutes', params)
 
-    def blocks(self):
+    def blocks(self, max_id = None, since_id = None, limit = None):
         """
         Fetch a list of users blocked by the authenticated user.
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/blocks')
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/blocks', params)
 
     ###
     # Reading data: Reports
@@ -446,13 +449,14 @@ class Mastodon:
     ###
     # Reading data: Favourites
     ###
-    def favourites(self):
+    def favourites(self, max_id = None, since_id = None, limit = None):
         """
         Fetch the authenticated user's favourited statuses.
 
         Returns a list of toot dicts.
         """
-        return self.__api_request('GET', '/api/v1/favourites')
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/favourites', params)
 
     ###
     # Reading data: Follow requests
