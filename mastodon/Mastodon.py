@@ -342,6 +342,8 @@ class Mastodon:
         """
         Fetch account information by user id.
 
+        To retreive a user id from it's address (user@instance.com), uses the account_search method.
+
         Returns a user dict.
         """
         return self.__api_request('GET', '/api/v1/accounts/' + str(id))
@@ -358,6 +360,8 @@ class Mastodon:
         """
         Fetch statuses by user id. Same options as timeline are permitted.
 
+        To retreive a user id from it's address (user@instance.com), uses the account_search method.
+
         Returns a list of toot dicts.
         """
         params = self.__generate_params(locals(), ['id'])
@@ -366,6 +370,8 @@ class Mastodon:
     def account_following(self, id, max_id = None, since_id = None, limit = None):
         """
         Fetch users the given user is following.
+
+        To retreive a user id from it's address (user@instance.com), uses the account_search method.
 
         Returns a list of user dicts.
         """
@@ -376,6 +382,8 @@ class Mastodon:
         """
         Fetch users the given user is followed by.
 
+        To retreive a user id from it's address (user@instance.com), uses the account_search method.
+
         Returns a list of user dicts.
         """
         params = self.__generate_params(locals(), ['id'])
@@ -385,6 +393,8 @@ class Mastodon:
         """
         Fetch relationships (following, followed_by, blocking) of the logged in user to
         a given account. id can be a list.
+
+        To retreive a user id from it's address (user@instance.com), uses the account_search method.
 
         Returns a list of relationship dicts.
         """
