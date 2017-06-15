@@ -18,11 +18,13 @@ Mastodon.py
 
    # Log in - either every time, or use persisted
    '''
-   mastodon = Mastodon(client_id = 'pytooter_clientcred.secret')
+   mastodon = Mastodon(
+       client_id = 'pytooter_clientcred.secret',
+       api_base_url = 'https://mastodon.social'
+   )
    mastodon.log_in(
        'my_login_email@example.com',
        'incrediblygoodpassword',
-       api_base_url = 'https://mastodon.social',
        to_file = 'pytooter_usercred.secret'
    )
    '''
