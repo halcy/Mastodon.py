@@ -343,6 +343,11 @@ Reading data: Reports
 
 .. automethod:: Mastodon.reports
 
+Reading data: Domain blocks
+---------------------------
+
+.. automethod:: Mastodon.domain_blocks
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
@@ -389,6 +394,14 @@ Writing data: Reports
 ---------------------
 
 .. automethod:: Mastodon.report
+
+Writing data: Domain blocks
+---------------------------
+These methods allow you to block and unblock all statuses from a domain
+for the logged-in user.
+
+.. automethod:: Mastodon.domain_block
+.. automethod:: Mastodon.domain_unblock
 
 Streaming
 ---------

@@ -468,6 +468,18 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/follow_requests', params)
 
     ###
+    # Reading data: Domain blocks
+    ###
+    def domain_blocks(self, max_id = None, since_id = None, limit = None):
+        """
+        Fetch the authenticated user's blocked domain.
+
+        Returns a list of blocked domain URLs.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/domain_blocks', params)
+    
+    ###
     # Writing data: Statuses
     ###
     def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
@@ -713,6 +725,23 @@ class Mastodon:
         media_file_description = (file_name, media_file, mime_type)
         return self.__api_request('POST', '/api/v1/media', files = {'file': media_file_description})
 
+    ###
+    # Writing data: Domain blocks
+    ###
+    def domain_block(self, domain = None):
+        """
+        Add a block for all statuses originating from the specified domain for the logged-in user.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/domain_blocks', params)
+    
+    def domain_unblock(self, domain = None):
+        """
+        Remove a domain block for the logged-in user.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('DELETE', '/api/v1/domain_blocks', params)
+    
     ###
     # Streaming
     ###
