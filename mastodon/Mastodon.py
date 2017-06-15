@@ -870,7 +870,7 @@ class Mastodon:
             # Handle response
             if self.debug_requests == True:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
-                print('response headers: ' + str(response_object.headers))
+                print('Response headers: ' + str(response_object.headers))
                 print('Response text content: ' + str(response_object.text))
 
             if response_object.status_code == 404:
@@ -914,6 +914,8 @@ class Mastodon:
                             to_next = min(to_next, 5 * 60)
                             time.sleep(to_next)
                             request_complete = False
+                            
+            response = self.__handle_response(self, response_object, method, params, files, do_ratelimiting, self.api_base_url)
 
         return response
 
@@ -955,6 +957,69 @@ class Mastodon:
                 del params[key]
 
         return params
+        
+    def __handle_response(self, mast_obj: Mastodon, response: requests.models.Response, method: str, params: dict, files: dict, do_ratelimiting: bool, api_base_url: str):
+        return self.ResponseObject(mast_obj, response, method, params, files, do_ratelimiting, api_base_url)
+    
+    
+    class ResponseObject:
+        def __init__(self, mast_obj: Mastodon, response: requests.models.Response, method: str, params: dict, files: dict, do_ratelimiting: bool, api_base_url: str):
+            self.mast_obj = mast_obj
+            self.response_obj = response
+            self.method = method
+            self.params = params
+            self.files = files
+            self.do_ratelimiting = do_ratelimiting
+            self.api_base_url = api_base_url
+            self._response = response.json()
+            
+        @property
+        def response(self) -> dict:
+            return self._response
+        
+        @response.setter
+        def response(self, value: dict):
+            self._response = value
+            return
+        
+        def __repr__(self):
+            return '<MastodonAPI ResponseObject [%s]>' % (self.response_obj.url)
+        
+        def __iter__(self):
+            try:
+                while True:
+                    if 'Link' in self.response_obj.headers:
+                        tmp_url = requests.utils.parse_header_links(self.response_obj.headers['Link'].rstrip('>').replace('>,<', ',<'))
+                        next_url = None
+                        if tmp_url:
+                            for url in tmp_url:
+                                if url['rel'] == 'next':
+                                    next_url = url['url'].replace(self.api_base_url,'')
+                                    break
+                        if next_url is not None:
+                            tmp_response = self.mast_obj.__api_request(self.method, next_url, params=self.params, files=self.files, do_ratelimiting=self.do_ratelimiting)
+                            if type(tmp_response.response) is dict:
+                                self.response = tmp_response.response
+                                yield self.response
+                            else:
+                                raise StopIteration
+                    else:
+                        self.response = self.response_obj.json()
+                        return self.response_obj.json()
+            except Exception as e:
+                raise e
+        
+        def fetch_all(self):
+            try:
+                r = []
+                for page in self:
+                    if page is not None:
+                        r.append(page)
+                    else:
+                        return self.response
+            except StopIteration:
+                return r
+            return r
 
 
     def __get_token_expired(self):
