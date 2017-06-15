@@ -73,6 +73,28 @@ a loop without ever sleeping at all yourself. It is for applications that would 
 just pretend there is no such thing as a rate limit and are fine with sometimes not
 being very interactive.
 
+A note about pagination
+-----------------------
+Many of Mastodons API endpoints are paginated. What this means is that if you request
+data from them, you might not get all the data at once - instead, you might only get the
+first few results.
+
+All endpoints that are paginated have three parameters: since_id, max_id and limit.
+since_id allows you to specify the smallest id you want in the returned data. max_id,
+similarly, allows you to specify the largest. By specifying either one (generally,
+only one, not both) of them you can go through pages forwards and backwards.
+
+limit allows you to specify how many results you would like returned. Note that an
+instance may choose to return less results than you requested.
+
+The responses returned by paginated endpoints contain a "link" header that specifies
+which parameters to use to get the next and previous pages. Mastodon.py parses these
+and stores them (if present) in the first (for the previous page) and last (for the 
+next page) item of the returned list as _pagination_prev and _pagination_next.
+
+There are convenience functions available for fetching the previous and next page of
+a paginated request as well as for fetching all pages starting from a first page.
+
 A note about IDs
 ----------------
 Mastodons API uses IDs in several places: User IDs, Toot IDs, ...
@@ -257,8 +279,9 @@ you can simply pass them to the constructor of the class, too!
 Note that while it is perfectly reasonable to log back in whenever 
 your app starts, registering a new application on every 
 startup is not, so don't do that - instead, register an application 
-once, and then persist your client id and secret. Convenience
-methods for this are provided.
+once, and then persist your client id and secret. A convenient method
+for this is provided by the functions dealing with registering the app,
+logging in and the Mastodon classes constructor.
 
 To talk to an instance different from the flagship instance, specify
 the api_base_url (usually, just the URL of the instance, i.e. 
@@ -405,11 +428,19 @@ Writing data: Reports
 
 Writing data: Domain blocks
 ---------------------------
-These methods allow you to block and unblock all statuses from a domain
+These functions allow you to block and unblock all statuses from a domain
 for the logged-in user.
 
 .. automethod:: Mastodon.domain_block
 .. automethod:: Mastodon.domain_unblock
+
+Pagination
+----------
+These functions allow for convenient retrieval of paginated data.
+
+.. automethod:: Mastodon.fetch_next
+.. automethod:: Mastodon.fetch_previous
+.. automethod:: Mastodon.fetch_remaining
 
 Streaming
 ---------

@@ -14,10 +14,12 @@ import requests
 from requests.models import urlencode
 import dateutil
 import dateutil.parser
+import re
+import copy
 
 class Mastodon:
     """
-    Super basic but thorough and easy to use mastodon.social
+    Super basic but thorough and easy to use Mastodon
     api wrapper in python.
 
     If anything is unclear, check the official API docs at
@@ -744,6 +746,76 @@ class Mastodon:
         return self.__api_request('DELETE', '/api/v1/domain_blocks', params)
     
     ###
+    # Pagination
+    ###
+    def fetch_next(self, previous_page):
+        """
+        Fetches the next page of results of a paginated request. Pass in the
+        previous page in its entirety, or the pagination information dict 
+        returned as a part of that pages last status ('_pagination_next').
+        
+        Returns the next page or None if no further data is available.
+        """
+        if isinstance(previous_page, list):
+            if '_pagination_next' in previous_page[-1]:
+                params = previous_page[-1]['_pagination_next']
+            else:
+                return None
+        else:
+            params = previous_page
+        
+        method = params['_pagination_method']
+        del params['_pagination_method']
+        
+        endpoint = params['_pagination_endpoint']
+        del params['_pagination_endpoint']
+        
+        return self.__api_request(method, endpoint, params)
+    
+    def fetch_previous(self, next_page):
+        """
+        Fetches the previous page of results of a paginated request. Pass in the
+        previous page in its entirety, or the pagination information dict 
+        returned as a part of that pages first status ('_pagination_prev').
+        
+        Returns the previous page or None if no further data is available.
+        """
+        if isinstance(next_page, list):
+            if '_pagination_prev' in next_page[-1]:
+                params = next_page[-1]['_pagination_prev']
+            else:
+                return None
+        else:
+            params = next_page
+        
+        method = params['_pagination_method']
+        del params['_pagination_method']
+        
+        endpoint = params['_pagination_endpoint']
+        del params['_pagination_endpoint']
+        
+        return self.__api_request(method, endpoint, params)
+    
+    def fetch_remaining(self, first_page):
+        """
+        Fetches all the remaining pages of a paginated request starting from a 
+        first page and returns the entire set of results (including the first page
+        that was passed in) as a big list.
+        
+        Be careful, as this might generate a lot of requests, depending on what you are
+        fetching, and might cause you to run into rate limits very quickly.
+        """
+        first_page = copy.deepcopy(first_page)
+        
+        all_pages = []
+        current_page = first_page
+        while current_page != None:
+            all_pages.extend(current_page)
+            current_page = self.fetch_next(current_page)
+            
+        return all_pages
+    
+    ###
     # Streaming
     ###
     def user_stream(self, listener):
@@ -786,7 +858,7 @@ class Mastodon:
         incoming events.
         """
         return self.__stream('/api/v1/streaming/hashtag', listener, params={'tag': tag})
-
+    
     ###
     # Internal helpers, dragons probably
     ###
@@ -884,6 +956,34 @@ class Mastodon:
             except:
                 raise MastodonAPIError("Could not parse response as JSON, response code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
 
+            # Parse link headers
+            if isinstance(response, list) and 'Link' in response_object.headers:
+                tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))   
+                for url in tmp_urls:
+                    if url['rel'] == 'next':
+                        # Be paranoid and extract max_id specifically
+                        next_url = url['url']
+                        matchgroups = re.search(r"max_id=([0-9]*)", next_url)
+                        
+                        if matchgroups:
+                            next_params = copy.deepcopy(params)
+                            next_params['_pagination_method'] = method
+                            next_params['_pagination_endpoint'] = endpoint
+                            next_params['max_id'] = int(matchgroups.group(1))
+                            response[-1]['_pagination_next'] = next_params
+                            
+                    if url['rel'] == 'prev':
+                        # Be paranoid and extract since_id specifically
+                        prev_url = url['url']
+                        matchgroups = re.search(r"since_id=([0-9]*)", prev_url)
+                        
+                        if matchgroups:
+                            prev_params = copy.deepcopy(params)
+                            prev_params['_pagination_method'] = method
+                            prev_params['_pagination_endpoint'] = endpoint
+                            prev_params['max_id'] = int(matchgroups.group(1))
+                            response[0]['_pagination_prev'] = prev_params
+                
             # Handle rate limiting
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
                 self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
