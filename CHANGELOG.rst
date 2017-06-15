@@ -1,6 +1,13 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.0.8
+------
+ * Added support for domain blocks
+ * Updated the documentation to reflect API changes
+ * Added support for pagination (Thanks gled-rs, azillion)
+ * Fixed various bugs (Thanks brrzap, fumi-san)
+
 v1.0.7
 ------
  * Added support for OAuth2 (Thanks to azillon)
