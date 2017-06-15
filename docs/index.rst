@@ -10,8 +10,9 @@ Mastodon.py
    # Register app - only once!
    '''
    Mastodon.create_app(
-        'pytooterapp', 
-         to_file = 'pytooter_clientcred.secret'
+        'pytooterapp',
+        api_base_url = 'https://mastodon.social',
+        to_file = 'pytooter_clientcred.secret'
    )
    '''
 
@@ -20,17 +21,19 @@ Mastodon.py
    mastodon = Mastodon(client_id = 'pytooter_clientcred.secret')
    mastodon.log_in(
        'my_login_email@example.com',
-       'incrediblygoodpassword', 
+       'incrediblygoodpassword',
+       api_base_url = 'https://mastodon.social',
        to_file = 'pytooter_usercred.secret'
    )
    '''
 
-   # Create actual instance
+   # Create actual API instance
    mastodon = Mastodon(
        client_id = 'pytooter_clientcred.secret', 
-       access_token = 'pytooter_usercred.secret'
+       access_token = 'pytooter_usercred.secret',
+       api_base_url = 'https://mastodon.social'
    )
-   mastodon.toot('Tooting from python!')
+   mastodon.toot('Tooting from python using #mastodonpy !')
 
 `Mastodon`_ is an ostatus based twitter-like federated social 
 network node. It has an API that allows you to interact with its 

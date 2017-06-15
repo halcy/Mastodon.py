@@ -22,10 +22,6 @@ class Mastodon:
 
     If anything is unclear, check the official API docs at
     https://github.com/Gargron/mastodon/wiki/API
-    
-    Supported:
-        Username-Password Login
-        OAuth2
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
