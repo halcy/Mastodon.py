@@ -472,9 +472,9 @@ class Mastodon:
     ###
     def domain_blocks(self, max_id = None, since_id = None, limit = None):
         """
-        Fetch the authenticated user's blocked domain.
+        Fetch the authenticated user's blocked domains.
 
-        Returns a list of blocked domain URLs.
+        Returns a list of blocked domain URLs (as strings, without protocol specifier).
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
