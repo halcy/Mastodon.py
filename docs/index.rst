@@ -228,6 +228,20 @@ Card dicts
         'provider_url': # URL pointing to the embeds provider
     }
 
+Instance dicts
+~~~~~~~~~~~~~~
+.. code-block:: python
+
+    mastodon.instance()
+    # Returns the folowing dictionary
+    {
+        'description': # A brief instance description set by the admin
+        'email': # The admin contact e-mail
+        'title': # The instances title
+        'uri': # The instances URL
+        'version': # The instances mastodon version
+    }
+
 App registration and user authentication
 ----------------------------------------
 Before you can use the mastodon API, you have to register your 
@@ -248,7 +262,7 @@ methods for this are provided.
 .. automethod:: Mastodon.log_in
 .. automethod:: Mastodon.auth_request_url
 
-Reading data: Instance
+Reading data: Instances
 -----------------------
 This function allows you to fetch information associated with the
 current instance.
@@ -300,9 +314,18 @@ Reading data: Follows
 
 .. automethod:: Mastodon.follows
 
+Reading data: Favourites
+------------------------
+
+.. automethod:: Mastodon.favourites
+
+Reading data: Follow requests
+-----------------------------
+
+.. automethod:: Mastodon.follow_requests
+
 Reading data: Searching
 -----------------------
-This function allows you to search for content.
 
 .. automethod:: Mastodon.search
 
@@ -317,25 +340,8 @@ muted or blocked by the logged in user.
 
 Reading data: Reports
 ------------------------------
-These functions allow you to retrieve information about reports filed
-by the authenticated user, and file a report against a user.
 
 .. automethod:: Mastodon.reports
-.. automethod:: Mastodon.report
-
-Reading data: Favourites
-------------------------
-This function allows you to get information about statuses favourited
-by the authenticated user.
-
-.. automethod:: Mastodon.favourites
-
-Reading data: Follow requests
------------------------------
-This function allows you to get a list of pending incoming follow
-requests for the authenticated user.
-
-.. automethod:: Mastodon.follow_requests
 
 Writing data: Statuses
 ----------------------
@@ -378,6 +384,11 @@ media IDs (Up to 4 at the same time) can then be used with post_status
 to attach media to statuses.
 
 .. automethod:: Mastodon.media_post
+
+Writing data: Reports
+---------------------
+
+.. automethod:: Mastodon.report
 
 Streaming
 ---------

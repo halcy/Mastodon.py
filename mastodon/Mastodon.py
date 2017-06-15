@@ -207,13 +207,13 @@ class Mastodon:
         return response['access_token']
 
     ###
-    # Reading data: Instance
+    # Reading data: Instances
     ###
     def instance(self):
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
-        Returns a dict.
+        Returns an instance dict.
         """
         return self.__api_request('GET', '/api/v1/instance/')
 
@@ -656,7 +656,7 @@ class Mastodon:
     ###
     def report(self, account_id, status_ids, comment):
         """
-        Report a user to the admin.
+        Report statuses to the instances administrators.
 
         Accepts a list of toot IDs associated with the report, and a comment.
 
