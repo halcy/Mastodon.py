@@ -42,7 +42,8 @@ network node. It has an API that allows you to interact with its
 every aspect. This is a simple python wrapper for that api, provided
 as a single python module. By default, it talks to the 
 `Mastodon flagship instance`_, but it can be set to talk to any 
-node running Mastodon.
+node running Mastodon by setting api_base_url when creating the
+api object (or creating an app).
 
 A note about rate limits
 ------------------------
@@ -258,6 +259,11 @@ your app starts, registering a new application on every
 startup is not, so don't do that - instead, register an application 
 once, and then persist your client id and secret. Convenience
 methods for this are provided.
+
+To talk to an instance different from the flagship instance, specify
+the api_base_url (usually, just the URL of the instance, i.e. 
+https://mastodon.social/ for the flagship instance). If no protocol
+is specified, Mastodon.py defaults to https.
 
 .. automethod:: Mastodon.create_app
 .. automethod:: Mastodon.__init__
