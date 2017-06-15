@@ -44,6 +44,7 @@ class Mastodon:
 
         Returns client_id and client_secret.
         """
+        api_base_url = Mastodon.__protocolize(api_base_url)
         
         request_data = {
             'client_name': client_name,
@@ -95,7 +96,7 @@ class Mastodon:
         By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
         pass the desired timeout (in seconds) as request_timeout.
         """
-        self.api_base_url = api_base_url
+        self.api_base_url = Mastodon.__protocolize(api_base_url)
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = access_token
@@ -976,6 +977,13 @@ class Mastodon:
         """Internal helper for oauth code"""
         self._refresh_token = value
         return
+    
+    @staticmethod
+    def __protocolize(base_url):
+        """Internal add-protocol-to-url helper"""
+        if not base_url.startswith("http://") and not base_url.startswith("https://"):
+            base_url = "https://" + base_url
+        return base_url
 
 ##
 # Exceptions
