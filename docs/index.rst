@@ -134,6 +134,8 @@ Toot dicts
                             # when there are attached files.
         'tags': # A list of hashtag dicts used in the toot
         'application': # Application dict for the client used to post the toot
+        'language': # The (autodetected or otherwise set server side) language of the toot.
+        'muted': # oolean denoting whether the user has muted this status by way of conversation muting.
     }
 
 Relationship dicts
@@ -144,11 +146,12 @@ Relationship dicts
     # Returns the following dictionary:
     {
         'id': # Numerical id (same one as <numerical id>)
-        'following': # Boolean denoting whether you follow them
-        'followed_by': # Boolean denoting whether they follow you back
-        'blocking': # Boolean denoting whether you are blocking them
-        'muting': # Boolean denoting whether you are muting them
-        'requested': # Boolean denoting whether you have sent them a follow request
+        'following': # Boolean denoting whether the logged-in user follows the specified user
+        'followed_by': # Boolean denoting whether the specified user follows the logged-in user
+        'blocking': # Boolean denoting whether the logged-in user has blocked the specified user
+        'muting': # Boolean denoting whether the logged-in user has muted the specified user
+        'requested': # Boolean denoting whether the logged-in user has sent the specified user a follow request
+        'domain_blocking': # Boolean denoting whether the logged-in user has blocked the specified users domain
     }
 
 Notification dicts
@@ -185,13 +188,22 @@ Media dicts
     # Returns the following dictionary:
     {
         'id': # The ID of the attachment.
-        'type': # Media type, EG 'image'
+        'type': # Media type: 'image', 'video' or 'gifv'
         'url': # The URL for the image in the local cache
         'remote_url': # The remote URL for the media (if the image is from a remote instance)
         'preview_url': # The URL for the media preview
         'text_url': # The display text for the media (what shows up in toots)
+        'meta': # Dictionary of two image metadata dicts (see below), 'original' and 'small' (preview)
     }
-
+    
+    # Metadata dicts:
+    {
+       'width': # Width of the image in pixels
+       'height': # Height of the image in pixels
+       'aspect': # Aspect ratio of the image as a floating point number
+       'size': # Textual representation of the image size in pixels, e.g. '800x600'
+    }
+    
 Card dicts
 ~~~~~~~~~~
 .. code-block:: python
@@ -202,7 +214,18 @@ Card dicts
         'url': # The URL of the card.
         'title': # The title of the card.
         'description': # The description of the card.
+        'type': # Embed type: 'link', 'photo', 'video', or 'rich'
         'image': # (optional) The image associated with the card.
+        
+        # OEmbed data (all optional):
+        'author_name': # Name of the embedded contents author
+        'author_url': # URL pointing to the embedded contents author
+        'description': # Description of the embedded content
+        'width': # Width of the embedded object
+        'height': # Height of the embedded object
+        'html': # HTML string of the embed
+        'provider_name': # Name of the provider from which the embed originates
+        'provider_url': # URL pointing to the embeds provider
     }
 
 App registration and user authentication

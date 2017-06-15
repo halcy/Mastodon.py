@@ -21,7 +21,7 @@ class Mastodon:
     api wrapper in python.
 
     If anything is unclear, check the official API docs at
-    https://github.com/Gargron/mastodon/wiki/API
+    https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
@@ -283,7 +283,8 @@ class Mastodon:
 
     def status_card(self, id):
         """
-        Fetch a card associated with a status.
+        Fetch a card associated with a status. A card describes an object (such as an
+        external video or link) embedded into a status.
 
         Returns a card dict.
         """
@@ -482,6 +483,7 @@ class Mastodon:
 
         The visibility parameter is a string value and matches the visibility
         option on the /api/v1/status POST API endpoint. It accepts any of:
+        'direct' - post will be visible only to mentioned users
         'private' - post will be visible only to followers
         'unlisted' - post will be public but not appear on the public timeline
         'public' - post will be public
