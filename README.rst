@@ -7,30 +7,35 @@ Mastodon.py
    # Register app - only once!
    '''
    Mastodon.create_app(
-        'pytooterapp', 
-         to_file = 'pytooter_clientcred.txt'
+        'pytooterapp',
+        api_base_url = 'https://mastodon.social',
+        to_file = 'pytooter_clientcred.secret'
    )
    '''
 
    # Log in - either every time, or use persisted
    '''
-   mastodon = Mastodon(client_id = 'pytooter_clientcred.txt')
+   mastodon = Mastodon(
+       client_id = 'pytooter_clientcred.secret',
+       api_base_url = 'https://mastodon.social'
+   )
    mastodon.log_in(
        'my_login_email@example.com',
-       'incrediblygoodpassword', 
-       to_file = 'pytooter_usercred.txt'
+       'incrediblygoodpassword',
+       to_file = 'pytooter_usercred.secret'
    )
    '''
 
-   # Create actual instance
+   # Create actual API instance
    mastodon = Mastodon(
-       client_id = 'pytooter_clientcred.txt', 
-       access_token = 'pytooter_usercred.txt'
+       client_id = 'pytooter_clientcred.secret', 
+       access_token = 'pytooter_usercred.secret',
+       api_base_url = 'https://mastodon.social'
    )
-   mastodon.toot('Tooting from python!')
+   mastodon.toot('Tooting from python using #mastodonpy !')
 
 Python wrapper for the Mastodon ( https://github.com/tootsuite/mastodon/ ) API. 
-Feature complete for public API version v1 and easy to get started with.
+Feature complete for public API as of version v1.4 and easy to get started with.
 
 You can install Mastodon.py via pypi:
 
@@ -42,8 +47,5 @@ You can install Mastodon.py via pypi:
    # Python 3
    pip3 install Mastodon.py
 
-Full documentation and basic "how to post a toot" usage example can be found 
+Full documentation and basic usage examples can be found 
 at http://mastodonpy.readthedocs.io/en/latest/ .
-
-Full "real life" example of how to use this library to write a Mastodon bot 
-will be linked here shortly.

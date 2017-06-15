@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='Mastodon.py',
-      version='1.0.7',
+      version='1.0.8',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       setup_requires=['pytest-runner'],
@@ -13,7 +13,7 @@ setup(name='Mastodon.py',
       license='MIT',
       keywords='mastodon api microblogging',
       classifiers=[
-          'Development Status :: 4 - Beta',
+          'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
           'Topic :: Communications',
           'License :: OSI Approved :: MIT License',
