@@ -45,6 +45,9 @@ as a single python module. By default, it talks to the
 node running Mastodon by setting api_base_url when creating the
 api object (or creating an app).
 
+Mastodon.py aims to implement the complete public Mastodon API. As
+of this time, it is feature complete for Mastodon version 1.4.
+
 A note about rate limits
 ------------------------
 Mastodons API rate limits per IP. By default, the limit is 150 requests per 5 minute 
