@@ -50,7 +50,7 @@ of this time, it is feature complete for Mastodon version 1.4.
 
 A note about rate limits
 ------------------------
-Mastodons API rate limits per IP. By default, the limit is 150 requests per 5 minute 
+Mastodons API rate limits per IP. By default, the limit is 300 requests per 5 minute 
 time slot. This can differ from instance to instance and is subject to change.
 Mastodon.py has three modes for dealing with rate limiting that you can pass to 
 the constructor, "throw", "wait" and "pace", "wait" being the default.
