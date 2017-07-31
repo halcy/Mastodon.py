@@ -592,7 +592,7 @@ class Mastodon:
         """
         Clear out a users notifications
         """
-        return self.__api_request('GET', '/api/v1/notifications/clear')
+        return self.__api_request('POST', '/api/v1/notifications/clear')
 
     ###
     # Writing data: Accounts
