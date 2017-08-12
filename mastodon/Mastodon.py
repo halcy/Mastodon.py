@@ -957,7 +957,7 @@ class Mastodon:
                 raise MastodonAPIError("Could not parse response as JSON, response code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
 
             # Parse link headers
-            if isinstance(response, list) and 'Link' in response_object.headers:
+            if isinstance(response, list) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
                 tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))   
                 for url in tmp_urls:
                     if url['rel'] == 'next':
