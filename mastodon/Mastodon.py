@@ -108,9 +108,9 @@ class Mastodon:
         self._token_expired = datetime.datetime.now()
         self._refresh_token = None
 
-        self.ratelimit_limit = 300
+        self.ratelimit_limit = 150
         self.ratelimit_reset = time.time()
-        self.ratelimit_remaining = 300
+        self.ratelimit_remaining = 150
         self.ratelimit_lastcall = time.time()
         self.ratelimit_pacefactor = ratelimit_pacefactor
 
@@ -828,9 +828,8 @@ class Mastodon:
         If async is False, this method blocks forever.
 
         If async is True, 'listener' will listen on another thread and this method 
-        will return a requests.Response instance corresponding to the open
-        connection. The connection may be closed at any time by calling its
-        close() method.
+        will return a handle corresponding to the open connection. The
+        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
@@ -842,9 +841,8 @@ class Mastodon:
         If async is False, this method blocks forever.
 
         If async is True, 'listener' will listen on another thread and this method 
-        will return a requests.Response instance corresponding to the open
-        connection. The connection may be closed at any time by calling its
-        close() method.
+        will return a handle corresponding to the open connection. The
+        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async)
 
@@ -856,9 +854,8 @@ class Mastodon:
         If async is False, this method blocks forever.
 
         If async is True, 'listener' will listen on another thread and this method 
-        will return a requests.Response instance corresponding to the open
-        connection. The connection may be closed at any time by calling its
-        close() method.
+        will return a handle corresponding to the open connection. The
+        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async)
 
@@ -871,9 +868,8 @@ class Mastodon:
         If async is False, this method blocks forever.
 
         If async is True, 'listener' will listen on another thread and this method 
-        will return a requests.Response instance corresponding to the open
-        connection. The connection may be closed at any time by calling its
-        close() method.
+        will return a handle corresponding to the open connection. The
+        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/hashtag', listener, params={'tag': tag}, async=async)
     
@@ -1040,8 +1036,8 @@ class Mastodon:
         """
         Internal streaming API helper.
 
-        Returns the requests.Response instance corresponding to the open websocket
-        connection.
+        Returns a handle to the open connection that the user can close if they
+        wish to terminate it.
         """
 
         headers = {}
@@ -1051,23 +1047,32 @@ class Mastodon:
 
         connection = requests.get(url, headers = headers, data = params, stream = True)
 
-        def __stream_threadproc():
-            with closing(connection) as r:
-                try:
-                    listener.handle_stream(r.iter_lines())
-                except AttributeError as e:
-                    # TODO If the user closes the connection early, requests gets
-                    # confused and throws an AttributeError
-                    pass
-            return 0
+        class __stream_handle():
+            def __init__(self, connection):
+                self.connection = connection
+
+            def close(self):
+                self.connection.close()
+
+            def _threadproc(self):
+                with closing(connection) as r:
+                    try:
+                        listener.handle_stream(r.iter_lines())
+                    except AttributeError as e:
+                        # Eat AttributeError from requests if user closes early
+                        pass
+                return 0
+
+        handle = __stream_handle(connection)
 
         if async:
-            t = threading.Thread(args=(), target=__stream_threadproc)
+            t = threading.Thread(args=(), target=handle._threadproc)
             t.start()
-            return connection
+            return handle
         else:
             # Blocking, never returns (can only leave via exception)
-            return __stream_threadproc()
+            with closing(connection) as r:
+                listener.handle_stream(r.iter_lines())
 
     def __generate_params(self, params, exclude = []):
         """
