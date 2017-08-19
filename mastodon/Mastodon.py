@@ -1083,6 +1083,9 @@ class Mastodon:
         """Internal add-protocol-to-url helper"""
         if not base_url.startswith("http://") and not base_url.startswith("https://"):
             base_url = "https://" + base_url
+
+        # Some API endpoints can't handle extra /'s in path requests
+        base_url = base_url.rstrip("/")
         return base_url
 
 ##
