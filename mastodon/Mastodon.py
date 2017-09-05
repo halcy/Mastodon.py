@@ -758,11 +758,11 @@ class Mastodon:
         """
         if isinstance(previous_page, list):
             if '_pagination_next' in previous_page[-1]:
-                params = previous_page[-1]['_pagination_next']
+                params = copy.deepcopy(previous_page[-1]['_pagination_next'])
             else:
                 return None
         else:
-            params = previous_page
+            params = copy.deepcopy(previous_page)
         
         method = params['_pagination_method']
         del params['_pagination_method']
@@ -782,11 +782,11 @@ class Mastodon:
         """
         if isinstance(next_page, list):
             if '_pagination_prev' in next_page[-1]:
-                params = next_page[-1]['_pagination_prev']
+                params = copy.deepcopy(next_page[-1]['_pagination_prev'])
             else:
                 return None
         else:
-            params = next_page
+            params = copy.deepcopy(next_page)
         
         method = params['_pagination_method']
         del params['_pagination_method']
