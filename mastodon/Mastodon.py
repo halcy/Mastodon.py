@@ -76,8 +76,9 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret=None, access_token=None, api_base_url=__DEFAULT_BASE_URL,
-                 debug_requests=False, ratelimit_method="wait", ratelimit_pacefactor=1.1,
+    def __init__(self, client_id, client_secret=None, access_token=None,
+                 api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
+                 ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
@@ -166,7 +167,8 @@ class Mastodon:
         Will throw a MastodonIllegalArgumentError if username / password
         are wrong, scopes are not valid or granted scopes differ from requested.
 
-        For OAuth2 documentation, compare https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
+        For OAuth2 documentation, compare
+        https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
 
         Returns the access token.
         """
@@ -537,7 +539,8 @@ class Mastodon:
         # Validate visibility parameter
         valid_visibilities = ['private', 'public', 'unlisted', 'direct', '']
         if params_initial['visibility'].lower() not in valid_visibilities:
-            raise ValueError('Invalid visibility value! Acceptable values are %s' % valid_visibilities)
+            raise ValueError('Invalid visibility value! Acceptable '
+                             'values are %s' % valid_visibilities)
 
         if params_initial['sensitive'] is False:
             del [params_initial['sensitive']]
@@ -551,7 +554,8 @@ class Mastodon:
                     else:
                         media_ids_proper.append(media_id)
             except Exception as e:
-                raise MastodonIllegalArgumentError("Invalid media dict: %s" % e)
+                raise MastodonIllegalArgumentError("Invalid media "
+                                                   "dict: %s" % e)
 
             params_initial["media_ids"] = media_ids_proper
 
@@ -754,8 +758,9 @@ class Mastodon:
             media_file = open(media_file, 'rb')
 
         if mime_type is None:
-            raise MastodonIllegalArgumentError(
-                'Could not determine mime type or data passed directly without mime type.')
+            raise MastodonIllegalArgumentError('Could not determine mime type'
+                                               ' or data passed directly '
+                                               'without mime type.')
 
         random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
         file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(
@@ -996,8 +1001,9 @@ class Mastodon:
                 response = response_object.json()
             except:
                 raise MastodonAPIError(
-                    "Could not parse response as JSON, response code was %s, bad json content was '%s'" % (
-                    response_object.status_code, response_object.content))
+                    "Could not parse response as JSON, response code was %s, "
+                    "bad json content was '%s'" % (response_object.status_code,
+                                                   response_object.content))
 
             # Parse link headers
             if isinstance(response, list) and \
@@ -1006,7 +1012,7 @@ class Mastodon:
                 tmp_urls = requests.utils.parse_header_links(
                     response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
                 for url in tmp_urls:
-                    if not 'rel' in url:
+                    if 'rel' not in url:
                         continue
 
                     if url['rel'] == 'next':
