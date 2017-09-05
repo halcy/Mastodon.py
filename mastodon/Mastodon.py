@@ -809,7 +809,7 @@ class Mastodon:
         
         all_pages = []
         current_page = first_page
-        while current_page != None:
+        while current_page != None and len(current_page) > 0:
             all_pages.extend(current_page)
             current_page = self.fetch_next(current_page)
             
