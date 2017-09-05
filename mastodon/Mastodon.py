@@ -781,8 +781,8 @@ class Mastodon:
         Returns the previous page or None if no further data is available.
         """
         if isinstance(next_page, list):
-            if '_pagination_prev' in next_page[-1]:
-                params = copy.deepcopy(next_page[-1]['_pagination_prev'])
+            if '_pagination_prev' in next_page[0]:
+                params = copy.deepcopy(next_page[0]['_pagination_prev'])
             else:
                 return None
         else:
@@ -970,6 +970,8 @@ class Mastodon:
                             next_params['_pagination_method'] = method
                             next_params['_pagination_endpoint'] = endpoint
                             next_params['max_id'] = int(matchgroups.group(1))
+                            if "since_id" in next_params:
+                                del next_params['since_id']
                             response[-1]['_pagination_next'] = next_params
                             
                     if url['rel'] == 'prev':
@@ -981,7 +983,9 @@ class Mastodon:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
-                            prev_params['max_id'] = int(matchgroups.group(1))
+                            prev_params['since_id'] = int(matchgroups.group(1))
+                            if "max_id" in prev_params:
+                                del prev_params['max_id']
                             response[0]['_pagination_prev'] = prev_params
                 
             # Handle rate limiting
