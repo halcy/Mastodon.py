@@ -6,7 +6,6 @@ import mimetypes
 import time
 import random
 import string
-import pytz
 import datetime
 from contextlib import closing
 import pytz
@@ -16,6 +15,7 @@ import dateutil
 import dateutil.parser
 import re
 import copy
+
 
 class Mastodon:
     """
@@ -28,12 +28,12 @@ class Mastodon:
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
 
-
     ###
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name, scopes = ['read', 'write', 'follow'], redirect_uris = None, website = None, to_file = None, api_base_url = __DEFAULT_BASE_URL, request_timeout = __DEFAULT_TIMEOUT):
+    def create_app(client_name, scopes=['read', 'write', 'follow'], redirect_uris=None, website=None, to_file=None,
+                   api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT):
         """
         Create a new app with given client_name and scopes (read, write, follow)
 
@@ -47,7 +47,7 @@ class Mastodon:
         Returns client_id and client_secret.
         """
         api_base_url = Mastodon.__protocolize(api_base_url)
-        
+
         request_data = {
             'client_name': client_name,
             'scopes': " ".join(scopes)
@@ -55,18 +55,18 @@ class Mastodon:
 
         try:
             if redirect_uris is not None:
-                request_data['redirect_uris'] = redirect_uris;
+                request_data['redirect_uris'] = redirect_uris
             else:
-                request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob';
+                request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob'
             if website is not None:
                 request_data['website'] = website
-            
-            response = requests.post(api_base_url + '/api/v1/apps', data = request_data, timeout = request_timeout)
+
+            response = requests.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
             response = response.json()
         except Exception as e:
             raise MastodonNetworkError("Could not complete request: %s" % e)
 
-        if to_file != None:
+        if to_file is not None:
             with open(to_file, 'w') as secret_file:
                 secret_file.write(response['client_id'] + '\n')
                 secret_file.write(response['client_secret'] + '\n')
@@ -76,7 +76,9 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret = None, access_token = None, api_base_url = __DEFAULT_BASE_URL, debug_requests = False, ratelimit_method = "wait", ratelimit_pacefactor = 1.1, request_timeout = __DEFAULT_TIMEOUT):
+    def __init__(self, client_id, client_secret=None, access_token=None, api_base_url=__DEFAULT_BASE_URL,
+                 debug_requests=False, ratelimit_method="wait", ratelimit_pacefactor=1.1,
+                 request_timeout=__DEFAULT_TIMEOUT):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
@@ -115,7 +117,7 @@ class Mastodon:
 
         self.request_timeout = request_timeout
 
-        if not ratelimit_method in ["throw", "wait", "pace"]:
+        if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
 
         if os.path.isfile(self.client_id):
@@ -123,15 +125,15 @@ class Mastodon:
                 self.client_id = secret_file.readline().rstrip()
                 self.client_secret = secret_file.readline().rstrip()
         else:
-            if self.client_secret == None:
+            if self.client_secret is None:
                 raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
 
-        if self.access_token != None and os.path.isfile(self.access_token):
+        if self.access_token is not None and os.path.isfile(self.access_token):
             with open(self.access_token, 'r') as token_file:
                 self.access_token = token_file.readline().rstrip()
-                
 
-    def auth_request_url(self, client_id = None, redirect_uris = "urn:ietf:wg:oauth:2.0:oob", scopes = ['read', 'write', 'follow']):
+    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
+                         scopes=['read', 'write', 'follow']):
         """Returns the url that a client needs to request the grant from the server.
         """
         if client_id is None:
@@ -140,8 +142,8 @@ class Mastodon:
             if os.path.isfile(client_id):
                 with open(client_id, 'r') as secret_file:
                     client_id = secret_file.readline().rstrip()
-                
-        params = {}
+
+        params = dict()
         params['client_id'] = client_id
         params['response_type'] = "code"
         params['redirect_uri'] = redirect_uris
@@ -149,18 +151,18 @@ class Mastodon:
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
-    def log_in(self, username = None, password = None,\
-            code = None, redirect_uri = "urn:ietf:wg:oauth:2.0:oob", refresh_token = None,\
-            scopes = ['read', 'write', 'follow'], to_file = None):
+    def log_in(self, username=None, password=None,
+               code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None,
+               scopes=['read', 'write', 'follow'], to_file=None):
         """
         Your username is the e-mail you use to log in into mastodon.
-        
+
         Can persist access token to file, to be used in the constructor.
-        
+
         Supports refresh_token but Mastodon.social doesn't implement it at the moment.
 
         Handles password, authorization_code, and refresh_token authentication.
-        
+
         Will throw a MastodonIllegalArgumentError if username / password
         are wrong, scopes are not valid or granted scopes differ from requested.
 
@@ -179,13 +181,13 @@ class Mastodon:
             params['grant_type'] = 'refresh_token'
         else:
             raise MastodonIllegalArgumentError('Invalid arguments given. username and password or code are required.')
-        
+
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
         params['scope'] = " ".join(scopes)
-        
+
         try:
-            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting = False)
+            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting=False)
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
@@ -201,9 +203,10 @@ class Mastodon:
         received_scopes = " ".join(sorted(response["scope"].split(" ")))
 
         if requested_scopes != received_scopes:
-            raise MastodonAPIError('Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
+            raise MastodonAPIError(
+                'Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
 
-        if to_file != None:
+        if to_file is not None:
             with open(to_file, 'w') as token_file:
                 token_file.write(response['access_token'] + '\n')
 
@@ -223,7 +226,7 @@ class Mastodon:
     ###
     # Reading data: Timelines
     ##
-    def timeline(self, timeline = "home", max_id = None, since_id = None, limit = None):
+    def timeline(self, timeline="home", max_id=None, since_id=None, limit=None):
         """
         Fetch statuses, most recent ones first. Timeline can be home, local, public,
         or tag/hashtag. See the following functions documentation for what those do.
@@ -239,39 +242,44 @@ class Mastodon:
             params_initial['local'] = True
 
         params = self.__generate_params(params_initial, ['timeline'])
-        return self.__api_request('GET', '/api/v1/timelines/' + timeline, params)
+        url = '/api/v1/timelines/{0}'.format(timeline)
+        return self.__api_request('GET', url, params)
 
-    def timeline_home(self, max_id = None, since_id = None, limit = None):
+    def timeline_home(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the authenticated users home timeline (i.e. followed users and self).
 
         Returns a list of toot dicts.
         """
-        return self.timeline('home', max_id = max_id, since_id = since_id, limit = limit)
+        return self.timeline('home', max_id=max_id, since_id=since_id,
+                             limit=limit)
 
-    def timeline_local(self, max_id = None, since_id = None, limit = None):
+    def timeline_local(self, max_id=None, since_id=None, limit=None):
         """
         Fetches the local / instance-wide timeline, not including replies.
 
         Returns a list of toot dicts.
         """
-        return self.timeline('local', max_id = max_id, since_id = since_id, limit = limit)
+        return self.timeline('local', max_id=max_id, since_id=since_id,
+                             limit=limit)
 
-    def timeline_public(self, max_id = None, since_id = None, limit = None):
+    def timeline_public(self, max_id=None, since_id=None, limit=None):
         """
         Fetches the public / visible-network timeline, not including replies.
 
         Returns a list of toot dicts.
         """
-        return self.timeline('public', max_id = max_id, since_id = since_id, limit = limit)
+        return self.timeline('public', max_id=max_id, since_id=since_id,
+                             limit=limit)
 
-    def timeline_hashtag(self, hashtag, max_id = None, since_id = None, limit = None):
+    def timeline_hashtag(self, hashtag, max_id=None, since_id=None, limit=None):
         """
         Fetch a timeline of toots with a given hashtag.
 
         Returns a list of toot dicts.
         """
-        return self.timeline('tag/' + str(hashtag), max_id = max_id, since_id = since_id, limit = limit)
+        url = 'tag/{0}'.format(str(hashtag))
+        return self.timeline(url, max_id=max_id, since_id=since_id, limit=limit)
 
     ###
     # Reading data: Statuses
@@ -282,7 +290,8 @@ class Mastodon:
 
         Returns a toot dict.
         """
-        return self.__api_request('GET', '/api/v1/statuses/' + str(id))
+        url = '/api/v1/statuses/{0}'.format(str(id))
+        return self.__api_request('GET', url)
 
     def status_card(self, id):
         """
@@ -291,7 +300,8 @@ class Mastodon:
 
         Returns a card dict.
         """
-        return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/card')
+        url = '/api/v1/statuses/{0}/card'.format(str(id))
+        return self.__api_request('GET', url)
 
     def status_context(self, id):
         """
@@ -299,7 +309,8 @@ class Mastodon:
 
         Returns a context dict.
         """
-        return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/context')
+        url = '/api/v1/statuses/{0}/context'.format(str(id))
+        return self.__api_request('GET', url)
 
     def status_reblogged_by(self, id):
         """
@@ -307,7 +318,8 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/reblogged_by')
+        url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
+        return self.__api_request('GET', url)
 
     def status_favourited_by(self, id):
         """
@@ -315,12 +327,13 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
-        return self.__api_request('GET', '/api/v1/statuses/' + str(id) + '/favourited_by')
+        url = '/api/v1/statuses/{0}/favourited_by'.format(str(id))
+        return self.__api_request('GET', url)
 
     ###
     # Reading data: Notifications
     ###
-    def notifications(self, id = None, max_id = None, since_id = None, limit = None):
+    def notifications(self, id=None, max_id=None, since_id=None, limit=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the authenticated
         user.
@@ -329,11 +342,12 @@ class Mastodon:
 
         Returns a list of notification dicts.
         """
-        if id == None:
+        if id is None:
             params = self.__generate_params(locals(), ['id'])
             return self.__api_request('GET', '/api/v1/notifications', params)
         else:
-            return self.__api_request('GET', '/api/v1/notifications/' + str(id))
+            url = '/api/v1/notifications/{0}'.format(str(id))
+            return self.__api_request('GET', url)
 
     ###
     # Reading data: Accounts
@@ -344,7 +358,8 @@ class Mastodon:
 
         Returns a user dict.
         """
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id))
+        url = '/api/v1/accounts/{0}'.format(str(id))
+        return self.__api_request('GET', url)
 
     def account_verify_credentials(self):
         """
@@ -354,32 +369,35 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
-    def account_statuses(self, id, max_id = None, since_id = None, limit = None):
+    def account_statuses(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch statuses by user id. Same options as timeline are permitted.
 
         Returns a list of toot dicts.
         """
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/statuses', params)
+        url = '/api/v1/accounts/{0}/statuses'.format(str(id))
+        return self.__api_request('GET', url, params)
 
-    def account_following(self, id, max_id = None, since_id = None, limit = None):
+    def account_following(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is following.
 
         Returns a list of user dicts.
         """
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/following', params)
+        url = '/api/v1/accounts/{0}/following'.format(str(id))
+        return self.__api_request('GET', url, params)
 
-    def account_followers(self, id, max_id = None, since_id = None, limit = None):
+    def account_followers(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is followed by.
 
         Returns a list of user dicts.
         """
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', '/api/v1/accounts/' + str(id) + '/followers', params)
+        url = '/api/v1/accounts/{0}/followers'.format(str(id))
+        return self.__api_request('GET', url, params)
 
     def account_relationships(self, id):
         """
@@ -389,9 +407,10 @@ class Mastodon:
         Returns a list of relationship dicts.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('GET', '/api/v1/accounts/relationships', params)
+        return self.__api_request('GET', '/api/v1/accounts/relationships',
+                                  params)
 
-    def account_search(self, q, limit = None):
+    def account_search(self, q, limit=None):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
         in the username@domain format and not yet in the database.
@@ -404,7 +423,7 @@ class Mastodon:
     ###
     # Reading data: Searching
     ###
-    def search(self, q, resolve = False):
+    def search(self, q, resolve=False):
         """
         Fetch matching hashtags, accounts and statuses. Will search federated
         instances if resolve is True.
@@ -417,7 +436,7 @@ class Mastodon:
     ###
     # Reading data: Mutes and Blocks
     ###
-    def mutes(self, max_id = None, since_id = None, limit = None):
+    def mutes(self, max_id=None, since_id=None, limit=None):
         """
         Fetch a list of users muted by the authenticated user.
 
@@ -426,7 +445,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
-    def blocks(self, max_id = None, since_id = None, limit = None):
+    def blocks(self, max_id=None, since_id=None, limit=None):
         """
         Fetch a list of users blocked by the authenticated user.
 
@@ -449,7 +468,7 @@ class Mastodon:
     ###
     # Reading data: Favourites
     ###
-    def favourites(self, max_id = None, since_id = None, limit = None):
+    def favourites(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the authenticated user's favourited statuses.
 
@@ -461,7 +480,7 @@ class Mastodon:
     ###
     # Reading data: Follow requests
     ###
-    def follow_requests(self, max_id = None, since_id = None, limit = None):
+    def follow_requests(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the authenticated user's incoming follow requests.
 
@@ -473,7 +492,7 @@ class Mastodon:
     ###
     # Reading data: Domain blocks
     ###
-    def domain_blocks(self, max_id = None, since_id = None, limit = None):
+    def domain_blocks(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the authenticated user's blocked domains.
 
@@ -481,11 +500,12 @@ class Mastodon:
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
-    
+
     ###
     # Writing data: Statuses
     ###
-    def status_post(self, status, in_reply_to_id = None, media_ids = None, sensitive = False, visibility = '', spoiler_text = None):
+    def status_post(self, status, in_reply_to_id=None, media_ids=None,
+                    sensitive=False, visibility='', spoiler_text=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         up to four pieces of media (Uploaded via media_post()). media_ids can
@@ -519,10 +539,10 @@ class Mastodon:
         if params_initial['visibility'].lower() not in valid_visibilities:
             raise ValueError('Invalid visibility value! Acceptable values are %s' % valid_visibilities)
 
-        if params_initial['sensitive'] == False:
-            del[params_initial['sensitive']]
+        if params_initial['sensitive'] is False:
+            del [params_initial['sensitive']]
 
-        if media_ids != None:
+        if media_ids is not None:
             try:
                 media_ids_proper = []
                 for media_id in media_ids:
@@ -552,14 +572,16 @@ class Mastodon:
 
         Returns an empty dict for good measure.
         """
-        return self.__api_request('DELETE', '/api/v1/statuses/' + str(id))
+        url = '/api/v1/statuses/{0}'.format(str(id))
+        return self.__api_request('DELETE', url)
 
     def status_reblog(self, id):
         """Reblog a status.
 
         Returns a toot with with a new status that wraps around the reblogged one.
         """
-        return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/reblog")
+        url = '/api/v1/statuses/{0}/reblog'.format(str(id))
+        return self.__api_request('POST', url)
 
     def status_unreblog(self, id):
         """
@@ -567,7 +589,8 @@ class Mastodon:
 
         Returns a toot dict with the status that used to be reblogged.
         """
-        return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/unreblog")
+        url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
+        return self.__api_request('POST', url)
 
     def status_favourite(self, id):
         """
@@ -575,7 +598,8 @@ class Mastodon:
 
         Returns a toot dict with the favourited status.
         """
-        return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/favourite")
+        url = '/api/v1/statuses/{0}/favourite'.format(str(id))
+        return self.__api_request('POST', url)
 
     def status_unfavourite(self, id):
         """
@@ -583,7 +607,8 @@ class Mastodon:
 
         Returns a toot dict with the un-favourited status.
         """
-        return self.__api_request('POST', '/api/v1/statuses/' + str(id) + "/unfavourite")
+        url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
+        return self.__api_request('POST', url)
 
     ###
     # Writing data: Notifications
@@ -603,7 +628,8 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
-        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/follow")
+        url = '/api/v1/accounts/{0}/follow'.format(str(id))
+        return self.__api_request('POST', url)
 
     def follows(self, uri):
         """
@@ -620,7 +646,8 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
-        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unfollow")
+        url = '/api/v1/accounts/{0}/unfollow'.format(str(id))
+        return self.__api_request('POST', url)
 
     def account_block(self, id):
         """
@@ -628,7 +655,8 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
-        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/block")
+        url = '/api/v1/accounts/{0}/block'.format(str(id))
+        return self.__api_request('POST', url)
 
     def account_unblock(self, id):
         """
@@ -636,7 +664,8 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
-        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unblock")
+        url = '/api/v1/accounts/{0}/unblock'.format(str(id))
+        return self.__api_request('POST', url)
 
     def account_mute(self, id):
         """
@@ -644,7 +673,8 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
-        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/mute")
+        url = '/api/v1/accounts/{0}/mute'.format(str(id))
+        return self.__api_request('POST', url)
 
     def account_unmute(self, id):
         """
@@ -652,9 +682,11 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
-        return self.__api_request('POST', '/api/v1/accounts/' + str(id) + "/unmute")
+        url = '/api/v1/accounts/{0}/unmute'.format(str(id))
+        return self.__api_request('POST', url)
 
-    def account_update_credentials(self, display_name = None, note = None, avatar = None, header = None):
+    def account_update_credentials(self, display_name=None, note=None,
+                                   avatar=None, header=None):
         """
         Update the profile for the currently authenticated user.
 
@@ -689,7 +721,8 @@ class Mastodon:
 
         Returns an empty dict.
         """
-        return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/authorize")
+        url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
+        return self.__api_request('POST', url)
 
     def follow_request_reject(self, id):
         """
@@ -697,12 +730,13 @@ class Mastodon:
 
         Returns an empty dict.
         """
-        return self.__api_request('POST', '/api/v1/follow_requests/' + str(id) + "/reject")
+        url = '/api/v1/follow_requests/{0}/reject'.format(str(id))
+        return self.__api_request('POST', url)
 
     ###
     # Writing data: Media
     ###
-    def media_post(self, media_file, mime_type = None):
+    def media_post(self, media_file, mime_type=None):
         """
         Post an image. media_file can either be image data or
         a file name. If image data is passed directly, the mime
@@ -715,45 +749,48 @@ class Mastodon:
         Returns a media dict. This contains the id that can be used in
         status_post to attach the media file to a toot.
         """
-        if mime_type == None and os.path.isfile(media_file):
+        if mime_type is None and os.path.isfile(media_file):
             mime_type = mimetypes.guess_type(media_file)[0]
             media_file = open(media_file, 'rb')
 
-        if mime_type == None:
-            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        if mime_type is None:
+            raise MastodonIllegalArgumentError(
+                'Could not determine mime type or data passed directly without mime type.')
 
         random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-        file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
+        file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(
+            mime_type)
 
         media_file_description = (file_name, media_file, mime_type)
-        return self.__api_request('POST', '/api/v1/media', files = {'file': media_file_description})
+        return self.__api_request('POST', '/api/v1/media',
+                                  files={'file': media_file_description})
 
     ###
     # Writing data: Domain blocks
     ###
-    def domain_block(self, domain = None):
+    def domain_block(self, domain=None):
         """
         Add a block for all statuses originating from the specified domain for the logged-in user.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/domain_blocks', params)
-    
-    def domain_unblock(self, domain = None):
+
+    def domain_unblock(self, domain=None):
         """
         Remove a domain block for the logged-in user.
         """
         params = self.__generate_params(locals())
         return self.__api_request('DELETE', '/api/v1/domain_blocks', params)
-    
+
     ###
     # Pagination
     ###
     def fetch_next(self, previous_page):
         """
         Fetches the next page of results of a paginated request. Pass in the
-        previous page in its entirety, or the pagination information dict 
+        previous page in its entirety, or the pagination information dict
         returned as a part of that pages last status ('_pagination_next').
-        
+
         Returns the next page or None if no further data is available.
         """
         if isinstance(previous_page, list):
@@ -763,21 +800,21 @@ class Mastodon:
                 return None
         else:
             params = copy.deepcopy(previous_page)
-        
+
         method = params['_pagination_method']
         del params['_pagination_method']
-        
+
         endpoint = params['_pagination_endpoint']
         del params['_pagination_endpoint']
-        
+
         return self.__api_request(method, endpoint, params)
-    
+
     def fetch_previous(self, next_page):
         """
         Fetches the previous page of results of a paginated request. Pass in the
-        previous page in its entirety, or the pagination information dict 
+        previous page in its entirety, or the pagination information dict
         returned as a part of that pages first status ('_pagination_prev').
-        
+
         Returns the previous page or None if no further data is available.
         """
         if isinstance(next_page, list):
@@ -787,34 +824,34 @@ class Mastodon:
                 return None
         else:
             params = copy.deepcopy(next_page)
-        
+
         method = params['_pagination_method']
         del params['_pagination_method']
-        
+
         endpoint = params['_pagination_endpoint']
         del params['_pagination_endpoint']
-        
+
         return self.__api_request(method, endpoint, params)
-    
+
     def fetch_remaining(self, first_page):
         """
-        Fetches all the remaining pages of a paginated request starting from a 
+        Fetches all the remaining pages of a paginated request starting from a
         first page and returns the entire set of results (including the first page
         that was passed in) as a big list.
-        
+
         Be careful, as this might generate a lot of requests, depending on what you are
         fetching, and might cause you to run into rate limits very quickly.
         """
         first_page = copy.deepcopy(first_page)
-        
+
         all_pages = []
         current_page = first_page
-        while current_page != None and len(current_page) > 0:
+        while current_page is not None and len(current_page) > 0:
             all_pages.extend(current_page)
             current_page = self.fetch_next(current_page)
-            
+
         return all_pages
-    
+
     ###
     # Streaming
     ###
@@ -858,7 +895,7 @@ class Mastodon:
         incoming events.
         """
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
-    
+
     ###
     # Internal helpers, dragons probably
     ###
@@ -870,22 +907,22 @@ class Mastodon:
         Assumes UTC if timezone is not given.
         """
         date_time_utc = None
-        if date_time.tzinfo == None:
-            date_time_utc = date_time.replace(tzinfo = pytz.utc)
+        if date_time.tzinfo is None:
+            date_time_utc = date_time.replace(tzinfo=pytz.utc)
         else:
             date_time_utc = date_time.astimezone(pytz.utc)
 
-        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo = pytz.utc)
+        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
 
         return (date_time_utc - epoch_utc).total_seconds()
 
-    def __api_request(self, method, endpoint, params = {}, files = {}, do_ratelimiting = True):
+    def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True):
         """
         Internal API request helper.
         """
         response = None
         headers = None
-
+        remaining_wait = 0
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
         if do_ratelimiting and self.ratelimit_method == "pace":
@@ -906,10 +943,10 @@ class Mastodon:
                 time.sleep(to_next)
 
         # Generate request headers
-        if self.access_token != None:
+        if self.access_token is not None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
 
-        if self.debug_requests == True:
+        if self.debug_requests:
             print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
             print('Parameters: ' + str(params))
             print('Headers: ' + str(headers))
@@ -923,24 +960,28 @@ class Mastodon:
             response_object = None
             try:
                 if method == 'GET':
-                    response_object = requests.get(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
+                    response_object = requests.get(self.api_base_url + endpoint, data=params, headers=headers,
+                                                   files=files, timeout=self.request_timeout)
 
                 if method == 'POST':
-                    response_object = requests.post(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
+                    response_object = requests.post(self.api_base_url + endpoint, data=params, headers=headers,
+                                                    files=files, timeout=self.request_timeout)
 
                 if method == 'PATCH':
-                    response_object = requests.patch(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
+                    response_object = requests.patch(self.api_base_url + endpoint, data=params, headers=headers,
+                                                     files=files, timeout=self.request_timeout)
 
                 if method == 'DELETE':
-                    response_object = requests.delete(self.api_base_url + endpoint, data = params, headers = headers, files = files, timeout = self.request_timeout)
+                    response_object = requests.delete(self.api_base_url + endpoint, data=params, headers=headers,
+                                                      files=files, timeout=self.request_timeout)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
 
-            if response_object == None:
+            if response_object is None:
                 raise MastodonIllegalArgumentError("Illegal request.")
 
             # Handle response
-            if self.debug_requests == True:
+            if self.debug_requests:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
                 print('response headers: ' + str(response_object.headers))
                 print('Response text content: ' + str(response_object.text))
@@ -954,20 +995,25 @@ class Mastodon:
             try:
                 response = response_object.json()
             except:
-                raise MastodonAPIError("Could not parse response as JSON, response code was %s, bad json content was '%s'" % (response_object.status_code, response_object.content))
+                raise MastodonAPIError(
+                    "Could not parse response as JSON, response code was %s, bad json content was '%s'" % (
+                    response_object.status_code, response_object.content))
 
             # Parse link headers
-            if isinstance(response, list) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
-                tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))   
+            if isinstance(response, list) and \
+                    'Link' in response_object.headers and \
+                    response_object.headers['Link'] != "":
+                tmp_urls = requests.utils.parse_header_links(
+                    response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
                 for url in tmp_urls:
                     if not 'rel' in url:
                         continue
-                    
+
                     if url['rel'] == 'next':
                         # Be paranoid and extract max_id specifically
                         next_url = url['url']
                         matchgroups = re.search(r"max_id=([0-9]*)", next_url)
-                        
+
                         if matchgroups:
                             next_params = copy.deepcopy(params)
                             next_params['_pagination_method'] = method
@@ -976,12 +1022,12 @@ class Mastodon:
                             if "since_id" in next_params:
                                 del next_params['since_id']
                             response[-1]['_pagination_next'] = next_params
-                            
+
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id specifically
                         prev_url = url['url']
                         matchgroups = re.search(r"since_id=([0-9]*)", prev_url)
-                        
+
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
@@ -990,7 +1036,7 @@ class Mastodon:
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
                             response[0]['_pagination_prev'] = prev_params
-                
+
             # Handle rate limiting
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
                 self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
@@ -1024,21 +1070,20 @@ class Mastodon:
 
         return response
 
-    def __stream(self, endpoint, listener, params = {}):
+    def __stream(self, endpoint, listener, params={}):
         """
         Internal streaming API helper.
         """
 
         headers = {}
-        if self.access_token != None:
+        if self.access_token is not None:
             headers = {'Authorization': 'Bearer ' + self.access_token}
 
         url = self.api_base_url + endpoint
-        with closing(requests.get(url, headers = headers, data = params, stream = True)) as r:
+        with closing(requests.get(url, headers=headers, data=params, stream=True)) as r:
             listener.handle_stream(r.iter_lines())
 
-
-    def __generate_params(self, params, exclude = []):
+    def __generate_params(self, params, exclude=[]):
         """
         Internal named-parameters-to-dict helper.
 
@@ -1052,7 +1097,7 @@ class Mastodon:
         del params['self']
         param_keys = list(params.keys())
         for key in param_keys:
-            if params[key] == None or key in exclude:
+            if params[key] is None or key in exclude:
                 del params[key]
 
         param_keys = list(params.keys())
@@ -1063,28 +1108,24 @@ class Mastodon:
 
         return params
 
-
     def __get_token_expired(self):
         """Internal helper for oauth code"""
-        if self._token_expired < datetime.datetime.now():
-            return True
-        else:
-            return False
+        return self._token_expired < datetime.datetime.now()
 
     def __set_token_expired(self, value):
         """Internal helper for oauth code"""
         self._token_expired = datetime.datetime.now() + datetime.timedelta(seconds=value)
         return
-    
+
     def __get_refresh_token(self):
         """Internal helper for oauth code"""
         return self._refresh_token
-        
+
     def __set_refresh_token(self, value):
         """Internal helper for oauth code"""
         self._refresh_token = value
         return
-    
+
     @staticmethod
     def __protocolize(base_url):
         """Internal add-protocol-to-url helper"""
@@ -1095,21 +1136,25 @@ class Mastodon:
         base_url = base_url.rstrip("/")
         return base_url
 
+
 ##
 # Exceptions
 ##
 class MastodonIllegalArgumentError(ValueError):
     pass
 
+
 class MastodonFileNotFoundError(IOError):
     pass
+
 
 class MastodonNetworkError(IOError):
     pass
 
+
 class MastodonAPIError(Exception):
     pass
 
+
 class MastodonRatelimitError(Exception):
     pass
-
