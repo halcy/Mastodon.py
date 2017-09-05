@@ -857,7 +857,7 @@ class Mastodon:
         This method blocks forever, calling callbacks on 'listener' for
         incoming events.
         """
-        return self.__stream('/api/v1/streaming/hashtag', listener, params={'tag': tag})
+        return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
     
     ###
     # Internal helpers, dragons probably
