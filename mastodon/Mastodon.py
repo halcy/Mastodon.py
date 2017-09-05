@@ -960,6 +960,9 @@ class Mastodon:
             if isinstance(response, list) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
                 tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))   
                 for url in tmp_urls:
+                    if not 'rel' in url:
+                        continue
+                    
                     if url['rel'] == 'next':
                         # Be paranoid and extract max_id specifically
                         next_url = url['url']
