@@ -162,7 +162,7 @@ Toot dicts
                             # when there are attached files.
         'tags': # A list of hashtag dicts used in the toot
         'application': # Application dict for the client used to post the toot
-        'language': # The (autodetected or otherwise set server side) language of the toot.
+        'language': # The language of the toot, if specified by the server.
         'muted': # oolean denoting whether the user has muted this status by way of conversation muting.
     }
 
@@ -394,6 +394,13 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_favourite
 .. automethod:: Mastodon.status_unfavourite
 .. automethod:: Mastodon.status_delete
+
+Writing data: Notifications
+---------------------------
+These functions allow you to clear all or some notifications.
+
+.. automethod:: Mastodon.notifications_clear
+.. automethod:: Mastodon.notifications_dismiss
 
 Writing data: Accounts
 ----------------------
