@@ -1,6 +1,16 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.1.0
+------
+ * BREAKING CHANGE: Added date parsing to the response parser
+ * Added notification dismissal
+ * Added conversation muting
+ * Updated documentation
+ * Added asynchronous mode for the streaming API
+ * Fixed several bugs (thanks ng-0, LogalDeveloper, Chronister, Elizafox, codl, lambadalambda)
+ * Improved code style (thanks foxmask)
+
 v1.0.8
 ------
  * Added support for domain blocks
