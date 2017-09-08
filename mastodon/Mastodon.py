@@ -829,7 +829,7 @@ class Mastodon:
 
         Returns the next page or None if no further data is available.
         """
-        if isinstance(previous_page, list):
+        if isinstance(previous_page, list) and len(previous_page) != 0:
             if '_pagination_next' in previous_page[-1]:
                 params = copy.deepcopy(previous_page[-1]['_pagination_next'])
             else:
@@ -853,7 +853,7 @@ class Mastodon:
 
         Returns the previous page or None if no further data is available.
         """
-        if isinstance(next_page, list):
+        if isinstance(next_page, list) and len(previous_page) != 0:
             if '_pagination_prev' in next_page[0]:
                 params = copy.deepcopy(next_page[0]['_pagination_prev'])
             else:
