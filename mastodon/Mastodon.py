@@ -585,9 +585,10 @@ class Mastodon:
         return self.__api_request('DELETE', url)
 
     def status_reblog(self, id):
-        """Reblog a status.
+        """
+        Reblog a status.
 
-        Returns a toot with with a new status that wraps around the reblogged one.
+        Returns a toot dict with a new status that wraps around the reblogged one.
         """
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
         return self.__api_request('POST', url)
@@ -617,6 +618,24 @@ class Mastodon:
         Returns a toot dict with the un-favourited status.
         """
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
+        return self.__api_request('POST', url)
+
+    def status_mute(self, id):
+        """
+        Mute notifications for a status.
+
+        Returns a toot dict with the now muted status
+        """
+        url = '/api/v1/statuses/{0}/mute'.format(str(id))
+        return self.__api_request('POST', url)
+
+    def status_unmute(self, id):
+        """
+        Unmute notifications for a status.
+
+        Returns a toot dict with the status that used to be muted.
+        """
+        url = '/api/v1/statuses/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
     ###

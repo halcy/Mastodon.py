@@ -435,6 +435,8 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_unreblog
 .. automethod:: Mastodon.status_favourite
 .. automethod:: Mastodon.status_unfavourite
+.. automethod:: Mastodon.status_mute
+.. automethod:: Mastodon.status_unmute
 .. automethod:: Mastodon.status_delete
 
 Writing data: Notifications
