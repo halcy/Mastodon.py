@@ -565,6 +565,8 @@ class Mastodon:
     def toot(self, status):
         """
         Synonym for status_post that only takes the status text as input.
+        
+        Usage in production code is not recommended.
 
         Returns a toot dict with the new status.
         """
