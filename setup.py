@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(name='Mastodon.py',
       version='1.0.8',
@@ -6,7 +6,7 @@ setup(name='Mastodon.py',
       packages=['mastodon'],
       setup_requires=['pytest-runner'],
       tests_require=['pytest'],
-      install_requires=['requests', 'dateutil', 'six'],
+      install_requires=['requests', 'python-dateutil', 'six', 'pytz'],
       url='https://github.com/halcy/Mastodon.py',
       author='Lorenz Diener',
       author_email='lorenzd+mastodonpypypi@gmail.com',
@@ -19,5 +19,4 @@ setup(name='Mastodon.py',
           'License :: OSI Approved :: MIT License',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 3',
-      ]
-)
+      ])

@@ -24,8 +24,9 @@ class Listener(StreamListener):
         self.heartbeats += 1
 
     def handle_stream_(self, lines):
-        '''Test helper to avoid littering all tests with six.b().'''
+        """Test helper to avoid littering all tests with six.b()."""
         return self.handle_stream(map(six.b, lines))
+
 
 def test_heartbeat():
     listener = Listener()
@@ -85,7 +86,7 @@ def test_many(events):
 
 
 def test_unknown_event():
-    '''Be tolerant of new event types'''
+    """Be tolerant of new event types"""
     listener = Listener()
     listener.handle_stream_([
         'event: blahblah',
@@ -137,11 +138,11 @@ def test_sse_order_doesnt_matter():
 
 
 def test_extra_keys_ignored():
-    '''
+    """
     https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format
     defines 'id' and 'retry' keys which the Mastodon streaming API doesn't use,
     and alleges that "All other field names are ignored".
-    '''
+    """
     listener = Listener()
     listener.handle_stream_([
         'event: update',
@@ -155,7 +156,7 @@ def test_extra_keys_ignored():
 
 
 def test_valid_utf8():
-    '''Snowman Cat Face With Tears Of Joy'''
+    """Snowman Cat Face With Tears Of Joy"""
     listener = Listener()
     listener.handle_stream_([
         'event: update',
@@ -166,7 +167,7 @@ def test_valid_utf8():
 
 
 def test_invalid_utf8():
-    '''Cat Face With Tears O'''
+    """Cat Face With Tears O"""
     listener = Listener()
     with pytest.raises(MalformedEventError):
         listener.handle_stream_([
@@ -177,13 +178,13 @@ def test_invalid_utf8():
 
 
 def test_multiline_payload():
-    '''
+    """
     https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Data-only_messages
     says that newlines in the 'data' field can be encoded by sending the field
     twice! This would be really pathological for Mastodon because the payload
     is JSON, but technically literal newlines are permissible (outside strings)
     so let's handle this case.
-    '''
+    """
     listener = Listener()
     listener.handle_stream_([
         'event: update',
