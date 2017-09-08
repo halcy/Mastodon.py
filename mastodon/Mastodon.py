@@ -965,9 +965,9 @@ class Mastodon:
             response_object = None
             try:
                 if method == 'GET':
-                    response_object = requests.get(self.api_base_url + endpoint, data=params, headers=headers,
-                                                   files=files, timeout=self.request_timeout)
-
+                    response_object = requests.get(self.api_base_url + endpoint, params=params, 
+                                                   headers=headers, files=files, 
+                                                   timeout=self.request_timeout)
                 if method == 'POST':
                     response_object = requests.post(self.api_base_url + endpoint, data=params, headers=headers,
                                                     files=files, timeout=self.request_timeout)
