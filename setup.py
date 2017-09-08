@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='Mastodon.py',
-      version='1.0.8',
+      version='1.1.0',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       setup_requires=['pytest-runner'],
