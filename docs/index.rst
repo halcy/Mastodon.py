@@ -46,7 +46,7 @@ node running Mastodon by setting api_base_url when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 1.4.
+of this time, it is feature complete for Mastodon version 1.6.
 
 A note about rate limits
 ------------------------
@@ -107,10 +107,30 @@ web interface into your code. This will not work, as the IDs on the web
 interface and in the URLs are not the same as the IDs used internally
 in the API, so don't do that.
 
+Error handling
+--------------
+When Mastodon.py encounters an error, it will raise an exception, generally with
+some text included to tell you what went wrong. 
+
+MastodonIllegalArgumentError is generally a programming problem - you asked the 
+API to do something obviously invalid (i.e. specify a privacy scope that does
+not exist).
+
+MastodonFileNotFoundError and MastodonNetworkError are IO errors - could be you
+specified a wrong URL, could be the internet is down or your hard drive is dying.
+
+MastodonAPIError is an error returned from the Mastodon instance - the server
+has decided it can't fullfill your request (i.e. you requested info on a user that
+does not exist).
+
+MastodonRatelimitError is raised when you hit an API rate limit. You should try 
+again after a while (see the rate limiting section above).
+
 Return values
 -------------
-Unless otherwise specified, all data is returned as python 
-dictionaries, matching the JSON format used by the API.
+Unless otherwise specified, all data is returned as python dictionaries, matching 
+the JSON format used by the API. Dates returned by the API are in ISO 8601 format
+and are parsed into python datetime objects.
 
 User dicts
 ~~~~~~~~~~
@@ -124,13 +144,16 @@ User dicts
         'acct': # The user's account name as username@domain (@domain omitted for local users)
         'display_name': # The user's display name
         'locked': # Denotes whether the account can be followed without a follow request
+        'created_at': # Account creation time
         'following_count': # How many people they follow
         'followers_count': # How many followers they have
         'statuses_count': # How many statuses they have
         'note': # Their bio
         'url': # Their URL; usually 'https://mastodon.social/users/<acct>'
-        'avatar': # URL for their avatar
-        'header': # URL for their header image
+        'avatar': # URL for their avatar, can be animated
+        'header': # URL for their header image, can be animated
+        'avatar_static': # URL for their avatar, never animated
+        'header_static': # URL for their header image, never animated
     }
 
 Toot dicts
@@ -157,15 +180,33 @@ Toot dicts
         'sensitive': # Denotes whether media attachments to the toot are marked sensitive
         'spoiler_text': # Warning text that should be displayed before the toot content
         'visibility': # Toot visibility ('public', 'unlisted', 'private', or 'direct')
-        'mentions': # A list of account dicts mentioned in the toot
+        'mentions': # A list of users dicts mentioned in the toot, as Mention dicts
         'media_attachments': # list of media dicts of attached files. Only present
                             # when there are attached files.
-        'tags': # A list of hashtag dicts used in the toot
+        'tags': # A list of hashtag used in the toot, as Hashtag dicts
         'application': # Application dict for the client used to post the toot
         'language': # The language of the toot, if specified by the server.
-        'muted': # oolean denoting whether the user has muted this status by way of conversation muting.
+        'muted': # Boolean denoting whether the user has muted this status by way of conversation muting.
     }
 
+Mention dicts
+~~~~~~~~~~~~~
+.. code-block:: python
+    {
+        'url': # Mentioned users profile URL (potentially remote)
+        'username': # Mentioned users user name (not including domain)
+        'acct': # Mentioned users account name (including domain)
+        'id': # Mentioned users (local) account ID
+    }
+    
+Hashtag dicts
+~~~~~~~~~~~~~
+.. code-block:: python
+    {
+        'name': # Hashtag name (not including the #)
+        'url': # Hashtag URL (can be remote)
+    }
+    
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
 .. code-block:: python
@@ -268,6 +309,7 @@ Instance dicts
         'title': # The instances title
         'uri': # The instances URL
         'version': # The instances mastodon version
+        'urls': # Additional URLs dict, presently only 'streaming_api' with the stream websocket address.
     }
 
 App registration and user authentication
