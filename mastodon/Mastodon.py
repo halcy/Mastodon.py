@@ -111,9 +111,9 @@ class Mastodon:
         self._token_expired = datetime.datetime.now()
         self._refresh_token = None
 
-        self.ratelimit_limit = 150
+        self.ratelimit_limit = 300
         self.ratelimit_reset = time.time()
-        self.ratelimit_remaining = 150
+        self.ratelimit_remaining = 300
         self.ratelimit_lastcall = time.time()
         self.ratelimit_pacefactor = ratelimit_pacefactor
 
