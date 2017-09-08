@@ -628,6 +628,13 @@ class Mastodon:
         """
         return self.__api_request('POST', '/api/v1/notifications/clear')
 
+
+    def notifications_dismiss(self, id):
+        """
+        Deletes a single notification
+        """
+        return self.__api_request('POST', '/api/v1/notifications/dismiss')
+
     ###
     # Writing data: Accounts
     ###
