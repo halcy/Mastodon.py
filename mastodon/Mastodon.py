@@ -925,6 +925,7 @@ class Mastodon:
         connection may be closed at any time by calling its close() method.
         """
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
+    
     ###
     # Internal helpers, dragons probably
     ###
@@ -945,6 +946,19 @@ class Mastodon:
 
         return (date_time_utc - epoch_utc).total_seconds()
 
+    def __json_date_parse(self, json_object):
+        """
+        Parse dates in certain known json fields, if possible.
+        """
+        known_date_fields = ["created_at"]
+        for k, v in json_object.items():
+            if k in known_date_fields:
+                try:
+                    json_object[k] = dateutil.parser.parse(v)
+                except:
+                    raise MastodonAPIError('Encountered invalid date.')
+        return json_object
+    
     def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True):
         """
         Internal API request helper.
@@ -1016,19 +1030,32 @@ class Mastodon:
                 print('Response text content: ' + str(response_object.text))
 
             if response_object.status_code == 404:
-                raise MastodonAPIError('Endpoint not found.')
-
+                try:
+                    response = response_object.json()
+                except:
+                    raise MastodonAPIError('Endpoint not found.')
+                
+                if isinstance(response, dict) and 'error' in response:
+                    raise MastodonAPIError("Mastodon API returned error: " + str(response['error']))
+                else:
+                    raise MastodonAPIError('Endpoint not found.')
+                
+                
             if response_object.status_code == 500:
                 raise MastodonAPIError('General API problem.')
 
             try:
-                response = response_object.json()
+                response = response_object.json(object_hook=self.__json_date_parse)
             except:
                 raise MastodonAPIError(
                     "Could not parse response as JSON, response code was %s, "
                     "bad json content was '%s'" % (response_object.status_code,
                                                    response_object.content))
-
+                    
+            # See if the returned dict is an error dict even though status is 200
+            if isinstance(response, dict) and 'error' in response:
+                raise MastodonAPIError("Mastodon API returned error: " + str(response['error']))
+                    
             # Parse link headers
             if isinstance(response, list) and \
                     'Link' in response_object.headers and \
