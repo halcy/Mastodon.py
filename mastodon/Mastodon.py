@@ -853,7 +853,7 @@ class Mastodon:
 
         Returns the previous page or None if no further data is available.
         """
-        if isinstance(next_page, list) and len(previous_page) != 0:
+        if isinstance(next_page, list) and len(next_page) != 0:
             if '_pagination_prev' in next_page[0]:
                 params = copy.deepcopy(next_page[0]['_pagination_prev'])
             else:
