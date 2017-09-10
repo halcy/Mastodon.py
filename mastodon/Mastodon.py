@@ -973,7 +973,10 @@ class Mastodon:
         for k, v in json_object.items():
             if k in known_date_fields:
                 try:
-                    json_object[k] = dateutil.parser.parse(v)
+                    if isinstance(v, int):
+                        json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
+                    else:
+                        json_object[k] = dateutil.parser.parse(v)
                 except:
                     raise MastodonAPIError('Encountered invalid date.')
         return json_object
