@@ -1,6 +1,10 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.1.1
+------
+ * Emergency fix to allow logging in to work (thanks codl)
+
 v1.1.0
 ------
  * BREAKING CHANGE: Added date parsing to the response parser
