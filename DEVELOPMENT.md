@@ -10,6 +10,6 @@ Here's some general stuff to keep in mind, and some work that needs to be done
     * Some things are probably wrong, but none known.
     
 * Other things missing:
-    * Actual error handling that is good: Proper dealing with OAuth errors, more specific exceptions
+    * Actual error handling that is good: Proper dealing with OAuth errors, more specific exceptions 
     * Automatic ID unpacking
     * Tests (long-term goal)
