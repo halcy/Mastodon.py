@@ -1177,7 +1177,6 @@ class Mastodon:
         # redirection, and then use the domain it gives us to do the final
         # request.
         if endpoint.startswith("/api/v1/streaming"):
-            print("Hi I'm streaming", endpoint)
             stream_base = self.api_base_url + "/api/v1/streaming"
 
             with __no_auth_strip_session() as session:
@@ -1188,7 +1187,6 @@ class Mastodon:
                 raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
 
             url = connection.url.replace("/api/v1/streaming", endpoint)
-            print("Url redirected:", url)
 
         with __no_auth_strip_session() as session:
             # Prevent stripping of authorisation headers on redirect
