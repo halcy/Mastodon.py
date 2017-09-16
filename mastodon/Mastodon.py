@@ -1162,7 +1162,40 @@ class Mastodon:
             headers = {'Authorization': 'Bearer ' + self.access_token}
         url = self.api_base_url + endpoint
 
-        connection = requests.get(url, headers = headers, data = params, stream = True)
+        # requests session subclass to disable stripping authorization headers
+        class __no_auth_strip_session(requests.Session):
+            def rebuild_auth(self, prepared_request, response):
+                return
+
+        # Mastodon can be configured to use another address for streaming.
+        # However, due to a bug, Mastodon does not issue 301 Permanently
+        # Moved redirects for anything but /api/v1/streaming (including
+        # subdirs), instead returning a 404 with no redirect and causing the
+        # entire request to fail.
+        #
+        # The workaround is to hit /api/v1/streaming and see if there is a
+        # redirection, and then use the domain it gives us to do the final
+        # request.
+        if endpoint.startswith("/api/v1/streaming"):
+            print("Hi I'm streaming", endpoint)
+            stream_base = self.api_base_url + "/api/v1/streaming"
+
+            with __no_auth_strip_session() as session:
+                connection = session.get(stream_base, headers = headers, data = params)
+
+            if connection.status_code not in (404, 200):
+                # 404 is a normal error, raise on anything else
+                raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
+
+            url = connection.url.replace("/api/v1/streaming", endpoint)
+            print("Url redirected:", url)
+
+        with __no_auth_strip_session() as session:
+            # Prevent stripping of authorisation headers on redirect
+            connection = session.get(url, headers = headers, data = params, stream = True)
+
+        if connection.status_code != 200:
+            raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
 
         class __stream_handle():
             def __init__(self, connection):
