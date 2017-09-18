@@ -652,7 +652,8 @@ class Mastodon:
         """
         Deletes a single notification
         """
-        return self.__api_request('POST', '/api/v1/notifications/dismiss')
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/notifications/dismiss', params)
 
     ###
     # Writing data: Accounts
