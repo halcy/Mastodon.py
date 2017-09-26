@@ -1280,21 +1280,29 @@ class Mastodon:
 ##
 # Exceptions
 ##
-class MastodonIllegalArgumentError(ValueError):
+class MastodonError(Exception):
+    """Base class for Mastodon.py exceptions"""
+
+
+class MastodonIllegalArgumentError(ValueError, MastodonError):
     pass
 
 
-class MastodonFileNotFoundError(IOError):
+class MastodonIOError(IOError, MastodonError):
+    """Base class for Mastodon.py I/O errors"""
+
+
+class MastodonFileNotFoundError(MastodonIOError):
     pass
 
 
-class MastodonNetworkError(IOError):
+class MastodonNetworkError(MastodonIOError):
     pass
 
 
-class MastodonAPIError(Exception):
+class MastodonAPIError(MastodonError):
     pass
 
 
-class MastodonRatelimitError(Exception):
+class MastodonRatelimitError(MastodonError):
     pass
