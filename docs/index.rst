@@ -112,12 +112,17 @@ Error handling
 When Mastodon.py encounters an error, it will raise an exception, generally with
 some text included to tell you what went wrong. 
 
+The base class that all mastodon exceptions inherit from is the MastodonError
+class. If you are only interested in the fact an error was raised somewhere in
+Mastodon.py, and not the details, this is the exception you can catch.
+
 MastodonIllegalArgumentError is generally a programming problem - you asked the 
 API to do something obviously invalid (i.e. specify a privacy scope that does
 not exist).
 
 MastodonFileNotFoundError and MastodonNetworkError are IO errors - could be you
-specified a wrong URL, could be the internet is down or your hard drive is dying.
+specified a wrong URL, could be the internet is down or your hard drive is
+dying. They inherit from MastodonIOError, for easy catching.
 
 MastodonAPIError is an error returned from the Mastodon instance - the server
 has decided it can't fullfill your request (i.e. you requested info on a user that
