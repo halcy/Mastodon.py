@@ -16,6 +16,7 @@ import dateutil.parser
 import re
 import copy
 import threading
+from urllib.parse import urlparse
 
 
 class Mastodon:
@@ -1158,40 +1159,22 @@ class Mastodon:
         wish to terminate it.
         """
 
-        headers = {}
-        if self.access_token is not None:
-            headers = {'Authorization': 'Bearer ' + self.access_token}
-        url = self.api_base_url + endpoint
+        # Check if we have to redirect
+        instance = self.instance()
+        if "streaming_api" in instance["urls"] and instance["urls"]["streaming_api"] != self.api_base_url:
+            # This is probably a websockets URL, which is really for the browser, but requests can't handle it
+            # So we do this below to turn it into an HTTPS URL
+            parse = urlparse(instance["urls"]["streaming_api"])
+            url = "https://" + parse.netloc
+        else:
+            url = self.api_base_url
 
-        # requests session subclass to disable stripping authorization headers
-        class __no_auth_strip_session(requests.Session):
-            def rebuild_auth(self, prepared_request, response):
-                return
+        # The streaming server can't handle two slashes in a path, so remove trailing slashes
+        if url[-1] == '/':
+            url = url[:-1]
 
-        # Mastodon can be configured to use another address for streaming.
-        # However, due to a bug, Mastodon does not issue 301 Permanently
-        # Moved redirects for anything but /api/v1/streaming (including
-        # subdirs), instead returning a 404 with no redirect and causing the
-        # entire request to fail.
-        #
-        # The workaround is to hit /api/v1/streaming and see if there is a
-        # redirection, and then use the domain it gives us to do the final
-        # request.
-        if endpoint.startswith("/api/v1/streaming"):
-            stream_base = self.api_base_url + "/api/v1/streaming"
-
-            with __no_auth_strip_session() as session:
-                connection = session.get(stream_base, headers = headers, data = params)
-
-            if connection.status_code not in (404, 200):
-                # 404 is a normal error, raise on anything else
-                raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
-
-            url = connection.url.replace("/api/v1/streaming", endpoint)
-
-        with __no_auth_strip_session() as session:
-            # Prevent stripping of authorisation headers on redirect
-            connection = session.get(url, headers = headers, data = params, stream = True)
+        headers = {"Authorization": "Bearer " + self.access_token}
+        connection = requests.get(url + endpoint, headers = headers, data = params, stream = True)
 
         if connection.status_code != 200:
             raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
