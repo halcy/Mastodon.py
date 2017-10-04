@@ -1047,6 +1047,25 @@ class Mastodon:
             if response_object is None:
                 raise MastodonIllegalArgumentError("Illegal request.")
 
+            # Parse rate limiting headers
+            if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
+                self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
+                self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
+
+                try:
+                    ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                    self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
+
+                    # Adjust server time to local clock
+                    if 'Date' in response_object.headers:
+                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                        server_time = self.__datetime_to_epoch(server_time_datetime)
+                        server_time_diff = time.time() - server_time
+                        self.ratelimit_reset += server_time_diff
+                        self.ratelimit_lastcall = time.time()
+                except Exception as e:
+                    raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
+
             # Handle response
             if self.debug_requests:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
@@ -1067,6 +1086,19 @@ class Mastodon:
                 
             if response_object.status_code == 500:
                 raise MastodonAPIError('General API problem.')
+
+            # Handle rate limiting
+            if response_object.status_code == 429:
+                if self.ratelimit_method == 'throw' or not do_ratelimiting:
+                    raise MastodonRatelimitError('Hit rate limit.')
+                elif self.ratelimit_method in ('wait', 'pace'):
+                    to_next = self.ratelimit_reset - time.time()
+                    if to_next > 0:
+                        # As a precaution, never sleep longer than 5 minutes
+                        to_next = min(to_next, 5 * 60)
+                        time.sleep(to_next)
+                        request_complete = False
+                        continue
 
             try:
                 response = response_object.json(object_hook=self.__json_date_parse)
@@ -1118,36 +1150,6 @@ class Mastodon:
                                 del prev_params['max_id']
                             response[0]['_pagination_prev'] = prev_params
 
-            # Handle rate limiting
-            if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
-                self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
-                self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
-
-                try:
-                    ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
-                    self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
-
-                    # Adjust server time to local clock
-                    if 'Date' in response_object.headers:
-                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
-                        server_time = self.__datetime_to_epoch(server_time_datetime)
-                        server_time_diff = time.time() - server_time
-                        self.ratelimit_reset += server_time_diff
-                        self.ratelimit_lastcall = time.time()
-                except Exception as e:
-                    raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
-
-                if "error" in response and response["error"] == "Throttled":
-                    if self.ratelimit_method == "throw":
-                        raise MastodonRatelimitError("Hit rate limit.")
-
-                    if self.ratelimit_method == "wait" or self.ratelimit_method == "pace":
-                        to_next = self.ratelimit_reset - time.time()
-                        if to_next > 0:
-                            # As a precaution, never sleep longer than 5 minutes
-                            to_next = min(to_next, 5 * 60)
-                            time.sleep(to_next)
-                            request_complete = False
 
         return response
 
