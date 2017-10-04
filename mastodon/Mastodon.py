@@ -1025,10 +1025,15 @@ class Mastodon:
             request_complete = True
 
             try:
+                kwargs = dict(headers=headers, files=files,
+                              timeout=self.request_timeout)
+                if method == 'GET':
+                    kwargs['params'] = params
+                else:
+                    kwargs['data'] = params
+
                 response_object = requests.request(
-                        method, self.api_base_url + endpoint, params=params,
-                        headers=headers, files=files,
-                        timeout=self.request_timeout)
+                        method, self.api_base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
 
