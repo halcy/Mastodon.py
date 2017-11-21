@@ -470,6 +470,9 @@ class Mastodon:
         Fetch a list of reports made by the authenticated user.
 
         Returns a list of report dicts.
+        
+        Warning: According to the official API documentation, this
+        method is to be treated as not finalized as of Mastodon 2.0.0.
         """
         return self.__api_request('GET', '/api/v1/reports')
 

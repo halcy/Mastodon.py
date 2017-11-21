@@ -329,6 +329,20 @@ Instance dicts
         'urls': # Additional URLs dict, presently only 'streaming_api' with the stream websocket address.
     }
 
+Report dicts
+~~~~~~~~~~~~
+.. code-block:: python
+
+    mastodon.reports()[0]
+    # Returns the folowing dictionary
+    {
+        'id': # Numerical id of the report
+        'action_taken': # True if a moderator or admin has processed the
+                        # report, False otherwise. Note that no indication as to what action was taken is given
+                        # and that an admin simply marking the report as processed and not doing anything else
+                        # will set this field to True.
+    }
+    
 App registration and user authentication
 ----------------------------------------
 Before you can use the mastodon API, you have to register your 
