@@ -236,9 +236,10 @@ class Mastodon:
     ##
     def timeline(self, timeline="home", max_id=None, since_id=None, limit=None):
         """
-        Fetch statuses, most recent ones first. Timeline can be home, local, public,
-        or tag/hashtag. See the following functions documentation for what those do.
-
+        Fetch statuses, most recent ones first. Timeline can be 'home', 'local', 'public',
+        or 'tag/hashtag'. See the following functions documentation for what those do.
+        Local hashtag timelines are supported via the timeline_hashtag() function.
+        
         The default timeline is the "home" timeline.
 
         Returns a list of toot dicts.
@@ -280,14 +281,21 @@ class Mastodon:
         return self.timeline('public', max_id=max_id, since_id=since_id,
                              limit=limit)
 
-    def timeline_hashtag(self, hashtag, max_id=None, since_id=None, limit=None):
+    def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None):
         """
         Fetch a timeline of toots with a given hashtag.
 
         Returns a list of toot dicts.
         """
-        url = 'tag/{0}'.format(str(hashtag))
-        return self.timeline(url, max_id=max_id, since_id=since_id, limit=limit)
+        params_initial = locals()        
+        
+        if local == False:
+            del params_initial['local']
+        
+        url = '/api/v1/timelines/tag/{0}'.format(hashtag)        
+        params = self.__generate_params(params_initial, ['hashtag'])
+        
+        return self.__api_request('GET', url, params)
 
     ###
     # Reading data: Statuses
