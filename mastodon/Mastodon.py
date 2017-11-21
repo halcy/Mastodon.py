@@ -285,6 +285,8 @@ class Mastodon:
         """
         Fetch a timeline of toots with a given hashtag.
 
+        Set "local" to True to retrieve only instance-local tagged posts.
+
         Returns a list of toot dicts.
         """
         params_initial = locals()        
