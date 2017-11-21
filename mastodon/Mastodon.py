@@ -1029,21 +1029,15 @@ class Mastodon:
 
             response_object = None
             try:
+                kwargs = dict(headers=headers, files=files,
+                              timeout=self.request_timeout)
                 if method == 'GET':
-                    response_object = requests.get(self.api_base_url + endpoint, params=params,
-                                                   headers=headers, files=files,
-                                                   timeout=self.request_timeout)
-                if method == 'POST':
-                    response_object = requests.post(self.api_base_url + endpoint, data=params, headers=headers,
-                                                    files=files, timeout=self.request_timeout)
+                    kwargs['params'] = params
+                else:
+                    kwargs['data'] = params
 
-                if method == 'PATCH':
-                    response_object = requests.patch(self.api_base_url + endpoint, data=params, headers=headers,
-                                                     files=files, timeout=self.request_timeout)
-
-                if method == 'DELETE':
-                    response_object = requests.delete(self.api_base_url + endpoint, data=params, headers=headers,
-                                                      files=files, timeout=self.request_timeout)
+                response_object = requests.request(
+                        method, self.api_base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
 
