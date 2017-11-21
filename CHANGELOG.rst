@@ -4,6 +4,7 @@ version number. Breaking changes will be avoided as far as at all possible.
 v1.1.2
 ------
 * 2.0 id compatibility (thanks codl)
+* Added emoji support
 * Media alt-text support (thanks foozmeat)
 * Python2 fixes (thanks ragingscholar)
 * General code cleanup and small fixes (thanks codl)
