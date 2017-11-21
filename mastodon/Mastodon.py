@@ -777,7 +777,7 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    def media_post(self, media_file, mime_type=None):
+    def media_post(self, media_file, mime_type=None, description=None):
         """
         Post an image. media_file can either be image data or
         a file name. If image data is passed directly, the mime
@@ -805,7 +805,8 @@ class Mastodon:
 
         media_file_description = (file_name, media_file, mime_type)
         return self.__api_request('POST', '/api/v1/media',
-                                  files={'file': media_file_description})
+                                  files={'file': media_file_description},
+                                  params={'description': description})
 
     ###
     # Writing data: Domain blocks
