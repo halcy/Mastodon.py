@@ -219,7 +219,7 @@ Emoji dicts
 .. code-block:: python
 
     {
-        'shortcode': # Emoji shortcode, without surrounding colons.
+        'shortcode': # Emoji shortcode, without surrounding colons
         'url': # URL for the emoji image, can be animated 
         'static_url': # URL for the emoji image, never animated
     }
