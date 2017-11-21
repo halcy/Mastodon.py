@@ -186,17 +186,18 @@ Toot dicts
         'spoiler_text': # Warning text that should be displayed before the toot content
         'visibility': # Toot visibility ('public', 'unlisted', 'private', or 'direct')
         'mentions': # A list of users dicts mentioned in the toot, as Mention dicts
-        'media_attachments': # list of media dicts of attached files. Only present
-                            # when there are attached files.
+        'media_attachments': # A list of media dicts of attached files
+        'emojis': # A list of custom emojis used in the toot, as Emoji dicts
         'tags': # A list of hashtag used in the toot, as Hashtag dicts
         'application': # Application dict for the client used to post the toot
         'language': # The language of the toot, if specified by the server.
-        'muted': # Boolean denoting whether the user has muted this status by way of conversation muting.
+        'muted': # Boolean denoting whether the user has muted this status by way of conversation muting
     }
 
 Mention dicts
 ~~~~~~~~~~~~~
 .. code-block:: python
+
     {
         'url': # Mentioned users profile URL (potentially remote)
         'username': # Mentioned users user name (not including domain)
@@ -207,9 +208,20 @@ Mention dicts
 Hashtag dicts
 ~~~~~~~~~~~~~
 .. code-block:: python
+
     {
         'name': # Hashtag name (not including the #)
         'url': # Hashtag URL (can be remote)
+    }
+  
+Emoji dicts
+~~~~~~~~~~~
+.. code-block:: python
+
+    {
+        'shortcode': # Emoji shortcode, without surrounding colons.
+        'url': # URL for the emoji image, can be animated 
+        'static_url': # URL for the emoji image, never animated
     }
     
 Relationship dicts
@@ -262,7 +274,7 @@ Media dicts
     # Returns the following dictionary:
     {
         'id': # The ID of the attachment.
-        'type': # Media type: 'image', 'video' or 'gifv'
+        'type': # Media type: 'image', 'video', 'gifv' or 'unknown'.
         'url': # The URL for the image in the local cache
         'remote_url': # The remote URL for the media (if the image is from a remote instance)
         'preview_url': # The URL for the media preview
