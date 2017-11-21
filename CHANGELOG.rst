@@ -1,6 +1,15 @@
 A note on versioning: This librarys major version will grow with the APIs 
 version number. Breaking changes will be avoided as far as at all possible.
 
+v1.1.2
+------
+* 2.0 id compatibility (thanks codl)
+* Media alt-text support (thanks foozmeat)
+* Python2 fixes (thanks ragingscholar)
+* General code cleanup and small fixes (thanks codl)
+* Beginnings of better error handling (thanks Elizafox)
+* Various documentation updates
+
 v1.1.1
 ------
  * Emergency fix to allow logging in to work (thanks codl)
