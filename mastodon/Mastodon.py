@@ -16,6 +16,7 @@ import dateutil.parser
 import re
 import copy
 import threading
+import sys
 try:
     from urllib.parse import urlparse
 except ImportError:
@@ -776,7 +777,7 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    def media_post(self, media_file, mime_type=None):
+    def media_post(self, media_file, mime_type=None, description=None):
         """
         Post an image. media_file can either be image data or
         a file name. If image data is passed directly, the mime
@@ -804,7 +805,8 @@ class Mastodon:
 
         media_file_description = (file_name, media_file, mime_type)
         return self.__api_request('POST', '/api/v1/media',
-                                  files={'file': media_file_description})
+                                  files={'file': media_file_description},
+                                  params={'description': description})
 
     ###
     # Writing data: Domain blocks
@@ -970,6 +972,7 @@ class Mastodon:
 
         return (date_time_utc - epoch_utc).total_seconds()
 
+
     def __json_date_parse(self, json_object):
         """
         Parse dates in certain known json fields, if possible.
@@ -984,6 +987,29 @@ class Mastodon:
                         json_object[k] = dateutil.parser.parse(v)
                 except:
                     raise MastodonAPIError('Encountered invalid date.')
+        return json_object
+
+    def __json_id_to_bignum(self, json_object):
+        """
+        Converts json string IDs to native python bignums.
+        """
+        if sys.version_info.major >= 3:
+            str_type = str
+        else:
+            str_type = unicode
+
+        if ('id' in json_object and
+                isinstance(json_object['id'], str_type)):
+            try:
+                json_object['id'] = int(json_object['id'])
+            except ValueError:
+                pass
+
+        return json_object
+
+    def __json_hooks(self, json_object):
+        json_object = self.__json_date_parse(json_object)
+        json_object = self.__json_id_to_bignum(json_object)
         return json_object
 
     def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True):
@@ -1098,7 +1124,7 @@ class Mastodon:
                         continue
 
             try:
-                response = response_object.json(object_hook=self.__json_date_parse)
+                response = response_object.json(object_hook=self.__json_hooks)
             except:
                 raise MastodonAPIError(
                     "Could not parse response as JSON, response code was %s, "

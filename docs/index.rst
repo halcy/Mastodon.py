@@ -46,7 +46,7 @@ node running Mastodon by setting api_base_url when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 1.6.
+of this time, it is feature complete for Mastodon version 2.0.
 
 A note about rate limits
 ------------------------
