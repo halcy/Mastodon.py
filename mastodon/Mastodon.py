@@ -1027,23 +1027,16 @@ class Mastodon:
         while not request_complete:
             request_complete = True
 
-            response_object = None
             try:
+                kwargs = dict(headers=headers, files=files,
+                              timeout=self.request_timeout)
                 if method == 'GET':
-                    response_object = requests.get(self.api_base_url + endpoint, params=params,
-                                                   headers=headers, files=files,
-                                                   timeout=self.request_timeout)
-                if method == 'POST':
-                    response_object = requests.post(self.api_base_url + endpoint, data=params, headers=headers,
-                                                    files=files, timeout=self.request_timeout)
+                    kwargs['params'] = params
+                else:
+                    kwargs['data'] = params
 
-                if method == 'PATCH':
-                    response_object = requests.patch(self.api_base_url + endpoint, data=params, headers=headers,
-                                                     files=files, timeout=self.request_timeout)
-
-                if method == 'DELETE':
-                    response_object = requests.delete(self.api_base_url + endpoint, data=params, headers=headers,
-                                                      files=files, timeout=self.request_timeout)
+                response_object = requests.request(
+                        method, self.api_base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
 
@@ -1068,7 +1061,7 @@ class Mastodon:
                         self.ratelimit_lastcall = time.time()
                 except Exception as e:
                     raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
-
+                    
             # Handle response
             if self.debug_requests:
                 print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
