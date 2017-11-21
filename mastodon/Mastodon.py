@@ -532,9 +532,9 @@ class Mastodon:
         'public' - post will be public
 
         If not passed in, visibility defaults to match the current account's
-        locked setting (private if the account is locked, public otherwise).
-        Note that the "privacy" setting is not currently used in determining
-        visibility when not specified.
+        default-privacy setting (starting with Mastodon version 1.6) or its
+        locked setting - private if the account is locked, public otherwise
+        (for Mastodon versions lower than 1.6).
 
         The spoiler_text parameter is a string to be shown as a warning before
         the text of the status.  If no text is passed in, no warning will be
