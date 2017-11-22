@@ -244,6 +244,12 @@ class Mastodon:
 
         Returns a list of toot dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params_initial = locals()
 
         if timeline == "local":
@@ -289,6 +295,12 @@ class Mastodon:
 
         Returns a list of toot dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params_initial = locals()        
         
         if local == False:
@@ -308,6 +320,7 @@ class Mastodon:
 
         Returns a toot dict.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
@@ -318,6 +331,7 @@ class Mastodon:
 
         Returns a card dict.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/card'.format(str(id))
         return self.__api_request('GET', url)
 
@@ -327,6 +341,7 @@ class Mastodon:
 
         Returns a context dict.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/context'.format(str(id))
         return self.__api_request('GET', url)
 
@@ -336,6 +351,7 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
         return self.__api_request('GET', url)
 
@@ -345,6 +361,7 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourited_by'.format(str(id))
         return self.__api_request('GET', url)
 
@@ -360,10 +377,17 @@ class Mastodon:
 
         Returns a list of notification dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+        
         if id is None:
             params = self.__generate_params(locals(), ['id'])
             return self.__api_request('GET', '/api/v1/notifications', params)
         else:
+            id = self.__unpack_id(id)
             url = '/api/v1/notifications/{0}'.format(str(id))
             return self.__api_request('GET', url)
 
@@ -376,6 +400,7 @@ class Mastodon:
 
         Returns a user dict.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
@@ -393,6 +418,13 @@ class Mastodon:
 
         Returns a list of toot dicts.
         """
+        id = self.__unpack_id(id)
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
@@ -403,6 +435,13 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        id = self.__unpack_id(id)
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/following'.format(str(id))
         return self.__api_request('GET', url, params)
@@ -413,6 +452,13 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        id = self.__unpack_id(id)
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/followers'.format(str(id))
         return self.__api_request('GET', url, params)
@@ -424,6 +470,7 @@ class Mastodon:
 
         Returns a list of relationship dicts.
         """
+        id = self.__unpack_id(id)
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
@@ -460,6 +507,12 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
@@ -469,6 +522,12 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/blocks', params)
 
@@ -495,6 +554,12 @@ class Mastodon:
 
         Returns a list of toot dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/favourites', params)
 
@@ -507,6 +572,12 @@ class Mastodon:
 
         Returns a list of user dicts.
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/follow_requests', params)
 
@@ -519,6 +590,12 @@ class Mastodon:
 
         Returns a list of blocked domain URLs (as strings, without protocol specifier).
         """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+            
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
 
@@ -555,6 +632,9 @@ class Mastodon:
 
         Returns a toot dict with the new status.
         """
+        if in_reply_to_id != None:
+            in_reply_to_id = self.__unpack_id(in_reply_to_id)
+        
         params_initial = locals()
 
         # Validate visibility parameter
@@ -599,6 +679,7 @@ class Mastodon:
 
         Returns an empty dict for good measure.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
         return self.__api_request('DELETE', url)
 
@@ -608,6 +689,7 @@ class Mastodon:
 
         Returns a toot dict with a new status that wraps around the reblogged one.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -617,6 +699,7 @@ class Mastodon:
 
         Returns a toot dict with the status that used to be reblogged.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -626,6 +709,7 @@ class Mastodon:
 
         Returns a toot dict with the favourited status.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourite'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -635,6 +719,7 @@ class Mastodon:
 
         Returns a toot dict with the un-favourited status.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -644,6 +729,7 @@ class Mastodon:
 
         Returns a toot dict with the now muted status
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/mute'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -653,6 +739,7 @@ class Mastodon:
 
         Returns a toot dict with the status that used to be muted.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -670,6 +757,7 @@ class Mastodon:
         """
         Deletes a single notification
         """
+        id = self.__unpack_id(id)
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/notifications/dismiss', params)
 
@@ -682,6 +770,7 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -700,6 +789,7 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unfollow'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -709,6 +799,7 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/block'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -718,6 +809,7 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unblock'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -727,6 +819,7 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/mute'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -736,6 +829,7 @@ class Mastodon:
 
         Returns a relationship dict containing the updated relationship to the user.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -763,6 +857,8 @@ class Mastodon:
 
         Returns a report dict.
         """
+        account_id = self.__unpack_id(account_id)
+        status_ids = map(lambda x: self.__unpack_id(x), status_ids)
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/reports/', params)
 
@@ -775,6 +871,7 @@ class Mastodon:
 
         Returns an empty dict.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -784,6 +881,7 @@ class Mastodon:
 
         Returns an empty dict.
         """
+        id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/reject'.format(str(id))
         return self.__api_request('POST', url)
 
@@ -1268,7 +1366,20 @@ class Mastodon:
                 del params[key]
 
         return params
-
+    
+    def __unpack_id(self, id):
+        """
+        Internal object-to-id converter
+        
+        Checks if id is a dict that contains id and
+        returns the id inside, otherwise just returns
+        the id straight.
+        """
+        if isinstance(id, dict) and "id" in id:
+            return id["id"]
+        else:
+            return id
+        
     def __get_token_expired(self):
         """Internal helper for oauth code"""
         return self._token_expired < datetime.datetime.now()
