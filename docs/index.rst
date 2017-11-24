@@ -112,23 +112,23 @@ Error handling
 When Mastodon.py encounters an error, it will raise an exception, generally with
 some text included to tell you what went wrong. 
 
-The base class that all mastodon exceptions inherit from is the MastodonError
-class. If you are only interested in the fact an error was raised somewhere in
+The base class that all mastodon exceptions inherit from is `MastodonError`. 
+If you are only interested in the fact an error was raised somewhere in
 Mastodon.py, and not the details, this is the exception you can catch.
 
-MastodonIllegalArgumentError is generally a programming problem - you asked the 
+`MastodonIllegalArgumentError` is generally a programming problem - you asked the 
 API to do something obviously invalid (i.e. specify a privacy scope that does
 not exist).
 
-MastodonFileNotFoundError and MastodonNetworkError are IO errors - could be you
+`MastodonFileNotFoundError` and `MastodonNetworkError` are IO errors - could be you
 specified a wrong URL, could be the internet is down or your hard drive is
 dying. They inherit from MastodonIOError, for easy catching.
 
-MastodonAPIError is an error returned from the Mastodon instance - the server
+`MastodonAPIError` is an error returned from the Mastodon instance - the server
 has decided it can't fullfill your request (i.e. you requested info on a user that
 does not exist).
 
-MastodonRatelimitError is raised when you hit an API rate limit. You should try 
+`MastodonRatelimitError` is raised when you hit an API rate limit. You should try 
 again after a while (see the rate limiting section above).
 
 Return values
@@ -538,10 +538,28 @@ If async is True, the listener will listen on another thread and these methods
 will return a handle corresponding to the open connection. The
 connection may be closed at any time by calling its close() method.
 
-.. automethod:: Mastodon.user_stream
-.. automethod:: Mastodon.public_stream
-.. automethod:: Mastodon.local_stream
-.. automethod:: Mastodon.hashtag_stream
+The streaming functions take instances of `StreamListener` as a parameter.
+A `CallbackStreamListener` class that allows you to specify function callbacks 
+directly is included for convenience.
+
+.. automethod:: Mastodon.stream_user
+.. automethod:: Mastodon.stream_public
+.. automethod:: Mastodon.stream_local
+.. automethod:: Mastodon.stream_hashtag
+
+StreamListener
+~~~~~~~~~~~~~~
+
+.. autoclass:: StreamListener
+.. automethod:: StreamListener.on_update
+.. automethod:: StreamListener.on_notification
+.. automethod:: StreamListener.on_delete
+.. automethod:: StreamListener.handle_heartbeat
+
+CallbackStreamListener
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: CallbackStreamListener
 
 .. _Mastodon: https://github.com/tootsuite/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/

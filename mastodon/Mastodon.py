@@ -1010,7 +1010,7 @@ class Mastodon:
     ###
     # Streaming
     ###
-    def user_stream(self, listener, async=False):
+    def stream_user(self, listener, async=False):
         """
         Streams events that are relevant to the authorized user, i.e. home
         timeline and notifications. 'listener' should be a subclass of
@@ -1018,14 +1018,14 @@ class Mastodon:
         """
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
-    def public_stream(self, listener, async=False):
+    def stream_public(self, listener, async=False):
         """
         Streams public events. 'listener' should be a subclass of StreamListener
         which will receive callbacks for incoming events.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async)
 
-    def local_stream(self, listener, async=False):
+    def stream_local(self, listener, async=False):
         """
         Streams local events. 'listener' should be a subclass of StreamListener
         which will receive callbacks for incoming events.
@@ -1033,7 +1033,7 @@ class Mastodon:
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async)
 
-    def hashtag_stream(self, tag, listener, async=False):
+    def stream_hashtag(self, tag, listener, async=False):
         """
         Returns all public statuses for the hashtag 'tag'. 'listener' should be
         a subclass of StreamListener which will receive callbacks for incoming
