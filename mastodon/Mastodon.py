@@ -1419,6 +1419,7 @@ class MastodonError(Exception):
 
 
 class MastodonIllegalArgumentError(ValueError, MastodonError):
+    """Raised when an incorrect parameter is passed to a function"""
     pass
 
 
@@ -1427,16 +1428,24 @@ class MastodonIOError(IOError, MastodonError):
 
 
 class MastodonFileNotFoundError(MastodonIOError):
+    """Raised when a file requested to be loaded can not be opened"""
     pass
 
 
 class MastodonNetworkError(MastodonIOError):
+    """Raised when network communication with the server fails"""
     pass
 
 
 class MastodonAPIError(MastodonError):
+    """Raised when the mastodon API generates a response that cannot be handled"""
     pass
 
 
 class MastodonRatelimitError(MastodonError):
+    """Raised when rate limiting is set to manual mode and the rate limit is exceeded"""
+    pass
+
+class MastodonMalformedEventError(MastodonError):
+    """Raised when the server-sent event stream is malformed"""
     pass

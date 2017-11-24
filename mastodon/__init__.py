@@ -1,4 +1,4 @@
 from mastodon.Mastodon import Mastodon
-from mastodon.streaming import StreamListener, MalformedEventError
+from mastodon.streaming import StreamListener
 
-__all__ = ['Mastodon', 'StreamListener', 'MalformedEventError']
+__all__ = ['Mastodon', 'StreamListener']

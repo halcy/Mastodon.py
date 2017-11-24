@@ -4,16 +4,9 @@ https://github.com/tootsuite/mastodon/blob/master/docs/Using-the-API/Streaming-A
 """
 
 import json
-import logging
 import six
 from mastodon import Mastodon
-
-log = logging.getLogger(__name__)
-
-class MalformedEventError(Exception):
-    """Raised when the server-sent event stream is malformed."""
-    pass
-
+from mastodon.Mastodon import MastodonMalformedEventError
 
 class StreamListener(object):
     """Callbacks for the streaming API. Create a subclass, override the on_xxx
@@ -55,7 +48,7 @@ class StreamListener(object):
                 line = raw_line.decode('utf-8')
             except UnicodeDecodeError as err:
                 six.raise_from(
-                    MalformedEventError("Malformed UTF-8", line),
+                    MastodonMalformedEventError("Malformed UTF-8", line),
                     err
                 )
 
@@ -85,14 +78,14 @@ class StreamListener(object):
             payload = json.loads(data, object_hook = Mastodon._Mastodon__json_hooks)
         except KeyError as err:
            six.raise_from(
-               MalformedEventError('Missing field', err.args[0], event),
+               MastodonMalformedEventError('Missing field', err.args[0], event),
                err
            )
         except ValueError as err:
            # py2: plain ValueError
            # py3: json.JSONDecodeError, a subclass of ValueError
            six.raise_from(
-               MalformedEventError('Bad JSON', data),
+               MastodonMalformedEventError('Bad JSON', data),
                err
            )
            
