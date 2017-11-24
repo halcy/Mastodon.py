@@ -1083,8 +1083,8 @@ class Mastodon:
 
         return (date_time_utc - epoch_utc).total_seconds()
 
-
-    def __json_date_parse(self, json_object):
+    @staticmethod
+    def __json_date_parse(json_object):
         """
         Parse dates in certain known json fields, if possible.
         """
@@ -1100,7 +1100,8 @@ class Mastodon:
                     raise MastodonAPIError('Encountered invalid date.')
         return json_object
 
-    def __json_id_to_bignum(self, json_object):
+    @staticmethod
+    def __json_id_to_bignum(json_object):
         """
         Converts json string IDs to native python bignums.
         """
@@ -1117,10 +1118,11 @@ class Mastodon:
                 pass
 
         return json_object
-
-    def __json_hooks(self, json_object):
-        json_object = self.__json_date_parse(json_object)
-        json_object = self.__json_id_to_bignum(json_object)
+    
+    @staticmethod
+    def __json_hooks(json_object):
+        json_object = Mastodon.__json_date_parse(json_object)
+        json_object = Mastodon.__json_id_to_bignum(json_object)
         return json_object
 
     def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True):

@@ -6,10 +6,9 @@ https://github.com/tootsuite/mastodon/blob/master/docs/Using-the-API/Streaming-A
 import json
 import logging
 import six
-
+from mastodon import Mastodon
 
 log = logging.getLogger(__name__)
-
 
 class MalformedEventError(Exception):
     """Raised when the server-sent event stream is malformed."""
@@ -24,7 +23,7 @@ class StreamListener(object):
 
     def on_update(self, status):
         """A new status has appeared! 'status' is the parsed JSON dictionary
-describing the status."""
+        describing the status."""
         pass
 
     def on_notification(self, notification):
@@ -40,7 +39,8 @@ describing the status."""
         """The server has sent us a keep-alive message. This callback may be
         useful to carry out periodic housekeeping tasks, or just to confirm
         that the connection is still open."""
-
+        pass
+    
     def handle_stream(self, lines):
         """
         Handles a stream of events from the Mastodon server. When each event
@@ -63,7 +63,7 @@ describing the status."""
                 self.handle_heartbeat()
             elif line == '':
                 # end of event
-                self._despatch(event)
+                self._dispatch(event)
                 event = {}
             else:
                 key, value = line.split(': ', 1)
@@ -78,24 +78,24 @@ describing the status."""
         if event:
             log.warn("outstanding partial event at end of stream: %s", event)
 
-    def _despatch(self, event):
+    def _dispatch(self, event):
         try:
             name = event['event']
             data = event['data']
-            payload = json.loads(data)
+            payload = json.loads(data, object_hook = Mastodon._Mastodon__json_hooks)
         except KeyError as err:
-            six.raise_from(
-                MalformedEventError('Missing field', err.args[0], event),
-                err
-            )
+           six.raise_from(
+               MalformedEventError('Missing field', err.args[0], event),
+               err
+           )
         except ValueError as err:
-            # py2: plain ValueError
-            # py3: json.JSONDecodeError, a subclass of ValueError
-            six.raise_from(
-                MalformedEventError('Bad JSON', data),
-                err
-            )
-
+           # py2: plain ValueError
+           # py3: json.JSONDecodeError, a subclass of ValueError
+           six.raise_from(
+               MalformedEventError('Bad JSON', data),
+               err
+           )
+           
         handler_name = 'on_' + name
         try:
             handler = getattr(self, handler_name)
