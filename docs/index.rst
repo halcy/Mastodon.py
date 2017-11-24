@@ -172,7 +172,7 @@ Toot dicts
         'uri': # Descriptor for the toot
             # EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'
         'url': # URL of the toot
-        'account': # Account dict for the account which posted the status
+        'account': # User dict for the account which posted the status
         'in_reply_to_id': # Numerical id of the toot this toot is in response to
         'in_reply_to_account_id': # Numerical id of the account this toot is in response to
         'reblog': # Denotes whether the toot is a reblog
