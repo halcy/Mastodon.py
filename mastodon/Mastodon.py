@@ -17,10 +17,11 @@ import re
 import copy
 import threading
 import sys
+
 try:
     from urllib.parse import urlparse
 except ImportError:
-     from urlparse import urlparse
+    from urlparse import urlparse
 
 
 class Mastodon:
@@ -1014,12 +1015,6 @@ class Mastodon:
         Streams events that are relevant to the authorized user, i.e. home
         timeline and notifications. 'listener' should be a subclass of
         StreamListener which will receive callbacks for incoming events.
-
-        If async is False, this method blocks forever.
-
-        If async is True, 'listener' will listen on another thread and this method
-        will return a handle corresponding to the open connection. The
-        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
@@ -1027,12 +1022,6 @@ class Mastodon:
         """
         Streams public events. 'listener' should be a subclass of StreamListener
         which will receive callbacks for incoming events.
-
-        If async is False, this method blocks forever.
-
-        If async is True, 'listener' will listen on another thread and this method
-        will return a handle corresponding to the open connection. The
-        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async)
 
@@ -1041,11 +1030,6 @@ class Mastodon:
         Streams local events. 'listener' should be a subclass of StreamListener
         which will receive callbacks for incoming events.
 
-        If async is False, this method blocks forever.
-
-        If async is True, 'listener' will listen on another thread and this method
-        will return a handle corresponding to the open connection. The
-        connection may be closed at any time by calling its close() method.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async)
 
@@ -1054,12 +1038,6 @@ class Mastodon:
         Returns all public statuses for the hashtag 'tag'. 'listener' should be
         a subclass of StreamListener which will receive callbacks for incoming
         events.
-
-        If async is False, this method blocks forever.
-
-        If async is True, 'listener' will listen on another thread and this method
-        will return a handle corresponding to the open connection. The
-        connection may be closed at any time by calling its close() method.
         """
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
 

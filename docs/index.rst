@@ -37,7 +37,7 @@ Mastodon.py
    )
    mastodon.toot('Tooting from python using #mastodonpy !')
 
-`Mastodon`_ is an ostatus based twitter-like federated social 
+`Mastodon`_ is an ActivityPub and OStatus based twitter-like federated social 
 network node. It has an API that allows you to interact with its 
 every aspect. This is a simple python wrapper for that api, provided
 as a single python module. By default, it talks to the 
@@ -531,10 +531,17 @@ Streaming
 ---------
 These functions allow access to the streaming API.
 
+If async is False, these  methods block forever (or until an
+exception is raised).
+
+If async is True, the listener will listen on another thread and these methods
+will return a handle corresponding to the open connection. The
+connection may be closed at any time by calling its close() method.
+
 .. automethod:: Mastodon.user_stream
 .. automethod:: Mastodon.public_stream
+.. automethod:: Mastodon.local_stream
 .. automethod:: Mastodon.hashtag_stream
-
 
 .. _Mastodon: https://github.com/tootsuite/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/

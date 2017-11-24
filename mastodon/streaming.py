@@ -67,10 +67,6 @@ class StreamListener(object):
                 else:
                     event[key] = value
 
-        # end of stream
-        if event:
-            log.warn("outstanding partial event at end of stream: %s", event)
-
     def _dispatch(self, event):
         try:
             name = event['event']
@@ -92,8 +88,44 @@ class StreamListener(object):
         handler_name = 'on_' + name
         try:
             handler = getattr(self, handler_name)
-        except AttributeError:
-            log.warn("Unhandled event '%s'", name)
+        except AttributeError as err:
+            six.raise_from(
+               MastodonMalformedEventError('Bad event type', name),
+               err
+            )
         else:
             # TODO: allow handlers to return/raise to stop streaming cleanly
             handler(payload)
+
+class CallbackStreamListener(StreamListener):
+    """
+    Simple callback stream handler class.
+    Can optionally additionally send local update events to a separate handler.
+    """
+    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None):
+        super(CallbackStreamListener, self).__init__()
+        self.update_handler = update_handler
+        self.local_update_handler = local_update_handler
+        self.delete_handler = delete_handler
+        self.notification_handler = notification_handler
+        
+    def on_update(self, status):
+        if self.update_handler != None:
+            self.update_handler(status)
+        
+        try:
+            if self.local_update_handler != None and not "@" in status["account"]["acct"]:
+                self.local_update_handler(status)
+        except Exception as err:
+            six.raise_from(
+               MastodonMalformedEventError('received bad update', status),
+               err
+            )
+    
+    def on_delete(self, deleted_id):
+        if self.delete_handler != None:
+            self.delete_handler(deleted_id)
+    
+    def on_notification(self, notification):
+        if self.notification_handler != None:
+            self.notification_handler(notification)
