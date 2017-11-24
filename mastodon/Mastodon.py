@@ -1305,9 +1305,13 @@ class Mastodon:
         class __stream_handle():
             def __init__(self, connection):
                 self.connection = connection
+                self._thread = threading.current_thread()
 
             def close(self):
                 self.connection.close()
+
+            def is_alive(self):
+                return self._thread.is_alive()
 
             def _threadproc(self):
                 with closing(connection) as r:
