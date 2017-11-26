@@ -17,6 +17,7 @@ import re
 import copy
 import threading
 import sys
+import six
 
 try:
     from urllib.parse import urlparse
@@ -1083,13 +1084,8 @@ class Mastodon:
         """
         Converts json string IDs to native python bignums.
         """
-        if sys.version_info.major >= 3:
-            str_type = str
-        else:
-            str_type = unicode
-
         if ('id' in json_object and
-                isinstance(json_object['id'], str_type)):
+                isinstance(json_object['id'], six.text_type)):
             try:
                 json_object['id'] = int(json_object['id'])
             except ValueError:
