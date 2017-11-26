@@ -3,5 +3,9 @@ python:
     - "3.6"
     - "2.7"
 
-install: pip install .
-script: python setup.py pytest
+install:
+    - pip install .
+    - pip install codecov
+script:
+    - python setup.py pytest
+    - codecov
