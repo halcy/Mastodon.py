@@ -1,5 +1,6 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError
+from time import sleep
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -33,3 +34,58 @@ def test_status_favourited_by(status, api):
     api.status_favourite(status['id'])
     favourites = api.status_favourited_by(status['id'])
     assert favourites
+
+@pytest.mark.vcr()
+def test_toot(api):
+    status = api.toot('Toot!')
+    try:
+        assert status
+    finally:
+        api.status_delete(status['id'])
+
+@pytest.mark.vcr()
+@pytest.mark.parametrize('visibility', ('', 'direct', 'private', 'unlisted', 'public',
+        pytest.param('foobar', marks=pytest.mark.xfail())))
+@pytest.mark.parametrize('spoiler_text', (None, 'Content warning'))
+def test_status_post(api, visibility, spoiler_text):
+    status = api.status_post(
+            'Toot!',
+            visibility=visibility,
+            spoiler_text=spoiler_text)
+    try:
+        assert status
+        if visibility:
+            assert status['visibility'] == visibility
+        if spoiler_text:
+            assert status['spoiler_text'] == spoiler_text
+    finally:
+        api.status_delete(status['id'])
+
+@pytest.mark.vcr()
+def test_status_reblog_unreblog(status, api):
+    reblog = api.status_reblog(status['id'])
+    assert reblog
+
+    status = reblog['reblog']
+    assert status['reblogged']
+
+    status = api.status_unreblog(status['id'])
+    assert not status['reblogged']
+
+
+@pytest.mark.vcr()
+def test_status_fav_unfav(status, api):
+    status = api.status_favourite(status['id'])
+    assert status['favourited']
+
+    status = api.status_unfavourite(status['id'])
+    assert not status['favourited']
+
+
+@pytest.mark.vcr()
+def test_status_mute_unmute(status, api):
+    status = api.status_mute(status['id'])
+    assert status['muted']
+
+    status = api.status_unmute(status['id'])
+    assert not status['muted']
