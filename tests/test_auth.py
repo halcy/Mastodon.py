@@ -18,6 +18,11 @@ def test_auth_request_url(api):
     assert set(query['scope'][0].split()) == set(('read', 'write', 'follow'))
 
 
+def test_log_in_none(api_anonymous):
+    with pytest.raises(MastodonIllegalArgumentError):
+        api_anonymous.log_in()
+
+
 @pytest.mark.vcr()
 def test_log_in_password(api_anonymous):
     token = api_anonymous.log_in(
