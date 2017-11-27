@@ -9,13 +9,12 @@ def mastodon():
             client_secret='__MASTODON_PY_TEST_SECRET',
             access_token='__MASTODON_PY_TEST_TOKEN')
 
-
-
 @pytest.fixture()
 def status(mastodon):
     _status = mastodon.status_post('Toot!')
     yield _status
     mastodon.status_delete(_status['id'])
+
 
 @pytest.fixture()
 def vcr_config():

@@ -1,4 +1,4 @@
-from .fixtures import *
+import pytest
 from datetime import datetime
 
 @pytest.mark.vcr()

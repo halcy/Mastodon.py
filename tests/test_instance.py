@@ -1,4 +1,3 @@
-from .fixtures import *
 import pytest
 
 @pytest.mark.vcr()
