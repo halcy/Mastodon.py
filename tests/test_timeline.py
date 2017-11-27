@@ -11,9 +11,10 @@ def test_public_tl_anonymous(api_anonymous, status):
 
 @pytest.mark.vcr()
 def test_public_tl(api, status):
-    tl = api.timeline_public()
-    print(tl[0])
-    assert status['id'] in map(lambda st: st['id'], tl)
+    public = api.timeline_public()
+    local = api.timeline_local()
+    assert status['id'] in map(lambda st: st['id'], public)
+    assert status['id'] in map(lambda st: st['id'], local)
 
 @pytest.mark.vcr()
 def test_home_tl(api, status):
