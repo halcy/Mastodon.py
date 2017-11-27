@@ -31,7 +31,7 @@ def test_create_app_to_file(mocker):
     (fd, filename) = tempfile.mkstemp(text=True)
 
     test_create_app(mocker, to_file=filename)
-    with open(fd) as f:
+    with os.fdopen(fd) as f:
         assert f.read() == "foo\nbar\n"
 
     os.remove(filename)
