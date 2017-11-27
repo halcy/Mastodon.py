@@ -6,8 +6,7 @@ python:
 install:
     - pip install .
     - pip install codecov
-script:
-    - python setup.py pytest
-    - codecov
+script: python setup.py pytest
+after_script: codecov
 
 cache: pip
