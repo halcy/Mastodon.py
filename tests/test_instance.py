@@ -1,8 +1,8 @@
 import pytest
 
 @pytest.mark.vcr()
-def test_instance(mastodon):
-    instance = mastodon.instance()
+def test_instance(api):
+    instance = api.instance()
 
     assert isinstance(instance, dict)  # hehe, instance is instance
 
