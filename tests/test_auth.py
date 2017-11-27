@@ -53,6 +53,6 @@ def test_log_in_code(api_anonymous):
     pass
 
 
-@pytest.mark.skip(reason="Not supported by Mastodon 😬 (yet?)")
+@pytest.mark.skip(reason="Not supported by Mastodon >:@ (yet?)")
 def test_log_in_refresh(api_anonymous):
     pass
