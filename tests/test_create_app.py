@@ -26,15 +26,10 @@ def test_create_app(mocker, to_file=None, redirect_uris=None, website=None):
     assert app == ('foo', 'bar')
     assert requests.post.called
 
-def test_create_app_to_file(mocker):
-    import tempfile, os
-    (fd, filename) = tempfile.mkstemp(text=True)
-
-    test_create_app(mocker, to_file=filename)
-    with os.fdopen(fd) as f:
-        assert f.read() == "foo\nbar\n"
-
-    os.remove(filename)
+def test_create_app_to_file(mocker, tmpdir):
+    filepath = tmpdir.join('credentials')
+    test_create_app(mocker, to_file=str(filepath))
+    assert filepath.read_text('UTF-8') == "foo\nbar\n"
 
 def test_create_app_redirect_uris(mocker):
     test_create_app(mocker, redirect_uris='http://example.net')
