@@ -13,7 +13,7 @@ WITH new_app AS (
             'Mastodon.py test suite',
             '__MASTODON_PY_TEST_ID',
             '__MASTODON_PY_TEST_SECRET',
-            'urn:itef:wg:oauth:2.0:oob',
+            'urn:ietf:wg:oauth:2.0:oob',
             'read write follow',
             'User',
             1,
