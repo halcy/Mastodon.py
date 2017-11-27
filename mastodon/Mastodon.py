@@ -1306,7 +1306,11 @@ class Mastodon:
             def close(self):
                 self.connection.close()
 
+            def is_alive(self):
+                return self._thread.is_alive()
+
             def _threadproc(self):
+                self._thread = threading.current_thread()
                 with closing(connection) as r:
                     try:
                         listener.handle_stream(r.iter_lines())
