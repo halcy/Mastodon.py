@@ -4,8 +4,8 @@ from mastodon.Mastodon import MastodonIllegalArgumentError
 
 def test_constructor_from_filenames():
     api = Mastodon(
-            'client.credentials',
-            access_token = 'access.credentials')
+            'tests/client.credentials',
+            access_token = 'tests/access.credentials')
     assert api.client_id == 'foo'
     assert api.client_secret == 'bar'
     assert api.access_token == 'baz'
