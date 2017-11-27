@@ -28,3 +28,9 @@ def test_hashtag_tl(api):
         assert status['id'] in map(lambda st: st['id'], tl)
     finally:
         api.status_delete(status['id'])
+
+@pytest.mark.vcr()
+def test_home_tl_anonymous_throws(api_anonymous):
+    from mastodon.Mastodon import MastodonAPIError
+    with pytest.raises(MastodonAPIError):
+        tl = api_anonymous.timeline_home()
