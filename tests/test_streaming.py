@@ -1,7 +1,9 @@
 import six
 import pytest
 import itertools
-from mastodon.streaming import StreamListener, MalformedEventError
+from mastodon.streaming import StreamListener
+from mastodon.Mastodon import MastodonMalformedEventError
+
 
 
 class Listener(StreamListener):
@@ -19,6 +21,9 @@ class Listener(StreamListener):
 
     def on_delete(self, status_id):
         self.deletes.append(status_id)
+
+    def on_blahblah(self, data):
+        pass
 
     def handle_heartbeat(self):
         self.heartbeats += 1
@@ -101,7 +106,7 @@ def test_unknown_event():
 
 def test_missing_event_name():
     listener = Listener()
-    with pytest.raises(MalformedEventError):
+    with pytest.raises(MastodonMalformedEventError):
         listener.handle_stream_([
             'data: {}',
             '',
@@ -115,7 +120,7 @@ def test_missing_event_name():
 
 def test_missing_data():
     listener = Listener()
-    with pytest.raises(MalformedEventError):
+    with pytest.raises(MastodonMalformedEventError):
         listener.handle_stream_([
             'event: update',
             '',
@@ -169,7 +174,7 @@ def test_valid_utf8():
 def test_invalid_utf8():
     """Cat Face With Tears O"""
     listener = Listener()
-    with pytest.raises(MalformedEventError):
+    with pytest.raises(MastodonMalformedEventError):
         listener.handle_stream_([
             'event: update',
             'data: {"foo": "\xF0\x9F\x98"}',
