@@ -1190,7 +1190,7 @@ class Mastodon:
                     raise MastodonAPIError('Endpoint not found.')
 
                 if isinstance(response, dict) and 'error' in response:
-                    raise MastodonAPIError("Mastodon API returned error: " + str(response['error']))
+                    raise MastodonAPIError("Mastodon API returned error: " + response['error'].encode('utf-8').strip())
                 else:
                     raise MastodonAPIError('Endpoint not found.')
 
