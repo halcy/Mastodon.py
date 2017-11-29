@@ -299,7 +299,7 @@ class Mastodon:
         Returns a list of toot dicts.
         """
         if hashtag.startswith("#"):
-            throw MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
             
         if max_id != None:
             max_id = self.__unpack_id(max_id)
