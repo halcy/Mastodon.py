@@ -1,37 +1,84 @@
-WITH new_app AS (
-    INSERT INTO oauth_applications (
-            name,
-            uid,
-            secret,
-            redirect_uri,
-            scopes,
-            owner_type,
-            owner_id,
-            created_at,
-            updated_at
-        ) VALUES (
-            'Mastodon.py test suite',
-            '__MASTODON_PY_TEST_ID',
-            '__MASTODON_PY_TEST_SECRET',
-            'urn:ietf:wg:oauth:2.0:oob',
-            'read write follow',
-            'User',
-            1,
-            now(),
-            now()
-        )
-    RETURNING id
-)
+DELETE FROM oauth_access_tokens WHERE id = 6543210987654321;
+DELETE FROM oauth_access_tokens WHERE id = 1234567890123456;
+DELETE FROM oauth_applications WHERE id = 1234567890123456;
+DELETE FROM users WHERE id = 1234567890123456;
+DELETE FROM accounts WHERE id = 1234567890123456;
+
+INSERT INTO accounts (
+    id,
+    username,
+    created_at,
+    updated_at
+) VALUES (
+    1234567890123456,
+    'mastodonpy_test',
+    now(),
+    now()
+);
+
+INSERT INTO users (
+    id,
+    email,
+    account_id,
+    created_at,
+    updated_at,
+    confirmed_at,
+    locale
+) VALUES (
+    1234567890123456,
+    'mastodonpy_test@localhost:3000',
+    1234567890123456,
+    now(),
+    now(),
+    now(),
+    'ja'  -- japanese locale for unicode testing :p
+);
+
+
+
+INSERT INTO oauth_applications (
+    id,
+    name,
+    uid,
+    secret,
+    redirect_uri,
+    scopes,
+    owner_type,
+    owner_id,
+    created_at,
+    updated_at
+) VALUES (
+    1234567890123456,
+    'Mastodon.py test suite',
+    '__MASTODON_PY_TEST_CLIENT_ID',
+    '__MASTODON_PY_TEST_CLIENT_SECRET',
+    'urn:ietf:wg:oauth:2.0:oob',
+    'read write follow',
+    'User',
+    1234567890123456,
+    now(),
+    now()
+);
+
 INSERT INTO oauth_access_tokens (
+    id,
     token,
     scopes,
     application_id,
     resource_owner_id,
     created_at
-) SELECT
-    '__MASTODON_PY_TEST_TOKEN',
+) VALUES (
+    1234567890123456,
+    '__MASTODON_PY_TEST_ACCESS_TOKEN',
     'read write follow',
-    new_app.id,
+    1234567890123456,
+    1234567890123456,
+    now()
+), (
+    6543210987654321,
+    '__MASTODON_PY_TEST_ACCESS_TOKEN_2',
+    'read write follow',
+    1234567890123456,
     1,
     now()
-FROM new_app;
+);
