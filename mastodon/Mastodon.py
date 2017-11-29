@@ -291,12 +291,16 @@ class Mastodon:
 
     def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None):
         """
-        Fetch a timeline of toots with a given hashtag.
+        Fetch a timeline of toots with a given hashtag. The hashtag parameter
+        should not contain the leading #.
 
         Set "local" to True to retrieve only instance-local tagged posts.
 
         Returns a list of toot dicts.
         """
+        if hashtag.startswith("#"):
+            throw MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
+            
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
