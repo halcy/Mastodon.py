@@ -1227,7 +1227,9 @@ class Mastodon:
 
             # See if the returned dict is an error dict even though status is 200
             if isinstance(response, dict) and 'error' in response:
-                raise MastodonAPIError("Mastodon API returned error: " + str(response['error']))
+                if not isinstance(response['error'], six.string_types):
+                    response['error'] = six.text_type(response['error'])
+                raise MastodonAPIError("Mastodon API returned error: " + response['error'])
 
             # Parse link headers
             if isinstance(response, list) and \
