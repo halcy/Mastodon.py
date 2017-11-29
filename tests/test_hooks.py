@@ -7,7 +7,6 @@ def test_id_hook(status):
     assert isinstance(status['id'], int)
 
 
-@pytest.mark.xfail(reason='fixed in upstream')
 @pytest.mark.vcr()
 def test_id_hook_in_reply_to(api, status):
     reply = api.status_post('Reply!', in_reply_to_id=status['id'])
