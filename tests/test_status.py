@@ -5,7 +5,12 @@ from time import sleep
 @pytest.mark.vcr()
 def test_status(status, api):
     status2 = api.status(status['id'])
-    assert status2 == status
+    assert status2
+
+@pytest.mark.vcr()
+def test_status_empty(api):
+    with pytest.raises(MastodonAPIError):
+        api.status_post('')
 
 @pytest.mark.vcr()
 def test_status_missing(api):
