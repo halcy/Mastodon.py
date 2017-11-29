@@ -45,7 +45,7 @@ def test_toot(api):
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize('visibility', ('', 'direct', 'private', 'unlisted', 'public',
-        pytest.param('foobar', marks=pytest.mark.xfail())))
+        pytest.param('foobar', marks=pytest.mark.xfail(strict=True))))
 @pytest.mark.parametrize('spoiler_text', (None, 'Content warning'))
 def test_status_post(api, visibility, spoiler_text):
     status = api.status_post(
