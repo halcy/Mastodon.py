@@ -1,4 +1,5 @@
 import pytest
+from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError
 
 @pytest.mark.vcr()
 def test_public_tl_anonymous(api_anonymous, status):
@@ -30,8 +31,12 @@ def test_hashtag_tl(api):
     finally:
         api.status_delete(status['id'])
 
+def test_hashtag_tl_leading_hash(api):
+    with pytest.raises(MastodonIllegalArgumentError):
+        api.timeline_hashtag('#hoot')
+
+
 @pytest.mark.vcr()
 def test_home_tl_anonymous_throws(api_anonymous):
-    from mastodon.Mastodon import MastodonAPIError
     with pytest.raises(MastodonAPIError):
-        tl = api_anonymous.timeline_home()
+        api_anonymous.timeline_home()
