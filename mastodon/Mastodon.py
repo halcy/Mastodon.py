@@ -1044,6 +1044,8 @@ class Mastodon:
         a subclass of StreamListener which will receive callbacks for incoming
         events.
         """
+        if tag.startswith("#"):
+            raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
 
     ###
