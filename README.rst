@@ -49,3 +49,6 @@ You can install Mastodon.py via pypi:
 
 Full documentation and basic usage examples can be found 
 at http://mastodonpy.readthedocs.io/en/latest/ .
+
+.. image:: https://travis-ci.org/halcy/Mastodon.py.svg?branch=master
+    :target: https://travis-ci.org/halcy/Mastodon.py
