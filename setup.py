@@ -1,12 +1,18 @@
 from setuptools import setup
 
+test_deps = ['pytest', 'pytest-cov', 'vcrpy', 'pytest-vcr', 'pytest-mock']
+extras = {
+      "test": test_deps
+}
+
 setup(name='Mastodon.py',
       version='1.1.2',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       setup_requires=['pytest-runner'],
-      tests_require=['pytest'],
       install_requires=['requests', 'python-dateutil', 'six', 'pytz'],
+      tests_require=test_deps,
+      extras_require=extras,
       url='https://github.com/halcy/Mastodon.py',
       author='Lorenz Diener',
       author_email='lorenzd+mastodonpypypi@gmail.com',

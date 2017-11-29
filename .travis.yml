@@ -1,0 +1,12 @@
+language: python
+python:
+    - "3.6"
+    - "2.7"
+
+install:
+    - pip install .[test]
+    - pip install codecov
+script: python setup.py pytest
+after_script: codecov
+
+cache: pip
