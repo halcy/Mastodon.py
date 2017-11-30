@@ -52,3 +52,7 @@ at http://mastodonpy.readthedocs.io/en/latest/ .
 
 .. image:: https://travis-ci.org/halcy/Mastodon.py.svg?branch=master
     :target: https://travis-ci.org/halcy/Mastodon.py
+.. image:: https://codecov.io/gh/halcy/Mastodon.py/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/halcy/Mastodon.py
+
+
