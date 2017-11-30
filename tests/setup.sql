@@ -7,11 +7,13 @@ DELETE FROM accounts WHERE id = 1234567890123456;
 INSERT INTO accounts (
     id,
     username,
+    locked,
     created_at,
     updated_at
 ) VALUES (
     1234567890123456,
     'mastodonpy_test',
+    't',
     now(),
     now()
 );

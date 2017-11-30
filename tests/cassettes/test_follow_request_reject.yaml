@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1234567890123456/follow
+  response:
+    body: {string: '{"id":"1234567890123456","following":false,"followed_by":false,"blocking":false,"muting":false,"requested":true,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"5f0d561506d1323c3e160a377c23d7ea"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [7154cf2f-ace8-4c77-9dd8-f7de88d6dfbf]
+      X-Runtime: ['0.069936']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['136']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/follow_requests/1/reject
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"025d3164863931d5961fd059d0b0e4ee"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [941e921d-b13d-4ae9-b755-7bd5c9e7f911]
+      X-Runtime: ['0.032675']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+version: 1
