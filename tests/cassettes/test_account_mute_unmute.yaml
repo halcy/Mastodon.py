@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/mute
+  response:
+    body: {string: '{"id":"1","following":false,"followed_by":false,"blocking":false,"muting":true,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"29202955a4020108196abe86f9cd0179"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [45f28867-e291-4323-85fb-3f7a6f787a84]
+      X-Runtime: ['0.056882']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['121']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/unmute
+  response:
+    body: {string: '{"id":"1","following":false,"followed_by":false,"blocking":false,"muting":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"05e46d89ddd4fee200b318b7343c32b4"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [2e3c386a-0ec4-46d6-9473-e47d242f91ce]
+      X-Runtime: ['0.041201']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['122']
+    status: {code: 200, message: OK}
+version: 1

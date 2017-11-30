@@ -24,9 +24,9 @@ This test suite uses [VCR.py][] to record requests to Mastodon and replay them i
 
 If you want to add or change tests, you will need a Mastodon development server running on `http://localhost:3000`, with the default `admin` user and default password.
 
-It also needs a test OAuth app to be set up by applying the provided `setup_app.sql` to Mastodon's database:
+It also needs a test OAuth app and an additional test user to be set up by applying the provided `setup.sql` to Mastodon's database:
 
-    psql -d mastodon_development < tests/setup_app.sql
+    psql -d mastodon_development < tests/setup.sql
 
 Tests that send requests to Mastodon should be marked as needing VCR with the `pytest.mark.vcr` decorator.
 

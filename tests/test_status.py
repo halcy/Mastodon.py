@@ -86,6 +86,11 @@ def test_status_fav_unfav(status, api):
     status = api.status_unfavourite(status['id'])
     assert not status['favourited']
 
+@pytest.mark.vcr()
+def test_favourites(api):
+    favs = api.favourites()
+    assert isinstance(favs, list)
+
 
 @pytest.mark.vcr()
 def test_status_mute_unmute(status, api):

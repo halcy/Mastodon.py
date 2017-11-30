@@ -1,21 +1,28 @@
 import pytest
 
-@pytest.fixture
-def api():
+
+def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN'):
     import mastodon
     return mastodon.Mastodon(
             api_base_url='http://localhost:3000',
-            client_id='__MASTODON_PY_TEST_ID',
-            client_secret='__MASTODON_PY_TEST_SECRET',
-            access_token='__MASTODON_PY_TEST_TOKEN')
+            client_id='__MASTODON_PY_TEST_CLIENT_ID',
+            client_secret='__MASTODON_PY_TEST_CLIENT_SECRET',
+            access_token=access_token)
+
+
+@pytest.fixture
+def api():
+    return _api()
+
+
+@pytest.fixture
+def api2():
+    return _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN_2')
+
 
 @pytest.fixture
 def api_anonymous():
-    import mastodon
-    return mastodon.Mastodon(
-            api_base_url='http://localhost:3000',
-            client_id='__MASTODON_PY_TEST_ID',
-            client_secret='__MASTODON_PY_TEST_SECRET')
+    return _api(access_token=None)
 
 @pytest.fixture()
 def status(api):
