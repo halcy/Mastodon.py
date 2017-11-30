@@ -69,6 +69,18 @@ def test_account_mute_unmute(api):
 
 
 @pytest.mark.vcr()
+def test_mutes(api):
+    mutes = api.mutes()
+    assert isinstance(mutes, list)
+
+
+@pytest.mark.vcr()
+def test_blocks(api):
+    blocks = api.blocks()
+    assert isinstance(blocks, list)
+
+
+@pytest.mark.vcr()
 def test_account_update_credentials(api):
     import base64
     with open('tests/image.jpg', 'rb') as f:
