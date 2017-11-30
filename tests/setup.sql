@@ -1,3 +1,4 @@
+DELETE FROM settings WHERE id = 1234567890123456;
 DELETE FROM oauth_access_tokens WHERE id = 6543210987654321;
 DELETE FROM oauth_access_tokens WHERE id = 1234567890123456;
 DELETE FROM oauth_applications WHERE id = 1234567890123456;
@@ -84,3 +85,21 @@ INSERT INTO oauth_access_tokens (
     1,
     now()
 );
+
+INSERT INTO settings (
+    id,
+    var,
+    value,
+    thing_type,
+    thing_id,
+    created_at,
+    updated_at
+) VALUES (
+    1234567890123456,
+    'notification_emails',
+    E'---\nfollow_request: false',
+    'User',
+    1234567890123456,
+    now(),
+    now()
+)
