@@ -45,9 +45,9 @@ def api_version(version):
             major, minor, patch = parse_version_string(version)
             if major > self.mastodon_major:
                 raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
-            elif minor > self.mastodon_minor:
+            elif major == self.mastodon_major and minor > self.mastodon_minor:
                 raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
-            elif patch > self.mastodon_patch:
+            elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
                 raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
             return function(self, *args, **kwargs)
         function.__doc__ = function.__doc__ + "\n\n        *Minumum Mastodon version: " + version + "*"
