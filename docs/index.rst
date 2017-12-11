@@ -98,14 +98,31 @@ next page) item of the returned list as _pagination_prev and _pagination_next.
 There are convenience functions available for fetching the previous and next page of
 a paginated request as well as for fetching all pages starting from a first page.
 
-A note about IDs
-----------------
+Two notes about IDs
+-------------------
 Mastodons API uses IDs in several places: User IDs, Toot IDs, ...
 
 While debugging, it might be tempting to copy-paste in IDs from the
 web interface into your code. This will not work, as the IDs on the web
 interface and in the URLs are not the same as the IDs used internally
 in the API, so don't do that.
+
+ID unpacking
+~~~~~~~~~~~~
+Wherever Mastodon.py expects an ID as a parameter, you can also pass a
+dict that contains an id - this means that, for example, instead of saying 
+
+.. code-block:: python
+
+    mastodon.status_post("@somebody wow!", in_reply_to_id = toot["id"])
+    
+you can also just write
+
+.. code-block:: python
+
+    mastodon.status_post("@somebody wow!", in_reply_to_id = toot)
+    
+and everything will work as intended.
 
 Error handling
 --------------
@@ -376,6 +393,10 @@ calls. By default, it checks against the version of Mastodon retrieved on
 init(), or the version you specified. With these functions, you can make
 Mastodon.py re-check the server version or explicitly determine if a
 specific minimum Version is available.
+
+Note that the automatic version checks check for the version in which the
+endpoint was first added, not the version in which it was last changed. The
+latter check may be added to Mastodon.py at a later date.
 
 .. automethod:: Mastodon.retrieve_mastodon_version
 .. automethod:: Mastodon.verify_minimum_version
