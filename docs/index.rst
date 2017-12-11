@@ -369,6 +369,17 @@ is specified, Mastodon.py defaults to https.
 .. automethod:: Mastodon.log_in
 .. automethod:: Mastodon.auth_request_url
 
+Versioning
+----------
+Mastodon.py will check if a certain endpoint is available before doing API
+calls. By default, it checks against the version of Mastodon retrieved on
+init(), or the version you specified. With these functions, you can make
+Mastodon.py re-check the server version or explicitly determine if a
+specific minimum Version is available.
+
+.. automethod:: Mastodon.retrieve_mastodon_version
+.. automethod:: Mastodon.verify_minimum_version
+
 Reading data: Instances
 -----------------------
 This function allows you to fetch information associated with the
