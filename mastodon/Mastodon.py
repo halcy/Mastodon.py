@@ -18,6 +18,7 @@ import copy
 import threading
 import sys
 import six
+from decorator import decorate
 
 try:
     from urllib.parse import urlparse
@@ -25,6 +26,24 @@ except ImportError:
     from urlparse import urlparse
 
 
+"""
+Version check decorator
+"""
+def api_version(version):
+    def api_min_version_decorator(function):      
+        def wrapper(self, *args, **kwargs):
+            major, minor, patch = list(map(int, version.split(".")))
+            if major > self.mastodon_major:
+                raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
+            elif minor > self.mastodon_minor:
+                raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
+            elif patch > self.mastodon_patch:
+                raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
+            function(self, *args, **kwargs)
+        function.__doc__ = function.__doc__ + "\n\n        *Minumum Mastodon version: " + version + "*"
+        return decorate(function, wrapper)
+    return api_min_version_decorator
+        
 class Mastodon:
     """
     Super basic but thorough and easy to use Mastodon
@@ -87,7 +106,7 @@ class Mastodon:
     def __init__(self, client_id, client_secret=None, access_token=None,
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
-                 request_timeout=__DEFAULT_TIMEOUT):
+                 request_timeout=__DEFAULT_TIMEOUT, version="2.0.0"):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
@@ -108,6 +127,10 @@ class Mastodon:
 
         By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
         pass the desired timeout (in seconds) as request_timeout.
+        
+        The version parameter can be used to specify the version of Mastodon that Mastodon.py will
+        expect to be installed on the server. The function will throw an error if an unparseable 
+        Version is specified. By default, Mastodon.py assumes the latest supported version.
         """
         self.api_base_url = Mastodon.__protocolize(api_base_url)
         self.client_id = client_id
@@ -126,9 +149,14 @@ class Mastodon:
 
         self.request_timeout = request_timeout
 
+        try:
+            self.mastodon_major, self.mastodon_minor, self.mastodon_patch = list(map(int, version.split(".")))
+        except:
+            raise MastodonVersionError("Bad version specified")
+
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
-
+        
         if os.path.isfile(self.client_id):
             with open(self.client_id, 'r') as secret_file:
                 self.client_id = secret_file.readline().rstrip()
@@ -1411,6 +1439,10 @@ class Mastodon:
 class MastodonError(Exception):
     """Base class for Mastodon.py exceptions"""
 
+
+class MastodonVersionError(MastodonError):
+    """Raised when a function is called that the version of Mastodon for which
+       Mastodon.py was instantiated does not support"""
 
 class MastodonIllegalArgumentError(ValueError, MastodonError):
     """Raised when an incorrect parameter is passed to a function"""
