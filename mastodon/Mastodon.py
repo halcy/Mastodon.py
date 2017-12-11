@@ -1177,9 +1177,9 @@ class Mastodon:
     @api_version("1.1.0")
     def stream_hashtag(self, tag, listener, async=False):
         """
-        Returns all public statuses for the hashtag 'tag'. 'listener' should be
-        a subclass of StreamListener which will receive callbacks for incoming
-        events.
+        Stream for all public statuses for the hashtag 'tag' seen by the connected
+        instance. 'listener' should be a subclass of StreamListener which will receive 
+        callbacks for incoming events.
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")

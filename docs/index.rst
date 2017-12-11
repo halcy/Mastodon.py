@@ -547,7 +547,8 @@ exception is raised).
 
 If async is True, the listener will listen on another thread and these methods
 will return a handle corresponding to the open connection. The
-connection may be closed at any time by calling its close() method.
+connection may be closed at any time by calling the handles close() method, and the
+status of the connection can be verified calling is_alive() on the handle.
 
 The streaming functions take instances of `StreamListener` as a parameter.
 A `CallbackStreamListener` class that allows you to specify function callbacks 
