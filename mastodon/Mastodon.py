@@ -116,7 +116,7 @@ class Mastodon:
     def __init__(self, client_id, client_secret=None, access_token=None,
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
-                 request_timeout=__DEFAULT_TIMEOUT, mastodon_version="2.0.0"):
+                 request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
@@ -140,8 +140,8 @@ class Mastodon:
         
         The mastodon_version parameter can be used to specify the version of Mastodon that Mastodon.py will
         expect to be installed on the server. The function will throw an error if an unparseable 
-        Version is specified or if the server mastodon version is too old. If no version is specified,
-        Mastodon.py will set mastodon_version to the detected version.
+        Version is specified. If no version is specified, Mastodon.py will set mastodon_version to the 
+        detected version.
         """
         self.api_base_url = Mastodon.__protocolize(api_base_url)
         self.client_id = client_id
@@ -160,14 +160,20 @@ class Mastodon:
 
         self.request_timeout = request_timeout
 
-        try:
-            self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
-        except:
-            raise MastodonVersionError("Bad version specified")
-
+        # Versioning
+        if mastodon_version == None:
+            self.retrieve_mastodon_version()
+        else:
+            try:
+                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
+            except:
+                raise MastodonVersionError("Bad version specified")
+        
+        # Ratelimiting parameter check
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
         
+        # Token loading
         if os.path.isfile(self.client_id):
             with open(self.client_id, 'r') as secret_file:
                 self.client_id = secret_file.readline().rstrip()
@@ -184,7 +190,6 @@ class Mastodon:
         """
         Determine installed mastodon version and set major, minor and patch (not including RC info) accordingly.
         
-        
         Returns the version string, possibly including rc info.
         """
         try:
@@ -193,10 +198,25 @@ class Mastodon:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
             
-        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version)
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
         return version_str
         
+    def verify_minimum_version(self, version_str):
+        """
+        Update version info from server and verify that at least the specified version is present.
         
+        Returns True if version requirement is satisfied, False if not.
+        """
+        self.retrieve_mastodon_version()
+        major, minor, patch = parse_version_string(version_str)
+        if major > self.mastodon_major:
+            return False
+        elif major == self.mastodon_major and minor > self.mastodon_minor:
+            return False
+        elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
+            return False
+        return True
+    
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
                          scopes=['read', 'write', 'follow']):
         """Returns the url that a client needs to request the grant from the server.
