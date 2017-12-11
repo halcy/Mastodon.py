@@ -288,7 +288,7 @@ class Mastodon:
 
         Returns an instance dict.
         """
-        return self.__instance('GET', '/api/v1/instance/')
+        return self.__instance()
 
     def __instance(self):
         """
