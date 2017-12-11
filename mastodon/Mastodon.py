@@ -49,7 +49,7 @@ def api_version(version):
                 raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
             elif patch > self.mastodon_patch:
                 raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
-            function(self, *args, **kwargs)
+            return function(self, *args, **kwargs)
         function.__doc__ = function.__doc__ + "\n\n        *Minumum Mastodon version: " + version + "*"
         return decorate(function, wrapper)
     return api_min_version_decorator
