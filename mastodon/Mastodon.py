@@ -26,12 +26,23 @@ except ImportError:
     from urlparse import urlparse
 
 """
-Version check decorator
+Version check functions, including decorator and parser
 """
+def parse_version_string(version_string):
+    """Parses a semver version string, stripping off "rc" stuff if present."""
+    string_parts =  version_string.split(".")
+    version_parts = [
+        int(re.match("([0-9]*)", string_parts[0]).group(0)),
+        int(re.match("([0-9]*)", string_parts[1]).group(0)),
+        int(re.match("([0-9]*)", string_parts[2]).group(0))
+    ]
+    return version_parts
+
 def api_version(version):
+    """Version check decorator. Currently only checks Bigger Than."""
     def api_min_version_decorator(function):      
-        def wrapper(self, *args, **kwargs):
-            major, minor, patch = list(map(int, version.split(".")))
+        def wrapper(function, self, *args, **kwargs):
+            major, minor, patch = parse_version_string(version)
             if major > self.mastodon_major:
                 raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
             elif minor > self.mastodon_minor:
@@ -42,7 +53,7 @@ def api_version(version):
         function.__doc__ = function.__doc__ + "\n\n        *Minumum Mastodon version: " + version + "*"
         return decorate(function, wrapper)
     return api_min_version_decorator
-        
+      
 class Mastodon:
     """
     Super basic but thorough and easy to use Mastodon
@@ -105,7 +116,7 @@ class Mastodon:
     def __init__(self, client_id, client_secret=None, access_token=None,
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
-                 request_timeout=__DEFAULT_TIMEOUT, version="2.0.0"):
+                 request_timeout=__DEFAULT_TIMEOUT, mastodon_version="2.0.0"):
         """
         Create a new API wrapper instance based on the given client_secret and client_id. If you
         give a client_id and it is not a file, you must also give a secret.
@@ -127,9 +138,10 @@ class Mastodon:
         By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
         pass the desired timeout (in seconds) as request_timeout.
         
-        The version parameter can be used to specify the version of Mastodon that Mastodon.py will
+        The mastodon_version parameter can be used to specify the version of Mastodon that Mastodon.py will
         expect to be installed on the server. The function will throw an error if an unparseable 
-        Version is specified. By default, Mastodon.py assumes the latest supported version.
+        Version is specified or if the server mastodon version is too old. If no version is specified,
+        Mastodon.py will set mastodon_version to the detected version.
         """
         self.api_base_url = Mastodon.__protocolize(api_base_url)
         self.client_id = client_id
@@ -149,7 +161,7 @@ class Mastodon:
         self.request_timeout = request_timeout
 
         try:
-            self.mastodon_major, self.mastodon_minor, self.mastodon_patch = list(map(int, version.split(".")))
+            self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
         except:
             raise MastodonVersionError("Bad version specified")
 
@@ -167,7 +179,24 @@ class Mastodon:
         if self.access_token is not None and os.path.isfile(self.access_token):
             with open(self.access_token, 'r') as token_file:
                 self.access_token = token_file.readline().rstrip()
-
+    
+    def retrieve_mastodon_version(self):
+        """
+        Determine installed mastodon version and set major, minor and patch (not including RC info) accordingly.
+        
+        
+        Returns the version string, possibly including rc info.
+        """
+        try:
+            version_str = self.__instance()["version"]
+        except:
+            # instance() was added in 1.1.0, so our best guess is 1.0.0.
+            version_str = "1.0.0"
+            
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version)
+        return version_str
+        
+        
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
                          scopes=['read', 'write', 'follow']):
         """Returns the url that a client needs to request the grant from the server.
@@ -258,6 +287,12 @@ class Mastodon:
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
         Returns an instance dict.
+        """
+        return self.__instance('GET', '/api/v1/instance/')
+
+    def __instance(self):
+        """
+        Internal, non-version-checking helper that does the same as instance()
         """
         return self.__api_request('GET', '/api/v1/instance/')
 
@@ -1475,7 +1510,7 @@ class Mastodon:
         """Internal helper for oauth code"""
         self._refresh_token = value
         return
-
+    
     @staticmethod
     def __protocolize(base_url):
         """Internal add-protocol-to-url helper"""
