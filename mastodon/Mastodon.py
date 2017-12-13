@@ -607,6 +607,20 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
+    @api_version("2.1.0")
+    def account_lists(self, id):
+        """
+        Get all of the logged in users lists which the specified user is
+        a member of.
+        
+        TODO: This doesn't work.
+        
+        Returns a list of `list dicts`_.
+        """
+        params = self.__generate_params(locals(), ['id'])
+        url = '/api/v1/accounts/{0}/lists'.format(str(id))
+        return self.__api_request('GET', url, params)
+    
     ###
     # Reading data: Searching
     ###
