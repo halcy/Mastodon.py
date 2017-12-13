@@ -666,6 +666,25 @@ class Mastodon:
         id = self.__unpack_id(id)        
         return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
 
+    @api_version("2.1.0")
+    def list_accounts(self, id, max_id=None, since_id=None, limit=None):
+        """
+        Get the accounts that are on the given list. A `limit` of 0 can
+        be specified to get all accounts without pagination.
+        
+        Returns a list of `user dicts`_.
+        """
+        id = self.__unpack_id(id)
+        
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+        
+        params = self.__generate_params(locals(), ['id']) 
+        return self.__api_request('GET', '/api/v1/lists/{0}/accounts'.format(id))
+
     ###
     # Reading data: Mutes and Blocks
     ###
@@ -1086,6 +1105,42 @@ class Mastodon:
         id = self.__unpack_id(id)
         self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
     
+    @api_version("2.1.0")
+    def list_delete(self, id):
+        """
+        Delete a list.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
+    
+    @api_version("2.1.0")
+    def list_accounts_add(self, id, account_ids):
+        """
+        Add the account(s) given in `account_ids` to the list.
+        """
+        id = self.__unpack_id(id)
+        
+        if not isinstance(account_ids, list):
+            account_ids = [account_ids]
+        account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
+        
+        params = self.__generate_params(locals(), ['id'])        
+        return self.__api_request('POST', '/api/v1/lists/{0}/accounts'.format(id), params)
+        
+    @api_version("2.1.0")
+    def list_accounts_delete(self, id, account_ids):
+        """
+        Remove the account(s) given in `account_ids` from the list.
+        """
+        id = self.__unpack_id(id)
+        
+        if not isinstance(account_ids, list):
+            account_ids = [account_ids]
+        account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
+        
+        params = self.__generate_params(locals(), ['id'])        
+        return self.__api_request('DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
+        
     ###
     # Writing data: Reports
     ###
@@ -1099,7 +1154,11 @@ class Mastodon:
         Returns a `report dict`_.
         """
         account_id = self.__unpack_id(account_id)
-        status_ids = map(lambda x: self.__unpack_id(x), status_ids)
+        
+        if not isinstance(status_ids, list):
+            status_ids = [status_ids]
+        status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
+        
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/reports/', params)
 
