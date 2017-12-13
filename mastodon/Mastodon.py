@@ -72,16 +72,16 @@ class Mastodon:
     def create_app(client_name, scopes=['read', 'write', 'follow'], redirect_uris=None, website=None, to_file=None,
                    api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT):
         """
-        Create a new app with given client_name and scopes (read, write, follow)
+        Create a new app with given `client_name` and `scopes` (read, write, follow)
 
-        Specify redirect_uris if you want users to be redirected to a certain page after authenticating.
-        Specify to_file to persist your apps info to a file so you can use them in the constructor.
-        Specify api_base_url if you want to register an app on an instance different from the flagship one.
+        Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating.
+        Specify `to_file` to persist your apps info to a file so you can use them in the constructor.
+        Specify `api_base_url` if you want to register an app on an instance different from the flagship one.
 
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         future mastodon instances or even the flagship instance in the future.
 
-        Returns client_id and client_secret.
+        Returns `client_id` and `client_secret`, both as strings.
         """
         api_base_url = Mastodon.__protocolize(api_base_url)
 
@@ -118,13 +118,13 @@ class Mastodon:
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None):
         """
-        Create a new API wrapper instance based on the given client_secret and client_id. If you
-        give a client_id and it is not a file, you must also give a secret.
+        Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
+        give a `client_id` and it is not a file, you must also give a secret.
 
-        You can also specify an access_token, directly or as a file (as written by log_in).
+        You can also specify an `access_token`, directly or as a file (as written by `log_in()`_).
 
-        Mastodon.py can try to respect rate limits in several ways, controlled by ratelimit_method.
-        "throw" makes functions throw a MastodonRatelimitError when the rate
+        Mastodon.py can try to respect rate limits in several ways, controlled by `ratelimit_method`.
+        "throw" makes functions throw a `MastodonRatelimitError` when the rate
         limit is hit. "wait" mode will, once the limit is hit, wait and retry the request as soon
         as the rate limit resets, until it succeeds. "pace" works like throw, but tries to wait in
         between calls so that the limit is generally not hit (How hard it tries to not hit the rate
@@ -132,15 +132,15 @@ class Mastodon:
         even in "wait" and "pace" mode, requests can still fail due to network or other problems! Also
         note that "pace" and "wait" are NOT thread safe.
 
-        Specify api_base_url if you wish to talk to an instance other than the flagship one.
-        If a file is given as client_id, read client ID and secret from that file.
+        Specify `api_base_url` if you wish to talk to an instance other than the flagship one.
+        If a file is given as `client_id`, client ID and secret are read from that file.
 
         By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
-        pass the desired timeout (in seconds) as request_timeout.
+        pass the desired timeout (in seconds) as `request_timeout`.
         
-        The mastodon_version parameter can be used to specify the version of Mastodon that Mastodon.py will
+        The `mastodon_version` parameter can be used to specify the version of Mastodon that Mastodon.py will
         expect to be installed on the server. The function will throw an error if an unparseable 
-        Version is specified. If no version is specified, Mastodon.py will set mastodon_version to the 
+        Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the 
         detected version.
         """
         self.api_base_url = Mastodon.__protocolize(api_base_url)
@@ -240,21 +240,21 @@ class Mastodon:
                code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None,
                scopes=['read', 'write', 'follow'], to_file=None):
         """
-        Your username is the e-mail you use to log in into mastodon.
+        Get the access token for a user.
+        
+        The username is the e-mail used to log in into mastodon.
 
-        Can persist access token to file, to be used in the constructor.
+        Can persist access token to file `to_file`, to be used in the constructor.
 
-        Supports refresh_token but Mastodon.social doesn't implement it at the moment.
-
-        Handles password, authorization_code, and refresh_token authentication.
-
-        Will throw a MastodonIllegalArgumentError if username / password
+        Handles password and OAuth-based authorization.
+        
+        Will throw a `MastodonIllegalArgumentError` if username / password
         are wrong, scopes are not valid or granted scopes differ from requested.
 
         For OAuth2 documentation, compare
         https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
 
-        Returns the access token.
+        Returns the access token as a string.
         """
         if username is not None and password is not None:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
@@ -306,7 +306,9 @@ class Mastodon:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
-        Returns an instance dict.
+        Does not require authentication.
+
+        Returns an `instance dict`_.
         """
         return self.__instance()
 
@@ -322,13 +324,13 @@ class Mastodon:
     @api_version("1.0.0")
     def timeline(self, timeline="home", max_id=None, since_id=None, limit=None):
         """
-        Fetch statuses, most recent ones first. Timeline can be 'home', 'local', 'public',
-        or 'tag/hashtag'. See the following functions documentation for what those do.
-        Local hashtag timelines are supported via the timeline_hashtag() function.
+        Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
+        'tag/hashtag' or 'list/id'. See the following functions documentation for what those do.
+        Local hashtag timelines are supported via the `timeline_hashtag()`_ function.
         
         The default timeline is the "home" timeline.
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
@@ -349,9 +351,9 @@ class Mastodon:
     @api_version("1.0.0")
     def timeline_home(self, max_id=None, since_id=None, limit=None):
         """
-        Fetch the authenticated users home timeline (i.e. followed users and self).
+        Fetch the logged-in users home timeline (i.e. followed users and self).
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         return self.timeline('home', max_id=max_id, since_id=since_id,
                              limit=limit)
@@ -361,7 +363,7 @@ class Mastodon:
         """
         Fetches the local / instance-wide timeline, not including replies.
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         return self.timeline('local', max_id=max_id, since_id=since_id,
                              limit=limit)
@@ -371,7 +373,7 @@ class Mastodon:
         """
         Fetches the public / visible-network timeline, not including replies.
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         return self.timeline('public', max_id=max_id, since_id=since_id,
                              limit=limit)
@@ -382,9 +384,9 @@ class Mastodon:
         Fetch a timeline of toots with a given hashtag. The hashtag parameter
         should not contain the leading #.
 
-        Set "local" to True to retrieve only instance-local tagged posts.
+        Set `local` to True to retrieve only instance-local tagged posts.
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         if hashtag.startswith("#"):
             raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
@@ -405,6 +407,17 @@ class Mastodon:
         
         return self.__api_request('GET', url, params)
 
+    @api_version("2.1.0")
+    def timeline_list(self, id, max_id=None, since_id=None, limit=None):
+        """
+        Fetches a timeline containing all the toots by users in a given list.
+
+        Returns a list of `toot dicts`_.
+        """
+        id = self.__unpack_id(id)
+        return self.timeline('list/{0}'.format(id), max_id=max_id, 
+                             since_id=since_id, limit=limit)
+
     ###
     # Reading data: Statuses
     ###
@@ -413,7 +426,9 @@ class Mastodon:
         """
         Fetch information about a single toot.
 
-        Returns a toot dict.
+        Does not require authentication for publicly visible statuses.
+
+        Returns a `toot dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
@@ -425,7 +440,9 @@ class Mastodon:
         Fetch a card associated with a status. A card describes an object (such as an
         external video or link) embedded into a status.
 
-        Returns a card dict.
+        Does not require authentication for publicly visible statuses.
+
+        Returns a `card dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/card'.format(str(id))
@@ -436,7 +453,9 @@ class Mastodon:
         """
         Fetch information about ancestors and descendants of a toot.
 
-        Returns a context dict.
+        Does not require authentication for publicly visible statuses.
+
+        Returns a `context dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/context'.format(str(id))
@@ -447,7 +466,9 @@ class Mastodon:
         """
         Fetch a list of users that have reblogged a status.
 
-        Returns a list of user dicts.
+        Does not require authentication for publicly visible statuses.
+
+        Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
@@ -458,7 +479,9 @@ class Mastodon:
         """
         Fetch a list of users that have favourited a status.
 
-        Returns a list of user dicts.
+        Does not require authentication for publicly visible statuses.
+
+        Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourited_by'.format(str(id))
@@ -470,12 +493,12 @@ class Mastodon:
     @api_version("1.0.0")
     def notifications(self, id=None, max_id=None, since_id=None, limit=None):
         """
-        Fetch notifications (mentions, favourites, reblogs, follows) for the authenticated
+        Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user.
 
-        Can be passed an id to fetch a single notification.
+        Can be passed an `id` to fetch a single notification.
 
-        Returns a list of notification dicts.
+        Returns a list of `notification dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
@@ -497,9 +520,9 @@ class Mastodon:
     @api_version("1.0.0")
     def account(self, id):
         """
-        Fetch account information by user id.
+        Fetch account information by user `id`.
 
-        Returns a user dict.
+        Returns a `user dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}'.format(str(id))
@@ -508,18 +531,21 @@ class Mastodon:
     @api_version("1.0.0")
     def account_verify_credentials(self):
         """
-        Fetch authenticated user's account information.
+        Fetch logged-in user's account information.
 
-        Returns a user dict.
+        Returns a `user dict`_ (Starting from 2.1.0, with an additional "source" field).
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
     @api_version("1.0.0")
     def account_statuses(self, id, max_id=None, since_id=None, limit=None):
         """
-        Fetch statuses by user id. Same options as timeline are permitted.
+        Fetch statuses by user `id`. Same options as `timeline()`_ are permitted.
+        Returned toots are from the perspective of the logged-in user, i.e.
+        all statuses visible to the logged-in user (including DMs) are
+        included.
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         id = self.__unpack_id(id)
         if max_id != None:
@@ -537,7 +563,7 @@ class Mastodon:
         """
         Fetch users the given user is following.
 
-        Returns a list of user dicts.
+        Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
         if max_id != None:
@@ -555,7 +581,7 @@ class Mastodon:
         """
         Fetch users the given user is followed by.
 
-        Returns a list of user dicts.
+        Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
         if max_id != None:
@@ -572,9 +598,9 @@ class Mastodon:
     def account_relationships(self, id):
         """
         Fetch relationship (following, followed_by, blocking, follow requested) of 
-        the logged in user to a given account. id can be a list.
+        the logged in user to a given account. `id` can be a list.
 
-        Returns a list of relationship dicts.
+        Returns a list of `relationship dicts`_.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
@@ -587,11 +613,23 @@ class Mastodon:
         Fetch matching accounts. Will lookup an account remotely if the search term is
         in the username@domain format and not yet in the database.
 
-        Returns a list of user dicts.
+        Returns a list of `user dicts`_.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
+    @api_version("2.1.0")
+    def account_lists(self, id):
+        """
+        Get all of the logged in users lists which the specified user is
+        a member of.
+        
+        Returns a list of `list dicts`_.
+        """
+        params = self.__generate_params(locals(), ['id'])
+        url = '/api/v1/accounts/{0}/lists'.format(str(id))
+        return self.__api_request('GET', url, params)
+    
     ###
     # Reading data: Searching
     ###
@@ -601,10 +639,51 @@ class Mastodon:
         Fetch matching hashtags, accounts and statuses. Will search federated
         instances if resolve is True.
 
-        Returns a dict of lists.
+        Returns a `search result dict`_.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/search', params)
+
+    ###
+    # Reading data: Lists
+    ###
+    @api_version("2.1.0")
+    def lists(self):
+        """
+        Fetch a list of all the Lists by the logged-in user.
+        
+        Returns a list of `list dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/lists')
+
+    @api_version("2.1.0")
+    def list(self, id):
+        """
+        Fetch info about a specific list.
+        
+        Returns a `list dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
+
+    @api_version("2.1.0")
+    def list_accounts(self, id, max_id=None, since_id=None, limit=None):
+        """
+        Get the accounts that are on the given list. A `limit` of 0 can
+        be specified to get all accounts without pagination.
+        
+        Returns a list of `user dicts`_.
+        """
+        id = self.__unpack_id(id)
+        
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+        
+        params = self.__generate_params(locals(), ['id']) 
+        return self.__api_request('GET', '/api/v1/lists/{0}/accounts'.format(id))
 
     ###
     # Reading data: Mutes and Blocks
@@ -612,9 +691,9 @@ class Mastodon:
     @api_version("1.1.0")    
     def mutes(self, max_id=None, since_id=None, limit=None):
         """
-        Fetch a list of users muted by the authenticated user.
+        Fetch a list of users muted by the logged-in user.
 
-        Returns a list of user dicts.
+        Returns a list of `user dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
@@ -628,9 +707,9 @@ class Mastodon:
     @api_version("1.0.0")
     def blocks(self, max_id=None, since_id=None, limit=None):
         """
-        Fetch a list of users blocked by the authenticated user.
+        Fetch a list of users blocked by the logged-in user.
 
-        Returns a list of user dicts.
+        Returns a list of `user dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
@@ -647,12 +726,12 @@ class Mastodon:
     @api_version("1.1.0")
     def reports(self):
         """
-        Fetch a list of reports made by the authenticated user.
+        Fetch a list of reports made by the logged-in user.
 
-        Returns a list of report dicts.
+        Returns a list of `report dicts`_.
         
         Warning: According to the official API documentation, this
-        method is to be treated as not finalized as of Mastodon 2.0.0.
+        method is to be treated as not finalized as of Mastodon 2.1.0.
         """
         return self.__api_request('GET', '/api/v1/reports')
 
@@ -662,9 +741,9 @@ class Mastodon:
     @api_version("1.0.0")
     def favourites(self, max_id=None, since_id=None, limit=None):
         """
-        Fetch the authenticated user's favourited statuses.
+        Fetch the logged-in user's favourited statuses.
 
-        Returns a list of toot dicts.
+        Returns a list of `toot dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
@@ -681,9 +760,9 @@ class Mastodon:
     @api_version("1.0.0")
     def follow_requests(self, max_id=None, since_id=None, limit=None):
         """
-        Fetch the authenticated user's incoming follow requests.
+        Fetch the logged-in user's incoming follow requests.
 
-        Returns a list of user dicts.
+        Returns a list of `user dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
@@ -700,7 +779,7 @@ class Mastodon:
     @api_version("1.4.0")
     def domain_blocks(self, max_id=None, since_id=None, limit=None):
         """
-        Fetch the authenticated user's blocked domains.
+        Fetch the logged-in user's blocked domains.
 
         Returns a list of blocked domain URLs (as strings, without protocol specifier).
         """
@@ -714,6 +793,21 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
 
     ###
+    # Reading data: Emoji
+    ###
+    @api_version("2.1.0")
+    def custom_emojis(self):
+        """
+        Fetch the list of custom emoji the instance has installed.
+
+        Does not require authentication.
+
+        Returns a list of `emoji dicts`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/custom_emojis')
+
+    ###
     # Writing data: Statuses
     ###
     @api_version("1.0.0")    
@@ -721,11 +815,11 @@ class Mastodon:
                     sensitive=False, visibility='', spoiler_text=None):
         """
         Post a status. Can optionally be in reply to another status and contain
-        up to four pieces of media (Uploaded via media_post()). media_ids can
-        also be the media dicts returned by media_post - they are unpacked
+        up to four pieces of media (Uploaded via `media_post()`_). media_ids can
+        also be the `media dicts`_ returned by `media_post()`_ - they are unpacked
         automatically.
 
-        The 'sensitive' boolean decides whether or not media attached to the post
+        The `sensitive` boolean decides whether or not media attached to the post
         should be marked as sensitive, which hides it by default on the Mastodon
         web front-end.
 
@@ -741,11 +835,11 @@ class Mastodon:
         locked setting - private if the account is locked, public otherwise
         (for Mastodon versions lower than 1.6).
 
-        The spoiler_text parameter is a string to be shown as a warning before
+        The `spoiler_text` parameter is a string to be shown as a warning before
         the text of the status.  If no text is passed in, no warning will be
         displayed.
 
-        Returns a toot dict with the new status.
+        Returns a `toot dict`_ with the new status.
         """
         if in_reply_to_id != None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
@@ -781,11 +875,11 @@ class Mastodon:
     @api_version("1.0.0")
     def toot(self, status):
         """
-        Synonym for status_post that only takes the status text as input.
+        Synonym for `status_post()`_ that only takes the status text as input.
 
         Usage in production code is not recommended.
 
-        Returns a toot dict with the new status.
+        Returns a `toot dict`_ with the new status.
         """
         return self.status_post(status)
 
@@ -793,19 +887,17 @@ class Mastodon:
     def status_delete(self, id):
         """
         Delete a status
-
-        Returns an empty dict for good measure.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
-        return self.__api_request('DELETE', url)
+        self.__api_request('DELETE', url)
 
     @api_version("1.0.0")
     def status_reblog(self, id):
         """
         Reblog a status.
 
-        Returns a toot dict with a new status that wraps around the reblogged one.
+        Returns a `toot dict`_ with a new status that wraps around the reblogged one.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
@@ -816,7 +908,7 @@ class Mastodon:
         """
         Un-reblog a status.
 
-        Returns a toot dict with the status that used to be reblogged.
+        Returns a `toot dict`_ with the status that used to be reblogged.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
@@ -827,7 +919,7 @@ class Mastodon:
         """
         Favourite a status.
 
-        Returns a toot dict with the favourited status.
+        Returns a `toot dict`_ with the favourited status.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourite'.format(str(id))
@@ -838,7 +930,7 @@ class Mastodon:
         """
         Un-favourite a status.
 
-        Returns a toot dict with the un-favourited status.
+        Returns a `toot dict`_ with the un-favourited status.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
@@ -849,7 +941,7 @@ class Mastodon:
         """
         Mute notifications for a status.
 
-        Returns a toot dict with the now muted status
+        Returns a `toot dict`_ with the now muted status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/mute'.format(str(id))
@@ -860,7 +952,7 @@ class Mastodon:
         """
         Unmute notifications for a status.
 
-        Returns a toot dict with the status that used to be muted.
+        Returns a `toot dict`_ with the status that used to be muted.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unmute'.format(str(id))
@@ -874,7 +966,7 @@ class Mastodon:
         """
         Clear out a users notifications
         """
-        return self.__api_request('POST', '/api/v1/notifications/clear')
+        self.__api_request('POST', '/api/v1/notifications/clear')
 
 
     @api_version("1.3.0")
@@ -884,7 +976,7 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
-        return self.__api_request('POST', '/api/v1/notifications/dismiss', params)
+        self.__api_request('POST', '/api/v1/notifications/dismiss', params)
 
     ###
     # Writing data: Accounts
@@ -894,7 +986,7 @@ class Mastodon:
         """
         Follow a user.
 
-        Returns a relationship dict containing the updated relationship to the user.
+        Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
@@ -905,7 +997,7 @@ class Mastodon:
         """
         Follow a remote user by uri (username@domain).
 
-        Returns a user dict.
+        Returns a `user dict`_.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/follows', params)
@@ -915,7 +1007,7 @@ class Mastodon:
         """
         Unfollow a user.
 
-        Returns a relationship dict containing the updated relationship to the user.
+        Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unfollow'.format(str(id))
@@ -926,7 +1018,7 @@ class Mastodon:
         """
         Block a user.
 
-        Returns a relationship dict containing the updated relationship to the user.
+        Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/block'.format(str(id))
@@ -937,7 +1029,7 @@ class Mastodon:
         """
         Unblock a user.
 
-        Returns a relationship dict containing the updated relationship to the user.
+        Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unblock'.format(str(id))
@@ -948,7 +1040,7 @@ class Mastodon:
         """
         Mute a user.
 
-        Returns a relationship dict containing the updated relationship to the user.
+        Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/mute'.format(str(id))
@@ -959,7 +1051,7 @@ class Mastodon:
         """
         Unmute a user.
 
-        Returns a relationship dict containing the updated relationship to the user.
+        Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
@@ -969,16 +1061,78 @@ class Mastodon:
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, header=None):
         """
-        Update the profile for the currently authenticated user.
+        Update the profile for the currently logged-in user.
 
         'note' is the user's bio.
 
         'avatar' and 'header' are images encoded in base64, prepended by a content-type
         (for example: 'data:image/png;base64,iVBORw0KGgoAAAA[...]')
+        
+        Returns the updated `user dict` of the logged-in user.
         """
         params = self.__generate_params(locals())
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
 
+    ###
+    # Writing data: Lists
+    ###
+    @api_version("2.1.0")
+    def list_create(self, title):
+        """
+        Create a new list with the given `title`.
+        
+        Returns the `list dict`_ of the created list.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/lists', params)
+    
+    @api_version("2.1.0")
+    def list_update(self, id, title):
+        """
+        Update info about a list, where "info" is really the lists `title`.
+        
+        Returns the `list dict`_ of the modified list.
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('PUT', '/api/v1/lists/{0}'.format(id), params)
+    
+    @api_version("2.1.0")
+    def list_delete(self, id):
+        """
+        Delete a list.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
+    
+    @api_version("2.1.0")
+    def list_accounts_add(self, id, account_ids):
+        """
+        Add the account(s) given in `account_ids` to the list.
+        """
+        id = self.__unpack_id(id)
+        
+        if not isinstance(account_ids, list):
+            account_ids = [account_ids]
+        account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
+        
+        params = self.__generate_params(locals(), ['id'])        
+        self.__api_request('POST', '/api/v1/lists/{0}/accounts'.format(id), params)
+        
+    @api_version("2.1.0")
+    def list_accounts_delete(self, id, account_ids):
+        """
+        Remove the account(s) given in `account_ids` from the list.
+        """
+        id = self.__unpack_id(id)
+        
+        if not isinstance(account_ids, list):
+            account_ids = [account_ids]
+        account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
+        
+        params = self.__generate_params(locals(), ['id'])        
+        self.__api_request('DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
+        
     ###
     # Writing data: Reports
     ###
@@ -989,10 +1143,14 @@ class Mastodon:
 
         Accepts a list of toot IDs associated with the report, and a comment.
 
-        Returns a report dict.
+        Returns a `report dict`_.
         """
         account_id = self.__unpack_id(account_id)
-        status_ids = map(lambda x: self.__unpack_id(x), status_ids)
+        
+        if not isinstance(status_ids, list):
+            status_ids = [status_ids]
+        status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
+        
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/reports/', params)
 
@@ -1003,23 +1161,19 @@ class Mastodon:
     def follow_request_authorize(self, id):
         """
         Accept an incoming follow request.
-
-        Returns an empty dict.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
-        return self.__api_request('POST', url)
+        self.__api_request('POST', url)
 
     @api_version("1.0.0")
     def follow_request_reject(self, id):
         """
         Reject an incoming follow request.
-
-        Returns an empty dict.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/reject'.format(str(id))
-        return self.__api_request('POST', url)
+        self.__api_request('POST', url)
 
     ###
     # Writing data: Media
@@ -1027,15 +1181,15 @@ class Mastodon:
     @api_version("1.0.0")
     def media_post(self, media_file, mime_type=None, description=None):
         """
-        Post an image. media_file can either be image data or
+        Post an image. `media_file` can either be image data or
         a file name. If image data is passed directly, the mime
         type has to be specified manually, otherwise, it is
         determined from the file name.
 
-        Throws a MastodonIllegalArgumentError if the mime type of the
+        Throws a `MastodonIllegalArgumentError` if the mime type of the
         passed data or file can not be determined properly.
 
-        Returns a media dict. This contains the id that can be used in
+        Returns a `media dict`_. This contains the id that can be used in
         status_post to attach the media file to a toot.
         """
         if mime_type is None and os.path.isfile(media_file):
@@ -1065,7 +1219,7 @@ class Mastodon:
         Add a block for all statuses originating from the specified domain for the logged-in user.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('POST', '/api/v1/domain_blocks', params)
+        self.__api_request('POST', '/api/v1/domain_blocks', params)
 
     @api_version("1.4.0")
     def domain_unblock(self, domain=None):
@@ -1073,7 +1227,7 @@ class Mastodon:
         Remove a domain block for the logged-in user.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('DELETE', '/api/v1/domain_blocks', params)
+        self.__api_request('DELETE', '/api/v1/domain_blocks', params)
 
     ###
     # Pagination
@@ -1152,25 +1306,21 @@ class Mastodon:
     def stream_user(self, listener, async=False):
         """
         Streams events that are relevant to the authorized user, i.e. home
-        timeline and notifications. 'listener' should be a subclass of
-        StreamListener which will receive callbacks for incoming events.
+        timeline and notifications.
         """
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
     @api_version("1.1.0")
     def stream_public(self, listener, async=False):
         """
-        Streams public events. 'listener' should be a subclass of StreamListener
-        which will receive callbacks for incoming events.
+        Streams public events.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async)
 
     @api_version("1.1.0")
     def stream_local(self, listener, async=False):
         """
-        Streams local events. 'listener' should be a subclass of StreamListener
-        which will receive callbacks for incoming events.
-
+        Streams local public events.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async)
 
@@ -1178,13 +1328,21 @@ class Mastodon:
     def stream_hashtag(self, tag, listener, async=False):
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
-        instance. 'listener' should be a subclass of StreamListener which will receive 
-        callbacks for incoming events.
+        instance.
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
 
+    @api_version("2.1.0")
+    def stream_list(self, id, listener, async=False):
+        """
+        Stream events for the current user, restricted to accounts on the given
+        list. 
+        """
+        id =  self.__unpack_id(id)
+        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener)
+    
     ###
     # Internal helpers, dragons probably
     ###

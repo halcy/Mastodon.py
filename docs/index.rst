@@ -134,7 +134,7 @@ If you are only interested in the fact an error was raised somewhere in
 Mastodon.py, and not the details, this is the exception you can catch.
 
 `MastodonIllegalArgumentError` is generally a programming problem - you asked the 
-API to do something obviously invalid (i.e. specify a privacy scope that does
+API to do something obviously invalid (i.e. specify a privacy option that does
 not exist).
 
 `MastodonFileNotFoundError` and `MastodonNetworkError` are IO errors - could be you
@@ -156,6 +156,8 @@ and are parsed into python datetime objects.
 
 User dicts
 ~~~~~~~~~~
+.. _user dict:
+
 .. code-block:: python
 
     mastodon.account(<numerical id>)
@@ -176,10 +178,21 @@ User dicts
         'header': # URL for their header image, can be animated
         'avatar_static': # URL for their avatar, never animated
         'header_static': # URL for their header image, never animated
+        'source': # Additional information - only present for user dict returned from account_verify_credentials()
     }
 
+    mastodon.account_verify_credentials()["source"]
+    # Returns the following dictionary:
+    {
+        'privacy': # The users default visibility setting ("private", "unlisted" or "public")
+        'sensitive': # Denotes whether user media should be marked sensitive by default
+        'note': # Plain text version of the users bio
+    }
+    
 Toot dicts
 ~~~~~~~~~~
+.. _toot dict:
+
 .. code-block:: python
 
     mastodon.toot("Hello from Python")
@@ -213,6 +226,8 @@ Toot dicts
 
 Mention dicts
 ~~~~~~~~~~~~~
+.. _mention dict:
+
 .. code-block:: python
 
     {
@@ -224,6 +239,8 @@ Mention dicts
     
 Hashtag dicts
 ~~~~~~~~~~~~~
+.. _hashtag dict:
+
 .. code-block:: python
 
     {
@@ -233,6 +250,8 @@ Hashtag dicts
   
 Emoji dicts
 ~~~~~~~~~~~
+.. _emoji dict:
+
 .. code-block:: python
 
     {
@@ -243,6 +262,8 @@ Emoji dicts
     
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
+.. _relationship dict:
+
 .. code-block:: python
 
     mastodon.account_follow(<numerical id>)
@@ -259,21 +280,25 @@ Relationship dicts
 
 Notification dicts
 ~~~~~~~~~~~~~~~~~~
+.. _notification dict:
+
 .. code-block:: python
 
     mastodon.notifications()[0]
     # Returns the following dictionary:
     {
-        'id': # id of the notification.
-        'type': # "mention", "reblog", "favourite" or "follow".
-        'created_at': # The time the notification was created.
-        'account': # User dict of the user from whom the notification originates.
-        'status': # In case of "mention", the mentioning status. 
-                  # In case of reblog / favourite, the reblogged / favourited status.
+        'id': # id of the notification
+        'type': # "mention", "reblog", "favourite" or "follow"
+        'created_at': # The time the notification was created
+        'account': # User dict of the user from whom the notification originates
+        'status': # In case of "mention", the mentioning status
+                  # In case of reblog / favourite, the reblogged / favourited status
     }
 
 Context dicts
 ~~~~~~~~~~~~~
+.. _context dict:
+
 .. code-block:: python
 
     mastodon.status_context(<numerical id>)
@@ -283,8 +308,23 @@ Context dicts
         'descendants': # A list of toot dicts
     }
 
+List dicts
+~~~~~~~~~~
+.. _list dict:
+
+.. code-block:: python
+    
+    mastodon.list(<numerical id>)
+    # Returns the following dictionary:
+    {
+        'id': # id of the list
+        'title': # title of the list
+    }
+    
 Media dicts
 ~~~~~~~~~~~
+.. _media dict:
+
 .. code-block:: python
 
     mastodon.media_post("image.jpg", "image/jpeg")
@@ -309,6 +349,8 @@ Media dicts
     
 Card dicts
 ~~~~~~~~~~
+.. _card dict:
+
 .. code-block:: python
 
     mastodon.status_card(<numerical id>):
@@ -331,8 +373,24 @@ Card dicts
         'provider_url': # URL pointing to the embeds provider
     }
 
+Search result dicts
+~~~~~~~~~~~~~~~~~~~
+.. _search result dict:
+
+.. code-block:: python
+
+    mastodon.search("<query>")
+    # Returns the folowing dictionary
+    {
+        'accounts': # List of account dicts resulting from the query
+        'hashtags': # List of hashtag dicts resulting from the query
+        'statuses': # List of toot dicts resulting from the query
+    }    
+    
 Instance dicts
 ~~~~~~~~~~~~~~
+.. _instance dict:
+
 .. code-block:: python
 
     mastodon.instance()
@@ -348,6 +406,8 @@ Instance dicts
 
 Report dicts
 ~~~~~~~~~~~~
+.. _report dict:
+
 .. code-block:: python
 
     mastodon.reports()[0]
@@ -383,6 +443,7 @@ is specified, Mastodon.py defaults to https.
 
 .. automethod:: Mastodon.create_app
 .. automethod:: Mastodon.__init__
+.. _log_in():
 .. automethod:: Mastodon.log_in
 .. automethod:: Mastodon.auth_request_url
 
@@ -413,11 +474,14 @@ Reading data: Timelines
 This function allows you to access the timelines a logged in
 user could see, as well as hashtag timelines and the public timeline.
 
+.. _timeline():
 .. automethod:: Mastodon.timeline
 .. automethod:: Mastodon.timeline_home
 .. automethod:: Mastodon.timeline_local
 .. automethod:: Mastodon.timeline_public
+.. _timeline_hashtag():
 .. automethod:: Mastodon.timeline_hashtag
+.. automethod:: Mastodon.timeline_list
 
 Reading data: Statuses
 ----------------------
@@ -448,6 +512,14 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Reading data: Lists
+-------------------
+These functions allow you to view information about lists.
+
+.. automethod:: Mastodon.lists
+.. automethod:: Mastodon.list
+.. automethod:: Mastodon.list_accounts
+
 Reading data: Follows
 ---------------------
 
@@ -468,7 +540,6 @@ Reading data: Searching
 
 .. automethod:: Mastodon.search
 
-
 Reading data: Mutes and blocks
 ------------------------------
 These functions allow you to get information about accounts that are
@@ -487,11 +558,17 @@ Reading data: Domain blocks
 
 .. automethod:: Mastodon.domain_blocks
 
+Reading data: Emoji
+-------------------
+
+.. automethod:: Mastodon.custom_emojis
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
 interact with already posted statuses.
 
+.. _status_post():
 .. automethod:: Mastodon.status_post
 .. automethod:: Mastodon.toot
 .. automethod:: Mastodon.status_reblog
@@ -523,6 +600,19 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unmute
 .. automethod:: Mastodon.account_update_credentials
 
+Writing data: Lists
+-------------------
+These functions allow you to create, maintain and delete lists.
+
+When creating lists, note that (As of Mastodon 2.1.0), a user can only
+have a maximum of 50 lists.
+
+.. automethod:: Mastodon.list_create
+.. automethod:: Mastodon.list_update
+.. automethod:: Mastodon.list_delete
+.. automethod:: Mastodon.list_accounts_add
+.. automethod:: Mastodon.list_accounts_delete
+
 Writing data: Follow requests
 -----------------------------
 These functions allow you to accept or reject incoming follow requests.
@@ -535,6 +625,8 @@ Writing data: Media
 This function allows you to upload media to Mastodon. The returned
 media IDs (Up to 4 at the same time) can then be used with post_status
 to attach media to statuses.
+
+.. _media_post():
 
 .. automethod:: Mastodon.media_post
 
@@ -571,7 +663,7 @@ will return a handle corresponding to the open connection. The
 connection may be closed at any time by calling the handles close() method, and the
 status of the connection can be verified calling is_alive() on the handle.
 
-The streaming functions take instances of `StreamListener` as a parameter.
+The streaming functions take instances of `StreamListener` as the `listener` parameter.
 A `CallbackStreamListener` class that allows you to specify function callbacks 
 directly is included for convenience.
 
@@ -579,6 +671,7 @@ directly is included for convenience.
 .. automethod:: Mastodon.stream_public
 .. automethod:: Mastodon.stream_local
 .. automethod:: Mastodon.stream_hashtag
+.. automethod:: Mastodon.stream_list
 
 StreamListener
 ~~~~~~~~~~~~~~
