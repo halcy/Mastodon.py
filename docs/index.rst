@@ -585,7 +585,7 @@ will return a handle corresponding to the open connection. The
 connection may be closed at any time by calling the handles close() method, and the
 status of the connection can be verified calling is_alive() on the handle.
 
-The streaming functions take instances of `StreamListener` as a parameter.
+The streaming functions take instances of `StreamListener` as the `listener` parameter.
 A `CallbackStreamListener` class that allows you to specify function callbacks 
 directly is included for convenience.
 
@@ -593,6 +593,7 @@ directly is included for convenience.
 .. automethod:: Mastodon.stream_public
 .. automethod:: Mastodon.stream_local
 .. automethod:: Mastodon.stream_hashtag
+.. automethod:: Mastodon.stream_list
 
 StreamListener
 ~~~~~~~~~~~~~~

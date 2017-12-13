@@ -1165,25 +1165,21 @@ class Mastodon:
     def stream_user(self, listener, async=False):
         """
         Streams events that are relevant to the authorized user, i.e. home
-        timeline and notifications. 'listener' should be a subclass of
-        StreamListener which will receive callbacks for incoming events.
+        timeline and notifications.
         """
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
     @api_version("1.1.0")
     def stream_public(self, listener, async=False):
         """
-        Streams public events. 'listener' should be a subclass of StreamListener
-        which will receive callbacks for incoming events.
+        Streams public events.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async)
 
     @api_version("1.1.0")
     def stream_local(self, listener, async=False):
         """
-        Streams local events. 'listener' should be a subclass of StreamListener
-        which will receive callbacks for incoming events.
-
+        Streams local public events.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async)
 
@@ -1191,13 +1187,21 @@ class Mastodon:
     def stream_hashtag(self, tag, listener, async=False):
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
-        instance. 'listener' should be a subclass of StreamListener which will receive 
-        callbacks for incoming events.
+        instance.
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
 
+    @api_version("2.1.0")
+    def stream_list(self, id, listener, async=False):
+        """
+        Stream events for the current user, restricted to accounts on the given
+        list. 
+        """
+        id =  self.__unpack_id(id)
+        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener)
+    
     ###
     # Internal helpers, dragons probably
     ###
