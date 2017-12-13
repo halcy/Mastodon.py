@@ -180,7 +180,8 @@ User dicts
         'header': # URL for their header image, can be animated
         'avatar_static': # URL for their avatar, never animated
         'header_static': # URL for their header image, never animated
-        'source': # Additional information - only present for user dict returned from account_verify_credentials()
+        'source': # Additional information - only present for user dict returned 
+                  # from account_verify_credentials()
     }
 
     mastodon.account_verify_credentials()["source"]
@@ -223,7 +224,8 @@ Toot dicts
         'tags': # A list of hashtag used in the toot, as Hashtag dicts
         'application': # Application dict for the client used to post the toot
         'language': # The language of the toot, if specified by the server.
-        'muted': # Boolean denoting whether the user has muted this status by way of conversation muting
+        'muted': # Boolean denoting whether the user has muted this status by 
+                 # way of conversation muting
     }
 
 Mention dicts
@@ -276,8 +278,10 @@ Relationship dicts
         'followed_by': # Boolean denoting whether the specified user follows the logged-in user
         'blocking': # Boolean denoting whether the logged-in user has blocked the specified user
         'muting': # Boolean denoting whether the logged-in user has muted the specified user
-        'requested': # Boolean denoting whether the logged-in user has sent the specified user a follow request
-        'domain_blocking': # Boolean denoting whether the logged-in user has blocked the specified users domain
+        'requested': # Boolean denoting whether the logged-in user has sent the specified 
+                     # user a follow request
+        'domain_blocking': # Boolean denoting whether the logged-in user has blocked the 
+                           # specified users domain
     }
 
 Notification dicts
@@ -338,7 +342,8 @@ Media dicts
         'remote_url': # The remote URL for the media (if the image is from a remote instance)
         'preview_url': # The URL for the media preview
         'text_url': # The display text for the media (what shows up in toots)
-        'meta': # Dictionary of two image metadata dicts (see below), 'original' and 'small' (preview)
+        'meta': # Dictionary of two image metadata dicts (see below), 
+                # 'original' and 'small' (preview)
     }
     
     # Metadata dicts:
@@ -403,7 +408,8 @@ Instance dicts
         'title': # The instances title
         'uri': # The instances URL
         'version': # The instances mastodon version
-        'urls': # Additional URLs dict, presently only 'streaming_api' with the stream websocket address.
+        'urls': # Additional URLs dict, presently only 'streaming_api' with the 
+                # stream websocket address.
     }
 
 Report dicts
@@ -417,8 +423,9 @@ Report dicts
     {
         'id': # Numerical id of the report
         'action_taken': # True if a moderator or admin has processed the
-                        # report, False otherwise. Note that no indication as to what action was taken is given
-                        # and that an admin simply marking the report as processed and not doing anything else
+                        # report, False otherwise. Note that no indication as to 
+                        # what action was taken is given and that an admin simply 
+                        # marking the report as processed and not doing anything else
                         # will set this field to True.
     }
     
