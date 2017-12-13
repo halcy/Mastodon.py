@@ -42,11 +42,11 @@ network node. It has an API that allows you to interact with its
 every aspect. This is a simple python wrapper for that api, provided
 as a single python module. By default, it talks to the 
 `Mastodon flagship instance`_, but it can be set to talk to any 
-node running Mastodon by setting api_base_url when creating the
+node running Mastodon by setting `api_base_url` when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 2.0.0.
+of this time, it is feature complete for Mastodon version 2.1.0.
 
 A note about rate limits
 ------------------------
@@ -361,7 +361,7 @@ Card dicts
 .. code-block:: python
 
     mastodon.status_card(<numerical id>):
-    # Returns the folowing dictionary
+    # Returns the following dictionary
     {
         'url': # The URL of the card.
         'title': # The title of the card.
@@ -387,7 +387,7 @@ Search result dicts
 .. code-block:: python
 
     mastodon.search("<query>")
-    # Returns the folowing dictionary
+    # Returns the following dictionary
     {
         'accounts': # List of account dicts resulting from the query
         'hashtags': # List of hashtag dicts resulting from the query
@@ -401,7 +401,7 @@ Instance dicts
 .. code-block:: python
 
     mastodon.instance()
-    # Returns the folowing dictionary
+    # Returns the following dictionary
     {
         'description': # A brief instance description set by the admin
         'email': # The admin contact e-mail
@@ -419,7 +419,7 @@ Report dicts
 .. code-block:: python
 
     mastodon.reports()[0]
-    # Returns the folowing dictionary
+    # Returns the following dictionary
     {
         'id': # Numerical id of the report
         'action_taken': # True if a moderator or admin has processed the
