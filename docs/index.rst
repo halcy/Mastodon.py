@@ -340,6 +340,18 @@ Card dicts
         'provider_url': # URL pointing to the embeds provider
     }
 
+Search result dicts
+~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+    mastodon.search(...)
+    # Returns the folowing dictionary
+    {
+        'accounts': # List of account dicts resulting from the query
+        'hashtags': # List of hashtag dicts resulting from the query
+        'statuses': # List of toot dicts resulting from the query
+    }    
+    
 Instance dicts
 ~~~~~~~~~~~~~~
 .. code-block:: python

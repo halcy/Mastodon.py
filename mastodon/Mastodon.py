@@ -601,7 +601,7 @@ class Mastodon:
         Fetch matching hashtags, accounts and statuses. Will search federated
         instances if resolve is True.
 
-        Returns a dict of lists.
+        Returns a search result dict.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/search', params)
