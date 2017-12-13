@@ -512,6 +512,14 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Reading data: Lists
+-------------------
+These functions allow you to view information about lists.
+
+.. automethod:: Mastodon.lists
+.. automethod:: Mastodon.list
+.. automethod:: Mastodon.list_accounts
+
 Reading data: Follows
 ---------------------
 
@@ -531,7 +539,6 @@ Reading data: Searching
 -----------------------
 
 .. automethod:: Mastodon.search
-
 
 Reading data: Mutes and blocks
 ------------------------------
@@ -592,6 +599,19 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_mute
 .. automethod:: Mastodon.account_unmute
 .. automethod:: Mastodon.account_update_credentials
+
+Writing data: Lists
+-------------------
+These functions allow you to create, maintain and delete lists.
+
+When creating lists, note that (As of Mastodon 2.1.0), a user can only
+have a maximum of 50 lists.
+
+.. automethod:: Mastodon.list_create
+.. automethod:: Mastodon.list_update
+.. automethod:: Mastodon.list_delete
+.. automethod:: Mastodon.list_accounts_add
+.. automethod:: Mastodon.list_accounts_delete
 
 Writing data: Follow requests
 -----------------------------

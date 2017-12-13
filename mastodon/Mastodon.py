@@ -1106,14 +1106,6 @@ class Mastodon:
         self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
     
     @api_version("2.1.0")
-    def list_delete(self, id):
-        """
-        Delete a list.
-        """
-        id = self.__unpack_id(id)
-        self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
-    
-    @api_version("2.1.0")
     def list_accounts_add(self, id, account_ids):
         """
         Add the account(s) given in `account_ids` to the list.
@@ -1125,7 +1117,7 @@ class Mastodon:
         account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
         
         params = self.__generate_params(locals(), ['id'])        
-        return self.__api_request('POST', '/api/v1/lists/{0}/accounts'.format(id), params)
+        self.__api_request('POST', '/api/v1/lists/{0}/accounts'.format(id), params)
         
     @api_version("2.1.0")
     def list_accounts_delete(self, id, account_ids):
@@ -1139,7 +1131,7 @@ class Mastodon:
         account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
         
         params = self.__generate_params(locals(), ['id'])        
-        return self.__api_request('DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
+        self.__api_request('DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
         
     ###
     # Writing data: Reports
