@@ -156,6 +156,8 @@ and are parsed into python datetime objects.
 
 User dicts
 ~~~~~~~~~~
+.. _user dict:
+
 .. code-block:: python
 
     mastodon.account(<numerical id>)
@@ -189,6 +191,8 @@ User dicts
     
 Toot dicts
 ~~~~~~~~~~
+.. _toot dict:
+
 .. code-block:: python
 
     mastodon.toot("Hello from Python")
@@ -222,6 +226,8 @@ Toot dicts
 
 Mention dicts
 ~~~~~~~~~~~~~
+.. _mention dict:
+
 .. code-block:: python
 
     {
@@ -233,6 +239,8 @@ Mention dicts
     
 Hashtag dicts
 ~~~~~~~~~~~~~
+.. _hashtag dict:
+
 .. code-block:: python
 
     {
@@ -242,6 +250,8 @@ Hashtag dicts
   
 Emoji dicts
 ~~~~~~~~~~~
+.. _emoji dict:
+
 .. code-block:: python
 
     {
@@ -252,6 +262,8 @@ Emoji dicts
     
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
+.. _relationship dict:
+
 .. code-block:: python
 
     mastodon.account_follow(<numerical id>)
@@ -268,6 +280,8 @@ Relationship dicts
 
 Notification dicts
 ~~~~~~~~~~~~~~~~~~
+.. _notification dict:
+
 .. code-block:: python
 
     mastodon.notifications()[0]
@@ -283,6 +297,8 @@ Notification dicts
 
 Context dicts
 ~~~~~~~~~~~~~
+.. _context dict:
+
 .. code-block:: python
 
     mastodon.status_context(<numerical id>)
@@ -294,6 +310,8 @@ Context dicts
 
 Media dicts
 ~~~~~~~~~~~
+.. _media dict:
+
 .. code-block:: python
 
     mastodon.media_post("image.jpg", "image/jpeg")
@@ -318,6 +336,8 @@ Media dicts
     
 Card dicts
 ~~~~~~~~~~
+.. _card dict:
+
 .. code-block:: python
 
     mastodon.status_card(<numerical id>):
@@ -342,9 +362,11 @@ Card dicts
 
 Search result dicts
 ~~~~~~~~~~~~~~~~~~~
+.. _search result dict:
+
 .. code-block:: python
 
-    mastodon.search(...)
+    mastodon.search("<query>")
     # Returns the folowing dictionary
     {
         'accounts': # List of account dicts resulting from the query
@@ -354,6 +376,8 @@ Search result dicts
     
 Instance dicts
 ~~~~~~~~~~~~~~
+.. _instance dict:
+
 .. code-block:: python
 
     mastodon.instance()
@@ -369,6 +393,8 @@ Instance dicts
 
 Report dicts
 ~~~~~~~~~~~~
+.. _report dict:
+
 .. code-block:: python
 
     mastodon.reports()[0]
@@ -404,6 +430,7 @@ is specified, Mastodon.py defaults to https.
 
 .. automethod:: Mastodon.create_app
 .. automethod:: Mastodon.__init__
+.. _log_in():
 .. automethod:: Mastodon.log_in
 .. automethod:: Mastodon.auth_request_url
 
@@ -434,10 +461,12 @@ Reading data: Timelines
 This function allows you to access the timelines a logged in
 user could see, as well as hashtag timelines and the public timeline.
 
+.. _timeline():
 .. automethod:: Mastodon.timeline
 .. automethod:: Mastodon.timeline_home
 .. automethod:: Mastodon.timeline_local
 .. automethod:: Mastodon.timeline_public
+.. _timeline_hashtag():
 .. automethod:: Mastodon.timeline_hashtag
 
 Reading data: Statuses
@@ -518,6 +547,7 @@ Writing data: Statuses
 These functions allow you to post statuses to Mastodon and to
 interact with already posted statuses.
 
+.. _status_post():
 .. automethod:: Mastodon.status_post
 .. automethod:: Mastodon.toot
 .. automethod:: Mastodon.status_reblog
@@ -561,6 +591,8 @@ Writing data: Media
 This function allows you to upload media to Mastodon. The returned
 media IDs (Up to 4 at the same time) can then be used with post_status
 to attach media to statuses.
+
+.. _media_post():
 
 .. automethod:: Mastodon.media_post
 
