@@ -56,7 +56,7 @@ Mastodon.py has three modes for dealing with rate limiting that you can pass to
 the constructor, "throw", "wait" and "pace", "wait" being the default.
 
 In "throw" mode, Mastodon.py makes no attempt to stick to rate limits. When
-a request hits the rate limit, it simply throws a MastodonRateLimitError. This is
+a request hits the rate limit, it simply throws a `MastodonRateLimitError`. This is
 for applications that need to handle all rate limiting themselves (i.e. interactive apps), 
 or applications wanting to use Mastodon.py in a multi-threaded context ("wait" and "pace" 
 modes are not thread safe).
@@ -147,6 +147,8 @@ does not exist).
 
 `MastodonRatelimitError` is raised when you hit an API rate limit. You should try 
 again after a while (see the rate limiting section above).
+
+`MastodonVersionError` is raised when a version check for an API call fails.
 
 Return values
 -------------
@@ -451,13 +453,14 @@ Versioning
 ----------
 Mastodon.py will check if a certain endpoint is available before doing API
 calls. By default, it checks against the version of Mastodon retrieved on
-init(), or the version you specified. With these functions, you can make
-Mastodon.py re-check the server version or explicitly determine if a
-specific minimum Version is available.
+init(), or the version you specified. Mastodon.py can be set (in the 
+constructor) to either check if an endpoint is available at all or to check 
+if the endpoint is available and behaves as in the newest Mastodon version 
+(this is the default). Version checking can also be disabled altogether.
+If a version check fails, Mastodon.py throws a `MastodonVersionError`.
 
-Note that the automatic version checks check for the version in which the
-endpoint was first added, not the version in which it was last changed. The
-latter check may be added to Mastodon.py at a later date.
+With the following functions, you can make Mastodon.py re-check the server 
+version or explicitly determine if a specific minimum Version is available.
 
 .. automethod:: Mastodon.retrieve_mastodon_version
 .. automethod:: Mastodon.verify_minimum_version

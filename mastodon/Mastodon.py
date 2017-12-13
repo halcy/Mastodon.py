@@ -38,19 +38,24 @@ def parse_version_string(version_string):
     ]
     return version_parts
 
-def api_version(version):
+def api_version(created_ver, last_changed_ver):
     """Version check decorator. Currently only checks Bigger Than."""
     def api_min_version_decorator(function):      
         def wrapper(function, self, *args, **kwargs):
+            if not self.version_check_mode == "none":
+                if self.version_check_mode == "created":
+                    version = created_version
+                else:
+                    version = last_changed_ver
             major, minor, patch = parse_version_string(version)
             if major > self.mastodon_major:
-                raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
+                raise MastodonVersionError("Version check failed (Need version " + version + ")")
             elif major == self.mastodon_major and minor > self.mastodon_minor:
-                raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
+                raise MastodonVersionError("Version check failed (Need version " + version + ")")
             elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-                raise MastodonVersionError("Specified version does not support this API endpoint (Available from " + version + ")")
+                raise MastodonVersionError("Version check failed (Need version " + version + ")")
             return function(self, *args, **kwargs)
-        function.__doc__ = function.__doc__ + "\n\n        *Minumum Mastodon version: " + version + "*"
+        function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
         return decorate(function, wrapper)
     return api_min_version_decorator
       
@@ -116,7 +121,8 @@ class Mastodon:
     def __init__(self, client_id, client_secret=None, access_token=None,
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
-                 request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None):
+                 request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
+                 version_check_mode = "changed"):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret.
@@ -142,6 +148,12 @@ class Mastodon:
         expect to be installed on the server. The function will throw an error if an unparseable 
         Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the 
         detected version.
+        
+        The version check mode can be set to "created", "changed" (the default behaviour) or "none". If set to 
+        "created", Mastodon.py will throw an error if the version of Mastodon it is connected to is too old
+        to have an endpoint. If it is set to "changed", it will throw an error if the endpoints behaviour has
+        changed after the version of Mastodon that is connected has been released. If it is set to "none",
+        version checking is disabled.
         """
         self.api_base_url = Mastodon.__protocolize(api_base_url)
         self.client_id = client_id
@@ -168,6 +180,10 @@ class Mastodon:
                 self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
             except:
                 raise MastodonVersionError("Bad version specified")
+        
+        if not version_check_mode in ["created", "changed", "none"]:
+            raise MastodonIllegalArgumentError("Invalid version check method.")
+        self.version_check_mode = version_check_mode
         
         # Ratelimiting parameter check
         if ratelimit_method not in ["throw", "wait", "pace"]:
@@ -301,7 +317,7 @@ class Mastodon:
     ###
     # Reading data: Instances
     ###
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.4.2")
     def instance(self):
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
@@ -321,7 +337,7 @@ class Mastodon:
     ###
     # Reading data: Timelines
     ##
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def timeline(self, timeline="home", max_id=None, since_id=None, limit=None):
         """
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
@@ -348,7 +364,7 @@ class Mastodon:
         url = '/api/v1/timelines/{0}'.format(timeline)
         return self.__api_request('GET', url, params)
     
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def timeline_home(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in users home timeline (i.e. followed users and self).
@@ -358,7 +374,7 @@ class Mastodon:
         return self.timeline('home', max_id=max_id, since_id=since_id,
                              limit=limit)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def timeline_local(self, max_id=None, since_id=None, limit=None):
         """
         Fetches the local / instance-wide timeline, not including replies.
@@ -368,7 +384,7 @@ class Mastodon:
         return self.timeline('local', max_id=max_id, since_id=since_id,
                              limit=limit)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def timeline_public(self, max_id=None, since_id=None, limit=None):
         """
         Fetches the public / visible-network timeline, not including replies.
@@ -378,7 +394,7 @@ class Mastodon:
         return self.timeline('public', max_id=max_id, since_id=since_id,
                              limit=limit)
 
-    @api_version("1.0.0")    
+    @api_version("1.0.0", "2.0.0")    
     def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None):
         """
         Fetch a timeline of toots with a given hashtag. The hashtag parameter
@@ -407,7 +423,7 @@ class Mastodon:
         
         return self.__api_request('GET', url, params)
 
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def timeline_list(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetches a timeline containing all the toots by users in a given list.
@@ -421,7 +437,7 @@ class Mastodon:
     ###
     # Reading data: Statuses
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def status(self, id):
         """
         Fetch information about a single toot.
@@ -434,7 +450,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def status_card(self, id):
         """
         Fetch a card associated with a status. A card describes an object (such as an
@@ -448,7 +464,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/card'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def status_context(self, id):
         """
         Fetch information about ancestors and descendants of a toot.
@@ -461,7 +477,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/context'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def status_reblogged_by(self, id):
         """
         Fetch a list of users that have reblogged a status.
@@ -474,7 +490,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def status_favourited_by(self, id):
         """
         Fetch a list of users that have favourited a status.
@@ -490,7 +506,7 @@ class Mastodon:
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def notifications(self, id=None, max_id=None, since_id=None, limit=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
@@ -517,7 +533,7 @@ class Mastodon:
     ###
     # Reading data: Accounts
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def account(self, id):
         """
         Fetch account information by user `id`.
@@ -528,7 +544,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}'.format(str(id))
         return self.__api_request('GET', url)
     
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.5.0")
     def account_verify_credentials(self):
         """
         Fetch logged-in user's account information.
@@ -537,13 +553,17 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
-    @api_version("1.0.0")
-    def account_statuses(self, id, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.0.0")
+    def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, max_id=None, since_id=None, limit=None):
         """
         Fetch statuses by user `id`. Same options as `timeline()`_ are permitted.
         Returned toots are from the perspective of the logged-in user, i.e.
         all statuses visible to the logged-in user (including DMs) are
         included.
+
+        If `only_media` is set, return only statuses with media attachments.
+        If `pinned` is set, return only statuses that have been pinned.
+        If `exclude_replies` is set, filter out all statuses that are replies.
 
         Returns a list of `toot dicts`_.
         """
@@ -558,7 +578,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def account_following(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is following.
@@ -576,7 +596,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/following'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def account_followers(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is followed by.
@@ -594,7 +614,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/followers'.format(str(id))
         return self.__api_request('GET', url, params)
     
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.4.0")
     def account_relationships(self, id):
         """
         Fetch relationship (following, followed_by, blocking, follow requested) of 
@@ -607,7 +627,7 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def account_search(self, q, limit=None):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
@@ -618,7 +638,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def account_lists(self, id):
         """
         Get all of the logged in users lists which the specified user is
@@ -633,7 +653,7 @@ class Mastodon:
     ###
     # Reading data: Searching
     ###
-    @api_version("1.1.0")
+    @api_version("1.1.0", "2.1.0")
     def search(self, q, resolve=False):
         """
         Fetch matching hashtags, accounts and statuses. Will search federated
@@ -647,7 +667,7 @@ class Mastodon:
     ###
     # Reading data: Lists
     ###
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def lists(self):
         """
         Fetch a list of all the Lists by the logged-in user.
@@ -656,7 +676,7 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/lists')
 
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list(self, id):
         """
         Fetch info about a specific list.
@@ -666,7 +686,7 @@ class Mastodon:
         id = self.__unpack_id(id)        
         return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
 
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list_accounts(self, id, max_id=None, since_id=None, limit=None):
         """
         Get the accounts that are on the given list. A `limit` of 0 can
@@ -688,7 +708,7 @@ class Mastodon:
     ###
     # Reading data: Mutes and Blocks
     ###
-    @api_version("1.1.0")    
+    @api_version("1.1.0", "1.1.0")    
     def mutes(self, max_id=None, since_id=None, limit=None):
         """
         Fetch a list of users muted by the logged-in user.
@@ -704,7 +724,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def blocks(self, max_id=None, since_id=None, limit=None):
         """
         Fetch a list of users blocked by the logged-in user.
@@ -723,7 +743,7 @@ class Mastodon:
     ###
     # Reading data: Reports
     ###
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.1.0")
     def reports(self):
         """
         Fetch a list of reports made by the logged-in user.
@@ -738,7 +758,7 @@ class Mastodon:
     ###
     # Reading data: Favourites
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def favourites(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's favourited statuses.
@@ -757,7 +777,7 @@ class Mastodon:
     ###
     # Reading data: Follow requests
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def follow_requests(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's incoming follow requests.
@@ -776,7 +796,7 @@ class Mastodon:
     ###
     # Reading data: Domain blocks
     ###
-    @api_version("1.4.0")
+    @api_version("1.4.0", "1.4.0")
     def domain_blocks(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's blocked domains.
@@ -795,7 +815,7 @@ class Mastodon:
     ###
     # Reading data: Emoji
     ###
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def custom_emojis(self):
         """
         Fetch the list of custom emoji the instance has installed.
@@ -810,7 +830,7 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0")    
+    @api_version("1.0.0", "2.0.0")    
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility='', spoiler_text=None):
         """
@@ -872,7 +892,7 @@ class Mastodon:
         params = self.__generate_params(params_initial)
         return self.__api_request('POST', '/api/v1/statuses', params)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def toot(self, status):
         """
         Synonym for `status_post()`_ that only takes the status text as input.
@@ -883,7 +903,7 @@ class Mastodon:
         """
         return self.status_post(status)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def status_delete(self, id):
         """
         Delete a status
@@ -892,7 +912,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}'.format(str(id))
         self.__api_request('DELETE', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def status_reblog(self, id):
         """
         Reblog a status.
@@ -903,7 +923,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def status_unreblog(self, id):
         """
         Un-reblog a status.
@@ -914,7 +934,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def status_favourite(self, id):
         """
         Favourite a status.
@@ -925,7 +945,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/favourite'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def status_unfavourite(self, id):
         """
         Un-favourite a status.
@@ -936,7 +956,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
         return self.__api_request('POST', url)
     
-    @api_version("1.4.0")
+    @api_version("1.4.0", "2.0.0")
     def status_mute(self, id):
         """
         Mute notifications for a status.
@@ -947,7 +967,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/mute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.4.0")
+    @api_version("1.4.0", "2.0.0")
     def status_unmute(self, id):
         """
         Unmute notifications for a status.
@@ -961,7 +981,7 @@ class Mastodon:
     ###
     # Writing data: Notifications
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def notifications_clear(self):
         """
         Clear out a users notifications
@@ -969,7 +989,7 @@ class Mastodon:
         self.__api_request('POST', '/api/v1/notifications/clear')
 
 
-    @api_version("1.3.0")
+    @api_version("1.3.0", "1.3.0")
     def notifications_dismiss(self, id):
         """
         Deletes a single notification
@@ -981,7 +1001,7 @@ class Mastodon:
     ###
     # Writing data: Accounts
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.4.0")
     def account_follow(self, id):
         """
         Follow a user.
@@ -992,7 +1012,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def follows(self, uri):
         """
         Follow a remote user by uri (username@domain).
@@ -1002,7 +1022,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/follows', params)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.4.0")
     def account_unfollow(self, id):
         """
         Unfollow a user.
@@ -1013,7 +1033,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unfollow'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.4.0")
     def account_block(self, id):
         """
         Block a user.
@@ -1024,7 +1044,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/block'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.4.0")
     def account_unblock(self, id):
         """
         Unblock a user.
@@ -1035,7 +1055,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unblock'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.4.0")
     def account_mute(self, id):
         """
         Mute a user.
@@ -1046,7 +1066,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/mute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.4.0")
     def account_unmute(self, id):
         """
         Unmute a user.
@@ -1057,7 +1077,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1")
+    @api_version("1.1.1", "1.6.0")
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, header=None):
         """
@@ -1076,7 +1096,7 @@ class Mastodon:
     ###
     # Writing data: Lists
     ###
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list_create(self, title):
         """
         Create a new list with the given `title`.
@@ -1086,7 +1106,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/lists', params)
     
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list_update(self, id, title):
         """
         Update info about a list, where "info" is really the lists `title`.
@@ -1097,7 +1117,7 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('PUT', '/api/v1/lists/{0}'.format(id), params)
     
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list_delete(self, id):
         """
         Delete a list.
@@ -1105,7 +1125,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
     
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list_accounts_add(self, id, account_ids):
         """
         Add the account(s) given in `account_ids` to the list.
@@ -1119,7 +1139,7 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])        
         self.__api_request('POST', '/api/v1/lists/{0}/accounts'.format(id), params)
         
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def list_accounts_delete(self, id, account_ids):
         """
         Remove the account(s) given in `account_ids` from the list.
@@ -1136,7 +1156,7 @@ class Mastodon:
     ###
     # Writing data: Reports
     ###
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.1.0")
     def report(self, account_id, status_ids, comment):
         """
         Report statuses to the instances administrators.
@@ -1157,7 +1177,7 @@ class Mastodon:
     ###
     # Writing data: Follow requests
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def follow_request_authorize(self, id):
         """
         Accept an incoming follow request.
@@ -1166,7 +1186,7 @@ class Mastodon:
         url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
         self.__api_request('POST', url)
 
-    @api_version("1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def follow_request_reject(self, id):
         """
         Reject an incoming follow request.
@@ -1178,7 +1198,7 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0")
+    @api_version("1.0.0", "2.0.0")
     def media_post(self, media_file, mime_type=None, description=None):
         """
         Post an image. `media_file` can either be image data or
@@ -1213,7 +1233,7 @@ class Mastodon:
     ###
     # Writing data: Domain blocks
     ###
-    @api_version("1.4.0")
+    @api_version("1.4.0", "1.4.0")
     def domain_block(self, domain=None):
         """
         Add a block for all statuses originating from the specified domain for the logged-in user.
@@ -1221,7 +1241,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         self.__api_request('POST', '/api/v1/domain_blocks', params)
 
-    @api_version("1.4.0")
+    @api_version("1.4.0", "1.4.0")
     def domain_unblock(self, domain=None):
         """
         Remove a domain block for the logged-in user.
@@ -1302,7 +1322,7 @@ class Mastodon:
     ###
     # Streaming
     ###
-    @api_version("1.1.0")    
+    @api_version("1.1.0", "1.4.2")    
     def stream_user(self, listener, async=False):
         """
         Streams events that are relevant to the authorized user, i.e. home
@@ -1310,21 +1330,21 @@ class Mastodon:
         """
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.4.2")
     def stream_public(self, listener, async=False):
         """
         Streams public events.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async)
 
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.4.2")
     def stream_local(self, listener, async=False):
         """
         Streams local public events.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async)
 
-    @api_version("1.1.0")
+    @api_version("1.1.0", "1.4.2")
     def stream_hashtag(self, tag, listener, async=False):
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
@@ -1334,7 +1354,7 @@ class Mastodon:
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
 
-    @api_version("2.1.0")
+    @api_version("2.1.0", "2.1.0")
     def stream_list(self, id, listener, async=False):
         """
         Stream events for the current user, restricted to accounts on the given
@@ -1705,7 +1725,6 @@ class Mastodon:
 ##
 class MastodonError(Exception):
     """Base class for Mastodon.py exceptions"""
-
 
 class MastodonVersionError(MastodonError):
     """Raised when a function is called that the version of Mastodon for which
