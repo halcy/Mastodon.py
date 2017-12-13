@@ -607,6 +607,18 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/search', params)
 
     ###
+    # Reading data: Lists
+    ###
+    @api_version("2.1.0")
+    def lists(self):
+        """
+        Fetch a list of all the Lists by the logged-in user.
+        
+        Returns a list of list dicts.
+        """
+        return self.__api_request('GET', '/api/v1/lists')
+
+    ###
     # Reading data: Mutes and Blocks
     ###
     @api_version("1.1.0")    
