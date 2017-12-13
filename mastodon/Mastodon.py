@@ -510,7 +510,7 @@ class Mastodon:
         """
         Fetch authenticated user's account information.
 
-        Returns a user dict.
+        Returns a user dict (Starting from 2.1.0, with an additional "source" field).
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 

@@ -134,7 +134,7 @@ If you are only interested in the fact an error was raised somewhere in
 Mastodon.py, and not the details, this is the exception you can catch.
 
 `MastodonIllegalArgumentError` is generally a programming problem - you asked the 
-API to do something obviously invalid (i.e. specify a privacy scope that does
+API to do something obviously invalid (i.e. specify a privacy option that does
 not exist).
 
 `MastodonFileNotFoundError` and `MastodonNetworkError` are IO errors - could be you
@@ -176,8 +176,17 @@ User dicts
         'header': # URL for their header image, can be animated
         'avatar_static': # URL for their avatar, never animated
         'header_static': # URL for their header image, never animated
+        'source': # Additional information - only present for user dict returned from account_verify_credentials()
     }
 
+    mastodon.account_verify_credentials()["source"]
+    # Returns the following dictionary:
+    {
+        'privacy': # The users default visibility setting ("private", "unlisted" or "public")
+        'sensitive': # Denotes whether user media should be marked sensitive by default
+        'note': # Plain text version of the users bio
+    }
+    
 Toot dicts
 ~~~~~~~~~~
 .. code-block:: python
