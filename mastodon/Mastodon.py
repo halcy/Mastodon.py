@@ -714,6 +714,19 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
 
     ###
+    # Reading data: Emoji
+    ###
+    @api_version("2.1.0")
+    def custom_emojis(self):
+        """
+        Fetch the list of custom emoji the instance has installed.
+
+        Returns a list of emoji dicts.
+        
+        """
+        return self.__api_request('GET', '/api/v1/custom_emojis')
+
+    ###
     # Writing data: Statuses
     ###
     @api_version("1.0.0")    

@@ -496,6 +496,11 @@ Reading data: Domain blocks
 
 .. automethod:: Mastodon.domain_blocks
 
+Reading data: Emoji
+-------------------
+
+.. automethod:: Mastodon.custom_emojis
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
