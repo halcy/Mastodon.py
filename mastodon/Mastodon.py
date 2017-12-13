@@ -69,7 +69,8 @@ class Mastodon:
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
-
+    __SUPPORTED_MASTODON_VERSION = "2.1.0"
+    
     ###
     # Registering apps
     ###
