@@ -306,6 +306,8 @@ class Mastodon:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
+        Does not require authentication.
+
         Returns an `instance dict`_.
         """
         return self.__instance()
@@ -413,6 +415,8 @@ class Mastodon:
         """
         Fetch information about a single toot.
 
+        Does not require authentication for publicly visible statuses.
+
         Returns a `toot dict`_.
         """
         id = self.__unpack_id(id)
@@ -425,6 +429,8 @@ class Mastodon:
         Fetch a card associated with a status. A card describes an object (such as an
         external video or link) embedded into a status.
 
+        Does not require authentication for publicly visible statuses.
+
         Returns a `card dict`_.
         """
         id = self.__unpack_id(id)
@@ -435,6 +441,8 @@ class Mastodon:
     def status_context(self, id):
         """
         Fetch information about ancestors and descendants of a toot.
+
+        Does not require authentication for publicly visible statuses.
 
         Returns a `context dict`_.
         """
@@ -447,6 +455,8 @@ class Mastodon:
         """
         Fetch a list of users that have reblogged a status.
 
+        Does not require authentication for publicly visible statuses.
+
         Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
@@ -457,6 +467,8 @@ class Mastodon:
     def status_favourited_by(self, id):
         """
         Fetch a list of users that have favourited a status.
+
+        Does not require authentication for publicly visible statuses.
 
         Returns a list of `user dicts`_.
         """
@@ -735,6 +747,8 @@ class Mastodon:
     def custom_emojis(self):
         """
         Fetch the list of custom emoji the instance has installed.
+
+        Does not require authentication.
 
         Returns a list of `emoji dicts`_.
         
