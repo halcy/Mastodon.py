@@ -287,12 +287,12 @@ Notification dicts
     mastodon.notifications()[0]
     # Returns the following dictionary:
     {
-        'id': # id of the notification.
-        'type': # "mention", "reblog", "favourite" or "follow".
-        'created_at': # The time the notification was created.
-        'account': # User dict of the user from whom the notification originates.
-        'status': # In case of "mention", the mentioning status. 
-                  # In case of reblog / favourite, the reblogged / favourited status.
+        'id': # id of the notification
+        'type': # "mention", "reblog", "favourite" or "follow"
+        'created_at': # The time the notification was created
+        'account': # User dict of the user from whom the notification originates
+        'status': # In case of "mention", the mentioning status
+                  # In case of reblog / favourite, the reblogged / favourited status
     }
 
 Context dicts
@@ -308,6 +308,19 @@ Context dicts
         'descendants': # A list of toot dicts
     }
 
+List dicts
+~~~~~~~~~~
+.. _list dict:
+
+.. code-block:: python
+    
+    mastodon.list(<numerical id>)
+    # Returns the following dictionary:
+    {
+        'id': # id of the list
+        'title': # title of the list
+    }
+    
 Media dicts
 ~~~~~~~~~~~
 .. _media dict:
@@ -468,6 +481,7 @@ user could see, as well as hashtag timelines and the public timeline.
 .. automethod:: Mastodon.timeline_public
 .. _timeline_hashtag():
 .. automethod:: Mastodon.timeline_hashtag
+.. automethod:: Mastodon.timeline_list
 
 Reading data: Statuses
 ----------------------

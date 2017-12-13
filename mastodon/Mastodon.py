@@ -325,7 +325,7 @@ class Mastodon:
     def timeline(self, timeline="home", max_id=None, since_id=None, limit=None):
         """
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
-        or 'tag/hashtag'. See the following functions documentation for what those do.
+        'tag/hashtag' or 'list/id'. See the following functions documentation for what those do.
         Local hashtag timelines are supported via the `timeline_hashtag()`_ function.
         
         The default timeline is the "home" timeline.
@@ -406,6 +406,17 @@ class Mastodon:
         params = self.__generate_params(params_initial, ['hashtag'])
         
         return self.__api_request('GET', url, params)
+
+    @api_version("2.1.0")
+    def timeline_list(self, id, max_id=None, since_id=None, limit=None):
+        """
+        Fetches a timeline containing all the toots by users in a given list.
+
+        Returns a list of `toot dicts`_.
+        """
+        id = self.__unpack_id(id)
+        return self.timeline('list/{0}'.format(id), max_id=max_id, 
+                             since_id=since_id, limit=limit)
 
     ###
     # Reading data: Statuses
@@ -613,8 +624,6 @@ class Mastodon:
         Get all of the logged in users lists which the specified user is
         a member of.
         
-        TODO: This doesn't work.
-        
         Returns a list of `list dicts`_.
         """
         params = self.__generate_params(locals(), ['id'])
@@ -646,6 +655,16 @@ class Mastodon:
         Returns a list of `list dicts`_.
         """
         return self.__api_request('GET', '/api/v1/lists')
+
+    @api_version("2.1.0")
+    def list(self, id):
+        """
+        Fetch info about a specific list.
+        
+        Returns a `list dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
 
     ###
     # Reading data: Mutes and Blocks
@@ -1035,6 +1054,38 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
 
+    ###
+    # Writing data: Lists
+    ###
+    @api_version("2.1.0")
+    def list_create(self, title):
+        """
+        Create a new list with the given `title`.
+        
+        Returns the `list dict`_ of the created list.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/lists', params)
+    
+    @api_version("2.1.0")
+    def list_update(self, id, title):
+        """
+        Update info about a list, where "info" is really the lists `title`.
+        
+        Returns the `list dict`_ of the modified list.
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('PUT', '/api/v1/lists/{0}'.format(id), params)
+    
+    @api_version("2.1.0")
+    def list_delete(self, id):
+        """
+        Delete a list.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
+    
     ###
     # Writing data: Reports
     ###
