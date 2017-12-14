@@ -59,7 +59,6 @@ def api_version(created_ver, last_changed_ver):
         return decorate(function, wrapper)
     return api_min_version_decorator
 
-
 ###
 # Dict helper class.
 # Defined at top level so it can be pickled.

@@ -1,5 +1,26 @@
 A note on versioning: This librarys major version will grow with the APIs 
-version number. Breaking changes will be avoided as far as at all possible.
+version number. Breaking changes will be indicated by a change in the minor
+(or major) version number, and will generally be avoided.
+
+v1.2.0 (Preliminary)
+--------------------
+* BREAKING CHANGE: Renamed streaming functions to be more in line with the rest
+* POTENTIALLY BREAKING CHANGE: Added attribute-style access for returned dicts
+* 2.1.0 compatibility
+    * Added custom_emojis()
+    * Added list(), lists(), list_accounts()
+    * Added list_create(), list_update(), list_delete()
+    * Added list_accounts_add(), list_accounts_delete()
+    * Added account_lists()
+    * Added timeline_list()
+    * Added stream_list()
+* Added automatic id unpacking    
+* Added api versioning
+* Added a large amount of tests (MASSIVE thanks to codl)
+* Added asynchronous mode to streaming api (Thanks Kjwon15)
+* Added CallbackStreamListener
+* Improved documentation for the streaming API
+* Verious fixes, clarifications, et cetera (Thanks Dryusdan, codl)  
 
 v1.1.2
 ------
