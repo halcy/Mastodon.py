@@ -733,3 +733,9 @@ CallbackStreamListener
 .. _Mastodon: https://github.com/tootsuite/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/
 .. _Mastodon api docs: https://github.com/tootsuite/documentation/
+
+Acknowledgements
+----------------
+Mastodon.py contains work by a large amount of contributors, many of which have
+put significant work into making it a better library. You can find some information
+about who helped with which particular feature or fix in the changelog.
