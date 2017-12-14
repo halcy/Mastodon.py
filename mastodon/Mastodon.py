@@ -44,16 +44,16 @@ def api_version(created_ver, last_changed_ver):
         def wrapper(function, self, *args, **kwargs):
             if not self.version_check_mode == "none":
                 if self.version_check_mode == "created":
-                    version = created_version
+                    version = created_ver
                 else:
                     version = last_changed_ver
-            major, minor, patch = parse_version_string(version)
-            if major > self.mastodon_major:
-                raise MastodonVersionError("Version check failed (Need version " + version + ")")
-            elif major == self.mastodon_major and minor > self.mastodon_minor:
-                raise MastodonVersionError("Version check failed (Need version " + version + ")")
-            elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-                raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                major, minor, patch = parse_version_string(version)
+                if major > self.mastodon_major:
+                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                elif major == self.mastodon_major and minor > self.mastodon_minor:
+                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
+                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
             return function(self, *args, **kwargs)
         function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
         return decorate(function, wrapper)
