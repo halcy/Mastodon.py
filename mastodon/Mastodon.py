@@ -563,7 +563,8 @@ class Mastodon:
         included.
 
         If `only_media` is set, return only statuses with media attachments.
-        If `pinned` is set, return only statuses that have been pinned.
+        If `pinned` is set, return only statuses that have been pinned. Note that 
+        as of Mastodon 2.1.0, this only works properly for instance-local users.
         If `exclude_replies` is set, filter out all statuses that are replies.
 
         Returns a list of `toot dicts`_.
@@ -574,8 +575,15 @@ class Mastodon:
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
-            
+        
         params = self.__generate_params(locals(), ['id'])
+        if pinned == False:
+            del params["pinned"]
+        if only_media == False:
+            del params["only_media"]
+        if exclude_replies == False:
+            del params["exclude_replies"]
+        
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
 
