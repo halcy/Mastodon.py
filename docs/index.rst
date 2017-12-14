@@ -69,7 +69,7 @@ a while.
 
 In "pace" mode, Mastodon.py will delay each new request after the first one such that, 
 if requests were to continue at the same rate, only a certain fraction (set in the
-constructor as ratelimit_pacefactor) of the rate limit will be used up. The fraction can
+constructor as `ratelimit_pacefactor`) of the rate limit will be used up. The fraction can
 be (and by default, is) greater than one. If the rate limit is hit, "pace" behaves like
 "wait". This mode is probably the most advanced one and allows you to just poll in
 a loop without ever sleeping at all yourself. It is for applications that would rather
