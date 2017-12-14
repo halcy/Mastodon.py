@@ -110,7 +110,7 @@ in the API, so don't do that.
 ID unpacking
 ~~~~~~~~~~~~
 Wherever Mastodon.py expects an ID as a parameter, you can also pass a
-dict that contains an id - this means that, for example, instead of saying 
+dict that contains an id - this means that, for example, instead of writing 
 
 .. code-block:: python
 
@@ -156,6 +156,23 @@ Unless otherwise specified, all data is returned as python dictionaries, matchin
 the JSON format used by the API. Dates returned by the API are in ISO 8601 format
 and are parsed into python datetime objects.
 
+To make access easier, the dictionaries returned are wrapped by a class that adds
+read-only attributes for all dict values - this means that, for example, instead of
+writing
+
+.. code-block:: python
+
+    description = mastodon.account_verify_credentials()["source"]["note"]
+    
+you can also just write
+
+.. code-block:: python
+
+    description = mastodon.account_verify_credentials().source.note
+    
+and everything will work as intended.
+
+
 User dicts
 ~~~~~~~~~~
 .. _user dict:
@@ -182,6 +199,8 @@ User dicts
         'header_static': # URL for their header image, never animated
         'source': # Additional information - only present for user dict returned 
                   # from account_verify_credentials()
+        'moved_to_account': # If set, an account dict of the account this user has
+                            # set up as their moved-to address.
     }
 
     mastodon.account_verify_credentials()["source"]
@@ -474,10 +493,11 @@ Versioning
 Mastodon.py will check if a certain endpoint is available before doing API
 calls. By default, it checks against the version of Mastodon retrieved on
 init(), or the version you specified. Mastodon.py can be set (in the 
-constructor) to either check if an endpoint is available at all or to check 
-if the endpoint is available and behaves as in the newest Mastodon version 
-(this is the default). Version checking can also be disabled altogether.
-If a version check fails, Mastodon.py throws a `MastodonVersionError`.
+constructor) to either check if an endpoint is available at all (this is the 
+default) or to check if the endpoint is available and behaves as in the newest 
+Mastodon version (with regards to parameters as well as return values). 
+Version checking can also be disabled altogether. If a version check fails, 
+Mastodon.py throws a `MastodonVersionError`.
 
 With the following functions, you can make Mastodon.py re-check the server 
 version or explicitly determine if a specific minimum Version is available.

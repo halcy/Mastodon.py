@@ -123,7 +123,7 @@ class Mastodon:
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode = "changed"):
+                 version_check_mode = "created"):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret.
@@ -150,7 +150,7 @@ class Mastodon:
         Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the 
         detected version.
         
-        The version check mode can be set to "created", "changed" (the default behaviour) or "none". If set to 
+        The version check mode can be set to "created" (the default behaviour), "changed" or "none". If set to 
         "created", Mastodon.py will throw an error if the version of Mastodon it is connected to is too old
         to have an endpoint. If it is set to "changed", it will throw an error if the endpoints behaviour has
         changed after the version of Mastodon that is connected has been released. If it is set to "none",
@@ -478,7 +478,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/context'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def status_reblogged_by(self, id):
         """
         Fetch a list of users that have reblogged a status.
@@ -491,7 +491,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def status_favourited_by(self, id):
         """
         Fetch a list of users that have favourited a status.
@@ -545,7 +545,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}'.format(str(id))
         return self.__api_request('GET', url)
     
-    @api_version("1.0.0", "1.5.0")
+    @api_version("1.0.0", "2.1.0")
     def account_verify_credentials(self):
         """
         Fetch logged-in user's account information.
@@ -587,7 +587,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def account_following(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is following.
@@ -605,7 +605,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/following'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def account_followers(self, id, max_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is followed by.
@@ -636,7 +636,7 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def account_search(self, q, limit=None):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
@@ -717,7 +717,7 @@ class Mastodon:
     ###
     # Reading data: Mutes and Blocks
     ###
-    @api_version("1.1.0", "1.1.0")    
+    @api_version("1.1.0", "2.1.0")    
     def mutes(self, max_id=None, since_id=None, limit=None):
         """
         Fetch a list of users muted by the logged-in user.
@@ -733,7 +733,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def blocks(self, max_id=None, since_id=None, limit=None):
         """
         Fetch a list of users blocked by the logged-in user.
@@ -786,7 +786,7 @@ class Mastodon:
     ###
     # Reading data: Follow requests
     ###
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def follow_requests(self, max_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's incoming follow requests.
@@ -1021,7 +1021,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0", "1.0.0")
+    @api_version("1.0.0", "2.1.0")
     def follows(self, uri):
         """
         Follow a remote user by uri (username@domain).
@@ -1086,7 +1086,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1", "1.6.0")
+    @api_version("1.1.1", "2.1.0")
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, header=None):
         """
