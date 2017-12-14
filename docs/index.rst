@@ -222,7 +222,8 @@ Toot dicts
         'media_attachments': # A list of media dicts of attached files
         'emojis': # A list of custom emojis used in the toot, as Emoji dicts
         'tags': # A list of hashtag used in the toot, as Hashtag dicts
-        'application': # Application dict for the client used to post the toot
+        'application': # Application dict for the client used to post the toot (Can be
+                       # None, for toots made using the web UI).
         'language': # The language of the toot, if specified by the server.
         'muted': # Boolean denoting whether the user has muted this status by 
                  # way of conversation muting
@@ -263,7 +264,19 @@ Emoji dicts
         'url': # URL for the emoji image, can be animated 
         'static_url': # URL for the emoji image, never animated
     }
-    
+ 
+Application dicts
+~~~~~~~~~~~~~~~~~
+ .. _application dict:
+ 
+.. code-block:: python
+
+    {
+        'name': # The applications name
+        'website': # The applications website
+    }
+ 
+ 
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
 .. _relationship dict:
