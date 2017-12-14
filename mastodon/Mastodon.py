@@ -25,9 +25,9 @@ try:
 except ImportError:
     from urlparse import urlparse
 
-"""
-Version check functions, including decorator and parser
-"""
+###
+# Version check functions, including decorator and parser
+###
 def parse_version_string(version_string):
     """Parses a semver version string, stripping off "rc" stuff if present."""
     string_parts =  version_string.split(".")
@@ -58,7 +58,28 @@ def api_version(created_ver, last_changed_ver):
         function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
         return decorate(function, wrapper)
     return api_min_version_decorator
-      
+
+
+###
+# Dict helper class.
+# Defined at top level so it can be pickled.
+###
+class AttribAccessDict(dict):
+    def __getattr__(self, attr):
+        if attr in self:
+            return self[attr]
+        else:
+            raise AttributeError("Attribute not found: " + str(attr))
+        
+    def __setattr__(self, attr, val):
+        if attr in self:
+            raise AttributeError("Attribute-style access is read only")
+        super().__setattr__(attr, val)
+
+###
+# The actual Mastodon class
+###
+
 class Mastodon:
     """
     Super basic but thorough and easy to use Mastodon
@@ -1398,17 +1419,6 @@ class Mastodon:
         Makes it possible to use attribute notation to access a dicts
         elements, while still allowing the dict to act as a dict.
         """
-        class AttribAccessDict(dict):
-            def __getattr__(self, attr):
-                if attr in self:
-                    return self[attr]
-                else:
-                    raise AttributeError()
-                
-            def __setattr__(self, attr, val):
-                if attr in self:
-                    raise AttributeError("Attribute-style access is read only")
-                super().__setattr__(attr, val)
         if isinstance(json_object, dict):
             return AttribAccessDict(json_object)
         return json_object
