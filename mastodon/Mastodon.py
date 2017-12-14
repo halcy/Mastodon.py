@@ -1400,8 +1400,15 @@ class Mastodon:
         """
         class AttribAccessDict(dict):
             def __getattr__(self, attr):
-                return self[attr]
-        
+                if attr in self:
+                    return self[attr]
+                else:
+                    raise AttributeError()
+                
+            def __setattr__(self, attr, val):
+                if attr in self:
+                    raise AttributeError("Attribute-style access is read only")
+                super().__setattr__(attr, val)
         if isinstance(json_object, dict):
             return AttribAccessDict(json_object)
         return json_object
