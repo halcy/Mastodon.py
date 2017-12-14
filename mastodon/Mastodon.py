@@ -1393,6 +1393,20 @@ class Mastodon:
         return (date_time_utc - epoch_utc).total_seconds()
 
     @staticmethod
+    def __json_allow_dict_attrs(json_object):
+        """
+        Makes it possible to use attribute notation to access a dicts
+        elements, while still allowing the dict to act as a dict.
+        """
+        class AttribAccessDict(dict):
+            def __getattr__(self, attr):
+                return self[attr]
+        
+        if isinstance(json_object, dict):
+            return AttribAccessDict(json_object)
+        return json_object
+
+    @staticmethod
     def __json_date_parse(json_object):
         """
         Parse dates in certain known json fields, if possible.
@@ -1428,6 +1442,7 @@ class Mastodon:
     def __json_hooks(json_object):
         json_object = Mastodon.__json_date_parse(json_object)
         json_object = Mastodon.__json_id_to_bignum(json_object)
+        json_object = Mastodon.__json_allow_dict_attrs(json_object)
         return json_object
 
     def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True):
