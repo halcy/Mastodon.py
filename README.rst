@@ -35,7 +35,7 @@ Mastodon.py
    mastodon.toot('Tooting from python using #mastodonpy !')
 
 Python wrapper for the Mastodon ( https://github.com/tootsuite/mastodon/ ) API. 
-Feature complete for public API as of Mastodon version 2.0.0 and easy to get started with.
+Feature complete for public API as of Mastodon version 2.1.0 and easy to get started with.
 
 You can install Mastodon.py via pypi:
 

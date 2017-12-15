@@ -253,6 +253,12 @@ class Mastodon:
         elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
             return False
         return True
+
+    def get_supported_version(self):
+        """
+        Retrieve the maximum version of Mastodon supported by this version of Mastodon.py
+        """
+        return __SUPPORTED_MASTODON_VERSION
     
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
                          scopes=['read', 'write', 'follow']):
