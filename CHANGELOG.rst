@@ -20,7 +20,7 @@ v1.2.0
 * Added asynchronous mode to streaming api (Thanks Kjwon15)
 * Added CallbackStreamListener
 * Improved documentation for the streaming API
-* Verious fixes, clarifications, et cetera (Thanks Dryusdan, codl)  
+* Various fixes, clarifications, et cetera (Thanks Dryusdan, codl)  
 
 v1.1.2
 ------
