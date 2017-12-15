@@ -50,8 +50,8 @@ of this time, it is feature complete for Mastodon version 2.1.0.
 
 A note about rate limits
 ------------------------
-Mastodons API rate limits per IP. By default, the limit is 300 requests per 5 minute 
-time slot. This can differ from instance to instance and is subject to change.
+Mastodons API rate limits per user account. By default, the limit is 300 requests 
+per 5 minute time slot. This can differ from instance to instance and is subject to change.
 Mastodon.py has three modes for dealing with rate limiting that you can pass to 
 the constructor, "throw", "wait" and "pace", "wait" being the default.
 
@@ -75,6 +75,15 @@ be (and by default, is) greater than one. If the rate limit is hit, "pace" behav
 a loop without ever sleeping at all yourself. It is for applications that would rather
 just pretend there is no such thing as a rate limit and are fine with sometimes not
 being very interactive.
+
+In addition to the per-user limit, there is a per-IP limit of 7500 requests per 5 
+minute time slot, and tighter limits on logins. Mastodon.py does not make any effort
+to respect these.
+
+If your application requires many hits to endpoints that are available without logging
+in, do consider using Mastodon.py without authenticating to get the full per-IP limit. In
+this case, you can set the Mastodon objects `ratelimit_limit` and `ratelimit_remaining`
+properties appropriately if you want to use advanced rate limit handling.
 
 A note about pagination
 -----------------------
