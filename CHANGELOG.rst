@@ -2,11 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.
 
-v1.2.0 (Preliminary)
---------------------
+v1.2.0
+------
 * BREAKING CHANGE: Renamed streaming functions to be more in line with the rest
 * POTENTIALLY BREAKING CHANGE: Added attribute-style access for returned dicts
-* 2.1.0 compatibility
+* Mastodon v2.1.0 compatibility
     * Added custom_emojis()
     * Added list(), lists(), list_accounts()
     * Added list_create(), list_update(), list_delete()
