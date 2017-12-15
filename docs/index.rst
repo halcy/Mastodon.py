@@ -241,8 +241,9 @@ Toot dicts
         'media_attachments': # A list of media dicts of attached files
         'emojis': # A list of custom emojis used in the toot, as Emoji dicts
         'tags': # A list of hashtag used in the toot, as Hashtag dicts
-        'application': # Application dict for the client used to post the toot (Can be
-                       # None, for toots made using the web UI).
+        'application': # Application dict for the client used to post the toot (Does not federate
+                       # and is therefore always None for remote toots, can also be None for
+                       # local toots for some legacy applications).
         'language': # The language of the toot, if specified by the server.
         'muted': # Boolean denoting whether the user has muted this status by 
                  # way of conversation muting
