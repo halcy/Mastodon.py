@@ -1387,7 +1387,7 @@ class Mastodon:
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
-        return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener)
+        return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener, async=async)
 
     @api_version("2.1.0", "2.1.0")
     def stream_list(self, id, listener, async=False):
@@ -1396,7 +1396,7 @@ class Mastodon:
         list. 
         """
         id =  self.__unpack_id(id)
-        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener)
+        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, async=async)
     
     ###
     # Internal helpers, dragons probably
@@ -1670,9 +1670,11 @@ class Mastodon:
 
         class __stream_handle():
             def __init__(self, connection):
+                self.closed = False
                 self.connection = connection
 
             def close(self):
+                self.closed = True
                 self.connection.close()
 
             def is_alive(self):
@@ -1682,10 +1684,10 @@ class Mastodon:
                 self._thread = threading.current_thread()
                 with closing(connection) as r:
                     try:
-                        listener.handle_stream(r.iter_lines())
+                        listener.handle_stream(r.iter_lines(chunk_size = 1, decode_unicode = True))
                     except AttributeError as e:
-                        # Eat AttributeError from requests if user closes early
-                        pass
+                        if not self.closed:
+                            raise e
                 return 0
 
         handle = __stream_handle(connection)
