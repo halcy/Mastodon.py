@@ -1693,7 +1693,7 @@ class Mastodon:
         handle = __stream_handle(connection)
 
         if async:
-            t = threading.Thread(args=(), target=handle._threadproc)
+            t = threading.Thread(args=(), daemon = True, target=handle._threadproc)
             t.start()
             return handle
         else:
