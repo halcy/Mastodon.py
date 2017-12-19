@@ -34,38 +34,46 @@ class StreamListener(object):
         that the connection is still open."""
         pass
     
-    def handle_stream(self, lines):
+    def handle_stream(self, response):
         """
         Handles a stream of events from the Mastodon server. When each event
         is received, the corresponding .on_[name]() method is called.
 
-        lines: an iterable of lines of bytes sent by the Mastodon server, as
-        returned by requests.Response.iter_lines().
+        response; a requests response object with the open stream for reading.
         """
-        event = {}
-        for raw_line in lines:
-            try:
-                line = raw_line.decode('utf-8')
-            except UnicodeDecodeError as err:
-                six.raise_from(
-                    MastodonMalformedEventError("Malformed UTF-8", line),
-                    err
-                )
-
-            if line.startswith(':'):
-                self.handle_heartbeat()
-            elif line == '':
-                # end of event
-                self._dispatch(event)
-                event = {}
-            else:
-                key, value = line.split(': ', 1)
-                # According to the MDN spec, repeating the 'data' key
-                # represents a newline(!)
-                if key in event:
-                    event[key] += '\n' + value
+        self.event = {}
+        line_buffer = bytearray()
+        for chunk in response.iter_content(chunk_size = 1):
+            if chunk:
+                if chunk == b'\n':
+                    self.handle_line(line_buffer)
+                    line_buffer = bytearray()
                 else:
-                    event[key] = value
+                    line_buffer.extend(chunk)
+        
+    def handle_line(self, raw_line):
+        try:
+            line = raw_line.decode('utf-8')
+        except UnicodeDecodeError as err:
+            six.raise_from(
+                MastodonMalformedEventError("Malformed UTF-8", line),
+                err
+            )
+
+        if line.startswith(':'):
+            self.handle_heartbeat()
+        elif line == '':
+            # end of event
+            self._dispatch(self.event)
+            self.event = {}
+        else:
+            key, value = line.split(': ', 1)
+            # According to the MDN spec, repeating the 'data' key
+            # represents a newline(!)
+            if key in self.event:
+                self.event[key] += '\n' + value
+            else:
+                self.event[key] = value
 
     def _dispatch(self, event):
         try:

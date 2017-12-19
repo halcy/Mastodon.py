@@ -1684,7 +1684,7 @@ class Mastodon:
                 self._thread = threading.current_thread()
                 with closing(connection) as r:
                     try:
-                        listener.handle_stream(r.iter_lines(chunk_size = 1, decode_unicode = True))
+                        listener.handle_stream(r)
                     except AttributeError as e:
                         if not self.closed:
                             raise e
@@ -1699,7 +1699,7 @@ class Mastodon:
         else:
             # Blocking, never returns (can only leave via exception)
             with closing(connection) as r:
-                listener.handle_stream(r.iter_lines())
+                listener.handle_stream(r)
 
     def __generate_params(self, params, exclude=[]):
         """
