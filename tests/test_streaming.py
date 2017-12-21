@@ -30,7 +30,18 @@ class Listener(StreamListener):
 
     def handle_stream_(self, lines):
         """Test helper to avoid littering all tests with six.b()."""
-        return self.handle_stream(map(six.b, lines))
+        class MockResponse():
+            def __init__(self, data):
+                self.data = data
+                
+            def iter_content(self, chunk_size):
+                for line in self.data:
+                    for byte in line:
+                        bytearr = bytearray()
+                        bytearr.append(byte)
+                        yield(bytearr)
+                    yield(b'\n')
+        return self.handle_stream(MockResponse(map(six.b, lines)))
 
 
 def test_heartbeat():

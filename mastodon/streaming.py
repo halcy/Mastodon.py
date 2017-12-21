@@ -56,7 +56,7 @@ class StreamListener(object):
             line = raw_line.decode('utf-8')
         except UnicodeDecodeError as err:
             six.raise_from(
-                MastodonMalformedEventError("Malformed UTF-8", line),
+                MastodonMalformedEventError("Malformed UTF-8"),
                 err
             )
 
