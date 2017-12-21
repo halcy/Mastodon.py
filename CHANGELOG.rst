@@ -2,6 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided. 
 
+v1.2.1
+------
+* Internal stability changes and fixes to streaming code
+* Fixed async parameter being ignored in two streaming methods
+
 v1.2.0
 ------
 * BREAKING CHANGE: Renamed streaming functions to be more in line with the rest
