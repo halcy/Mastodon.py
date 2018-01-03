@@ -1,5 +1,7 @@
 import pytest
-from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError
+from mastodon.Mastodon import MastodonAPIError,\
+                              MastodonIllegalArgumentError,\
+                              MastodonUnauthorizedError
 
 @pytest.mark.vcr()
 def test_public_tl_anonymous(api_anonymous, status):
@@ -16,6 +18,11 @@ def test_public_tl(api, status):
     local = api.timeline_local()
     assert status['id'] in map(lambda st: st['id'], public)
     assert status['id'] in map(lambda st: st['id'], local)
+
+@pytest.mark.vcr()
+def test_unauthed_home_tl_throws(api_anonymous, status):
+    with pytest.raises(MastodonUnauthorizedError):
+        api_anonymous.timeline_home()
 
 @pytest.mark.vcr()
 def test_home_tl(api, status):

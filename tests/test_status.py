@@ -1,6 +1,5 @@
 import pytest
-from mastodon.Mastodon import MastodonAPIError
-from time import sleep
+from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -14,7 +13,7 @@ def test_status_empty(api):
 
 @pytest.mark.vcr()
 def test_status_missing(api):
-    with pytest.raises(MastodonAPIError):
+    with pytest.raises(MastodonNotFoundError):
         api.status(0)
 
 @pytest.mark.skip(reason="Doesn't look like mastodon will make a card for an url that doesn't have a TLD, and relying on some external website being reachable to make a card of is messy :/")
