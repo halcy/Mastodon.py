@@ -254,11 +254,12 @@ class Mastodon:
             return False
         return True
 
-    def get_supported_version(self):
+    @staticmethod
+    def get_supported_version():
         """
         Retrieve the maximum version of Mastodon supported by this version of Mastodon.py
         """
-        return __SUPPORTED_MASTODON_VERSION
+        return Mastodon.__SUPPORTED_MASTODON_VERSION
     
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
                          scopes=['read', 'write', 'follow']):
