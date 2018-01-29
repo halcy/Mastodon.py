@@ -41,40 +41,39 @@ class StreamListener(object):
 
         response; a requests response object with the open stream for reading.
         """
-        self.event = {}
+        event = {}
         line_buffer = bytearray()
         for chunk in response.iter_content(chunk_size = 1):
             if chunk:
                 if chunk == b'\n':
-                    self.handle_line(line_buffer)
+                    try:
+                        line = line_buffer.decode('utf-8')
+                    except UnicodeDecodeError as err:
+                        six.raise_from(
+                            MastodonMalformedEventError("Malformed UTF-8"),
+                            err
+                        )
+                    if line == '':
+                        self._dispatch(event)
+                    else:
+                        event = self._parse_line(line, event)
                     line_buffer = bytearray()
                 else:
                     line_buffer.extend(chunk)
         
-    def handle_line(self, raw_line):
-        try:
-            line = raw_line.decode('utf-8')
-        except UnicodeDecodeError as err:
-            six.raise_from(
-                MastodonMalformedEventError("Malformed UTF-8"),
-                err
-            )
-
+    def _parse_line(self, line, event):
         if line.startswith(':'):
             self.handle_heartbeat()
-        elif line == '':
-            # end of event
-            self._dispatch(self.event)
-            self.event = {}
         else:
             key, value = line.split(': ', 1)
             # According to the MDN spec, repeating the 'data' key
             # represents a newline(!)
-            if key in self.event:
-                self.event[key] += '\n' + value
+            if key in event:
+                event[key] += '\n' + value
             else:
-                self.event[key] = value
-
+                event[key] = value
+        return event
+    
     def _dispatch(self, event):
         try:
             name = event['event']
