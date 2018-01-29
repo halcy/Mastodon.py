@@ -454,6 +454,21 @@ Instance dicts
                 # stream websocket address.
     }
 
+Activity dicts
+~~~~~~~~~~~~~~
+.. _activity dict:
+
+.. code-block:: python
+
+    mastodon.instance_activity()[0]
+    # Returns the following dictionary
+    {
+        'week': # Date of the first day of the week the stats were collected for
+        'logins': # Number of users that logged in that week
+        'registrations': # Number of new users that week
+        'statuses': # Number of statuses posted that week
+    }    
+    
 Report dicts
 ~~~~~~~~~~~~
 .. _report dict:
@@ -517,10 +532,12 @@ version or explicitly determine if a specific minimum Version is available.
 
 Reading data: Instances
 -----------------------
-This function allows you to fetch information associated with the
+These functions allow you to fetch information associated with the
 current instance.
 
 .. automethod:: Mastodon.instance
+.. automethod:: Mastodon.instance_activity
+.. automethod:: Mastodon.instance_peers
 
 Reading data: Timelines
 -----------------------

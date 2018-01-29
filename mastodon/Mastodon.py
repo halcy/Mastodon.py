@@ -89,7 +89,7 @@ class Mastodon:
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
-    __SUPPORTED_MASTODON_VERSION = "2.1.0"
+    __SUPPORTED_MASTODON_VERSION = "2.1.2"
     
     ###
     # Registering apps
@@ -360,7 +360,29 @@ class Mastodon:
         """
         Internal, non-version-checking helper that does the same as instance()
         """
-        return self.__api_request('GET', '/api/v1/instance/')
+        return self.__api_request('GET', '/api/v1/instance')
+
+    @api_version("2.1.2", "2.1.2")
+    def instance_activity(self):
+        """
+        Retrieve activity stats about the instance. May be disabled by the instance administrator - throws
+        a MastodonNotFoundError in that case.
+        
+        Activity is returned for 12 weeks going back from the current week.
+        
+        Returns a list `activity dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/instance/activity')
+
+    @api_version("2.1.2", "2.1.2")
+    def instance_peers(self):
+        """
+        Retrieve the instances that this instance knows about. May be disabled by the instance administrator - throws
+        a MastodonNotFoundError in that case.
+        
+        Returns a list of URL strings.
+        """
+        return self.__api_request('GET', '/api/v1/instance/peers')
 
     ###
     # Reading data: Timelines
@@ -1434,7 +1456,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at"]
+        known_date_fields = ["created_at", "week"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 try:
@@ -1447,13 +1469,12 @@ class Mastodon:
         return json_object
 
     @staticmethod
-    def __json_id_to_bignum(json_object):
+    def __json_strnum_to_bignum(json_object):
         """
-        Converts json string IDs to native python bignums.
+        Converts json string numerals to native python bignums.
         """
-        for key in ('id', 'in_reply_to_id', 'in_reply_to_account_id'):
-            if (key in json_object and
-                    isinstance(json_object[key], six.text_type)):
+        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses'):
+            if (key in json_object and isinstance(json_object[key], six.text_type)):
                 try:
                     json_object[key] = int(json_object[key])
                 except ValueError:
@@ -1463,8 +1484,8 @@ class Mastodon:
     
     @staticmethod
     def __json_hooks(json_object):
+        json_object = Mastodon.__json_strnum_to_bignum(json_object)        
         json_object = Mastodon.__json_date_parse(json_object)
-        json_object = Mastodon.__json_id_to_bignum(json_object)
         json_object = Mastodon.__json_allow_dict_attrs(json_object)
         return json_object
 
