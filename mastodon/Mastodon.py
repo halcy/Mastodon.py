@@ -360,7 +360,7 @@ class Mastodon:
         """
         Internal, non-version-checking helper that does the same as instance()
         """
-        return self.__api_request('GET', '/api/v1/instance')
+        return self.__api_request('GET', '/api/v1/instance/')
 
     @api_version("2.1.2", "2.1.2")
     def instance_activity(self):
