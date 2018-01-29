@@ -55,6 +55,7 @@ class StreamListener(object):
                         )
                     if line == '':
                         self._dispatch(event)
+                        event = {}
                     else:
                         event = self._parse_line(line, event)
                     line_buffer = bytearray()
