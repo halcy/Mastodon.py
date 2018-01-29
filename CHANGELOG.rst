@@ -2,6 +2,15 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided. 
 
+v1.2.2
+------
+* Several small bugfixes (thanks codl)
+* Mastodon v2.1.2 compatibility
+    * Added instance_activity()
+    * Added instance_peers()    
+* Fixed StreamListener breaking when listening to more than one stream (again thanks, codl)
+    * POTENTIALLY BREAKING CHANGE: Remvoved handle_line, which should have been an internal helper to begin with
+
 v1.2.1 
 ------
 * Internal stability changes and fixes to streaming code
