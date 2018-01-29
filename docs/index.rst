@@ -46,7 +46,7 @@ node running Mastodon by setting `api_base_url` when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 2.1.0.
+of this time, it is feature complete for Mastodon version 2.2.0.
 
 A note about rate limits
 ------------------------
@@ -674,7 +674,7 @@ Writing data: Lists
 -------------------
 These functions allow you to create, maintain and delete lists.
 
-When creating lists, note that (As of Mastodon 2.1.0), a user can only
+When creating lists, note that a user can only
 have a maximum of 50 lists.
 
 .. automethod:: Mastodon.list_create
