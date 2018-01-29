@@ -1550,33 +1550,45 @@ class Mastodon:
                 print('response headers: ' + str(response_object.headers))
                 print('Response text content: ' + str(response_object.text))
 
-            if response_object.status_code == 404:
+            if not response_object.ok:
                 try:
-                    response = response_object.json()
-                except:
-                    raise MastodonAPIError('Endpoint not found.')
+                    response = response_object.json(object_hook=self.__json_hooks)
+                    if not isinstance(response, dict) or 'error' not in response:
+                        error_msg = None
+                    error_msg = response['error']
+                except ValueError:
+                    error_msg = None
 
-                if isinstance(response, dict) and 'error' in response:
-                    raise MastodonAPIError("Mastodon API returned error: " + str(response['error']))
+                # Handle rate limiting
+                if response_object.status_code == 429:
+                    if self.ratelimit_method == 'throw' or not do_ratelimiting:
+                        raise MastodonRatelimitError('Hit rate limit.')
+                    elif self.ratelimit_method in ('wait', 'pace'):
+                        to_next = self.ratelimit_reset - time.time()
+                        if to_next > 0:
+                            # As a precaution, never sleep longer than 5 minutes
+                            to_next = min(to_next, 5 * 60)
+                            time.sleep(to_next)
+                            request_complete = False
+                            continue
+
+                if response_object.status_code == 404:
+                    ex_type = MastodonNotFoundError
+                    if not error_msg:
+                        error_msg = 'Endpoint not found.'
+                        # this is for compatibility with older versions
+                        # which raised MastodonAPIError('Endpoint not found.')
+                        # on any 404
+                elif response_object.status_code == 401:
+                    ex_type = MastodonUnauthorizedError
                 else:
-                    raise MastodonAPIError('Endpoint not found.')
+                    ex_type = MastodonAPIError
 
-
-            if response_object.status_code == 500:
-                raise MastodonAPIError('General API problem.')
-
-            # Handle rate limiting
-            if response_object.status_code == 429:
-                if self.ratelimit_method == 'throw' or not do_ratelimiting:
-                    raise MastodonRatelimitError('Hit rate limit.')
-                elif self.ratelimit_method in ('wait', 'pace'):
-                    to_next = self.ratelimit_reset - time.time()
-                    if to_next > 0:
-                        # As a precaution, never sleep longer than 5 minutes
-                        to_next = min(to_next, 5 * 60)
-                        time.sleep(to_next)
-                        request_complete = False
-                        continue
+                raise ex_type(
+                        'Mastodon API returned error',
+                        response_object.status_code,
+                        response_object.reason,
+                        error_msg)
 
             try:
                 response = response_object.json(object_hook=self.__json_hooks)
@@ -1585,12 +1597,6 @@ class Mastodon:
                     "Could not parse response as JSON, response code was %s, "
                     "bad json content was '%s'" % (response_object.status_code,
                                                    response_object.content))
-
-            # See if the returned dict is an error dict even though status is 200
-            if isinstance(response, dict) and 'error' in response:
-                if not isinstance(response['error'], six.string_types):
-                    response['error'] = six.text_type(response['error'])
-                raise MastodonAPIError("Mastodon API returned error: " + response['error'])
 
             # Parse link headers
             if isinstance(response, list) and \
@@ -1799,6 +1805,16 @@ class MastodonNetworkError(MastodonIOError):
 
 class MastodonAPIError(MastodonError):
     """Raised when the mastodon API generates a response that cannot be handled"""
+    pass
+
+class MastodonNotFoundError(MastodonAPIError):
+    """Raised when the mastodon API returns a 404 Not Found error"""
+    pass
+
+class MastodonUnauthorizedError(MastodonAPIError):
+    """Raised when the mastodon API returns a 401 Unauthorized error
+
+       This happens when an OAuth token is invalid or has been revoked."""
     pass
 
 
