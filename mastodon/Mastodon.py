@@ -893,9 +893,12 @@ class Mastodon:
                     sensitive=False, visibility='', spoiler_text=None):
         """
         Post a status. Can optionally be in reply to another status and contain
-        up to four pieces of media (Uploaded via `media_post()`_). media_ids can
-        also be the `media dicts`_ returned by `media_post()`_ - they are unpacked
-        automatically.
+        media.
+        
+        `media_ids` must be a list (even if you're only attaching one item). It 
+        can contain up to four pieces of media (uploaded via `media_post()`_). 
+        `media_ids` can also be the `media dicts`_ returned by `media_post()`_ - 
+        they are unpacked automatically.
 
         The `sensitive` boolean decides whether or not media attached to the post
         should be marked as sensitive, which hides it by default on the Mastodon
