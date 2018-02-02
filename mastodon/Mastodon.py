@@ -895,10 +895,10 @@ class Mastodon:
         Post a status. Can optionally be in reply to another status and contain
         media.
         
-        `media_ids` must be a list (even if you're only attaching one item). It 
-        can contain up to four pieces of media (uploaded via `media_post()`_). 
-        `media_ids` can also be the `media dicts`_ returned by `media_post()`_ - 
-        they are unpacked automatically.
+        `media_ids` should be a list. (If it's not, the function will turn it
+        into one.) It can contain up to four pieces of media (uploaded via 
+        `media_post()`_). `media_ids` can also be the `media dicts`_ returned 
+        by `media_post()`_ - they are unpacked automatically.
 
         The `sensitive` boolean decides whether or not media attached to the post
         should be marked as sensitive, which hides it by default on the Mastodon
@@ -939,6 +939,8 @@ class Mastodon:
         if media_ids is not None:
             try:
                 media_ids_proper = []
+                if not isinstance(media_ids, (list, tuple)):
+                    media_ids = [media_ids]
                 for media_id in media_ids:
                     if isinstance(media_id, dict):
                         media_ids_proper.append(media_id["id"])
