@@ -7,6 +7,7 @@ import json
 import six
 from mastodon import Mastodon
 from mastodon.Mastodon import MastodonMalformedEventError
+from requests.exceptions import ChunkedEncodingError
 
 class StreamListener(object):
     """Callbacks for the streaming API. Create a subclass, override the on_xxx
@@ -43,25 +44,31 @@ class StreamListener(object):
         """
         event = {}
         line_buffer = bytearray()
-        for chunk in response.iter_content(chunk_size = 1):
-            if chunk:
-                if chunk == b'\n':
-                    try:
-                        line = line_buffer.decode('utf-8')
-                    except UnicodeDecodeError as err:
-                        six.raise_from(
-                            MastodonMalformedEventError("Malformed UTF-8"),
-                            err
-                        )
-                    if line == '':
-                        self._dispatch(event)
-                        event = {}
+        try:
+            for chunk in response.iter_content(chunk_size = 1):
+                if chunk:
+                    if chunk == b'\n':
+                        try:
+                            line = line_buffer.decode('utf-8')
+                        except UnicodeDecodeError as err:
+                            six.raise_from(
+                                MastodonMalformedEventError("Malformed UTF-8"),
+                                err
+                            )
+                        if line == '':
+                            self._dispatch(event)
+                            event = {}
+                        else:
+                            event = self._parse_line(line, event)
+                        line_buffer = bytearray()
                     else:
-                        event = self._parse_line(line, event)
-                    line_buffer = bytearray()
-                else:
-                    line_buffer.extend(chunk)
-        
+                        line_buffer.extend(chunk)
+        except ChunkedEncodingError as err:
+            six.raise_from(
+                MastodonNetworkError("Server ceased communication."),
+                err
+            )
+            
     def _parse_line(self, line, event):
         if line.startswith(':'):
             self.handle_heartbeat()
