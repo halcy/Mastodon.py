@@ -89,6 +89,7 @@ class Mastodon:
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
+    __DEFAULT_STREAM_TIMEOUT = 300
     __SUPPORTED_MASTODON_VERSION = "2.2.0"
     
     ###
@@ -1395,37 +1396,37 @@ class Mastodon:
         return self.__stream('/api/v1/streaming/user', listener, async=async)
 
     @api_version("1.1.0", "1.4.2")
-    def stream_public(self, listener, async=False):
+    def stream_public(self, listener, async=False, timeout=__DEFAULT_STREAM_TIMEOUT):
         """
         Streams public events.
         """
-        return self.__stream('/api/v1/streaming/public', listener, async=async)
+        return self.__stream('/api/v1/streaming/public', listener, async=async, timeout=timeout)
 
     @api_version("1.1.0", "1.4.2")
-    def stream_local(self, listener, async=False):
+    def stream_local(self, listener, async=False, timeout=__DEFAULT_STREAM_TIMEOUT):
         """
         Streams local public events.
         """
-        return self.__stream('/api/v1/streaming/public/local', listener, async=async)
+        return self.__stream('/api/v1/streaming/public/local', listener, async=async, timeout=timeout)
 
     @api_version("1.1.0", "1.4.2")
-    def stream_hashtag(self, tag, listener, async=False):
+    def stream_hashtag(self, tag, listener, async=False, timeout=__DEFAULT_STREAM_TIMEOUT):
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
         instance.
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
-        return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener, async=async)
+        return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener, async=async, timeout=timeout)
 
     @api_version("2.1.0", "2.1.0")
-    def stream_list(self, id, listener, async=False):
+    def stream_list(self, id, listener, async=False, timeout=__DEFAULT_STREAM_TIMEOUT):
         """
         Stream events for the current user, restricted to accounts on the given
         list. 
         """
         id =  self.__unpack_id(id)
-        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, async=async)
+        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, async=async, timeout=timeout)
     
     ###
     # Internal helpers, dragons probably
@@ -1667,7 +1668,7 @@ class Mastodon:
 
         return response
 
-    def __stream(self, endpoint, listener, params={}, async=False):
+    def __stream(self, endpoint, listener, params={}, async=False, timeout=__DEFAULT_STREAM_TIMEOUT):
         """
         Internal streaming API helper.
 
@@ -1697,7 +1698,8 @@ class Mastodon:
             url = url[:-1]
 
         headers = {"Authorization": "Bearer " + self.access_token}
-        connection = requests.get(url + endpoint, headers = headers, data = params, stream = True)
+        connection = requests.get(url + endpoint, headers = headers, data = params, stream = True,
+                                  timeout=(self.request_timeout, timeout))
 
         if connection.status_code != 200:
             raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
