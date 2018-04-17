@@ -731,7 +731,8 @@ If `async` is True, the listener will listen on another thread and these methods
 will return a handle corresponding to the open connection. If, in addition, `async_reconnect` is True,
 the thread will attempt to reconnect to the streaming API if any errors are encountered, waiting
 `async_reconnect_wait_sec` seconds between reconnection attempts. Note that no effort is made
-to "catch up" - toots made while the connection is broken will not be received.
+to "catch up" - events created while the connection is broken will not be received. If you need to make
+sure to get absolutely all notifications / deletes / toots, you will have to do that manually.
 
 The connection may be closed at any time by calling the handles close() method. The 
 current status of the handler thread can be checked with the handles is_alive() function,
