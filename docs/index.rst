@@ -725,13 +725,17 @@ Streaming
 ---------
 These functions allow access to the streaming API.
 
-If async is False, these  methods block forever (or until an
-exception is raised).
+If `async` is False, these  methods block forever (or until an exception is raised).
 
-If async is True, the listener will listen on another thread and these methods
-will return a handle corresponding to the open connection. The
-connection may be closed at any time by calling the handles close() method, and the
-status of the connection can be verified calling is_alive() on the handle.
+If `async` is True, the listener will listen on another thread and these methods
+will return a handle corresponding to the open connection. If, in addition, `async_reconnect` is True,
+the thread will attempt to reconnect to the streaming API if any errors are encountered, waiting
+`async_reconnect_wait_sec` seconds between reconnection attempts. Note that no effort is made
+to "catch up" - toots made while the connection is broken will not be received.
+
+The connection may be closed at any time by calling the handles close() method. The 
+current status of the handler thread can be checked with the handles is_alive() function,
+and the streaming status can be checked by calling is_receiving().
 
 The streaming functions take instances of `StreamListener` as the `listener` parameter.
 A `CallbackStreamListener` class that allows you to specify function callbacks 
