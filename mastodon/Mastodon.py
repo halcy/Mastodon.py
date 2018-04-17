@@ -89,6 +89,7 @@ class Mastodon:
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
+    __DEFAULT_STREAM_RECONNECT_WAIT_SEC = 5
     __SUPPORTED_MASTODON_VERSION = "2.2.0"
     
     ###
@@ -1387,7 +1388,7 @@ class Mastodon:
     # Streaming
     ###
     @api_version("1.1.0", "1.4.2")    
-    def stream_user(self, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=5):
+    def stream_user(self, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams events that are relevant to the authorized user, i.e. home
         timeline and notifications.
@@ -1395,21 +1396,21 @@ class Mastodon:
         return self.__stream('/api/v1/streaming/user', listener, async=async, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("1.1.0", "1.4.2")
-    def stream_public(self, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=5):
+    def stream_public(self, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams public events.
         """
         return self.__stream('/api/v1/streaming/public', listener, async=async, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("1.1.0", "1.4.2")
-    def stream_local(self, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=5):
+    def stream_local(self, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams local public events.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, async=async, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("1.1.0", "1.4.2")
-    def stream_hashtag(self, tag, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=5):
+    def stream_hashtag(self, tag, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
         instance.
@@ -1419,7 +1420,7 @@ class Mastodon:
         return self.__stream("/api/v1/streaming/hashtag?tag={}".format(tag), listener, async=async, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("2.1.0", "2.1.0")
-    def stream_list(self, id, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=5):
+    def stream_list(self, id, listener, async=False, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Stream events for the current user, restricted to accounts on the given
         list. 
