@@ -346,7 +346,7 @@ class Mastodon:
     ###
     # Reading data: Instances
     ###
-    @api_version("1.1.0", "1.4.2")
+    @api_version("1.1.0", "2.3.0")
     def instance(self):
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
