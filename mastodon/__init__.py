@@ -1,4 +1,4 @@
-from mastodon.Mastodon import Mastodon
+from mastodon.Mastodon import Mastodon, MastodonError, MastodonVersionError, MastodonIllegalArgumentError, MastodonIOError, MastodonFileNotFoundError, MastodonNetworkError, MastodonAPIError, MastodonNotFoundError, MastodonUnauthorizedError, MastodonRatelimitError, MastodonMalformedEventError
 from mastodon.streaming import StreamListener, CallbackStreamListener
 
-__all__ = ['Mastodon', 'StreamListener', 'CallbackStreamListener']
+__all__ = ['Mastodon', 'StreamListener', 'CallbackStreamListener', 'MastodonError', 'MastodonVersionError', 'MastodonIllegalArgumentError', 'MastodonIOError', 'MastodonFileNotFoundError', 'MastodonNetworkError', 'MastodonAPIError', 'MastodonNotFoundError', 'MastodonUnauthorizedError', 'MastodonRatelimitError', 'MastodonMalformedEventError']
