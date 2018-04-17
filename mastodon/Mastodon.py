@@ -1716,6 +1716,7 @@ class Mastodon:
                 self.connect_func = connect_func
                 self.reconnect_async = reconnect_async
                 self.reconnect_async_wait_sec = reconnect_async_wait_sec
+                self.reconnecting = False
                 
             def close(self):
                 self.closed = True
@@ -1723,6 +1724,12 @@ class Mastodon:
 
             def is_alive(self):
                 return self._thread.is_alive()
+
+            def is_receiving(self):
+                if self.closed or not self.running or self.reconnecting or not self.is_alive():
+                    return False
+                else:
+                    return True
 
             def _threadproc(self):
                 self._thread = threading.current_thread()
@@ -1741,6 +1748,7 @@ class Mastodon:
 
                     # Reconnect loop. Try immediately once, then with delays on error.
                     if self.reconnect_async and not self.closed:
+                        self.reconnecting = True
                         connect_success = False
                         while not connect_success:
                             connect_success = True
@@ -1752,7 +1760,7 @@ class Mastodon:
                             except:
                                 time.sleep(self.reconnect_async_wait_sec)
                                 connect_success = False
-                                
+                        self.reconnecting = False
                     else:
                         self.running = False
                 return 0
