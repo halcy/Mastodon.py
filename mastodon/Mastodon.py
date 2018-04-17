@@ -1143,9 +1143,9 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1", "2.1.0")
+    @api_version("1.1.1", "2.3.0")
     def account_update_credentials(self, display_name=None, note=None,
-                                   avatar=None, header=None):
+                                   avatar=None, header=None, locked=None):
         """
         Update the profile for the currently logged-in user.
 
@@ -1153,6 +1153,8 @@ class Mastodon:
 
         'avatar' and 'header' are images encoded in base64, prepended by a content-type
         (for example: 'data:image/png;base64,iVBORw0KGgoAAAA[...]')
+        
+        'locked' specifies whether the user needs to manually approve follow requests.
         
         Returns the updated `user dict` of the logged-in user.
         """
