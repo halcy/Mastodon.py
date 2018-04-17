@@ -725,7 +725,7 @@ Streaming
 ---------
 These functions allow access to the streaming API.
 
-If `async` is False, these  methods block forever (or until an exception is raised).
+If `async` is False, these  methods block forever (or until an error is encountered).
 
 If `async` is True, the listener will listen on another thread and these methods
 will return a handle corresponding to the open connection. If, in addition, `async_reconnect` is True,
@@ -740,6 +740,10 @@ and the streaming status can be checked by calling is_receiving().
 The streaming functions take instances of `StreamListener` as the `listener` parameter.
 A `CallbackStreamListener` class that allows you to specify function callbacks 
 directly is included for convenience.
+
+When in not-async mode or async mode without async_reconnect, the stream functions may raise
+various exceptions: `MastodonMalformedEventError` if a received event cannot be parsed and
+`MastodonNetworkError` if any connection problems occur.
 
 .. automethod:: Mastodon.stream_user
 .. automethod:: Mastodon.stream_public
