@@ -6,7 +6,7 @@ https://github.com/tootsuite/mastodon/blob/master/docs/Using-the-API/Streaming-A
 import json
 import six
 from mastodon import Mastodon
-from mastodon.Mastodon import MastodonMalformedEventError
+from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError
 from requests.exceptions import ChunkedEncodingError
 
 class StreamListener(object):
@@ -109,7 +109,6 @@ class StreamListener(object):
                err
             )
         else:
-            # TODO: allow handlers to return/raise to stop streaming cleanly
             handler(payload)
 
 class CallbackStreamListener(StreamListener):
