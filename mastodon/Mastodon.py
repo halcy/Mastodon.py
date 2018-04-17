@@ -687,10 +687,11 @@ class Mastodon:
                                   params)
 
     @api_version("1.0.0", "2.1.0")
-    def account_search(self, q, limit=None):
+    def account_search(self, q, limit=None. following=False):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
-        in the username@domain format and not yet in the database.
+        in the username@domain format and not yet in the database. Set `following` to
+        True to limit the search to users the logged-in user follows.
 
         Returns a list of `user dicts`_.
         """
