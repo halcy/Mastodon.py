@@ -176,4 +176,181 @@ interactions:
       X-XSS-Protection: [1; mode=block]
       content-length: ['2']
     status: {code: 200, message: OK}
+- request:
+    body: status=Toot%21
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['14']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"99882236142265564","created_at":"2018-04-18T20:06:12.400Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882236142265564","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882236142265564","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f64a08e9df7e48be7e30cc16b399906e"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [b7a493fc-4fad-45bb-a35c-3fe182431554]
+      X-Runtime: ['0.358218']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1397']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/timelines/home
+  response:
+    body: {string: '[{"id":"99882236142265564","created_at":"2018-04-18T20:06:12.400Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882236142265564","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882236142265564","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882066183174528","created_at":"2018-04-18T19:22:59.040Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882066183174528","content":"\u003cp\u003e\u003ca
+        href=\"http://example.org/\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003eexample.org/\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882066183174528","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882065561622146","created_at":"2018-04-18T19:22:49.552Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882065561622146","content":"\u003cp\u003e\u003ca
+        href=\"http://example.com/\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003eexample.com/\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882065561622146","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882064545536699","created_at":"2018-04-18T19:22:34.048Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882064545536699","content":"\u003cp\u003e\u003ca
+        href=\"http://example.com/\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003eexample.com/\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882064545536699","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882063944223279","created_at":"2018-04-18T19:22:24.876Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882063944223279","content":"\u003cp\u003e\u003ca
+        href=\"http://example.com/\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003eexample.com/\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882063944223279","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882060408332122","created_at":"2018-04-18T19:21:30.924Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882060408332122","content":"\u003cp\u003e\u003ca
+        href=\"http://example.com/\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003eexample.com/\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882060408332122","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882039667012643","created_at":"2018-04-18T19:16:14.432Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882039667012643","content":"\u003cp\u003e\u003ca
+        href=\"http://heise.de\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003eheise.de\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882039667012643","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882038962484111","created_at":"2018-04-18T19:16:03.676Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882038962484111","content":"\u003cp\u003e\u003ca
+        href=\"http://localtest.me:3000\" rel=\"nofollow noopener\" target=\"_blank\"\u003e\u003cspan
+        class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003elocaltest.me:3000\u003c/span\u003e\u003cspan
+        class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882038962484111","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99882035527092788","created_at":"2018-04-18T19:15:11.323Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"la","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99882035527092788","content":"\u003cp\u003ehttp://localhost.:3000\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99882035527092788","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"99881900185916232","created_at":"2018-04-18T18:40:46.107Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881900185916232","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881900185916232","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881893369225896","created_at":"2018-04-18T18:39:02.107Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881893369225896","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881893369225896","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881886188502572","created_at":"2018-04-18T18:37:12.523Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881886188502572","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881886188502572","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881880376378694","created_at":"2018-04-18T18:35:43.841Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"private","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881880376378694","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881880376378694","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881873861755612","created_at":"2018-04-18T18:34:04.431Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"private","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881873861755612","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881873861755612","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881838650412766","created_at":"2018-04-18T18:25:07.332Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"private","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881838650412766","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881838650412766","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881778650675432","created_at":"2018-04-18T18:09:51.849Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"private","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881778650675432","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881778650675432","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881767798582518","created_at":"2018-04-18T18:07:06.038Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"private","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881767798582518","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881767798582518","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]},{"id":"99881759861217027","created_at":"2018-04-18T18:05:04.988Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"private","language":"mi","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99881759861217027","content":"\u003cp\u003e\u003ca
+        href=\"http://localhost:3000/tags/hoot\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ehoot\u003c/span\u003e\u003c/a\u003e
+        (hashtag toot)\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99881759861217027","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpe","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpe","followers_count":0,"following_count":0,"statuses_count":21},"media_attachments":[],"mentions":[],"tags":[{"name":"hoot","url":"http://localhost:3000/tags/hoot"}],"emojis":[]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"2b95d5dc793df9630b0858b43742b533"]
+      Link: ['<http://localhost:3000/api/v1/timelines/home?max_id=99881759861217027>;
+          rel="next", <http://localhost:3000/api/v1/timelines/home?since_id=99882236142265564>;
+          rel="prev"']
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [80e16f2d-7549-4915-9a51-09cd44cb989d]
+      X-Runtime: ['0.436647']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['28829']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/statuses/99882236142265564
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"c20be3a9dce740d7f932207ef3b8ab21"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8b11a456-20f4-447f-8a08-789c4e980ac0]
+      X-Runtime: ['0.044548']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
 version: 1

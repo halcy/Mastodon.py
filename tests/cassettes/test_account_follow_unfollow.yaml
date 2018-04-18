@@ -51,4 +51,56 @@ interactions:
       X-XSS-Protection: [1; mode=block]
       content-length: ['175']
     status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/follow
+  response:
+    body: {string: '{"id":"1","following":true,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"b8c56d834f4621bc2b3b8f2dd4eb7712"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [2ee799ee-aca4-46be-9729-9a326bc6b1ab]
+      X-Runtime: ['0.231535']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['174']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/unfollow
+  response:
+    body: {string: '{"id":"1","following":false,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"229b5f1dd5df8ec902733f300aadca06"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [3b7e105e-4b86-4131-9877-42c33ab471cb]
+      X-Runtime: ['0.121848']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['175']
+    status: {code: 200, message: OK}
 version: 1

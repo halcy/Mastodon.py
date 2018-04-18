@@ -23,4 +23,28 @@ interactions:
       X-XSS-Protection: [1; mode=block]
       content-length: ['28']
     status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/statuses/0
+  response:
+    body: {string: '{"error":"Record not found"}'}
+    headers:
+      Cache-Control: [no-cache]
+      Content-Type: [application/json; charset=utf-8]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [2b985021-244e-4505-bb19-99e5c967692f]
+      X-Runtime: ['0.048510']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['28']
+    status: {code: 404, message: Not Found}
 version: 1

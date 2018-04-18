@@ -97,4 +97,102 @@ interactions:
       X-Request-Id: [a80e82cb-97e8-48b7-b34c-5b4b70d7ab28]
       X-Runtime: ['0.136069']
     status: {code: 500, message: Internal Server Error}
+- request:
+    body: status=
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['7']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: "NoMethodError at /api/v1/statuses\n=================================\n\n>
+        undefined method `empty?' for nil:NilClass\n\napp/services/post_status_service.rb,
+        line 25\n--------------------------------------------\n\n``` ruby\n   20       end\n
+        \  21   \n   22       media  = validate_media!(options[:media_ids])\n   23
+        \      status = nil\n   24       text   = options.delete(:spoiler_text) if
+        text.blank? && options[:spoiler_text].present?\n>  25       text   = '.' if
+        text.blank? && !media.empty?\n   26   \n   27       ApplicationRecord.transaction
+        do\n   28         status = account.statuses.create!(text: text,\n   29                                           media_attachments:
+        media || [],\n   30                                           thread: in_reply_to,\n```\n\nApp
+        backtrace\n-------------\n\n - app/services/post_status_service.rb:25:in `call'\n
+        - app/controllers/api/v1/statuses_controller.rb:42:in `create'\n\nFull backtrace\n--------------\n\n
+        - app/services/post_status_service.rb:25:in `call'\n - app/controllers/api/v1/statuses_controller.rb:42:in
+        `create'\n - actionpack (5.1.4) lib/action_controller/metal/basic_implicit_render.rb:4:in
+        `send_action'\n - actionpack (5.1.4) lib/abstract_controller/base.rb:186:in
+        `process_action'\n - actionpack (5.1.4) lib/action_controller/metal/rendering.rb:30:in
+        `process_action'\n - actionpack (5.1.4) lib/abstract_controller/callbacks.rb:20:in
+        `block in process_action'\n - activesupport (5.1.4) lib/active_support/callbacks.rb:131:in
+        `run_callbacks'\n - actionpack (5.1.4) lib/abstract_controller/callbacks.rb:19:in
+        `process_action'\n - actionpack (5.1.4) lib/action_controller/metal/rescue.rb:20:in
+        `process_action'\n - actionpack (5.1.4) lib/action_controller/metal/instrumentation.rb:32:in
+        `block in process_action'\n - activesupport (5.1.4) lib/active_support/notifications.rb:166:in
+        `block in instrument'\n - activesupport (5.1.4) lib/active_support/notifications/instrumenter.rb:21:in
+        `instrument'\n - activesupport (5.1.4) lib/active_support/notifications.rb:166:in
+        `instrument'\n - actionpack (5.1.4) lib/action_controller/metal/instrumentation.rb:30:in
+        `process_action'\n - actionpack (5.1.4) lib/action_controller/metal/params_wrapper.rb:252:in
+        `process_action'\n - activerecord (5.1.4) lib/active_record/railties/controller_runtime.rb:22:in
+        `process_action'\n - actionpack (5.1.4) lib/abstract_controller/base.rb:124:in
+        `process'\n - actionview (5.1.4) lib/action_view/rendering.rb:30:in `process'\n
+        - actionpack (5.1.4) lib/action_controller/metal.rb:189:in `dispatch'\n -
+        actionpack (5.1.4) lib/action_controller/metal.rb:253:in `dispatch'\n - actionpack
+        (5.1.4) lib/action_dispatch/routing/route_set.rb:49:in `dispatch'\n - actionpack
+        (5.1.4) lib/action_dispatch/routing/route_set.rb:31:in `serve'\n - actionpack
+        (5.1.4) lib/action_dispatch/journey/router.rb:50:in `block in serve'\n - actionpack
+        (5.1.4) lib/action_dispatch/journey/router.rb:33:in `serve'\n - actionpack
+        (5.1.4) lib/action_dispatch/routing/route_set.rb:834:in `call'\n - omniauth
+        (1.8.1) lib/omniauth/builder.rb:63:in `call'\n - bullet (5.6.1) lib/bullet/rack.rb:12:in
+        `call'\n - http_accept_language (2.1.1) lib/http_accept_language/middleware.rb:14:in
+        `call'\n - rack (2.0.3) lib/rack/deflater.rb:34:in `call'\n - rack-attack
+        (5.0.1) lib/rack/attack.rb:140:in `call'\n - warden (1.2.7) lib/warden/manager.rb:36:in
+        `block in call'\n - warden (1.2.7) lib/warden/manager.rb:35:in `call'\n -
+        rack (2.0.3) lib/rack/etag.rb:25:in `call'\n - rack (2.0.3) lib/rack/conditional_get.rb:38:in
+        `call'\n - rack (2.0.3) lib/rack/head.rb:12:in `call'\n - rack (2.0.3) lib/rack/session/abstract/id.rb:232:in
+        `context'\n - rack (2.0.3) lib/rack/session/abstract/id.rb:226:in `call'\n
+        - actionpack (5.1.4) lib/action_dispatch/middleware/cookies.rb:613:in `call'\n
+        - activerecord (5.1.4) lib/active_record/migration.rb:556:in `call'\n - actionpack
+        (5.1.4) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'\n
+        - activesupport (5.1.4) lib/active_support/callbacks.rb:97:in `run_callbacks'\n
+        - actionpack (5.1.4) lib/action_dispatch/middleware/callbacks.rb:24:in `call'\n
+        - actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'\n
+        - better_errors (2.4.0) lib/better_errors/middleware.rb:84:in `protected_app_call'\n
+        - better_errors (2.4.0) lib/better_errors/middleware.rb:79:in `better_errors_call'\n
+        - better_errors (2.4.0) lib/better_errors/middleware.rb:57:in `call'\n - actionpack
+        (5.1.4) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'\n
+        - actionpack (5.1.4) lib/action_dispatch/middleware/show_exceptions.rb:31:in
+        `call'\n - chewy (5.0.0) lib/chewy/railtie.rb:19:in `block in call'\n - chewy
+        (5.0.0) lib/chewy/strategy.rb:70:in `wrap'\n - chewy (5.0.0) lib/chewy.rb:201:in
+        `strategy'\n - chewy (5.0.0) lib/chewy/railtie.rb:19:in `call'\n - railties
+        (5.1.4) lib/rails/rack/logger.rb:36:in `call_app'\n - railties (5.1.4) lib/rails/rack/logger.rb:24:in
+        `block in call'\n - activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in
+        `block in tagged'\n - activesupport (5.1.4) lib/active_support/tagged_logging.rb:26:in
+        `tagged'\n - activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in
+        `tagged'\n - railties (5.1.4) lib/rails/rack/logger.rb:24:in `call'\n - sprockets-rails
+        (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'\n - actionpack (5.1.4)
+        lib/action_dispatch/middleware/remote_ip.rb:79:in `call'\n - actionpack (5.1.4)
+        lib/action_dispatch/middleware/request_id.rb:25:in `call'\n - rack (2.0.3)
+        lib/rack/method_override.rb:22:in `call'\n - rack (2.0.3) lib/rack/runtime.rb:22:in
+        `call'\n - rack-timeout (0.4.2) lib/rack/timeout/core.rb:100:in `call'\n -
+        activesupport (5.1.4) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in
+        `call'\n - actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in
+        `call'\n - actionpack (5.1.4) lib/action_dispatch/middleware/static.rb:125:in
+        `call'\n - rack (2.0.3) lib/rack/sendfile.rb:111:in `call'\n - rack-cors (0.4.1)
+        lib/rack/cors.rb:81:in `call'\n - webpacker (3.0.2) lib/webpacker/dev_server_proxy.rb:17:in
+        `perform_request'\n - rack-proxy (0.6.2) lib/rack/proxy.rb:57:in `call'\n
+        - railties (5.1.4) lib/rails/engine.rb:522:in `call'\n - puma (3.11.0) lib/puma/configuration.rb:225:in
+        `call'\n - puma (3.11.0) lib/puma/server.rb:624:in `handle_request'\n - puma
+        (3.11.0) lib/puma/server.rb:438:in `process_client'\n - puma (3.11.0) lib/puma/server.rb:302:in
+        `block in run'\n - puma (3.11.0) lib/puma/thread_pool.rb:120:in `block in
+        spawn_thread'\n\n"}
+    headers:
+      Content-Type: [text/plain; charset=utf-8]
+      Transfer-Encoding: [chunked]
+      Vary: [Origin]
+      X-Request-Id: [49ab592f-6641-48f1-b38d-430f18c60ac8]
+      X-Runtime: ['0.111582']
+    status: {code: 500, message: Internal Server Error}
 version: 1

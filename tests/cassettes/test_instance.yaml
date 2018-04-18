@@ -24,4 +24,29 @@ interactions:
       X-XSS-Protection: [1; mode=block]
       content-length: ['292']
     status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body: {string: '{"uri":"localhost:3000","title":"Mastodon","description":"","email":"","version":"2.3.3","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":2,"status_count":40,"domain_count":0},"thumbnail":"http://localhost:3000/packs/preview.jpg","languages":["en"],"contact_account":null}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"d10838ec1c36f518f9275bc7bac36c3d"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [96e4f613-a2eb-4e63-b237-257989333b97]
+      X-Runtime: ['0.192588']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['292']
+    status: {code: 200, message: OK}
 version: 1
