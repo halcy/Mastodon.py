@@ -90,7 +90,7 @@ class Mastodon:
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
     __DEFAULT_STREAM_RECONNECT_WAIT_SEC = 5
-    __SUPPORTED_MASTODON_VERSION = "2.2.0"
+    __SUPPORTED_MASTODON_VERSION = "2.3.0"
     
     ###
     # Registering apps
@@ -892,7 +892,7 @@ class Mastodon:
     ###
     @api_version("1.0.0", "2.0.0")    
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
-                    sensitive=False, visibility='', spoiler_text=None):
+                    sensitive=False, visibility=None, spoiler_text=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -930,11 +930,14 @@ class Mastodon:
         params_initial = locals()
 
         # Validate visibility parameter
-        valid_visibilities = ['private', 'public', 'unlisted', 'direct', '']
-        params_initial['visibility'] = params_initial['visibility'].lower()
-        if params_initial['visibility'] not in valid_visibilities:
-            raise ValueError('Invalid visibility value! Acceptable '
-                             'values are %s' % valid_visibilities)
+        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
+        if params_initial['visibility'] == None:
+            del params_initial['visibility']
+        else:
+            params_initial['visibility'] = params_initial['visibility'].lower()
+            if params_initial['visibility'] not in valid_visibilities:
+                raise ValueError('Invalid visibility value! Acceptable '
+                                'values are %s' % valid_visibilities)
 
         if params_initial['sensitive'] is False:
             del [params_initial['sensitive']]
@@ -1145,21 +1148,54 @@ class Mastodon:
 
     @api_version("1.1.1", "2.3.0")
     def account_update_credentials(self, display_name=None, note=None,
-                                   avatar=None, header=None, locked=None):
+                                   avatar=None, avatar_mime_type=None,
+                                   header=None, header_mime_type=None, locked=None):
         """
         Update the profile for the currently logged-in user.
 
         'note' is the user's bio.
 
-        'avatar' and 'header' are images encoded in base64, prepended by a content-type
-        (for example: 'data:image/png;base64,iVBORw0KGgoAAAA[...]')
+        'avatar' and 'header' are images. As with media uploads, it is possible to either
+        pass image data and a mime type, or a filename of an image file, for either.
         
         'locked' specifies whether the user needs to manually approve follow requests.
         
         Returns the updated `user dict` of the logged-in user.
         """
-        params = self.__generate_params(locals())
-        return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
+        params_initial = locals()
+        
+        # Load avatar, if specified
+        if avatar_mime_type is None and os.path.isfile(avatar):
+            avatar_mime_type = mimetypes.guess_type(avatar)[0]
+            avatar = open(avatar, 'rb')
+        
+        if (not avatar is None and avatar_mime_type is None):
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        
+        # Load header, if specified
+        if header_mime_type is None and os.path.isfile(header):
+            header_mime_type = mimetypes.guess_type(header)[0]
+            header = open(header, 'rb')
+        
+        if (not header is None and header_mime_type is None):
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        
+        # Clean up params
+        for param in ["avatar", "avatar_mime_type", "header", "header_mime_type"]:
+            if param in params_initial:
+                del params_initial[param]
+        
+        # Create file info
+        files = {}
+        if not avatar is None:
+            avatar_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
+            files["avatar"] = (avatar_file_name, avatar, avatar_mime_type)
+        if not header is None:
+            header_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
+            files["header"] = (header_file_name, header, header_mime_type)
+        
+        params = self.__generate_params(params_initial)
+        return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
 
     ###
     # Writing data: Lists
