@@ -7,7 +7,7 @@ def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN'):
             client_id='__MASTODON_PY_TEST_CLIENT_ID',
             client_secret='__MASTODON_PY_TEST_CLIENT_SECRET',
             access_token=access_token,
-            mastodon_version="2.1.0")
+            mastodon_version="2.3.0")
 
 
 @pytest.fixture
