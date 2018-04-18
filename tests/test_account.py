@@ -80,7 +80,7 @@ def test_blocks(api):
     assert isinstance(blocks, list)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials(api):
     with open('tests/image.jpg', 'rb') as f:
         image = f.read()
