@@ -1872,6 +1872,10 @@ class MastodonNetworkError(MastodonIOError):
     """Raised when network communication with the server fails"""
     pass
 
+class MastodonReadTimeout(MastodonNetworkError):
+    """Raised when a stream times out"""
+    pass
+
 
 class MastodonAPIError(MastodonError):
     """Raised when the mastodon API generates a response that cannot be handled"""
