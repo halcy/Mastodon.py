@@ -1,11 +1,51 @@
 import six
 import pytest
 import itertools
-from mastodon.streaming import StreamListener
+from mastodon.streaming import StreamListener, CallbackStreamListener
 from mastodon.Mastodon import MastodonMalformedEventError
+from mastodon import Mastodon
 
+import threading
+import time
 
+# For monkeypatching so we can make vcrpy better
+import vcr.stubs
 
+streamingIsPatched = False
+realConnections = []
+
+def patchStreaming():
+    global streamingIsPatched
+    if streamingIsPatched == True:
+        return
+    streamingIsPatched = True
+    
+    realGetResponse = vcr.stubs.VCRConnection.getresponse
+    def fakeGetResponse(*args, **kwargs):
+        if args[0]._vcr_request.path.startswith("/api/v1/streaming/"):
+            realConnections.append(args[0].real_connection)
+            realConnectionRealGetresponse = args[0].real_connection.getresponse
+            def fakeRealConnectionGetresponse(*args, **kwargs):
+                response = realConnectionRealGetresponse(*args, **kwargs)
+                real_body = b""
+                try:
+                    while True:
+                        chunk = response.read(1)
+                        real_body += chunk
+                except AttributeError: 
+                    pass # Connection closed
+                response.read = (lambda: real_body)
+                return response
+            args[0].real_connection.getresponse = fakeRealConnectionGetresponse
+        return realGetResponse(*args, **kwargs)
+    vcr.stubs.VCRConnection.getresponse = fakeGetResponse
+
+def streamingClose():
+    global realConnections
+    for connection in realConnections:
+        connection.close()
+    realConnections = []
+    
 class Listener(StreamListener):
     def __init__(self):
         self.updates = []
@@ -210,3 +250,45 @@ def test_multiline_payload():
         '',
     ])
     assert listener.updates == [{"foo": "bar"}]
+
+@pytest.mark.vcr(match_on=['path'])
+def test_stream_user(api, api2):
+    patchStreaming()
+    
+    updates = []
+    notifications = []
+    listener = CallbackStreamListener(
+        update_handler = lambda x: updates.append(x),
+        notification_handler = lambda x: notifications.append(x)
+    )
+    
+    posted = []
+    def do_activities():
+        time.sleep(5)
+        posted.append(api.status_post("only real cars respond."))
+        posted.append(api2.status_post("@mastodonpy_test beep beep I'm a jeep"))
+        posted.append(api2.status_post("on the internet, nobody knows you're a plane"))
+        time.sleep(3)
+        streamingClose()
+        
+    t = threading.Thread(args=(), target=do_activities)
+    t.start()
+    
+    stream = None
+    try:
+        stream = api.stream_user(listener, run_async=True)
+        time.sleep(13)
+    finally:
+        if stream != None:
+            stream.close()
+        
+    assert len(updates) == 2
+    assert len(notifications) == 1
+    
+    assert updates[0].id == posted[0].id
+    assert updates[1].id == posted[0].id
+    assert notifications[0].status.id == posted[1].id
+    
+    t.join()
+    
+    
