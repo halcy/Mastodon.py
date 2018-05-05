@@ -194,6 +194,8 @@ class Mastodon:
 
         self.request_timeout = request_timeout
 
+        self.session = requests.Session()
+
         # Versioning
         if mastodon_version == None:
             self.retrieve_mastodon_version()
@@ -1585,7 +1587,7 @@ class Mastodon:
                 else:
                     kwargs['data'] = params
 
-                response_object = requests.request(
+                response_object = self.session.request(
                         method, self.api_base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
@@ -1739,8 +1741,7 @@ class Mastodon:
         # Connect function (called and then potentially passed to async handler)
         def connect_func():
             headers = {"Authorization": "Bearer " + self.access_token}
-            connection = requests.get(url + endpoint, headers = headers, data = params, stream = True)
-
+            connection = self.session.get(url + endpoint, headers = headers, data = params, stream = True)
             if connection.status_code != 200:
                 raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
             return connection
