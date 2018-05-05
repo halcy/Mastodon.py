@@ -1807,7 +1807,8 @@ class Mastodon:
 
         if run_async:
             handle = __stream_handle(connection, connect_func, reconnect_async, reconnect_async_wait_sec)
-            t = threading.Thread(args=(), daemon = True, target=handle._threadproc)
+            t = threading.Thread(args=(), target=handle._threadproc)
+            t.daemon = True
             t.start()
             return handle
         else:
