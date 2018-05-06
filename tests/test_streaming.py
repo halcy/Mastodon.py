@@ -164,6 +164,16 @@ def test_invalid_event():
             '',
         ])
 
+def test_invalid_json():
+    """But not too tolerant"""
+    listener = Listener()
+    with pytest.raises(MastodonMalformedEventError):
+        listener.handle_stream_([
+            'event: blahblah',
+            'data: {kjaslkdjalskdjasd asdkjhak ajdasldasd}',
+            '',
+        ])
+
 def test_missing_event_name():
     listener = Listener()
     with pytest.raises(MastodonMalformedEventError):
