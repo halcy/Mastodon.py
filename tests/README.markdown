@@ -15,6 +15,7 @@ And if you want a complete HTML coverage report:
     pytest --cov=mastodon --cov-report html:coverage
     # then open coverage/index.html in your favourite web browser
 
+Note that some tests are slightly unstable, as they require sidekiq to do things at the right time, and will thus sometimes break.
 
 ## Contributing
 
