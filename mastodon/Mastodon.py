@@ -91,7 +91,7 @@ class Mastodon:
     __DEFAULT_TIMEOUT = 300
     __DEFAULT_STREAM_TIMEOUT = 300
     __DEFAULT_STREAM_RECONNECT_WAIT_SEC = 5
-    __SUPPORTED_MASTODON_VERSION = "2.2.0"
+    __SUPPORTED_MASTODON_VERSION = "2.3.0"
     
     ###
     # Registering apps
@@ -194,6 +194,8 @@ class Mastodon:
         self.ratelimit_pacefactor = ratelimit_pacefactor
 
         self.request_timeout = request_timeout
+
+        self.session = requests.Session()
 
         # Versioning
         if mastodon_version == None:
@@ -347,7 +349,7 @@ class Mastodon:
     ###
     # Reading data: Instances
     ###
-    @api_version("1.1.0", "1.4.2")
+    @api_version("1.1.0", "2.3.0")
     def instance(self):
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
@@ -688,10 +690,11 @@ class Mastodon:
                                   params)
 
     @api_version("1.0.0", "2.1.0")
-    def account_search(self, q, limit=None):
+    def account_search(self, q, limit=None, following=False):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
-        in the username@domain format and not yet in the database.
+        in the username@domain format and not yet in the database. Set `following` to
+        True to limit the search to users the logged-in user follows.
 
         Returns a list of `user dicts`_.
         """
@@ -706,6 +709,7 @@ class Mastodon:
         
         Returns a list of `list dicts`_.
         """
+        id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/lists'.format(str(id))
         return self.__api_request('GET', url, params)
@@ -892,7 +896,7 @@ class Mastodon:
     ###
     @api_version("1.0.0", "2.0.0")    
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
-                    sensitive=False, visibility='', spoiler_text=None):
+                    sensitive=False, visibility=None, spoiler_text=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -930,11 +934,14 @@ class Mastodon:
         params_initial = locals()
 
         # Validate visibility parameter
-        valid_visibilities = ['private', 'public', 'unlisted', 'direct', '']
-        params_initial['visibility'] = params_initial['visibility'].lower()
-        if params_initial['visibility'] not in valid_visibilities:
-            raise ValueError('Invalid visibility value! Acceptable '
-                             'values are %s' % valid_visibilities)
+        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
+        if params_initial['visibility'] == None:
+            del params_initial['visibility']
+        else:
+            params_initial['visibility'] = params_initial['visibility'].lower()
+            if params_initial['visibility'] not in valid_visibilities:
+                raise ValueError('Invalid visibility value! Acceptable '
+                                'values are %s' % valid_visibilities)
 
         if params_initial['sensitive'] is False:
             del [params_initial['sensitive']]
@@ -1143,21 +1150,56 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1", "2.1.0")
+    @api_version("1.1.1", "2.3.0")
     def account_update_credentials(self, display_name=None, note=None,
-                                   avatar=None, header=None):
+                                   avatar=None, avatar_mime_type=None,
+                                   header=None, header_mime_type=None, locked=None):
         """
         Update the profile for the currently logged-in user.
 
         'note' is the user's bio.
 
-        'avatar' and 'header' are images encoded in base64, prepended by a content-type
-        (for example: 'data:image/png;base64,iVBORw0KGgoAAAA[...]')
+        'avatar' and 'header' are images. As with media uploads, it is possible to either
+        pass image data and a mime type, or a filename of an image file, for either.
+        
+        'locked' specifies whether the user needs to manually approve follow requests.
         
         Returns the updated `user dict` of the logged-in user.
         """
-        params = self.__generate_params(locals())
-        return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params)
+        params_initial = locals()
+        
+        # Load avatar, if specified
+        if avatar_mime_type is None and os.path.isfile(avatar):
+            avatar_mime_type = mimetypes.guess_type(avatar)[0]
+            avatar = open(avatar, 'rb')
+        
+        if (not avatar is None and avatar_mime_type is None):
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        
+        # Load header, if specified
+        if header_mime_type is None and os.path.isfile(header):
+            header_mime_type = mimetypes.guess_type(header)[0]
+            header = open(header, 'rb')
+        
+        if (not header is None and header_mime_type is None):
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        
+        # Clean up params
+        for param in ["avatar", "avatar_mime_type", "header", "header_mime_type"]:
+            if param in params_initial:
+                del params_initial[param]
+        
+        # Create file info
+        files = {}
+        if not avatar is None:
+            avatar_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
+            files["avatar"] = (avatar_file_name, avatar, avatar_mime_type)
+        if not header is None:
+            header_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
+            files["header"] = (header_file_name, header, header_mime_type)
+        
+        params = self.__generate_params(params_initial)
+        return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
 
     ###
     # Writing data: Lists
@@ -1547,7 +1589,7 @@ class Mastodon:
                 else:
                     kwargs['data'] = params
 
-                response_object = requests.request(
+                response_object = self.session.request(
                         method, self.api_base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
@@ -1701,7 +1743,7 @@ class Mastodon:
         # Connect function (called and then potentially passed to async handler)
         def connect_func():
             headers = {"Authorization": "Bearer " + self.access_token}
-            connection = requests.get(url + endpoint, headers = headers, data = params, stream = True,
+            connection = self.session.get(url + endpoint, headers = headers, data = params, stream = True,
                                   timeout=(self.request_timeout, timeout))
 
             if connection.status_code != 200:
@@ -1769,7 +1811,8 @@ class Mastodon:
 
         if run_async:
             handle = __stream_handle(connection, connect_func, reconnect_async, reconnect_async_wait_sec)
-            t = threading.Thread(args=(), daemon = True, target=handle._threadproc)
+            t = threading.Thread(args=(), target=handle._threadproc)
+            t.daemon = True
             t.start()
             return handle
         else:

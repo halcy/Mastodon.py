@@ -20,6 +20,22 @@ def test_constructor_illegal_ratelimit():
                 'foo', client_secret='bar',
                 ratelimit_method='baz')
 
+def test_constructor_illegal_versioncheckmode():
+    with pytest.raises(MastodonIllegalArgumentError):
+        api = Mastodon(
+                'foo', client_secret='bar',
+                version_check_mode='baz')
+
+
 def test_constructor_missing_client_secret():
     with pytest.raises(MastodonIllegalArgumentError):
         api = Mastodon('foo')
+
+@pytest.mark.vcr()
+def test_verify_version(api):
+    assert api.verify_minimum_version("2.3.3") == True
+    assert api.verify_minimum_version("2.3.4") == False
+    assert api.verify_minimum_version("2.4.3") == False
+    assert api.verify_minimum_version("3.3.3") == False
+    assert api.verify_minimum_version("1.0.0") == True
+    

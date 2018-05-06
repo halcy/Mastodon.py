@@ -80,17 +80,15 @@ def test_blocks(api):
     assert isinstance(blocks, list)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials(api):
-    import base64
     with open('tests/image.jpg', 'rb') as f:
         image = f.read()
-    b64_image = base64.b64encode(image)
-    data_uri = b'data:image/jpeg;base64,' + b64_image
 
     account = api.account_update_credentials(
             display_name='John Lennon',
             note='I walk funny',
-            avatar = data_uri,
-            header = data_uri)
+            avatar = "tests/image.jpg",
+            header = image,
+            header_mime_type = "image/jpeg")
     assert account

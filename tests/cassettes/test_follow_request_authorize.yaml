@@ -7,23 +7,23 @@ interactions:
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: POST
     uri: http://localhost:3000/api/v1/accounts/1234567890123456/follow
   response:
-    body: {string: '{"id":"1234567890123456","following":false,"followed_by":false,"blocking":false,"muting":false,"requested":true,"domain_blocking":false}'}
+    body: {string: '{"id":"1234567890123456","following":false,"showing_reblogs":true,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":true,"domain_blocking":false}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"39b04ee179b7c6820c81f24224090155"]
+      ETag: [W/"081762809bc21ca493670420dc736fa1"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [ff6e83a7-8f9e-4e71-91fe-ab3d12a7b379]
-      X-Runtime: ['0.073482']
+      X-Request-Id: [2559832e-48fb-4782-a78e-73edd7cf1cfa]
+      X-Runtime: ['0.113395']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['136']
+      content-length: ['188']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -33,7 +33,7 @@ interactions:
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: POST
     uri: http://localhost:3000/api/v1/follow_requests/1/authorize
   response:
@@ -41,13 +41,13 @@ interactions:
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"25cc8a12b4a7526df56e78049197b9fc"]
+      ETag: [W/"7450e41af88d5294b91dd2d498b116ae"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [e7e70867-7816-42f7-bdfa-994f6bd2dbbc]
-      X-Runtime: ['0.040458']
+      X-Request-Id: [e420580c-7bc9-499c-8363-143e76184b5f]
+      X-Runtime: ['0.056386']
       X-XSS-Protection: [1; mode=block]
       content-length: ['2']
     status: {code: 200, message: OK}
@@ -59,22 +59,22 @@ interactions:
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: POST
     uri: http://localhost:3000/api/v1/accounts/1234567890123456/unfollow
   response:
-    body: {string: '{"id":"1234567890123456","following":false,"followed_by":false,"blocking":false,"muting":false,"requested":false,"domain_blocking":false}'}
+    body: {string: '{"id":"1234567890123456","following":false,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"fc9790ae7d4aa4b12007bc0900ea9c72"]
+      ETag: [W/"d52662a06ac8e4bd34c2c2b4e2e46f99"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [a651ddce-80d0-484b-a2f2-6c5fb6377d06]
-      X-Runtime: ['0.040597']
+      X-Request-Id: [066d1c43-5304-41fe-af40-041dfb36253d]
+      X-Runtime: ['0.077256']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['137']
+      content-length: ['190']
     status: {code: 200, message: OK}
 version: 1

@@ -1,116 +1,120 @@
 interactions:
 - request:
-    body: visibility=&status=Toot%21
+    body: status=Toot%21
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_TOKEN]
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['26']
+      Content-Length: ['14']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: POST
     uri: http://localhost:3000/api/v1/statuses
   response:
-    body: {string: '{"id":"99078602504465984","created_at":"2017-11-27T21:51:36.228Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/99078602504465984","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@admin/99078602504465984","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"codltest","locked":false,"created_at":"2017-07-01T17:09:15.621Z","note":"\u003cp\u003ehello
-        :)\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","avatar_static":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":39},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    body: {string: '{"id":"99979652371926761","created_at":"2018-05-06T01:00:26.102Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99979652371926761","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99979652371926761","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":0,"statuses_count":129},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"bbc6e496d298265c537670c07d8bccdf"]
+      ETag: [W/"bb5c5ae4f7ccb3b3e3c6c72af474bc1d"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [21a5d437-9323-4226-8b11-b2875428afaf]
-      X-Runtime: ['0.059917']
+      X-Request-Id: [c95cb5f1-0a5b-4200-8dbd-93b9fca183d0]
+      X-Runtime: ['0.275382']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['1216']
+      content-length: ['1402']
     status: {code: 200, message: OK}
 - request:
     body: null
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_TOKEN]
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: POST
-    uri: http://localhost:3000/api/v1/statuses/99078602504465984/reblog
+    uri: http://localhost:3000/api/v1/statuses/99979652371926761/reblog
   response:
-    body: {string: '{"id":"99078602509548908","created_at":"2017-11-27T21:51:36.306Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/99078602509548908/activity","content":"\u003cp\u003eRT
-        \u003cspan class=\"h-card\"\u003e\u003ca href=\"http://localhost:3000/@admin\"
-        class=\"u-url mention\"\u003e@\u003cspan\u003eadmin\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e
-        Toot!\u003c/p\u003e","url":"http://localhost:3000/@admin/99078602509548908","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":true,"muted":false,"reblog":{"id":"99078602504465984","created_at":"2017-11-27T21:51:36.228Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/99078602504465984","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@admin/99078602504465984","reblogs_count":1,"favourites_count":0,"favourited":false,"reblogged":true,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"codltest","locked":false,"created_at":"2017-07-01T17:09:15.621Z","note":"\u003cp\u003ehello
-        :)\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","avatar_static":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":39},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},"application":null,"account":{"id":"1","username":"admin","acct":"admin","display_name":"codltest","locked":false,"created_at":"2017-07-01T17:09:15.621Z","note":"\u003cp\u003ehello
-        :)\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","avatar_static":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":40},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    body: {string: '{"id":"99979652390762679","created_at":"2018-05-06T01:00:26.382Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/mastodonpy_test/statuses/99979652390762679/activity","content":"\u003cp\u003eRT
+        \u003cspan class=\"h-card\"\u003e\u003ca href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\"\u003e@\u003cspan\u003emastodonpy_test\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e
+        Toot!\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99979652390762679","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":true,"muted":false,"reblog":{"id":"99979652371926761","created_at":"2018-05-06T01:00:26.102Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99979652371926761","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99979652371926761","reblogs_count":1,"favourites_count":0,"favourited":false,"reblogged":true,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":0,"statuses_count":129},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},"application":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":0,"statuses_count":130},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"fe1e853c3b03ebcec5abd1e1b35d2a80"]
+      ETag: [W/"c38380d7884dcf58ac8d9380865ecde7"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [f0a0c6e8-8e44-455d-a25a-35fdafb12a85]
-      X-Runtime: ['0.091112']
+      X-Request-Id: [92cba8ae-7f1b-4037-b839-3b9a871a6826]
+      X-Runtime: ['0.334543']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['2558']
+      content-length: ['2950']
     status: {code: 200, message: OK}
 - request:
     body: null
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_TOKEN]
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: POST
-    uri: http://localhost:3000/api/v1/statuses/99078602504465984/unreblog
+    uri: http://localhost:3000/api/v1/statuses/99979652371926761/unreblog
   response:
-    body: {string: '{"id":"99078602504465984","created_at":"2017-11-27T21:51:36.228Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/99078602504465984","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@admin/99078602504465984","reblogs_count":1,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"codltest","locked":false,"created_at":"2017-07-01T17:09:15.621Z","note":"\u003cp\u003ehello
-        :)\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","avatar_static":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":40},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    body: {string: '{"id":"99979652371926761","created_at":"2018-05-06T01:00:26.102Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/99979652371926761","content":"\u003cp\u003eToot!\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/99979652371926761","reblogs_count":1,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"created_at":"2018-04-18T20:04:06.511Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":0,"statuses_count":130},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"a61d4671c0bb3fc5b5170c4f412adaf9"]
+      ETag: [W/"dd004e0e699bf89b799802591c2ef87b"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [0fbd79a3-ef33-462d-898d-12cf236217c2]
-      X-Runtime: ['0.057957']
+      X-Request-Id: [50f50c12-effa-4efa-adcb-7bbec2f07f24]
+      X-Runtime: ['0.071297']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['1216']
+      content-length: ['1402']
     status: {code: 200, message: OK}
 - request:
     body: null
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_TOKEN]
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: DELETE
-    uri: http://localhost:3000/api/v1/statuses/99078602504465984
+    uri: http://localhost:3000/api/v1/statuses/99979652371926761
   response:
     body: {string: '{}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"e7d76440082320bd78d556c907de0f9b"]
+      ETag: [W/"6d201c7fbcbadfcbc7ea2e3ada8d84ab"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [e1e8b44b-1862-4f8a-ab62-815d4b0aeec2]
-      X-Runtime: ['0.023916']
+      X-Request-Id: [424b1842-abb9-451b-91b9-e38f205ddc57]
+      X-Runtime: ['0.052935']
       X-XSS-Protection: [1; mode=block]
       content-length: ['2']
     status: {code: 200, message: OK}

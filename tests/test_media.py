@@ -11,7 +11,7 @@ def test_media_post(api, sensitive):
 
     status = api.status_post(
             'LOL check this out',
-            media_ids=[media],
+            media_ids=media,
             sensitive=sensitive
             )
 

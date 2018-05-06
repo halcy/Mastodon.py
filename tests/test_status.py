@@ -16,11 +16,17 @@ def test_status_missing(api):
     with pytest.raises(MastodonNotFoundError):
         api.status(0)
 
-@pytest.mark.skip(reason="Doesn't look like mastodon will make a card for an url that doesn't have a TLD, and relying on some external website being reachable to make a card of is messy :/")
+# Messy and will only work if there is an internet connection that is decent, obviously.
+@pytest.mark.vcr()
 def test_status_card(api):
-    status = api.status_post("http://localhost:3000")
+    import time
+    status = api.status_post("http://example.org/")
+    time.sleep(5) # Card generation may take time
     card = api.status_card(status['id'])
-    assert card
+    try:
+        assert card
+    finally:
+        api.status_delete(status['id'])
 
 @pytest.mark.vcr()
 def test_status_context(status, api):
@@ -48,7 +54,7 @@ def test_toot(api):
         api.status_delete(status['id'])
 
 @pytest.mark.vcr()
-@pytest.mark.parametrize('visibility', ('', 'direct', 'private', 'unlisted', 'public',
+@pytest.mark.parametrize('visibility', (None, 'direct', 'private', 'unlisted', 'public',
         pytest.param('foobar', marks=pytest.mark.xfail(strict=True))))
 @pytest.mark.parametrize('spoiler_text', (None, 'Content warning'))
 def test_status_post(api, visibility, spoiler_text):

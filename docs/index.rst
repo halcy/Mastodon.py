@@ -385,10 +385,13 @@ Media dicts
         'preview_url': # The URL for the media preview
         'text_url': # The display text for the media (what shows up in toots)
         'meta': # Dictionary of two image metadata dicts (see below), 
-                # 'original' and 'small' (preview)
+                # 'original' and 'small' (preview). Either may be empty.
+                # May additionally contain an "fps" field giving a videos frames per second (possibly
+                # rounded), and a "length" field giving a videos length in a human-readable format.
+                # Note that a video may have an image as preview.
     }
     
-    # Metadata dicts:
+    # Metadata dicts (image) - all fields are optional:
     {
        'width': # Width of the image in pixels
        'height': # Height of the image in pixels
@@ -396,6 +399,14 @@ Media dicts
        'size': # Textual representation of the image size in pixels, e.g. '800x600'
     }
     
+    # Metadata dicts (video, gifv) - all fields are optional:
+    {
+        'width': # Width of the video in pixels
+        'heigh': # Height of the video in pixels
+        'frame_rate': # Exact frame rate of the video in frames per second
+        'duration': # Duration of the video in seconds
+        'bitrate': # Average bit-rate of the video in bytes per second
+    }
 Card dicts
 ~~~~~~~~~~
 .. _card dict:
@@ -452,6 +463,8 @@ Instance dicts
         'version': # The instances mastodon version
         'urls': # Additional URLs dict, presently only 'streaming_api' with the 
                 # stream websocket address.
+        'contact_account': # Account dict of the primary contact for the instance.
+        'languages': # Array of ISO 6391 language codes the instance has chosen to advertise.
     }
 
 Activity dicts
@@ -731,7 +744,8 @@ If `async` is True, the listener will listen on another thread and these methods
 will return a handle corresponding to the open connection. If, in addition, `async_reconnect` is True,
 the thread will attempt to reconnect to the streaming API if any errors are encountered, waiting
 `async_reconnect_wait_sec` seconds between reconnection attempts. Note that no effort is made
-to "catch up" - toots made while the connection is broken will not be received.
+to "catch up" - events created while the connection is broken will not be received. If you need to make
+sure to get absolutely all notifications / deletes / toots, you will have to do that manually.
 
 The connection may be closed at any time by calling the handles close() method. The 
 current status of the handler thread can be checked with the handles is_alive() function,

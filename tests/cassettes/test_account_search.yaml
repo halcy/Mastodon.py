@@ -6,23 +6,22 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      User-Agent: [python-requests/2.9.1]
     method: GET
-    uri: http://localhost:3000/api/v1/accounts/search?q=admin
+    uri: http://localhost:3000/api/v1/accounts/search?following=False&q=admin
   response:
-    body: {string: '[{"id":"1","username":"admin","acct":"admin","display_name":"codltest","locked":false,"created_at":"2017-07-01T17:09:15.621Z","note":"\u003cp\u003ehello
-        :)\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","avatar_static":"http://localhost:3000/system/accounts/avatars/000/000/001/original/99b4c443463de195.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":50}]'}
+    body: {string: '[]'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"f257564844f554885596d31ac16d0607"]
+      ETag: [W/"d21cc31537780b09e689112cad9f33d5"]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [efde9755-3e09-4e66-89d3-ad28026d0a0a]
-      X-Runtime: ['0.047304']
+      X-Request-Id: [e0308c3e-a422-44e9-9991-80cbeab109c8]
+      X-Runtime: ['0.071572']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['605']
+      content-length: ['2']
     status: {code: 200, message: OK}
 version: 1
