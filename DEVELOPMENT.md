@@ -8,6 +8,4 @@ Here's some general stuff to keep in mind, and some work that needs to be done
     * Add support for focal points
     * Add support for idempotency keys
     * Document error handling better
-    * Update tests
-    * Decide what to do about frame_rate values specified as fractions (7/20 etc.)
     
