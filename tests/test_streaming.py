@@ -154,6 +154,15 @@ def test_unknown_event():
     assert listener.deletes == []
     assert listener.heartbeats == 0
 
+def test_invalid_event():
+    """But not too tolerant"""
+    listener = Listener()
+    with pytest.raises(MastodonMalformedEventError):
+        listener.handle_stream_([
+            'event: whatup',
+            'data: {}',
+            '',
+        ])
 
 def test_missing_event_name():
     listener = Listener()
