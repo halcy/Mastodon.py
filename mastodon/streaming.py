@@ -6,8 +6,8 @@ https://github.com/tootsuite/mastodon/blob/master/docs/Using-the-API/Streaming-A
 import json
 import six
 from mastodon import Mastodon
-from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError
-from requests.exceptions import ChunkedEncodingError
+from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
+from requests.exceptions import ChunkedEncodingError, ReadTimeout
 
 class StreamListener(object):
     """Callbacks for the streaming API. Create a subclass, override the on_xxx
@@ -68,7 +68,12 @@ class StreamListener(object):
                 MastodonNetworkError("Server ceased communication."),
                 err
             )
-            
+        except MastodonReadTimeout as err:
+            six.raise_from(
+                MastodonReadTimeout("Timed out while reading from server."),
+                err
+            )
+
     def _parse_line(self, line, event):
         if line.startswith(':'):
             self.handle_heartbeat()
