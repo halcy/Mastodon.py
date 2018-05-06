@@ -257,9 +257,11 @@ def test_stream_user(api, api2):
     
     updates = []
     notifications = []
+    deletes = []
     listener = CallbackStreamListener(
         update_handler = lambda x: updates.append(x),
-        notification_handler = lambda x: notifications.append(x)
+        notification_handler = lambda x: notifications.append(x),
+        delete_handler = lambda x: deletes.append(x)
     )
     
     posted = []
@@ -268,6 +270,46 @@ def test_stream_user(api, api2):
         posted.append(api.status_post("only real cars respond."))
         posted.append(api2.status_post("@mastodonpy_test beep beep I'm a jeep"))
         posted.append(api2.status_post("on the internet, nobody knows you're a plane"))
+        time.sleep(1)
+        api.status_delete(posted[0])
+        time.sleep(2)
+        streamingClose()
+        
+    t = threading.Thread(args=(), target=do_activities)
+    t.start()
+    
+    stream = None
+    try:
+        stream = api.stream_user(listener, run_async=True)
+        time.sleep(13)
+    finally:
+        if stream != None:
+            stream.close()
+        
+    assert len(updates) == 1
+    assert len(notifications) == 1
+    assert len(deletes) == 1
+    
+    assert updates[0].id == posted[0].id
+    assert deletes[0] == posted[0].id
+    assert notifications[0].status.id == posted[1].id
+    
+    t.join()
+    
+@pytest.mark.vcr(match_on=['path'])
+def test_stream_user_local(api, api2):
+    patchStreaming()
+    
+    updates = []
+    notifications = []
+    listener = CallbackStreamListener(
+        local_update_handler = lambda x: updates.append(x),
+    )
+    
+    posted = []
+    def do_activities():
+        time.sleep(5)
+        posted.append(api.status_post("it's cool guy"))
         time.sleep(3)
         streamingClose()
         
@@ -282,13 +324,7 @@ def test_stream_user(api, api2):
         if stream != None:
             stream.close()
         
-    assert len(updates) == 2
-    assert len(notifications) == 1
-    
+    assert len(updates) == 1
     assert updates[0].id == posted[0].id
-    assert updates[1].id == posted[0].id
-    assert notifications[0].status.id == posted[1].id
     
     t.join()
-    
-    
