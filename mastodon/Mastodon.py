@@ -708,6 +708,7 @@ class Mastodon:
         
         Returns a list of `list dicts`_.
         """
+        id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/lists'.format(str(id))
         return self.__api_request('GET', url, params)

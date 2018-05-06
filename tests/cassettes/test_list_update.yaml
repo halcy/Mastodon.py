@@ -1,0 +1,157 @@
+interactions:
+- request:
+    body: title=ham+burglars
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['18']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/lists
+  response:
+    body: {string: '{"id":"22","title":"ham burglars"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"0c98211766a89984581c09197affd90c"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [fe851633-a39e-4bbd-8ecd-665d08ad9d69]
+      X-Runtime: ['0.046417']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['34']
+    status: {code: 200, message: OK}
+- request:
+    body: title=fry+kids
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['14']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: PUT
+    uri: http://localhost:3000/api/v1/lists/22
+  response:
+    body: {string: '{"id":"22","title":"fry kids"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"6dd7ff39115629170e5815c546666ab8"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [157f5470-3782-40e4-80ac-ea94f8e3f575]
+      X-Runtime: ['0.051260']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['30']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists
+  response:
+    body: {string: '[{"id":"1","title":"ham burglars"},{"id":"22","title":"fry kids"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"3a312ac5c7092d9a90693c236852fdc9"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [22dae45a-b92a-4ff0-b1a0-50ff690f429a]
+      X-Runtime: ['0.045067']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['66']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists
+  response:
+    body: {string: '[{"id":"1","title":"ham burglars"},{"id":"22","title":"fry kids"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"3a312ac5c7092d9a90693c236852fdc9"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [c4381d47-2ef7-40f8-ae75-ce8996886177]
+      X-Runtime: ['0.036421']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['66']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists/22
+  response:
+    body: {string: '{"id":"22","title":"fry kids"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"6dd7ff39115629170e5815c546666ab8"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [3e821cd3-7c44-4e3a-8cdf-9fa498f0bb68]
+      X-Runtime: ['0.020432']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['30']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/lists/22
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"ee6751ce2dc32e165dd24aca071f6eed"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [a8576f90-288b-4271-af8a-9bcabf3e2df9]
+      X-Runtime: ['0.032007']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+version: 1

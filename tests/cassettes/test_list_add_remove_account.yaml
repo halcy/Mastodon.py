@@ -1,0 +1,367 @@
+interactions:
+- request:
+    body: title=ham+burglars
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['18']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/lists
+  response:
+    body: {string: '{"id":"23","title":"ham burglars"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"0bcee380026306b4b8a9913243ef8d50"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [259f3b2e-1a4a-469d-82da-c2c604c4a950]
+      X-Runtime: ['0.056062']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['34']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/verify_credentials
+  response:
+    body: {string: '{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"created_at":"2018-04-17T21:40:55.626Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":51,"source":{"privacy":"public","sensitive":false,"note":""}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"52597edacbe583a8c705f06e18236329"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [2d436ac6-f2f9-4b2c-882e-8700462f1360]
+      X-Runtime: ['0.071364']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['571']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/follow
+  response:
+    body: {string: '{"id":"1","following":true,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"98c147556f83bd7b26490f2eac449592"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [79ef47dd-e003-4d92-b6ba-dfb51011822f]
+      X-Runtime: ['0.099480']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['174']
+    status: {code: 200, message: OK}
+- request:
+    body: account_ids%5B%5D=1
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['19']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"ee6751ce2dc32e165dd24aca071f6eed"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [0a67c0e2-3839-4c48-9d71-6a2a2e53f493]
+      X-Runtime: ['0.064774']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '[{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"created_at":"2018-04-17T21:40:55.626Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":51}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"4d3af392a570a5835fef368719dd8061"]
+      Link: ['<http://localhost:3000/api/v1/lists/23/accounts?since_id=1>; rel="prev"']
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8fe7676a-8ba8-4eb9-bd43-63889ea9c192]
+      X-Runtime: ['0.052742']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['515']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/unfollow
+  response:
+    body: {string: '{"id":"1","following":false,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"1e5f6a4b23911d5c2aeb66f774492a0b"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f9e46470-cfe8-4d23-bbf8-d909a0c9502a]
+      X-Runtime: ['0.086559']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['175']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"7762a54b770895c411eb3e681494e743"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [500b6154-3bdb-4cbb-bb99-e87072552943]
+      X-Runtime: ['0.057220']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/follow
+  response:
+    body: {string: '{"id":"1","following":true,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"98c147556f83bd7b26490f2eac449592"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [1f5d47f3-591f-4e91-bd77-0942c45caedb]
+      X-Runtime: ['0.081679']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['174']
+    status: {code: 200, message: OK}
+- request:
+    body: account_ids%5B%5D=1
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['19']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"ee6751ce2dc32e165dd24aca071f6eed"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [0f8bc3a7-c8fe-444b-b994-485c98cbda0a]
+      X-Runtime: ['0.064982']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '[{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"created_at":"2018-04-17T21:40:55.626Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":51}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"b9836e2f0226339c225639e9cc22ede9"]
+      Link: ['<http://localhost:3000/api/v1/lists/23/accounts?since_id=1>; rel="prev"']
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [794c2f5c-3edd-4b24-b8e3-bf9b26c021df]
+      X-Runtime: ['0.048936']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['515']
+    status: {code: 200, message: OK}
+- request:
+    body: account_ids%5B%5D=1
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['19']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"7d75201dffe84268b8e3844d4dc96e56"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [5b9c340c-9df5-4875-a754-9bd36a6398d2]
+      X-Runtime: ['0.054353']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: http://localhost:3000/api/v1/lists/23/accounts
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"d136973c02e6e12b3280a000929bdfab"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6cc121cd-cc66-4795-b9cd-8272b89166ff]
+      X-Runtime: ['0.050224']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/unfollow
+  response:
+    body: {string: '{"id":"1","following":false,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"b2c35ec6363918f9324f60b9ce18ad00"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [32c56b5c-a75f-45a3-a7fc-cf048dca9ce2]
+      X-Runtime: ['0.053228']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['175']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/lists/23
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"7d75201dffe84268b8e3844d4dc96e56"]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6f82b353-ca11-4c04-bd5c-36c02e050462]
+      X-Runtime: ['0.032468']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+version: 1
