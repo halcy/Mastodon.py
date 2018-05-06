@@ -403,10 +403,12 @@ Media dicts
     {
         'width': # Width of the video in pixels
         'heigh': # Height of the video in pixels
-        'frame_rate': # Exact frame rate of the video in frames per second
+        'frame_rate': # Exact frame rate of the video in frames per second.
+                      # Can be an integer fraction (i.e. "20/7")
         'duration': # Duration of the video in seconds
         'bitrate': # Average bit-rate of the video in bytes per second
     }
+    
 Card dicts
 ~~~~~~~~~~
 .. _card dict:
