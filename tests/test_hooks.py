@@ -29,3 +29,10 @@ def test_id_hook_within_reblog(api, status):
 @pytest.mark.vcr()
 def test_date_hook(status):
     assert isinstance(status['created_at'], datetime)
+
+@pytest.mark.vcr()
+def test_attribute_access(status):
+    assert status.id != None
+    with pytest.raises(AttributeError):
+        status.id = 420
+    
