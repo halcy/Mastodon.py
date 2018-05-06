@@ -440,7 +440,7 @@ class Mastodon:
         return self.timeline('local', max_id=max_id, since_id=since_id,
                              limit=limit)
 
-    @api_version("1.0.0", "2.0.0")
+    @api_version("1.0.0", "2.3.0")
     def timeline_public(self, max_id=None, since_id=None, limit=None, only_media=False):
         """
         Fetches the public / visible-network timeline, not including replies.
@@ -450,7 +450,7 @@ class Mastodon:
         return self.timeline('public', max_id=max_id, since_id=since_id,
                              limit=limit)
 
-    @api_version("1.0.0", "2.0.0")    
+    @api_version("1.0.0", "2.3.0")    
     def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None, only_media=False):
         """
         Fetch a timeline of toots with a given hashtag. The hashtag parameter
@@ -691,7 +691,7 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
 
-    @api_version("1.0.0", "2.1.0")
+    @api_version("1.0.0", "2.3.0")
     def account_search(self, q, limit=None, following=False):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
@@ -1308,13 +1308,16 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0", "2.0.0")
-    def media_post(self, media_file, mime_type=None, description=None):
+    @api_version("1.0.0", "2.3.0")
+    def media_post(self, media_file, mime_type=None, description=None, focus=None):
         """
         Post an image. `media_file` can either be image data or
         a file name. If image data is passed directly, the mime
         type has to be specified manually, otherwise, it is
-        determined from the file name.
+        determined from the file name. `focus` should be a tuple
+        of floats between -1 and 1, giving the x and y coordinates
+        of the images focus point for cropping (with the origin being the images
+        center).
 
         Throws a `MastodonIllegalArgumentError` if the mime type of the
         passed data or file can not be determined properly.
@@ -1335,10 +1338,13 @@ class Mastodon:
         file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(
             mime_type)
 
+        if focus != None:
+            focus = str(focus[0]) + "," + str(focus[1])
+            
         media_file_description = (file_name, media_file, mime_type)
         return self.__api_request('POST', '/api/v1/media',
                                   files={'file': media_file_description},
-                                  params={'description': description})
+                                  params={'description': description, 'focus': focus})
 
     ###
     # Writing data: Domain blocks
