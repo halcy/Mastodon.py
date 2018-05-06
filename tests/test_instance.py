@@ -29,3 +29,6 @@ def test_low_version(api_low_version):
     with pytest.raises(MastodonVersionError):
         instance = api_low_version.instance()
     
+@pytest.mark.vcr()
+def test_emoji(api):
+    assert len(api.custom_emojis()) == 0
