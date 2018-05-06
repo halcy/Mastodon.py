@@ -400,6 +400,8 @@ class Mastodon:
         
         The default timeline is the "home" timeline.
 
+        Media only queries are supported via the `timeline_public()`_ and `timeline_hashtag()`_ functions.
+
         Returns a list of `toot dicts`_.
         """
         if max_id != None:
@@ -439,7 +441,7 @@ class Mastodon:
                              limit=limit)
 
     @api_version("1.0.0", "2.0.0")
-    def timeline_public(self, max_id=None, since_id=None, limit=None):
+    def timeline_public(self, max_id=None, since_id=None, limit=None, only_media=False):
         """
         Fetches the public / visible-network timeline, not including replies.
 
@@ -449,7 +451,7 @@ class Mastodon:
                              limit=limit)
 
     @api_version("1.0.0", "2.0.0")    
-    def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None):
+    def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None, only_media=False):
         """
         Fetch a timeline of toots with a given hashtag. The hashtag parameter
         should not contain the leading #.
