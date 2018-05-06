@@ -274,6 +274,10 @@ def test_multiline_payload():
 def test_stream_user(api, api2):
     patchStreaming()
     
+    # Make sure we are in the right state to not receive updates from api2
+    user = api2.account_verify_credentials()
+    api2.account_unfollow(user)
+    
     updates = []
     notifications = []
     deletes = []
@@ -318,6 +322,10 @@ def test_stream_user(api, api2):
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_local(api, api2):
     patchStreaming()
+    
+    # Make sure we are in the right state to not receive updates from api2
+    user = api2.account_verify_credentials()
+    api2.account_unfollow(user)
     
     updates = []
     notifications = []
