@@ -174,7 +174,7 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, access_token=None, client_id=None, client_secret=None,
+    def __init__(self, client_secret=None, access_token=None, client_id=None,
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
