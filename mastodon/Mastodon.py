@@ -174,7 +174,7 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id, client_secret=None, access_token=None,
+    def __init__(self, client_id=None, client_secret=None, access_token=None,
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
@@ -248,17 +248,20 @@ class Mastodon:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
         
         # Token loading
-        if os.path.isfile(self.client_id):
-            with open(self.client_id, 'r') as secret_file:
-                self.client_id = secret_file.readline().rstrip()
-                self.client_secret = secret_file.readline().rstrip()
-        else:
-            if self.client_secret is None:
-                raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
+        if self.client_id is None and self.access_token is None:
+            raise MastodonIllegalArgumentError('No credentials were given.')
+        if self.client_id is not None:
+            if os.path.isfile(self.client_id):
+                with open(self.client_id, 'r') as secret_file:
+                    self.client_id = secret_file.readline().rstrip()
+                    self.client_secret = secret_file.readline().rstrip()
+            else:
+                if self.client_secret is None:
+                    raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
 
-        if self.access_token is not None and os.path.isfile(self.access_token):
-            with open(self.access_token, 'r') as token_file:
-                self.access_token = token_file.readline().rstrip()
+            if self.access_token is not None and os.path.isfile(self.access_token):
+                with open(self.access_token, 'r') as token_file:
+                    self.access_token = token_file.readline().rstrip()
     
     def retrieve_mastodon_version(self):
         """
