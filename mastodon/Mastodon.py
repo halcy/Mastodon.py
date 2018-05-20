@@ -1252,7 +1252,7 @@ class Mastodon:
             avatar_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
             files["avatar"] = (avatar_file_name, avatar, avatar_mime_type)
         if not header is None:
-            header_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
+            header_file_name = "mastodonpyupload_" + mimetypes.guess_extension(header_mime_type)
             files["header"] = (header_file_name, header, header_mime_type)
         
         params = self.__generate_params(params_initial)
