@@ -1226,20 +1226,22 @@ class Mastodon:
         params_initial = locals()
         
         # Load avatar, if specified
-        if avatar_mime_type is None and os.path.isfile(avatar):
-            avatar_mime_type = mimetypes.guess_type(avatar)[0]
-            avatar = open(avatar, 'rb')
-        
-        if (not avatar is None and avatar_mime_type is None):
-            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        if not avatar is None:
+            if avatar_mime_type is None and os.path.isfile(avatar):
+                avatar_mime_type = mimetypes.guess_type(avatar)[0]
+                avatar = open(avatar, 'rb')
+
+            if avatar_mime_type is None:
+                raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
         
         # Load header, if specified
-        if header_mime_type is None and os.path.isfile(header):
-            header_mime_type = mimetypes.guess_type(header)[0]
-            header = open(header, 'rb')
-        
-        if (not header is None and header_mime_type is None):
-            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        if not header is None:
+            if header_mime_type is None and os.path.isfile(header):
+                header_mime_type = mimetypes.guess_type(header)[0]
+                header = open(header, 'rb')
+
+            if header_mime_type is None:
+                raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
         
         # Clean up params
         for param in ["avatar", "avatar_mime_type", "header", "header_mime_type"]:

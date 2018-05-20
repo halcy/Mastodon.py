@@ -92,3 +92,23 @@ def test_account_update_credentials(api):
             header = image,
             header_mime_type = "image/jpeg")
     assert account
+
+@pytest.mark.vcr(match_on=['path'])
+def test_account_update_credentials_no_header(api):
+    account = api.account_update_credentials(
+            display_name='John Lennon',
+            note='I walk funny',
+            avatar = "tests/image.jpg")
+    assert account
+
+@pytest.mark.vcr(match_on=['path'])
+def test_account_update_credentials_no_avatar(api):
+    with open('tests/image.jpg', 'rb') as f:
+        image = f.read()
+
+    account = api.account_update_credentials(
+            display_name='John Lennon',
+            note='I walk funny',
+            header = image,
+            header_mime_type = "image/jpeg")
+    assert account
