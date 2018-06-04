@@ -39,3 +39,5 @@ def test_verify_version(api):
     assert api.verify_minimum_version("3.3.3") == False
     assert api.verify_minimum_version("1.0.0") == True
     
+def test_supported_version(api):
+    assert Mastodon.get_supported_version()

@@ -112,3 +112,13 @@ def test_account_update_credentials_no_avatar(api):
             header = image,
             header_mime_type = "image/jpeg")
     assert account
+
+@pytest.mark.vcr()
+def test_account_pinned(status, status2, api):
+    try:
+        status = api.status_pin(status['id'])
+        pinned = api.account_statuses(api.account_verify_credentials(), pinned = True)
+        assert status in pinned
+        assert not status2 in pinned
+    finally:
+        api.status_unpin(status['id'])

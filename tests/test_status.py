@@ -104,3 +104,11 @@ def test_status_mute_unmute(status, api):
 
     status = api.status_unmute(status['id'])
     assert not status['muted']
+    
+@pytest.mark.vcr()
+def test_status_pin_unpin(status, api):
+    status = api.status_pin(status['id'])
+    assert status['pinned']
+
+    status = api.status_unpin(status['id'])
+    assert not status['pinned']

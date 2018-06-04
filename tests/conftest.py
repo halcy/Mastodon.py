@@ -23,7 +23,6 @@ def api_low_version():
 def api2():
     return _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN_2')
 
-
 @pytest.fixture
 def api_anonymous():
     return _api(access_token=None)
@@ -34,6 +33,11 @@ def status(api):
     yield _status
     api.status_delete(_status['id'])
 
+@pytest.fixture()
+def status2(api):
+    _status = api.status_post('Toot, too!')
+    yield _status
+    api.status_delete(_status['id'])
 
 @pytest.fixture()
 def vcr_config():
