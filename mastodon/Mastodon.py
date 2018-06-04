@@ -7,6 +7,7 @@ import time
 import random
 import string
 import datetime
+import collections
 from contextlib import closing
 import pytz
 import requests
@@ -104,13 +105,13 @@ class Mastodon:
     __DEFAULT_TIMEOUT = 300
     __DEFAULT_STREAM_TIMEOUT = 300
     __DEFAULT_STREAM_RECONNECT_WAIT_SEC = 5
-    __SUPPORTED_MASTODON_VERSION = "2.3.0"
+    __SUPPORTED_MASTODON_VERSION = "2.4.0"
     
     # Dict versions
     __DICT_VERSION_APPLICATION = "1.0.0"
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "2.3.0"
-    __DICT_VERSION_ACCOUNT = "2.3.0"
+    __DICT_VERSION_ACCOUNT = "2.4.0"
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.1.0", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION)
     __DICT_VERSION_INSTANCE = bigger_version("2.3.0", __DICT_VERSION_ACCOUNT)
@@ -1239,10 +1240,11 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1", "2.3.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.1.1", "2.4.0", __DICT_VERSION_ACCOUNT)
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, avatar_mime_type=None,
-                                   header=None, header_mime_type=None, locked=None):
+                                   header=None, header_mime_type=None, 
+                                   locked=None, fields=None):
         """
         Update the profile for the currently logged-in user.
 
@@ -1253,9 +1255,12 @@ class Mastodon:
         
         'locked' specifies whether the user needs to manually approve follow requests.
         
+        'fields' can be a list of up to four name-value pairs (specified as tuples) to 
+        appear as semi-structured information in the users profile.
+        
         Returns the updated `user dict` of the logged-in user.
         """
-        params_initial = locals()
+        params_initial = collections.OrderedDict(locals())
         
         # Load avatar, if specified
         if not avatar is None:
@@ -1275,8 +1280,18 @@ class Mastodon:
             if header_mime_type is None:
                 raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
         
+        # Convert fields
+        if fields != None:
+            if len(fields) > 4:
+                raise MastodonIllegalArgumentError('A maximum of four fields are allowed.')
+            
+            fields_attributes = []
+            for idx, (field_name, field_value) in enumerate(fields):
+                params_initial['fields_attributes[' + str(idx) + '][name]'] = field_name
+                params_initial['fields_attributes[' + str(idx) + '][value]'] = field_value
+            
         # Clean up params
-        for param in ["avatar", "avatar_mime_type", "header", "header_mime_type"]:
+        for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields"]:
             if param in params_initial:
                 del params_initial[param]
         

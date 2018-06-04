@@ -1,5 +1,6 @@
 import pytest
-from mastodon.Mastodon import MastodonAPIError
+from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError
+import re
 
 @pytest.mark.vcr()
 def test_account(api):
@@ -86,12 +87,35 @@ def test_account_update_credentials(api):
         image = f.read()
 
     account = api.account_update_credentials(
-            display_name='John Lennon',
-            note='I walk funny',
-            avatar = "tests/image.jpg",
-            header = image,
-            header_mime_type = "image/jpeg")
+        display_name='John Lennon',
+        note='I walk funny',
+        avatar = "tests/image.jpg",
+        header = image,
+        header_mime_type = "image/jpeg",
+        fields = [
+            ("bread", "toasty."),
+            ("lasagna", "no!!!"),
+        ]
+    )
+    
     assert account
+    assert account["display_name"] == 'John Lennon'
+    assert re.sub("<.*?>", " ", account["note"]).strip() == 'I walk funny'
+    assert account["fields"][0].name == "bread"
+    assert account["fields"][0].value == "toasty."
+    assert account["fields"][1].name == "lasagna"
+    assert account["fields"][1].value == "no!!!"
+
+@pytest.mark.vcr()
+def test_account_update_credentials_too_many_fields(api):
+    with pytest.raises(MastodonIllegalArgumentError):
+        api.account_update_credentials(fields = [
+            ('a', 'b'),
+            ('c', 'd'), 
+            ('e', 'f'), 
+            ('g', 'h'), 
+            ('i', 'j'),
+        ])
 
 @pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials_no_header(api):
