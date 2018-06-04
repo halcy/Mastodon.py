@@ -951,9 +951,10 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)    
+    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)    
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
-                    sensitive=False, visibility=None, spoiler_text=None):
+                    sensitive=False, visibility=None, spoiler_text=None,
+                    idempotency_key=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -983,6 +984,11 @@ class Mastodon:
         the text of the status.  If no text is passed in, no warning will be
         displayed.
 
+        You can set `idempotency_key` to a value to uniquely identify an attempt
+        at posting a status. Even if you call this function more than once,
+        if you call it with the same `idempotency_key`, only one status will
+        be created.
+
         Returns a `toot dict`_ with the new status.
         """
         if in_reply_to_id != None:
@@ -1003,6 +1009,10 @@ class Mastodon:
         if params_initial['sensitive'] is False:
             del [params_initial['sensitive']]
 
+        headers = {}
+        if idempotency_key != None:
+            headers['Idempotency-Key'] = idempotency_key
+            
         if media_ids is not None:
             try:
                 media_ids_proper = []
@@ -1019,8 +1029,8 @@ class Mastodon:
 
             params_initial["media_ids"] = media_ids_proper
 
-        params = self.__generate_params(params_initial)
-        return self.__api_request('POST', '/api/v1/statuses', params)
+        params = self.__generate_params(params_initial, ['idempotency_key'])
+        return self.__api_request('POST', '/api/v1/statuses', params, headers = headers)
 
     @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
     def toot(self, status):
@@ -1640,7 +1650,7 @@ class Mastodon:
         json_object = Mastodon.__json_allow_dict_attrs(json_object)
         return json_object
 
-    def __api_request(self, method, endpoint, params={}, files={}, do_ratelimiting=True):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, do_ratelimiting=True):
         """
         Internal API request helper.
         """
@@ -1667,8 +1677,9 @@ class Mastodon:
                 time.sleep(to_next)
 
         # Generate request headers
+        headers = copy.deepcopy(headers)
         if self.access_token is not None:
-            headers = {'Authorization': 'Bearer ' + self.access_token}
+            headers['Authorization'] = 'Bearer ' + self.access_token
 
         if self.debug_requests:
             print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
