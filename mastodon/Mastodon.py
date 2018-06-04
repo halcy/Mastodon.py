@@ -111,7 +111,7 @@ class Mastodon:
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "2.3.0"
     __DICT_VERSION_ACCOUNT = "2.3.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.0.0", 
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.1.0", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION)
     __DICT_VERSION_INSTANCE = bigger_version("2.3.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "1.0.0"
@@ -761,7 +761,7 @@ class Mastodon:
     @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
     def account_lists(self, id):
         """
-        Get all of the logged in users lists which the specified user is
+        Get all of the logged-in users lists which the specified user is
         a member of.
         
         Returns a list of `list dicts`_.
@@ -1108,6 +1108,28 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
+    @api_version("2.1.0", "2.1.0", __DICT_VERSION_STATUS)
+    def status_pin(self, id):
+        """
+        Pin a status for the logged-in user.
+
+        Returns a `toot dict`_ with the now pinned status
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/statuses/{0}/pin'.format(str(id))
+        return self.__api_request('POST', url)
+
+    @api_version("2.1.0", "2.1.0", __DICT_VERSION_STATUS)
+    def status_unpin(self, id):
+        """
+        Unpin a pinned status for the logged-in user.
+
+        Returns a `toot dict`_ with the status that used to be pinned.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/statuses/{0}/unpin'.format(str(id))
+        return self.__api_request('POST', url)
+
     ###
     # Writing data: Notifications
     ###
@@ -1402,7 +1424,21 @@ class Mastodon:
         return self.__api_request('POST', '/api/v1/media',
                                   files={'file': media_file_description},
                                   params={'description': description, 'focus': focus})
+    
+    @api_version("2.3.0", "2.3.0", __DICT_VERSION_MEDIA)
+    def media_update(self, id, description=None, focus=None):
+        """
+        Update the metadata of the media file with the given `id`. `description` and 
+        `focus` are as in `media_post()`_ .
+        """
+        id = self.__unpack_id(id)
 
+        if focus != None:
+            focus = str(focus[0]) + "," + str(focus[1])
+            
+        params = self.__generate_params(locals(), ['id'])  
+        return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
+    
     ###
     # Writing data: Domain blocks
     ###

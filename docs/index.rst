@@ -256,6 +256,8 @@ Toot dicts
         'language': # The language of the toot, if specified by the server.
         'muted': # Boolean denoting whether the user has muted this status by 
                  # way of conversation muting
+        'pinned': # Boolean denoting whether or not the status is currently pinned for the
+                  # associated account.
     }
 
 Mention dicts
@@ -662,6 +664,8 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_unfavourite
 .. automethod:: Mastodon.status_mute
 .. automethod:: Mastodon.status_unmute
+.. automethod:: Mastodon.status_pin
+.. automethod:: Mastodon.status_unpin
 .. automethod:: Mastodon.status_delete
 
 Writing data: Notifications
@@ -714,6 +718,7 @@ to attach media to statuses.
 .. _media_post():
 
 .. automethod:: Mastodon.media_post
+.. automethod:: Mastodon.media_update
 
 Writing data: Reports
 ---------------------

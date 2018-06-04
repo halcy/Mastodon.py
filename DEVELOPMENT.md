@@ -4,8 +4,6 @@ Here's some general stuff to keep in mind, and some work that needs to be done
   use requests over urllib, et cetera.
 
 * Current TODOs (2.3 support):
-    * Add support for media updating
-    * Add support for focal points
     * Add support for idempotency keys
     * Document error handling better
     
