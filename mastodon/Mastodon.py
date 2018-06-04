@@ -86,7 +86,7 @@ class AttribAccessDict(dict):
     def __setattr__(self, attr, val):
         if attr in self:
             raise AttributeError("Attribute-style access is read only")
-        super().__setattr__(attr, val)
+        super(AttribAccessDict, self).__setattr__(attr, val)
 
 ###
 # The actual Mastodon class
