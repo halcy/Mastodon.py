@@ -409,6 +409,7 @@ Media dicts
                 # May additionally contain an "fps" field giving a videos frames per second (possibly
                 # rounded), and a "length" field giving a videos length in a human-readable format.
                 # Note that a video may have an image as preview.
+                # May also contain a 'focus' dict.
     }
     
     # Metadata dicts (image) - all fields are optional:
@@ -427,6 +428,12 @@ Media dicts
                       # Can be an integer fraction (i.e. "20/7")
         'duration': # Duration of the video in seconds
         'bitrate': # Average bit-rate of the video in bytes per second
+    }
+    
+    # Focus Metadata dict:
+    {
+        'x': Focus point x coordinate (between -1 and 1)
+        'y': Focus point x coordinate (between -1 and 1)
     }
     
 Card dicts

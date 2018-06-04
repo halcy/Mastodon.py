@@ -5,8 +5,9 @@ import pytest
 def test_media_post(api, sensitive):
     media = api.media_post(
             'tests/image.jpg',
-            description="John Lennon doing a funny walk")
-
+            description="John Lennon doing a funny walk",
+            focus=(-0.5, 0.3))
+    
     assert media
 
     status = api.status_post(
@@ -21,6 +22,8 @@ def test_media_post(api, sensitive):
         assert status['sensitive'] == sensitive
         assert status['media_attachments']
         assert status['media_attachments'][0]['description']
+        assert status['media_attachments'][0]['meta']['focus']['x'] == -0.5
+        assert status['media_attachments'][0]['meta']['focus']['y'] == 0.3
     finally:
         api.status_delete(status['id'])
 
