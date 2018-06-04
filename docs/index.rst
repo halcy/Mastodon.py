@@ -97,7 +97,9 @@ similarly, allows you to specify the largest. By specifying either one (generall
 only one, not both) of them you can go through pages forwards and backwards.
 
 limit allows you to specify how many results you would like returned. Note that an
-instance may choose to return less results than you requested.
+instance may choose to return less results than you requested - by default, Mastodon 
+will return no more than 40 statues and no more than 80 accounts no matter how high
+you set the limit.
 
 The responses returned by paginated endpoints contain a "link" header that specifies
 which parameters to use to get the next and previous pages. Mastodon.py parses these

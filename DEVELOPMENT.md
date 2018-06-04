@@ -5,5 +5,7 @@ Here's some general stuff to keep in mind, and some work that needs to be done
 
 * Current TODOs:
     * Testing - test 2.3 stuff and verify it works, test pinning
-    * 2.4 support
-    
+    * 2.4 support:
+        * Dict updates (bot flag, profile meta fields, ...?)
+        * Push API
+        
