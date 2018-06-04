@@ -227,6 +227,7 @@ User dicts
                   # from account_verify_credentials()
         'moved_to_account': # If set, an account dict of the account this user has
                             # set up as their moved-to address.
+        'bot': # Boolean indicating whether this account is automated.
     }
 
     mastodon.account_verify_credentials()["source"]

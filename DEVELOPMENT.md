@@ -4,6 +4,7 @@ Here's some general stuff to keep in mind, and some work that needs to be done
   use requests over urllib, et cetera.
 
 * Current TODOs:
+    * Stream since_id and better resume
     * Testing - test 2.3 stuff and verify it works, test pinning
     * 2.4 support:
         * Dict updates (bot flag, profile meta fields, ...?)

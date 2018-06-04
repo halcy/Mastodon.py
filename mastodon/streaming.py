@@ -25,6 +25,11 @@ class StreamListener(object):
         describing the notification."""
         pass
 
+    def on_abort(self):
+        """Some error happened that requires that the connection should
+        be aborted (or re-established)"""
+        pass
+
     def on_delete(self, status_id):
         """A status has been deleted. status_id is the status' integer ID."""
         pass
@@ -64,11 +69,13 @@ class StreamListener(object):
                     else:
                         line_buffer.extend(chunk)
         except ChunkedEncodingError as err:
+            self.on_abort()
             six.raise_from(
                 MastodonNetworkError("Server ceased communication."),
                 err
             )
         except MastodonReadTimeout as err:
+            self.on_abort()
             six.raise_from(
                 MastodonReadTimeout("Timed out while reading from server."),
                 err
