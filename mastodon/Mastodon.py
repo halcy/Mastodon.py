@@ -82,7 +82,7 @@ class AttribAccessDict(dict):
             return self[attr]
         else:
             raise AttributeError("Attribute not found: " + str(attr))
-        
+    
     def __setattr__(self, attr, val):
         if attr in self:
             raise AttributeError("Attribute-style access is read only")
@@ -1480,8 +1480,8 @@ class Mastodon:
         Returns the next page or None if no further data is available.
         """
         if isinstance(previous_page, list) and len(previous_page) != 0:
-            if '_pagination_next' in previous_page[-1]:
-                params = copy.deepcopy(previous_page[-1]['_pagination_next'])
+            if hasattr(previous_page[-1], '_pagination_next'):
+                params = copy.deepcopy(previous_page[-1]._pagination_next)
             else:
                 return None
         else:
@@ -1504,8 +1504,8 @@ class Mastodon:
         Returns the previous page or None if no further data is available.
         """
         if isinstance(next_page, list) and len(next_page) != 0:
-            if '_pagination_prev' in next_page[0]:
-                params = copy.deepcopy(next_page[0]['_pagination_prev'])
+            if hasattr(next_page[0], '_pagination_prev'):
+                params = copy.deepcopy(next_page[0]._pagination_prev)
             else:
                 return None
         else:
@@ -1655,7 +1655,6 @@ class Mastodon:
         Internal API request helper.
         """
         response = None
-        headers = None
         remaining_wait = 0
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
@@ -1804,7 +1803,7 @@ class Mastodon:
                             next_params['max_id'] = int(matchgroups.group(1))
                             if "since_id" in next_params:
                                 del next_params['since_id']
-                            response[-1]['_pagination_next'] = next_params
+                            response[-1]._pagination_next = next_params
 
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id specifically
@@ -1818,7 +1817,7 @@ class Mastodon:
                             prev_params['since_id'] = int(matchgroups.group(1))
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
-                            response[0]['_pagination_prev'] = prev_params
+                            response[0]._pagination_prev = prev_params
 
 
         return response

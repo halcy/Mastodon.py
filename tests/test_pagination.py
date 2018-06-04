@@ -31,9 +31,9 @@ def test_fetch_next_previous_from_pagination_info(api):
     account = api.account_verify_credentials()
     with many_statuses(api):
         statuses = api.account_statuses(account['id'], limit=5)
-        next_statuses = api.fetch_next(statuses[-1]['_pagination_next'])
+        next_statuses = api.fetch_next(statuses[-1]._pagination_next)
         assert next_statuses
-        previous_statuses = api.fetch_previous(next_statuses[0]['_pagination_prev'])
+        previous_statuses = api.fetch_previous(next_statuses[0]._pagination_prev)
         assert previous_statuses
 
 

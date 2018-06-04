@@ -102,7 +102,12 @@ instance may choose to return less results than you requested.
 The responses returned by paginated endpoints contain a "link" header that specifies
 which parameters to use to get the next and previous pages. Mastodon.py parses these
 and stores them (if present) in the first (for the previous page) and last (for the 
-next page) item of the returned list as _pagination_prev and _pagination_next.
+next page) item of the returned list as _pagination_prev and _pagination_next. They
+are accessible only via attribute-style access, and are not considered in determining
+dict equality (meaning their presence will not affect any tests of wheter two dicts
+are the same, or whether a specific dict is in a list). Note that this also means that
+if you want to persist pagination info with your data, you'll have to take care of that
+manually (or persist objects, not just dicts).
 
 There are convenience functions available for fetching the previous and next page of
 a paginated request as well as for fetching all pages starting from a first page.
@@ -188,7 +193,8 @@ you can also just write
 
     description = mastodon.account_verify_credentials().source.note
     
-and everything will work as intended.
+and everything will work as intended. The class used for this is exposed as
+`AttribAccessDict`.
 
 
 User dicts
