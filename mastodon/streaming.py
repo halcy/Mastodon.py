@@ -26,8 +26,7 @@ class StreamListener(object):
         pass
 
     def on_abort(self):
-        """Some error happened that requires that the connection should
-        be aborted (or re-established)"""
+        """There was a connection error or read timeout."""
         pass
 
     def on_delete(self, status_id):
