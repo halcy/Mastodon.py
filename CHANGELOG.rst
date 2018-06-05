@@ -2,6 +2,35 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided. 
 
+v1.3.0
+------
+!!!!! There are several potentially breaking changes in here, and a lot
+of things changed, since this release covers two Mastodon versions and 
+then some !!!!!
+
+* Several small bug fixes (Thanks goldensuneur, bowlercaptain, joyeusenoelle)
+* Improved stream error handling (Thanks codl)
+* Improvements to streaming:
+    * Added on_abort() handler to streams
+    * Added automatic reconnecting
+    * POTENTIALLY BREAKING CHANGE: Added better error catching to make sure 
+      streaming functions do not just crash
+* Mastodon v2.3 compatibility (sorry for the late release)
+    * only_media parameter in timeline functions 
+    * focus support for media_upload()
+    * Added media_update()
+* Mastodon v2.4 compatibility
+    * Added fields to account_update_credentials()
+    * WebPush support:
+        * Added push_subscription(), push_subscription_set(), push_subscription_update(),
+          push_subscription_delete()
+        * Added webpush crypto utilities: push_subscription_generate_keys(), 
+          push_subscription_decrypt_push()
+* Added support for pinned toots, an oversight from 2.1.0: status_pin(), status_unpin()
+* POTENTIALLY BREAKING CHANGE: Changed pagination attributes to not be part of the dict keys
+  of paginated return values.
+* Many internal improvements, more tests
+
 v1.2.2
 ------
 * Several small bugfixes (thanks codl)
