@@ -21,7 +21,7 @@ def test_media_post(api, sensitive):
     try:
         assert status['sensitive'] == sensitive
         assert status['media_attachments']
-        assert status['media_attachments'][0]['description']
+        assert status['media_attachments'][0]['description'] == "John Lennon doing a funny walk"
         assert status['media_attachments'][0]['meta']['focus']['x'] == -0.5
         assert status['media_attachments'][0]['meta']['focus']['y'] == 0.3
     finally:
