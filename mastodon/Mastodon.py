@@ -189,7 +189,8 @@ class Mastodon:
                  version_check_mode = "created"):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
-        give a `client_id` and it is not a file, you must also give a secret.
+        give a `client_id` and it is not a file, you must also give a secret. If you specify an
+        `access_token` then you don't need to specify a `client_id`.
 
         You can also specify an `access_token`, directly or as a file (as written by `log_in()`_).
 
@@ -267,9 +268,9 @@ class Mastodon:
                 if self.client_secret is None:
                     raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
 
-            if self.access_token is not None and os.path.isfile(self.access_token):
-                with open(self.access_token, 'r') as token_file:
-                    self.access_token = token_file.readline().rstrip()
+        if self.access_token is not None and os.path.isfile(self.access_token):
+            with open(self.access_token, 'r') as token_file:
+                self.access_token = token_file.readline().rstrip()
     
     def retrieve_mastodon_version(self):
         """
