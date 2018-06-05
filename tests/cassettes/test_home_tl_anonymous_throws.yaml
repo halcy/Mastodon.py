@@ -11,17 +11,20 @@ interactions:
   response:
     body: {string: '{"error":"The access token is invalid"}'}
     headers:
-      Cache-Control: [no-store]
+      Cache-Control: ['private, no-store']
       Content-Type: [application/json; charset=utf-8]
       Pragma: [no-cache]
+      Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
       WWW-Authenticate: ['Bearer realm="Doorkeeper", error="invalid_token", error_description="The
           access token is invalid"']
       X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [ac5a9247-938f-425b-bbe6-e01de6b2a4ea]
-      X-Runtime: ['0.066247']
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [1550ae6f-bd19-472a-93ce-a625c388adeb]
+      X-Runtime: ['0.098159']
       X-XSS-Protection: [1; mode=block]
       content-length: ['39']
     status: {code: 401, message: Unauthorized}

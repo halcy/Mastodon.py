@@ -1611,7 +1611,6 @@ class Mastodon:
         
         return priv_dict, pub_dict
     
-    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH_NOTIF)
     def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
         """
         Decrypts `data` received in a webpush request. Requires the private key dict 
@@ -2109,7 +2108,7 @@ class Mastodon:
         (or at least the locals() call) should generally be the first thing
         in your function.
         """
-        params = dict(params)
+        params = collections.OrderedDict(params)
 
         del params['self']
         param_keys = list(params.keys())

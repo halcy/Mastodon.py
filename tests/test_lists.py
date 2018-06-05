@@ -1,4 +1,5 @@
 import pytest
+import time
 
 @pytest.fixture()
 def mastodon_list(api):
@@ -54,7 +55,9 @@ def test_list_timeline(api, api2, mastodon_list):
     api.list_accounts_add(mastodon_list, user)
     
     status = api2.status_post("I have never stolen a ham in my life.", visibility="public")
-    assert status.id in map(lambda x: x.id, api.timeline_list(mastodon_list))
+    time.sleep(2)
+    list_tl = list(map(lambda x: x.id, api.timeline_list(mastodon_list)))
+    assert status.id in list_tl
     
     api2.status_delete(status)
     api.account_unfollow(user)

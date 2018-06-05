@@ -277,6 +277,7 @@ def test_stream_user(api, api2):
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
     api2.account_unfollow(user)
+    time.sleep(2)
     
     updates = []
     notifications = []

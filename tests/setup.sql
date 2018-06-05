@@ -55,7 +55,7 @@ INSERT INTO oauth_applications (
     '__MASTODON_PY_TEST_CLIENT_ID',
     '__MASTODON_PY_TEST_CLIENT_SECRET',
     'urn:ietf:wg:oauth:2.0:oob',
-    'read write follow',
+    'read write follow push',
     'User',
     1234567890123456,
     now(),
@@ -71,14 +71,14 @@ INSERT INTO oauth_access_tokens (
 ) VALUES (
     1234567890123456,
     '__MASTODON_PY_TEST_ACCESS_TOKEN',
-    'read write follow',
+    'read write follow push',
     1234567890123456,
     1234567890123456,
     now()
 ), (
     6543210987654321,
     '__MASTODON_PY_TEST_ACCESS_TOKEN_2',
-    'read write follow',
+    'read write follow push',
     1234567890123456,
     1,
     now()

@@ -34,9 +34,7 @@ def test_constructor_missing_client_secret():
 @pytest.mark.vcr()
 def test_verify_version(api):
     assert api.verify_minimum_version("2.3.3") == True
-    assert api.verify_minimum_version("2.3.4") == False
-    assert api.verify_minimum_version("2.4.3") == False
-    assert api.verify_minimum_version("3.3.3") == False
+    assert api.verify_minimum_version("9999.9999.9999") == False
     assert api.verify_minimum_version("1.0.0") == True
     
 def test_supported_version(api):

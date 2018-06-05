@@ -7,10 +7,6 @@ from mastodon.Mastodon import MastodonAPIError,\
 def test_public_tl_anonymous(api_anonymous, status):
     tl = api_anonymous.timeline_public()
     assert status['id'] in map(lambda st: st['id'], tl)
-    # although tempting, we can't do
-    #     assert status in tl
-    # because the statuses returned in the tl have additional
-    # pagination-related attributes
 
 @pytest.mark.vcr()
 def test_public_tl(api, status):
