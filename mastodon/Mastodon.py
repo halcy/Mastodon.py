@@ -70,6 +70,7 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                 if major > self.mastodon_major:
                     raise MastodonVersionError("Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
+                    print(self.mastodon_minor)
                     raise MastodonVersionError("Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
                     raise MastodonVersionError("Version check failed (Need version " + version + ")")
@@ -1510,9 +1511,9 @@ class Mastodon:
     # Writing data: Push subscriptions
     ###
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
-    def push_subscription_set(self, endpoint, encrypt_params, follow_events=False, 
-                              favourite_events=False, reblog_events=False, 
-                              mention_events=False):
+    def push_subscription_set(self, endpoint, encrypt_params, follow_events=None, 
+                              favourite_events=None, reblog_events=None, 
+                              mention_events=None):
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
         
@@ -1537,24 +1538,24 @@ class Mastodon:
             'subscription[keys][auth]': push_auth_b64
         }
         
-        if follow_events == True:
-            params['data[alerts][follow]'] = True
+        if follow_events != None:
+            params['data[alerts][follow]'] = follow_events
         
-        if favourite_events == True:
-            params['data[alerts][favourite]'] = True
+        if favourite_events != None:
+            params['data[alerts][favourite]'] = favourite_events
             
-        if reblog_events == True:
-            params['data[alerts][reblog]'] = True
+        if reblog_events != None:
+            params['data[alerts][reblog]'] = reblog_events
             
-        if mention_events == True:
-            params['data[alerts][mention]'] = True
+        if mention_events != None:
+            params['data[alerts][mention]'] = mention_events
             
         return self.__api_request('POST', '/api/v1/push/subscription', params)
     
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
-    def push_subscription_update(self, endpoint, encrypt_params, follow_events=False, 
-                              favourite_events=False, reblog_events=False, 
-                              mention_events=False):
+    def push_subscription_update(self, follow_events=None, 
+                              favourite_events=None, reblog_events=None, 
+                              mention_events=None):
         """
         Modifies what kind of events the app wishes to subscribe to.
         
@@ -1562,17 +1563,17 @@ class Mastodon:
         """
         params = {}
         
-        if follow_events == True:
-            params['data[alerts][follow]'] = True
+        if follow_events != None:
+            params['data[alerts][follow]'] = follow_events
         
-        if favourite_events == True:
-            params['data[alerts][favourite]'] = True
+        if favourite_events != None:
+            params['data[alerts][favourite]'] = favourite_events
             
-        if reblog_events == True:
-            params['data[alerts][reblog]'] = True
+        if reblog_events != None:
+            params['data[alerts][reblog]'] = reblog_events
             
-        if mention_events == True:
-            params['data[alerts][mention]'] = True
+        if mention_events != None:
+            params['data[alerts][mention]'] = mention_events
             
         return self.__api_request('PUT', '/api/v1/push/subscription', params)
     
@@ -1798,6 +1799,19 @@ class Mastodon:
         return json_object
 
     @staticmethod
+    def __json_truefalse_parse(json_object):
+        """
+        Parse 'True' / 'False' strings in certain known fields
+        """
+        for key in ('follow', 'favourite', 'reblog', 'mention'):
+            if (key in json_object and isinstance(json_object[key], six.text_type)):
+                if json_object[key] == 'True':
+                    json_object[key] = True
+                if json_object[key] == 'False':
+                    json_object[key] = False
+        return json_object
+    
+    @staticmethod
     def __json_strnum_to_bignum(json_object):
         """
         Converts json string numerals to native python bignums.
@@ -1815,6 +1829,7 @@ class Mastodon:
     def __json_hooks(json_object):
         json_object = Mastodon.__json_strnum_to_bignum(json_object)        
         json_object = Mastodon.__json_date_parse(json_object)
+        json_object = Mastodon.__json_truefalse_parse(json_object)
         json_object = Mastodon.__json_allow_dict_attrs(json_object)
         return json_object
 

@@ -1,4 +1,6 @@
 import pytest
+import time
+from mastodon.Mastodon import MastodonNotFoundError
 
 def test_decrypt(api):
     priv = {
@@ -20,4 +22,48 @@ def test_decrypt(api):
     
     assert decrypted
     assert decrypted.title == 'You were mentioned by fake halcy'
+
+@pytest.mark.vcr(match_on=['path'])
+def test_push_set(api):
+    priv, pub = api.push_subscription_generate_keys()
+    sub = api.push_subscription_set("example.com", pub)
     
+    assert sub == api.push_subscription()
+    assert sub.endpoint == "https://example.com"
+
+@pytest.mark.vcr(match_on=['path'])
+def test_push_update(api):
+    priv, pub = api.push_subscription_generate_keys()
+    sub = api.push_subscription_set("example.com", pub,follow_events=False,
+                                    favourite_events=False, reblog_events=False, 
+                                    mention_events=False)
+    
+    sub2 = api.push_subscription_update(follow_events=True, favourite_events=True, 
+                                        reblog_events=True, mention_events=True)
+    time.sleep(1)
+    assert sub2 == api.push_subscription()
+    
+    sub3 = api.push_subscription_update(follow_events=False, favourite_events=False, 
+                                        reblog_events=False, mention_events=False)
+    time.sleep(1)
+    assert sub3 == api.push_subscription()
+    
+    assert sub3.alerts.follow == False
+    assert sub3.alerts.favourite == False
+    assert sub3.alerts.reblog == False
+    assert sub3.alerts.mention == False
+    assert sub2.alerts.follow == True
+    assert sub2.alerts.favourite == True
+    assert sub2.alerts.reblog == True
+    assert sub2.alerts.mention == True
+  
+
+@pytest.mark.vcr(match_on=['path'])
+def test_push_delete(api):
+    priv, pub = api.push_subscription_generate_keys()
+    sub = api.push_subscription_set("example.com", pub)
+    assert sub 
+    
+    api.push_subscription_delete()
+    with pytest.raises(MastodonNotFoundError):
+        api.push_subscription()
