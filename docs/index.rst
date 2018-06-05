@@ -31,7 +31,6 @@ Mastodon.py
 
    # Create actual API instance
    mastodon = Mastodon(
-       client_id = 'pytooter_clientcred.secret', 
        access_token = 'pytooter_usercred.secret',
        api_base_url = 'https://mastodon.social'
    )
