@@ -844,7 +844,7 @@ Mastodon allows an application to have one webpush subscription per user at a ti
 .. automethod:: Mastodon.push_subscription_set
 .. automethod:: Mastodon.push_subscription_update
 
-.. push_subscription_generate_keys():
+.. _push_subscription_generate_keys():
 
 .. automethod:: Mastodon.push_subscription_generate_keys
 .. automethod:: Mastodon.push_subscription_decrypt_push

@@ -1518,7 +1518,7 @@ class Mastodon:
         requires https for this URL. `encrypt_params` is a dict with key parameters that allow
         the server to encrypt data for you: A public key `pubkey` and a shared secret `auth`.
         You can generate this as well as the corresponding private key using the 
-        `push_subscription_generate_keys()`_ .
+        `push_subscription_generate_keys()`_ function.
         
         The rest of the parameters controls what kind of events you wish to subscribe to.
         
