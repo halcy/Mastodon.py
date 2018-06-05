@@ -1588,7 +1588,7 @@ class Mastodon:
     ###     
     def push_subscription_generate_keys(self):
         """
-        Generates a private key, public key and shared secret for use in webpush subscriptionss.
+        Generates a private key, public key and shared secret for use in webpush subscriptions.
         
         Returns two dicts: One with the private key and shared secret and another with the 
         public key and shared secret.
