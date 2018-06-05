@@ -53,7 +53,7 @@ Acknowledgements
 ----------------
 Mastodon.py contains work by a large amount of contributors, many of which have
 put significant work into making it a better library. You can find some information
-about who helped with which particular feature or fix in the changelog.
+about who helped with which particular feature or fix in the changelog. 
 
 .. image:: https://travis-ci.org/halcy/Mastodon.py.svg?branch=master
     :target: https://travis-ci.org/halcy/Mastodon.py
