@@ -546,6 +546,26 @@ Push subscription dicts
                   # if webpushes have been requested for those events.
     }
     
+Push notification dicts
+~~~~~~~~~~~~~~~~~~~~~~~
+.. _push notification dict:
+
+.. code-block:: python
+
+    mastodon.push_subscription_decrypt_push(...)
+    # Returns the following dictionary
+    {
+        'access_token': # Access token that can be used to access the API as the 
+                        # notified user
+        'body': # Text body of the notification
+        'icon': # URL to an icon for the notification
+        'notification_id': # ID that can be passed to notification() to get the full 
+                           # notification object,
+        'notification_type': # 'mention', 'reblog', 'follow' or 'favourite'
+        'preferred_locale': # The users preferred locale
+        'title': # Title for the notification
+    }
+    
 App registration and user authentication
 ----------------------------------------
 Before you can use the mastodon API, you have to register your 

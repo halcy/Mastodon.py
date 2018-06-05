@@ -132,6 +132,7 @@ class Mastodon:
     __DICT_VERSION_ACTIVITY = "2.1.2" 
     __DICT_VERSION_REPORT = "1.1.0"
     __DICT_VERSION_PUSH = "2.4.0"
+    __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     
     ###
     # Registering apps
@@ -1609,13 +1610,14 @@ class Mastodon:
         
         return priv_dict, pub_dict
     
+    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH_NOTIF)
     def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
         """
         Decrypts `data` received in a webpush request. Requires the private key dict 
         from `push_subscription_generate_keys()`_ (`decrypt_params`) as well as the 
         Encryption and server Crypto-Key headers from the received webpush
         
-        Returns the decoded webpush.
+        Returns the decoded webpush as a `push notification dict`_.
         """
         salt = self.__decode_webpush_b64(encryption_header.split("salt=")[1].strip())
         dhparams = self.__decode_webpush_b64(crypto_key_header.split("dh=")[1].split(";")[0].strip())
