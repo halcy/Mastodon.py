@@ -15,7 +15,7 @@ def test_auth_request_url(api):
     assert query['client_id'][0] == api.client_id
     assert query['response_type'][0] == 'code'
     assert query['redirect_uri'][0] == 'urn:ietf:wg:oauth:2.0:oob'
-    assert set(query['scope'][0].split()) == set(('read', 'write', 'follow'))
+    assert set(query['scope'][0].split()) == set(('read', 'write', 'follow', 'push'))
 
 
 def test_log_in_none(api_anonymous):

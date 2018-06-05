@@ -100,7 +100,7 @@ class AttribAccessDict(dict):
 
 class Mastodon:
     """
-    Super basic but thorough and easy to use Mastodon
+    Thorough and easy to use Mastodon
     api wrapper in python.
 
     If anything is unclear, check the official API docs at
