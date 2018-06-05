@@ -6,5 +6,5 @@ Here's some general stuff to keep in mind, and some work that needs to be done
 * Current TODOs:
     * Testing - test 2.3 stuff and verify it works: TODO: media updating
     * 2.4 support:
-        * Push API
+        * Document and add tests for webpush
         

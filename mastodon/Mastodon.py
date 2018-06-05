@@ -20,6 +20,11 @@ import threading
 import sys
 import six
 from decorator import decorate
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.asymmetric import ec
+import http_ece
+import base64
+import json
 
 try:
     from urllib.parse import urlparse
@@ -126,15 +131,16 @@ class Mastodon:
             __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2" 
     __DICT_VERSION_REPORT = "1.1.0"
+    __DICT_VERSION_PUSH = "2.4.0"
     
     ###
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name, scopes=['read', 'write', 'follow'], redirect_uris=None, website=None, to_file=None,
+    def create_app(client_name, scopes=['read', 'write', 'follow', 'push'], redirect_uris=None, website=None, to_file=None,
                    api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT):
         """
-        Create a new app with given `client_name` and `scopes` (read, write, follow)
+        Create a new app with given `client_name` and `scopes` (read, write, follow, push)
 
         Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating.
         Specify `to_file` to persist your apps info to a file so you can use them in the constructor.
@@ -303,7 +309,7 @@ class Mastodon:
         return Mastodon.__SUPPORTED_MASTODON_VERSION
     
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
-                         scopes=['read', 'write', 'follow']):
+                         scopes=['read', 'write', 'follow', 'push']):
         """Returns the url that a client needs to request the grant from the server.
         """
         if client_id is None:
@@ -323,7 +329,7 @@ class Mastodon:
 
     def log_in(self, username=None, password=None,
                code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None,
-               scopes=['read', 'write', 'follow'], to_file=None):
+               scopes=['read', 'write', 'follow', 'push'], to_file=None):
         """
         Get the access token for a user.
         
@@ -950,6 +956,19 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/custom_emojis')
 
     ###
+    # Reading data: Webpush subscriptions
+    ###
+    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
+    def push_subscription(self):
+        """
+        Fetch the current push subscription the logged-in user has for this app.
+
+        Returns a `push subscription dict`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/push/subscription')
+
+    ###
     # Writing data: Statuses
     ###
     @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)    
@@ -1455,6 +1474,8 @@ class Mastodon:
         """
         Update the metadata of the media file with the given `id`. `description` and 
         `focus` are as in `media_post()`_ .
+        
+        Returns the updated `media dict`_.
         """
         id = self.__unpack_id(id)
 
@@ -1483,6 +1504,136 @@ class Mastodon:
         params = self.__generate_params(locals())
         self.__api_request('DELETE', '/api/v1/domain_blocks', params)
 
+    ###
+    # Writing data: Push subscriptions
+    ###
+    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
+    def push_subscription_set(self, endpoint, encrypt_params, follow_events=False, 
+                              favourite_events=False, reblog_events=False, 
+                              mention_events=False):
+        """
+        Sets up or modifies the push subscription the logged-in user has for this app.
+        
+        `endpoint` is the endpoint URL mastodon should call for pushes. Note that mastodon
+        requires https for this URL. `encrypt_params` is a dict with key parameters that allow
+        the server to encrypt data for you: A public key `pubkey` and a shared secret `auth`.
+        You can generate this as well as the corresponding private key using the 
+        `push_subscription_generate_keys()`_ .
+        
+        The rest of the parameters controls what kind of events you wish to subscribe to.
+        
+        Returns a `push subscription dict`_.
+        """
+        endpoint = Mastodon.__protocolize(endpoint)
+        
+        push_pubkey_b64 = base64.b64encode(encrypt_params['pubkey'])
+        push_auth_b64 = base64.b64encode(encrypt_params['auth'])
+        
+        params = {
+            'subscription[endpoint]': endpoint,
+            'subscription[keys][p256dh]': push_pubkey_b64,
+            'subscription[keys][auth]': push_auth_b64
+        }
+        
+        if follow_events == True:
+            params['data[alerts][follow]'] = True
+        
+        if favourite_events == True:
+            params['data[alerts][favourite]'] = True
+            
+        if reblog_events == True:
+            params['data[alerts][reblog]'] = True
+            
+        if mention_events == True:
+            params['data[alerts][mention]'] = True
+            
+        return self.__api_request('POST', '/api/v1/push/subscription', params)
+    
+    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
+    def push_subscription_update(self, endpoint, encrypt_params, follow_events=False, 
+                              favourite_events=False, reblog_events=False, 
+                              mention_events=False):
+        """
+        Modifies what kind of events the app wishes to subscribe to.
+        
+        Returns the updated `push subscription dict`_.
+        """
+        params = {}
+        
+        if follow_events == True:
+            params['data[alerts][follow]'] = True
+        
+        if favourite_events == True:
+            params['data[alerts][favourite]'] = True
+            
+        if reblog_events == True:
+            params['data[alerts][reblog]'] = True
+            
+        if mention_events == True:
+            params['data[alerts][mention]'] = True
+            
+        return self.__api_request('PUT', '/api/v1/push/subscription', params)
+    
+    @api_version("2.4.0", "2.4.0", "2.4.0")
+    def push_subscription_delete(self):
+        """
+        Remove the current push subscription the logged-in user has for this app.
+        """
+        self.__api_request('DELETE', '/api/v1/push/subscription')
+     
+     
+    ###
+    # Push subscription crypto utilities
+    ###     
+    def push_subscription_generate_keys(self):
+        """
+        Generates a private key, public key and shared secret for use in webpush subscriptionss.
+        
+        Returns two dicts: One with the private key and shared secret and another with the 
+        public key and shared secret.
+        """
+        push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
+        push_key_priv = push_key_pair.private_numbers().private_value
+        push_key_pub = push_key_pair.public_key().public_numbers().encode_point() 
+        push_shared_secret = os.urandom(16)
+        
+        priv_dict = {
+            'privkey': push_key_priv,
+            'auth': push_shared_secret
+        }
+        
+        pub_dict = {
+            'pubkey': push_key_pub,
+            'auth': push_shared_secret
+        }
+        
+        return priv_dict, pub_dict
+    
+    def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
+        """
+        Decrypts `data` received in a webpush request. Requires the private key dict 
+        from `push_subscription_generate_keys()`_ (`decrypt_params`) as well as the 
+        Encryption and server Crypto-Key headers from the received webpush
+        
+        Returns the decoded webpush.
+        """
+        salt = self.__decode_webpush_b64(encryption_header.split("salt=")[1].strip())
+        dhparams = self.__decode_webpush_b64(crypto_key_header.split("dh=")[1].split(";")[0].strip())
+        p256ecdsa = self.__decode_webpush_b64(crypto_key_header.split("p256ecdsa=")[1].strip())
+        dec_key = ec.derive_private_key(decrypt_params['privkey'], ec.SECP256R1(), default_backend())
+        decrypted = http_ece.decrypt(
+            data,
+            salt = salt,
+            key = p256ecdsa,
+            private_key = dec_key, 
+            dh = dhparams, 
+            auth_secret=decrypt_params['auth'],
+            keylabel = "P-256",
+            version = "aesgcm"
+        )
+        
+        return json.loads(decrypted.decode('utf-8'), object_hook = Mastodon.__json_hooks)
+    
     ###
     # Pagination
     ###
@@ -1983,7 +2134,16 @@ class Mastodon:
             return id["id"]
         else:
             return id
-        
+    
+    def __decode_webpush_b64(self, data):
+        """
+        Re-pads and decodes urlsafe base64.
+        """
+        missing_padding = len(data) % 4
+        if missing_padding != 0:
+            data += '=' * (4 - missing_padding)
+        return base64.urlsafe_b64decode(data)
+    
     def __get_token_expired(self):
         """Internal helper for oauth code"""
         return self._token_expired < datetime.datetime.now()

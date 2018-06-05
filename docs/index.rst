@@ -529,6 +529,23 @@ Report dicts
                         # will set this field to True.
     }
     
+Push subscription dicts
+~~~~~~~~~~~~~~~~~~~~~~~
+.. _push subscription dict:
+
+.. code-block:: python
+
+    mastodon.push_subscription()
+    # Returns the following dictionary
+    {
+        'id': # Numerical id of the push subscription
+        'endpoint': # Endpoint URL for the subscription
+        'server_key': # Server pubkey used for signature verification
+        'alerts': # Subscribed events - dict that may contain keys 'follow',
+                  # 'favourite', 'reblog' and 'mention', with value True
+                  # if webpushes have been requested for those events.
+    }
+    
 App registration and user authentication
 ----------------------------------------
 Before you can use the mastodon API, you have to register your 
@@ -805,6 +822,7 @@ StreamListener
 .. automethod:: StreamListener.on_update
 .. automethod:: StreamListener.on_notification
 .. automethod:: StreamListener.on_delete
+.. automethod:: StreamListener.on_abort
 .. automethod:: StreamListener.handle_heartbeat
 
 CallbackStreamListener
@@ -812,12 +830,31 @@ CallbackStreamListener
 
 .. autoclass:: CallbackStreamListener
 
-.. _Mastodon: https://github.com/tootsuite/mastodon
-.. _Mastodon flagship instance: http://mastodon.social/
-.. _Mastodon api docs: https://github.com/tootsuite/documentation/
+Push subscriptions
+------------------
+These functions allow you to manage webpush subscriptions and to decrypt received
+pushes. Note that the intended setup is not mastodon pushing directly to a users client - 
+the push endpoint should usually be a relay server that then takes care of delivering the 
+(encrypted) push to the end user via some mechanism, where it can then be decrypted and
+displayed.
+
+Mastodon allows an application to have one webpush subscription per user at a time.
+
+.. automethod:: Mastodon.push_subscription
+.. automethod:: Mastodon.push_subscription_set
+.. automethod:: Mastodon.push_subscription_update
+
+.. push_subscription_generate_keys():
+
+.. automethod:: Mastodon.push_subscription_generate_keys
+.. automethod:: Mastodon.push_subscription_decrypt_push
 
 Acknowledgements
 ----------------
 Mastodon.py contains work by a large amount of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog.
+
+.. _Mastodon: https://github.com/tootsuite/mastodon
+.. _Mastodon flagship instance: http://mastodon.social/
+.. _Mastodon api docs: https://github.com/tootsuite/documentation/
