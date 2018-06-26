@@ -342,8 +342,9 @@ class Mastodon:
 
         Handles password and OAuth-based authorization.
         
-        Will throw a `MastodonIllegalArgumentError` if username / password
-        are wrong, scopes are not valid or granted scopes differ from requested.
+        Will throw a `MastodonIllegalArgumentError` if the OAuth or the
+        username / password credentials given are incorrect, and
+        `MastodonAPIError` if all of the requested scopes were not granted.
 
         For OAuth2 documentation, compare
         https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
@@ -379,12 +380,11 @@ class Mastodon:
             else:
                 raise MastodonIllegalArgumentError('Invalid request: %s' % e)
 
-        requested_scopes = " ".join(sorted(scopes))
-        received_scopes = " ".join(sorted(response["scope"].split(" ")))
+        received_scopes = response["scope"].split(" ")
 
-        if requested_scopes != received_scopes:
+        if not set(scopes) <= set(received_scopes):
             raise MastodonAPIError(
-                'Granted scopes "' + received_scopes + '" differ from requested scopes "' + requested_scopes + '".')
+                'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
 
         if to_file is not None:
             with open(to_file, 'w') as token_file:
