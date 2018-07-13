@@ -8,43 +8,52 @@ from mastodon import Mastodon
 import threading
 import time
 
+import select
+
 # For monkeypatching so we can make vcrpy better
 import vcr.stubs
 
-streamingIsPatched = False
-realConnections = []
+streaming_is_patched = False
+real_connections = []
+close_connections = False
 
 def patchStreaming():
-    global streamingIsPatched
-    if streamingIsPatched == True:
+    global streaming_is_patched
+    global close_connections
+    if streaming_is_patched == True:
         return
-    streamingIsPatched = True
+    streaming_is_patched = True
     
-    realGetResponse = vcr.stubs.VCRConnection.getresponse
-    def fakeGetResponse(*args, **kwargs):
+    real_get_response = vcr.stubs.VCRConnection.getresponse
+    def fake_get_response(*args, **kwargs):
+        global close_connections
+        close_connections = False
         if args[0]._vcr_request.path.startswith("/api/v1/streaming/"):
-            realConnections.append(args[0].real_connection)
-            realConnectionRealGetresponse = args[0].real_connection.getresponse
+            real_connections.append(args[0].real_connection)
+            real_connection_real_get_response = args[0].real_connection.getresponse
             def fakeRealConnectionGetresponse(*args, **kwargs):
-                response = realConnectionRealGetresponse(*args, **kwargs)
+                response = real_connection_real_get_response(*args, **kwargs)
                 real_body = b""
                 try:
-                    while True:
-                        chunk = response.read(1)
-                        real_body += chunk
+                    while close_connections == False:
+                        if len(select.select([response], [], [], 0.01)[0]) > 0:
+                            chunk = response.read(1)
+                            real_body += chunk
                 except AttributeError: 
                     pass # Connection closed
+                print(real_body)
                 response.read = (lambda: real_body)
                 return response
             args[0].real_connection.getresponse = fakeRealConnectionGetresponse
-        return realGetResponse(*args, **kwargs)
-    vcr.stubs.VCRConnection.getresponse = fakeGetResponse
+        return real_get_response(*args, **kwargs)
+    vcr.stubs.VCRConnection.getresponse = fake_get_response
 
-def streamingClose():
-    global realConnections
-    for connection in realConnections:
+def streaming_close():
+    global real_connections
+    for connection in real_connections:
         connection.close()
-    realConnections = []
+    real_connections = []
+    close_connections = True
     
 class Listener(StreamListener):
     def __init__(self):
@@ -296,8 +305,8 @@ def test_stream_user(api, api2):
         posted.append(api2.status_post("on the internet, nobody knows you're a plane"))
         time.sleep(1)
         api.status_delete(posted[0])
-        time.sleep(2)
-        streamingClose()
+        time.sleep(10)
+        streaming_close()
         
     t = threading.Thread(args=(), target=do_activities)
     t.start()
@@ -305,7 +314,7 @@ def test_stream_user(api, api2):
     stream = None
     try:
         stream = api.stream_user(listener, run_async=True)
-        time.sleep(13)
+        time.sleep(20)
     finally:
         if stream != None:
             stream.close()
@@ -338,8 +347,8 @@ def test_stream_user_local(api, api2):
     def do_activities():
         time.sleep(5)
         posted.append(api.status_post("it's cool guy"))
-        time.sleep(3)
-        streamingClose()
+        time.sleep(10)
+        streaming_close()
         
     t = threading.Thread(args=(), target=do_activities)
     t.start()
@@ -347,7 +356,7 @@ def test_stream_user_local(api, api2):
     stream = None
     try:
         stream = api.stream_user(listener, run_async=True)
-        time.sleep(13)
+        time.sleep(20)
     finally:
         if stream != None:
             stream.close()
