@@ -30,9 +30,25 @@ def test_account_relationships(api):
 @pytest.mark.vcr()
 def test_account_search(api):
     results = api.account_search('admin')
+    admin_acc = results[0]
+    
     assert isinstance(results, list)
+    assert len(results) == 1
 
-
+    api.account_follow(admin_acc)
+    results = api.account_search('admin', following = True)
+    assert isinstance(results, list)
+    assert len(results) == 1
+    
+    api.account_unfollow(admin_acc)
+    results = api.account_search('admin', following = True)
+    assert isinstance(results, list)
+    assert len(results) == 0
+    
+    results = api.account_search('admin')
+    assert isinstance(results, list)
+    assert len(results) == 1
+    
 @pytest.mark.vcr()
 def test_account_follow_unfollow(api):
     relationship = api.account_follow(1)
