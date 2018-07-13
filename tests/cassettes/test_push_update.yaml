@@ -1,22 +1,22 @@
 interactions:
 - request:
-    body: data%5Balerts%5D%5Bfollow%5D=False&data%5Balerts%5D%5Bmention%5D=False&data%5Balerts%5D%5Bfavourite%5D=False&data%5Balerts%5D%5Breblog%5D=False&subscription%5Bkeys%5D%5Bauth%5D=h5Zt2UrWoYKx02aVC5L0%2Fg%3D%3D&subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BJ%2F4Tq2mAxlVXrgepITYrCU%2B%2F0628kF1nX1vzbBUP3s2C%2FiLo9v1%2FMVCgpMLHVuPNG4fRCjgowdx4D9O%2FDSfncY%3D
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BEezdIcRPItLy97aGLxjarOo9Tr3SR2t%2BugBHlmW5XBjh1km%2FBzh386YxTuuQmFHTgauuKsA916TqjroIlR3YXo%3D&subscription%5Bkeys%5D%5Bauth%5D=UWQyKZpYhAOJlafZFBGQUg%3D%3D&data%5Balerts%5D%5Bfollow%5D=False&data%5Balerts%5D%5Bfavourite%5D=False&data%5Balerts%5D%5Breblog%5D=False&data%5Balerts%5D%5Bmention%5D=False
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['398']
+      Content-Length: ['388']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.9.1]
+      User-Agent: [python-requests/2.18.4]
     method: POST
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":8,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BEFgv48oiSIH0eOGT7FydL1ukygGBCLjUDocQJQABVZuFedxZr3QRjZQQvaVVrtMALGqQj9Skemt34NvshOvhyo="}'}
+    body: {string: '{"id":5,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BC0l_ldr_Wvytg6fB3PdfeZx8NNB0E0UL2xIOtLfwumKtHTby9zdL0UdeqEQQJcKI6ZGqWoFD6OSkT7aRHKJmX8="}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"b5b71aae730fd5d31b23f14fdd57c42f"]
+      ETag: [W/"252094381c7d9c858fa5575db429db14"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -24,13 +24,13 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [9fada085-29a3-4666-8c07-2021409541bf]
-      X-Runtime: ['0.049096']
+      X-Request-Id: [4cef0e38-16bc-4e0d-afbb-43ab53094996]
+      X-Runtime: ['0.030632']
       X-XSS-Protection: [1; mode=block]
       content-length: ['228']
     status: {code: 200, message: OK}
 - request:
-    body: data%5Balerts%5D%5Bfollow%5D=True&data%5Balerts%5D%5Bmention%5D=True&data%5Balerts%5D%5Bfavourite%5D=True&data%5Balerts%5D%5Breblog%5D=True
+    body: data%5Balerts%5D%5Bfollow%5D=True&data%5Balerts%5D%5Bfavourite%5D=True&data%5Balerts%5D%5Breblog%5D=True&data%5Balerts%5D%5Bmention%5D=True
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -38,15 +38,15 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['139']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.9.1]
+      User-Agent: [python-requests/2.18.4]
     method: PUT
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":8,"endpoint":"https://example.com","alerts":{"follow":"True","favourite":"True","reblog":"True","mention":"True"},"server_key":"BEFgv48oiSIH0eOGT7FydL1ukygGBCLjUDocQJQABVZuFedxZr3QRjZQQvaVVrtMALGqQj9Skemt34NvshOvhyo="}'}
+    body: {string: '{"id":5,"endpoint":"https://example.com","alerts":{"follow":"True","favourite":"True","reblog":"True","mention":"True"},"server_key":"BC0l_ldr_Wvytg6fB3PdfeZx8NNB0E0UL2xIOtLfwumKtHTby9zdL0UdeqEQQJcKI6ZGqWoFD6OSkT7aRHKJmX8="}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"3fafedf49e495c0eb69b2da4d976d97d"]
+      ETag: [W/"0e38c3ae2e417768d42b98066b8d8ad6"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -54,8 +54,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [2f6d8ac9-9650-4ec4-b3fe-79885e3cfc56]
-      X-Runtime: ['0.029778']
+      X-Request-Id: [dd447739-83b1-4ddd-a31e-83d4c63ffc25]
+      X-Runtime: ['0.039073']
       X-XSS-Protection: [1; mode=block]
       content-length: ['224']
     status: {code: 200, message: OK}
@@ -66,15 +66,15 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.9.1]
+      User-Agent: [python-requests/2.18.4]
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":8,"endpoint":"https://example.com","alerts":{"follow":"True","favourite":"True","reblog":"True","mention":"True"},"server_key":"BEFgv48oiSIH0eOGT7FydL1ukygGBCLjUDocQJQABVZuFedxZr3QRjZQQvaVVrtMALGqQj9Skemt34NvshOvhyo="}'}
+    body: {string: '{"id":5,"endpoint":"https://example.com","alerts":{"follow":"True","favourite":"True","reblog":"True","mention":"True"},"server_key":"BC0l_ldr_Wvytg6fB3PdfeZx8NNB0E0UL2xIOtLfwumKtHTby9zdL0UdeqEQQJcKI6ZGqWoFD6OSkT7aRHKJmX8="}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"66ba38489a2226cf55fafd76860b1384"]
+      ETag: [W/"5887f72cb22fcc3a8e96c458d6c5da50"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -82,13 +82,13 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [36c25fd1-46b4-47aa-ada8-c8fe3e5d5a97]
-      X-Runtime: ['0.024214']
+      X-Request-Id: [f07be2a8-d9c9-49f9-8735-09b3248468e3]
+      X-Runtime: ['0.014578']
       X-XSS-Protection: [1; mode=block]
       content-length: ['224']
     status: {code: 200, message: OK}
 - request:
-    body: data%5Balerts%5D%5Bfollow%5D=False&data%5Balerts%5D%5Bmention%5D=False&data%5Balerts%5D%5Bfavourite%5D=False&data%5Balerts%5D%5Breblog%5D=False
+    body: data%5Balerts%5D%5Bfollow%5D=False&data%5Balerts%5D%5Bfavourite%5D=False&data%5Balerts%5D%5Breblog%5D=False&data%5Balerts%5D%5Bmention%5D=False
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -96,15 +96,15 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['143']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.9.1]
+      User-Agent: [python-requests/2.18.4]
     method: PUT
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":8,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BEFgv48oiSIH0eOGT7FydL1ukygGBCLjUDocQJQABVZuFedxZr3QRjZQQvaVVrtMALGqQj9Skemt34NvshOvhyo="}'}
+    body: {string: '{"id":5,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BC0l_ldr_Wvytg6fB3PdfeZx8NNB0E0UL2xIOtLfwumKtHTby9zdL0UdeqEQQJcKI6ZGqWoFD6OSkT7aRHKJmX8="}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"aaa8530ccca182b42e8f076f1da2f112"]
+      ETag: [W/"84dcf2c7f2f39c087d9780aaf15bc109"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -112,8 +112,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [40893dfd-87c5-4886-9938-69e93d0578c6]
-      X-Runtime: ['0.049371']
+      X-Request-Id: [e2ed4297-a2f1-48d5-abcb-a732116ac8d0]
+      X-Runtime: ['0.027530']
       X-XSS-Protection: [1; mode=block]
       content-length: ['228']
     status: {code: 200, message: OK}
@@ -124,15 +124,15 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.9.1]
+      User-Agent: [python-requests/2.18.4]
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":8,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BEFgv48oiSIH0eOGT7FydL1ukygGBCLjUDocQJQABVZuFedxZr3QRjZQQvaVVrtMALGqQj9Skemt34NvshOvhyo="}'}
+    body: {string: '{"id":5,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BC0l_ldr_Wvytg6fB3PdfeZx8NNB0E0UL2xIOtLfwumKtHTby9zdL0UdeqEQQJcKI6ZGqWoFD6OSkT7aRHKJmX8="}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"e403993b72df1ff96f98eb99b4e6ff85"]
+      ETag: [W/"ebbdc78441110323a7cb3fdadd400172"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -140,8 +140,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [bb02d1ad-37d7-4496-b136-ba085b60a774]
-      X-Runtime: ['0.022633']
+      X-Request-Id: [392eb7c7-79dd-40b1-b55c-6f0d88028ac4]
+      X-Runtime: ['0.016925']
       X-XSS-Protection: [1; mode=block]
       content-length: ['228']
     status: {code: 200, message: OK}
