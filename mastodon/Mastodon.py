@@ -766,6 +766,10 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         params = self.__generate_params(locals())
+        
+        if params["following"] == False:
+            del params["following"]
+            
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
     @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
