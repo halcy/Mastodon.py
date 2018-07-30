@@ -848,6 +848,17 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/search', params)
 
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_SEARCHRESULT)
+    def search_v2(self, q, resolve=False):
+        """
+        Identical to `search()`, except in that it returns tags as
+        `tag dicts`_.
+
+        Returns a `search result dict`_.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v2/search', params)
+
     ###
     # Reading data: Lists
     ###
