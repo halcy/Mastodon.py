@@ -111,6 +111,45 @@ class Mastodon:
     __DEFAULT_TIMEOUT = 300
     __DEFAULT_STREAM_TIMEOUT = 300
     __DEFAULT_STREAM_RECONNECT_WAIT_SEC = 5
+    __DEFAULT_SCOPES = ['read', 'write', 'follow', 'push']
+    __SCOPE_SETS = {
+        'read': [
+            'read:accounts', 
+            'read:blocks', 
+            'read:favourites', 
+            'read:filters', 
+            'read:follows', 
+            'read:lists', 
+            'read:mutes', 
+            'read:notifications', 
+            'read:reports', 
+            'read:search', 
+            'read:statuses'
+        ],
+        'write': [
+            'write:accounts', 
+            'write:blocks', 
+            'write:favourites', 
+            'write:filters', 
+            'write:follows', 
+            'write:lists', 
+            'write:media', 
+            'write:mutes', 
+            'write:notifications', 
+            'write:reports', 
+            'write:statuses',
+        ],
+        'follow': [
+            'read:blocks',
+            'read:follows',
+            'read:mutes',
+            'write:blocks',  
+            'write:follows',
+            'write:mutes', 
+        ]
+    }
+    __VALID_SCOPES = ['read', 'write', 'follow', 'push'] + __SCOPE_SETS['read'] + __SCOPE_SETS['write']
+        
     __SUPPORTED_MASTODON_VERSION = "2.4.0"
     
     # Dict versions
@@ -139,10 +178,11 @@ class Mastodon:
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name, scopes=['read', 'write', 'follow', 'push'], redirect_uris=None, website=None, to_file=None,
+    def create_app(client_name, scopes=__DEFAULT_SCOPES, redirect_uris=None, website=None, to_file=None,
                    api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT):
         """
-        Create a new app with given `client_name` and `scopes` (read, write, follow, push)
+        Create a new app with given `client_name` and `scopes` (The basic scropse are "read", "write", "follow" and "push" 
+        - more granular scopes are available, please refere to Mastodon documentation for which).
 
         Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating.
         Specify `to_file` to persist your apps info to a file so you can use them in the constructor.
@@ -312,7 +352,7 @@ class Mastodon:
         return Mastodon.__SUPPORTED_MASTODON_VERSION
     
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
-                         scopes=['read', 'write', 'follow', 'push']):
+                         scopes=__DEFAULT_SCOPES):
         """Returns the url that a client needs to request the grant from the server.
         """
         if client_id is None:
@@ -332,7 +372,7 @@ class Mastodon:
 
     def log_in(self, username=None, password=None,
                code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None,
-               scopes=['read', 'write', 'follow', 'push'], to_file=None):
+               scopes=__DEFAULT_SCOPES, to_file=None):
         """
         Get the access token for a user.
         
@@ -381,7 +421,10 @@ class Mastodon:
                 raise MastodonIllegalArgumentError('Invalid request: %s' % e)
 
         received_scopes = response["scope"].split(" ")
-
+        for scope_set in self.__SCOPE_SETS.keys():
+            if scope_set in received_scopes:
+                received_scopes += self.__SCOPE_SETS[scope_set]
+        
         if not set(scopes) <= set(received_scopes):
             raise MastodonAPIError(
                 'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
