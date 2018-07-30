@@ -703,6 +703,7 @@ These functions allow you to get information about keyword filters.
 
 .. automethod:: Mastodon.filters
 .. automethod:: Mastodon.filter
+.. automethod:: Mastodon.filters_apply
 
 Reading data: Follow suggestions
 --------------------------------

@@ -855,7 +855,43 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/filters/{0}'.format(str(id))
         return self.__api_request('GET', url)
+    
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    def filters_apply(self, objects, filters, context):
+        """
+        Helper function: Applies a list of filters to a list of either statuses 
+        or notifications and returns only those matched by none. This function will
+        apply all filters that match the context provided in `context`, i.e.
+        if you want to apply only notification-relevant filters, specify
+        'notifications'. Valid contexts are 'home', 'notifications', 'public' and 'thread'.
+        """
         
+        # Build filter regex
+        filter_strings = []
+        for keyword_filter in filters: 
+            if not context in keyword_filter["context"]:
+                continue
+            
+            filter_string = re.escape(keyword_filter["phrase"])
+            if keyword_filter["whole_word"] == True:
+                filter_string = "\\b" + filter_string + "\\b"
+            filter_strings.append(filter_string)
+        filter_re = re.compile("|".join(filter_strings))
+        return filter_re
+        
+        # Apply
+        filter_results = []
+        for filter_object in objects:
+            filter_status = filter_object
+            if "status" in filter_object:
+                filter_status = filter_object["status"]
+            filter_text = filter_status["content"]
+            filter_text = re.sub("<.*?>", " ", filter_text)
+            filter_text = re.sub('\s+', ' ', filter_text).strip()
+            if not filter_re.match(filter_text):
+                filter_results.append(filter_object)
+        return filter_results
+    
     ###
     # Reading data: Follow suggestions
     ###
