@@ -839,7 +839,9 @@ class Mastodon:
     def search(self, q, resolve=False):
         """
         Fetch matching hashtags, accounts and statuses. Will search federated
-        instances if resolve is True.
+        instances if resolve is True. Full-text search is only enabled if
+        the instance supports it, and is restricted to statuses the logged-in
+        user wrote or was mentioned in.
 
         Returns a `search result dict`_.
         """
