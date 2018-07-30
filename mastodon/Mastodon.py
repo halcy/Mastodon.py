@@ -150,7 +150,7 @@ class Mastodon:
     }
     __VALID_SCOPES = ['read', 'write', 'follow', 'push'] + __SCOPE_SETS['read'] + __SCOPE_SETS['write']
         
-    __SUPPORTED_MASTODON_VERSION = "2.4.0"
+    __SUPPORTED_MASTODON_VERSION = "2.4.3"
     
     # Dict versions
     __DICT_VERSION_APPLICATION = "1.0.0"
