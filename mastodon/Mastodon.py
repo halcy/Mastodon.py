@@ -162,7 +162,7 @@ class Mastodon:
     __DICT_VERSION_INSTANCE = bigger_version("2.3.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "1.0.0"
     __DICT_VERSION_EMOJI = "2.1.0"
-    __DICT_VERSION_RELATIONSHIP = "2.3.4"
+    __DICT_VERSION_RELATIONSHIP = "2.4.3"
     __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
@@ -1027,7 +1027,7 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0", "2.3.4", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
                     language=None, idempotency_key=None):
@@ -1275,7 +1275,7 @@ class Mastodon:
     ###
     # Writing data: Accounts
     ###
-    @api_version("1.0.0", "2.3.4", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "2.4.3", __DICT_VERSION_RELATIONSHIP)
     def account_follow(self, id, reblogs=True):
         """
         Follow a user.
@@ -1336,7 +1336,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unblock'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.0", "2.3.4", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.1.0", "2.4.3", __DICT_VERSION_RELATIONSHIP)
     def account_mute(self, id, notifications=True):
         """
         Mute a user.
