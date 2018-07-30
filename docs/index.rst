@@ -704,6 +704,7 @@ Reading data: Searching
 -----------------------
 
 .. automethod:: Mastodon.search
+.. automethod:: Mastodon.search_v2
 
 Reading data: Mutes and blocks
 ------------------------------
