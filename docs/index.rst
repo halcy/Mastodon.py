@@ -338,10 +338,14 @@ Relationship dicts
         'followed_by': # Boolean denoting whether the specified user follows the logged-in user
         'blocking': # Boolean denoting whether the logged-in user has blocked the specified user
         'muting': # Boolean denoting whether the logged-in user has muted the specified user
+        'muting_notifications': # Boolean denoting wheter the logged-in user has muted notifications 
+                                # related to the specified user
         'requested': # Boolean denoting whether the logged-in user has sent the specified 
                      # user a follow request
         'domain_blocking': # Boolean denoting whether the logged-in user has blocked the 
                            # specified users domain
+        'showing_reblogs': # Boolean denoting whether the specified users reblogs show up on the
+                           # logged-in users Timeline
     }
 
 Notification dicts
