@@ -12,11 +12,11 @@ interactions:
     method: POST
     uri: http://localhost:3000/api/v1/lists
   response:
-    body: {string: '{"id":"10","title":"ham burglars"}'}
+    body: {string: '{"id":"13","title":"ham burglars"}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"14287cb42ec1ab07b6aa44c5f19b5c1d"]
+      ETag: [W/"08ee126e4426f4c3dcc15b490a31c7df"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -24,8 +24,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [824c6ec5-88ea-4469-aa5b-f9f20a9c6550]
-      X-Runtime: ['0.020458']
+      X-Request-Id: [93aed641-d8d7-4a2a-a4c2-fd803add1424]
+      X-Runtime: ['0.036909']
       X-XSS-Protection: [1; mode=block]
       content-length: ['34']
     status: {code: 200, message: OK}
@@ -40,11 +40,11 @@ interactions:
     method: GET
     uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
-    body: {string: '{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":5,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[]},"emojis":[],"fields":[]}'}
+    body: {string: '{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":67,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[]},"emojis":[],"fields":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"e8cc773e17c063bb46d8192abb677e46"]
+      ETag: [W/"7d5513dfb7003f3c2fffbb3f9e8c4e0d"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -52,28 +52,29 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [f4bf71a3-0740-4afc-b4d8-3ac675cc1d26]
-      X-Runtime: ['0.018511']
+      X-Request-Id: [bd7b5669-1805-403f-94cb-22c72d70e230]
+      X-Runtime: ['0.050034']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['634']
+      content-length: ['635']
     status: {code: 200, message: OK}
 - request:
-    body: null
+    body: reblogs=True&id=1
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['0']
+      Content-Length: ['17']
+      Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
     uri: http://localhost:3000/api/v1/accounts/1/follow
   response:
-    body: {string: '{"id":"1","following":true,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    body: {string: '{"id":"1","following":true,"showing_reblogs":true,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"d0a82968c8f9aeedda238946aae1989a"]
+      ETag: [W/"166b4a474c2b011ac5850811efaa62e2"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -81,10 +82,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [e40ee840-b7fe-4dbb-85ec-a184f5064c43]
-      X-Runtime: ['0.084309']
+      X-Request-Id: [8c68d798-7421-46cc-a73c-e72a3cd0f117]
+      X-Runtime: ['0.097679']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['174']
+      content-length: ['173']
     status: {code: 200, message: OK}
 - request:
     body: account_ids%5B%5D=1
@@ -97,13 +98,13 @@ interactions:
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
-    uri: http://localhost:3000/api/v1/lists/10/accounts
+    uri: http://localhost:3000/api/v1/lists/13/accounts
   response:
     body: {string: '{}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"f39c5a269dd640bacf5a55db8d2d3e90"]
+      ETag: [W/"ffab38e79475e4159e128e2821989fd2"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -111,8 +112,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [a6d6eb3d-c6af-4f7f-b2d7-21635c1d3971]
-      X-Runtime: ['0.040148']
+      X-Request-Id: [626a4239-5798-47cd-86ce-a2c78e2b472c]
+      X-Runtime: ['0.051662']
       X-XSS-Protection: [1; mode=block]
       content-length: ['2']
     status: {code: 200, message: OK}
@@ -129,13 +130,13 @@ interactions:
     method: POST
     uri: http://localhost:3000/api/v1/statuses
   response:
-    body: {string: '{"id":"100369507189110184","created_at":"2018-07-13T21:25:38.523Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100369507189110184","content":"\u003cp\u003eI
-        have never stolen a ham in my life.\u003c/p\u003e","url":"http://localhost:3000/@admin/100369507189110184","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":6,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    body: {string: '{"id":"100465052062847543","created_at":"2018-07-30T18:23:57.880Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100465052062847543","content":"\u003cp\u003eI
+        have never stolen a ham in my life.\u003c/p\u003e","url":"http://localhost:3000/@admin/100465052062847543","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":68,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"f38648e739a25f995ed7d242b59a0a04"]
+      ETag: [W/"cd2e3ed193ead95de59673b883f9a7e7"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -143,10 +144,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [5249cbf5-d705-4c5b-a4e0-9681f9e55b80]
-      X-Runtime: ['0.133811']
+      X-Request-Id: [fde17c71-c6fe-4ef2-86a0-00d835c2888c]
+      X-Runtime: ['0.660351']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['1196']
+      content-length: ['1197']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -157,17 +158,17 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: http://localhost:3000/api/v1/timelines/list/10
+    uri: http://localhost:3000/api/v1/timelines/list/13
   response:
-    body: {string: '[{"id":"100369507189110184","created_at":"2018-07-13T21:25:38.523Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100369507189110184","content":"\u003cp\u003eI
-        have never stolen a ham in my life.\u003c/p\u003e","url":"http://localhost:3000/@admin/100369507189110184","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":6,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}]'}
+    body: {string: '[{"id":"100465052062847543","created_at":"2018-07-30T18:23:57.880Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100465052062847543","content":"\u003cp\u003eI
+        have never stolen a ham in my life.\u003c/p\u003e","url":"http://localhost:3000/@admin/100465052062847543","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":68,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}]'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"5ca2946eb36f6fc5ffe06ca64054b80a"]
-      Link: ['<http://localhost:3000/api/v1/timelines/list/10?max_id=100369507189110184>;
-          rel="next", <http://localhost:3000/api/v1/timelines/list/10?since_id=100369507189110184>;
+      ETag: [W/"60e2292459fabb6aeeea2876de810795"]
+      Link: ['<http://localhost:3000/api/v1/timelines/list/13?max_id=100465052062847543>;
+          rel="next", <http://localhost:3000/api/v1/timelines/list/13?since_id=100465052062847543>;
           rel="prev"']
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
@@ -176,10 +177,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [0a8771de-01e5-47ea-b308-c39646919149]
-      X-Runtime: ['0.063009']
+      X-Request-Id: [90e19e55-3f2f-4de8-88e1-e06783835a34]
+      X-Runtime: ['0.114401']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['1183']
+      content-length: ['1184']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -191,13 +192,13 @@ interactions:
       Content-Length: ['0']
       User-Agent: [python-requests/2.18.4]
     method: DELETE
-    uri: http://localhost:3000/api/v1/statuses/100369507189110184
+    uri: http://localhost:3000/api/v1/statuses/100465052062847543
   response:
     body: {string: '{}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"e550419afbc20eb5dd0d734baac1e28c"]
+      ETag: [W/"c7fe7763c986dce23b2aa864997670c6"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -205,8 +206,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [3fa84a36-8f29-4766-ad4b-008c536f9f0b]
-      X-Runtime: ['0.023745']
+      X-Request-Id: [8e41a094-2f2c-48b5-93d5-008aeec044fe]
+      X-Runtime: ['0.029226']
       X-XSS-Protection: [1; mode=block]
       content-length: ['2']
     status: {code: 200, message: OK}
@@ -226,7 +227,7 @@ interactions:
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"0d26e234d9adadd5bd21d9ab0dedf7fb"]
+      ETag: [W/"a47c9ac8c40127af7818d33139c13a8b"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -234,8 +235,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [df5c6bed-aa7b-4409-a195-f4a31b48f5c4]
-      X-Runtime: ['0.105460']
+      X-Request-Id: [5e12d6ff-d52c-4a34-bec4-0d58e4e1b397]
+      X-Runtime: ['0.074404']
       X-XSS-Protection: [1; mode=block]
       content-length: ['175']
     status: {code: 200, message: OK}
@@ -249,13 +250,13 @@ interactions:
       Content-Length: ['0']
       User-Agent: [python-requests/2.18.4]
     method: DELETE
-    uri: http://localhost:3000/api/v1/lists/10
+    uri: http://localhost:3000/api/v1/lists/13
   response:
     body: {string: '{}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"e550419afbc20eb5dd0d734baac1e28c"]
+      ETag: [W/"c7fe7763c986dce23b2aa864997670c6"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -263,8 +264,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [a7d88e2f-5c75-4338-a386-944ee12bd7f9]
-      X-Runtime: ['0.036622']
+      X-Request-Id: [7a18d813-0ceb-4961-a5c8-22ab8c3b078a]
+      X-Runtime: ['0.070349']
       X-XSS-Protection: [1; mode=block]
       content-length: ['2']
     status: {code: 200, message: OK}

@@ -1,21 +1,22 @@
 interactions:
 - request:
-    body: null
+    body: reblogs=True&id=1
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['0']
+      Content-Length: ['17']
+      Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
     uri: http://localhost:3000/api/v1/accounts/1/follow
   response:
-    body: {string: '{"id":"1","following":true,"showing_reblogs":false,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    body: {string: '{"id":"1","following":true,"showing_reblogs":true,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"2aac633ba6c8db22698d7975d76a2350"]
+      ETag: [W/"da231c42e4f93811b1967ba204ea1826"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -23,10 +24,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [133f29cb-6a3a-486f-9b2a-745b0439a8ad]
-      X-Runtime: ['0.068733']
+      X-Request-Id: [58de6ff4-5b4d-40ff-acfc-cbacec164fba]
+      X-Runtime: ['0.133648']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['174']
+      content-length: ['173']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -44,7 +45,7 @@ interactions:
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Content-Type: [application/json; charset=utf-8]
-      ETag: [W/"567fcb76cedd3fab2d295958338f60e1"]
+      ETag: [W/"aa5045a7c507295fb5399be2a201fd0a"]
       Referrer-Policy: [strict-origin-when-cross-origin]
       Transfer-Encoding: [chunked]
       Vary: ['Accept-Encoding, Origin']
@@ -52,8 +53,8 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [18d3baab-c960-4eb9-842f-8e9a8be1bcd5]
-      X-Runtime: ['0.075583']
+      X-Request-Id: [6500e743-3e55-4931-a7de-3433017b2892]
+      X-Runtime: ['0.117442']
       X-XSS-Protection: [1; mode=block]
       content-length: ['175']
     status: {code: 200, message: OK}

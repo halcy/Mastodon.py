@@ -378,8 +378,7 @@ Filter dicts
         'context': # List of places where the filters are applied ('home', 'notifications', 'public', 'thread')
         'expires_at': # Expiry date for the filter
         'irreversible': # Boolean denoting if this filter is executed server-side
-                        # or if it should be ran client-side (Note that Mastodon.py does
-                        # not run client-side filters for you).
+                        # or if it should be ran client-side.
         'whole_word': # Boolean denoting whether this filter can match partial words
     }
     

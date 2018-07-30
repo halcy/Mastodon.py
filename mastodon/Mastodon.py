@@ -1497,15 +1497,14 @@ class Mastodon:
     # Writing data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filter_create(phrase, context, irreversible = True, whole_word = True, expires_in = None):
+    def filter_create(phrase, context, irreversible = False, whole_word = True, expires_in = None):
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
         filtered out, `context` specifies from where to filter the keywords.
         Valid contexts are 'home', 'notifications', 'public' and 'thread'.
         
-        Set `irreversible` to False if you want the filter to merely be applied
-        at client side. Note that Mastodon.py doesn't do any client-side
-        filtering for you.
+        Set `irreversible` to True if you want the filter to just delete statuses
+        server side. This works only for the 'home' and 'notifications' contexts.
         
         Set `whole_word` to False if you want to allow filter matches to
         start or end within a word, not only at word boundaries.
