@@ -717,6 +717,7 @@ interact with already posted statuses.
 
 .. _status_post():
 .. automethod:: Mastodon.status_post
+.. automethod:: Mastodon.status_reply
 .. automethod:: Mastodon.toot
 .. automethod:: Mastodon.status_reblog
 .. automethod:: Mastodon.status_unreblog

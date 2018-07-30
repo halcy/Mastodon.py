@@ -269,7 +269,9 @@ class Mastodon:
         self.ratelimit_method = ratelimit_method
         self._token_expired = datetime.datetime.now()
         self._refresh_token = None
-
+        
+        self.__logged_in_id = None
+        
         self.ratelimit_limit = 300
         self.ratelimit_reset = time.time()
         self.ratelimit_remaining = 300
@@ -432,7 +434,9 @@ class Mastodon:
         if to_file is not None:
             with open(to_file, 'w') as token_file:
                 token_file.write(response['access_token'] + '\n')
-
+        
+        self.__logged_in_id = None
+        
         return response['access_token']
 
     ###
@@ -1021,7 +1025,7 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)    
+    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
                     idempotency_key=None):
@@ -1113,6 +1117,34 @@ class Mastodon:
         """
         return self.status_post(status)
 
+    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
+    def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, spoiler_text=None, idempotency_key=None):
+        """
+        Helper function - acts like status_post, but prepends the name of all
+        the users that are being replied to to the status text and retains
+        CW and visibility if not explicitly overridden.
+        """
+        user_id = self.__get_logged_in_id()
+        
+        # Determine users to mention
+        mentioned_accounts = collections.OrderedDict()
+        mentioned_accounts[to_status.account.id] = to_status.account.acct
+        for account in to_status.mentions:
+            if account.id != user_id and not account.id in mentioned_accounts.keys():
+                mentioned_accounts[account.id] = account.acct
+                
+        # Join into one piece of text. The space is added inside because of self-replies.
+        status = "".join(map(lambda x: "@" + x + " ", mentioned_accounts.values())) + status
+            
+        # Retain visibility / cw
+        if visibility == None and 'visibility' in to_status:
+            visibility = to_status.visibility
+        if spoiler_text == None and 'spoiler_text' in to_status:
+            spoiler_text = to_status.spoiler_text
+            
+        self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
+                         visibility = visibility, spoiler_text = spoiler_text, idempotency_key = idempotency_key)
+        
     @api_version("1.0.0", "1.0.0", "1.0.0")
     def status_delete(self, id):
         """
@@ -1817,6 +1849,15 @@ class Mastodon:
         epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
 
         return (date_time_utc - epoch_utc).total_seconds()
+
+    def __get_logged_in_id(self):
+        """
+        Fetch the logged in users ID, with caching. ID is reset on calls to log_in.
+        """
+        if self.__logged_in_id == None:
+            self.__logged_in_id = self.account_verify_credentials().id
+        return self.__logged_in_id
+            
 
     @staticmethod
     def __json_allow_dict_attrs(json_object):
