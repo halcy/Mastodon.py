@@ -31,7 +31,14 @@ def test_filter_create(api):
         assert(keyword_filter == keyword_filter_2)
     finally:
         api.filter_delete(keyword_filter)
-        
+
+@pytest.mark.vcr()
+def test_filter_update(api):
+    keyword_filter = api.filter_create("anime", ['notifications'], irreversible = False, whole_word = True, expires_in = None)
+    keyword_filter_2 = api.filter_update(keyword_filter, phrase = "japanimation")
+    keyword_filter = api.filter(keyword_filter.id)
+    assert(keyword_filter.phrase == "japanimation")
+
 @pytest.mark.vcr()
 def test_filter_serverside(api, api2):
     api.account_follow(api2.account_verify_credentials())
