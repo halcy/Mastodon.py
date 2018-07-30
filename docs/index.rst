@@ -299,8 +299,21 @@ Hashtag dicts
     {
         'name': # Hashtag name (not including the #)
         'url': # Hashtag URL (can be remote)
+        'history': # List of usage history dicts for up to 7 days. Not present in statuses.
     }
-  
+
+Hashtag usage history dicts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _hashtag usage history dict:
+
+.. code-block:: python
+
+    {
+        'day': # Date of the day this history dict is for
+        'uses': # Number of statuses using this hashtag on that day
+        'accounts': # Number of accounts using this hashtag in at least one status on that day
+    }
+    
 Emoji dicts
 ~~~~~~~~~~~
 .. _emoji dict:

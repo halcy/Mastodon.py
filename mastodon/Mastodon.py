@@ -1894,7 +1894,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week"]
+        known_date_fields = ["created_at", "week", "day"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 try:
