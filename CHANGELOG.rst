@@ -4,11 +4,13 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.3.1
 ------
-* Mastodon v2.4.3 compatibility
+* Mastodon v2.4.3 compatibility:
    * Keyword filter support: filters(), filter(), filters_apply(), filter_create(), filter_update(), filter_delete()
    * Follow suggestions support: suggestions(), suggestion_delete()
    * account_follow() now has "reblogs" parameter
    * account_mute() now has "notifications" parameter
+   * Support for granular scopes
+* Added status_reply() convenience function
 * First attempt at basic Pleroma compatibility (Thanks deeunderscore)
 * Several small fixes
 
