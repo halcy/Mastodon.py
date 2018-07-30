@@ -1198,7 +1198,8 @@ class Mastodon:
         CW and visibility if not explicitly overridden.
         
         Set `untag` to True if you want the reply to only go to the user you
-        are replying to.
+        are replying to, removing every other mentioned user from the
+        conversation.
         """
         user_id = self.__get_logged_in_id()
         
