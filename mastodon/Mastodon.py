@@ -1191,20 +1191,25 @@ class Mastodon:
 
     @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, 
-                     spoiler_text=None, language=None, idempotency_key=None):
+                     spoiler_text=None, language=None, idempotency_key=None, untag=False):
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to to the status text and retains
         CW and visibility if not explicitly overridden.
+        
+        Set `untag` to True if you want the reply to only go to the user you
+        are replying to.
         """
         user_id = self.__get_logged_in_id()
         
         # Determine users to mention
         mentioned_accounts = collections.OrderedDict()
         mentioned_accounts[to_status.account.id] = to_status.account.acct
-        for account in to_status.mentions:
-            if account.id != user_id and not account.id in mentioned_accounts.keys():
-                mentioned_accounts[account.id] = account.acct
+        
+        if not untag:
+            for account in to_status.mentions:
+                if account.id != user_id and not account.id in mentioned_accounts.keys():
+                    mentioned_accounts[account.id] = account.acct
                 
         # Join into one piece of text. The space is added inside because of self-replies.
         status = "".join(map(lambda x: "@" + x + " ", mentioned_accounts.values())) + status
