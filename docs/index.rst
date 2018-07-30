@@ -698,7 +698,7 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
-Writing data: Keyword filters
+Reading data: Keyword filters
 -----------------------------
 These functions allow you to get information about keyword filters.
 
