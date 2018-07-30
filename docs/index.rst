@@ -269,7 +269,8 @@ Toot dicts
         'application': # Application dict for the client used to post the toot (Does not federate
                        # and is therefore always None for remote toots, can also be None for
                        # local toots for some legacy applications).
-        'language': # The language of the toot, if specified by the server.
+        'language': # The language of the toot, if specified by the server, 
+                    # as ISO 639-2 language code.
         'muted': # Boolean denoting whether the user has muted this status by 
                  # way of conversation muting
         'pinned': # Boolean denoting whether or not the status is currently pinned for the

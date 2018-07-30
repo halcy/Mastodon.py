@@ -1027,10 +1027,10 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.3.4", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
-                    idempotency_key=None):
+                    language=None, idempotency_key=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -1060,6 +1060,9 @@ class Mastodon:
         the text of the status.  If no text is passed in, no warning will be
         displayed.
 
+        Specify `language` to override automatic language detection. The parameter
+        accepts all valid ISO 639-2 language codes.
+
         You can set `idempotency_key` to a value to uniquely identify an attempt
         at posting a status. Even if you call this function more than once,
         if you call it with the same `idempotency_key`, only one status will
@@ -1081,6 +1084,9 @@ class Mastodon:
             if params_initial['visibility'] not in valid_visibilities:
                 raise ValueError('Invalid visibility value! Acceptable '
                                 'values are %s' % valid_visibilities)
+
+        if params_initial['language'] == None:
+            del params_initial['language']
 
         if params_initial['sensitive'] is False:
             del [params_initial['sensitive']]
@@ -1120,7 +1126,8 @@ class Mastodon:
         return self.status_post(status)
 
     @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
-    def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, spoiler_text=None, idempotency_key=None):
+    def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, 
+                     spoiler_text=None, language=None, idempotency_key=None):
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to to the status text and retains
@@ -1145,7 +1152,8 @@ class Mastodon:
             spoiler_text = to_status.spoiler_text
             
         self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
-                         visibility = visibility, spoiler_text = spoiler_text, idempotency_key = idempotency_key)
+                         visibility = visibility, spoiler_text = spoiler_text, language = language,
+                         idempotency_key = idempotency_key)
         
     @api_version("1.0.0", "1.0.0", "1.0.0")
     def status_delete(self, id):
@@ -1272,7 +1280,7 @@ class Mastodon:
         """
         Follow a user.
 
-        Set "reblogs" to False to hide boosts by the followed user.
+        Set `reblogs` to False to hide boosts by the followed user.
 
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """
@@ -1333,7 +1341,7 @@ class Mastodon:
         """
         Mute a user.
 
-        Set "notifications" to False to receive notifications even though the user is
+        Set `notifications` to False to receive notifications even though the user is
         muted from timelines.
 
         Returns a `relationship dict`_ containing the updated relationship to the user.
