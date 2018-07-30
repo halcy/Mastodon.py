@@ -7,6 +7,15 @@ def test_status(status, api):
     assert status2
 
 @pytest.mark.vcr()
+def test_status_reply(status, api2):
+    status2 = api2.status_reply(status, "same!")
+    try:
+        assert status2
+        assert status2.mentions[0].id == status.account.id
+    finally:
+        api2.status_delete(status2['id'])
+        
+@pytest.mark.vcr()
 def test_status_empty(api):
     with pytest.raises(MastodonAPIError):
         api.status_post('')

@@ -1221,7 +1221,7 @@ class Mastodon:
         if spoiler_text == None and 'spoiler_text' in to_status:
             spoiler_text = to_status.spoiler_text
             
-        self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
+        return self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
                          visibility = visibility, spoiler_text = spoiler_text, language = language,
                          idempotency_key = idempotency_key)
         
