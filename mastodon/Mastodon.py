@@ -833,6 +833,19 @@ class Mastodon:
         return self.__api_request('GET', url, params)
     
     ###
+    # Reading data: Follow suggestions
+    ###
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_ACCOUNT)
+    def suggestions(self):
+        """
+        Fetch follow suggestions for the logged-in user.
+
+        Returns a list of `user dicts`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/suggestions')
+    
+    ###
     # Reading data: Searching
     ###
     @api_version("1.1.0", "2.1.0", __DICT_VERSION_SEARCHRESULT)
@@ -867,8 +880,11 @@ class Mastodon:
         """
         Fetch trending-hashtag information, if the instance provides such information.
 
+        Does not require authentication.
+
         Returns a list of `hashtag dicts`_, sorted by the instances trending algorithm,
         descending.
+        
         """
         return self.__api_request('GET', '/api/v1/trends')
 
@@ -1451,6 +1467,19 @@ class Mastodon:
         
         params = self.__generate_params(params_initial)
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
+
+
+    ###
+    # Writing data: Follow suggestions
+    ###
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_ACCOUNT)
+    def suggestion_delete(self, account_id):
+        """
+        Remove a single user from the follow suggestions.
+        """
+        account_id = self.__unpack_id(account_id)
+        url = '/api/v1/suggestions/{0}'.format(str(account_id))
+        self.__api_request('DELETE', url)
 
     ###
     # Writing data: Lists

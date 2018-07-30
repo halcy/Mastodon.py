@@ -677,6 +677,11 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Reading data: Follow suggestions
+--------------------------------
+
+.. automethod:: Mastodon.suggestions
+
 Reading data: Lists
 -------------------
 These functions allow you to view information about lists.
@@ -773,6 +778,11 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_mute
 .. automethod:: Mastodon.account_unmute
 .. automethod:: Mastodon.account_update_credentials
+
+Writing data: Follow suggestions
+--------------------------------
+
+.. automethod:: Mastodon.suggestion_delete
 
 Writing data: Lists
 -------------------
