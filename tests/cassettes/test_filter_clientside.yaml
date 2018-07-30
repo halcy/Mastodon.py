@@ -1,0 +1,565 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/verify_credentials
+  response:
+    body: {string: '{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":77,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[]},"emojis":[],"fields":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"96f1e632bedff53bc417e2e23a83717c"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [eb91d8db-54ed-456e-92c2-b81775633a9d]
+      X-Runtime: ['0.032487']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['635']
+    status: {code: 200, message: OK}
+- request:
+    body: reblogs=1&id=1
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['14']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/1/follow
+  response:
+    body: {string: '{"id":"1","following":true,"showing_reblogs":true,"followed_by":false,"blocking":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"fe107f34a56849d06ee76fc843f89760"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [832132c4-9446-4ffb-bb88-9a5c5f2d1da8]
+      X-Runtime: ['0.053476']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['173']
+    status: {code: 200, message: OK}
+- request:
+    body: whole_word=0&irreversible=0&phrase=anime&context%5B%5D=home
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['59']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/filters
+  response:
+    body: {string: '{"id":24,"phrase":"anime","context":["home"],"whole_word":false,"expires_at":null,"irreversible":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"1f6f2cfe01cee9c7fa64873d11877e0a"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [0984090a-d260-482d-bc07-60ff9ebcf170]
+      X-Runtime: ['0.041620']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['103']
+    status: {code: 200, message: OK}
+- request:
+    body: whole_word=1&irreversible=0&phrase=girugamesh&context%5B%5D=home
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['64']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/filters
+  response:
+    body: {string: '{"id":25,"phrase":"girugamesh","context":["home"],"whole_word":true,"expires_at":null,"irreversible":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"419bc648bfd93411fc0e37da31754670"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [8ad1c23d-fd60-43d1-8519-dacbe2c52957]
+      X-Runtime: ['0.033784']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['107']
+    status: {code: 200, message: OK}
+- request:
+    body: whole_word=1&irreversible=0&phrase=japanimation&context%5B%5D=notifications
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['75']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/filters
+  response:
+    body: {string: '{"id":26,"phrase":"japanimation","context":["notifications"],"whole_word":true,"expires_at":null,"irreversible":false}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"8313201b5ec4886215cc3539b3d5fdb5"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [d1d884b0-a19d-434d-b2b3-480a5f028512]
+      X-Runtime: ['0.033475']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['118']
+    status: {code: 200, message: OK}
+- request:
+    body: status=I+love+animes
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['20']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"100465659631900327","created_at":"2018-07-30T20:58:28.365Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465659631900327","content":"\u003cp\u003eI
+        love animes\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659631900327","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":78,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"28c8b2e58a6f138875011985c2cf637e"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [a9c42910-a577-4733-aa68-7ae945287019]
+      X-Runtime: ['0.172233']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1173']
+    status: {code: 200, message: OK}
+- request:
+    body: status=Girugamesh%21
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['20']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"100465659647340884","created_at":"2018-07-30T20:58:28.602Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465659647340884","content":"\u003cp\u003eGirugamesh!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659647340884","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":79,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"256bf872aa68fca68067fd604bf9a1a1"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [ca302493-b258-44e5-8ffe-f52ef81e5172]
+      X-Runtime: ['0.214470']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1171']
+    status: {code: 200, message: OK}
+- request:
+    body: status=Girugameshnetworking%21
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['30']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"100465659662509605","created_at":"2018-07-30T20:58:28.837Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"no","uri":"http://localhost:3000/users/admin/statuses/100465659662509605","content":"\u003cp\u003eGirugameshnetworking!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659662509605","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":80,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"d12f50e6c8fe6f3d5ff8b4997b2a918c"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [48bf60d9-ab71-4b1e-8f2f-00a33f3ae98a]
+      X-Runtime: ['0.215613']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1181']
+    status: {code: 200, message: OK}
+- request:
+    body: status=I+love+japanimation%21
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['29']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"100465659679228554","created_at":"2018-07-30T20:58:29.096Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465659679228554","content":"\u003cp\u003eI
+        love japanimation!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659679228554","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"7b8ed89d96e6f4b0c6804e57815f9fa8"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [939ec625-5dd3-40aa-90be-f6f898241c95]
+      X-Runtime: ['0.258094']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1180']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/timelines/home
+  response:
+    body: {string: '[{"id":"100465659679228554","created_at":"2018-07-30T20:58:29.096Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465659679228554","content":"\u003cp\u003eI
+        love japanimation!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659679228554","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100465659662509605","created_at":"2018-07-30T20:58:28.837Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"no","uri":"http://localhost:3000/users/admin/statuses/100465659662509605","content":"\u003cp\u003eGirugameshnetworking!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659662509605","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100465659647340884","created_at":"2018-07-30T20:58:28.602Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465659647340884","content":"\u003cp\u003eGirugamesh!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659647340884","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100465659631900327","created_at":"2018-07-30T20:58:28.365Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465659631900327","content":"\u003cp\u003eI
+        love animes\u003c/p\u003e","url":"http://localhost:3000/@admin/100465659631900327","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100465559679402754","created_at":"2018-07-30T20:33:03.214Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465559679402754","content":"\u003cp\u003eI
+        love japanimation!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465559679402754","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100465559659485435","created_at":"2018-07-30T20:33:02.930Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"no","uri":"http://localhost:3000/users/admin/statuses/100465559659485435","content":"\u003cp\u003eGirugameshnetworking!\u003c/p\u003e","url":"http://localhost:3000/@admin/100465559659485435","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100465559616321413","created_at":"2018-07-30T20:33:02.275Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100465559616321413","content":"\u003cp\u003eI
+        love animes\u003c/p\u003e","url":"http://localhost:3000/@admin/100465559616321413","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369878639416248","created_at":"2018-07-13T23:00:06.400Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"fy","uri":"http://localhost:3000/users/mastodonpy_test/statuses/100369878639416248","content":"\u003cp\u003eit\u0026apos;s
+        cool guy\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/100369878639416248","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"created_at":"2018-07-13T23:02:25.260Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":1,"statuses_count":90,"emojis":[],"fields":[{"name":"bread","value":"toasty."},{"name":"lasagna","value":"no!!!"}]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369876256619444","created_at":"2018-07-13T22:59:30.057Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100369876256619444","content":"\u003cp\u003eon
+        the internet, nobody knows you\u0026apos;re a plane\u003c/p\u003e","url":"http://localhost:3000/@admin/100369876256619444","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369876236168049","created_at":"2018-07-13T22:59:29.744Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100369876236168049","content":"\u003cp\u003e\u003cspan
+        class=\"h-card\"\u003e\u003ca href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\"\u003e@\u003cspan\u003emastodonpy_test\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e
+        beep beep I\u0026apos;m a jeep\u003c/p\u003e","url":"http://localhost:3000/@admin/100369876236168049","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[{"id":"1234567890123456","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[]},{"id":"100369866131840990","created_at":"2018-07-13T22:56:55.551Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"fy","uri":"http://localhost:3000/users/mastodonpy_test/statuses/100369866131840990","content":"\u003cp\u003eit\u0026apos;s
+        cool guy\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/100369866131840990","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"created_at":"2018-07-13T23:02:25.260Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":1,"statuses_count":90,"emojis":[],"fields":[{"name":"bread","value":"toasty."},{"name":"lasagna","value":"no!!!"}]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369864730374084","created_at":"2018-07-13T22:56:34.197Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100369864730374084","content":"\u003cp\u003eon
+        the internet, nobody knows you\u0026apos;re a plane\u003c/p\u003e","url":"http://localhost:3000/@admin/100369864730374084","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369864711152431","created_at":"2018-07-13T22:56:33.885Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100369864711152431","content":"\u003cp\u003e\u003cspan
+        class=\"h-card\"\u003e\u003ca href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\"\u003e@\u003cspan\u003emastodonpy_test\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e
+        beep beep I\u0026apos;m a jeep\u003c/p\u003e","url":"http://localhost:3000/@admin/100369864711152431","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[{"id":"1234567890123456","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[]},{"id":"100369861426964675","created_at":"2018-07-13T22:55:43.756Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"fy","uri":"http://localhost:3000/users/mastodonpy_test/statuses/100369861426964675","content":"\u003cp\u003eit\u0026apos;s
+        cool guy\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/100369861426964675","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"created_at":"2018-07-13T23:02:25.260Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":1,"statuses_count":90,"emojis":[],"fields":[{"name":"bread","value":"toasty."},{"name":"lasagna","value":"no!!!"}]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369860025045082","created_at":"2018-07-13T22:55:22.399Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100369860025045082","content":"\u003cp\u003eon
+        the internet, nobody knows you\u0026apos;re a plane\u003c/p\u003e","url":"http://localhost:3000/@admin/100369860025045082","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369860006737049","created_at":"2018-07-13T22:55:22.102Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100369860006737049","content":"\u003cp\u003e\u003cspan
+        class=\"h-card\"\u003e\u003ca href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\"\u003e@\u003cspan\u003emastodonpy_test\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e
+        beep beep I\u0026apos;m a jeep\u003c/p\u003e","url":"http://localhost:3000/@admin/100369860006737049","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[{"id":"1234567890123456","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[]},{"id":"100369855289558259","created_at":"2018-07-13T22:54:10.107Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"fy","uri":"http://localhost:3000/users/mastodonpy_test/statuses/100369855289558259","content":"\u003cp\u003eit\u0026apos;s
+        cool guy\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/100369855289558259","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"created_at":"2018-07-13T23:02:25.260Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":1,"statuses_count":90,"emojis":[],"fields":[{"name":"bread","value":"toasty."},{"name":"lasagna","value":"no!!!"}]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369853882920137","created_at":"2018-07-13T22:53:48.742Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/100369853882920137","content":"\u003cp\u003eon
+        the internet, nobody knows you\u0026apos;re a plane\u003c/p\u003e","url":"http://localhost:3000/@admin/100369853882920137","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]},{"id":"100369853862414186","created_at":"2018-07-13T22:53:48.345Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":null,"uri":"http://localhost:3000/users/admin/statuses/100369853862414186","content":"\u003cp\u003e\u003cspan
+        class=\"h-card\"\u003e\u003ca href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\"\u003e@\u003cspan\u003emastodonpy_test\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e
+        beep beep I\u0026apos;m a jeep\u003c/p\u003e","url":"http://localhost:3000/@admin/100369853862414186","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2018-07-13T19:35:33.303Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":81,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[{"id":"1234567890123456","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[]},{"id":"100369852128654372","created_at":"2018-07-13T22:53:21.874Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"fy","uri":"http://localhost:3000/users/mastodonpy_test/statuses/100369852128654372","content":"\u003cp\u003eit\u0026apos;s
+        cool guy\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test/100369852128654372","reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"created_at":"2018-07-13T23:02:25.260Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/mastodonpyupload_.jpeg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/mastodonpyupload_.jpeg","followers_count":0,"following_count":1,"statuses_count":90,"emojis":[],"fields":[{"name":"bread","value":"toasty."},{"name":"lasagna","value":"no!!!"}]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"8e545518c5ef3eafada6e5d037f09434"]
+      Link: ['<http://localhost:3000/api/v1/timelines/home?max_id=100369852128654372>;
+          rel="next", <http://localhost:3000/api/v1/timelines/home?since_id=100465659679228554>;
+          rel="prev"']
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [47182337-9b1d-458c-9011-a20ab605cc39]
+      X-Runtime: ['0.294831']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['26586']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/filters/24
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f23e62d6758c16d7847b85d2dd34d044"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [6742b8b5-955c-4e39-bfa0-a60316ff98be]
+      X-Runtime: ['0.038607']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/filters/25
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f23e62d6758c16d7847b85d2dd34d044"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [fc848d17-a24b-4de4-b24b-1acd536ef3f6]
+      X-Runtime: ['0.027986']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/filters/26
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f23e62d6758c16d7847b85d2dd34d044"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [b98a2e02-5ddc-4935-a471-0fe3038dc808]
+      X-Runtime: ['0.025733']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/statuses/100465659631900327
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f23e62d6758c16d7847b85d2dd34d044"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [5fe33695-d46a-4252-af76-00b4a586f7ef]
+      X-Runtime: ['0.030696']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/statuses/100465659647340884
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f23e62d6758c16d7847b85d2dd34d044"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [a4ec6ec1-99e4-4395-b9ed-0f2e19c8669b]
+      X-Runtime: ['0.064158']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/statuses/100465659662509605
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"f23e62d6758c16d7847b85d2dd34d044"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [d9e9324c-1442-4767-a720-e28c33471bea]
+      X-Runtime: ['0.102234']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/statuses/100465659679228554
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"26b7fe38f7269e3355b0a1d438f70ca5"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [af0647e4-ef68-4ec3-828c-02f522b68461]
+      X-Runtime: ['0.098372']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+version: 1

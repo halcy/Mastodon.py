@@ -837,7 +837,7 @@ class Mastodon:
     # Reading data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filters():
+    def filters(self):
         """
         Fetch all of the logged-in users filters.
         
@@ -846,7 +846,7 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/filters')
         
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filter(id):
+    def filter(self, id):
         """
         Fetches information about the filter with the specified `id`.
         
@@ -876,8 +876,7 @@ class Mastodon:
             if keyword_filter["whole_word"] == True:
                 filter_string = "\\b" + filter_string + "\\b"
             filter_strings.append(filter_string)
-        filter_re = re.compile("|".join(filter_strings))
-        return filter_re
+        filter_re = re.compile("|".join(filter_strings), flags = re.IGNORECASE)
         
         # Apply
         filter_results = []
@@ -888,7 +887,7 @@ class Mastodon:
             filter_text = filter_status["content"]
             filter_text = re.sub("<.*?>", " ", filter_text)
             filter_text = re.sub('\s+', ' ', filter_text).strip()
-            if not filter_re.match(filter_text):
+            if not filter_re.search(filter_text):
                 filter_results.append(filter_object)
         return filter_results
     
@@ -1539,7 +1538,7 @@ class Mastodon:
     # Writing data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filter_create(phrase, context, irreversible = False, whole_word = True, expires_in = None):
+    def filter_create(self, phrase, context, irreversible = False, whole_word = True, expires_in = None):
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
         filtered out, `context` specifies from where to filter the keywords.
@@ -1565,7 +1564,7 @@ class Mastodon:
         return self.__api_request('POST', '/api/v1/filters', params)
         
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filter_update(id, phrase = None, context = None, irreversible = None, whole_word = None, expires_in = None):
+    def filter_update(self, id, phrase = None, context = None, irreversible = None, whole_word = None, expires_in = None):
         """
         Updates the filter with the given `id`. Parameters are the same
         as in `filter_create()`.
@@ -1578,7 +1577,7 @@ class Mastodon:
         return self.__api_request('PUT', url, params)
     
     @api_version("2.4.3", "2.4.3", "2.4.3")
-    def filter_delete(id):
+    def filter_delete(self, id):
         """
         Deletes the filter with the given `id`.
         """
@@ -2067,13 +2066,14 @@ class Mastodon:
         known_date_fields = ["created_at", "week", "day", "expires_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
-                try:
-                    if isinstance(v, int):
-                        json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
-                    else:
-                        json_object[k] = dateutil.parser.parse(v)
-                except:
-                    raise MastodonAPIError('Encountered invalid date.')
+                if v != None:
+                    try:
+                        if isinstance(v, int):
+                            json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
+                        else:
+                            json_object[k] = dateutil.parser.parse(v)
+                    except:
+                        raise MastodonAPIError('Encountered invalid date.')
         return json_object
 
     @staticmethod
@@ -2406,6 +2406,12 @@ class Mastodon:
         del params['self']
         param_keys = list(params.keys())
         for key in param_keys:
+            if isinstance(params[key], bool) and params[key] == False:
+                params[key] = '0'
+            if isinstance(params[key], bool) and params[key] == True:
+                params[key] = '1'
+                
+        for key in param_keys:
             if params[key] is None or key in exclude:
                 del params[key]
 
@@ -2414,7 +2420,7 @@ class Mastodon:
             if isinstance(params[key], list):
                 params[key + "[]"] = params[key]
                 del params[key]
-
+            
         return params
     
     def __unpack_id(self, id):
