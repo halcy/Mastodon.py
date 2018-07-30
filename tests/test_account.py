@@ -162,3 +162,14 @@ def test_account_pinned(status, status2, api):
         assert not status2 in pinned
     finally:
         api.status_unpin(status['id'])
+
+@pytest.mark.vcr()
+def test_follow_suggestions(api):
+    suggestions = api.suggestions()
+    assert(suggestions)
+    assert(len(suggestions) > 0)
+    
+    api.suggestion_delete(suggestions[0])
+    suggestions2 = api.suggestions()
+    assert(len(suggestions2) < len(suggestions))
+    
