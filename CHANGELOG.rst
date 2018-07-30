@@ -2,6 +2,16 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided. 
 
+v1.3.1
+------
+* Mastodon v2.4.3 compatibility
+   * Keyword filter support: filters(), filter(), filters_apply(), filter_create(), filter_update(), filter_delete()
+   * Follow suggestions support: suggestions(), suggestion_delete()
+   * account_follow() now has "reblogs" parameter
+   * account_mute() now has "notifications" parameter
+* First attempt at basic Pleroma compatibility (Thanks deeunderscore)
+* Several small fixes
+
 v1.3.0
 ------
 !!!!! There are several potentially breaking changes in here, and a lot
