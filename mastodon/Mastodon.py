@@ -160,7 +160,7 @@ class Mastodon:
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.1.0", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION)
     __DICT_VERSION_INSTANCE = bigger_version("2.3.0", __DICT_VERSION_ACCOUNT)
-    __DICT_VERSION_HASHTAG = "1.0.0"
+    __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "2.1.0"
     __DICT_VERSION_RELATIONSHIP = "2.4.3"
     __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
@@ -852,12 +852,25 @@ class Mastodon:
     def search_v2(self, q, resolve=False):
         """
         Identical to `search()`, except in that it returns tags as
-        `tag dicts`_.
+        `hashtag dicts`_.
 
         Returns a `search result dict`_.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v2/search', params)
+
+    ###
+    # Reading data: Trends
+    ###
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_HASHTAG)
+    def trends(self):
+        """
+        Fetch trending-hashtag information, if the instance provides such information.
+
+        Returns a list of `hashtag dicts`_, sorted by the instances trending algorithm,
+        descending.
+        """
+        return self.__api_request('GET', '/api/v1/trends')
 
     ###
     # Reading data: Lists
