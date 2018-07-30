@@ -362,6 +362,25 @@ Relationship dicts
                            # logged-in users Timeline
     }
 
+Filter dicts
+~~~~~~~~~~~~
+.. _filter dict:
+ 
+.. code-block:: python
+
+    mastodon.account_follow(<numerical id>)
+    # Returns the following dictionary:
+    {
+        'id': # Numerical id of the filter
+        'phrase': # Filtered keyword or phrase
+        'context': # List of places where the filters are applied ('home', 'notifications', 'public', 'thread')
+        'expires_at': # Expiry date for the filter
+        'irreversible': # Boolean denoting if this filter is executed server-side
+                        # or if it should be ran client-side (Note that Mastodon.py does
+                        # not run client-side filters for you).
+        'whole_word': # Boolean denoting whether this filter can match partial words
+    }
+    
 Notification dicts
 ~~~~~~~~~~~~~~~~~~
 .. _notification dict:
@@ -677,6 +696,13 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Writing data: Keyword filters
+-----------------------------
+These functions allow you to get information about keyword filters.
+
+.. automethod:: Mastodon.filters
+.. automethod:: Mastodon.filter
+
 Reading data: Follow suggestions
 --------------------------------
 
@@ -778,6 +804,14 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_mute
 .. automethod:: Mastodon.account_unmute
 .. automethod:: Mastodon.account_update_credentials
+
+Writing data: Keyword filters
+-----------------------------
+These functions allow you to manipulate keyword filters.
+
+.. automethod:: Mastodon.filter_create
+.. automethod:: Mastodon.filter_update
+.. automethod:: Mastodon.filter_delete
 
 Writing data: Follow suggestions
 --------------------------------

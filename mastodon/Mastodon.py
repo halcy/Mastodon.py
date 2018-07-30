@@ -173,6 +173,7 @@ class Mastodon:
     __DICT_VERSION_REPORT = "1.1.0"
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
+    __DICT_VERSION_FILTER = "2.4.3"
     
     ###
     # Registering apps
@@ -833,6 +834,29 @@ class Mastodon:
         return self.__api_request('GET', url, params)
     
     ###
+    # Reading data: Keyword filters
+    ###
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    def filters():
+        """
+        Fetch all of the logged-in users filters.
+        
+        Returns a list of `filter dicts`_. Not paginated.
+        """
+        return self.__api_request('GET', '/api/v1/filters')
+        
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    def filter(id):
+        """
+        Fetches information about the filter with the specified `id`.
+        
+        Returns a `filter dict`_.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/filters/{0}'.format(str(id))
+        return self.__api_request('GET', url)
+        
+    ###
     # Reading data: Follow suggestions
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_ACCOUNT)
@@ -1470,12 +1494,64 @@ class Mastodon:
 
 
     ###
+    # Writing data: Keyword filters
+    ###
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    def filter_create(phrase, context, irreversible = True, whole_word = True, expires_in = None):
+        """
+        Creates a new keyword filter. `phrase` is the phrase that should be
+        filtered out, `context` specifies from where to filter the keywords.
+        Valid contexts are 'home', 'notifications', 'public' and 'thread'.
+        
+        Set `irreversible` to False if you want the filter to merely be applied
+        at client side. Note that Mastodon.py doesn't do any client-side
+        filtering for you.
+        
+        Set `whole_word` to False if you want to allow filter matches to
+        start or end within a word, not only at word boundaries.
+        
+        Set `expires_in` to specify for how many seconds the filter should be
+        kept around.
+        
+        Returns the `filter dict`_ of the newly created filter. 
+        """
+        params = self.__generate_params(locals())
+        
+        for context_val in context:
+            if not context_val in ['home', 'notifications', 'public', 'thread']:
+                raise MastodonIllegalArgumentError('Invalid filter context.')
+        
+        return self.__api_request('POST', '/api/v1/filters', params)
+        
+    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    def filter_update(id, phrase = None, context = None, irreversible = None, whole_word = None, expires_in = None):
+        """
+        Updates the filter with the given `id`. Parameters are the same
+        as in `filter_create()`.
+        
+        Returns the `filter dict`_ of the updated filter. 
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ['id'])
+        url = '/api/v1/filters/{0}'.format(str(id))
+        return self.__api_request('PUT', url, params)
+    
+    @api_version("2.4.3", "2.4.3", "2.4.3")
+    def filter_delete(id):
+        """
+        Deletes the filter with the given `id`.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/filters/{0}'.format(str(id))
+        self.__api_request('DELETE', url)
+        
+    ###
     # Writing data: Follow suggestions
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_ACCOUNT)
     def suggestion_delete(self, account_id):
         """
-        Remove a single user from the follow suggestions.
+        Remove the user with the given `account_id` from the follow suggestions.
         """
         account_id = self.__unpack_id(account_id)
         url = '/api/v1/suggestions/{0}'.format(str(account_id))
@@ -1947,7 +2023,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day"]
+        known_date_fields = ["created_at", "week", "day", "expires_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 try:
