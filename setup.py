@@ -1,6 +1,6 @@
 from setuptools import setup
 
-test_deps = ['pytest', 'pytest-cov', 'vcrpy', 'pytest-vcr', 'pytest-mock']
+test_deps = ['pytest', 'pytest-runner', 'pytest-cov', 'vcrpy', 'pytest-vcr', 'pytest-mock']
 extras = {
       "test": test_deps
 }
@@ -9,7 +9,6 @@ setup(name='Mastodon.py',
       version='1.3.1',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
-      setup_requires=['pytest-runner'],
       install_requires=[
           'requests', 
           'python-dateutil', 
