@@ -1,16 +1,18 @@
 Mastodon.py
 ===========
-Register your app! This only needs to be done once.
+Register your app! This only needs to be done once. Uncomment the code and substitute in your information.
 
 .. code-block:: python
 
    from mastodon import Mastodon
 
+   '''
    Mastodon.create_app(
         'pytooterapp',
         api_base_url = 'https://mastodon.social',
         to_file = 'pytooter_clientcred.secret'
    )
+   '''
 
 Then login. This can be done every time, or use persisted.
 
