@@ -1,20 +1,23 @@
 Mastodon.py
 ===========
+Register your app! This only needs to be done once.
+
 .. code-block:: python
 
    from mastodon import Mastodon
 
-   # Register app - only once!
-   '''
    Mastodon.create_app(
         'pytooterapp',
         api_base_url = 'https://mastodon.social',
         to_file = 'pytooter_clientcred.secret'
    )
-   '''
 
-   # Log in - either every time, or use persisted
-   '''
+Then login. This can be done every time, or use persisted.
+
+.. code-block:: python
+
+   from mastodon import Mastodon
+   
    mastodon = Mastodon(
        client_id = 'pytooter_clientcred.secret',
        api_base_url = 'https://mastodon.social'
@@ -24,9 +27,13 @@ Mastodon.py
        'incrediblygoodpassword',
        to_file = 'pytooter_usercred.secret'
    )
-   '''
 
-   # Create actual API instance
+To post, create an actual API instance.
+
+.. code-block:: python
+
+   from mastodon import Mastodon
+   
    mastodon = Mastodon(
        access_token = 'pytooter_usercred.secret',
        api_base_url = 'https://mastodon.social'
