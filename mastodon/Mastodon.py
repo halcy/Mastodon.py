@@ -1722,6 +1722,8 @@ class Mastodon:
         if mime_type is None and os.path.isfile(media_file):
             mime_type = mimetypes.guess_type(media_file)[0]
             media_file = open(media_file, 'rb')
+        elif mime_type and os.path.isfile(media_file):
+            media_file = open(media_file, 'rb')
 
         if mime_type is None:
             raise MastodonIllegalArgumentError('Could not determine mime type'
