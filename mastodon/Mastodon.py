@@ -31,6 +31,11 @@ try:
 except ImportError:
     from urlparse import urlparse
 
+try:
+    import magic
+except ImportError:
+    magic = None
+
 ###
 # Version check functions, including decorator and parser
 ###
@@ -2529,3 +2534,11 @@ class MastodonRatelimitError(MastodonError):
 class MastodonMalformedEventError(MastodonError):
     """Raised when the server-sent event stream is malformed"""
     pass
+
+def guess_type(media_file):
+    mime_type = None
+    if magic:
+        mime_type = magic.from_file(media_file, mime=True)
+    else:
+        mime_type = mimetypes.guess_type(media_file)[0]
+    return mime_type
