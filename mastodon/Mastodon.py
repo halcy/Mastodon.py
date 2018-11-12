@@ -1496,7 +1496,7 @@ class Mastodon:
         # Load avatar, if specified
         if not avatar is None:
             if avatar_mime_type is None and os.path.isfile(avatar):
-                avatar_mime_type = mimetypes.guess_type(avatar)[0]
+                avatar_mime_type = guess_type(avatar)
                 avatar = open(avatar, 'rb')
 
             if avatar_mime_type is None:
@@ -1505,7 +1505,7 @@ class Mastodon:
         # Load header, if specified
         if not header is None:
             if header_mime_type is None and os.path.isfile(header):
-                header_mime_type = mimetypes.guess_type(header)[0]
+                header_mime_type = guess_type(header)
                 header = open(header, 'rb')
 
             if header_mime_type is None:
@@ -1725,7 +1725,7 @@ class Mastodon:
         status_post to attach the media file to a toot.
         """
         if mime_type is None and os.path.isfile(media_file):
-            mime_type = mimetypes.guess_type(media_file)[0]
+            mime_type = guess_type(media_file)
             media_file = open(media_file, 'rb')
 
         if mime_type is None:
