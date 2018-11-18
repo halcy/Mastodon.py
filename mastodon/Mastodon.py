@@ -180,7 +180,7 @@ class Mastodon:
     ###
     @staticmethod
     def create_app(client_name, scopes=__DEFAULT_SCOPES, redirect_uris=None, website=None, to_file=None,
-                   api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT):
+                   api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT, session=None):
         """
         Create a new app with given `client_name` and `scopes` (The basic scropse are "read", "write", "follow" and "push" 
         - more granular scopes are available, please refere to Mastodon documentation for which).
@@ -189,6 +189,8 @@ class Mastodon:
         Specify `to_file` to persist your apps info to a file so you can use them in the constructor.
         Specify `api_base_url` if you want to register an app on an instance different from the flagship one.
 
+        Specify `session` with a requests.Session for it to be used instead of the deafult.
+        
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         future mastodon instances or even the flagship instance in the future.
 
@@ -208,9 +210,12 @@ class Mastodon:
                 request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob'
             if website is not None:
                 request_data['website'] = website
-
-            response = requests.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
-            response = response.json()
+            if session:
+                ret = session.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
+                response = ret.json()
+            else:
+                response = requests.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
+                response = response.json()
         except Exception as e:
             raise MastodonNetworkError("Could not complete request: %s" % e)
 
@@ -228,7 +233,7 @@ class Mastodon:
                  api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode = "created"):
+                 version_check_mode = "created", session=None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret. If you specify an
@@ -250,7 +255,9 @@ class Mastodon:
 
         By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
         pass the desired timeout (in seconds) as `request_timeout`.
-        
+
+        For fine-tuned control over the requests object use `session` with a requests.Session.
+                
         The `mastodon_version` parameter can be used to specify the version of Mastodon that Mastodon.py will
         expect to be installed on the server. The function will throw an error if an unparseable 
         Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the 
@@ -281,7 +288,10 @@ class Mastodon:
 
         self.request_timeout = request_timeout
 
-        self.session = requests.Session()
+        if session:
+            self.session = session
+        else:
+            self.session = requests.Session()
 
         # Versioning
         if mastodon_version == None:
