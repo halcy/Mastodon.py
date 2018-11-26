@@ -27,19 +27,19 @@ def api2():
 def api_anonymous():
     return _api(access_token=None)
 
-@pytest.fixture()
+@pytest.fixture
 def status(api):
     _status = api.status_post('Toot!')
     yield _status
     api.status_delete(_status['id'])
 
-@pytest.fixture()
+@pytest.fixture
 def status2(api):
     _status = api.status_post('Toot, too!')
     yield _status
     api.status_delete(_status['id'])
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def vcr_config():
     return dict(
             match_on = ['method', 'path', 'query', 'body'],
