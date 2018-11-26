@@ -890,8 +890,8 @@ class Mastodon:
             if "status" in filter_object:
                 filter_status = filter_object["status"]
             filter_text = filter_status["content"]
-            filter_text = re.sub("<.*?>", " ", filter_text)
-            filter_text = re.sub('\s+', ' ', filter_text).strip()
+            filter_text = re.sub(r"<.*?>", " ", filter_text)
+            filter_text = re.sub(r"\s+", " ", filter_text).strip()
             if not filter_re.search(filter_text):
                 filter_results.append(filter_object)
         return filter_results
