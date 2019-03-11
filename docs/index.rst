@@ -71,6 +71,26 @@ for applications that need to handle all rate limiting themselves (i.e. interact
 or applications wanting to use Mastodon.py in a multi-threaded context ("wait" and "pace" 
 modes are not thread safe).
 
+.. note::
+   Rate limit information is available on the `Mastodon` object for applications that
+   implement their own rate limit handling.
+
+   .. attribute:: Mastodon.ratelimit_remaining
+
+      Number of requests allowed until the next reset.
+
+   .. attribute:: Mastodon.ratelimit_reset
+
+      Time at which the rate limit will next be reset, as a POSIX timestamp.
+
+   .. attribute:: Mastodon.ratelimit_limit
+
+      Total number of requests allowed between resets. Typically 300.
+
+   .. attribute:: Mastodon.ratelimit_lastcall
+
+      Time at which these values have last been seen and updated, as a POSIX timestamp.
+
 In "wait" mode, once a request hits the rate limit, Mastodon.py will wait until
 the rate limit resets and then try again, until the request succeeds or an error
 is encountered. This mode is for applications that would rather just not worry about rate limits
@@ -91,9 +111,8 @@ minute time slot, and tighter limits on logins. Mastodon.py does not make any ef
 to respect these.
 
 If your application requires many hits to endpoints that are available without logging
-in, do consider using Mastodon.py without authenticating to get the full per-IP limit. In
-this case, you can set the Mastodon objects `ratelimit_limit` and `ratelimit_remaining`
-properties appropriately if you want to use advanced rate limit handling.
+in, do consider using Mastodon.py without authenticating to get the full per-IP limit.
+
 
 A note about pagination
 -----------------------
