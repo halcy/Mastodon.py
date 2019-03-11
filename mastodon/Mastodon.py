@@ -2214,9 +2214,12 @@ class Mastodon:
             if not response_object.ok:
                 try:
                     response = response_object.json(object_hook=self.__json_hooks)
-                    if not isinstance(response, dict) or 'error' not in response:
+                    if isinstance(response, dict) and 'error' in response:
+                        error_msg = response['error']
+                    elif isinstance(response, str):
+                        error_msg = response
+                    else:
                         error_msg = None
-                    error_msg = response['error']
                 except ValueError:
                     error_msg = None
 
