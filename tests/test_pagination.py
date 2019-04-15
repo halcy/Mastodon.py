@@ -1,5 +1,10 @@
 import pytest
 from contextlib import contextmanager
+try:
+    from mock import MagicMock
+except ImportError:
+    from unittest.mock import MagicMock
+import requests_mock
 
 UNLIKELY_HASHTAG = "fgiztsshwiaqqiztpmmjbtvmescsculuvmgjgopwoeidbcrixp"
 
@@ -44,3 +49,18 @@ def test_fetch_remaining(api):
         hashtag_remaining = api.fetch_remaining(hashtag)
         assert hashtag_remaining
         assert len(hashtag_remaining) >= 30
+
+def test_link_headers(api):
+    rmock = requests_mock.Adapter()
+    api.session.mount(api.api_base_url, rmock)
+
+    _id='abc1234'
+
+    rmock.register_uri('GET', requests_mock.ANY, json=[{"foo": "bar"}], headers={"link":"""
+            <{base}/api/v1/timelines/tag/{tag}?max_id={_id}>; rel="next", <{base}/api/v1/timelines/tag/{tag}?since_id={_id}>; rel="prev"
+        """.format(base=api.api_base_url, tag=UNLIKELY_HASHTAG, _id=_id).strip()
+    })
+
+    resp = api.timeline_hashtag(UNLIKELY_HASHTAG)
+    assert resp[0]._pagination_next['max_id'] == _id
+    assert resp[0]._pagination_prev['since_id'] == _id
