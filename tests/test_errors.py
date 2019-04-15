@@ -1,6 +1,6 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError
-import re
+
 try:
     from mock import MagicMock
 except ImportError:
