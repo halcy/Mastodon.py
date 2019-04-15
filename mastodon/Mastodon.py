@@ -2272,7 +2272,7 @@ class Mastodon:
                     if url['rel'] == 'next':
                         # Be paranoid and extract max_id specifically
                         next_url = url['url']
-                        matchgroups = re.search(r"max_id=([^&]+)", next_url)
+                        matchgroups = re.search(r"[?&]max_id=([^&]+)", next_url)
 
                         if matchgroups:
                             next_params = copy.deepcopy(params)
@@ -2290,7 +2290,7 @@ class Mastodon:
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id specifically
                         prev_url = url['url']
-                        matchgroups = re.search(r"since_id=([^&]+)", prev_url)
+                        matchgroups = re.search(r"[?&]since_id=([^&]+)", prev_url)
 
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
