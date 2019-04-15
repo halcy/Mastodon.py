@@ -2279,7 +2279,7 @@ class Mastodon:
                             next_params['_pagination_method'] = method
                             next_params['_pagination_endpoint'] = endpoint
                             max_id = matchgroups.group(1)
-                            if max_id.is_digit():
+                            if max_id.isdigit():
                                 next_params['max_id'] = int(max_id)
                             else:
                                 next_params['max_id'] = max_id
@@ -2297,7 +2297,7 @@ class Mastodon:
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
                             since_id = matchgroups.group(1)
-                            if since_id.is_digit():
+                            if since_id.isdigit():
                                 prev_params['since_id'] = int(since_id)
                             else:
                                 prev_params['since_id'] = since_id
