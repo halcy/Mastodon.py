@@ -374,6 +374,7 @@ Application dicts
     {
         'name': # The applications name
         'website': # The applications website
+        'vapid_key': # A vapid key that can be used in web applications
     }
  
  

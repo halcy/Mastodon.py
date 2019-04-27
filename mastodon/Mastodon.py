@@ -158,7 +158,7 @@ class Mastodon:
     __SUPPORTED_MASTODON_VERSION = "2.4.3"
     
     # Dict versions
-    __DICT_VERSION_APPLICATION = "1.0.0"
+    __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "2.3.0"
     __DICT_VERSION_ACCOUNT = "2.4.0"
@@ -1165,6 +1165,19 @@ class Mastodon:
         
         """
         return self.__api_request('GET', '/api/v1/custom_emojis')
+
+    ###
+    # Reading data: Apps
+    ###
+    @api_version("2.0.0", "2.7.2", __DICT_VERSION_APPLICATION)
+    def app_verify_credentials(self):
+        """
+        Fetch information about the current application.
+
+        Returns an `application dict`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/apps/verify_credentials')
 
     ###
     # Reading data: Webpush subscriptions
