@@ -500,8 +500,8 @@ class Mastodon:
     ###
     # Reading data: Timelines
     ##
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
-    def timeline(self, timeline="home", max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
+    def timeline(self, timeline="home", max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
         'tag/hashtag' or 'list/id'. See the following functions documentation for what those do.
@@ -516,9 +516,12 @@ class Mastodon:
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+            
         if since_id != None:
             since_id = self.__unpack_id(since_id)
-            
+        
         params_initial = locals()
 
         if timeline == "local":
@@ -529,28 +532,28 @@ class Mastodon:
         url = '/api/v1/timelines/{0}'.format(timeline)
         return self.__api_request('GET', url, params)
     
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
-    def timeline_home(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
+    def timeline_home(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in users home timeline (i.e. followed users and self).
 
         Returns a list of `toot dicts`_.
         """
-        return self.timeline('home', max_id=max_id, since_id=since_id,
-                             limit=limit)
+        return self.timeline('home', max_id=max_id, min_id=min_id, 
+                             since_id=since_id, limit=limit)
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
-    def timeline_local(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
+    def timeline_local(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches the local / instance-wide timeline, not including replies.
 
         Returns a list of `toot dicts`_.
         """
-        return self.timeline('local', max_id=max_id, since_id=since_id,
-                             limit=limit)
+        return self.timeline('local', max_id=max_id, min_id=min_id,
+                             since_id=since_id, limit=limit)
 
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
-    def timeline_public(self, max_id=None, since_id=None, limit=None, only_media=False):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
+    def timeline_public(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False):
         """
         Fetches the public / visible-network timeline, not including replies.
 
@@ -560,10 +563,13 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+            
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
-            
+        
         params_initial = locals()        
         
         if only_media == False:
@@ -574,8 +580,8 @@ class Mastodon:
         
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)    
-    def timeline_hashtag(self, hashtag, local=False, max_id=None, since_id=None, limit=None, only_media=False):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)    
+    def timeline_hashtag(self, hashtag, local=False, max_id=None, min_id=None, since_id=None, limit=None, only_media=False):
         """
         Fetch a timeline of toots with a given hashtag. The hashtag parameter
         should not contain the leading #.
@@ -590,6 +596,9 @@ class Mastodon:
             
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)        
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
@@ -607,16 +616,16 @@ class Mastodon:
         
         return self.__api_request('GET', url, params)
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_STATUS)
-    def timeline_list(self, id, max_id=None, since_id=None, limit=None):
+    @api_version("2.1.0", "2.6.0", __DICT_VERSION_STATUS)
+    def timeline_list(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a timeline containing all the toots by users in a given list.
 
         Returns a list of `toot dicts`_.
         """
         id = self.__unpack_id(id)
-        return self.timeline('list/{0}'.format(id), max_id=max_id, 
-                             since_id=since_id, limit=limit)
+        return self.timeline('list/{0}'.format(id), max_id=max_id,
+                             min_id=min_id, since_id=since_id, limit=limit)
 
     ###
     # Reading data: Statuses
@@ -690,8 +699,8 @@ class Mastodon:
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0", "1.0.0", __DICT_VERSION_NOTIFICATION)
-    def notifications(self, id=None, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_NOTIFICATION)
+    def notifications(self, id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user.
@@ -702,6 +711,9 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
@@ -740,7 +752,7 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
     @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
-    def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, max_id=None, since_id=None, limit=None):
+    def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch statuses by user `id`. Same options as `timeline()`_ are permitted.
         Returned toots are from the perspective of the logged-in user, i.e.
@@ -760,6 +772,9 @@ class Mastodon:
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+        
         if since_id != None:
             since_id = self.__unpack_id(since_id)
         
@@ -774,8 +789,8 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
-    def account_following(self, id, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    def account_following(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is following.
 
@@ -785,6 +800,9 @@ class Mastodon:
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+        
         if since_id != None:
             since_id = self.__unpack_id(since_id)
             
@@ -792,8 +810,8 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/following'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
-    def account_followers(self, id, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    def account_followers(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is followed by.
 
@@ -802,6 +820,9 @@ class Mastodon:
         id = self.__unpack_id(id)
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
@@ -986,8 +1007,8 @@ class Mastodon:
         id = self.__unpack_id(id)        
         return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_ACCOUNT)
-    def list_accounts(self, id, max_id=None, since_id=None, limit=None):
+    @api_version("2.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    def list_accounts(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get the accounts that are on the given list. A `limit` of 0 can
         be specified to get all accounts without pagination.
@@ -999,6 +1020,9 @@ class Mastodon:
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+        
         if since_id != None:
             since_id = self.__unpack_id(since_id)
         
@@ -1008,8 +1032,8 @@ class Mastodon:
     ###
     # Reading data: Mutes and Blocks
     ###
-    @api_version("1.1.0", "2.1.0", __DICT_VERSION_ACCOUNT)    
-    def mutes(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)    
+    def mutes(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch a list of users muted by the logged-in user.
 
@@ -1018,14 +1042,17 @@ class Mastodon:
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)        
+        
         if since_id != None:
             since_id = self.__unpack_id(since_id)
             
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
-    def blocks(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    def blocks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch a list of users blocked by the logged-in user.
 
@@ -1033,6 +1060,9 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
@@ -1058,8 +1088,8 @@ class Mastodon:
     ###
     # Reading data: Favourites
     ###
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
-    def favourites(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
+    def favourites(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's favourited statuses.
 
@@ -1067,6 +1097,9 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)        
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
@@ -1077,8 +1110,8 @@ class Mastodon:
     ###
     # Reading data: Follow requests
     ###
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
-    def follow_requests(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    def follow_requests(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's incoming follow requests.
 
@@ -1086,6 +1119,9 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)        
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
@@ -1096,8 +1132,8 @@ class Mastodon:
     ###
     # Reading data: Domain blocks
     ###
-    @api_version("1.4.0", "1.4.0", "1.4.0")
-    def domain_blocks(self, max_id=None, since_id=None, limit=None):
+    @api_version("1.4.0", "2.6.0", "1.4.0")
+    def domain_blocks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's blocked domains.
 
@@ -1105,6 +1141,9 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)        
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
