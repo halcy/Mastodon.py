@@ -811,6 +811,11 @@ Reading data: Emoji
 
 .. automethod:: Mastodon.custom_emojis
 
+Reading data: Apps
+------------------
+
+.. automethod:: Mastodon.app_verify_credentials
+
 Reading data: Endorsements
 --------------------------
 

@@ -40,3 +40,9 @@ def test_create_app_website(mocker):
     test_create_app(mocker, website='http://example.net')
     kwargs = requests.post.call_args[1]
     assert kwargs['data']['website'] == 'http://example.net'
+
+@pytest.mark.vcr()
+def test_app_verify_credentials(api):
+    app = api.app_verify_credentials()
+    assert app
+    assert app.name == 'Mastodon.py test suite'
