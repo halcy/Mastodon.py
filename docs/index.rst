@@ -300,7 +300,7 @@ Toot dicts
                        # and is therefore always None for remote toots, can also be None for
                        # local toots for some legacy applications).
         'language': # The language of the toot, if specified by the server, 
-                    # as ISO 639-2 language code.
+                    # as ISO 639-1 (two-letter) language code.
         'muted': # Boolean denoting whether the user has muted this status by 
                  # way of conversation muting
         'pinned': # Boolean denoting whether or not the status is currently pinned for the
@@ -557,7 +557,8 @@ Instance dicts
         'urls': # Additional URLs dict, presently only 'streaming_api' with the 
                 # stream websocket address.
         'contact_account': # Account dict of the primary contact for the instance.
-        'languages': # Array of ISO 6391 language codes the instance has chosen to advertise.
+        'languages': # Array of ISO 639-1 (two-letter) language codes the instance 
+                     # has chosen to advertise.
     }
 
 Activity dicts
