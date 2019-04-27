@@ -312,6 +312,8 @@ Toot dicts
         'pinned': # Boolean denoting whether or not the status is currently pinned for the
                   # associated account.
         'replies_count': # The number of replies to this status.
+        'card': # A preview card for links from the status, if present at time of delivery,
+                # as card dict.
     }
 
 Mention dicts
@@ -565,9 +567,14 @@ Instance dicts
         'version': # The instances mastodon version
         'urls': # Additional URLs dict, presently only 'streaming_api' with the 
                 # stream websocket address.
+        'stats: # A dictionary containing three stats, user_count (number of local users),
+                # status_count (number of local statuses) and domain_count (number of known
+                # instance domains other than this one).
         'contact_account': # Account dict of the primary contact for the instance.
         'languages': # Array of ISO 639-1 (two-letter) language codes the instance 
                      # has chosen to advertise.
+        'registrations': # Boolean indication whether registrations on this instance are open
+                         # (True) or not (False).
     }
 
 Activity dicts
