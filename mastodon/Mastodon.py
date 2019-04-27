@@ -1036,8 +1036,8 @@ class Mastodon:
 
         Returns a list of `report dicts`_.
         
-        Warning: According to the official API documentation, this
-        method is to be treated as not finalized as of Mastodon 2.1.0.
+        Warning: This method has now finally been removed, and will not 
+        work on mastodon versions 2.5.0 and above.
         """
         return self.__api_request('GET', '/api/v1/reports')
 

@@ -593,7 +593,9 @@ Report dicts
                         # report, False otherwise. Note that no indication as to 
                         # what action was taken is given and that an admin simply 
                         # marking the report as processed and not doing anything else
-                        # will set this field to True.
+                        # will set this field to True. Note also that now that there 
+                        # is no way to get any updated report lists, this will 
+                        # always be false.
     }
     
 Push subscription dicts
@@ -780,8 +782,8 @@ muted or blocked by the logged in user.
 .. automethod:: Mastodon.mutes
 .. automethod:: Mastodon.blocks
 
-Reading data: Reports
-------------------------------
+Reading data: Reports (REMOVED IN 2.5.0)
+----------------------------------------
 
 .. automethod:: Mastodon.reports
 
