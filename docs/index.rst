@@ -686,7 +686,8 @@ current instance.
 Reading data: Timelines
 -----------------------
 This function allows you to access the timelines a logged in
-user could see, as well as hashtag timelines and the public timeline.
+user could see, as well as hashtag timelines and the public (federated)
+and local timelines.
 
 .. _timeline():
 .. automethod:: Mastodon.timeline
