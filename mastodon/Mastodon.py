@@ -242,7 +242,9 @@ class Mastodon:
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret. If you specify an
-        `access_token` then you don't need to specify a `client_id`.
+        `access_token` then you don't need to specify a `client_id`. It is allowed to specify
+        neither - in this case, you will be restricted to only using endpoints that do not
+        require authentication.
 
         You can also specify an `access_token`, directly or as a file (as written by `log_in()`_).
 
@@ -719,7 +721,9 @@ class Mastodon:
     def account(self, id):
         """
         Fetch account information by user `id`.
-
+        
+        Does not require authentication.
+        
         Returns a `user dict`_.
         """
         id = self.__unpack_id(id)
@@ -735,7 +739,7 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
     def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, max_id=None, since_id=None, limit=None):
         """
         Fetch statuses by user `id`. Same options as `timeline()`_ are permitted.
@@ -747,6 +751,8 @@ class Mastodon:
         If `pinned` is set, return only statuses that have been pinned. Note that 
         as of Mastodon 2.1.0, this only works properly for instance-local users.
         If `exclude_replies` is set, filter out all statuses that are replies.
+
+        Does not require authentication.
 
         Returns a list of `toot dicts`_.
         """
