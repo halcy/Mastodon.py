@@ -2475,7 +2475,7 @@ class Mastodon:
             if connection.status_code != 200:
                 raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
             return connection
-        connection = connect_func()
+        connection = None
         
         # Async stream handler
         class __stream_handle():
@@ -2506,18 +2506,19 @@ class Mastodon:
                 
                 # Run until closed or until error if not autoreconnecting
                 while self.running:
-                    with closing(self.connection) as r:
-                        try:
-                            listener.handle_stream(r)
-                        except (AttributeError, MastodonMalformedEventError, MastodonNetworkError) as e:
-                            if not (self.closed or self.reconnect_async):
-                                raise e
-                            else:
-                                if self.closed:
-                                    self.running = False
+                    if not self.connection is None:
+                        with closing(self.connection) as r:
+                            try:
+                                listener.handle_stream(r)
+                            except (AttributeError, MastodonMalformedEventError, MastodonNetworkError) as e:
+                                if not (self.closed or self.reconnect_async):
+                                    raise e
+                                else:
+                                    if self.closed:
+                                        self.running = False
 
                     # Reconnect loop. Try immediately once, then with delays on error.
-                    if self.reconnect_async and not self.closed:
+                    if (self.reconnect_async and not self.closed) or self.connection is None:
                         self.reconnecting = True
                         connect_success = False
                         while not connect_success:
@@ -2527,6 +2528,8 @@ class Mastodon:
                                 if self.connection.status_code != 200:
                                     time.sleep(self.reconnect_async_wait_sec)
                                     connect_success = False
+                                    exception = MastodonNetworkError("Could not connect to server.")
+                                    listener.on_abort(exception)
                             except:
                                 time.sleep(self.reconnect_async_wait_sec)
                                 connect_success = False
@@ -2543,6 +2546,7 @@ class Mastodon:
             return handle
         else:
             # Blocking, never returns (can only leave via exception)
+            connection = connect_func()            
             with closing(connection) as r:
                 listener.handle_stream(r)
 
