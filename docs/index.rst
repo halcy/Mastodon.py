@@ -199,6 +199,9 @@ operation due to an upstream problem in the requests/urllib libraries.
 `MastodonRatelimitError` is raised when you hit an API rate limit. You should try 
 again after a while (see the rate limiting section above).
 
+`MastodonServerError` is raised when the server throws an internal error, likely due
+to server misconfiguration.
+
 `MastodonVersionError` is raised when a version check for an API call fails.
 
 
