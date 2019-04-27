@@ -2275,13 +2275,17 @@ class Mastodon:
                     if url['rel'] == 'next':
                         # Be paranoid and extract max_id specifically
                         next_url = url['url']
-                        matchgroups = re.search(r"max_id=([0-9]*)", next_url)
+                        matchgroups = re.search(r"[?&]max_id=([^&]+)", next_url)
 
                         if matchgroups:
                             next_params = copy.deepcopy(params)
                             next_params['_pagination_method'] = method
                             next_params['_pagination_endpoint'] = endpoint
-                            next_params['max_id'] = int(matchgroups.group(1))
+                            max_id = matchgroups.group(1)
+                            if max_id.isdigit():
+                                next_params['max_id'] = int(max_id)
+                            else:
+                                next_params['max_id'] = max_id
                             if "since_id" in next_params:
                                 del next_params['since_id']
                             response[-1]._pagination_next = next_params
@@ -2289,13 +2293,17 @@ class Mastodon:
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id specifically
                         prev_url = url['url']
-                        matchgroups = re.search(r"since_id=([0-9]*)", prev_url)
+                        matchgroups = re.search(r"[?&]since_id=([^&]+)", prev_url)
 
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
-                            prev_params['since_id'] = int(matchgroups.group(1))
+                            since_id = matchgroups.group(1)
+                            if since_id.isdigit():
+                                prev_params['since_id'] = int(since_id)
+                            else:
+                                prev_params['since_id'] = since_id
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
                             response[0]._pagination_prev = prev_params
