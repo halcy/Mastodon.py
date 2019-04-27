@@ -951,22 +951,6 @@ class Mastodon:
         return self.__api_request('GET', '/api/v2/search', params)
 
     ###
-    # Reading data: Trends
-    ###
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_HASHTAG)
-    def trends(self):
-        """
-        Fetch trending-hashtag information, if the instance provides such information.
-
-        Does not require authentication.
-
-        Returns a list of `hashtag dicts`_, sorted by the instances trending algorithm,
-        descending.
-        
-        """
-        return self.__api_request('GET', '/api/v1/trends')
-
-    ###
     # Reading data: Lists
     ###
     @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
