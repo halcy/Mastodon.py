@@ -2245,6 +2245,8 @@ class Mastodon:
                         # on any 404
                 elif response_object.status_code == 401:
                     ex_type = MastodonUnauthorizedError
+                elif response_object.status_code == 502:
+                    ex_type = MastodonServerError
                 else:
                     ex_type = MastodonAPIError
 
@@ -2537,6 +2539,10 @@ class MastodonReadTimeout(MastodonNetworkError):
 
 class MastodonAPIError(MastodonError):
     """Raised when the mastodon API generates a response that cannot be handled"""
+    pass
+
+class MastodonServerError(MastodonError):
+    """Raised if the Server is malconfigured, e.g. returns a 502 error code"""
     pass
 
 class MastodonNotFoundError(MastodonAPIError):
