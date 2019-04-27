@@ -190,14 +190,19 @@ class Mastodon:
         Create a new app with given `client_name` and `scopes` (The basic scropse are "read", "write", "follow" and "push" 
         - more granular scopes are available, please refere to Mastodon documentation for which).
 
-        Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating.
+        Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating in an oauth flow.
+        You can specify multiple URLs by passing a list. Note that if you wish to use OAuth authentication with redirects,
+        the redirect URI must be one of the URLs specified here.
+        
         Specify `to_file` to persist your apps info to a file so you can use them in the constructor.
-        Specify `api_base_url` if you want to register an app on an instance different from the flagship one.
+        Specify `api_base_url` if you want to register an app on an instance different from the flagship one.        
+        Specify `website` to give a website for your app.
 
         Specify `session` with a requests.Session for it to be used instead of the deafult.
         
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         future mastodon instances or even the flagship instance in the future.
+        
 
         Returns `client_id` and `client_secret`, both as strings.
         """
@@ -210,6 +215,8 @@ class Mastodon:
 
         try:
             if redirect_uris is not None:
+                if isinstance(redirect_uris, (list, tuple)):
+                    redirect_uris = "\n".join(list(redirect_uris))
                 request_data['redirect_uris'] = redirect_uris
             else:
                 request_data['redirect_uris'] = 'urn:ietf:wg:oauth:2.0:oob'
@@ -370,8 +377,20 @@ class Mastodon:
         return Mastodon.__SUPPORTED_MASTODON_VERSION
     
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
-                         scopes=__DEFAULT_SCOPES):
-        """Returns the url that a client needs to request the grant from the server.
+                         scopes=__DEFAULT_SCOPES, force_login=False):
+        """
+        Returns the url that a client needs to request an oauth grant from the server.
+        
+        To log in with oauth, send your user to this URL. The user will then log in and
+        get a code which you can pass to log_in.
+        
+        scopes are as in `log_in()`_, redirect_uris is where the user should be redirected to
+        after authentication. Note that redirect_uris must be one of the URLs given during
+        app registration. When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed,
+        otherwise it is added to the given URL as the "code" request parameter.
+        
+        Pass force_login if you want the user to always log in even when already logged
+        into web mastodon (i.e. when registering multiple different accounts in an app).
         """
         if client_id is None:
             client_id = self.client_id
@@ -385,6 +404,7 @@ class Mastodon:
         params['response_type'] = "code"
         params['redirect_uri'] = redirect_uris
         params['scope'] = " ".join(scopes)
+        params['force_login'] = force_login
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
@@ -404,8 +424,10 @@ class Mastodon:
         username / password credentials given are incorrect, and
         `MastodonAPIError` if all of the requested scopes were not granted.
 
-        For OAuth2 documentation, compare
-        https://github.com/doorkeeper-gem/doorkeeper/wiki/Interacting-as-an-OAuth-client-with-Doorkeeper
+        For OAuth2, obtain a code via having your user go to the url returned by 
+        `auth_request_url()`_ and pass it as the code parameter. In this case,
+        make sure to also pass the same redirect_uri parameter as you used when
+        generating the auth request URL.
 
         Returns the access token as a string.
         """

@@ -674,6 +674,7 @@ is specified, Mastodon.py defaults to https.
 .. automethod:: Mastodon.__init__
 .. _log_in():
 .. automethod:: Mastodon.log_in
+.. _auth_request_url():
 .. automethod:: Mastodon.auth_request_url
 
 Versioning
@@ -712,6 +713,7 @@ and local timelines.
 .. automethod:: Mastodon.timeline
 .. automethod:: Mastodon.timeline_home
 .. automethod:: Mastodon.timeline_local
+.. _timeline_public():
 .. automethod:: Mastodon.timeline_public
 .. _timeline_hashtag():
 .. automethod:: Mastodon.timeline_hashtag
