@@ -1144,7 +1144,7 @@ class Mastodon:
     @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
-                    language=None, idempotency_key=None):
+                    language=None, idempotency_key=None, content_type=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -1181,6 +1181,11 @@ class Mastodon:
         at posting a status. Even if you call this function more than once,
         if you call it with the same `idempotency_key`, only one status will
         be created.
+
+        Specify 'content_type' to set the content type of your post on Pleroma.
+        It accepts 'text/plain' (default), 'text/markdown', and 'text/html'.
+        This parameter is not supported on Mastodon servers, but will be
+        safely ignored if set.
 
         Returns a `toot dict`_ with the new status.
         """
@@ -1224,6 +1229,9 @@ class Mastodon:
                                                    "dict: %s" % e)
 
             params_initial["media_ids"] = media_ids_proper
+
+        if params_initial['content_type'] == None:
+            del params_initial['content_type']
 
         params = self.__generate_params(params_initial, ['idempotency_key'])
         return self.__api_request('POST', '/api/v1/statuses', params, headers = headers)
