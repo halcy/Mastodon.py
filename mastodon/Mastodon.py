@@ -316,8 +316,6 @@ class Mastodon:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
         
         # Token loading
-        if self.client_id is None and self.access_token is None:
-            raise MastodonIllegalArgumentError('No credentials were given.')
         if self.client_id is not None:
             if os.path.isfile(self.client_id):
                 with open(self.client_id, 'r') as secret_file:
@@ -2560,7 +2558,9 @@ class MastodonNotFoundError(MastodonAPIError):
 class MastodonUnauthorizedError(MastodonAPIError):
     """Raised when the mastodon API returns a 401 Unauthorized error
 
-       This happens when an OAuth token is invalid or has been revoked."""
+       This happens when an OAuth token is invalid or has been revoked,
+       or when trying to access an endpoint that can't be used without
+       authentication without providing credentials."""
     pass
 
 
