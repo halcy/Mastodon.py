@@ -2323,13 +2323,16 @@ class Mastodon:
                                 next_params['max_id'] = max_id
                             if "since_id" in next_params:
                                 del next_params['since_id']
+                            if "min_id" in next_params:
+                                del next_params['min_id']
                             response[-1]._pagination_next = next_params
 
                     if url['rel'] == 'prev':
-                        # Be paranoid and extract since_id specifically
+                        # Be paranoid and extract since_id or min_id specifically
                         prev_url = url['url']
+                        
+                        # Old and busted (pre-2.6.0): since_id pagination
                         matchgroups = re.search(r"[?&]since_id=([^&]+)", prev_url)
-
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
@@ -2342,7 +2345,21 @@ class Mastodon:
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
                             response[0]._pagination_prev = prev_params
-
+                            
+                        # New and fantastico (post-2.6.0): min_id pagination
+                        matchgroups = re.search(r"[?&]min_id=([^&]+)", prev_url)
+                        if matchgroups:
+                            prev_params = copy.deepcopy(params)
+                            prev_params['_pagination_method'] = method
+                            prev_params['_pagination_endpoint'] = endpoint
+                            min_id = matchgroups.group(1)
+                            if min_id.isdigit():
+                                prev_params['min_id'] = int(min_id)
+                            else:
+                                prev_params['min_id'] = min_id
+                            if "max_id" in prev_params:
+                                del prev_params['max_id']
+                            response[0]._pagination_prev = prev_params
 
         return response
 

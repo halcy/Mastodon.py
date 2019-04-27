@@ -120,10 +120,13 @@ Many of Mastodons API endpoints are paginated. What this means is that if you re
 data from them, you might not get all the data at once - instead, you might only get the
 first few results.
 
-All endpoints that are paginated have three parameters: since_id, max_id and limit.
-since_id allows you to specify the smallest id you want in the returned data. max_id,
-similarly, allows you to specify the largest. By specifying either one (generally,
-only one, not both) of them you can go through pages forwards and backwards.
+All endpoints that are paginated have four parameters: since_id, max_id, min_id and 
+limit. since_id allows you to specify the smallest id you want in the returned data, but
+you will still always get the newest data, so if there are too many statuses between
+the newest one and since_id, some will not be returned. min_id, on the other hand, gives
+you statuses with that minimum id and newer, starting at the given id. max_id, similarly, 
+allows you to specify the largest id you want. By specifying either min_id or max_id 
+(generally, only one, not both) of them you can go through pages forwards and backwards.
 
 limit allows you to specify how many results you would like returned. Note that an
 instance may choose to return less results than you requested - by default, Mastodon 

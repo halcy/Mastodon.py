@@ -1,5 +1,8 @@
 import pytest
+import vcr
+
 from contextlib import contextmanager
+
 try:
     from mock import MagicMock
 except ImportError:
@@ -21,7 +24,6 @@ def many_statuses(api, n=10, suffix=''):
 
 
 @pytest.mark.vcr()
-@pytest.mark.skip(reason="will have to add code to handle the new backwards pagination without breaking the old one")
 def test_fetch_next_previous(api):
     account = api.account_verify_credentials()
     with many_statuses(api):
@@ -33,7 +35,6 @@ def test_fetch_next_previous(api):
 
 
 @pytest.mark.vcr()
-@pytest.mark.skip(reason="will have to add code to handle the new backwards pagination without breaking the old one")
 def test_fetch_next_previous_from_pagination_info(api):
     account = api.account_verify_credentials()
     with many_statuses(api):
@@ -43,6 +44,26 @@ def test_fetch_next_previous_from_pagination_info(api):
         previous_statuses = api.fetch_previous(next_statuses[0]._pagination_prev)
         assert previous_statuses
 
+def test_fetch_next_previous_old_pagination(api):
+    with vcr.use_cassette('test_fetch_next_previous.yaml', cassette_library_dir='tests/cassettes_old_pagination', record_mode='none'):
+        account = api.account_verify_credentials()
+        
+        with many_statuses(api):
+            statuses = api.account_statuses(account['id'], limit=5)
+            next_statuses = api.fetch_next(statuses)
+            assert next_statuses
+            previous_statuses = api.fetch_previous(next_statuses)
+            assert previous_statuses
+
+def test_fetch_next_previous_from_pagination_info_old_pagination(api):
+    account = api.account_verify_credentials()
+    with vcr.use_cassette('test_fetch_next_previous_from_pagination_info.yaml', cassette_library_dir='tests/cassettes_old_pagination', record_mode='none'):
+        with many_statuses(api):
+            statuses = api.account_statuses(account['id'], limit=5)
+            next_statuses = api.fetch_next(statuses[-1]._pagination_next)
+            assert next_statuses
+            previous_statuses = api.fetch_previous(next_statuses[0]._pagination_prev)
+            assert previous_statuses
 
 @pytest.mark.vcr()
 def test_fetch_remaining(api):
