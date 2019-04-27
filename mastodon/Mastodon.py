@@ -924,6 +924,20 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/suggestions')
     
     ###
+    # Reading data: Endorsements
+    ###
+    @api_version("2.5.0", "2.5.0", __DICT_VERSION_ACCOUNT)
+    def endorsements(self):
+        """
+        Fetch list of users endorsemed by the logged-in user.
+
+        Returns a list of `user dicts`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/endorsements')
+    
+    
+    ###
     # Reading data: Searching
     ###
     @api_version("1.1.0", "2.1.0", __DICT_VERSION_SEARCHRESULT)
@@ -1463,8 +1477,9 @@ class Mastodon:
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/mute'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', url, params)
 
     @api_version("1.1.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
     def account_unmute(self, id):
@@ -1544,6 +1559,28 @@ class Mastodon:
         params = self.__generate_params(params_initial)
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
 
+
+    @api_version("2.5.0", "2.5.0", __DICT_VERSION_RELATIONSHIP)
+    def account_pin(self, id):
+        """
+        Pin / endorse a user.
+        
+        Returns a `relationship dict`_ containing the updated relationship to the user.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/accounts/{0}/pin'.format(str(id))
+        return self.__api_request('POST', url)
+
+    @api_version("2.5.0", "2.5.0", __DICT_VERSION_RELATIONSHIP)
+    def account_unpin(self, id):
+        """
+        Unpin / un-endorse a user.
+
+        Returns a `relationship dict`_ containing the updated relationship to the user.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/accounts/{0}/unpin'.format(str(id))
+        return self.__api_request('POST', url)
 
     ###
     # Writing data: Keyword filters

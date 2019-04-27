@@ -175,3 +175,34 @@ def test_follow_suggestions(api2, status):
     suggestions2 = api2.suggestions()
     assert(len(suggestions2) < len(suggestions))
     
+@pytest.mark.vcr()
+def test_account_pin_unpin(api, api2):
+    user = api2.account_verify_credentials()
+    
+    # Make sure we are in the correct state
+    try:
+        api.account_follow(user)
+    except:
+        pass
+    
+    try:
+        api.account_unpin(user)
+    except:
+        pass
+    
+    relationship = api.account_pin(user)
+    endorsed = api.endorsements()
+        
+    try:
+        assert relationship
+        assert relationship['endorsed']
+        assert user["id"] in map(lambda x: x["id"], endorsed)
+    finally:
+        relationship = api.account_unpin(user)
+        endorsed2 = api.endorsements()
+        api.account_unfollow(user)        
+        assert relationship
+        assert not relationship['endorsed']
+        assert not user["id"] in map(lambda x: x["id"], endorsed2)
+
+        

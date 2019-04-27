@@ -800,6 +800,12 @@ Reading data: Emoji
 
 .. automethod:: Mastodon.custom_emojis
 
+Reading data: Endorsements
+--------------------------
+
+.. automethod:: Mastodon.endorsements
+
+
 Writing data: Statuses
 ----------------------
 These functions allow you to post statuses to Mastodon and to
@@ -838,6 +844,8 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unblock
 .. automethod:: Mastodon.account_mute
 .. automethod:: Mastodon.account_unmute
+.. automethod:: Mastodon.account_pin
+.. automethod:: Mastodon.account_unpin
 .. automethod:: Mastodon.account_update_credentials
 
 Writing data: Keyword filters
