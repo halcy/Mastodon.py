@@ -308,6 +308,7 @@ Toot dicts
                  # way of conversation muting
         'pinned': # Boolean denoting whether or not the status is currently pinned for the
                   # associated account.
+        'replies_count': # The number of replies to this status.
     }
 
 Mention dicts
@@ -393,6 +394,8 @@ Relationship dicts
                            # specified users domain
         'showing_reblogs': # Boolean denoting whether the specified users reblogs show up on the
                            # logged-in users Timeline
+        'endorsed': # Boolean denoting wheter the specified user is being endorsed / featured by the
+                    # logged-in user
     }
 
 Filter dicts

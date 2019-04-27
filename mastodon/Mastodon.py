@@ -162,12 +162,12 @@ class Mastodon:
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "2.3.0"
     __DICT_VERSION_ACCOUNT = "2.4.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.1.0", 
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.5.0", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION)
     __DICT_VERSION_INSTANCE = bigger_version("2.3.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "2.1.0"
-    __DICT_VERSION_RELATIONSHIP = "2.4.3"
+    __DICT_VERSION_RELATIONSHIP = "2.5.0"
     __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
