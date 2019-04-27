@@ -58,24 +58,26 @@ class StreamListener(object):
         try:
             for chunk in response.iter_content(chunk_size = 1):
                 if chunk:
-                    if chunk == b'\n':
-                        try:
-                            line = line_buffer.decode('utf-8')
-                        except UnicodeDecodeError as err:
-                            exception = MastodonMalformedEventError("Malformed UTF-8")
-                            self.on_abort(exception)
-                            six.raise_from(
-                                exception,
-                                err
-                            )
-                        if line == '':
-                            self._dispatch(event)
-                            event = {}
+                    for chunk_part in chunk:
+                        chunk_part = bytearray([chunk_part])
+                        if chunk_part == b'\n':
+                            try:
+                                line = line_buffer.decode('utf-8')
+                            except UnicodeDecodeError as err:
+                                exception = MastodonMalformedEventError("Malformed UTF-8")
+                                self.on_abort(exception)
+                                six.raise_from(
+                                    exception,
+                                    err
+                                )
+                            if line == '':
+                                self._dispatch(event)
+                                event = {}
+                            else:
+                                event = self._parse_line(line, event)
+                            line_buffer = bytearray()
                         else:
-                            event = self._parse_line(line, event)
-                        line_buffer = bytearray()
-                    else:
-                        line_buffer.extend(chunk)
+                            line_buffer.extend(chunk_part)
         except ChunkedEncodingError as err:
             exception = MastodonNetworkError("Server ceased communication.")
             self.on_abort(exception)
