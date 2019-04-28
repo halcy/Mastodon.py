@@ -1312,7 +1312,7 @@ class Mastodon:
         params = self.__generate_params(params_initial, ['idempotency_key'])
         return self.__api_request('POST', '/api/v1/statuses', params, headers = headers)
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
     def toot(self, status):
         """
         Synonym for `status_post()`_ that only takes the status text as input.
@@ -1323,7 +1323,7 @@ class Mastodon:
         """
         return self.status_post(status)
 
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, 
                      spoiler_text=None, language=None, idempotency_key=None, untag=False):
         """
