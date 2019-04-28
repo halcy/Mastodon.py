@@ -205,4 +205,7 @@ def test_account_pin_unpin(api, api2):
         assert not relationship['endorsed']
         assert not user["id"] in map(lambda x: x["id"], endorsed2)
 
-        
+@pytest.mark.vcr()
+def test_preferences(api):
+    prefs = api.preferences()
+    assert prefs

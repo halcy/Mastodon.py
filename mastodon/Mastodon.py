@@ -180,6 +180,7 @@ class Mastodon:
     __DICT_VERSION_FILTER = "2.4.3"
     __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
+    __DICT_VERSION_PREFERENCES = "2.8.0"
     
     ###
     # Registering apps
@@ -1348,6 +1349,20 @@ class Mastodon:
         
         """
         return self.__api_request('GET', '/api/v1/push/subscription')
+
+    ###
+    # Reading data: Preferences
+    ###
+    @api_version("2.8.0", "2.8.0", __DICT_VERSION_PREFERENCES)
+    def preferences(self):
+        """
+        Fetch the users preferences, which can be used to set some default options.
+        As of 2.8.0, apps can only fetch, not update preferences.
+
+        Returns a `preference dict`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/preferences')
 
     ###
     # Writing data: Statuses

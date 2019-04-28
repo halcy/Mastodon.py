@@ -335,7 +335,7 @@ Scheduled toot dicts
 
 .. code-block:: python
 
-    api2.status_post("text", scheduled_at=the_future)
+    mastodon.status_post("text", scheduled_at=the_future)
     # Returns the following dictionary:
     {
         'id': # Scheduled toot ID (note: Not the id of the toot once it gets posted!)
@@ -693,6 +693,26 @@ Push notification dicts
         'title': # Title for the notification
     }
     
+Preference dicts
+~~~~~~~~~~~~~~~~
+.. _preference dict:
+
+.. code-block:: python
+    
+    mastodon.preferences()
+    # Returns the following dictionary
+    {
+        'posting:default:visibility': # The default visibility setting for the users posts,
+                                      # as a string
+        'posting:default:sensitive': # Boolean indicating whether the users uploads should
+                                     # be marked sensitive by default
+        'posting:default:language': # The users default post language, if set (None if not)
+        'reading:expand:media': # How the user wishes to be shown sensitive media. Can be
+                                # 'default' (hide if sensitive), 'hide_all' or 'show_all'
+        'reading:expand:spoilers': # Boolean indicating whether the user wishes to expand
+                                   # content warnings by default
+    }
+    
 App registration and user authentication
 ----------------------------------------
 Before you can use the mastodon API, you have to register your 
@@ -877,6 +897,11 @@ Reading data: Endorsements
 --------------------------
 
 .. automethod:: Mastodon.endorsements
+
+Reading data: Preferences
+--------------------------
+
+.. automethod:: Mastodon.preferences
 
 
 Writing data: Statuses
