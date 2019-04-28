@@ -123,7 +123,7 @@ def test_status_pin_unpin(status, api):
     status = api.status_unpin(status['id'])
     assert not status['pinned']
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['path'])
 def test_scheduled_status(api):
     base_time = datetime.datetime(4000, 1, 1, 12, 13, 14)
     the_future = base_time + datetime.timedelta(minutes=20)
