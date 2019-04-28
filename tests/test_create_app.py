@@ -1,6 +1,8 @@
 from mastodon import Mastodon
 import pytest
 import requests
+import time
+
 try:
     from mock import Mock
 except ImportError:
@@ -46,3 +48,22 @@ def test_app_verify_credentials(api):
     app = api.app_verify_credentials()
     assert app
     assert app.name == 'Mastodon.py test suite'
+    
+@pytest.mark.vcr()
+def test_app_account_create():    
+    # This leaves behind stuff on the test server, which is unfortunate, but eh.
+    suffix = str(time.time()).replace(".", "")[-5:]
+    
+    test_app = test_app = Mastodon.create_app(
+        "mastodon.py generated test app", 
+        api_base_url="http://localhost:3000/"
+    )
+    
+    test_app_api = Mastodon(
+        test_app[0], 
+        test_app[1], 
+        api_base_url="http://localhost:3000/"
+    )
+    test_token = test_app_api.create_account("coolguy" + suffix, "swordfish", "email@localhost" + suffix, agreement=True)
+    assert test_token
+    

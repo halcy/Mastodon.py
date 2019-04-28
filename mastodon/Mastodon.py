@@ -476,7 +476,71 @@ class Mastodon:
         self.__logged_in_id = None
         
         return response['access_token']
-
+    
+    @api_version("2.7.0", "2.7.0", "2.7.0")
+    def create_account(self, username, password, email, agreement=False, locale="en", scopes=__DEFAULT_SCOPES, to_file=None):
+        """
+        Creates a new user account with the given username, password and email. "agreement"
+        must be set to true (after showing the user the instances user agreement and having
+        them agree to it), "locale" specifies the language for the confirmation e-mail as an
+        ISO 639-1 (two-letter) language code.
+        
+        Does not require an access token, but does require a client grant.
+        
+        By default, this method is rate-limited by IP to 5 requests per 30 minutes.
+        
+        Returns an access token (just like log_in), which it can also persist to to_file,
+        and sets it internally so that the user is now logged in. Note that this token 
+        can only be used after the user has confirmed their e-mail.
+        """
+        params = self.__generate_params(locals(), ['to_file', 'scopes'])
+        params['client_id'] = self.client_id
+        params['client_secret'] = self.client_secret
+        
+        if agreement == False:
+            del params_initial['agreement']
+        
+        # Step 1: Get a user-free token via oauth
+        try:
+            oauth_params = {}
+            oauth_params['scope'] = " ".join(scopes)
+            oauth_params['client_id'] = self.client_id
+            oauth_params['client_secret'] = self.client_secret
+            oauth_params['grant_type'] = 'client_credentials'
+            
+            response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False)
+            temp_access_token = response['access_token']
+        except Exception as e:
+            raise MastodonIllegalArgumentError('Invalid request during oauth phase: %s' % e)
+        
+        # Step 2: Use that to create a user
+        try:
+            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, 
+                                          access_token_override = temp_access_token)
+            self.access_token = response['access_token']
+            self.__set_refresh_token(response.get('refresh_token'))
+            self.__set_token_expired(int(response.get('expires_in', 0)))
+        except Exception as e:
+            raise MastodonIllegalArgumentError('Invalid request: %s' % e)
+        
+        # Step 3: Check scopes, persist, et cetera
+        received_scopes = response["scope"].split(" ")
+        for scope_set in self.__SCOPE_SETS.keys():
+            if scope_set in received_scopes:
+                received_scopes += self.__SCOPE_SETS[scope_set]
+        
+        if not set(scopes) <= set(received_scopes):
+            raise MastodonAPIError(
+                'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
+        
+        if to_file is not None:
+            with open(to_file, 'w') as token_file:
+                token_file.write(response['access_token'] + '\n')
+        
+        self.__logged_in_id = None
+        
+        return response['access_token']
+        
     ###
     # Reading data: Instances
     ###
@@ -2287,7 +2351,7 @@ class Mastodon:
         json_object = Mastodon.__json_allow_dict_attrs(json_object)
         return json_object
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, do_ratelimiting=True):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, do_ratelimiting=True):
         """
         Internal API request helper.
         """
@@ -2314,8 +2378,10 @@ class Mastodon:
 
         # Generate request headers
         headers = copy.deepcopy(headers)
-        if self.access_token is not None:
+        if not self.access_token is None:
             headers['Authorization'] = 'Bearer ' + self.access_token
+        if not access_token_override is None:
+            headers['Authorization'] = 'Bearer ' + access_token_override
 
         if self.debug_requests:
             print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
