@@ -179,6 +179,7 @@ class Mastodon:
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
     __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     
     ###
     # Registering apps
@@ -1300,10 +1301,11 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
-                    language=None, idempotency_key=None, content_type=None):
+                    language=None, idempotency_key=None, content_type=None,
+                    scheduled_at=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -1341,7 +1343,11 @@ class Mastodon:
         if you call it with the same `idempotency_key`, only one status will
         be created.
 
-        Specify 'content_type' to set the content type of your post on Pleroma.
+        Pass a datetime as `scheduled_at` to schedule the toot for a specific time
+        (the time must be at least 5 minutes into the future). If this is passed,
+        status_post returns a `scheduled toot dict`_ instead.
+
+        Specify `content_type` to set the content type of your post on Pleroma.
         It accepts 'text/plain' (default), 'text/markdown', and 'text/html'.
         This parameter is not supported on Mastodon servers, but will be
         safely ignored if set.
@@ -1350,6 +1356,9 @@ class Mastodon:
         """
         if in_reply_to_id != None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
+        
+        if scheduled_at != None:
+            scheduled_at = scheduled_at.isoformat()
         
         params_initial = locals()
 
@@ -1395,7 +1404,7 @@ class Mastodon:
         params = self.__generate_params(params_initial, ['idempotency_key'])
         return self.__api_request('POST', '/api/v1/statuses', params, headers = headers)
 
-    @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
     def toot(self, status):
         """
         Synonym for `status_post()`_ that only takes the status text as input.
@@ -1406,9 +1415,10 @@ class Mastodon:
         """
         return self.status_post(status)
 
-    @api_version("1.0.0", "2.4.3", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, 
-                     spoiler_text=None, language=None, idempotency_key=None, untag=False):
+                     spoiler_text=None, language=None, idempotency_key=None, content_type=None,
+                     scheduled_at=None, untag=False):
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to to the status text and retains
@@ -1440,7 +1450,8 @@ class Mastodon:
             
         return self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
                          visibility = visibility, spoiler_text = spoiler_text, language = language,
-                         idempotency_key = idempotency_key)
+                         idempotency_key = idempotency_key, content_type = content_type, 
+                         scheduled_at = scheduled_at)
         
     @api_version("1.0.0", "1.0.0", "1.0.0")
     def status_delete(self, id):
@@ -1539,6 +1550,17 @@ class Mastodon:
         url = '/api/v1/statuses/{0}/unpin'.format(str(id))
         return self.__api_request('POST', url)
 
+    ###
+    # Writing data: Scheduled statuses
+    ###
+    @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
+    def update_scheduled_status(self, id, scheduled_at):
+        scheduled_at = scheduled_at.isoformat()
+        id = self.__unpack_id(id)
+        self.__generate_params(locals(), ['id'])
+        url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
+        return self.__api_request('PUT', url, params)
+    
     ###
     # Writing data: Notifications
     ###
@@ -2303,7 +2325,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day", "expires_at"]
+        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v != None:
