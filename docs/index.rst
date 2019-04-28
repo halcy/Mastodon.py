@@ -994,6 +994,7 @@ StreamListener
 .. automethod:: StreamListener.on_update
 .. automethod:: StreamListener.on_notification
 .. automethod:: StreamListener.on_delete
+.. automethod:: StreamListener.on_conversation
 .. automethod:: StreamListener.on_abort
 .. automethod:: StreamListener.handle_heartbeat
 

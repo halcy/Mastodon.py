@@ -40,6 +40,11 @@ class StreamListener(object):
         """A status has been deleted. status_id is the status' integer ID."""
         pass
 
+    def on_conversation(self, conversation):
+        """A direct message (in the direct stream) has been received. conversation
+        contains the resulting conversation dict."""
+        pass
+
     def handle_heartbeat(self):
         """The server has sent us a keep-alive message. This callback may be
         useful to carry out periodic housekeeping tasks, or just to confirm
@@ -151,7 +156,7 @@ class CallbackStreamListener(StreamListener):
     Simple callback stream handler class.
     Can optionally additionally send local update events to a separate handler.
     """
-    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None):
+    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None, conversation_handler = None):
         super(CallbackStreamListener, self).__init__()
         self.update_handler = update_handler
         self.local_update_handler = local_update_handler
@@ -178,3 +183,7 @@ class CallbackStreamListener(StreamListener):
     def on_notification(self, notification):
         if self.notification_handler != None:
             self.notification_handler(notification)
+            
+    def on_conversation(self, conversation):
+        if self.conversation_handler != None:
+            self.conversation_handler(conversation)            

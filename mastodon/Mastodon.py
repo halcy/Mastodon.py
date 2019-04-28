@@ -2188,6 +2188,13 @@ class Mastodon:
         id =  self.__unpack_id(id)
         return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
     
+    @api_version("2.6.0", "2.6.0", __DICT_VERSION_STATUS)
+    def stream_direct(self, listener, run_async=False, timeout=__DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
+        """
+        Streams direct message events for the logged-in user, as conversation events.
+        """
+        return self.__stream('/api/v1/streaming/direct', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
+    
     ###
     # Internal helpers, dragons probably
     ###
