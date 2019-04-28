@@ -1,5 +1,6 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
+import datetime
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -121,3 +122,25 @@ def test_status_pin_unpin(status, api):
 
     status = api.status_unpin(status['id'])
     assert not status['pinned']
+
+@pytest.mark.vcr()
+def test_scheduled_status(api):
+    the_future = datetime.datetime.now() + datetime.timedelta(minutes=20)
+    scheduled_toot = api.status_post("please ensure adequate headroom", scheduled_at=the_future)
+    assert scheduled_toot
+
+    the_immediate_future = datetime.datetime.now() + datetime.timedelta(minutes=10)
+    scheduled_toot_2 = api.scheduled_status_update(scheduled_toot, the_immediate_future)
+    assert scheduled_toot_2
+    assert scheduled_toot_2.id == scheduled_toot.id
+    assert scheduled_toot_2.scheduled_at < scheduled_toot.scheduled_at
+
+    scheduled_toot_list = api.scheduled_statuses()
+    assert scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list)
+
+    scheduled_toot_3 = api.scheduled_status(scheduled_toot.id)
+    assert scheduled_toot_2.id == scheduled_toot_3.id
+
+    api.scheduled_status_delete(scheduled_toot_2)
+    scheduled_toot_list_2 = api.scheduled_statuses()
+    assert not scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list_2)

@@ -1,0 +1,180 @@
+interactions:
+- request:
+    body: scheduled_at=2019-04-28T17%3A55%3A56.132387%2B00%3A00&status=please+ensure+adequate+headroom
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['92']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"15","scheduled_at":"2019-04-28T17:55:56.132Z","params":{"text":"please
+        ensure adequate headroom","media_ids":null,"sensitive":null,"spoiler_text":null,"visibility":null,"scheduled_at":null,"poll":null,"idempotency":null,"in_reply_to_id":null,"application_id":1234567890123456},"media_attachments":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"d9085bd3f4bda89b707e0d17e0c25606"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [e3c02c5e-8bd8-4e7e-a85e-20729f54fe3a]
+      X-Runtime: ['0.045715']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['307']
+    status: {code: 200, message: OK}
+- request:
+    body: scheduled_at=2019-04-28T17%3A45%3A56.195854%2B00%3A00
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['53']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: PUT
+    uri: http://localhost:3000/api/v1/scheduled_statuses/15
+  response:
+    body: {string: '{"id":"15","scheduled_at":"2019-04-28T17:45:56.195Z","params":{"poll":null,"text":"please
+        ensure adequate headroom","media_ids":null,"sensitive":null,"visibility":null,"idempotency":null,"scheduled_at":null,"spoiler_text":null,"application_id":1234567890123456,"in_reply_to_id":null},"media_attachments":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"d21355711617bb379ce78df652b0db2f"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [209c6297-c6b8-4c24-909a-9fec28b3b84a]
+      X-Runtime: ['0.023350']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['307']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/scheduled_statuses
+  response:
+    body: {string: '[{"id":"15","scheduled_at":"2019-04-28T17:45:56.195Z","params":{"poll":null,"text":"please
+        ensure adequate headroom","media_ids":null,"sensitive":null,"visibility":null,"idempotency":null,"scheduled_at":null,"spoiler_text":null,"application_id":1234567890123456,"in_reply_to_id":null},"media_attachments":[]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"138781baa8c10ef9dbbc79f4b0de8fde"]
+      Link: ['<http://localhost:3000/api/v1/scheduled_statuses?min_id=15>; rel="prev"']
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [0a077bac-40fc-450f-8c55-3a611f587dcf]
+      X-Runtime: ['0.018360']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['309']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/scheduled_statuses/15
+  response:
+    body: {string: '{"id":"15","scheduled_at":"2019-04-28T17:45:56.195Z","params":{"poll":null,"text":"please
+        ensure adequate headroom","media_ids":null,"sensitive":null,"visibility":null,"idempotency":null,"scheduled_at":null,"spoiler_text":null,"application_id":1234567890123456,"in_reply_to_id":null},"media_attachments":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"d21355711617bb379ce78df652b0db2f"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [b4114f7e-4da9-4e0b-ae67-3a4f74f2ef98]
+      X-Runtime: ['0.017521']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['307']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/scheduled_statuses/15
+  response:
+    body: {string: '{}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"827009f7d29340dc4283f20343805141"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [59ee7082-f753-4527-b2f8-ce856067fee6]
+      X-Runtime: ['0.026622']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/scheduled_statuses
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"432588bf7e5e8b3c9a1fa09d4823b9e1"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [b35d8cb9-37b9-493f-9f27-03607a0f9b6e]
+      X-Runtime: ['0.015168']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2']
+    status: {code: 200, message: OK}
+version: 1
