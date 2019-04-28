@@ -1090,28 +1090,56 @@ class Mastodon:
     ###
     # Reading data: Searching
     ###
-    @api_version("1.1.0", "2.1.0", __DICT_VERSION_SEARCHRESULT)
-    def search(self, q, resolve=False):
+    @api_version("2.8.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
+    def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None):
         """
-        Fetch matching hashtags, accounts and statuses. Will search federated
-        instances if resolve is True. Full-text search is only enabled if
+        Fetch matching hashtags, accounts and statuses. Will perform webfinger
+        lookups if resolve is True. Full-text search is only enabled if
         the instance supports it, and is restricted to statuses the logged-in
         user wrote or was mentioned in.
+        
+        `result_type` can be one of "accounts", "hashtags" or "statuses", to only
+        search for that type of object.
+        
+        Specify `account_id` to only get results from the account with that id.
+        
+        `offset`, `min_id` and `max_id` can be used to paginate.
+
+        Returns a `search result dict`_, with tags as `hashtag dicts`_.
+        """
+        return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id,
+                              offset=offset, min_id=min_id, max_id=max_id)
+
+    @api_version("1.1.0", "2.1.0", __DICT_VERSION_SEARCHRESULT)
+    def search_v1(self, q, resolve=False):
+        """
+        Identical to `search_v2()`, except in that it does not return
+        tags as `hashtag dicts`_.
 
         Returns a `search result dict`_.
         """
         params = self.__generate_params(locals())
+        if resolve == False:
+            del params['resolve']
         return self.__api_request('GET', '/api/v1/search', params)
 
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_SEARCHRESULT)
-    def search_v2(self, q, resolve=False):
+    @api_version("2.8.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
+    def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None):
         """
-        Identical to `search()`, except in that it returns tags as
-        `hashtag dicts`_.
+        Identical to `search_v1()`, except in that it returns tags as
+        `hashtag dicts`_, has more parameters, and resolves by default.
 
         Returns a `search result dict`_.
         """
         params = self.__generate_params(locals())
+        
+        if resolve == False:
+            del params['resolve']
+        
+        if "result_type" in params:
+            params["type"] = params["result_type"]
+            del params["result_type"]
+        
         return self.__api_request('GET', '/api/v2/search', params)
 
     ###
