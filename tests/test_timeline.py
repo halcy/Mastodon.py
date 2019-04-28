@@ -50,8 +50,12 @@ def test_conversations(api, api2):
     status = api.status_post("@admin ilu bby ;3", visibility="direct")
     time.sleep(2)
     conversations = api2.conversations()
+    api2.conversations_read(conversations[0])
+    time.sleep(2)
+    conversations2 = api2.conversations()
     api.status_delete(status)
     assert conversations
     assert status.id in map(lambda x: x.last_status.id, conversations)
     assert account.id in map(lambda x: x.accounts[0].id, conversations)
-    
+    assert conversations[0].unread == True
+    assert conversations2[0].unread == False

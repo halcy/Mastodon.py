@@ -1495,6 +1495,21 @@ class Mastodon:
         params = self.__generate_params(locals())
         self.__api_request('POST', '/api/v1/notifications/dismiss', params)
 
+
+    ###
+    # Writing data: Conversations
+    ###
+    def conversations_read(self, id):
+        """
+        Marks a single conversation as read.
+        
+        WARNING: This method is currently not documented in the official API and
+        might therefore be unstable.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/conversations/{0}/read'.format(str(id))
+        return self.__api_request('POST', url)
+
     ###
     # Writing data: Accounts
     ###

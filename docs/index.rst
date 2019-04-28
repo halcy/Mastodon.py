@@ -3,7 +3,7 @@ Mastodon.py
 .. py:module:: mastodon
 .. py:class: Mastodon
    
-Register your app! This only needs to be done once. Uncomment the code and substitute in your information.
+Register your app! This only needs to be done once. Uncomment the code and substitute in your information:
 
 .. code-block:: python
 
@@ -17,7 +17,7 @@ Register your app! This only needs to be done once. Uncomment the code and subst
    )
    '''
 
-Then login. This can be done every time, or use persisted.
+Then login. This can be done every time, or you can use the persisted information:
 
 .. code-block:: python
 
@@ -33,7 +33,7 @@ Then login. This can be done every time, or use persisted.
        to_file = 'pytooter_usercred.secret'
    )
 
-To post, create an actual API instance.
+To post, create an actual API instance:
 
 .. code-block:: python
 
@@ -790,7 +790,7 @@ These functions allow you to view information about lists.
 Reading data: Follows
 ---------------------
 
-.. automethod:: Mastodon.follows
+.. automethod:: Mastodon.followshttps://docs.joinmastodon.org/api/rest
 
 Reading data: Favourites
 ------------------------
@@ -867,6 +867,12 @@ These functions allow you to clear all or some notifications.
 
 .. automethod:: Mastodon.notifications_clear
 .. automethod:: Mastodon.notifications_dismiss
+
+Writing data: Conversations
+---------------------------
+This function allows you to mark conversations read.
+
+.. automethod:: Mastodon.conversations_read
 
 Writing data: Accounts
 ----------------------
@@ -1023,4 +1029,4 @@ about who helped with which particular feature or fix in the changelog.
 
 .. _Mastodon: https://github.com/tootsuite/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/
-.. _Mastodon api docs: https://github.com/tootsuite/documentation/
+.. _Official Mastodon api docs: https://docs.joinmastodon.org/api/rest
