@@ -125,11 +125,12 @@ def test_status_pin_unpin(status, api):
 
 @pytest.mark.vcr()
 def test_scheduled_status(api):
-    the_future = datetime.datetime.now() + datetime.timedelta(minutes=20)
+    base_time = datetime.datetime(4000, 1, 1, 12, 13, 14)
+    the_future = base_time + datetime.timedelta(minutes=20)
     scheduled_toot = api.status_post("please ensure adequate headroom", scheduled_at=the_future)
     assert scheduled_toot
 
-    the_immediate_future = datetime.datetime.now() + datetime.timedelta(minutes=10)
+    the_immediate_future = base_time + datetime.timedelta(minutes=10)
     scheduled_toot_2 = api.scheduled_status_update(scheduled_toot, the_immediate_future)
     assert scheduled_toot_2
     assert scheduled_toot_2.id == scheduled_toot.id
