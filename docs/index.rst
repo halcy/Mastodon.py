@@ -671,7 +671,9 @@ App registration and user authentication
 Before you can use the mastodon API, you have to register your 
 application (which gets you a client key and client secret) 
 and then log in (which gets you an access token). These functions 
-allow you to do those things.
+allow you to do those things. Additionally, it is also possible
+to programmatically register a new user.
+
 For convenience, once you have a client id, secret and access token, 
 you can simply pass them to the constructor of the class, too!
 
@@ -693,6 +695,7 @@ is specified, Mastodon.py defaults to https.
 .. automethod:: Mastodon.log_in
 .. _auth_request_url():
 .. automethod:: Mastodon.auth_request_url
+.. automethod:: Mastodon.create_account
 
 Versioning
 ----------
