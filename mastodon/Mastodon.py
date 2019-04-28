@@ -127,7 +127,6 @@ class Mastodon:
             'read:lists', 
             'read:mutes', 
             'read:notifications', 
-            'read:reports', 
             'read:search', 
             'read:statuses'
         ],
@@ -179,6 +178,7 @@ class Mastodon:
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
+    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     
     ###
     # Registering apps
@@ -649,6 +649,25 @@ class Mastodon:
         return self.timeline('list/{0}'.format(id), max_id=max_id,
                              min_id=min_id, since_id=since_id, limit=limit)
 
+    @api_version("2.6.0", "2.6.0", __DICT_VERSION_CONVERSATION)
+    def conversations(self, max_id=None, min_id=None, since_id=None, limit=None):
+        """
+        Fetches a users conversations.
+        
+        Returns a list of `conversation dicts`_.
+        """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+            
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)            
+        
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', "/api/v1/conversations/", params)
+        
     ###
     # Reading data: Statuses
     ###
@@ -1782,22 +1801,30 @@ class Mastodon:
     ###
     # Writing data: Reports
     ###
-    @api_version("1.1.0", "1.1.0", __DICT_VERSION_REPORT)
-    def report(self, account_id, status_ids, comment):
+    @api_version("1.1.0", "2.5.0", __DICT_VERSION_REPORT)
+    def report(self, account_id, status_ids = None, comment = None, forward = False):
         """
         Report statuses to the instances administrators.
 
         Accepts a list of toot IDs associated with the report, and a comment.
+        
+        Set forward to True to forward a report of a remote user to that users
+        instance as well as sending it to the instance local administrators.
 
         Returns a `report dict`_.
         """
         account_id = self.__unpack_id(account_id)
         
-        if not isinstance(status_ids, list):
-            status_ids = [status_ids]
+        if not status_ids is None:
+            if not isinstance(status_ids, list):
+                status_ids = [status_ids]
         status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
         
-        params = self.__generate_params(locals())
+        params_initial = locals()        
+        if forward == False:
+            del params_initial['forward']
+        
+        params = self.__generate_params(params_initial)
         return self.__api_request('POST', '/api/v1/reports/', params)
 
     ###

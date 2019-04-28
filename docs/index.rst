@@ -329,6 +329,23 @@ Mention dicts
         'id': # Mentioned users (local) account ID
     }
     
+Conversation dicts
+~~~~~~~~~~~~~~~~~~
+.. _conversation dict:
+
+.. code-block:: python
+    
+    mastodon.conversations()[0]
+    # Returns the following dictionary:
+    {
+        'id': # The ID of this conversation object
+        'unread': # Boolean indicating whether this conversation has yet to be 
+                  # read by the user
+        'accounts': # List of accounts (other than the logged-in account) that 
+                    # are part of this conversation
+        'last_status': # The newest status in this conversation 
+    }
+    
 Hashtag dicts
 ~~~~~~~~~~~~~
 .. _hashtag dict:
@@ -718,6 +735,7 @@ and local timelines.
 .. _timeline_hashtag():
 .. automethod:: Mastodon.timeline_hashtag
 .. automethod:: Mastodon.timeline_list
+.. automethod:: Mastodon.conversations
 
 Reading data: Statuses
 ----------------------
