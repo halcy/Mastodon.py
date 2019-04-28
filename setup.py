@@ -6,11 +6,11 @@ extras = {
 }
 
 setup(name='Mastodon.py',
-      version='1.3.1',
+      version='1.4.0',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       install_requires=[
-          'requests', 
+          'requests>=2.4.2', 
           'python-dateutil', 
           'six', 
           'pytz',

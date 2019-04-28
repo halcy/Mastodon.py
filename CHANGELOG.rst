@@ -2,6 +2,39 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.4.0
+------
+There are some breaking changes in this release, though less than you might think, considering
+this goes all the way from version 2.4.3 to 2.8.0.
+
+* BREAKING CHANGE: Changed streaming API behaviour to make the initial connection asynchronous (Thanks to Shura0 for the detailed report)
+    * Old behaviour: The initial connection could fail, the stream functions would then throw an exception.
+    * New behaviour: The initial connection function just returns immediately. If there is a connection error, the listeners on_abort handler is called to inform the user and the connection is retried.
+* BREAKING CHANGE: search() now calls through to search_v2. The old behaviour is available as search_v1.
+* Added support for polls (Added in 2.8.0)
+* Added support for preferences API (Added in 2.8.0)
+* Added support for the boost visibility parameter (Added in 2.8.0)
+* Added support for type, limit, offset, min_id, max_id, account_id on the search API (Added in 2.8.0)
+* Added support for scheduled statuses (Added in 2.7.0)
+* Added support for account creation via the API (Thanks gargron for clarifying many things here and in other places. Added in 2.7.0)
+* Added support for conversation streaming / stream_direct (Added in 2.6.0)
+* Added support for conversations (Added in 2.6.0)
+* Added support for report forwarding (Added in 2.5.0)
+* Added support for multiple OAuth redirect URIs and forcing the user to re-login in OAuth flows.
+* Added support for app_verify_credentials endpoint (Added in 2.7.2).
+* Added support for min_id based backwards pagination (Added in 2.6.0). The old method is still supported for older installs.
+* Added support for account pins / endorsements (Added in 2.5.0).
+* Updated documentation for changes to entities.
+* Added the ability to access non-authenticated endpoints with no app credentials (Thanks to cerisara for the report and codl).
+* Fixed the streaming API not working with gzip encoding (Thanks to bitleks for the report).
+* Added more explicitly caught error classes (Thanks to lefherz).
+* Improved Pleroma support including content-type and pagination fixes (Thanks to jfmcbrayer for the report and codl).
+* Added better session support (Thanks to jrabbit).
+* Fixed dependencies (Thanks to jrabbit).
+* Fixed variousmime type issues (Thanks to errbufferoverfl and jfmcbrayer).
+* Improved the example code (Thanks to MarkEEaton).
+* Fixed various small documentation issues (Thanks to allo-).
+
 v1.3.1
 ------
 * Mastodon v2.4.3 compatibility:

@@ -54,7 +54,7 @@ node running Mastodon by setting `api_base_url` when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 2.4.3. Pleromas
+of this time, it is feature complete for Mastodon version 2.8.0. Pleromas
 Mastodon API layer, while not an official target, should also be basically
 compatible.
 
@@ -372,8 +372,8 @@ Poll dicts
         'multiple': # Boolean indicating whether it is allowed to vote for more than one option
         'votes_count': # Total number of votes cast in this poll
         'voted': # Boolean indicating whether the logged-in user has already voted in this poll
-        'options': # The poll options as a list of dicts, each option with a `title` and a
-                   # `votes_count` field. `votes_count` can be None if the poll creator has
+        'options': # The poll options as a list of dicts, each option with a title and a
+                   # votes_count field. votes_count can be None if the poll creator has
                    # chosen to hide vote totals until the poll expires and it hasn't yet.
         'emojis': # List of emoji dicts for all emoji used in answer strings
     }

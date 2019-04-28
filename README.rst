@@ -1,49 +1,45 @@
 Mastodon.py
 ===========
-Register your app! This only needs to be done once. Uncomment the code and substitute in your information.
-
-.. code-block:: python
-
-   from mastodon import Mastodon
-
-   '''
-   Mastodon.create_app(
-        'pytooterapp',
-        api_base_url = 'https://mastodon.social',
-        to_file = 'pytooter_clientcred.secret'
-   )
-   '''
-
-Then login. This can be done every time, or use persisted.
-
-.. code-block:: python
-
-   from mastodon import Mastodon
-   
-   mastodon = Mastodon(
-       client_id = 'pytooter_clientcred.secret',
-       api_base_url = 'https://mastodon.social'
-   )
-   mastodon.log_in(
-       'my_login_email@example.com',
-       'incrediblygoodpassword',
-       to_file = 'pytooter_usercred.secret'
-   )
-
-To post, create an actual API instance.
-
-.. code-block:: python
-
-   from mastodon import Mastodon
-   
-   mastodon = Mastodon(
-       access_token = 'pytooter_usercred.secret',
-       api_base_url = 'https://mastodon.social'
-   )
-   mastodon.toot('Tooting from python using #mastodonpy !')
-
 Python wrapper for the Mastodon ( https://github.com/tootsuite/mastodon/ ) API. 
-Feature complete for public API as of Mastodon version 2.4.3 and easy to get started with.
+Feature complete for public API as of Mastodon version 2.8.0 and easy to get started with:
+
+.. code-block:: python
+
+    #Register your app! This only needs to be done once. Uncomment the code and substitute in your information.
+    
+    from mastodon import Mastodon
+
+    '''
+    Mastodon.create_app(
+         'pytooterapp',
+         api_base_url = 'https://mastodon.social',
+         to_file = 'pytooter_clientcred.secret'
+    )
+    '''
+
+    # Then login. This can be done every time, or use persisted.
+
+    from mastodon import Mastodon
+    
+    mastodon = Mastodon(
+        client_id = 'pytooter_clientcred.secret',
+        api_base_url = 'https://mastodon.social'
+    )
+    mastodon.log_in(
+        'my_login_email@example.com',
+        'incrediblygoodpassword',
+        to_file = 'pytooter_usercred.secret'
+    )
+
+    # To post, create an actual API instance.
+
+    from mastodon import Mastodon
+    
+    mastodon = Mastodon(
+        access_token = 'pytooter_usercred.secret',
+        api_base_url = 'https://mastodon.social'
+    )
+    mastodon.toot('Tooting from python using #mastodonpy !')
 
 You can install Mastodon.py via pypi:
 
@@ -56,7 +52,7 @@ You can install Mastodon.py via pypi:
    pip3 install Mastodon.py
 
 Full documentation and basic usage examples can be found 
-at http://mastodonpy.readthedocs.io/en/latest/ .
+at http://mastodonpy.readthedocs.io/en/stable/ .
 
 Acknowledgements
 ----------------
