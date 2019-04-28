@@ -1370,8 +1370,7 @@ class Mastodon:
         should be marked as sensitive, which hides it by default on the Mastodon
         web front-end.
 
-        The visibility parameter is a string value and matches the visibility
-        option on the /api/v1/status POST API endpoint. It accepts any of:
+        The visibility parameter is a string value and accepts any of:
         'direct' - post will be visible only to mentioned users
         'private' - post will be visible only to followers
         'unlisted' - post will be public but not appear on the public timeline
@@ -1514,15 +1513,26 @@ class Mastodon:
         self.__api_request('DELETE', url)
 
     @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
-    def status_reblog(self, id):
+    def status_reblog(self, id, visibility=None):
         """
-        Reblog a status.
+        Reblog / boost a status.
+        
+        The visibility parameter functions the same as in `status_post()`_ and
+        allows you to reduce the visibility of a reblogged status.
 
         Returns a `toot dict`_ with a new status that wraps around the reblogged one.
         """
+        params = self.__generate_params(locals(), ['id'])
+        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
+        if 'visibility' in params:
+            params['visibility'] = params['visibility'].lower()
+            if params['visibility'] not in valid_visibilities:
+                raise ValueError('Invalid visibility value! Acceptable '
+                                'values are %s' % valid_visibilities)
+        
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', url, params)
 
     @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
     def status_unreblog(self, id):

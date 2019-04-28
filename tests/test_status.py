@@ -50,6 +50,11 @@ def test_status_reblogged_by(status, api):
     assert reblogs
 
 @pytest.mark.vcr()
+def test_status_reblog_visibility(status, api):
+    reblog_result = api.status_reblog(status['id'], visibility = 'unlisted')
+    assert reblog_result.visibility == 'unlisted'
+
+@pytest.mark.vcr()
 def test_status_favourited_by(status, api):
     api.status_favourite(status['id'])
     favourites = api.status_favourited_by(status['id'])
