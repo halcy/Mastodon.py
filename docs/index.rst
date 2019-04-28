@@ -328,7 +328,34 @@ Mention dicts
         'acct': # Mentioned users account name (including domain)
         'id': # Mentioned users (local) account ID
     }
-    
+  
+Scheduled toot dicts
+~~~~~~~~~~~~~~~~~~~~
+.. _scheduled toot dict:
+
+.. code-block:: python
+
+    api2.status_post("text", scheduled_at=the_future)
+    # Returns the following dictionary:
+    {
+        'id': # Scheduled toot ID (note: Not the id of the toot once it gets posted!)
+        'scheduled_at': # datetime object describing when the toot is to be posted
+        'params': # Parameters for the scheduled toot, specifically
+        {
+            'text': # Toot text
+            'in_reply_to_id': # ID of the toot this one is a reply to
+            'media_ids': # IDs of media attached to this toot
+            'sensitive': # Whether this toot is sensitive or not
+            'visibility': # Visibility of the toot
+            'idempotency': # Idempotency key for the scheduled toot
+            'scheduled_at': # Present, but generally "None"
+            'spoiler_text': # CW text for this toot
+            'application_id': # ID of the application that scheduled the toot
+            'poll': # Poll parameters, as a poll dict
+        },
+        'media_attachments': # Array of media dicts for the attachments to the scheduled toot
+    }
+  
 Conversation dicts
 ~~~~~~~~~~~~~~~~~~
 .. _conversation dict:

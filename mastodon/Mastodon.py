@@ -803,6 +803,18 @@ class Mastodon:
         return self.__api_request('GET', url)
 
     ###
+    # Reading data: Scheduled statuses
+    ###
+    @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
+    def scheduled_statuses(self):
+        """
+        Fetch a list of scheduled statuses
+
+        Returns a list of `scheduled toot dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/scheduled_statuses')
+    
+    ###
     # Reading data: Notifications
     ###
     @api_version("1.0.0", "2.6.0", __DICT_VERSION_NOTIFICATION)
@@ -1358,7 +1370,7 @@ class Mastodon:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
         
         if scheduled_at != None:
-            scheduled_at = scheduled_at.isoformat()
+            scheduled_at = scheduled_at.astimezone(pytz.utc).isoformat()
         
         params_initial = locals()
 
@@ -1554,15 +1566,17 @@ class Mastodon:
     # Writing data: Scheduled statuses
     ###
     @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
-    def update_scheduled_status(self, id, scheduled_at):
+    def scheduled_status_update(self, id, scheduled_at):
         """
         Update the scheduled time of a scheduled status.
         
         New time must be at least 5 minutes into the future.
+        
+        Returns a `scheduled toot dict`_
         """
-        scheduled_at = scheduled_at.isoformat()
+        scheduled_at = scheduled_at.astimezone(pytz.utc).isoformat()
         id = self.__unpack_id(id)
-        self.__generate_params(locals(), ['id'])
+        params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
         return self.__api_request('PUT', url, params)
     
