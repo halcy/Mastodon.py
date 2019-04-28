@@ -161,8 +161,9 @@ class Mastodon:
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "2.3.0"
     __DICT_VERSION_ACCOUNT = "2.4.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version("2.5.0", 
-            __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION)
+    __DICT_VERSION_POLL = "2.8.0"
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.0", 
+            __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("2.7.2", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "2.1.0"
@@ -827,6 +828,20 @@ class Mastodon:
         return self.__api_request('GET', url)
     
     ###
+    # Reading data: Polls
+    ###
+    @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
+    def poll(self, id):
+        """
+        Fetch information about the poll with the given id
+
+        Returns a `poll dict`_.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/polls/{0}'.format(str(id))
+        return self.__api_request('GET', url)
+    
+    ###
     # Reading data: Notifications
     ###
     @api_version("1.0.0", "2.6.0", __DICT_VERSION_NOTIFICATION)
@@ -1367,11 +1382,11 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
-    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
                     language=None, idempotency_key=None, content_type=None,
-                    scheduled_at=None):
+                    scheduled_at=None, poll=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -1411,6 +1426,9 @@ class Mastodon:
         Pass a datetime as `scheduled_at` to schedule the toot for a specific time
         (the time must be at least 5 minutes into the future). If this is passed,
         status_post returns a `scheduled toot dict`_ instead.
+
+        Pass `poll` to attach a poll to the status. An appropriate object can be
+        constructed using `make_poll()`_
 
         Specify `content_type` to set the content type of your post on Pleroma.
         It accepts 'text/plain' (default), 'text/markdown', and 'text/html'.
@@ -1466,10 +1484,14 @@ class Mastodon:
         if params_initial['content_type'] == None:
             del params_initial['content_type']
 
-        params = self.__generate_params(params_initial, ['idempotency_key'])
-        return self.__api_request('POST', '/api/v1/statuses', params, headers = headers)
+        use_json = False
+        if not poll is None:
+            use_json = True
 
-    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
+        params = self.__generate_params(params_initial, ['idempotency_key'])
+        return self.__api_request('POST', '/api/v1/statuses', params, headers = headers, use_json = use_json)
+
+    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def toot(self, status):
         """
         Synonym for `status_post()`_ that only takes the status text as input.
@@ -1480,10 +1502,10 @@ class Mastodon:
         """
         return self.status_post(status)
 
-    @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, 
                      spoiler_text=None, language=None, idempotency_key=None, content_type=None,
-                     scheduled_at=None, untag=False):
+                     scheduled_at=None, poll=None, untag=False):
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to to the status text and retains
@@ -1516,8 +1538,22 @@ class Mastodon:
         return self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
                          visibility = visibility, spoiler_text = spoiler_text, language = language,
                          idempotency_key = idempotency_key, content_type = content_type, 
-                         scheduled_at = scheduled_at)
+                         scheduled_at = scheduled_at, poll = poll)
+    
+    @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
+    def make_poll(self, options, expires_in, multiple=False, hide_totals=False):
+        """
+        Generate a poll object that can be passed as the `poll` option when posting a status.
         
+        options is an array of strings with the poll options (Maximum, by default: 4),
+        expires_in is the time in seconds for which the poll should be open.
+        Set multiple to True to allow people to choose more than one answer. Set
+        hide_totals to True to hide the results of the poll until it has expired.
+        """            
+        poll_params = locals()
+        del poll_params["self"]
+        return poll_params
+    
     @api_version("1.0.0", "1.0.0", "1.0.0")
     def status_delete(self, id):
         """
@@ -1652,6 +1688,34 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
         self.__api_request('DELETE', url)
+    
+    ###
+    # Writing data: Polls
+    ###
+    @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
+    def poll_vote(self, id, choices):
+        """
+        Vote in the given poll.
+        
+        `choices` is the index of the choice you wish to register a vote for 
+        (i.e. its index in the corresponding polls `options` field. In case 
+        of a poll that allows selection of more than one option, a list of
+        indices can be passed.
+        
+        You can only submit choices for any given poll once in case of
+        single-option polls, or only once per option in case of multi-option
+        polls.
+        
+        Returns the updated `poll dict`_
+        """
+        id = self.__unpack_id(id)
+        if not isinstance(choices, list):
+            choices = [choices]
+        params = self.__generate_params(locals(), ['id'])
+        
+        url = '/api/v1/polls/{0}/votes'.format(id)
+        self.__api_request('POST', url, params)
+        
     
     ###
     # Writing data: Notifications
@@ -2480,7 +2544,7 @@ class Mastodon:
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, do_ratelimiting=True):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, do_ratelimiting=True, use_json = False):
         """
         Internal API request helper.
         """
@@ -2527,11 +2591,14 @@ class Mastodon:
             try:
                 kwargs = dict(headers=headers, files=files,
                               timeout=self.request_timeout)
-                if method == 'GET':
-                    kwargs['params'] = params
+                if use_json == False:
+                    if method == 'GET':
+                        kwargs['params'] = params
+                    else:
+                        kwargs['data'] = params
                 else:
-                    kwargs['data'] = params
-
+                    kwargs['json'] = params
+                    
                 response_object = self.session.request(
                         method, self.api_base_url + endpoint, **kwargs)
             except Exception as e:

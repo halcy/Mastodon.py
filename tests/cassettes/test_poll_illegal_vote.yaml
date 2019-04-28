@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: '{"poll": {"hide_totals": false, "multiple": false, "expires_in": 300, "options":
+      ["four twenty", "sixty-nine"]}, "status": "nice"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      Content-Length: ['130']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"102005835304968136","created_at":"2019-04-28T21:05:24.088Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost/users/admin/statuses/102005835304968136","content":"\u003cp\u003enice\u003c/p\u003e","url":"http://localhost/@admin/102005835304968136","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-04-27T18:52:42.626Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":25,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"16","expires_at":"2019-04-28T21:10:24.070Z","expired":false,"multiple":false,"votes_count":0,"voted":true,"options":[{"title":"four
+        twenty","votes_count":0},{"title":"sixty-nine","votes_count":0}],"emojis":[]}}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"cb8935a9ac8d3dea6609462bbce81c7d"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [13adc429-bd63-4a6c-8afa-e52db1b58762]
+      X-Runtime: ['0.342656']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1383']
+    status: {code: 200, message: OK}
+- request:
+    body: choices%5B%5D=1
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['15']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/polls/16/votes
+  response:
+    body: {string: '{"id":"16","expires_at":"2019-04-28T21:10:24.070Z","expired":false,"multiple":false,"votes_count":1,"voted":true,"options":[{"title":"four
+        twenty","votes_count":0},{"title":"sixty-nine","votes_count":1}],"emojis":[]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Content-Type: [application/json; charset=utf-8]
+      ETag: [W/"96d62a6ad640c2c992e83b4bffc10c7b"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [d7715baa-8b11-47b3-bc72-401b22f6296c]
+      X-Runtime: ['0.167098']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['216']
+    status: {code: 200, message: OK}
+- request:
+    body: choices%5B%5D=0
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['15']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/polls/16/votes
+  response:
+    body: {string: "{\"error\":\"\u30D0\u30EA\u30C7\u30FC\u30B7\u30E7\u30F3\u306B\u5931\u6557\u3057\u307E\u3057\u305F:
+        \u3053\u306E\u30A2\u30F3\u30B1\u30FC\u30C8\u306B\u306F\u6295\u7968\u6E08\u307F\u3067\u3059\"}"}
+    headers:
+      Cache-Control: [no-cache]
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [846275ac-e205-4fb2-8132-edeef42a2ff2]
+      X-Runtime: ['0.101521']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['101']
+    status: {code: 422, message: Unprocessable Entity}
+version: 1

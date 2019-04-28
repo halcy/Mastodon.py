@@ -314,6 +314,7 @@ Toot dicts
         'replies_count': # The number of replies to this status.
         'card': # A preview card for links from the status, if present at time of delivery,
                 # as card dict.
+        'poll': # A poll dict if a poll is attached to this status.
     }
 
 Mention dicts
@@ -355,7 +356,29 @@ Scheduled toot dicts
         },
         'media_attachments': # Array of media dicts for the attachments to the scheduled toot
     }
-  
+
+Poll dicts
+~~~~~~~~~~
+.. _poll dict:
+
+.. code-block:: python
+
+    # Returns the following dictionary:
+    mastodon.poll(id)
+    {
+        'id': # The polls ID
+        'expires_at': # The time at which the poll is set to expire
+        'expired': # Boolean denoting whether you can still vote in this poll
+        'multiple': # Boolean indicating whether it is allowed to vote for more than one option
+        'votes_count': # Total number of votes cast in this poll
+        'voted': # Boolean indicating whether the logged-in user has already voted in this poll
+        'options': # The poll options as a list of dicts, each option with a `title` and a
+                   # `votes_count` field. `votes_count` can be None if the poll creator has
+                   # chosen to hide vote totals until the poll expires and it hasn't yet.
+        'emojis': # List of emoji dicts for all emoji used in answer strings
+    }
+        
+
 Conversation dicts
 ~~~~~~~~~~~~~~~~~~
 .. _conversation dict:
@@ -797,12 +820,18 @@ These functions allow you to get information about single statuses.
 .. automethod:: Mastodon.status_favourited_by
 .. automethod:: Mastodon.status_card
 
-Writing data: Scheduled statuses
+Reading data: Scheduled statuses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 These functions allow you to get information about scheduled statuses.
 
 .. automethod:: Mastodon.scheduled_statuses
 .. automethod:: Mastodon.scheduled_status
+
+Reading data: Polls
+~~~~~~~~~~~~~~~~~~~
+This function allows you to get and refresh information about polls.
+
+.. automethod:: Mastodon.poll
 
 Reading data: Notifications
 ---------------------------
@@ -913,6 +942,8 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_post
 .. automethod:: Mastodon.status_reply
 .. automethod:: Mastodon.toot
+.. _make_poll():
+.. automethod:: Mastodon.make_poll
 .. automethod:: Mastodon.status_reblog
 .. automethod:: Mastodon.status_unreblog
 .. automethod:: Mastodon.status_favourite
@@ -931,6 +962,12 @@ scheduled statuses.
 
 .. automethod:: Mastodon.scheduled_status_update
 .. automethod:: Mastodon.scheduled_status_delete
+
+Writing data: Polls
+~~~~~~~~~~~~~~~~~~~
+This function allows you to vote in polls.
+
+.. automethod:: Mastodon.poll_vote
 
 Writing data: Notifications
 ---------------------------
