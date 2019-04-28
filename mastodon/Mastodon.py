@@ -1499,9 +1499,12 @@ class Mastodon:
     ###
     # Writing data: Conversations
     ###
+    @api_version("2.6.0", "2.6.0", __DICT_VERSION_CONVERSATION)
     def conversations_read(self, id):
         """
         Marks a single conversation as read.
+        
+        Returns the updated `conversation dict`_.
         
         WARNING: This method is currently not documented in the official API and
         might therefore be unstable.
