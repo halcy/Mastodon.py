@@ -49,7 +49,7 @@ def test_app_verify_credentials(api):
     assert app
     assert app.name == 'Mastodon.py test suite'
     
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['path'])
 def test_app_account_create():    
     # This leaves behind stuff on the test server, which is unfortunate, but eh.
     suffix = str(time.time()).replace(".", "")[-5:]

@@ -1555,6 +1555,11 @@ class Mastodon:
     ###
     @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
     def update_scheduled_status(self, id, scheduled_at):
+        """
+        Update the scheduled time of a scheduled status.
+        
+        New time must be at least 5 minutes into the future.
+        """
         scheduled_at = scheduled_at.isoformat()
         id = self.__unpack_id(id)
         self.__generate_params(locals(), ['id'])
