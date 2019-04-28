@@ -1,6 +1,7 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
 import datetime
+import pytz
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -130,7 +131,7 @@ def test_status_pin_unpin(status, api):
 
 @pytest.mark.vcr(match_on=['path'])
 def test_scheduled_status(api):
-    base_time = datetime.datetime(4000, 1, 1, 12, 13, 14)
+    base_time = datetime.datetime(4000, 1, 1, 12, 13, 14, 0, pytz.timezone("Etc/GMT+2"))
     the_future = base_time + datetime.timedelta(minutes=20)
     scheduled_toot = api.status_post("please ensure adequate headroom", scheduled_at=the_future)
     assert scheduled_toot
