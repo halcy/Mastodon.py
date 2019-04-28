@@ -1381,7 +1381,7 @@ class Mastodon:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
         
         if scheduled_at != None:
-            scheduled_at = scheduled_at.astimezone(pytz.utc).isoformat()
+            scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         
         params_initial = locals()
 
@@ -1585,7 +1585,7 @@ class Mastodon:
         
         Returns a `scheduled toot dict`_
         """
-        scheduled_at = scheduled_at.astimezone(pytz.utc).isoformat()
+        scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
@@ -2406,11 +2406,26 @@ class Mastodon:
     
     @staticmethod
     def __json_hooks(json_object):
+        """
+        All the json hooks. Used in request parsing.
+        """
         json_object = Mastodon.__json_strnum_to_bignum(json_object)        
         json_object = Mastodon.__json_date_parse(json_object)
         json_object = Mastodon.__json_truefalse_parse(json_object)
         json_object = Mastodon.__json_allow_dict_attrs(json_object)
         return json_object
+
+    @staticmethod
+    def __consistent_isoformat_utc(datetime_val):
+        """
+        Function that does what isoformat does but it actually does the same
+        every time instead of randomly doing different things on some systems
+        and also it represents that time as the equivalent UTC time.
+        """
+        isotime = datetime_val.astimezone(pytz.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
+        if isotime[-2] != ":":
+            isotime = isotime[:-2] + ":" + isotime[-2:]
+        return isotime
 
     def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, do_ratelimiting=True):
         """
