@@ -777,6 +777,13 @@ These functions allow you to get information about single statuses.
 .. automethod:: Mastodon.status_favourited_by
 .. automethod:: Mastodon.status_card
 
+Writing data: Scheduled statuses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+These functions allow you to get information about scheduled statuses.
+
+.. automethod:: Mastodon.scheduled_statuses
+.. automethod:: Mastodon.scheduled_status
+
 Reading data: Notifications
 ---------------------------
 This function allows you to get information about a users notifications.
@@ -890,6 +897,15 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_pin
 .. automethod:: Mastodon.status_unpin
 .. automethod:: Mastodon.status_delete
+
+Writing data: Scheduled statuses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mastodon allows you to schedule statuses (using `status_post()`_.
+The functions in this section allow you to update or delete thusly
+scheduled statuses.
+
+.. automethod:: Mastodon.scheduled_status_update
+.. automethod:: Mastodon.scheduled_status_delete
 
 Writing data: Notifications
 ---------------------------

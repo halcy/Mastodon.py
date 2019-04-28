@@ -814,6 +814,17 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/scheduled_statuses')
     
+    @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
+    def scheduled_status(self, id):
+        """
+        Fetch information about the scheduled status with the given id.
+
+        Returns a `scheduled toot dict`_.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
+        return self.__api_request('GET', url)
+    
     ###
     # Reading data: Notifications
     ###
@@ -1579,6 +1590,15 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
         return self.__api_request('PUT', url, params)
+    
+    @api_version("2.7.0", "2.7.0", "2.7.0")
+    def scheduled_status_delete(self, id):
+        """
+        Deletes a scheduled status.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
+        self.__api_request('DELETE', url)
     
     ###
     # Writing data: Notifications
