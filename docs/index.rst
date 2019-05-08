@@ -54,9 +54,10 @@ node running Mastodon by setting `api_base_url` when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 2.8.0. Pleromas
+of this time, it is feature complete for Mastodon version 2.8.2. Pleromas
 Mastodon API layer, while not an official target, should also be basically
-compatible.
+compatible, and Mastodon.py does make some allowances for behaviour that isn't
+strictly like Mastodons.
 
 A note about rate limits
 ------------------------
