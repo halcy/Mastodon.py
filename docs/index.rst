@@ -780,6 +780,9 @@ Mastodon.py throws a `MastodonVersionError`.
 
 With the following functions, you can make Mastodon.py re-check the server 
 version or explicitly determine if a specific minimum Version is available.
+Long-running applications that aim to support multiple Mastodon versions
+should do this from time to time in case a server they are running against 
+updated.
 
 .. automethod:: Mastodon.retrieve_mastodon_version
 .. automethod:: Mastodon.verify_minimum_version
