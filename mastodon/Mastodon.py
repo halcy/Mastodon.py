@@ -201,7 +201,8 @@ class Mastodon:
         Specify `api_base_url` if you want to register an app on an instance different from the flagship one.        
         Specify `website` to give a website for your app.
 
-        Specify `session` with a requests.Session for it to be used instead of the deafult.
+        Specify `session` with a requests.Session for it to be used instead of the deafult. This can be
+        used to, amongst other things, adjust proxy or ssl certificate settings.
         
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         future mastodon instances or even the flagship instance in the future.
