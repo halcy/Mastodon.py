@@ -162,7 +162,7 @@ class Mastodon:
     __DICT_VERSION_MEDIA = "2.3.0"
     __DICT_VERSION_ACCOUNT = "2.4.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.0", 
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.2", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("2.7.2", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
@@ -1452,7 +1452,9 @@ class Mastodon:
         status_post returns a `scheduled toot dict`_ instead.
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
-        constructed using `make_poll()`_
+        constructed using `make_poll()`_ . Note that as of Mastodon version
+        2.8.2, you can only have either media or a poll attached, not both at 
+        the same time.
 
         Specify `content_type` to set the content type of your post on Pleroma.
         It accepts 'text/plain' (default), 'text/markdown', and 'text/html'.
@@ -1468,7 +1470,12 @@ class Mastodon:
             scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         
         params_initial = locals()
-
+        
+        # Validate poll/media exclusivity
+        if not poll is None:
+            if (not media_ids is None) and len(media_ids) != 0:
+                raise ValueError('Status can have media or poll attached - not both.')
+        
         # Validate visibility parameter
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
         if params_initial['visibility'] == None:
