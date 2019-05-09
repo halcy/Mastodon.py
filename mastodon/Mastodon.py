@@ -159,10 +159,10 @@ class Mastodon:
     # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
-    __DICT_VERSION_MEDIA = "2.3.0"
+    __DICT_VERSION_MEDIA = "2.8.2"
     __DICT_VERSION_ACCOUNT = "2.4.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.2", 
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.0", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("2.7.2", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
