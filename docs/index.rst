@@ -553,6 +553,7 @@ Media dicts
                 # rounded), and a "length" field giving a videos length in a human-readable format.
                 # Note that a video may have an image as preview.
                 # May also contain a 'focus' dict.
+        'blurhash': # The blurhash for the image, used for preview / placeholder generation
     }
     
     # Metadata dicts (image) - all fields are optional:
@@ -1062,6 +1063,12 @@ These functions allow for convenient retrieval of paginated data.
 .. automethod:: Mastodon.fetch_next
 .. automethod:: Mastodon.fetch_previous
 .. automethod:: Mastodon.fetch_remaining
+
+Blurhash decoding
+-----------------
+This function allows for easy basic decoding of blurhash strings to images.
+
+.. automethod:: Mastodon.decode_blurhash
 
 Streaming
 ---------
