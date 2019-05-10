@@ -65,4 +65,4 @@ about who helped with which particular feature or fix in the changelog.
 .. image:: https://codecov.io/gh/halcy/Mastodon.py/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/halcy/Mastodon.py
 
- 
+  
