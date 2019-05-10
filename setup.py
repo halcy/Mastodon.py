@@ -6,7 +6,7 @@ extras = {
 }
 
 setup(name='Mastodon.py',
-      version='1.4.0',
+      version='1.4.1',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       install_requires=[
