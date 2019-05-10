@@ -54,9 +54,10 @@ node running Mastodon by setting `api_base_url` when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 2.8.0. Pleromas
+of this time, it is feature complete for Mastodon version 2.8.2. Pleromas
 Mastodon API layer, while not an official target, should also be basically
-compatible.
+compatible, and Mastodon.py does make some allowances for behaviour that isn't
+strictly like Mastodons.
 
 A note about rate limits
 ------------------------
@@ -781,6 +782,9 @@ Mastodon.py throws a `MastodonVersionError`.
 
 With the following functions, you can make Mastodon.py re-check the server 
 version or explicitly determine if a specific minimum Version is available.
+Long-running applications that aim to support multiple Mastodon versions
+should do this from time to time in case a server they are running against 
+updated.
 
 .. automethod:: Mastodon.retrieve_mastodon_version
 .. automethod:: Mastodon.verify_minimum_version

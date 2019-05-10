@@ -155,12 +155,12 @@ class Mastodon:
     }
     __VALID_SCOPES = ['read', 'write', 'follow', 'push'] + __SCOPE_SETS['read'] + __SCOPE_SETS['write']
         
-    __SUPPORTED_MASTODON_VERSION = "2.4.3"
+    __SUPPORTED_MASTODON_VERSION = "2.8.2"
     
     # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
-    __DICT_VERSION_MEDIA = "2.3.0"
+    __DICT_VERSION_MEDIA = "2.8.2"
     __DICT_VERSION_ACCOUNT = "2.4.0"
     __DICT_VERSION_POLL = "2.8.0"
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.0", 
@@ -202,7 +202,8 @@ class Mastodon:
         Specify `api_base_url` if you want to register an app on an instance different from the flagship one.        
         Specify `website` to give a website for your app.
 
-        Specify `session` with a requests.Session for it to be used instead of the deafult.
+        Specify `session` with a requests.Session for it to be used instead of the deafult. This can be
+        used to, amongst other things, adjust proxy or ssl certificate settings.
         
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         future mastodon instances or even the flagship instance in the future.
@@ -357,13 +358,16 @@ class Mastodon:
         self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
         return version_str
         
-    def verify_minimum_version(self, version_str):
+    def verify_minimum_version(self, version_str, cached=False):
         """
         Update version info from server and verify that at least the specified version is present.
         
+        If you specify "cached", the version info update part is skipped.
+        
         Returns True if version requirement is satisfied, False if not.
         """
-        self.retrieve_mastodon_version()
+        if not cached:
+            self.retrieve_mastodon_version()
         major, minor, patch = parse_version_string(version_str)
         if major > self.mastodon_major:
             return False
@@ -1107,7 +1111,16 @@ class Mastodon:
     ###
     # Reading data: Searching
     ###
-    @api_version("2.8.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
+    def __ensure_search_params_acceptable(self, account_id, offset, min_id, max_id):
+        """
+        Internal Helper: Throw a MastodonVersionError if version is < 2.8.0 but parameters
+        for search that are available only starting with 2.8.0 are specified.
+        """
+        if not account_id is None or not offset is None or not min_id is None or not max_id is None:
+            if self.verify_minimum_version("2.8.0", cached=True) == False:
+                raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
+            
+    @api_version("1.1.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
     def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None):
         """
         Fetch matching hashtags, accounts and statuses. Will perform webfinger
@@ -1122,12 +1135,22 @@ class Mastodon:
         
         `offset`, `min_id` and `max_id` can be used to paginate.
 
+        Will use search_v1 (no tag dicts in return values) on Mastodon versions before 
+        2.4.1), search_v2 otherwise. Parameters other than resolve are only available
+        on Mastodon 2.8.0 or above - this function will throw a MastodonVersionError
+        if you try to use them on versions before that. Note that the cached version
+        number will be used for this to avoid uneccesary requests. 
+
         Returns a `search result dict`_, with tags as `hashtag dicts`_.
         """
-        return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id,
-                              offset=offset, min_id=min_id, max_id=max_id)
-
-    @api_version("1.1.0", "2.1.0", __DICT_VERSION_SEARCHRESULT)
+        if self.verify_minimum_version("2.4.1", cached=True) == True:
+            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id,
+                                offset=offset, min_id=min_id, max_id=max_id)
+        else:
+            self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
+            return self.search_v1(q, resolve=resolve)
+        
+    @api_version("1.1.0", "2.1.0", "2.1.0")
     def search_v1(self, q, resolve=False):
         """
         Identical to `search_v2()`, except in that it does not return
@@ -1140,7 +1163,7 @@ class Mastodon:
             del params['resolve']
         return self.__api_request('GET', '/api/v1/search', params)
 
-    @api_version("2.8.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
+    @api_version("2.4.1", "2.8.0", __DICT_VERSION_SEARCHRESULT)
     def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None):
         """
         Identical to `search_v1()`, except in that it returns tags as
@@ -1148,6 +1171,7 @@ class Mastodon:
 
         Returns a `search result dict`_.
         """
+        self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
         params = self.__generate_params(locals())
         
         if resolve == False:
@@ -1429,7 +1453,9 @@ class Mastodon:
         status_post returns a `scheduled toot dict`_ instead.
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
-        constructed using `make_poll()`_
+        constructed using `make_poll()`_ . Note that as of Mastodon version
+        2.8.2, you can only have either media or a poll attached, not both at 
+        the same time.
 
         Specify `content_type` to set the content type of your post on Pleroma.
         It accepts 'text/plain' (default), 'text/markdown', and 'text/html'.
@@ -1445,7 +1471,12 @@ class Mastodon:
             scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         
         params_initial = locals()
-
+        
+        # Validate poll/media exclusivity
+        if not poll is None:
+            if (not media_ids is None) and len(media_ids) != 0:
+                raise ValueError('Status can have media or poll attached - not both.')
+        
         # Validate visibility parameter
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
         if params_initial['visibility'] == None:
