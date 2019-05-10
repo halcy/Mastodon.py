@@ -25,6 +25,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 import http_ece
 import base64
 import json
+import blurhash
 
 try:
     from urllib.parse import urlparse
@@ -2315,7 +2316,42 @@ class Mastodon:
         )
         
         return json.loads(decrypted.decode('utf-8'), object_hook = Mastodon.__json_hooks)
-    
+   
+    ###
+    # Blurhash utilities
+    ###    
+    def decode_blurhash(self, media_dict, out_size = (16, 16), size_per_component = True, return_linear = True):
+        """
+        Basic media-dict blurhash decoding.
+        
+        out_size is the desired result size in pixels, either absolute or per blurhash
+        component (this is the default).
+        
+        By default, this function will return the image as linear RGB, ready for further
+        scaling operations. If you want to display the image directly, set return_linear 
+        to False.
+        
+        Returns the decoded blurhash image as a three-dimensional list: [height][width][3],
+        with the last dimension being RGB colours.
+        
+        For further info and tips for advanced usage, refer to the documentation for the
+        blurhash module: https://github.com/halcy/blurhash-python
+        """
+        # Figure out what size to decode to
+        decode_components_x, decode_components_y = blurhash.components(media_dict["blurhash"])
+        if size_per_component == False:
+            decode_size_x = out_size[0]
+            decode_size_y = out_size[1]
+        else:
+            decode_size_x = decode_components_x * out_size[0]
+            decode_size_y = decode_components_y * out_size[1]
+
+        # Decode
+        decoded_image = blurhash.decode(media_dict["blurhash"], decode_size_x, decode_size_y, linear = return_linear)
+
+        # And that's pretty much it.
+        return decoded_image
+        
     ###
     # Pagination
     ###
