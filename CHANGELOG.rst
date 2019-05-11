@@ -4,7 +4,7 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.4.1
 ------
-* Fix search not working on Mastodon versions before 2.8.0. search now dynamically selects search_v1 or search_v2 and adjusts valid parameters depending on the detected Mastodon version.
+* Fixed search not working on Mastodon versions before 2.8.0. search now dynamically selects search_v1 or search_v2 and adjusts valid parameters depending on the detected Mastodon version.
 * Added blurhash decoding.
 
 v1.4.0
