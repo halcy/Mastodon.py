@@ -2,6 +2,10 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.4.2
+------
+* Fixed date parsing in hashtag dicts.
+
 v1.4.1
 ------
 * Fixed search not working on Mastodon versions before 2.8.0. search now dynamically selects search_v1 or search_v2 and adjusts valid parameters depending on the detected Mastodon version.
