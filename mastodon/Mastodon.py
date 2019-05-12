@@ -2849,7 +2849,7 @@ class Mastodon:
         
         # Connect function (called and then potentially passed to async handler)
         def connect_func():
-            headers = {"Authorization": "Bearer " + self.access_token}
+            headers = {"Authorization": "Bearer " + self.access_token} if self.access_token else {}
             connection = self.session.get(url + endpoint, headers = headers, data = params, stream = True,
                                   timeout=(self.request_timeout, timeout))
 
