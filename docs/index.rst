@@ -555,6 +555,7 @@ Media dicts
                 # Note that a video may have an image as preview.
                 # May also contain a 'focus' dict.
         'blurhash': # The blurhash for the image, used for preview / placeholder generation
+        'description': # If set, the user-provided description for this media.
     }
     
     # Metadata dicts (image) - all fields are optional:
