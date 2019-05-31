@@ -506,7 +506,7 @@ class Mastodon:
         params['client_secret'] = self.client_secret
         
         if agreement == False:
-            del params_initial['agreement']
+            del params['agreement']
         
         # Step 1: Get a user-free token via oauth
         try:
