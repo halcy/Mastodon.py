@@ -16,7 +16,7 @@ webpush_deps = [
 ]
 
 extras = {
-      "test": test_deps,
+      "test": test_deps + webpush_deps,
       "webpush": webpush_deps,
 }
 
