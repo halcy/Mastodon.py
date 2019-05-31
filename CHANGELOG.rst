@@ -5,7 +5,7 @@ version number. Breaking changes will be indicated by a change in the minor
 v1.4.3
 ------
 * BREAKING BUT ONLY FOR YOUR DEPLOY, POTENTIALLY: http_ece and cryptography are now optional dependencies, if you need full webpush crypto support add the "webpush" feature to your Mastodon.py requirements or require one or both manually in your own setup.py.
-* Fixed a but in create_account (Thanks csmall for the report)
+* Fixed a bug in create_account (Thanks csmall for the report)
 * Allowed and documented non-authenticated access to streaming API (Thanks webwurst)
 * Fixed MastodonServerError not being exported (Thanks lefherz)
 * Fixed various small documentation issues (Thanks julianaito)
