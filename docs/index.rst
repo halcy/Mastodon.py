@@ -1135,6 +1135,9 @@ displayed.
 
 Mastodon allows an application to have one webpush subscription per user at a time.
 
+All crypto utilities require Mastodon.pys optional "webpush" feature dependencies
+(specifically, the "cryptography" and "http_ece" packages).
+
 .. automethod:: Mastodon.push_subscription
 .. automethod:: Mastodon.push_subscription_set
 .. automethod:: Mastodon.push_subscription_update

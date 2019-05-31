@@ -20,9 +20,20 @@ import threading
 import sys
 import six
 from decorator import decorate
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import ec
-import http_ece
+
+IMPL_HAS_CRYPTO = True
+try:
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives.asymmetric import ec
+except:
+    IMPL_HAS_CRYPTO = False
+    
+IMPL_HAS_ECE = True    
+try:
+    import http_ece
+except:
+    IMPL_HAS_ECE = False
+
 import base64
 import json
 import blurhash
@@ -2306,6 +2317,9 @@ class Mastodon:
         Returns two dicts: One with the private key and shared secret and another with the 
         public key and shared secret.
         """
+        if not IMPL_HAS_CRYPTO:
+            raise NotImplementedError('To use the crypto tools, please install the webpush feature dependencies.')
+        
         push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
         push_key_priv = push_key_pair.private_numbers().private_value
         push_key_pub = push_key_pair.public_key().public_numbers().encode_point() 
@@ -2331,6 +2345,9 @@ class Mastodon:
         
         Returns the decoded webpush as a `push notification dict`_.
         """
+        if (not IMPL_HAS_ECE) or (not IMPL_HAS_CRYPTO):
+            raise NotImplementedError('To use the crypto tools, please install the webpush feature dependencies.')
+        
         salt = self.__decode_webpush_b64(encryption_header.split("salt=")[1].strip())
         dhparams = self.__decode_webpush_b64(crypto_key_header.split("dh=")[1].split(";")[0].strip())
         p256ecdsa = self.__decode_webpush_b64(crypto_key_header.split("p256ecdsa=")[1].strip())

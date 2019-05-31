@@ -1,12 +1,27 @@
 from setuptools import setup
 
-test_deps = ['pytest', 'pytest-runner', 'pytest-cov', 'vcrpy', 'pytest-vcr', 'pytest-mock', 'requests-mock']
+test_deps = [
+    'pytest', 
+    'pytest-runner', 
+    'pytest-cov', 
+    'vcrpy', 
+    'pytest-vcr', 
+    'pytest-mock', 
+    'requests-mock'
+]
+
+webpush_deps = [
+    'http_ece>=1.0.5',
+    'cryptography>=1.6.0',
+]
+
 extras = {
-      "test": test_deps
+      "test": test_deps,
+      "webpush": webpush_deps,
 }
 
 setup(name='Mastodon.py',
-      version='1.4.2',
+      version='1.4.3',
       description='Python wrapper for the Mastodon API',
       packages=['mastodon'],
       install_requires=[
@@ -16,8 +31,6 @@ setup(name='Mastodon.py',
           'pytz',
           'python-magic',
           'decorator>=4.0.0', 
-          'http_ece>=1.0.5',
-          'cryptography>=1.6.0',
           'blurhash>=1.1.3',
       ],
       tests_require=test_deps,
