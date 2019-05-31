@@ -54,7 +54,7 @@ node running Mastodon by setting `api_base_url` when creating the
 api object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 2.8.2. Pleromas
+of this time, it is feature complete for Mastodon version 2.8.4. Pleromas
 Mastodon API layer, while not an official target, should also be basically
 compatible, and Mastodon.py does make some allowances for behaviour that isn't
 strictly like Mastodons.
@@ -803,7 +803,8 @@ Reading data: Timelines
 -----------------------
 This function allows you to access the timelines a logged in
 user could see, as well as hashtag timelines and the public (federated)
-and local timelines.
+and local timelines. For the public, local and hashtag timelines,
+access is allowed even when not authenticated.
 
 .. _timeline():
 .. automethod:: Mastodon.timeline
@@ -1077,7 +1078,8 @@ This function allows for easy basic decoding of blurhash strings to images.
 
 Streaming
 ---------
-These functions allow access to the streaming API.
+These functions allow access to the streaming API. For the public, local and hashtag streams,
+access is generally possible without authenticating.
 
 If `async` is False, these  methods block forever (or until an error is encountered).
 
