@@ -2750,7 +2750,8 @@ class Mastodon:
                         # on any 404
                 elif response_object.status_code == 401:
                     ex_type = MastodonUnauthorizedError
-                elif response_object.status_code == 502:
+                elif response_object.status_code >= 500 and \
+                     response_object.status_code <= 511:
                     ex_type = MastodonServerError
                 else:
                     ex_type = MastodonAPIError
@@ -3068,7 +3069,7 @@ class MastodonAPIError(MastodonError):
     pass
 
 class MastodonServerError(MastodonError):
-    """Raised if the Server is malconfigured, e.g. returns a 502 error code"""
+    """Raised if the Server is malconfigured and returns a 5xx error code"""
     pass
 
 class MastodonNotFoundError(MastodonAPIError):
