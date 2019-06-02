@@ -2750,6 +2750,14 @@ class Mastodon:
                         # on any 404
                 elif response_object.status_code == 401:
                     ex_type = MastodonUnauthorizedError
+                elif response_object.status_code == 500:
+                    ex_type = MastodonInternalServerError
+                elif response_object.status_code == 502:
+                    ex_type = MastodonBadGatewayError
+                elif response_object.status_code == 503:
+                    ex_type = MastodonServiceUnavailableError
+                elif response_object.status_code == 504:
+                    ex_type = MastodonGatewayTimeoutError
                 elif response_object.status_code >= 500 and \
                      response_object.status_code <= 511:
                     ex_type = MastodonServerError
@@ -3068,8 +3076,24 @@ class MastodonAPIError(MastodonError):
     """Raised when the mastodon API generates a response that cannot be handled"""
     pass
 
-class MastodonServerError(MastodonError):
+class MastodonServerError(MastodonAPIError):
     """Raised if the Server is malconfigured and returns a 5xx error code"""
+    pass
+
+class MastodonInternalServerError(MastodonServerError)
+    """Raised if the Server returns a 500 error"""
+    pass
+
+class MastodonBadGatewayError(MastodonServerError)
+    """Raised if the Server returns a 502 error"""
+    pass
+
+class MastodonServiceUnavailableError(MastodonServerError)
+    """Raised if the Server returns a 503 error"""
+    pass
+
+class MastodonGatewayTimeoutError(MastodonServerError)
+    """Raised if the Server returns a 504 error"""
     pass
 
 class MastodonNotFoundError(MastodonAPIError):
