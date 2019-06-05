@@ -3080,19 +3080,19 @@ class MastodonServerError(MastodonAPIError):
     """Raised if the Server is malconfigured and returns a 5xx error code"""
     pass
 
-class MastodonInternalServerError(MastodonServerError)
+class MastodonInternalServerError(MastodonServerError):
     """Raised if the Server returns a 500 error"""
     pass
 
-class MastodonBadGatewayError(MastodonServerError)
+class MastodonBadGatewayError(MastodonServerError):
     """Raised if the Server returns a 502 error"""
     pass
 
-class MastodonServiceUnavailableError(MastodonServerError)
+class MastodonServiceUnavailableError(MastodonServerError):
     """Raised if the Server returns a 503 error"""
     pass
 
-class MastodonGatewayTimeoutError(MastodonServerError)
+class MastodonGatewayTimeoutError(MastodonServerError):
     """Raised if the Server returns a 504 error"""
     pass
 
