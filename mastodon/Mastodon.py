@@ -36,7 +36,12 @@ except:
 
 import base64
 import json
-import blurhash
+
+IMPL_HAS_BLURHASH = True
+try:
+    import blurhash
+except:
+    IMPL_HAS_BLURHASH = False
 
 try:
     from urllib.parse import urlparse
@@ -2385,6 +2390,9 @@ class Mastodon:
         For further info and tips for advanced usage, refer to the documentation for the
         blurhash module: https://github.com/halcy/blurhash-python
         """
+        if not IMPL_HAS_BLURHASH:
+            raise NotImplementedError('To use the blurhash functions, please install the blurhash python module.')
+
         # Figure out what size to decode to
         decode_components_x, decode_components_y = blurhash.components(media_dict["blurhash"])
         if size_per_component == False:
