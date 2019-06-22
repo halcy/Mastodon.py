@@ -55,7 +55,7 @@ Full documentation and basic usage examples can be found
 at http://mastodonpy.readthedocs.io/en/stable/ .
 
 Acknowledgements
-----------------
+---------------- 
 Mastodon.py contains work by a large amount of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog. 
