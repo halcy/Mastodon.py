@@ -208,6 +208,8 @@ class Mastodon:
     __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
+    __DICT_VERSION_ADMIN_ACCOUNT = "2.9.1"
+    __DICT_VERSION_ADMIN_REPORT = "2.9.1"
     
     ###
     # Registering apps
@@ -2330,7 +2332,7 @@ class Mastodon:
     ###
     # Moderation API
     ###
-    @api_version("2.9.1", "2.9.1", "2.9.1")
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
@@ -2376,6 +2378,7 @@ class Mastodon:
         
         return self.__api_request('GET', '/api/v1/admin/accounts', params)
         
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account(self, id):
         """
         Fetches a single `admin account dict`_ for the user with the given id.
@@ -2384,7 +2387,8 @@ class Mastodon:
         """
         id = self.__unpack_id(id)        
         return self.__api_request('GET', '/api/v1/admin/accounts/{0}'.format(id))
-        
+    
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_enable(self, id):
         """
         Reenables login for a local account for which login has been disabled.
@@ -2394,6 +2398,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/enable'.format(id))
         
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_approve(self, id):
         """
         Approves a pending account.
@@ -2403,6 +2408,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/approve'.format(id))
 
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_reject(self, id):
         """
         Rejects and deletes a pending account.
@@ -2411,7 +2417,8 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/reject'.format(id))
-        
+      
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsilence(self, id):
         """
         Unsilences an account.
@@ -2421,6 +2428,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsilence'.format(id))
         
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsuspend(self, id):
         """
         Unsuspends an account.
@@ -2429,7 +2437,8 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsuspend'.format(id))
-            
+    
+    @api_version("2.9.1", "2.9.1", "2.9.1")
     def admin_account_moderate(self, id, action=None, report_id=None, warning_preset_id=None, text=None, send_email_notification=True):
         """
         Perform a moderation action on an account.
