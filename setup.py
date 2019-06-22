@@ -15,9 +15,14 @@ webpush_deps = [
     'cryptography>=1.6.0',
 ]
 
+blurhash_deps = [
+    'blurhash>=1.1.3',
+]
+
 extras = {
-      "test": test_deps + webpush_deps,
-      "webpush": webpush_deps,
+    "test": test_deps + webpush_deps + blurhash_deps,
+    "webpush": webpush_deps,
+    "blurhash": blurhash_deps,
 }
 
 setup(name='Mastodon.py',
@@ -31,7 +36,6 @@ setup(name='Mastodon.py',
           'pytz',
           'python-magic',
           'decorator>=4.0.0', 
-          'blurhash>=1.1.3',
       ],
       tests_require=test_deps,
       extras_require=extras,

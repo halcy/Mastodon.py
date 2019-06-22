@@ -1073,6 +1073,7 @@ These functions allow for convenient retrieval of paginated data.
 Blurhash decoding
 -----------------
 This function allows for easy basic decoding of blurhash strings to images.
+This requires Mastodon.pys optional "blurhash" feature dependencies.
 
 .. automethod:: Mastodon.decode_blurhash
 
