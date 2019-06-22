@@ -13,8 +13,8 @@ interactions:
     method: POST
     uri: http://localhost:3000/api/v1/statuses
   response:
-    body: {string: '{"id":"102315367762013469","created_at":"2019-06-22T13:03:34.554Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost/users/admin/statuses/102315367762013469","url":"http://localhost/@admin/102315367762013469","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"content":"\u003cp\u003enice\u003c/p\u003e","reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":1,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"1","expires_at":"2019-06-22T13:08:34.543Z","expired":false,"multiple":true,"votes_count":0,"voted":true,"options":[{"title":"four
+    body: {string: '{"id":"102317292292698844","created_at":"2019-06-22T21:13:00.550Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost/users/admin/statuses/102317292292698844","url":"http://localhost/@admin/102317292292698844","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"content":"\u003cp\u003enice\u003c/p\u003e","reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":2,"following_count":1,"statuses_count":17,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"15","expires_at":"2019-06-22T21:18:00.543Z","expired":false,"multiple":true,"votes_count":0,"voted":true,"options":[{"title":"four
         twenty","votes_count":0},{"title":"sixty-nine","votes_count":0}],"emojis":[]}}'}
     headers:
       Cache-Control: ['no-cache, no-store']
@@ -26,10 +26,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [eff31aa8-bda7-408b-8260-bc592dc9bbd4]
-      X-Runtime: ['0.223254']
+      X-Request-Id: [6f2ab5c9-1a3b-4e68-a193-49f0f238ac33]
+      X-Runtime: ['0.172958']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['1380']
+      content-length: ['1382']
     status: {code: 200, message: OK}
 - request:
     body: choices%5B%5D=1
@@ -42,9 +42,9 @@ interactions:
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
-    uri: http://localhost:3000/api/v1/polls/1/votes
+    uri: http://localhost:3000/api/v1/polls/15/votes
   response:
-    body: {string: '{"id":"1","expires_at":"2019-06-22T13:08:34.543Z","expired":false,"multiple":true,"votes_count":1,"voted":true,"options":[{"title":"four
+    body: {string: '{"id":"15","expires_at":"2019-06-22T21:18:00.543Z","expired":false,"multiple":true,"votes_count":1,"voted":true,"options":[{"title":"four
         twenty","votes_count":0},{"title":"sixty-nine","votes_count":1}],"emojis":[]}'}
     headers:
       Cache-Control: ['no-cache, no-store']
@@ -56,10 +56,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [08c8efb8-8ee3-4087-b9f7-25ba1335b593]
-      X-Runtime: ['0.077040']
+      X-Request-Id: [fbdb1b1c-f00d-41d6-b2b1-f1a21a07b994]
+      X-Runtime: ['0.088047']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['214']
+      content-length: ['215']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -70,9 +70,9 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: http://localhost:3000/api/v1/polls/1
+    uri: http://localhost:3000/api/v1/polls/15
   response:
-    body: {string: '{"id":"1","expires_at":"2019-06-22T13:08:34.543Z","expired":false,"multiple":true,"votes_count":1,"voted":true,"options":[{"title":"four
+    body: {string: '{"id":"15","expires_at":"2019-06-22T21:18:00.543Z","expired":false,"multiple":true,"votes_count":1,"voted":true,"options":[{"title":"four
         twenty","votes_count":0},{"title":"sixty-nine","votes_count":1}],"emojis":[]}'}
     headers:
       Cache-Control: ['no-cache, no-store']
@@ -84,10 +84,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [39703b78-72bb-4bda-8f3d-ecc0fa9a3645]
-      X-Runtime: ['0.035297']
+      X-Request-Id: [de18eedf-7628-4cd8-9200-609e0d0cfedc]
+      X-Runtime: ['0.038450']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['214']
+      content-length: ['215']
     status: {code: 200, message: OK}
 - request:
     body: choices%5B%5D=0
@@ -100,9 +100,9 @@ interactions:
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
-    uri: http://localhost:3000/api/v1/polls/1/votes
+    uri: http://localhost:3000/api/v1/polls/15/votes
   response:
-    body: {string: '{"id":"1","expires_at":"2019-06-22T13:08:34.543Z","expired":false,"multiple":true,"votes_count":2,"voted":true,"options":[{"title":"four
+    body: {string: '{"id":"15","expires_at":"2019-06-22T21:18:00.543Z","expired":false,"multiple":true,"votes_count":2,"voted":true,"options":[{"title":"four
         twenty","votes_count":1},{"title":"sixty-nine","votes_count":1}],"emojis":[]}'}
     headers:
       Cache-Control: ['no-cache, no-store']
@@ -114,10 +114,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [da03e008-863c-4d49-8c64-37fb93d629a0]
-      X-Runtime: ['0.043669']
+      X-Request-Id: [c39b84c0-2758-4951-a110-af922ccaa463]
+      X-Runtime: ['0.041077']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['214']
+      content-length: ['215']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -128,9 +128,9 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: http://localhost:3000/api/v1/polls/1
+    uri: http://localhost:3000/api/v1/polls/15
   response:
-    body: {string: '{"id":"1","expires_at":"2019-06-22T13:08:34.543Z","expired":false,"multiple":true,"votes_count":2,"voted":true,"options":[{"title":"four
+    body: {string: '{"id":"15","expires_at":"2019-06-22T21:18:00.543Z","expired":false,"multiple":true,"votes_count":2,"voted":true,"options":[{"title":"four
         twenty","votes_count":1},{"title":"sixty-nine","votes_count":1}],"emojis":[]}'}
     headers:
       Cache-Control: ['no-cache, no-store']
@@ -142,10 +142,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [ee710e5b-2403-45bd-97ca-0f2edcd70797]
-      X-Runtime: ['0.024792']
+      X-Request-Id: [7f01a980-b029-429a-aedf-554f25d36da8]
+      X-Runtime: ['0.023429']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['214']
+      content-length: ['215']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -157,10 +157,10 @@ interactions:
       Content-Length: ['0']
       User-Agent: [python-requests/2.18.4]
     method: DELETE
-    uri: http://localhost:3000/api/v1/statuses/102315367762013469
+    uri: http://localhost:3000/api/v1/statuses/102317292292698844
   response:
-    body: {string: '{"id":"102315367762013469","created_at":"2019-06-22T13:03:34.554Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost/users/admin/statuses/102315367762013469","url":"http://localhost/@admin/102315367762013469","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"text":"nice","reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":1,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"1","expires_at":"2019-06-22T13:08:34.543Z","expired":false,"multiple":true,"votes_count":2,"voted":true,"options":[{"title":"four
+    body: {string: '{"id":"102317292292698844","created_at":"2019-06-22T21:13:00.550Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost/users/admin/statuses/102317292292698844","url":"http://localhost/@admin/102317292292698844","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"text":"nice","reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":2,"following_count":1,"statuses_count":17,"emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"15","expires_at":"2019-06-22T21:18:00.543Z","expired":false,"multiple":true,"votes_count":2,"voted":true,"options":[{"title":"four
         twenty","votes_count":1},{"title":"sixty-nine","votes_count":1}],"emojis":[]}}'}
     headers:
       Cache-Control: ['no-cache, no-store']
@@ -172,9 +172,9 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [f5f1d50a-0185-482f-bfde-6b9ab6d97dfa]
-      X-Runtime: ['0.084331']
+      X-Request-Id: [01f69b24-a1f7-4792-b29e-ed435386d5e6]
+      X-Runtime: ['0.081525']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['1350']
+      content-length: ['1352']
     status: {code: 200, message: OK}
 version: 1

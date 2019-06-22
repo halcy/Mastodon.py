@@ -24,6 +24,10 @@ def api2():
     return _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN_2')
 
 @pytest.fixture
+def api3():
+    return _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN_3')
+
+@pytest.fixture
 def api_anonymous():
     return _api(access_token=None)
 

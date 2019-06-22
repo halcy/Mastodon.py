@@ -31,7 +31,8 @@ def test_filter_create(api):
         assert(keyword_filter == keyword_filter_2)
     finally:
         api.filter_delete(keyword_filter)
-
+    time.sleep(2)
+    
 @pytest.mark.vcr()
 def test_filter_update(api):
     keyword_filter = api.filter_create("anime", ['notifications'], irreversible = False, whole_word = True, expires_in = None)
@@ -65,9 +66,11 @@ def test_filter_serverside(api, api2):
         api2.status_delete(status_2)
         api2.status_delete(status_3)
         api2.status_delete(status_4)
+    time.sleep(2)
         
 @pytest.mark.vcr()
 def test_filter_clientside(api, api2):
+    time.sleep(2)
     api.account_follow(api2.account_verify_credentials())
     keyword_filter_1 = api.filter_create("anime", ['home'], irreversible = False, whole_word = False, expires_in = None)
     keyword_filter_2 = api.filter_create("girugamesh", ['home'], irreversible = False, whole_word = True, expires_in = None)
