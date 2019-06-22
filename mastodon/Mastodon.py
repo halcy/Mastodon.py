@@ -2474,7 +2474,8 @@ class Mastodon:
         
         self.__api_request('POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
         
-    def admin_reports(self, resolved=False, account_id=None, target_account_id=None):
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_REPORT)
+    def admin_reports(self, resolved=False, account_id=None, target_account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get a list of reports. 
         
@@ -2483,7 +2484,26 @@ class Mastodon:
         
         Returns a list of `report dicts`_.
         """
-        #GET /api/v1/admin/reports 	Get reports, with params resolved, account_id, target_account_id
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+        
+        if not account_id is None:
+            account_id = self.__unpack_id(account_id)
+            
+        if not target_account_id is None:
+            target_account_id = self.__unpack_id(target_account_id)
+            
+        if resolved == False:
+            resolved = None
+            
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/reports', params)
         
     def admin_report(self, id):
         pass
