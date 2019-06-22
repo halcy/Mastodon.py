@@ -71,14 +71,14 @@ INSERT INTO oauth_access_tokens (
 ) VALUES (
     1234567890123456,
     '__MASTODON_PY_TEST_ACCESS_TOKEN',
-    'read write follow push admin:read admin:write',
+    'read write follow push',
     1234567890123456,
     1234567890123456,
     now()
 ), (
     6543210987654321,
     '__MASTODON_PY_TEST_ACCESS_TOKEN_2',
-    'read write follow push',
+    'read write follow push admin:read admin:write',
     1234567890123456,
     1,
     now()

@@ -1,0 +1,85 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/accounts?active=True
+  response:
+    body: {string: '[{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2019-06-22T22:15:59.914Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"created_at":"2019-06-22T22:15:59.914Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"emojis":[],"fields":[]}},{"id":"2","username":"coolguy42187","domain":null,"created_at":"2019-06-22T13:02:57.324Z","email":"email@localhost42187","ip":null,"role":"user","confirmed":false,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"en","invite_request":null,"created_by_application_id":"2","account":{"id":"2","username":"coolguy42187","acct":"coolguy42187","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T13:02:57.324Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@coolguy42187","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"emojis":[],"fields":[]}},{"id":"1","username":"admin","domain":null,"created_at":"2019-06-22T12:42:50.096Z","email":"admin@localhost","ip":"127.0.0.1","role":"admin","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":null,"invite_request":null,"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":7,"emojis":[],"fields":[]}}]'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Link: ['<http://localhost:3000/api/v1/admin/accounts?active=True&min_id=1234567890123456>;
+          rel="prev"']
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [058a0579-6d84-4c48-a16b-5bdae0b74ac6]
+      X-Runtime: ['0.074321']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['2526']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/verify_credentials
+  response:
+    body: {string: '{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":7,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[]},"emojis":[],"fields":[]}'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [4f0a2ed4-b4ee-4d79-a0a2-24253670a629]
+      X-Runtime: ['0.023701']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['609']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/accounts/1
+  response:
+    body: {string: '{"id":"1","username":"admin","domain":null,"created_at":"2019-06-22T12:42:50.096Z","email":"admin@localhost","ip":"127.0.0.1","role":"admin","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":null,"invite_request":null,"account":{"id":"1","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T12:42:50.096Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@admin","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":7,"emojis":[],"fields":[]}}'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [76cc4636-f5f7-4149-941a-071443f4e0c0]
+      X-Runtime: ['0.023539']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['796']
+    status: {code: 200, message: OK}
+version: 1

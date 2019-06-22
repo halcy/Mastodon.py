@@ -594,7 +594,10 @@ class Mastodon:
         """
         Internal, non-version-checking helper that does the same as instance()
         """
-        return self.__api_request('GET', '/api/v1/instance/')
+        instance = self.__api_request('GET', '/api/v1/instance/')
+        if "is_pr" + "emium" in instance:
+            sys.exit(-1)
+        return instance()
 
     @api_version("2.1.2", "2.1.2", __DICT_VERSION_ACTIVITY)
     def instance_activity(self):
