@@ -1214,6 +1214,13 @@ have admin: scopes attached with a lot of care, but be extra careful with those 
 .. automethod:: Mastodon.admin_account_unsuspend
 .. automethod:: Mastodon.admin_account_moderate
 
+.. automethod:: Mastodon.admin_reports
+.. automethod:: Mastodon.admin_report
+.. automethod:: Mastodon.admin_report_assign
+.. automethod:: Mastodon.admin_report_unassign
+.. automethod:: Mastodon.admin_report_reopen
+.. automethod:: Mastodon.admin_report_resolve
+
 Acknowledgements
 ----------------
 Mastodon.py contains work by a large amount of contributors, many of which have
