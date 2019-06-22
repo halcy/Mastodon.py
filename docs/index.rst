@@ -263,6 +263,8 @@ User dicts
                             # set up as their moved-to address.
         'bot': # Boolean indicating whether this account is automated.
         'fields': # List of up to four dicts with free-form 'name' and 'value' profile info.
+                  # For fields with "this is me" type verification, verified_at is set to the
+                  # last verification date (It is None otherwise)
     }
 
     mastodon.account_verify_credentials()["source"]
@@ -739,6 +741,30 @@ Preference dicts
                                    # content warnings by default
     }
     
+    
+Admin account dicts
+~~~~~~~~~~~~~~~~~~~
+.. _admin account dicts:
+.. code-block:: python
+    {
+        'id': # The users id,
+        'username': # The users username, no leading @
+        'domain': # The users domain
+        'created_at': # The time of account creation
+        'email': # For local users, the users e-mail
+        'ip': # For local users, the users last known IP address
+        'role': # 'admin', 'moderator' or None
+        'confirmed': # For local users, False if the user has not confirmed their e-mail, True otherwise
+        'suspended': # Boolean indicating whether the user has been suspended
+        'silenced': # Boolean indicating whether the user has been suspended
+        'disabled': # For local users, boolean indicating whether the user has had their login disabled
+        'approved': # For local users, False if the user is pending, True otherwise
+        'locale': # For local users, the locale the user has set,
+        'invite_request': # If the user requested an invite, the invite request comment of that user. (TODO permanent?)
+        'invited_by_account_id': # Present if the user was invited by another user and set to the inviting users id.
+        'account': # The users account, as a standard account dict
+    }
+    
 App registration and user authentication
 ----------------------------------------
 Before you can use the mastodon API, you have to register your 
@@ -1148,6 +1174,33 @@ All crypto utilities require Mastodon.pys optional "webpush" feature dependencie
 
 .. automethod:: Mastodon.push_subscription_generate_keys
 .. automethod:: Mastodon.push_subscription_decrypt_push
+
+
+Moderation API
+--------------
+These functions allow you to perform moderation actions on users and generally
+process reports using the API. To do this, you need access to the "admin:read" and/or
+"admin:write" scopes or their more granular variants (both for the application and the 
+access token), as well as at least moderator access. Mastodon.py will not request these 
+by default, as that would be very dangerous.
+
+BIG WARNING: TREAT ANY ACCESS TOKENS THAT HAVE ADMIN CREDENTIALS AS EXTREMELY, MASSIVELY
+SENSITIVE DATA AND MAKE EXTRA SURE TO REVOKE THEM AFTER TESTING, NOT LET THEM SIT IN FILES
+SOMEWHERE, TRACK WHICH ARE ACTIVE, ET CETERA. ANY EXPOSURE OF SUCH ACCESS TOKENS MEANS YOU
+EXPOSE THE PERSONAL DATA OF ALL YOUR USERS TO WHOEVER HAS THESE TOKENS. TREAT THEM WITH
+EXTREME CARE.
+
+This is not to say that you should not treat access tokens from admin accounts that do not
+have admin: scopes attached with a lot of care, but be extra careful with those that do.
+
+.. automethod:: Mastodon.admin_accounts
+.. automethod:: Mastodon.admin_account
+.. automethod:: Mastodon.admin_account_enable
+.. automethod:: Mastodon.admin_account_approve
+.. automethod:: Mastodon.admin_account_reject
+.. automethod:: Mastodon.admin_account_unsilence
+.. automethod:: Mastodon.admin_account_unsuspend
+.. automethod:: Mastodon.admin_account_moderate
 
 Acknowledgements
 ----------------

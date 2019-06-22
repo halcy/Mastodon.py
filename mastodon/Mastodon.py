@@ -167,11 +167,20 @@ class Mastodon:
             'write:blocks',  
             'write:follows',
             'write:mutes', 
-        ]
+        ],
+        'admin:read': [
+            'admin:read:accounts', 
+            'admin:read:reports',
+        ],
+        'admin:write': [
+            'admin:write:accounts', 
+            'admin:write:reports',
+        ],
     }
-    __VALID_SCOPES = ['read', 'write', 'follow', 'push'] + __SCOPE_SETS['read'] + __SCOPE_SETS['write']
+    __VALID_SCOPES = ['read', 'write', 'follow', 'push', 'admin:read', 'admin:write'] + \
+        __SCOPE_SETS['read'] + __SCOPE_SETS['write'] + __SCOPE_SETS['admin:read'] + __SCOPE_SETS['admin:write']
         
-    __SUPPORTED_MASTODON_VERSION = "2.8.4"
+    __SUPPORTED_MASTODON_VERSION = "2.9.2"
     
     # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
@@ -593,7 +602,7 @@ class Mastodon:
         
         Activity is returned for 12 weeks going back from the current week.
         
-        Returns a list `activity dicts`_.
+        Returns a list of `activity dicts`_.
         """
         return self.__api_request('GET', '/api/v1/instance/activity')
 
@@ -2318,7 +2327,166 @@ class Mastodon:
         """
         self.__api_request('DELETE', '/api/v1/push/subscription')
      
-     
+    ###
+    # Moderation API
+    ###
+    @api_version("2.9.1", "2.9.1", "2.9.1")
+    def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
+        """
+        Fetches a list of accounts that match given criteria. By default, local accounts are returned.
+        
+        Set `remote` to True to get remote accounts, otherwise local accounts are returned (default: local accounts)
+        Set `by_domain` to a domain to get only accounts from that domain.
+        Set `status` to one of "active", "pending", "disabled", "silenced" or "suspended" to get only accounts with that moderation status (default: active)
+        Set `username` to a string to get only accounts whose username contains this string.
+        Set `display_name` to a string to get only accounts whose display name contains this string.
+        Set `email` to an email to get only accounts with that email (this only works on local accounts).
+        Set `ip` to an ip (as a string, standard v4/v6 notation) to get only accounts whose last active ip is that ip (this only works on local accounts).
+        Set `staff_only` to True to only get staff accounts (this only works on local accounts).
+        
+        Note that setting the boolean parameters to False does not mean "give me users to which this does not apply" but
+        instead means "I do not care if users have this attribute".
+        
+        Returns a list of `admin account dicts`_.
+        """
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+        
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+        
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+        
+        params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'])
+        
+        if remote == True:
+            params["remote"] = True
+        
+        mod_statuses = ["active", "pending", "disabled", "silenced", "suspended"]
+        if not status in mod_statuses:
+            raise ValueError("Invalid moderation status requested.")
+        
+        if staff_only == True:
+            params["staff"] = True
+        
+        for mod_status in mod_statuses:
+            if status == mod_status:
+                params[status] = True
+        
+        return self.__api_request('GET', '/api/v1/admin/accounts', params)
+        
+    def admin_account(self, id):
+        """
+        Fetches a single `admin account dict`_ for the user with the given id.
+        
+        Returns that dict.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('GET', '/api/v1/admin/accounts/{0}'.format(id))
+        
+    def admin_account_enable(self, id):
+        """
+        Reenables login for a local account for which login has been disabled.
+        
+        Returns the updated `admin account dict`_.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/enable'.format(id))
+        
+    def admin_account_approve(self, id):
+        """
+        Approves a pending account.
+        
+        Returns the updated `admin account dict`_.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/approve'.format(id))
+
+    def admin_account_reject(self, id):
+        """
+        Rejects and deletes a pending account.
+        
+        Returns the updated `admin account dict`_ for the account that is now gone.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/reject'.format(id))
+        
+    def admin_account_unsilence(self, id):
+        """
+        Unsilences an account.
+        
+        Returns the updated `admin account dict`_.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsilence'.format(id))
+        
+    def admin_account_unsuspend(self, id):
+        """
+        Unsuspends an account.
+        
+        Returns the updated `admin account dict`_.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsuspend'.format(id))
+            
+    def admin_account_moderate(self, id, action=None, report_id=None, warning_preset_id=None, text=None, send_email_notification=True):
+        """
+        Perform a moderation action on an account.
+        
+        Valid actions are:
+            * "disable" - for a local user, disable login.
+            * "silence" - hide the users posts from all public timelines.
+            * "suspend" - irreversibly delete all the users posts, past and future.
+        If no action is specified, the user is only issued a warning.
+        
+        Specify the id of a report as `report_id` to close the report with this moderation action as the resolution.
+        Specify `warning_preset_id` to use a warning preset as the notification text to the user, or `text` to specify text directly.
+        If both are specified, they are concatenated (preset first). Note that there is currently no API to retrieve or create
+        warning presets.
+        
+        Set `send_email_notification` to False to not send the user an e-mail notification informing them of the moderation action.
+        """
+        if action is None:
+            action = "none"
+        
+        if send_email_notification == False:
+            send_email_notification = None
+            
+        id = self.__unpack_id(id)
+        if not report_id is None:
+            report_id = self.__unpack_id(report_id)
+            
+        params = self.__generate_params(locals(), ['id', 'action'])
+        
+        params["type"] = action
+        
+        self.__api_request('POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
+        
+    def admin_reports(self, resolved, account_id, target_account_id):
+        pass
+        #GET /api/v1/admin/reports 	Get reports, with params resolved, account_id, target_account_id
+        
+    def admin_report(self, id):
+        pass
+        #GET /api/v1/admin/reports/:id 	Get a specific report
+        
+    def admin_report_assign(self, id):
+        pass
+        #POST /api/v1/admin/reports/:id/assign_to_self 	Assign report to self
+        
+    def admin_report_unassign(self, id):
+        pass
+        #POST /api/v1/admin/reports/:id/unassign 	Unassign report from self
+        
+    def admin_report_reopen(self, id):
+        pass
+        #POST /api/v1/admin/reports/:id/reopen 	Re-open report
+        
+    def admin_report_resolve(self, id):
+        pass
+        #POST /api/v1/admin/reports/:id/resolve 	Close report
+        
     ###
     # Push subscription crypto utilities
     ###     
