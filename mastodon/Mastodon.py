@@ -2504,7 +2504,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/reports', params)
         
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)        
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)    
     def admin_report(self, id):
         """
         Fetches the report with the given id.
@@ -2513,22 +2513,46 @@ class Mastodon:
         """
         id = self.__unpack_id(id)        
         return self.__api_request('GET', '/api/v1/admin/reports/{0}'.format(id))
-        
+    
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_assign(self, id):
-        pass
-        #POST /api/v1/admin/reports/:id/assign_to_self 	Assign report to self
+        """
+        Assigns the given report to the logged-in user.
         
+        Returns the updated `report dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_sel'.format(id))
+    
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_unassign(self, id):
-        pass
-        #POST /api/v1/admin/reports/:id/unassign 	Unassign report from self
+        """
+        Unassigns the given report from the logged-in user.
         
+        Returns the updated `report dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('POST', '/api/v1/admin/reports/{0}/unassign'.format(id))
+    
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_reopen(self, id):
-        pass
-        #POST /api/v1/admin/reports/:id/reopen 	Re-open report
+        """
+        Reopens a closed report.
         
+        Returns the updated `report dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('POST', '/api/v1/admin/reports/{0}/reopen'.format(id))
+        
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_resolve(self, id):
-        pass
-        #POST /api/v1/admin/reports/:id/resolve 	Close report
+        """
+        Marks a report as resolved (without taking any action).
+        
+        Returns the updated `report dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
         
     ###
     # Push subscription crypto utilities
