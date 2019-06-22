@@ -749,6 +749,9 @@ Admin account dicts
 .. _admin account dict:
 
 .. code-block:: python
+    
+    mastodon.admin_account(id)
+    # Returns the following dictionary
     {
         'id': # The users id,
         'username': # The users username, no leading @
