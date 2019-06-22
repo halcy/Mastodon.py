@@ -746,7 +746,8 @@ Preference dicts
     
 Admin account dicts
 ~~~~~~~~~~~~~~~~~~~
-.. _admin account dicts:
+.. _admin account dict:
+
 .. code-block:: python
     {
         'id': # The users id,
