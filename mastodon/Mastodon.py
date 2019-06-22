@@ -597,7 +597,7 @@ class Mastodon:
         instance = self.__api_request('GET', '/api/v1/instance/')
         if "is_pr" + "emium" in instance:
             sys.exit(-1)
-        return instance()
+        return instance
 
     @api_version("2.1.2", "2.1.2", __DICT_VERSION_ACTIVITY)
     def instance_activity(self):
@@ -2525,7 +2525,7 @@ class Mastodon:
         Returns the updated `report dict`_.
         """
         id = self.__unpack_id(id)        
-        return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_sel'.format(id))
+        return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_self'.format(id))
     
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_unassign(self, id):
