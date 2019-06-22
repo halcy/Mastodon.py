@@ -1109,6 +1109,7 @@ various exceptions: `MastodonMalformedEventError` if a received event cannot be 
 .. automethod:: Mastodon.stream_local
 .. automethod:: Mastodon.stream_hashtag
 .. automethod:: Mastodon.stream_list
+.. automethod:: Mastodon.stream_healthy
 
 StreamListener
 ~~~~~~~~~~~~~~

@@ -2534,6 +2534,16 @@ class Mastodon:
         """
         return self.__stream('/api/v1/streaming/direct', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
     
+    @api_version("2.5.0", "2.5.0", "2.5.0")
+    def stream_healthy(self):
+        """
+        Returns without True if streaming API is okay, False or raises an error otherwise.
+        """
+        api_okay = self.__api_request('GET', '/api/v1/streaming/health', base_url_override = self.__get_streaming_base(), parse=False)
+        if api_okay == b'OK':
+            return True
+        return False
+    
     ###
     # Internal helpers, dragons probably
     ###
@@ -2641,12 +2651,13 @@ class Mastodon:
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, do_ratelimiting=True, use_json = False):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, do_ratelimiting=True, use_json=False, parse=True):
         """
         Internal API request helper.
         """
         response = None
         remaining_wait = 0
+        
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
         if do_ratelimiting and self.ratelimit_method == "pace":
@@ -2673,8 +2684,13 @@ class Mastodon:
         if not access_token_override is None:
             headers['Authorization'] = 'Bearer ' + access_token_override
 
+        # Determine base URL
+        base_url = self.api_base_url
+        if not base_url_override is None:
+            base_url = base_url_override
+
         if self.debug_requests:
-            print('Mastodon: Request to endpoint "' + endpoint + '" using method "' + method + '".')
+            print('Mastodon: Request to endpoint "' + base_url + endpoint + '" using method "' + method + '".')
             print('Parameters: ' + str(params))
             print('Headers: ' + str(headers))
             print('Files: ' + str(files))
@@ -2695,9 +2711,9 @@ class Mastodon:
                         kwargs['data'] = params
                 else:
                     kwargs['json'] = params
-                    
+                
                 response_object = self.session.request(
-                        method, self.api_base_url + endpoint, **kwargs)
+                        method, base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError("Could not complete request: %s" % e)
 
@@ -2783,14 +2799,17 @@ class Mastodon:
                         response_object.reason,
                         error_msg)
 
-            try:
-                response = response_object.json(object_hook=self.__json_hooks)
-            except:
-                raise MastodonAPIError(
-                    "Could not parse response as JSON, response code was %s, "
-                    "bad json content was '%s'" % (response_object.status_code,
-                                                   response_object.content))
-
+            if parse == True:
+                try:
+                    response = response_object.json(object_hook=self.__json_hooks)
+                except:
+                    raise MastodonAPIError(
+                        "Could not parse response as JSON, response code was %s, "
+                        "bad json content was '%s'" % (response_object.status_code,
+                                                    response_object.content))
+            else:
+                response = response_object.content
+                
             # Parse link headers
             if isinstance(response, list) and \
                     'Link' in response_object.headers and \
@@ -2857,15 +2876,12 @@ class Mastodon:
 
         return response
 
-    def __stream(self, endpoint, listener, params={}, run_async=False, timeout=__DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
+    def __get_streaming_base(self):
         """
         Internal streaming API helper.
-
-        Returns a handle to the open connection that the user can close if they
-        wish to terminate it.
+        
+        Returns the correct URL for the streaming API.
         """
-
-        # Check if we have to redirect
         instance = self.instance()
         if "streaming_api" in instance["urls"] and instance["urls"]["streaming_api"] != self.api_base_url:
             # This is probably a websockets URL, which is really for the browser, but requests can't handle it
@@ -2881,6 +2897,18 @@ class Mastodon:
                             instance["urls"]["streaming_api"]))
         else:
             url = self.api_base_url
+        return url
+
+    def __stream(self, endpoint, listener, params={}, run_async=False, timeout=__DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
+        """
+        Internal streaming API helper.
+
+        Returns a handle to the open connection that the user can close if they
+        wish to terminate it.
+        """
+
+        # Check if we have to redirect
+        url = self.__get_streaming_base()
 
         # The streaming server can't handle two slashes in a path, so remove trailing slashes
         if url[-1] == '/':

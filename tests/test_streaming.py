@@ -365,3 +365,7 @@ def test_stream_user_local(api, api2):
     assert updates[0].id == posted[0].id
     
     t.join()
+
+@pytest.mark.vcr()
+def test_stream_healthy(api_anonymous):
+    assert api_anonymous.stream_healthy()

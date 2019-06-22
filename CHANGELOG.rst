@@ -2,6 +2,14 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.4.4
+------
+* Added streaming_health
+* Added support for local hashtag streams
+* Made blurhash an optional dependency (Thanks limburgher)
+* Fixed some things related to error handling (Thanks lefherz)
+* Fixed various small documentation issues (Thanks lefherz)
+
 v1.4.3
 ------
 * BREAKING BUT ONLY FOR YOUR DEPLOY, POTENTIALLY: http_ece and cryptography are now optional dependencies, if you need full webpush crypto support add the "webpush" feature to your Mastodon.py requirements or require one or both manually in your own setup.py.
