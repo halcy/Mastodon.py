@@ -2504,6 +2504,7 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/reports', params)
         
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)        
     def admin_report(self, id):
         """
         Fetches the report with the given id.
