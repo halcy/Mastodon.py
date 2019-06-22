@@ -4,6 +4,7 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.4.4
 ------
+* Added support for moderation API (Thanks Gargron for the clarifications and dotUser for helping with testing)
 * Made status_delete return the deleted status (With "source" attribute)
 * Added account_id parameter to notifications
 * Added streaming_health

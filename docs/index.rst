@@ -634,6 +634,7 @@ Instance dicts
     # Returns the following dictionary
     {
         'description': # A brief instance description set by the admin
+        'short_description': # An even briefer instance description
         'email': # The admin contact e-mail
         'title': # The instances title
         'uri': # The instances URL
@@ -643,11 +644,12 @@ Instance dicts
         'stats: # A dictionary containing three stats, user_count (number of local users),
                 # status_count (number of local statuses) and domain_count (number of known
                 # instance domains other than this one).
-        'contact_account': # Account dict of the primary contact for the instance.
+        'contact_account': # Account dict of the primary contact for the instance
         'languages': # Array of ISO 639-1 (two-letter) language codes the instance 
                      # has chosen to advertise.
         'registrations': # Boolean indication whether registrations on this instance are open
-                         # (True) or not (False).
+                         # (True) or not (False)
+        'approval_required': # True if account approval is required when registering
     }
 
 Activity dicts
