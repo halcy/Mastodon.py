@@ -26,7 +26,7 @@ def test_log_in_none(api_anonymous):
 @pytest.mark.vcr()
 def test_log_in_password(api_anonymous):
     token = api_anonymous.log_in(
-        username='admin@localhost:3000',
+        username='admin@localhost',
         password='mastodonadmin')
     assert token
 
@@ -35,7 +35,7 @@ def test_log_in_password(api_anonymous):
 def test_log_in_password_incorrect(api_anonymous):
     with pytest.raises(MastodonIllegalArgumentError):
         api_anonymous.log_in(
-            username='admin@localhost:3000',
+            username='admin@localhost',
             password='hunter2')
 
 
@@ -43,7 +43,7 @@ def test_log_in_password_incorrect(api_anonymous):
 def test_log_in_password_to_file(api_anonymous, tmpdir):
     filepath = tmpdir.join('token')
     api_anonymous.log_in(
-        username='admin@localhost:3000',
+        username='admin@localhost',
         password='mastodonadmin',
         to_file=str(filepath))
     token = filepath.read_text('UTF-8').rstrip()
