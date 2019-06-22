@@ -673,17 +673,23 @@ Report dicts
 
 .. code-block:: python
 
-    mastodon.reports()[0]
+    mastodon.admin_reports()[0]
     # Returns the following dictionary
     {
         'id': # Numerical id of the report
         'action_taken': # True if a moderator or admin has processed the
-                        # report, False otherwise. Note that no indication as to 
-                        # what action was taken is given and that an admin simply 
-                        # marking the report as processed and not doing anything else
-                        # will set this field to True. Note also that now that there 
-                        # is no way to get any updated report lists, this will 
-                        # always be false.
+                        # report, False otherwise.
+        
+        # The following fields are only present in the report dicts returned by moderation API:
+        'comment': # Text comment submitted with the report
+        'created_at': # Time at which this report was created, as a datetime object
+        'updated_at': # Last time this report has been updated, as a datetime object
+        'account': # Account dict of the user that filed this report
+        'target_account': # Account that has been reported with this report
+        'assigned_account': # If the report as been assigned to an account, 
+                            # account dict of that account (None if not)
+        'action_taken_by_account': # Account dict of the account that processed this report
+        'statuses': # List of statuses attached to the report, as toot dicts
     }
     
 Push subscription dicts

@@ -202,7 +202,7 @@ class Mastodon:
     __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", 
             __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2" 
-    __DICT_VERSION_REPORT = "1.1.0"
+    __DICT_VERSION_REPORT = "2.9.1"
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
@@ -210,7 +210,6 @@ class Mastodon:
     __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
     __DICT_VERSION_ADMIN_ACCOUNT = "2.9.1"
-    __DICT_VERSION_ADMIN_REPORT = "2.9.1"
     
     ###
     # Registering apps
@@ -2474,10 +2473,10 @@ class Mastodon:
         
         self.__api_request('POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
         
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_REPORT)
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_reports(self, resolved=False, account_id=None, target_account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
-        Get a list of reports. 
+        Fetches the list of reports. 
         
         Set `resolved` to True to search for resolved reports. `account_id` and `target_account_id`
         can be used to get reports filed by or about a specific user.
@@ -2506,8 +2505,13 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/admin/reports', params)
         
     def admin_report(self, id):
-        pass
-        #GET /api/v1/admin/reports/:id 	Get a specific report
+        """
+        Fetches the report with the given id.
+        
+        Returns a `report dict`_.
+        """
+        id = self.__unpack_id(id)        
+        return self.__api_request('GET', '/api/v1/admin/reports/{0}'.format(id))
         
     def admin_report_assign(self, id):
         pass
@@ -2801,7 +2805,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at"]
+        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v != None:
