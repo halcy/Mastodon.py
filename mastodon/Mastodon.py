@@ -2338,14 +2338,14 @@ class Mastodon:
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
         
-        Set `remote` to True to get remote accounts, otherwise local accounts are returned (default: local accounts)
-        Set `by_domain` to a domain to get only accounts from that domain.
-        Set `status` to one of "active", "pending", "disabled", "silenced" or "suspended" to get only accounts with that moderation status (default: active)
-        Set `username` to a string to get only accounts whose username contains this string.
-        Set `display_name` to a string to get only accounts whose display name contains this string.
-        Set `email` to an email to get only accounts with that email (this only works on local accounts).
-        Set `ip` to an ip (as a string, standard v4/v6 notation) to get only accounts whose last active ip is that ip (this only works on local accounts).
-        Set `staff_only` to True to only get staff accounts (this only works on local accounts).
+        * Set `remote` to True to get remote accounts, otherwise local accounts are returned (default: local accounts)
+        * Set `by_domain` to a domain to get only accounts from that domain.
+        * Set `status` to one of "active", "pending", "disabled", "silenced" or "suspended" to get only accounts with that moderation status (default: active)
+        * Set `username` to a string to get only accounts whose username contains this string.
+        * Set `display_name` to a string to get only accounts whose display name contains this string.
+        * Set `email` to an email to get only accounts with that email (this only works on local accounts).
+        * Set `ip` to an ip (as a string, standard v4/v6 notation) to get only accounts whose last active ip is that ip (this only works on local accounts).
+        * Set `staff_only` to True to only get staff accounts (this only works on local accounts).
         
         Note that setting the boolean parameters to False does not mean "give me users to which this does not apply" but
         instead means "I do not care if users have this attribute".
