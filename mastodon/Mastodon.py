@@ -944,7 +944,8 @@ class Mastodon:
         as of Mastodon 2.1.0, this only works properly for instance-local users.
         If `exclude_replies` is set, filter out all statuses that are replies.
 
-        Does not require authentication.
+        Does not require authentication for Mastodon versions after 2.7.0 (returns
+        publicly visible statuses in that case).
 
         Returns a list of `toot dicts`_.
         """
