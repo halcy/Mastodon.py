@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body: {string: '{"uri":"localhost","title":"Mastodon","description":"","email":"","version":"2.9.1","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":2,"status_count":8,"domain_count":0},"thumbnail":"http://localhost/packs/media/images/preview-9a17d32fc48369e8ccd910a75260e67d.jpg","languages":["en"],"registrations":true,"contact_account":null}'}
+    headers:
+      Cache-Control: ['max-age=300, public']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 22 Jun 2019 14:40:35 GMT']
+      ETag: [W/"9cf634ec19499004934b5325f20d71b4"]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [e205dad6-1b7d-4469-82e6-b1928be37b2f]
+      X-Runtime: ['0.026031']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['348']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:4000/api/v1/streaming/health
+  response:
+    body: {string: OK}
+    headers:
+      Access-Control-Allow-Headers: ['Authorization, Accept, Cache-Control']
+      Access-Control-Allow-Methods: ['GET, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Type: [text/plain]
+      Date: ['Sat, 22 Jun 2019 14:40:35 GMT']
+      Transfer-Encoding: [chunked]
+      X-Powered-By: [Express]
+      X-Request-Id: [93545687-8c80-4295-a7c7-5289fac6e5b3]
+    status: {code: 200, message: OK}
+version: 1

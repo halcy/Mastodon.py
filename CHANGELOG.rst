@@ -4,6 +4,8 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.4.4
 ------
+* Made status_delete return the deleted status (With "source" attribute)
+* Added account_id parameter to notifications
 * Added streaming_health
 * Added support for local hashtag streams
 * Made blurhash an optional dependency (Thanks limburgher)

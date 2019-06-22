@@ -543,7 +543,7 @@ Media dicts
     # Returns the following dictionary:
     {
         'id': # The ID of the attachment.
-        'type': # Media type: 'image', 'video', 'gifv' or 'unknown'.
+        'type': # Media type: 'image', 'video', 'gifv', 'audio' or 'unknown'.
         'url': # The URL for the image in the local cache
         'remote_url': # The remote URL for the media (if the image is from a remote instance)
         'preview_url': # The URL for the media preview

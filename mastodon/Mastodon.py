@@ -179,7 +179,7 @@ class Mastodon:
     __DICT_VERSION_MEDIA = "2.8.2"
     __DICT_VERSION_ACCOUNT = "2.4.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.8.0", 
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.9.1", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("2.7.2", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
@@ -865,12 +865,12 @@ class Mastodon:
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_NOTIFICATION)
-    def notifications(self, id=None, max_id=None, min_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "2.9.0", __DICT_VERSION_NOTIFICATION)
+    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
-        user.
-
+        user. Pass `account_id` to get only notifications originating from the given account.
+        
         Can be passed an `id` to fetch a single notification.
 
         Returns a list of `notification dicts`_.
@@ -883,6 +883,9 @@ class Mastodon:
         
         if since_id != None:
             since_id = self.__unpack_id(since_id)
+        
+        if account_id != None:
+            account_id = self.__unpack_id(account_id)
         
         if id is None:
             params = self.__generate_params(locals(), ['id'])
@@ -1606,10 +1609,14 @@ class Mastodon:
     def status_delete(self, id):
         """
         Delete a status
+        
+        Returns the now-deleted status, with an added "source" attribute that contains
+        the text that was used to compose this status (this can be used to power
+        "delete and redraft" functionality)
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
-        self.__api_request('DELETE', url)
+        return self.__api_request('DELETE', url)
 
     @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
     def status_reblog(self, id, visibility=None):
@@ -2159,10 +2166,10 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_MEDIA)
+    @api_version("1.0.0", "2.9.1", __DICT_VERSION_MEDIA)
     def media_post(self, media_file, mime_type=None, description=None, focus=None):
         """
-        Post an image. `media_file` can either be image data or
+        Post an image, video or audio file. `media_file` can either be image data or
         a file name. If image data is passed directly, the mime
         type has to be specified manually, otherwise, it is
         determined from the file name. `focus` should be a tuple
