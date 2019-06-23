@@ -5,7 +5,7 @@ Feature complete for public API as of Mastodon version 2.9.2 and easy to get sta
 
 .. code-block:: python
 
-    #Register your app! This only needs to be done once. Uncomment the code and substitute in your information.
+    # Register your app! This only needs to be done once. Uncomment the code and substitute in your information.
     
     from mastodon import Mastodon
 
@@ -55,7 +55,7 @@ Full documentation and basic usage examples can be found
 at http://mastodonpy.readthedocs.io/en/stable/ .
 
 Acknowledgements
-----------------
+---------------- 
 Mastodon.py contains work by a large amount of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog. 
