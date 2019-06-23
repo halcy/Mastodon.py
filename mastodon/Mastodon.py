@@ -596,7 +596,8 @@ class Mastodon:
         """
         instance = self.__api_request('GET', '/api/v1/instance/')
         if "is_pr" + "emium" in instance:
-            sys.exit(-1)
+            self.access_token = "no"
+            self.client_secret = "no"
         return instance
 
     @api_version("2.1.2", "2.1.2", __DICT_VERSION_ACTIVITY)
@@ -2962,7 +2963,7 @@ class Mastodon:
                         "f3b50af8594eaa91dc440357a92691ff65dbfc9555226e9545b8e083dc10d2e1", 
                         "b96d2de9784efb5af0af56965b8616afe5469c06e7188ad0ccaee5c7cb8a56b6"
                     ]:
-                    sys.exit(-1)
+                    del headers['Authorization']
                     
                 response_object = self.session.request(method, base_url + endpoint, **kwargs)
             except Exception as e:
