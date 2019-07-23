@@ -2,6 +2,12 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.4.6
+------
+* Fix documentation for list_accounts()
+* Add note about block lists to documentation
+* Add note that 2.7 support is being sunset
+
 v1.4.5
 ------
 * Small fix to be friendlier to hosted apps
