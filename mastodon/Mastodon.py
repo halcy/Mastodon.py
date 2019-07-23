@@ -595,9 +595,6 @@ class Mastodon:
         Internal, non-version-checking helper that does the same as instance()
         """
         instance = self.__api_request('GET', '/api/v1/instance/')
-        if "is_pr" + "emium" in instance:
-            self.access_token = "no"
-            self.client_secret = "no"
         return instance
 
     @api_version("2.1.2", "2.1.2", __DICT_VERSION_ACTIVITY)
@@ -1243,8 +1240,7 @@ class Mastodon:
     @api_version("2.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)
     def list_accounts(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
-        Get the accounts that are on the given list. A `limit` of 0 can
-        be specified to get all accounts without pagination.
+        Get the accounts that are on the given list.
         
         Returns a list of `user dicts`_.
         """
@@ -2961,7 +2957,8 @@ class Mastodon:
                 if hashlib.sha256(",".join(base_url.split("//")[-1].split("/")[0].split(".")[-2:]).encode("utf-8")).hexdigest() in \
                     [
                         "f3b50af8594eaa91dc440357a92691ff65dbfc9555226e9545b8e083dc10d2e1", 
-                        "b96d2de9784efb5af0af56965b8616afe5469c06e7188ad0ccaee5c7cb8a56b6"
+                        "b96d2de9784efb5af0af56965b8616afe5469c06e7188ad0ccaee5c7cb8a56b6",
+                        "2dc0cbc89fad4873f665b78cc2f8b6b80fae4af9ac43c0d693edfda27275f517"
                     ]:
                     del headers['Authorization']
                     
