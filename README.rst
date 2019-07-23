@@ -44,12 +44,13 @@ Feature complete for public API as of Mastodon version 2.9.2 and easy to get sta
 You can install Mastodon.py via pypi:
 
 .. code-block:: Bash
-
-   # Python 2
-   pip install Mastodon.py
    
    # Python 3
    pip3 install Mastodon.py
+
+Note that python 2.7 is now no longer officially supported. It will still 
+work for a while, and we will fix issues as they come up, but we will not 
+be testing specifically for python 2.7 any longer.
 
 Full documentation and basic usage examples can be found 
 at http://mastodonpy.readthedocs.io/en/stable/ .
