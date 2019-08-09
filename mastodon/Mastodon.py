@@ -1801,8 +1801,8 @@ class Mastodon:
         Deletes a single notification
         """
         id = self.__unpack_id(id)
-        params = self.__generate_params(locals())
-        self.__api_request('POST', '/api/v1/notifications/dismiss', params)
+        url = '/api/v1/notifications/{0}/dismiss'.format(str(id))
+        return self.__api_request('POST', url)
 
 
     ###
