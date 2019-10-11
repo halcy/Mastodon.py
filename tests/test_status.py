@@ -2,6 +2,7 @@ import pytest
 from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
 import datetime
 import pytz
+import vcr
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -28,6 +29,8 @@ def test_status_missing(api):
         api.status(0)
 
 # Messy and will only work if there is an internet connection that is decent, obviously.
+# Also, deprecated, but still a good test (Mastodon.py tries to fake the old behaviour
+# internally)
 @pytest.mark.vcr()
 def test_status_card(api):
     import time
@@ -38,6 +41,19 @@ def test_status_card(api):
         assert card
     finally:
         api.status_delete(status['id'])
+
+# Old-version card api
+def test_status_card_pre_2_9_2(api):
+    with vcr.use_cassette('test_status_card.yaml', cassette_library_dir='tests/cassettes_pre_2_9_2', record_mode='none'):    
+        import time
+        status = api.status_post("http://example.org/")
+        time.sleep(5) # Card generation may take time
+        card = api.status_card(status['id'])
+        try:
+            assert card
+        finally:
+            api.status_delete(status['id'])
+
 
 @pytest.mark.vcr()
 def test_status_context(status, api):

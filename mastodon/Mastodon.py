@@ -784,7 +784,7 @@ class Mastodon:
         url = '/api/v1/statuses/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "1.0.0", __DICT_VERSION_CARD)
+    @api_version("1.0.0", "3.0.0", __DICT_VERSION_CARD)
     def status_card(self, id):
         """
         Fetch a card associated with a status. A card describes an object (such as an
@@ -792,11 +792,19 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
+        This function is deprecated as of 3.0.0 and the endpoint does not
+        exist anymore - you should just use the "card" field of the status dicts
+        instead. Mastodon.py will try to mimick the old behaviour, but this
+        is somewhat inefficient and not guaranteed to be the case forever.
+
         Returns a `card dict`_.
         """
-        id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/card'.format(str(id))
-        return self.__api_request('GET', url)
+        if self.verify_minimum_version("3.0.0"):
+            return self.status(id).card
+        else:
+            id = self.__unpack_id(id)
+            url = '/api/v1/statuses/{0}/card'.format(str(id))
+            return self.__api_request('GET', url)
 
     @api_version("1.0.0", "1.0.0", __DICT_VERSION_CONTEXT)
     def status_context(self, id):
