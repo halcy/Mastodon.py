@@ -2591,7 +2591,7 @@ class Mastodon:
         push_key_priv = push_key_pair.private_numbers().private_value
         
         crypto_ver = cryptography.__version__
-        if len(crypto_ver) > 5:
+        if len(crypto_ver) < 5:
             crypto_ver += ".0"
         if bigger_version(crypto_ver, "2.5.0") == crypto_ver:
             push_key_pub = push_key_pair.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
