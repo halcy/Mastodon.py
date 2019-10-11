@@ -24,6 +24,7 @@ import hashlib
 
 IMPL_HAS_CRYPTO = True
 try:
+    import cryptography
     from cryptography.hazmat.backends import default_backend
     from cryptography.hazmat.primitives.asymmetric import ec
 except:
@@ -2587,7 +2588,10 @@ class Mastodon:
         
         push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
         push_key_priv = push_key_pair.private_numbers().private_value
-        push_key_pub = push_key_pair.public_key().public_numbers().encode_point() 
+        if bigger_version(cryptography.__version__, "2.5.0") == cryptography.__version__:
+            push_key_pub = push_key_pair.public_key().public_numbers().public_bytes() 
+        else:
+            push_key_pub = push_key_pair.public_key().public_numbers().encode_point() 
         push_shared_secret = os.urandom(16)
         
         priv_dict = {
