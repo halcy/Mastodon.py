@@ -37,9 +37,10 @@ def test_status_card(api):
     status = api.status_post("http://example.org/")
     time.sleep(5) # Card generation may take time
     card = api.status_card(status['id'])
-    print(card)
+    
     try:
         assert card
+        assert card.url == "http://example.org/"
     finally:
         api.status_delete(status['id'])
 
@@ -52,6 +53,7 @@ def test_status_card_pre_2_9_2(api):
         card = api.status_card(status['id'])
         try:
             assert card
+            assert card.url == "http://example.org/"
         finally:
             api.status_delete(status['id'])
 
