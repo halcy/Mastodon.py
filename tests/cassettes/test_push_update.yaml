@@ -1,18 +1,18 @@
 interactions:
 - request:
-    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BEQRJdvNORvTkA49w78QoxpeuwfVNydvoEVYtdm4P1QBYAbKfsy75f2CrzDaNpv%2BgM5Y89E2%2BkaACu3UHTdrOek%3D&subscription%5Bkeys%5D%5Bauth%5D=ujnJKHWzxo4xGUZl9TyPlw%3D%3D&data%5Balerts%5D%5Bfollow%5D=False&data%5Balerts%5D%5Bfavourite%5D=False&data%5Balerts%5D%5Breblog%5D=False&data%5Balerts%5D%5Bmention%5D=False
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BIZ1wWA3EboNcUWBZN5glPa1WVlA5BBS%2FGIQCbule2Zf%2FUg1bBSoT%2BmPJ5%2FLasg23FpxrNHSyPaJIYqV%2BV0iU24%3D&subscription%5Bkeys%5D%5Bauth%5D=Kxunpb%2F7V%2BbjkNYNUuqwlw%3D%3D&data%5Balerts%5D%5Bfollow%5D=0&data%5Balerts%5D%5Bfavourite%5D=0&data%5Balerts%5D%5Breblog%5D=0&data%5Balerts%5D%5Bmention%5D=0
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['388']
+      Content-Length: ['382']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":14,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BMimvNvIJnE4R13etr8xTuyqzJ41IjYCpSBH0LICimXu2yzRI8mDhMJzRYfKhoNrs0TMpvkaa5asJ7Dl6PorcZE="}'}
+    body: {string: '{"id":44,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BAWt221FllE4MOQ_TNqrMrc32IW2XhCRR0WTPI0Ne0TzoNm6UeUdEDDs5FAn8nGtW8eiJyCmSMoJnUEFi1Cj1Rk="}'}
     headers:
       Cache-Control: ['no-cache, no-store']
       Content-Type: [application/json; charset=utf-8]
@@ -23,25 +23,25 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [dce13274-504f-4258-9c96-803874768b33]
-      X-Runtime: ['0.027264']
+      X-Request-Id: [b179ef39-798e-4509-8254-650b5bab6248]
+      X-Runtime: ['0.052281']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['229']
+      content-length: ['221']
     status: {code: 200, message: OK}
 - request:
-    body: data%5Balerts%5D%5Bfollow%5D=True&data%5Balerts%5D%5Bfavourite%5D=True&data%5Balerts%5D%5Breblog%5D=True&data%5Balerts%5D%5Bmention%5D=True
+    body: data%5Balerts%5D%5Bfollow%5D=1&data%5Balerts%5D%5Bfavourite%5D=1&data%5Balerts%5D%5Breblog%5D=1&data%5Balerts%5D%5Bmention%5D=1
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['139']
+      Content-Length: ['127']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: PUT
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":14,"endpoint":"https://example.com","alerts":{"follow":"True","favourite":"True","reblog":"True","mention":"True"},"server_key":"BMimvNvIJnE4R13etr8xTuyqzJ41IjYCpSBH0LICimXu2yzRI8mDhMJzRYfKhoNrs0TMpvkaa5asJ7Dl6PorcZE="}'}
+    body: {string: '{"id":44,"endpoint":"https://example.com","alerts":{"follow":true,"favourite":true,"reblog":true,"mention":true},"server_key":"BAWt221FllE4MOQ_TNqrMrc32IW2XhCRR0WTPI0Ne0TzoNm6UeUdEDDs5FAn8nGtW8eiJyCmSMoJnUEFi1Cj1Rk="}'}
     headers:
       Cache-Control: ['no-cache, no-store']
       Content-Type: [application/json; charset=utf-8]
@@ -52,10 +52,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [618b7132-e767-40b5-8d45-a75379cb4e2e]
-      X-Runtime: ['0.040108']
+      X-Request-Id: [77c71d4e-4122-4352-be58-000c07f2b5b0]
+      X-Runtime: ['0.018310']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['225']
+      content-length: ['217']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -68,7 +68,7 @@ interactions:
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":14,"endpoint":"https://example.com","alerts":{"follow":"True","favourite":"True","reblog":"True","mention":"True"},"server_key":"BMimvNvIJnE4R13etr8xTuyqzJ41IjYCpSBH0LICimXu2yzRI8mDhMJzRYfKhoNrs0TMpvkaa5asJ7Dl6PorcZE="}'}
+    body: {string: '{"id":44,"endpoint":"https://example.com","alerts":{"follow":true,"favourite":true,"reblog":true,"mention":true},"server_key":"BAWt221FllE4MOQ_TNqrMrc32IW2XhCRR0WTPI0Ne0TzoNm6UeUdEDDs5FAn8nGtW8eiJyCmSMoJnUEFi1Cj1Rk="}'}
     headers:
       Cache-Control: ['no-cache, no-store']
       Content-Type: [application/json; charset=utf-8]
@@ -79,25 +79,25 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [ae7f8cd0-7fbd-4656-93ee-0d1908cbf023]
-      X-Runtime: ['0.052002']
+      X-Request-Id: [ba525c4c-71b1-48c8-86fc-595b8242c274]
+      X-Runtime: ['0.017948']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['225']
+      content-length: ['217']
     status: {code: 200, message: OK}
 - request:
-    body: data%5Balerts%5D%5Bfollow%5D=False&data%5Balerts%5D%5Bfavourite%5D=False&data%5Balerts%5D%5Breblog%5D=False&data%5Balerts%5D%5Bmention%5D=False
+    body: data%5Balerts%5D%5Bfollow%5D=0&data%5Balerts%5D%5Bfavourite%5D=0&data%5Balerts%5D%5Breblog%5D=0&data%5Balerts%5D%5Bmention%5D=0
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
       Connection: [keep-alive]
-      Content-Length: ['143']
+      Content-Length: ['127']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: PUT
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":14,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BMimvNvIJnE4R13etr8xTuyqzJ41IjYCpSBH0LICimXu2yzRI8mDhMJzRYfKhoNrs0TMpvkaa5asJ7Dl6PorcZE="}'}
+    body: {string: '{"id":44,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BAWt221FllE4MOQ_TNqrMrc32IW2XhCRR0WTPI0Ne0TzoNm6UeUdEDDs5FAn8nGtW8eiJyCmSMoJnUEFi1Cj1Rk="}'}
     headers:
       Cache-Control: ['no-cache, no-store']
       Content-Type: [application/json; charset=utf-8]
@@ -108,10 +108,10 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [62d2ea53-af2d-4855-87e4-ae49bed448ad]
-      X-Runtime: ['0.046968']
+      X-Request-Id: [a1f9a93e-183e-4915-915a-69fe399ab25f]
+      X-Runtime: ['0.030133']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['229']
+      content-length: ['221']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -124,7 +124,7 @@ interactions:
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":14,"endpoint":"https://example.com","alerts":{"follow":"False","favourite":"False","reblog":"False","mention":"False"},"server_key":"BMimvNvIJnE4R13etr8xTuyqzJ41IjYCpSBH0LICimXu2yzRI8mDhMJzRYfKhoNrs0TMpvkaa5asJ7Dl6PorcZE="}'}
+    body: {string: '{"id":44,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BAWt221FllE4MOQ_TNqrMrc32IW2XhCRR0WTPI0Ne0TzoNm6UeUdEDDs5FAn8nGtW8eiJyCmSMoJnUEFi1Cj1Rk="}'}
     headers:
       Cache-Control: ['no-cache, no-store']
       Content-Type: [application/json; charset=utf-8]
@@ -135,9 +135,36 @@ interactions:
       X-Download-Options: [noopen]
       X-Frame-Options: [SAMEORIGIN]
       X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [a0001fc1-ac0f-41ac-be02-08533b54d277]
-      X-Runtime: ['0.032558']
+      X-Request-Id: [2b1245fe-6cd3-4afd-96d7-ccee7791f4df]
+      X-Runtime: ['0.028445']
       X-XSS-Protection: [1; mode=block]
-      content-length: ['229']
+      content-length: ['221']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/push/subscription
+  response:
+    body: {string: '{"id":44,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BAWt221FllE4MOQ_TNqrMrc32IW2XhCRR0WTPI0Ne0TzoNm6UeUdEDDs5FAn8nGtW8eiJyCmSMoJnUEFi1Cj1Rk="}'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [6d7d368e-82d3-42a1-857b-2dc0240fb8b7]
+      X-Runtime: ['0.014119']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['221']
     status: {code: 200, message: OK}
 version: 1

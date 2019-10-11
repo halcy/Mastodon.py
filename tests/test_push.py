@@ -47,6 +47,8 @@ def test_push_update(api):
                                         reblog_events=False, mention_events=False)
     time.sleep(1)
     assert sub3 == api.push_subscription()
+    print(sub3)
+    print(api.push_subscription())
     
     assert sub3.alerts.follow == False
     assert sub3.alerts.favourite == False

@@ -1812,7 +1812,7 @@ class Mastodon:
         
         if self.verify_minimum_version("2.9.2"):
             url = '/api/v1/notifications/{0}/dismiss'.format(str(id))
-            return self.__api_request('POST', '/api/v1/notifications/dismiss', params)
+            self.__api_request('POST', url)
         else:
             params = self.__generate_params(locals())
             self.__api_request('POST', '/api/v1/notifications/dismiss', params)
@@ -2307,7 +2307,10 @@ class Mastodon:
             
         if mention_events != None:
             params['data[alerts][mention]'] = mention_events
-            
+        
+        # Canonicalize booleans
+        params = self.__generate_params(params)
+        
         return self.__api_request('POST', '/api/v1/push/subscription', params)
     
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
@@ -2332,6 +2335,9 @@ class Mastodon:
             
         if mention_events != None:
             params['data[alerts][mention]'] = mention_events
+            
+        # Canonicalize booleans
+        params = self.__generate_params(params)            
             
         return self.__api_request('PUT', '/api/v1/push/subscription', params)
     
@@ -2862,9 +2868,9 @@ class Mastodon:
         """
         for key in ('follow', 'favourite', 'reblog', 'mention'):
             if (key in json_object and isinstance(json_object[key], six.text_type)):
-                if json_object[key] == 'True':
+                if json_object[key].lower() == 'true':
                     json_object[key] = True
-                if json_object[key] == 'False':
+                if json_object[key].lower() == 'False':
                     json_object[key] = False
         return json_object
     
@@ -3270,7 +3276,9 @@ class Mastodon:
         """
         params = collections.OrderedDict(params)
 
-        del params['self']
+        if 'self' in params:
+            del params['self']
+        
         param_keys = list(params.keys())
         for key in param_keys:
             if isinstance(params[key], bool) and params[key] == False:

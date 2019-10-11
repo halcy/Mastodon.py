@@ -15,8 +15,8 @@ def test_notifications(api, mention):
 @pytest.mark.vcr()
 def test_notifications_dismiss(api, mention):
     notifications = api.notifications()
-    api.notifications_dismiss(notifications[0]) # TODO possibly verify that this returns a notif dict
-
+    api.notifications_dismiss(notifications[0])
+    
 def test_notifications_dismiss_pre_2_9_2(api, api2):
     with vcr.use_cassette('test_notifications_dismiss.yaml', cassette_library_dir='tests/cassettes_pre_2_9_2', record_mode='none'):
         status = None

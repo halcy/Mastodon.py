@@ -37,6 +37,7 @@ def test_status_card(api):
     status = api.status_post("http://example.org/")
     time.sleep(5) # Card generation may take time
     card = api.status_card(status['id'])
+    print(card)
     try:
         assert card
     finally:

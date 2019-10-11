@@ -70,6 +70,12 @@ def test_filter_serverside(api, api2):
         
 @pytest.mark.vcr()
 def test_filter_clientside(api, api2):
+    # Make sure no filters are left over from some previous run
+    # Unclean, but neccesary
+    all_filters = api.filters()
+    for mastodon_filter in all_filters:
+        api.filter_delete(mastodon_filter)
+    
     time.sleep(2)
     api.account_follow(api2.account_verify_credentials())
     keyword_filter_1 = api.filter_create("anime", ['home'], irreversible = False, whole_word = False, expires_in = None)
@@ -79,6 +85,8 @@ def test_filter_clientside(api, api2):
     status_2 = api2.toot("Girugamesh!")
     status_3 = api2.toot("Girugameshnetworking!")
     status_4 = api2.toot("I love japanimation!")
+    time.sleep(2)
+    
     tl = api.timeline_home()
     try:
         assert status_1['id'] in map(lambda st: st['id'], tl)
