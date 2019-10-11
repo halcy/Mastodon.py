@@ -1795,15 +1795,19 @@ class Mastodon:
         self.__api_request('POST', '/api/v1/notifications/clear')
 
 
-    @api_version("1.3.0", "1.3.0", "1.3.0")
+    @api_version("1.3.0", "2.9.2", "2.9.2")
     def notifications_dismiss(self, id):
         """
         Deletes a single notification
         """
         id = self.__unpack_id(id)
-        params = self.__generate_params(locals())
-        self.__api_request('POST', '/api/v1/notifications/dismiss', params)
-
+        
+        if self.verify_minimum_version("2.9.2"):
+            url = '/api/v1/notifications/{0}/dismiss'.format(str(id))
+            return self.__api_request('POST', '/api/v1/notifications/dismiss', params)
+        else:
+            params = self.__generate_params(locals())
+            self.__api_request('POST', '/api/v1/notifications/dismiss', params)
 
     ###
     # Writing data: Conversations
