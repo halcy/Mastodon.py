@@ -162,6 +162,7 @@ class CallbackStreamListener(StreamListener):
         self.local_update_handler = local_update_handler
         self.delete_handler = delete_handler
         self.notification_handler = notification_handler
+        self.conversation_handler = conversation_handler
         
     def on_update(self, status):
         if self.update_handler != None:

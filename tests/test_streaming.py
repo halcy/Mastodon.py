@@ -17,7 +17,7 @@ streaming_is_patched = False
 real_connections = []
 close_connections = False
 
-def patchStreaming():
+def patch_streaming():
     global streaming_is_patched
     global close_connections
     if streaming_is_patched == True:
@@ -281,7 +281,7 @@ def test_multiline_payload():
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user(api, api2):
-    patchStreaming()
+    patch_streaming()
     
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
@@ -331,7 +331,7 @@ def test_stream_user(api, api2):
     
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_local(api, api2):
-    patchStreaming()
+    patch_streaming()
     
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
@@ -365,6 +365,34 @@ def test_stream_user_local(api, api2):
     assert updates[0].id == posted[0].id
     
     t.join()
+
+@pytest.mark.vcr(match_on=['path'])
+def test_stream_direct(api, api2):
+    patch_streaming()
+    
+    conversations = []
+    listener = CallbackStreamListener(
+        conversation_handler = lambda x: conversations.append(x),
+    )
+    
+    def do_activities():
+        time.sleep(5)
+        api2.status_post("@mastodonpy_test todo funny text here", visibility = "direct")
+        time.sleep(10)
+        streaming_close()
+        
+    t = threading.Thread(args=(), target=do_activities)
+    t.start()
+    
+    stream = None
+    try:
+        stream = api.stream_direct(listener, run_async=True)
+        time.sleep(20)
+    finally:
+        if stream != None:
+            stream.close()
+        
+    assert len(conversations) == 1
 
 @pytest.mark.vcr()
 def test_stream_healthy(api_anonymous):
