@@ -895,6 +895,7 @@ their relationships.
 
 .. automethod:: Mastodon.account
 .. automethod:: Mastodon.account_verify_credentials
+.. automethod:: Mastodon.me
 .. automethod:: Mastodon.account_statuses
 .. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_followers

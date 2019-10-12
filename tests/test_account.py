@@ -7,7 +7,13 @@ def test_account(api):
     account = api.account(1)
     assert account
 
-
+@pytest.mark.vcr()
+def test_verify_credentials(api):
+    account_a = api.account_verify_credentials()
+    account_b = api.me()
+    
+    assert account_a.id == account_b.id
+    
 @pytest.mark.vcr()
 def test_account_following(api):
     following = api.account_following(1)

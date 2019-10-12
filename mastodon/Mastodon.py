@@ -966,6 +966,15 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
+    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
+    def me(self):
+        """
+        Get this users account. Symonym for `account_verify_credentials()`, does exactly
+        the same thing, just exists becase `account_verify_credentials()` has a confusing
+        name.
+        """
+        return self.account_verify_credentials()
+    
     @api_version("1.0.0", "2.7.0", __DICT_VERSION_STATUS)
     def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
