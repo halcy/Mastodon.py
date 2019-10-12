@@ -6,7 +6,8 @@ def test_polls(api, api2):
     status_poll = api2.status_post("nice", poll=poll_params)
     poll = status_poll.poll
     assert poll.votes_count == 0
-
+    assert poll.own_votes == []
+    
     api.poll_vote(status_poll.poll, [1])
     poll2 = api.poll(poll)
     assert poll2.votes_count == 1
