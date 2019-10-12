@@ -773,6 +773,20 @@ Featured tag dicts
                           # (can be None if there are none)
     }
     
+Read marker dicts
+~~~~~~~~~~~~~~~~~
+.. _read marker dict:
+
+.. code-block:: python
+
+    mastodon.markers_get()["home"]
+    # Returns the following dictionary:
+    {
+        'last_read_id': # ID of the last read object in the timeline
+        'version': # A counter that is incremented whenever the marker is set to a new status
+        'updated_at': # The time the marker was last set, as a datetime object
+    }    
+    
 Admin account dicts
 ~~~~~~~~~~~~~~~~~~~
 .. _admin account dict:
@@ -990,10 +1004,19 @@ muted or blocked by the logged in user.
 .. automethod:: Mastodon.mutes
 .. automethod:: Mastodon.blocks
 
-Reading data: Reports (REMOVED IN 2.5.0)
-----------------------------------------
+Reading data: Reports
+---------------------
+In Mastodon versions before 2.5.0 this function allowed for the retrieval
+of reports filed by the logged in user. It has since been removed.
 
 .. automethod:: Mastodon.reports
+
+
+Writing data: Last-read markers
+--------------------------
+This function allows you to set get last read position for timelines.
+
+.. automethod:: Mastodon.markers_get
 
 Reading data: Domain blocks
 ---------------------------
@@ -1141,6 +1164,14 @@ Writing data: Reports
 ---------------------
 
 .. automethod:: Mastodon.report
+
+Writing data: Last-read markers
+--------------------------
+This function allows you to set the last read position for timelines to
+allow for persisting where the user was reading a timeline between sessions
+and clients / devices.
+
+.. automethod:: Mastodon.markers_set
 
 Writing data: Domain blocks
 ---------------------------

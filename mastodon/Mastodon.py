@@ -213,6 +213,7 @@ class Mastodon:
     __DICT_VERSION_PREFERENCES = "2.8.0"
     __DICT_VERSION_ADMIN_ACCOUNT = "2.9.1"
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
+    __DICT_VERSION_MARKER = "3.0.0"
     
     ###
     # Registering apps
@@ -1590,6 +1591,25 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/preferences')
 
+    ##
+    # Reading data: Read markers
+    ##
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_MARKER)
+    def markers_get(self, timeline=["home"]):
+        """
+        Get the last-read-location markers for the specified timelines. Valid timelines
+        are the same as in `timeline()`_
+        
+        Note that despite the singular name, `timeline` can be a list.
+        
+        Returns a dict of `read marker dicts`_, keyed by timeline name.
+        """
+        if not isinstance(timeline, (list, tuple)):
+            timeline = [timeline]
+        params = self.__generate_params(locals())
+        
+        return self.__api_request('GET', '/api/v1/markers', params)
+
     ###
     # Writing data: Statuses
     ###
@@ -2450,6 +2470,34 @@ class Mastodon:
         params = self.__generate_params(locals())
         self.__api_request('DELETE', '/api/v1/domain_blocks', params)
 
+    ##
+    # Writing data: Read markers
+    ##
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_MARKER)
+    def markers_set(self, timelines, last_read_ids):
+        """
+        Set the "last read" marker(s) for the given timeline(s) to the given id(s)
+        
+        Note that if you give an invalid timeline name, this will silently do nothing.
+        
+        Returns a dict with the updated `read marker dicts`_, keyed by timeline name.
+        """
+        if not isinstance(timelines, (list, tuple)):
+            timelines = [timelines]
+            
+        if not isinstance(last_read_ids, (list, tuple)):
+            last_read_ids = [last_read_ids]
+            
+        if len(last_read_ids) != len(timelines):
+            raise MastodonIllegalArgumentError("Number of specified timelines and ids must be the same")
+        
+        params = collections.OrderedDict()
+        for timeline, last_read_id in zip(timelines, last_read_ids):
+            params[timeline] = collections.OrderedDict()
+            params[timeline]["last_read_id"] = self.__unpack_id(last_read_id)
+        
+        return self.__api_request('POST', '/api/v1/markers', params, use_json=True)
+
     ###
     # Writing data: Push subscriptions
     ###
@@ -3071,7 +3119,7 @@ class Mastodon:
         """
         Converts json string numerals to native python bignums.
         """
-        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses', 'day'):
+        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses', 'day', 'last_read_id'):
             if (key in json_object and isinstance(json_object[key], six.text_type)):
                 try:
                     json_object[key] = int(json_object[key])
