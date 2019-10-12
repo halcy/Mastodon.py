@@ -756,6 +756,21 @@ Preference dicts
                                    # content warnings by default
     }
     
+Featured tag dicts
+~~~~~~~~~~~~~~~~~~
+.. _featured tag dict:
+
+.. code-block:: python
+
+    mastodon.featured_tags()[0]
+    # Returns the following dictionary:
+    {
+        'id': # The featured tags id
+        'name': # The featured tags name (without leading #)
+        'statuses_count': # Number of publicly visible statuses posted with this hashtag that this instance knows about
+        'last_status_at': # The last time a public status containing this hashtag was added to this instances database
+                          # (can be None if there are none)
+    }
     
 Admin account dicts
 ~~~~~~~~~~~~~~~~~~~
@@ -907,6 +922,13 @@ their relationships.
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
 
+Reading data: Featured tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+These functions allow retrieving info about a users featured and suggested tags.
+
+.. automethod:: Mastodon.featured_tags
+.. automethod:: Mastodon.featured_tag_suggestions
+
 Reading data: Keyword filters
 -----------------------------
 These functions allow you to get information about keyword filters.
@@ -1057,6 +1079,13 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_pin
 .. automethod:: Mastodon.account_unpin
 .. automethod:: Mastodon.account_update_credentials
+
+Writing data: Featured tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+These functions allow setting which tags are featured on a users profile.
+
+.. automethod:: Mastodon.featured_tag_create
+.. automethod:: Mastodon.featured_tag_delete
 
 Writing data: Keyword filters
 -----------------------------

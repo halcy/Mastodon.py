@@ -1,6 +1,7 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError
 import re
+import time
 
 @pytest.mark.vcr()
 def test_account(api):
@@ -215,3 +216,36 @@ def test_account_pin_unpin(api, api2):
 def test_preferences(api):
     prefs = api.preferences()
     assert prefs
+
+@pytest.mark.vcr()
+def test_suggested_tags(api):
+    try:
+        status = api.status_post("cool free #ringtones")
+        time.sleep(2)
+        
+        suggests = api.featured_tag_suggestions()
+        assert suggests
+        assert len(suggests) > 0
+    finally:
+        api.status_delete(status)
+    
+@pytest.mark.vcr()
+def test_featured_tags(api):
+    featured_tag = api.featured_tag_create("mastopytesttag")
+    assert featured_tag
+    
+    tag_list = api.featured_tags()
+    assert featured_tag.name in list(map(lambda x: x.name, tag_list))
+    
+    api.featured_tag_delete(featured_tag)
+    tag_list = api.featured_tags()
+    assert not featured_tag.name in list(map(lambda x: x.name, tag_list))
+        
+        
+        
+        
+        
+        
+        
+        
+        

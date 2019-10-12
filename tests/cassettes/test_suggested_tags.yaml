@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: status=cool+free+%23ringtones
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['29']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body: {string: '{"id":"102951123020457171","created_at":"2019-10-12T19:44:29.956Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost/users/mastodonpy_test/statuses/102951123020457171","url":"http://localhost/@mastodonpy_test/102951123020457171","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"content":"\u003cp\u003ecool
+        free \u003ca href=\"http://localhost/tags/ringtones\" class=\"mention hashtag\"
+        rel=\"tag\"\u003e#\u003cspan\u003eringtones\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T23:11:52.441Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":1,"statuses_count":3,"last_status_at":"2019-10-12T19:44:29.976Z","emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[{"name":"ringtones","url":"http://localhost/tags/ringtones"}],"emojis":[],"card":null,"poll":null}'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [7c348bde-1d33-451a-8ae0-87cb09d8a1a2]
+      X-Runtime: ['0.222922']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1494']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://localhost:3000/api/v1/featured_tags/suggestions
+  response:
+    body: {string: '[{"name":"ringtones","url":"http://localhost/tags/ringtones","history":[{"day":"1570838400","uses":"1","accounts":"1"},{"day":"1570752000","uses":"0","accounts":"0"},{"day":"1570665600","uses":"0","accounts":"0"},{"day":"1570579200","uses":"0","accounts":"0"},{"day":"1570492800","uses":"0","accounts":"0"},{"day":"1570406400","uses":"0","accounts":"0"},{"day":"1570320000","uses":"0","accounts":"0"}]}]'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [fc6ec1a8-9c2e-4c08-925d-f80522d5bf65]
+      X-Runtime: ['0.061457']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['403']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.18.4]
+    method: DELETE
+    uri: http://localhost:3000/api/v1/statuses/102951123020457171
+  response:
+    body: {string: '{"id":"102951123020457171","created_at":"2019-10-12T19:44:29.956Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost/users/mastodonpy_test/statuses/102951123020457171","url":"http://localhost/@mastodonpy_test/102951123020457171","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"pinned":false,"text":"cool
+        free #ringtones","reblog":null,"application":{"name":"Mastodon.py test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"created_at":"2019-06-22T23:11:52.441Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":1,"statuses_count":3,"last_status_at":"2019-10-12T19:44:29.976Z","emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[{"name":"ringtones","url":"http://localhost/tags/ringtones"}],"emojis":[],"card":null,"poll":null}'}
+    headers:
+      Cache-Control: ['no-cache, no-store']
+      Content-Type: [application/json; charset=utf-8]
+      Referrer-Policy: [strict-origin-when-cross-origin]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding, Origin']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Permitted-Cross-Domain-Policies: [none]
+      X-Request-Id: [68301b80-982f-4397-8c6b-d9e7d8cd308b]
+      X-Runtime: ['0.118422']
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1325']
+    status: {code: 200, message: OK}
+version: 1

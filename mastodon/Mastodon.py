@@ -212,6 +212,7 @@ class Mastodon:
     __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
     __DICT_VERSION_ADMIN_ACCOUNT = "2.9.1"
+    __DICT_VERSION_FEATURED_TAG = "3.0.0"
     
     ###
     # Registering apps
@@ -1143,6 +1144,28 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/lists'.format(str(id))
         return self.__api_request('GET', url, params)
+    
+    ###
+    # Reading data: Featured hashtags
+    ###
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    def featured_tags(self):
+        """
+        Return the hashtags the logged-in user has set to be featured on 
+        their profile as a list of `featured tag dicts`_.
+        
+        Returns a list of `featured tag dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/featured_tags')
+    
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_HASHTAG)
+    def featured_tag_suggestions(self):
+        """
+        Returns the logged-in users 10 most commonly hashtags.
+        
+        Returns a list of `hashtag dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/featured_tags/suggestions')
     
     ###
     # Reading data: Keyword filters
@@ -2138,6 +2161,28 @@ class Mastodon:
         return self.__api_request('POST', url)
 
     ###
+    # Writing data: Featured hashtags
+    ###
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    def featured_tag_create(self, name):
+        """
+        Creates a new featured hashtag displayed on the logged-in users profile.
+        
+        Returns a `featured tag dict`_ with the newly featured tag.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/featured_tags', params)
+    
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    def featured_tag_delete(self, id):
+        """
+        Deletes one of the logged-in users featured hashtags.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/featured_tags/{0}'.format(str(id))
+        self.__api_request('DELETE', url)
+
+    ###
     # Writing data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
@@ -2982,7 +3027,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at"]
+        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at", "last_status_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v != None:
