@@ -2226,23 +2226,27 @@ class Mastodon:
     ###
     # Writing data: Follow requests
     ###
-    @api_version("1.0.0", "1.0.0", "1.0.0")
+    @api_version("1.0.0", "3.0.0", __DICT_VERSION_RELATIONSHIP)
     def follow_request_authorize(self, id):
         """
         Accept an incoming follow request.
+        
+        Returns the updated `relationship dict`_ for the requesting account.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
-        self.__api_request('POST', url)
+        return self.__api_request('POST', url)
 
-    @api_version("1.0.0", "1.0.0", "1.0.0")
+    @api_version("1.0.0", "3.0.0", __DICT_VERSION_RELATIONSHIP)
     def follow_request_reject(self, id):
         """
         Reject an incoming follow request.
+        
+        Returns the updated `relationship dict`_ for the requesting account.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/reject'.format(str(id))
-        self.__api_request('POST', url)
+        return self.__api_request('POST', url)
 
     ###
     # Writing data: Media
