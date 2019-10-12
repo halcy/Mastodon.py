@@ -610,7 +610,7 @@ class Mastodon:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
-        Does not require authentication.
+        Does not require authentication unless locked down by the administrator.
 
         Returns an `instance dict`_.
         """
@@ -658,6 +658,8 @@ class Mastodon:
         The default timeline is the "home" timeline.
 
         Media only queries are supported via the `timeline_public()`_ and `timeline_hashtag()`_ functions.
+        
+        May or may not require authentication depending on server settings and what is specifically requested.
 
         Returns a list of `toot dicts`_.
         """
@@ -949,7 +951,7 @@ class Mastodon:
         """
         Fetch account information by user `id`.
         
-        Does not require authentication.
+        Does not require authentication for publicly visible accounts.
         
         Returns a `user dict`_.
         """
@@ -989,7 +991,7 @@ class Mastodon:
         If `exclude_replies` is set, filter out all statuses that are replies.
 
         Does not require authentication for Mastodon versions after 2.7.0 (returns
-        publicly visible statuses in that case).
+        publicly visible statuses in that case), for publicly visible accounts.
 
         Returns a list of `toot dicts`_.
         """
@@ -1431,7 +1433,7 @@ class Mastodon:
         """
         Fetch the list of custom emoji the instance has installed.
 
-        Does not require authentication.
+        Does not require authentication unless locked down by the administrator.
 
         Returns a list of `emoji dicts`_.
         
