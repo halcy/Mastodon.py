@@ -1611,9 +1611,10 @@ class Mastodon:
         return self.status_post(status)
 
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
-    def status_reply(self, to_status, status, media_ids=None, sensitive=False, visibility=None, 
-                     spoiler_text=None, language=None, idempotency_key=None, content_type=None,
-                     scheduled_at=None, poll=None, untag=False):
+    def status_reply(self, to_status, status, in_reply_to_id=None, media_ids=None,
+                    sensitive=False, visibility=None, spoiler_text=None,
+                    language=None, idempotency_key=None, content_type=None,
+                    scheduled_at=None, poll=None, untag=False):
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to to the status text and retains
@@ -1623,6 +1624,11 @@ class Mastodon:
         are replying to, removing every other mentioned user from the
         conversation.
         """
+        keyword_args = locals()
+        del keyword_args["self"]
+        del keyword_args["to_status"]
+        del keyword_args["untag"]
+        
         user_id = self.__get_logged_in_id()
         
         # Determine users to mention
@@ -1642,11 +1648,12 @@ class Mastodon:
             visibility = to_status.visibility
         if spoiler_text == None and 'spoiler_text' in to_status:
             spoiler_text = to_status.spoiler_text
-            
-        return self.status_post(status, in_reply_to_id = to_status.id, media_ids = media_ids, sensitive = sensitive, 
-                         visibility = visibility, spoiler_text = spoiler_text, language = language,
-                         idempotency_key = idempotency_key, content_type = content_type, 
-                         scheduled_at = scheduled_at, poll = poll)
+        
+        keyword_args["status"] = status
+        keyword_args["visibility"] = visibility
+        keyword_args["spoiler_text"] = spoiler_text
+        keyword_args["in_reply_to_id"] = to_status.id
+        return self.status_post(**keyword_args)
     
     @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
     def make_poll(self, options, expires_in, multiple=False, hide_totals=False):
