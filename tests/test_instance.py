@@ -32,3 +32,7 @@ def test_low_version(api_low_version):
 @pytest.mark.vcr()
 def test_emoji(api):
     assert len(api.custom_emojis()) == 0
+
+@pytest.mark.vcr()
+def test_health(api):
+    assert api.instance_health() == True

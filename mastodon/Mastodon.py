@@ -654,6 +654,13 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/instance/peers')
 
+    @api_version("3.0.0", "3.0.0", "3.0.0")
+    def instance_health(self):
+        """
+        Basic health check. Returns True if healthy, False if not.
+        """
+        return self.__api_request('GET', '/health', parse=False).decode("utf-8") == "success"
+
     ###
     # Reading data: Timelines
     ##

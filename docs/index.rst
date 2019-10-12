@@ -843,6 +843,7 @@ current instance.
 .. automethod:: Mastodon.instance
 .. automethod:: Mastodon.instance_activity
 .. automethod:: Mastodon.instance_peers
+.. automethod:: Mastodon.instance_health
 
 Reading data: Timelines
 -----------------------
