@@ -10,10 +10,12 @@ def test_polls(api, api2):
     api.poll_vote(status_poll.poll, [1])
     poll2 = api.poll(poll)
     assert poll2.votes_count == 1
+    assert poll2.own_votes == [1]
     
     api.poll_vote(status_poll.poll, [0])
     poll3 = api.poll(poll)
     assert poll3.votes_count == 2
+    assert poll3.own_votes == [1, 0]
     
     api2.status_delete(status_poll)
     
