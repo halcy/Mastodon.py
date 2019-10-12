@@ -437,6 +437,8 @@ Emoji dicts
         'shortcode': # Emoji shortcode, without surrounding colons
         'url': # URL for the emoji image, can be animated 
         'static_url': # URL for the emoji image, never animated
+        'visible_in_picker': # True if the emoji is enabled, False if not.
+        'category': # The category to display the emoji under (not present if none is set)
     }
  
 Application dicts
