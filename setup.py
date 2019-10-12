@@ -16,7 +16,7 @@ webpush_deps = [
 ]
 
 blurhash_deps = [
-    'blurhash>=1.1.3',
+    'blurhash>=1.1.4',
 ]
 
 extras = {
@@ -36,7 +36,7 @@ setup(name='Mastodon.py',
           'pytz',
           'python-magic',
           'decorator>=4.0.0', 
-      ],
+      ] + blurhash_deps,
       tests_require=test_deps,
       extras_require=extras,
       url='https://github.com/halcy/Mastodon.py',
