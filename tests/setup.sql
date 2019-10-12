@@ -46,13 +46,15 @@ INSERT INTO accounts (
     username,
     locked,
     created_at,
-    updated_at
+    updated_at,
+    discoverable
 ) VALUES (
     1234567890123457,
     'mastodonpy_test_2',
     't',
     now(),
-    now()
+    now(),
+    t
 );
 
 INSERT INTO users (

@@ -1239,6 +1239,19 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/suggestions')
     
     ###
+    # Reading data: Follow suggestions
+    ###
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_ACCOUNT)
+    def directory(self):
+        """
+        Fetch the contents of the profile directory, if enabled on the server.
+
+        Returns a list of `user dicts`_.
+        
+        """
+        return self.__api_request('GET', '/api/v1/directory')
+    
+    ###
     # Reading data: Endorsements
     ###
     @api_version("2.5.0", "2.5.0", __DICT_VERSION_ACCOUNT)

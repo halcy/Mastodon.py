@@ -263,12 +263,13 @@ User dicts
         'header_static': # URL for their header image, never animated
         'source': # Additional information - only present for user dict returned 
                   # from account_verify_credentials()
-        'moved_to_account': # If set, an account dict of the account this user has
+        'moved_to_account': # If set, a user dict of the account this user has
                             # set up as their moved-to address.
         'bot': # Boolean indicating whether this account is automated.
         'fields': # List of up to four dicts with free-form 'name' and 'value' profile info.
                   # For fields with "this is me" type verification, verified_at is set to the
                   # last verification date (It is None otherwise)
+        'emojis': # List of custom emoji used in name, bio or fields
     }
 
     mastodon.account_verify_credentials()["source"]
@@ -626,7 +627,7 @@ Search result dicts
     mastodon.search("<query>")
     # Returns the following dictionary
     {
-        'accounts': # List of account dicts resulting from the query
+        'accounts': # List of user dicts resulting from the query
         'hashtags': # List of hashtag dicts resulting from the query
         'statuses': # List of toot dicts resulting from the query
     }    
@@ -651,7 +652,7 @@ Instance dicts
         'stats: # A dictionary containing three stats, user_count (number of local users),
                 # status_count (number of local statuses) and domain_count (number of known
                 # instance domains other than this one).
-        'contact_account': # Account dict of the primary contact for the instance
+        'contact_account': # User dict of the primary contact for the instance
         'languages': # Array of ISO 639-1 (two-letter) language codes the instance 
                      # has chosen to advertise.
         'registrations': # Boolean indication whether registrations on this instance are open
@@ -691,11 +692,11 @@ Report dicts
         'comment': # Text comment submitted with the report
         'created_at': # Time at which this report was created, as a datetime object
         'updated_at': # Last time this report has been updated, as a datetime object
-        'account': # Account dict of the user that filed this report
+        'account': # User dict of the user that filed this report
         'target_account': # Account that has been reported with this report
         'assigned_account': # If the report as been assigned to an account, 
-                            # account dict of that account (None if not)
-        'action_taken_by_account': # Account dict of the account that processed this report
+                            # User dict of that account (None if not)
+        'action_taken_by_account': # User dict of the account that processed this report
         'statuses': # List of statuses attached to the report, as toot dicts
     }
     
@@ -796,7 +797,7 @@ Admin account dicts
         'locale': # For local users, the locale the user has set,
         'invite_request': # If the user requested an invite, the invite request comment of that user. (TODO permanent?)
         'invited_by_account_id': # Present if the user was invited by another user and set to the inviting users id.
-        'account': # The users account, as a standard account dict
+        'account': # The users account, as a standard user dict
     }
     
 App registration and user authentication
@@ -941,6 +942,11 @@ Reading data: Follow suggestions
 --------------------------------
 
 .. automethod:: Mastodon.suggestions
+
+Reading data: Profile directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. authomethod:: Mastodon.directory
 
 Reading data: Lists
 -------------------
