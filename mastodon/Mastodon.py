@@ -660,7 +660,35 @@ class Mastodon:
         Basic health check. Returns True if healthy, False if not.
         """
         return self.__api_request('GET', '/health', parse=False).decode("utf-8") == "success"
-
+    
+    @api_version("3.0.0", "3.0.0", "3.0.0")
+    def instance_nodeinfo(self, schema = "http://nodeinfo.diaspora.software/ns/schema/2.0"):
+        """
+        Retrieves the instances nodeinfo information.
+        
+        For information on what the nodeinfo can contain, see the nodeinfo
+        specification: https://github.com/jhass/nodeinfo . By default,
+        Mastodon.py will try to retrieve the version 2.0 schema nodeinfo.
+        
+        To override the schema, specify the desired schema with the `schema`
+        parameter.
+        """
+        links = self.__api_request('GET', '/.well-known/nodeinfo')["links"]
+        
+        schema_url = None
+        for available_schema in links:
+            if available_schema.rel == schema:
+                schema_url = available_schema.href
+                
+        if schema_url is None:
+            raise MastodonIllegalArgumentError("Requested nodeinfo schema is not available.")
+        
+        try:
+            return self.__api_request('GET', schema_url, base_url_override="")
+        except MastodonNotFoundError:
+            parse = urlparse(schema_url)
+            return self.__api_request('GET', parse.path + parse.params + parse.query + parse.fragment)
+    
     ###
     # Reading data: Timelines
     ##

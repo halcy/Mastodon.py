@@ -36,3 +36,10 @@ def test_emoji(api):
 @pytest.mark.vcr()
 def test_health(api):
     assert api.instance_health() == True
+    
+@pytest.mark.vcr()
+def test_nodeinfo(api):
+    nodeinfo = api.instance_nodeinfo()
+    assert nodeinfo
+    assert nodeinfo.version == '2.0'
+    
