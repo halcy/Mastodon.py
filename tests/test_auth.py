@@ -30,14 +30,12 @@ def test_log_in_password(api_anonymous):
         password='mastodonadmin')
     assert token
 
-
 @pytest.mark.vcr()
 def test_log_in_password_incorrect(api_anonymous):
     with pytest.raises(MastodonIllegalArgumentError):
         api_anonymous.log_in(
             username='admin@localhost',
             password='hunter2')
-
 
 @pytest.mark.vcr()
 def test_log_in_password_to_file(api_anonymous, tmpdir):
@@ -46,17 +44,41 @@ def test_log_in_password_to_file(api_anonymous, tmpdir):
         username='admin@localhost',
         password='mastodonadmin',
         to_file=str(filepath))
-    token = filepath.read_text('UTF-8').rstrip()
+    token = filepath.read_text('UTF-8').rstrip().split("\n")[0]
     assert token
     api = api_anonymous
     api.access_token = token
     assert api.account_verify_credentials()
 
+@pytest.mark.vcr()
+def test_url_errors(tmpdir):
+    clientid_good = tmpdir.join("clientid")
+    token_good = tmpdir.join("token")
+    clientid_bad = tmpdir.join("clientid_bad")
+    token_bad = tmpdir.join("token_bad")
+    
+    clientid_good.write_text("foo\nbar\nhttps://zombo.com\n", "UTF-8")
+    token_good.write_text("foo\nhttps://zombo.com\n", "UTF-8")
+    clientid_bad.write_text("foo\nbar\nhttps://evil.org\n", "UTF-8")
+    token_bad.write_text("foo\nhttps://evil.org\n", "UTF-8")  
+    
+    api = Mastodon(client_id = clientid_good, access_token = token_good)
+    assert api
+    assert api.api_base_url == "https://zombo.com"
+    assert Mastodon(client_id = clientid_good, access_token = token_good, api_base_url = "zombo.com")
+    
+    with pytest.raises(MastodonIllegalArgumentError):
+        Mastodon(client_id = clientid_good, access_token = token_bad, api_base_url = "zombo.com")
+        
+    with pytest.raises(MastodonIllegalArgumentError):
+        Mastodon(client_id = clientid_bad, access_token = token_good, api_base_url = "zombo.com")
+        
+    with pytest.raises(MastodonIllegalArgumentError):
+        Mastodon(client_id = clientid_bad, access_token = token_bad, api_base_url = "zombo.com")        
 
 @pytest.mark.skip(reason="Not sure how to test this without setting up selenium or a similar browser automation suite to click on the allow button")
 def test_log_in_code(api_anonymous):
     pass
-
 
 @pytest.mark.skip(reason="Not supported by Mastodon >:@ (yet?)")
 def test_log_in_refresh(api_anonymous):

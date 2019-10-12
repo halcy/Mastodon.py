@@ -267,16 +267,17 @@ class Mastodon:
 
         if to_file is not None:
             with open(to_file, 'w') as secret_file:
-                secret_file.write(response['client_id'] + '\n')
-                secret_file.write(response['client_secret'] + '\n')
-
+                secret_file.write(response['client_id'] + "\n")
+                secret_file.write(response['client_secret'] + "\n")
+                secret_file.write(api_base_url + "\n")
+                
         return (response['client_id'], response['client_secret'])
 
     ###
     # Authentication, including constructor
     ###
     def __init__(self, client_id=None, client_secret=None, access_token=None,
-                 api_base_url=__DEFAULT_BASE_URL, debug_requests=False,
+                 api_base_url=None, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
                  version_check_mode = "created", session=None):
@@ -285,9 +286,12 @@ class Mastodon:
         give a `client_id` and it is not a file, you must also give a secret. If you specify an
         `access_token` then you don't need to specify a `client_id`. It is allowed to specify
         neither - in this case, you will be restricted to only using endpoints that do not
-        require authentication.
+        require authentication.  If a file is given as `client_id`, client ID, secret and 
+        base url are read from that file.
 
-        You can also specify an `access_token`, directly or as a file (as written by `log_in()`_).
+        You can also specify an `access_token`, directly or as a file (as written by `log_in()`_). If
+        a file is given, Mastodon.py also tries to load the base URL from this file, if present. A
+        client id and secret are not required in this case.
 
         Mastodon.py can try to respect rate limits in several ways, controlled by `ratelimit_method`.
         "throw" makes functions throw a `MastodonRatelimitError` when the rate
@@ -298,8 +302,9 @@ class Mastodon:
         even in "wait" and "pace" mode, requests can still fail due to network or other problems! Also
         note that "pace" and "wait" are NOT thread safe.
 
-        Specify `api_base_url` if you wish to talk to an instance other than the flagship one.
-        If a file is given as `client_id`, client ID and secret are read from that file.
+        Specify `api_base_url` if you wish to talk to an instance other than the flagship one. When
+        reading from client id or access token files as written by Mastodon.py 1.5.0 or larger,
+        this can be omitted.
 
         By default, a timeout of 300 seconds is used for all requests. If you wish to change this,
         pass the desired timeout (in seconds) as `request_timeout`.
@@ -317,7 +322,10 @@ class Mastodon:
         changed after the version of Mastodon that is connected has been released. If it is set to "none",
         version checking is disabled.
         """
-        self.api_base_url = Mastodon.__protocolize(api_base_url)
+        self.api_base_url = None
+        if not api_base_url is None:
+            self.api_base_url = Mastodon.__protocolize(api_base_url)
+        
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = access_token
@@ -364,6 +372,13 @@ class Mastodon:
                 with open(self.client_id, 'r') as secret_file:
                     self.client_id = secret_file.readline().rstrip()
                     self.client_secret = secret_file.readline().rstrip()
+                    
+                    try_base_url = secret_file.readline().rstrip()
+                    if (not try_base_url is None) and len(try_base_url) != 0:
+                        try_base_url = Mastodon.__protocolize(try_base_url)
+                        if not (self.api_base_url is None or try_base_url == self.api_base_url):
+                            raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
+                        self.api_base_url = try_base_url
             else:
                 if self.client_secret is None:
                     raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
@@ -371,7 +386,14 @@ class Mastodon:
         if self.access_token is not None and os.path.isfile(self.access_token):
             with open(self.access_token, 'r') as token_file:
                 self.access_token = token_file.readline().rstrip()
-    
+                
+                try_base_url = token_file.readline().rstrip()
+                if (not try_base_url is None) and len(try_base_url) != 0:
+                    try_base_url = Mastodon.__protocolize(try_base_url)
+                    if not (self.api_base_url is None or try_base_url == self.api_base_url):
+                         raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
+                    self.api_base_url = try_base_url
+                        
     def retrieve_mastodon_version(self):
         """
         Determine installed mastodon version and set major, minor and patch (not including RC info) accordingly.
@@ -508,8 +530,9 @@ class Mastodon:
 
         if to_file is not None:
             with open(to_file, 'w') as token_file:
-                token_file.write(response['access_token'] + '\n')
-        
+                token_file.write(response['access_token'] + "\n")
+                token_file.write(self.api_base_url + "\n")
+                
         self.__logged_in_id = None
         
         return response['access_token']
@@ -572,8 +595,9 @@ class Mastodon:
         
         if to_file is not None:
             with open(to_file, 'w') as token_file:
-                token_file.write(response['access_token'] + '\n')
-        
+                token_file.write(response['access_token'] + "\n")
+                token_file.write(self.api_base_url + "\n")
+                
         self.__logged_in_id = None
         
         return response['access_token']
