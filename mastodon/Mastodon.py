@@ -1863,9 +1863,6 @@ class Mastodon:
         Marks a single conversation as read.
         
         Returns the updated `conversation dict`_.
-        
-        WARNING: This method is currently not documented in the official API and
-        might therefore be unstable.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/conversations/{0}/read'.format(str(id))
