@@ -1,7 +1,7 @@
 Mastodon.py
 ===========
 Python wrapper for the Mastodon ( https://github.com/tootsuite/mastodon/ ) API. 
-Feature complete for public API as of Mastodon version 2.9.2 and easy to get started with:
+Feature complete for public API as of Mastodon version 3.0.1 and easy to get started with:
 
 .. code-block:: python
 

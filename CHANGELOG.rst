@@ -2,6 +2,28 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.5.0
+------
+* BREAKING CHANGE: the search_v1 API is now gone from Mastodon, Mastodon.py will still let you use it where available / use it where needed if you call search()
+* Support for new 3.0.0 features
+    * Added profile directory API: directory()
+    * Added featured and suggested tags API: featured_tags(), featured_tag_suggestions(), featured_tag_create(), featured_tag_delete() (Thanks Gargron for the advice)
+    * Added read-markers API: markers_get(), markers_set()
+    * Re-added trends API: trends()
+    * Added health api: instance_health()
+    * Added nodeinfo support: instance_nodeinfo()
+    * Added new parameters to search (exclude_unreviewed) and create_account (reason)
+* Added ability to persist base URLs together with access token and client id / secret files
+* Documented that status_card endpoint has been removed, switched to alternate method of retrieving cards if function is still used
+* Added blurhash as a core dependency, since it is now licensed permissively again
+* Added me() function as synonym for account_verify_credentials() to lessen confusion
+* Fixed notification-dismiss to use new API endpoint where the old one is not available (Thanks kensanata)
+* Fixed status_reply to match status_post
+* Add basic support for non-mainline featuresvia the feature_set parameter
+    * Added support for fedibirds quote_id parameter in status_post
+* Future-proofed webpush cryptography api while trying to remain very backwards compatible so that it can hopefully in the future become part of the core
+* Clarified and updated the documentation and improved the tests in various ways
+
 v1.4.6
 ------
 * Fix documentation for list_accounts()
