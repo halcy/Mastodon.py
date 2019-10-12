@@ -1207,7 +1207,7 @@ class Mastodon:
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
             
     @api_version("1.1.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
-    def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None):
+    def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
         """
         Fetch matching hashtags, accounts and statuses. Will perform webfinger
         lookups if resolve is True. Full-text search is only enabled if
@@ -1221,6 +1221,9 @@ class Mastodon:
         
         `offset`, `min_id` and `max_id` can be used to paginate.
 
+        `exclude_unreviewed` can be used to restrict search results for hashtags to only
+        those that have been reviewed by moderators. It is on by default.
+    
         Will use search_v1 (no tag dicts in return values) on Mastodon versions before 
         2.4.1), search_v2 otherwise. Parameters other than resolve are only available
         on Mastodon 2.8.0 or above - this function will throw a MastodonVersionError
@@ -1250,10 +1253,12 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/search', params)
 
     @api_version("2.4.1", "2.8.0", __DICT_VERSION_SEARCHRESULT)
-    def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None):
+    def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
         """
         Identical to `search_v1()`, except in that it returns tags as
         `hashtag dicts`_, has more parameters, and resolves by default.
+        
+        For more details documentation, please see `search()`
 
         Returns a `search result dict`_.
         """
@@ -1261,7 +1266,10 @@ class Mastodon:
         params = self.__generate_params(locals())
         
         if resolve == False:
-            del params['resolve']
+            del params["resolve"]
+        
+        if exclude_unreviewed == False or not self.verify_minimum_version("3.0.0", cached=True):
+            del params["exclude_unreviewed"]
         
         if "result_type" in params:
             params["type"] = params["result_type"]
