@@ -546,12 +546,13 @@ class Mastodon:
         return response['access_token']
     
     @api_version("2.7.0", "2.7.0", "2.7.0")
-    def create_account(self, username, password, email, agreement=False, locale="en", scopes=__DEFAULT_SCOPES, to_file=None):
+    def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=__DEFAULT_SCOPES, to_file=None):
         """
         Creates a new user account with the given username, password and email. "agreement"
         must be set to true (after showing the user the instances user agreement and having
         them agree to it), "locale" specifies the language for the confirmation e-mail as an
-        ISO 639-1 (two-letter) language code.
+        ISO 639-1 (two-letter) language code. `reason` can be used to specify why a user
+        would like to join if approved-registrations mode is on.
         
         Does not require an access token, but does require a client grant.
         
