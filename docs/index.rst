@@ -949,6 +949,11 @@ Reading data: Searching
 .. automethod:: Mastodon.search
 .. automethod:: Mastodon.search_v2
 
+Reading data: Trends
+--------------------
+
+.. automethod:: Mastodon.trends
+
 Reading data: Mutes and blocks
 ------------------------------
 These functions allow you to get information about accounts that are

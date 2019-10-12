@@ -1313,6 +1313,28 @@ class Mastodon:
         return self.__api_request('GET', '/api/v2/search', params)
 
     ###
+    # Reading data: Trends
+    ###
+    @api_version("2.4.3", "3.0.0", __DICT_VERSION_HASHTAG)
+    def trends(self, limit = None):
+        """
+        Fetch trending-hashtag information, if the instance provides such information.
+        
+        Specify `limit` to limit how many results are returned (the maximum number
+        of results is 10, the endpoint is not paginated).
+        
+        Does not require authentication unless locked down by the administrator.
+        
+        Important versioning note: This endpoint does not exist for Mastodon versions
+        between 2.8.0 (inclusive) and 3.0.0 (exclusive).
+        
+        Returns a list of `hashtag dicts`_, sorted by the instances trending algorithm,
+        descending.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/trends', params)
+
+    ###
     # Reading data: Lists
     ###
     @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
