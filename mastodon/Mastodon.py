@@ -280,7 +280,7 @@ class Mastodon:
                  api_base_url=None, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode = "created", session=None):
+                 version_check_mode = "created", session=None, feature_set="mainline"):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret. If you specify an
@@ -321,6 +321,10 @@ class Mastodon:
         to have an endpoint. If it is set to "changed", it will throw an error if the endpoints behaviour has
         changed after the version of Mastodon that is connected has been released. If it is set to "none",
         version checking is disabled.
+        
+        `feature_set` can be used to enable behaviour specific to non-mainline Mastodon API implementations.
+        Details are documented in the functions that provide such functionality. Currently supported feature
+        sets are `mainline` and `fedibird`.
         """
         self.api_base_url = None
         if not api_base_url is None:
@@ -349,6 +353,10 @@ class Mastodon:
         else:
             self.session = requests.Session()
 
+        self.feature_set = feature_set
+        if not self.feature_set in ["mainline", "fedibird"]:
+            raise MastodonIllegalArgumentError('Requested invalid feature set')
+        
         # Versioning
         if mastodon_version == None:
             self.retrieve_mastodon_version()
@@ -1487,7 +1495,7 @@ class Mastodon:
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
                     language=None, idempotency_key=None, content_type=None,
-                    scheduled_at=None, poll=None):
+                    scheduled_at=None, poll=None, quote_id=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -1538,8 +1546,16 @@ class Mastodon:
         This parameter is not supported on Mastodon servers, but will be
         safely ignored if set.
 
+        **Specific to `fedibird` feature set:**: The `quote_id` parameter is 
+        a non-standard extension that specifies the id of a quoted status.
+
         Returns a `toot dict`_ with the new status.
         """
+        if quote_id != None:
+            if self.feature_set != "fedibird":
+                raise MastodonIllegalArgumentError('quote_id is only available with feature set fedibird')
+            quote_id = self.__unpack_id(quote_id)
+            
         if in_reply_to_id != None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
         
