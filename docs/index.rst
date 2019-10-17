@@ -488,7 +488,7 @@ Filter dicts
  
 .. code-block:: python
 
-    mastodon.account_follow(<numerical id>)
+    mastodon.filter(<numerical id>)
     # Returns the following dictionary:
     {
         'id': # Numerical id of the filter
