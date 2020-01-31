@@ -2107,7 +2107,7 @@ class Mastodon:
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, avatar_mime_type=None,
                                    header=None, header_mime_type=None, 
-                                   locked=None, fields=None):
+                                   locked=None, bot=None, fields=None):
         """
         Update the profile for the currently logged-in user.
 
@@ -2117,6 +2117,8 @@ class Mastodon:
         pass image data and a mime type, or a filename of an image file, for either.
         
         'locked' specifies whether the user needs to manually approve follow requests.
+        
+        'bot' specifies whether the user should be set to a bot.
         
         'fields' can be a list of up to four name-value pairs (specified as tuples) to 
         appear as semi-structured information in the users profile.
