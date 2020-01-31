@@ -2136,7 +2136,7 @@ class Mastodon:
         
         # Load header, if specified
         if not header is None:
-            if header_mime_type is None and (isinstance(avatar, str) and os.path.isfile(header)):
+            if header_mime_type is None and (isinstance(header, str) and os.path.isfile(header)):
                 header_mime_type = guess_type(header)
                 header = open(header, 'rb')
 
