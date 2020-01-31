@@ -2107,7 +2107,8 @@ class Mastodon:
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, avatar_mime_type=None,
                                    header=None, header_mime_type=None, 
-                                   locked=None, bot=None, fields=None):
+                                   locked=None, bot=None, 
+                                   discoverable=None, fields=None):
         """
         Update the profile for the currently logged-in user.
 
