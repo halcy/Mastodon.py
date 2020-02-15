@@ -3215,6 +3215,8 @@ class Mastodon:
                 else:
                     kwargs['json'] = params
                 
+                # Block list with exactly three entries, matching on hashes of the instance API domain
+                # For more information, have a look at the docs
                 if hashlib.sha256(",".join(base_url.split("//")[-1].split("/")[0].split(".")[-2:]).encode("utf-8")).hexdigest() in \
                     [
                         "f3b50af8594eaa91dc440357a92691ff65dbfc9555226e9545b8e083dc10d2e1", 
