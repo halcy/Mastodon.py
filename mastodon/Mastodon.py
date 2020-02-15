@@ -3672,8 +3672,8 @@ class MastodonMalformedEventError(MastodonError):
 
 def guess_type(media_file):
     mime_type = None
-    if magic:
+    try:
         mime_type = magic.from_file(media_file, mime=True)
-    else:
+    except AttributeError:
         mime_type = mimetypes.guess_type(media_file)[0]
     return mime_type
