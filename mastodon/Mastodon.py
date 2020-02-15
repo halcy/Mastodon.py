@@ -183,13 +183,13 @@ class Mastodon:
     __VALID_SCOPES = ['read', 'write', 'follow', 'push', 'admin:read', 'admin:write'] + \
         __SCOPE_SETS['read'] + __SCOPE_SETS['write'] + __SCOPE_SETS['admin:read'] + __SCOPE_SETS['admin:write']
         
-    __SUPPORTED_MASTODON_VERSION = "3.0.1"
+    __SUPPORTED_MASTODON_VERSION = "3.1.1"
     
     # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "2.8.2"
-    __DICT_VERSION_ACCOUNT = "2.4.0"
+    __DICT_VERSION_ACCOUNT = "3.1.0"
     __DICT_VERSION_POLL = "2.8.0"
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.9.1", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
@@ -211,7 +211,7 @@ class Mastodon:
     __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = "2.9.1"
+    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("2.9.1", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
     
@@ -2103,7 +2103,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1", "2.4.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.1.1", "3.1.0", __DICT_VERSION_ACCOUNT)
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, avatar_mime_type=None,
                                    header=None, header_mime_type=None, 
@@ -2112,16 +2112,18 @@ class Mastodon:
         """
         Update the profile for the currently logged-in user.
 
-        'note' is the user's bio.
+        `note` is the user's bio.
 
-        'avatar' and 'header' are images. As with media uploads, it is possible to either
+        `avatar` and 'header' are images. As with media uploads, it is possible to either
         pass image data and a mime type, or a filename of an image file, for either.
         
-        'locked' specifies whether the user needs to manually approve follow requests.
+        `locked` specifies whether the user needs to manually approve follow requests.
         
-        'bot' specifies whether the user should be set to a bot.
+        `bot` specifies whether the user should be set to a bot.
         
-        'fields' can be a list of up to four name-value pairs (specified as tuples) to 
+        `discoverable` specifies whether the user should appear in the user directory.
+        
+        `fields` can be a list of up to four name-value pairs (specified as tuples) to 
         appear as semi-structured information in the users profile.
         
         Returns the updated `user dict` of the logged-in user.
