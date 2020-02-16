@@ -250,6 +250,9 @@ User dicts
         'username': # The username (what you @ them with)
         'acct': # The user's account name as username@domain (@domain omitted for local users)
         'display_name': # The user's display name
+        'discoverable': # True if the user is listed in the user directory, false if not. None
+                        # for remote users.
+        'group': # A surprise attribute that will help us later.
         'locked': # Denotes whether the account can be followed without a follow request
         'created_at': # Account creation time
         'following_count': # How many people they follow
@@ -510,7 +513,7 @@ Notification dicts
     # Returns the following dictionary:
     {
         'id': # id of the notification
-        'type': # "mention", "reblog", "favourite" or "follow"
+        'type': # "mention", "reblog", "favourite", "follow", "poll" or "follow_request"
         'created_at': # The time the notification was created
         'account': # User dict of the user from whom the notification originates
         'status': # In case of "mention", the mentioning status
