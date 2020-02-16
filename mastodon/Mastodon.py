@@ -1663,10 +1663,10 @@ class Mastodon:
         2.8.2, you can only have either media or a poll attached, not both at 
         the same time.
 
-        Specify `content_type` to set the content type of your post on Pleroma.
-        It accepts 'text/plain' (default), 'text/markdown', and 'text/html'.
-        This parameter is not supported on Mastodon servers, but will be
-        safely ignored if set.
+        **Specific to `pleroma` feature set:**: Specify `content_type` to set 
+        the content type of your post on Pleroma. It accepts 'text/plain' (default), 
+        'text/markdown', 'text/html' and 'text/bbcode. This parameter is not 
+        supported on Mastodon servers, but will be safely ignored if set.
 
         **Specific to `fedibird` feature set:**: The `quote_id` parameter is 
         a non-standard extension that specifies the id of a quoted status.
