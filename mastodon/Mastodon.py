@@ -326,7 +326,7 @@ class Mastodon:
         
         `feature_set` can be used to enable behaviour specific to non-mainline Mastodon API implementations.
         Details are documented in the functions that provide such functionality. Currently supported feature
-        sets are `mainline` and `fedibird`.
+        sets are `mainline`, `fedibird` and `pleroma`.
         """
         self.api_base_url = None
         if not api_base_url is None:
@@ -356,7 +356,7 @@ class Mastodon:
             self.session = requests.Session()
 
         self.feature_set = feature_set
-        if not self.feature_set in ["mainline", "fedibird"]:
+        if not self.feature_set in ["mainline", "fedibird", "pleroma"]:
             raise MastodonIllegalArgumentError('Requested invalid feature set')
         
         # Versioning
@@ -1677,6 +1677,13 @@ class Mastodon:
             if self.feature_set != "fedibird":
                 raise MastodonIllegalArgumentError('quote_id is only available with feature set fedibird')
             quote_id = self.__unpack_id(quote_id)
+           
+        if content_type != None:
+            if self.feature_set != "pleroma":
+                raise MastodonIllegalArgumentError('quote_id is only available with feature set pleroma')
+            # It would be better to read this from nodeinfo and cache, but this is easier
+            if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
+                raise MastodonIllegalArgumentError('Invalid content type specified')
             
         if in_reply_to_id != None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
