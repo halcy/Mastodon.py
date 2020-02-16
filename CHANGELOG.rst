@@ -31,7 +31,7 @@ v1.5.0
 * Added me() function as synonym for account_verify_credentials() to lessen confusion
 * Fixed notification-dismiss to use new API endpoint where the old one is not available (Thanks kensanata)
 * Fixed status_reply to match status_post
-* Add basic support for non-mainline featuresvia the feature_set parameter
+* Add basic support for non-mainline features via the feature_set parameter
     * Added support for fedibirds quote_id parameter in status_post
 * Future-proofed webpush cryptography api while trying to remain very backwards compatible so that it can hopefully in the future become part of the core
 * Clarified and updated the documentation and improved the tests in various ways
