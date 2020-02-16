@@ -252,7 +252,8 @@ User dicts
         'display_name': # The user's display name
         'discoverable': # True if the user is listed in the user directory, false if not. None
                         # for remote users.
-        'group': # A surprise attribute that will help us later.
+        'group': # A boolean indicating whether the account represents a group rather than an
+                 # individual.
         'locked': # Denotes whether the account can be followed without a follow request
         'created_at': # Account creation time
         'following_count': # How many people they follow
