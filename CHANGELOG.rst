@@ -2,6 +2,18 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.5.1 (in progress, unreleased)
+--------------------------------
+* 3.1 support
+	* Added `discoverable` parameter to account_update_credentials (Thanks gdunstone)
+	* Added new notification type "follow_request"
+* Fixed missing notification type "poll" in push notification API and documentation.´
+* Fix header upload in account_update_credentials (Thanks gdunstone)
+* Commented blocklist code (Thanks marnanel for the report)
+* Added fallback for when magic is not available (Thanks limburgher)
+* Added missing "mentions_only" parameter to notifications (Thanks adbenitez for the report)
+* Moved "content_type" parameter into "pleroma" feature set. This is a breaking change.
+
 v1.5.0
 ------
 * BREAKING CHANGE: the search_v1 API is now gone from Mastodon, Mastodon.py will still let you use it where available / use it where needed if you call search()
