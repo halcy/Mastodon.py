@@ -1,5 +1,10 @@
 Here's some general stuff to keep in mind, and some work that needs to be done:
 
+* 3.1 support is currently incomplete, patches welcome, especially if they contain unit tests:
+  * Add announcements
+  * Add announcement reactions
+  * Add bookmarks and bookmarks oauth scopes
+
 * If you'd like to contribute, here's some suggestions:
   * Features are currently up to date and mostly tested, but there are some areas where tests could be 
     better. Check the codecov page and try to add tests those areas.
@@ -11,7 +16,7 @@ Here's some general stuff to keep in mind, and some work that needs to be done:
     * Figure out what they do different and file issues / document it
     * Where code can be written to support alternate implementations or different features, write code to do this
     * Write tests specific to these features
-* Mastodon.py still somewhat tries to work for python2 as well as python3, so avoid things like annotations,
-  use requests over urllib, et cetera. However, python2 is not officially supported and not tested for anymore,
-  and once python2 reaches end of life (January 1st, 2020), this is over with.
- 
+    * We now have a "feature set" parameter to support these better.
+    
+
+
