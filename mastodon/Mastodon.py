@@ -960,7 +960,7 @@ class Mastodon:
     # Reading data: Notifications
     ###
     @api_version("1.0.0", "2.9.0", __DICT_VERSION_NOTIFICATION)
-    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
+    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, mentions_only=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
