@@ -2509,7 +2509,8 @@ class Mastodon:
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
     def push_subscription_set(self, endpoint, encrypt_params, follow_events=None, 
                               favourite_events=None, reblog_events=None, 
-                              mention_events=None):
+                              mention_events=None, poll_events=None,
+                              follow_request_events=None):
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
         
@@ -2545,6 +2546,12 @@ class Mastodon:
             
         if mention_events != None:
             params['data[alerts][mention]'] = mention_events
+            
+        if poll_events != None:
+            params['data[alerts][poll]'] = poll_events
+            
+        if follow_request_events != None:
+            params['data[alerts][follow_request]'] = follow_request_events
         
         # Canonicalize booleans
         params = self.__generate_params(params)
@@ -2554,7 +2561,8 @@ class Mastodon:
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
     def push_subscription_update(self, follow_events=None, 
                               favourite_events=None, reblog_events=None, 
-                              mention_events=None):
+                              mention_events=None, poll_events=None,
+                              follow_request_events=None):
         """
         Modifies what kind of events the app wishes to subscribe to.
         
@@ -2573,6 +2581,12 @@ class Mastodon:
             
         if mention_events != None:
             params['data[alerts][mention]'] = mention_events
+            
+        if poll_events != None:
+            params['data[alerts][poll]'] = poll_events
+            
+        if follow_request_events != None:
+            params['data[alerts][follow_request]'] = follow_request_events
             
         # Canonicalize booleans
         params = self.__generate_params(params)            
