@@ -1009,6 +1009,11 @@ muted or blocked by the logged in user.
 .. automethod:: Mastodon.mutes
 .. automethod:: Mastodon.blocks
 
+Reading data: Bookmarks
+-----------------------
+
+.. automethod:: Mastodon.bookmarks
+
 Reading data: Reports
 ---------------------
 In Mastodon versions before 2.5.0 this function allowed for the retrieval
@@ -1068,6 +1073,8 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_unmute
 .. automethod:: Mastodon.status_pin
 .. automethod:: Mastodon.status_unpin
+.. automethod:: Mastodon.status_bookmark
+.. automethod:: Mastodon.status_unbookmark
 .. automethod:: Mastodon.status_delete
 
 Writing data: Scheduled statuses
