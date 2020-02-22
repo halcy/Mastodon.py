@@ -1622,7 +1622,7 @@ class Mastodon:
         
         Returns a list of `toot dicts`_.
         """
-         return self.__api_request('GET', '/api/v1/bookmarks')
+        return self.__api_request('GET', '/api/v1/bookmarks')
     
     ###
     # Writing data: Statuses

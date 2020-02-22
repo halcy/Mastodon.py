@@ -54,7 +54,7 @@ INSERT INTO accounts (
     't',
     now(),
     now(),
-    t
+    't'
 );
 
 INSERT INTO users (
