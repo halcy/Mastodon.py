@@ -314,6 +314,7 @@ Toot dicts
         'media_attachments': # A list of media dicts of attached files
         'emojis': # A list of custom emojis used in the toot, as Emoji dicts
         'tags': # A list of hashtag used in the toot, as Hashtag dicts
+        'bookmarked': # True if the status is bookmarked by the logged in user, False if not.
         'application': # Application dict for the client used to post the toot (Does not federate
                        # and is therefore always None for remote toots, can also be None for
                        # local toots for some legacy applications).

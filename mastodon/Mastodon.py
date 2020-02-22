@@ -148,7 +148,8 @@ class Mastodon:
             'read:mutes', 
             'read:notifications', 
             'read:search', 
-            'read:statuses'
+            'read:statuses',
+            'read:bookmarks'
         ],
         'write': [
             'write:accounts', 
@@ -162,6 +163,7 @@ class Mastodon:
             'write:notifications', 
             'write:reports', 
             'write:statuses',
+            'write:bookmarks'
         ],
         'follow': [
             'read:blocks',
@@ -191,7 +193,7 @@ class Mastodon:
     __DICT_VERSION_MEDIA = "2.8.2"
     __DICT_VERSION_ACCOUNT = "3.1.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("2.9.1", 
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("3.1.0", 
             __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("2.9.2", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
