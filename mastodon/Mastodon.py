@@ -1613,6 +1613,18 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/markers', params)
 
     ###
+    # Reading data: Bookmarks
+    ###
+    @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
+    def bookmarks(self):
+        """
+        Get a list of statuses bookmarked by the logged-in user.
+        
+        Returns a list of `toot dicts`_.
+        """
+         return self.__api_request('GET', '/api/v1/bookmarks')
+    
+    ###
     # Writing data: Statuses
     ###
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
@@ -1926,6 +1938,29 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unpin'.format(str(id))
+        return self.__api_request('POST', url)
+    
+    
+    @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
+    def status_bookmark(self, id):
+        """
+        Bookmark a status as the logged-in user.
+
+        Returns a `toot dict`_ with the now bookmarked status
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/statuses/{0}/bookmark'.format(str(id))
+        return self.__api_request('POST', url)
+
+    @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
+    def status_unbookmark(self, id):
+        """
+        Unbookmark a bookmarked status for the logged-in user.
+
+        Returns a `toot dict`_ with the status that used to be bookmarked.
+        """
+        id = self.__unpack_id(id)
+        url = '/api/v1/statuses/{0}/unbookmark'.format(str(id))
         return self.__api_request('POST', url)
 
     ###
