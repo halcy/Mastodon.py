@@ -5,8 +5,11 @@ version number. Breaking changes will be indicated by a change in the minor
 v1.5.1 (in progress, unreleased)
 --------------------------------
 * 3.1 support
-	* Added `discoverable` parameter to account_update_credentials (Thanks gdunstone)
-	* Added new notification type "follow_request"
+    * Added `discoverable` parameter to account_update_credentials (Thanks gdunstone)
+    * Added new notification type "follow_request"
+    * Added bookmarks support: 
+        * New functions: `status_bookmark`, `status_unbookmark`, `bookmarks`
+        * New fine-grained oauth scopes: read:bookmarks and write:bookmarks.
 * Fixed missing notification type "poll" in push notification API and documentation.´
 * Fix header upload in account_update_credentials (Thanks gdunstone)
 * Commented blocklist code (Thanks marnanel for the report)

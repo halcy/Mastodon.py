@@ -3,7 +3,6 @@ Here's some general stuff to keep in mind, and some work that needs to be done:
 * 3.1 support is currently incomplete, patches welcome, especially if they contain unit tests:
   * Add announcements
   * Add announcement reactions
-  * Add bookmarks and bookmarks oauth scopes
 
 * If you'd like to contribute, here's some suggestions:
   * Features are currently up to date and mostly tested, but there are some areas where tests could be 
