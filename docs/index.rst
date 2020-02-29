@@ -1084,7 +1084,7 @@ Reading data: Preferences
 .. automethod:: Mastodon.preferences
 
 Reading data: Announcements
---------------------------
+---------------------------
 
 .. automethod:: Mastodon.announcements
 

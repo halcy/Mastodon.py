@@ -10,6 +10,10 @@ v1.5.1 (in progress, unreleased)
     * Added bookmarks support: 
         * New functions: `status_bookmark`, `status_unbookmark`, `bookmarks`
         * New fine-grained oauth scopes: read:bookmarks and write:bookmarks.
+    * Added announcement support
+        * New functions: `announcements`, `announcement_dismiss`
+    * Added announcement reaction support
+        * New functions: `announcement_reaction_create`, `announcement_reaction_delete`
 * Fixed missing notification type "poll" in push notification API and documentation.´
 * Fixed a token loading bug
 * Fix header upload in account_update_credentials (Thanks gdunstone)
