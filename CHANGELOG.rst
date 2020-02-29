@@ -11,6 +11,7 @@ v1.5.1 (in progress, unreleased)
         * New functions: `status_bookmark`, `status_unbookmark`, `bookmarks`
         * New fine-grained oauth scopes: read:bookmarks and write:bookmarks.
 * Fixed missing notification type "poll" in push notification API and documentation.´
+* Fixed a token loading bug
 * Fix header upload in account_update_credentials (Thanks gdunstone)
 * Commented blocklist code (Thanks marnanel for the report)
 * Added fallback for when magic is not available (Thanks limburgher)

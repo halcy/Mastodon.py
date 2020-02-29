@@ -216,6 +216,8 @@ class Mastodon:
     __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("2.9.1", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
+    __DICT_VERSION_REACTION = "3.1.0"
+    __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
     
     ###
     # Registering apps
@@ -361,23 +363,6 @@ class Mastodon:
         if not self.feature_set in ["mainline", "fedibird", "pleroma"]:
             raise MastodonIllegalArgumentError('Requested invalid feature set')
         
-        # Versioning
-        if mastodon_version == None:
-            self.retrieve_mastodon_version()
-        else:
-            try:
-                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
-            except:
-                raise MastodonVersionError("Bad version specified")
-        
-        if not version_check_mode in ["created", "changed", "none"]:
-            raise MastodonIllegalArgumentError("Invalid version check method.")
-        self.version_check_mode = version_check_mode
-        
-        # Ratelimiting parameter check
-        if ratelimit_method not in ["throw", "wait", "pace"]:
-            raise MastodonIllegalArgumentError("Invalid ratelimit method.")
-        
         # Token loading
         if self.client_id is not None:
             if os.path.isfile(self.client_id):
@@ -405,7 +390,25 @@ class Mastodon:
                     if not (self.api_base_url is None or try_base_url == self.api_base_url):
                          raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                     self.api_base_url = try_base_url
-                        
+        
+        # Versioning
+        if mastodon_version == None:
+            self.retrieve_mastodon_version()
+        else:
+            try:
+                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
+            except:
+                raise MastodonVersionError("Bad version specified")
+        
+        if not version_check_mode in ["created", "changed", "none"]:
+            raise MastodonIllegalArgumentError("Invalid version check method.")
+        self.version_check_mode = version_check_mode
+        
+        # Ratelimiting parameter check
+        if ratelimit_method not in ["throw", "wait", "pace"]:
+            raise MastodonIllegalArgumentError("Invalid ratelimit method.")
+        
+        
     def retrieve_mastodon_version(self):
         """
         Determine installed mastodon version and set major, minor and patch (not including RC info) accordingly.
@@ -1594,6 +1597,20 @@ class Mastodon:
         return self.__api_request('GET', '/api/v1/preferences')
 
     ##
+    # Reading data: Announcements
+    ##
+    
+    #/api/v1/announcements
+    @api_version("3.1.0", "3.1.0", __DICT_VERSION_ANNOUNCEMENT)
+    def announcements(self):
+        """
+        Fetch currently active annoucements.
+        
+        Returns a list of `annoucement dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/announcements')
+    
+    ##
     # Reading data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", __DICT_VERSION_MARKER)
@@ -2643,7 +2660,47 @@ class Mastodon:
         Remove the current push subscription the logged-in user has for this app.
         """
         self.__api_request('DELETE', '/api/v1/push/subscription')
+    
+    ###
+    # Writing data: Annoucements
+    ###
+    @api_version("3.1.0", "3.1.0", "3.1.0")
+    def announcement_dismiss(self, id):
+        """
+        Set the given annoucement to read.
+        """
+        id = self.__unpack_id(id)
+        
+        url = '/api/v1/announcements/{0}/dismiss'.format(str(id))
+        self.__api_request('POST', url)
+        
+    @api_version("3.1.0", "3.1.0", "3.1.0")
+    def announcement_reaction_create(self, id, reaction):
+        """
+        Add a reaction to an announcement. `reaction` can either be a unicode emoji
+        or the name of one of the instances custom emoji.
+        
+        Will throw an API error if the reaction name is not one of the allowed things
+        or when trying to add a reaction that the user has already added (adding a
+        reaction that a different user added is legal and increments the count).
+        """
+        id = self.__unpack_id(id)
+        
+        url = '/api/v1/announcements/{0}/reactions/{1}'.format(str(id), reaction)
+        self.__api_request('PUT', url)
      
+    @api_version("3.1.0", "3.1.0", "3.1.0")
+    def announcement_reaction_delete(self, id, reaction):
+        """
+        Remove a reaction to an announcement.
+        
+        Will throw an API error if the reaction does not exist.
+        """        
+        id = self.__unpack_id(id)
+        
+        url = '/api/v1/announcements/{0}/reactions/{1}'.format(str(id), reaction)
+        self.__api_request('DELETE', url)
+        
     ###
     # Moderation API
     ###
@@ -3151,7 +3208,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at", "last_status_at"]
+        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at", "last_status_at", "starts_at", "ends_at", "published_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v != None:

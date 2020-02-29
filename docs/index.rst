@@ -791,7 +791,37 @@ Read marker dicts
         'version': # A counter that is incremented whenever the marker is set to a new status
         'updated_at': # The time the marker was last set, as a datetime object
     }    
-    
+
+Announcement dicts
+~~~~~~~~~~~~~~~~~~
+.. _announcement dict:
+
+.. code-block:: python
+
+    mastodon.annoucements()[0]
+    # Returns the following dictionary:    
+    {
+        'id': # The annoucements id
+        'content': # The contents of the annoucement, as an html string
+        'starts_at': # The annoucements start time, as a datetime object. Can be None
+        'ends_at': # The annoucements end time, as a datetime object. Can be None
+        'all_day': # Boolean indicating whether the annoucement represents an "all day" event
+        'published_at': # The annoucements publish time, as a datetime object
+        'updated_at': # The annoucements last updated time, as a datetime object
+        'read': # A boolean indicating whether the logged in user has dismissed the annoucement
+        'mentions': # Users mentioned in the annoucement, as a list of mention dicts
+        'tags': # Hashtags mentioned in the announcement, as a list of hashtag dicts
+        'emojis': # Custom emoji used in the annoucement, as a list of emoji dicts
+        'reactions': # Reactions to the annoucement, as a list of reaction dicts (documented inline here):
+        [ {
+            'name': '# Name of the custom emoji or unicode emoji of the reaction
+            'count': # Reaction counter (i.e. number of users who have added this reaction)
+            'me': # True if the logged-in user has reacted with this emoji, false otherwise
+            'url': # URL for the custom emoji image
+            'static_url': # URL for a never-animated version of the custom emoji image
+        } ],
+    }
+
 Admin account dicts
 ~~~~~~~~~~~~~~~~~~~
 .. _admin account dict:
@@ -1053,6 +1083,11 @@ Reading data: Preferences
 
 .. automethod:: Mastodon.preferences
 
+Reading data: Announcements
+--------------------------
+
+.. automethod:: Mastodon.announcements
+
 
 Writing data: Statuses
 ----------------------
@@ -1192,6 +1227,15 @@ for the logged-in user.
 
 .. automethod:: Mastodon.domain_block
 .. automethod:: Mastodon.domain_unblock
+
+
+Writing data: Announcements
+---------------------------
+These functions allow you to mark annoucements read and modify reactions.
+
+.. automethod:: Mastodon.announcement_dismiss
+.. automethod:: Mastodon.announcement_reaction_create
+.. automethod:: Mastodon.announcement_reaction_delete
 
 Pagination
 ----------
