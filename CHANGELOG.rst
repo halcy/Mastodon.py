@@ -2,7 +2,7 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v1.5.1 (in progress, unreleased)
+v1.5.1
 --------------------------------
 * 3.1 support
     * Added `discoverable` parameter to account_update_credentials (Thanks gdunstone)
