@@ -1711,7 +1711,7 @@ class Mastodon:
            
         if content_type != None:
             if self.feature_set != "pleroma":
-                raise MastodonIllegalArgumentError('quote_id is only available with feature set pleroma')
+                raise MastodonIllegalArgumentError('content_type is only available with feature set pleroma')
             # It would be better to read this from nodeinfo and cache, but this is easier
             if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
                 raise MastodonIllegalArgumentError('Invalid content type specified')
