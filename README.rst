@@ -55,6 +55,14 @@ be testing specifically for python 2.7 any longer.
 Full documentation and basic usage examples can be found 
 at http://mastodonpy.readthedocs.io/en/stable/ .
 
+Maintenance
+-----------
+As you might have noticed, I have not done any maint work on this project in a while.
+I am currently extremely busy with my actual paid work, and will not be able to work
+on Mastodon.py until I hand in my dissertation, i.e. there will be no new releases or
+code from me for at least the rest of this year, maybe part of next. If you would like 
+to temporarily take over bug fixing / test writing / new method implementing, hit me up.
+
 Acknowledgements
 ----------------
 Mastodon.py contains work by a large amount of contributors, many of which have
