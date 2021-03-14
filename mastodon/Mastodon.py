@@ -2462,7 +2462,7 @@ class Mastodon:
     # Writing data: Media
     ###
     @api_version("1.0.0", "2.9.1", __DICT_VERSION_MEDIA)
-    def media_post(self, media_file, mime_type=None, description=None, focus=None):
+    def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None):
         """
         Post an image, video or audio file. `media_file` can either be image data or
         a file name. If image data is passed directly, the mime
@@ -2489,9 +2489,10 @@ class Mastodon:
                                                ' or data passed directly '
                                                'without mime type.')
 
-        random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-        file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(
-            mime_type)
+        if file_name is None:
+            random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(
+                mime_type)
 
         if focus != None:
             focus = str(focus[0]) + "," + str(focus[1])
