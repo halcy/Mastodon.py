@@ -39,9 +39,9 @@ def test_fetch_next_previous_from_pagination_info(api):
     account = api.account_verify_credentials()
     with many_statuses(api):
         statuses = api.account_statuses(account['id'], limit=5)
-        next_statuses = api.fetch_next(statuses[-1]._pagination_next)
+        next_statuses = api.fetch_next(statuses._pagination_next)
         assert next_statuses
-        previous_statuses = api.fetch_previous(next_statuses[0]._pagination_prev)
+        previous_statuses = api.fetch_previous(next_statuses._pagination_prev)
         assert previous_statuses
 
 def test_fetch_next_previous_old_pagination(api):
@@ -61,9 +61,9 @@ def test_fetch_next_previous_from_pagination_info_old_pagination(api):
         
         with many_statuses(api):
             statuses = api.account_statuses(account['id'], limit=5)
-            next_statuses = api.fetch_next(statuses[-1]._pagination_next)
+            next_statuses = api.fetch_next(statuses._pagination_next)
             assert next_statuses
-            previous_statuses = api.fetch_previous(next_statuses[0]._pagination_prev)
+            previous_statuses = api.fetch_previous(next_statuses._pagination_prev)
             assert previous_statuses
 
 @pytest.mark.vcr()
@@ -86,5 +86,5 @@ def test_link_headers(api):
     })
 
     resp = api.timeline_hashtag(UNLIKELY_HASHTAG)
-    assert resp[0]._pagination_next['max_id'] == _id
-    assert resp[0]._pagination_prev['since_id'] == _id
+    assert resp._pagination_next['max_id'] == _id
+    assert resp._pagination_prev['since_id'] == _id
