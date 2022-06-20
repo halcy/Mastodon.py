@@ -45,6 +45,16 @@ class StreamListener(object):
         contains the resulting conversation dict."""
         pass
 
+    def on_unknown_event(self, name, unknown_event = None):
+        """An unknown mastodon API event has been received. The name contains the event-name and unknown_event
+        contains the content of the unknown event.
+
+        This function must be implemented, if unknown events should be handled without an error.
+        """
+        exception = MastodonMalformedEventError('Bad event type', name)
+        self.on_abort(exception)
+        raise exception
+
     def handle_heartbeat(self):
         """The server has sent us a keep-alive message. This callback may be
         useful to carry out periodic housekeeping tasks, or just to confirm
@@ -55,6 +65,11 @@ class StreamListener(object):
         """
         Handles a stream of events from the Mastodon server. When each event
         is received, the corresponding .on_[name]() method is called.
+
+        When the Mastodon API changes, the on_unknown_event(name, content)
+        function is called.
+        The default behavior is to throw an error. Define a callback handler
+        to intercept unknown events if needed (and avoid errors)
 
         response; a requests response object with the open stream for reading.
         """
@@ -137,33 +152,32 @@ class StreamListener(object):
                 exception,
                 err
             )
-           
-        handler_name = 'on_' + name
-        try:
-            handler = getattr(self, handler_name)
-        except AttributeError as err:
-            exception = MastodonMalformedEventError('Bad event type', name)
-            self.on_abort(exception)
-            six.raise_from(
-               exception,
-               err
-            )
-        else:
+        # New mastodon API also supports event names with dots:
+        handler_name = 'on_' + name.replace('.', '_')
+        # A generic way to handle unknown events to make legacy code more stable for future changes
+        handler = getattr(self, handler_name, self.on_unknown_event)
+        if handler != self.on_unknown_event:
             handler(payload)
+        else:
+            handler(name, payload)
+
 
 class CallbackStreamListener(StreamListener):
     """
     Simple callback stream handler class.
     Can optionally additionally send local update events to a separate handler.
+    Define an unknown_event_handler for new Mastodon API events. If not, the
+    listener will raise an error on new, not handled, events from the API.
     """
-    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None, conversation_handler = None):
+    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None, conversation_handler = None, unknown_event_handler = None):
         super(CallbackStreamListener, self).__init__()
         self.update_handler = update_handler
         self.local_update_handler = local_update_handler
         self.delete_handler = delete_handler
         self.notification_handler = notification_handler
         self.conversation_handler = conversation_handler
-        
+        self.unknown_event_handler = unknown_event_handler
+
     def on_update(self, status):
         if self.update_handler != None:
             self.update_handler(status)
@@ -188,3 +202,11 @@ class CallbackStreamListener(StreamListener):
     def on_conversation(self, conversation):
         if self.conversation_handler != None:
             self.conversation_handler(conversation)            
+
+    def on_unknown_event(self, name, unknown_event = None):
+        if self.unknown_event_handler != None:
+            self.unknown_event_handler(name, unknown_event)
+        else:
+            exception = MastodonMalformedEventError('Bad event type', name)
+            self.on_abort(exception)
+            raise exception
