@@ -61,6 +61,8 @@ class Listener(StreamListener):
         self.notifications = []
         self.deletes = []
         self.heartbeats = 0
+        self.bla_called = False
+        self.do_something_called = False
 
     def on_update(self, status):
         self.updates.append(status)
@@ -72,6 +74,11 @@ class Listener(StreamListener):
         self.deletes.append(status_id)
 
     def on_blahblah(self, data):
+        self.bla_called = True
+        pass
+
+    def on_do_something(self, data):
+        self.do_something_called = True
         pass
 
     def handle_heartbeat(self):
@@ -158,6 +165,37 @@ def test_unknown_event():
         'data: {}',
         '',
     ])
+    assert listener.bla_called == True
+    assert listener.updates == []
+    assert listener.notifications == []
+    assert listener.deletes == []
+    assert listener.heartbeats == 0
+
+def test_unknown_handled_event():
+    """Be tolerant of new unknown event types, if on_unknown_event is available"""
+    listener = Listener()
+    listener.on_unknown_event = lambda name, payload: None
+
+    listener.handle_stream_([
+        'event: complete.new.event',
+        'data: {"k": "v"}',
+        '',
+    ])
+
+    assert listener.updates == []
+    assert listener.notifications == []
+    assert listener.deletes == []
+    assert listener.heartbeats == 0
+
+def test_dotted_unknown_event():
+    """Be tolerant of new event types with dots in the event-name"""
+    listener = Listener()
+    listener.handle_stream_([
+        'event: do.something',
+        'data: {}',
+        '',
+    ])
+    assert listener.do_something_called == True
     assert listener.updates == []
     assert listener.notifications == []
     assert listener.deletes == []
@@ -169,7 +207,7 @@ def test_invalid_event():
     with pytest.raises(MastodonMalformedEventError):
         listener.handle_stream_([
             'event: whatup',
-            'data: {}',
+            'data: {"k": "v"}',
             '',
         ])
 
