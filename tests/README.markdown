@@ -26,7 +26,7 @@ This test suite uses [VCR.py][] to record requests to Mastodon and replay them i
 If you want to add or change tests, you will need a Mastodon development server running on `http://localhost:3000`, with the default `admin` user and default password.
 To set this up, follow the development guide and set up the database using "rails db:setup".
 
-It also needs a test OAuth app and an additional test user to be set up by applying the provided `setup.sql` to Mastodon's database:
+It also needs a test OAuth app-registriation and an additional test user to be set up by applying the provided `setup.sql` to Mastodon's database:
 
     psql -d mastodon_development < tests/setup.sql
 

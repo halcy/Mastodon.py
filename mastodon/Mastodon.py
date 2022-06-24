@@ -1650,13 +1650,23 @@ class Mastodon:
     # Reading data: Bookmarks
     ###
     @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
-    def bookmarks(self):
+    def bookmarks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get a list of statuses bookmarked by the logged-in user.
         
         Returns a list of `toot dicts`_.
         """
-        return self.__api_request('GET', '/api/v1/bookmarks')
+        if max_id != None:
+            max_id = self.__unpack_id(max_id)
+
+        if min_id != None:
+            min_id = self.__unpack_id(min_id)
+
+        if since_id != None:
+            since_id = self.__unpack_id(since_id)
+
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/bookmarks', params)
     
     ###
     # Writing data: Statuses
@@ -3247,7 +3257,7 @@ class Mastodon:
             if (key in json_object and isinstance(json_object[key], six.text_type)):
                 if json_object[key].lower() == 'true':
                     json_object[key] = True
-                if json_object[key].lower() == 'False':
+                if json_object[key].lower() == 'false':
                     json_object[key] = False
         return json_object
     
