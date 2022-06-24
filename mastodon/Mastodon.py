@@ -3497,6 +3497,11 @@ class Mastodon:
                                 del next_params['min_id']
                             response._pagination_next = next_params
 
+                            # Maybe other API users rely on the pagination info in the last item
+                            # Will be removed in future
+                            if isinstance(response[-1], AttribAccessDict):
+                                response[-1]._pagination_next = next_params
+
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id or min_id specifically
                         prev_url = url['url']
@@ -3515,7 +3520,12 @@ class Mastodon:
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
                             response._pagination_prev = prev_params
-                            
+
+                            # Maybe other API users rely on the pagination info in the first item
+                            # Will be removed in future
+                            if isinstance(response[0], AttribAccessDict):
+                                response[0]._pagination_prev = prev_params
+
                         # New and fantastico (post-2.6.0): min_id pagination
                         matchgroups = re.search(r"[?&]min_id=([^&]+)", prev_url)
                         if matchgroups:
@@ -3530,6 +3540,11 @@ class Mastodon:
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
                             response._pagination_prev = prev_params
+
+                            # Maybe other API users rely on the pagination info in the first item
+                            # Will be removed in future
+                            if isinstance(response[0], AttribAccessDict):
+                                response[0]._pagination_prev = prev_params
 
         return response
 
