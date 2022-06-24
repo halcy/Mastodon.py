@@ -11,6 +11,11 @@ def test_bookmarks(api, status):
     assert len(bookmarked_statuses) > 0
     assert status_bookmarked == bookmarked_statuses[0]
     
+    bookmarked_statuses = api.bookmarks(limit=1)
+    assert bookmarked_statuses
+    assert len(bookmarked_statuses) > 0
+    assert status_bookmarked == bookmarked_statuses[0]
+
     status_unbookmarked = api.status_unbookmark(status_bookmarked)
     assert status_unbookmarked
     assert status_unbookmarked.bookmarked == False
