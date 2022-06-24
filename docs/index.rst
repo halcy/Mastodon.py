@@ -1275,6 +1275,19 @@ The streaming functions take instances of `StreamListener` as the `listener` par
 A `CallbackStreamListener` class that allows you to specify function callbacks 
 directly is included for convenience.
 
+For new well-known events implement the streaming function in `StreamListener` or `CallbackStreamListener`.
+The function name is `on_` + the event name. If the event-name contains dots, use an underscore instead.
+
+E.g. for `'status.update'` the listener function should be named as `on_status_update`.
+
+It may be that future Mastodon versions will come with completely new (unknown) event names. In this
+case a (deprecated) Mastodon.py would throw an error. If you want to avoid this in general, you can
+override the listener function `on_unknown_event`. This has an additional parameter `name` which informs
+about the name of the event. `unknown_event` contains the content of the event.
+
+Alternatively, a callback function can be passed in the `unknown_event_handler` parameter in the
+`CallbackStreamListener` constructor.
+
 When in not-async mode or async mode without async_reconnect, the stream functions may raise
 various exceptions: `MastodonMalformedEventError` if a received event cannot be parsed and
 `MastodonNetworkError` if any connection problems occur.
@@ -1294,6 +1307,7 @@ StreamListener
 .. automethod:: StreamListener.on_notification
 .. automethod:: StreamListener.on_delete
 .. automethod:: StreamListener.on_conversation
+.. automethod:: StreamListener.on_unknown_event
 .. automethod:: StreamListener.on_abort
 .. automethod:: StreamListener.handle_heartbeat
 
