@@ -3230,7 +3230,7 @@ class Mastodon:
             if (key in json_object and isinstance(json_object[key], six.text_type)):
                 if json_object[key].lower() == 'true':
                     json_object[key] = True
-                if json_object[key].lower() == 'False':
+                if json_object[key].lower() == 'false':
                     json_object[key] = False
         return json_object
     
