@@ -3610,7 +3610,8 @@ class Mastodon:
                 
             def close(self):
                 self.closed = True
-                self.connection.close()
+                if not self.connection is None:
+                    self.connection.close()
 
             def is_alive(self):
                 return self._thread.is_alive()
@@ -3620,6 +3621,14 @@ class Mastodon:
                     return False
                 else:
                     return True
+
+            def _sleep_attentive(self):
+                if self._thread != threading.current_thread():
+                    raise RuntimeError ("Illegal call from outside the stream_handle thread")
+                time_remaining = self.reconnect_async_wait_sec
+                while time_remaining>0 and not self.closed:
+                    time.sleep(0.5)
+                    time_remaining -= 0.5
 
             def _threadproc(self):
                 self._thread = threading.current_thread()
@@ -3642,16 +3651,26 @@ class Mastodon:
                         self.reconnecting = True
                         connect_success = False
                         while not connect_success:
-                            connect_success = True
+                            if self.closed:
+                                # Someone from outside stopped the streaming
+                                self.running = False
+                                break
                             try:
-                                self.connection = self.connect_func()
-                                if self.connection.status_code != 200:
-                                    time.sleep(self.reconnect_async_wait_sec)
-                                    connect_success = False
-                                    exception = MastodonNetworkError("Could not connect to server.")
+                                the_connection = self.connect_func()
+                                if the_connection.status_code != 200:
+                                    exception = MastodonNetworkError(f"Could not connect to server. "
+                                                                     f"HTTP status: {the_connection.status_code}")
                                     listener.on_abort(exception)
+                                    self._sleep_attentive()
+                                if self.closed:
+                                    # Here we have maybe a rare race condition. Exactly on connect, someone
+                                    # stopped the streaming before. We close the previous established connection:
+                                    the_connection.close()
+                                else:
+                                    self.connection = the_connection
+                                    connect_success = True
                             except:
-                                time.sleep(self.reconnect_async_wait_sec)
+                                self._sleep_attentive()
                                 connect_success = False
                         self.reconnecting = False
                     else:
