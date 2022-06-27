@@ -293,6 +293,7 @@ class Mastodon:
                 secret_file.write(response['client_id'] + "\n")
                 secret_file.write(response['client_secret'] + "\n")
                 secret_file.write(api_base_url + "\n")
+                secret_file.write(client_name + "\n")
                 
         return (response['client_id'], response['client_secret'])
 
@@ -303,7 +304,7 @@ class Mastodon:
                  api_base_url=None, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode = "created", session=None, feature_set="mainline"):
+                 version_check_mode = "created", session=None, feature_set="mainline", user_agent=None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret. If you specify an
@@ -348,6 +349,11 @@ class Mastodon:
         `feature_set` can be used to enable behaviour specific to non-mainline Mastodon API implementations.
         Details are documented in the functions that provide such functionality. Currently supported feature
         sets are `mainline`, `fedibird` and `pleroma`.
+
+        For some mastodon-instances a `User-Agent` header is needed. This can be set by parameter `user_agent`. From now
+        `create_app()` stores the application name into the client secret file. If `client_id` points to this file,
+        the app name will be used as `User-Agent` header as default. It's possible to modify old secret files and append
+        a client app name to use it as a `User-Agent` name.
         """
         self.api_base_url = None
         if not api_base_url is None:
@@ -379,6 +385,9 @@ class Mastodon:
         self.feature_set = feature_set
         if not self.feature_set in ["mainline", "fedibird", "pleroma"]:
             raise MastodonIllegalArgumentError('Requested invalid feature set')
+
+        # General defined user-agent
+        self.user_agent = user_agent
         
         # Token loading
         if self.client_id is not None:
@@ -393,6 +402,11 @@ class Mastodon:
                         if not (self.api_base_url is None or try_base_url == self.api_base_url):
                             raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                         self.api_base_url = try_base_url
+
+                    # With new registrations we support the 4th line to store a client_name and use it as user-agent
+                    client_name = secret_file.readline()
+                    if client_name and self.user_agent is None:
+                        self.user_agent = client_name.rstrip()
             else:
                 if self.client_secret is None:
                     raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
@@ -3334,6 +3348,10 @@ class Mastodon:
         if not access_token_override is None:
             headers['Authorization'] = 'Bearer ' + access_token_override
 
+        # Add user-agent
+        if self.user_agent:
+            headers['User-Agent'] = self.user_agent
+
         # Determine base URL
         base_url = self.api_base_url
         if not base_url_override is None:
@@ -3592,6 +3610,8 @@ class Mastodon:
         # Connect function (called and then potentially passed to async handler)
         def connect_func():
             headers = {"Authorization": "Bearer " + self.access_token} if self.access_token else {}
+            if self.user_agent:
+                headers['User-Agent'] = self.user_agent
             connection = self.session.get(url + endpoint, headers = headers, data = params, stream = True,
                                   timeout=(self.request_timeout, timeout))
 

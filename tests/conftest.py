@@ -8,7 +8,8 @@ def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN', version="3.1.1", versio
             client_secret='__MASTODON_PY_TEST_CLIENT_SECRET',
             access_token=access_token,
             mastodon_version=version,
-            version_check_mode=version_check_mode)
+            version_check_mode=version_check_mode,
+            user_agent='tests/v311')
 
 
 @pytest.fixture
