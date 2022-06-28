@@ -1063,7 +1063,7 @@ class Mastodon:
         return self.account_verify_credentials()
     
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
-    def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, max_id=None, min_id=None, since_id=None, limit=None, exclude_reblogs=False, tagged=None):
+    def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, exclude_reblogs=False, tagged=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch statuses by user `id`. Same options as `timeline()`_ are permitted.
         Returned toots are from the perspective of the logged-in user, i.e.
@@ -1075,7 +1075,7 @@ class Mastodon:
         as of Mastodon 2.1.0, this only works properly for instance-local users.
         If `exclude_replies` is set, filter out all statuses that are replies.
         If `exclude_reblogs` is set, filter out all statuses that are reblogs.
-        If `tagged` is set, return only statuses that are tagged with `tagged`.
+        If `tagged` is set, return only statuses that are tagged with `tagged`. Only a single tag without a '#' is valid.
 
         Does not require authentication for Mastodon versions after 2.7.0 (returns
         publicly visible statuses in that case), for publicly visible accounts.
@@ -1101,9 +1101,7 @@ class Mastodon:
             del params["exclude_replies"]
         if exclude_reblogs == False:
             del params["exclude_reblogs"]
-        if tagged is None:
-            del params["tagged"]
-        
+
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
 
