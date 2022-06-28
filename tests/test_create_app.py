@@ -31,7 +31,7 @@ def test_create_app(mocker, to_file=None, redirect_uris=None, website=None):
 def test_create_app_to_file(mocker, tmpdir):
     filepath = tmpdir.join('credentials')
     test_create_app(mocker, to_file=str(filepath))
-    assert filepath.read_text('UTF-8') == "foo\nbar\nhttps://example.com\n"
+    assert filepath.read_text('UTF-8') == "foo\nbar\nhttps://example.com\nMastodon.py test suite\n"
 
 def test_create_app_redirect_uris(mocker):
     test_create_app(mocker, redirect_uris='http://example.net')
