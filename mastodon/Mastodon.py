@@ -425,6 +425,10 @@ class Mastodon:
         if not version_check_mode in ["created", "changed", "none"]:
             raise MastodonIllegalArgumentError("Invalid version check method.")
         self.version_check_mode = version_check_mode
+
+        self.mastodon_major = 1
+        self.mastodon_minor = 0
+        self.mastodon_patch = 0
         
         # Versioning
         if mastodon_version == None and self.version_check_mode != 'none':
