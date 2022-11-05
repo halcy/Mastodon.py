@@ -3407,8 +3407,11 @@ class Mastodon:
                 self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
 
                 try:
-                    ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
-                    self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
+                    if str(int(response_object.headers['X-RateLimit-Reset'])) == response_object.headers['X-RateLimit-Reset']:
+                        self.ratelimit_reset = int(response_object.headers['X-RateLimit-Reset'])
+                    else:
+                        ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                        self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
                     # Adjust server time to local clock
                     if 'Date' in response_object.headers:
