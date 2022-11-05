@@ -421,19 +421,19 @@ class Mastodon:
                     if not (self.api_base_url is None or try_base_url == self.api_base_url):
                          raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                     self.api_base_url = try_base_url
+
+        if not version_check_mode in ["created", "changed", "none"]:
+            raise MastodonIllegalArgumentError("Invalid version check method.")
+        self.version_check_mode = version_check_mode
         
         # Versioning
-        if mastodon_version == None:
+        if mastodon_version == None and self.version_check_mode != 'none':
             self.retrieve_mastodon_version()
-        else:
+        elif self.version_check_mode != 'none':
             try:
                 self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
             except:
                 raise MastodonVersionError("Bad version specified")
-        
-        if not version_check_mode in ["created", "changed", "none"]:
-            raise MastodonIllegalArgumentError("Invalid version check method.")
-        self.version_check_mode = version_check_mode
         
         # Ratelimiting parameter check
         if ratelimit_method not in ["throw", "wait", "pace"]:
@@ -3407,8 +3407,11 @@ class Mastodon:
                 self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
 
                 try:
-                    ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
-                    self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
+                    if str(int(response_object.headers['X-RateLimit-Reset'])) == response_object.headers['X-RateLimit-Reset']:
+                        self.ratelimit_reset = int(response_object.headers['X-RateLimit-Reset'])
+                    else:
+                        ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                        self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
                     # Adjust server time to local clock
                     if 'Date' in response_object.headers:
