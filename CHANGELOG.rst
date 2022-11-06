@@ -2,6 +2,23 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.5.2
+* BREAKING CHANGE: Greatly improve how pagination info is stored (arittner)
+* Add "unknown event" handler for streaming (arittner)
+* Add support for exclude_types in notifications api (MicroCheapFx)
+* Add pagination to bookmarks (arittner)
+* Make connecting for streaming more resilient (arittner)
+* Allow specifying a user agent header (arittner)
+* Add support for tagged and exclude_reblogs on account_statuses api (arittner)
+* Add support for reports without attached statuses (arittner)
+* General fixes
+    * Fix a typo in __json_fruefalse_parse (zen-tools)
+* Some non-mastodon related fixes
+    * Fix a typo in error message for content_type (rinpatch
+    * Add support for specifying file name when uploading (animeavi)
+    * Fix several crashes related to gotosocials version string (fwaggle)
+    * Fix an issue related to hometowns version string
+
 v1.5.1
 --------------------------------
 * 3.1 support
