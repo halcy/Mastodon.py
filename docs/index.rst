@@ -1257,15 +1257,17 @@ Streaming
 These functions allow access to the streaming API. For the public, local and hashtag streams,
 access is generally possible without authenticating.
 
-If `async` is False, these  methods block forever (or until an error is encountered).
+If `run_async` is False, these  methods block forever (or until an error is encountered).
 
-If `async` is True, the listener will listen on another thread and these methods
-will return a handle corresponding to the open connection. If, in addition, `async_reconnect` is True,
+If `run_async` is True, the listener will listen on another thread and these methods
+will return a handle corresponding to the open connection. If, in addition, `reconnect_async` is True,
 the thread will attempt to reconnect to the streaming API if any errors are encountered, waiting
-`async_reconnect_wait_sec` seconds between reconnection attempts. Note that no effort is made
+`reconnect_async_wait_sec` seconds between reconnection attempts. Note that no effort is made
 to "catch up" - events created while the connection is broken will not be received. If you need to make
 sure to get absolutely all notifications / deletes / toots, you will have to do that manually, e.g.
 using the `on_abort` handler to fill in events since the last received one and then reconnecting.
+Both `run_async` and `reconnect_async` default to false, and you'll have to set each to true
+separately to get the behaviour described above.
 
 The connection may be closed at any time by calling the handles close() method. The 
 current status of the handler thread can be checked with the handles is_alive() function,
