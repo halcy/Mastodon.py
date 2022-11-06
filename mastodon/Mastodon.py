@@ -451,7 +451,7 @@ class Mastodon:
         Returns the version string, possibly including rc info.
         """
         try:
-            version_str = self.__instance()["version"]
+            version_str = self.__instance()["version"].split('+')[0]
         except:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
