@@ -1000,18 +1000,27 @@ class Mastodon:
     # Reading data: Notifications
     ###
     @api_version("1.0.0", "2.9.0", __DICT_VERSION_NOTIFICATION)
-    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, exclude_types=None):
+    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, exclude_types=None, mentions_only=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
 
         Parameter `exclude_types` is an array of the following `follow`, `favourite`, `reblog`,
-        `mention`, `poll`, `follow_request`
+        `mention`, `poll`, `follow_request`. Specifying `mentions_only` is a deprecated way to
+        set `exclude_types` to all but mentions.
         
         Can be passed an `id` to fetch a single notification.
 
         Returns a list of `notification dicts`_.
         """
+        if not mentions_only is None:
+            if not exclude_types is None:
+                if mentions_only:
+                    exclude_types = ["follow", "favourite", "reblog", "poll", "follow_request"]
+            else:
+                raise MastodonIllegalArgumentError('Cannot specify exclude_types when mentions_only is present')
+            del mentions_only
+            
         if max_id != None:
             max_id = self.__unpack_id(max_id)
         
@@ -3410,9 +3419,15 @@ class Mastodon:
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
                 self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
                 self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
+                
+                # For gotosocial, we need an int representation, but for non-ints this would crash
+                try:
+                    ratelimit_intrep = str(int(response_object.headers['X-RateLimit-Reset']))
+                except:
+                    ratelimit_intrep = None
 
                 try:
-                    if str(int(response_object.headers['X-RateLimit-Reset'])) == response_object.headers['X-RateLimit-Reset']:
+                    if not ratelimit_intrep is None and ratelimit_intrep == response_object.headers['X-RateLimit-Reset']:
                         self.ratelimit_reset = int(response_object.headers['X-RateLimit-Reset'])
                     else:
                         ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
