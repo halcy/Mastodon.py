@@ -2536,6 +2536,10 @@ class Mastodon:
         Throws a `MastodonIllegalArgumentError` if the mime type of the
         passed data or file can not be determined properly.
 
+        `file_name` can be specified to upload a file with the given name,
+        which is ignored by Mastodon, but some other Fediverse server software
+        will display it. If no name is specified, a random name will be generated.
+
         Returns a `media dict`_. This contains the id that can be used in
         status_post to attach the media file to a toot.
         """
@@ -2552,8 +2556,7 @@ class Mastodon:
 
         if file_name is None:
             random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(
-                mime_type)
+            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
 
         if focus != None:
             focus = str(focus[0]) + "," + str(focus[1])
