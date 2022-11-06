@@ -3,6 +3,7 @@ version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
 v1.5.2
+------
 * BREAKING CHANGE: Greatly improve how pagination info is stored (arittner)
 * Add "unknown event" handler for streaming (arittner)
 * Add support for exclude_types in notifications api (MicroCheapFx)
@@ -20,7 +21,7 @@ v1.5.2
     * Fix an issue related to hometowns version string
 
 v1.5.1
---------------------------------
+------
 * 3.1 support
     * Added `discoverable` parameter to account_update_credentials (Thanks gdunstone)
     * Added new notification type "follow_request"
