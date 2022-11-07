@@ -323,7 +323,7 @@ def test_stream_user(api, api2):
     
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
-    api2.account_unfollow(user)
+    api.account_unfollow(user)
     time.sleep(2)
     
     updates = []
@@ -349,13 +349,9 @@ def test_stream_user(api, api2):
     t = threading.Thread(args=(), target=do_activities)
     t.start()
     
-    stream = None
-    try:
-        stream = api.stream_user(listener, run_async=True)
-        time.sleep(20)
-    finally:
-        if stream != None:
-            stream.close()
+    stream = api.stream_user(listener, run_async=True)
+    time.sleep(20)
+    stream.close()
         
     assert len(updates) == 1
     assert len(notifications) == 1
@@ -373,10 +369,9 @@ def test_stream_user_local(api, api2):
     
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
-    api2.account_unfollow(user)
+    api.account_unfollow(user)
     
     updates = []
-    notifications = []
     listener = CallbackStreamListener(
         local_update_handler = lambda x: updates.append(x),
     )
@@ -391,13 +386,9 @@ def test_stream_user_local(api, api2):
     t = threading.Thread(args=(), target=do_activities)
     t.start()
     
-    stream = None
-    try:
-        stream = api.stream_user(listener, run_async=True)
-        time.sleep(20)
-    finally:
-        if stream != None:
-            stream.close()
+    stream = api.stream_user(listener, run_async=True)
+    time.sleep(20)
+    stream.close()
         
     assert len(updates) == 1
     assert updates[0].id == posted[0].id
@@ -422,13 +413,9 @@ def test_stream_direct(api, api2):
     t = threading.Thread(args=(), target=do_activities)
     t.start()
     
-    stream = None
-    try:
-        stream = api.stream_direct(listener, run_async=True)
-        time.sleep(20)
-    finally:
-        if stream != None:
-            stream.close()
+    stream = api.stream_direct(listener, run_async=True)
+    time.sleep(20)
+    stream.close()
         
     assert len(conversations) == 1
 

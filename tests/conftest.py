@@ -44,6 +44,12 @@ def status2(api):
     yield _status
     api.status_delete(_status['id'])
 
+@pytest.fixture
+def status3(api2):
+    _status = api2.status_post('Toot, finally!')
+    yield _status
+    api2.status_delete(_status['id'])
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return dict(

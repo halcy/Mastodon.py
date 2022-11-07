@@ -1,9 +1,69 @@
 interactions:
 - request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body:
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.0.0rc1","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":0,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":10485760,"image_matrix_limit":16777216,"video_size_limit":41943040,"video_frame_rate_limit":60,"video_matrix_limit":2304000},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+    headers:
+      Cache-Control:
+      - max-age=180, public
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-NkjUbSZNqSgwfuA6kaCQag=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 07 Nov 2022 19:54:46 GMT
+      ETag:
+      - W/"45319ebd79e4bcdb5bf907c47f95d0a1"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - b8a06111-f08b-49dc-8469-96e2e22baf38
+      X-Runtime:
+      - '0.013629'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
     body: !!binary |
-      LS1iNzVkM2IxMzNmMjc0NGEyYTNmZjU4OTIxZmUzMmUwZg0KQ29udGVudC1EaXNwb3NpdGlvbjog
-      Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTU4MjM5
-      OTcyOS4yMTUwMjM1X09UMU5UU1VRU0kuanBlIg0KQ29udGVudC1UeXBlOiBpbWFnZS9qcGVnDQoN
+      LS02YTYyZjE5NDFiYWQ3ZWU3M2MxYmQ2YWViMjM2Mzc2ZA0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTY2Nzg1
+      MDg4Ni44MzgxNDAyX1dRTjBPWFZYRVMuanBnIg0KQ29udGVudC1UeXBlOiBpbWFnZS9qcGVnDQoN
       Cv/Y/+AAEEpGSUYAAQEBAEgASAAA/+ICHElDQ19QUk9GSUxFAAEBAAACDGxjbXMCEAAAbW50clJH
       QiBYWVogB9wAAQAZAAMAKQA5YWNzcEFQUEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEA
       AAAA0y1sY21zAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK
@@ -939,32 +999,65 @@ interactions:
       fkRBtkgMCmGlSoojqYg3CP1hg5XagwuSZZej1N96VKgeHKRZSii9BM7fep2iK8u6Y69PxSpUVZts
       doSiQO3N/mozLhcIxMSN89s+KVKgU4XMHLHOFF7LVZRJrFV22pUqBoKKIKucrmmTAxMZfilSoFO2
       xicuMnjFStYMZkHV3XP4pUqC5Zbdy3MwJvu7U0AjASTLfOy9aVKgjPC5Yj9imCTIjyrGTjBn9aVK
-      gY09xujjo55uzvSpUqD/2Q0KLS1iNzVkM2IxMzNmMjc0NGEyYTNmZjU4OTIxZmUzMmUwZi0tDQo=
+      gY09xujjo55uzvSpUqD/2Q0KLS02YTYyZjE5NDFiYWQ3ZWU3M2MxYmQ2YWViMjM2Mzc2ZC0tDQo=
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['53522']
-      Content-Type: [multipart/form-data; boundary=b75d3b133f2744a2a3ff58921fe32e0f]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '53522'
+      Content-Type:
+      - multipart/form-data; boundary=6a62f1941bad7ee73c1bd6aeb236376d
+      User-Agent:
+      - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/media
+    uri: http://localhost:3000/api/v2/media
   response:
-    body: {string: '{"id":"4","type":"image","url":"http://localhost/system/media_attachments/files/000/000/004/original/228cb203e7be91bc.jpeg?1582399729","preview_url":"http://localhost/system/media_attachments/files/000/000/004/small/228cb203e7be91bc.jpeg?1582399729","remote_url":null,"text_url":"http://localhost/media/snyAbfjK2uCc3K_tko8","meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":400,"height":400,"size":"400x400","aspect":1.0}},"description":null,"blurhash":"UGD9YgIo00j[NFofR%M{IURj%Ms;D%of%MR%"}'}
+    body:
+      string: '{"id":"109304275729926991","type":"image","url":"http://localhost:3000/system/media_attachments/files/109/304/275/729/926/991/original/10d6e8a300c429c7.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/109/304/275/729/926/991/small/10d6e8a300c429c7.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0}},"description":null,"blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [32159763-1dec-4298-ba11-e38a1f5151c8]
-      X-Runtime: ['0.435108']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['535']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-VKJJDf/n3lUS1wYxX4PWdQ=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"7168c36c59fe751e5002687ff4e4b2c3"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 6b40699f-5296-407d-b5ac-bf2a4228fbd6
+      X-Runtime:
+      - '0.139682'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

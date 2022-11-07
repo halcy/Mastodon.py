@@ -2,30 +2,61 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/custom_emojis
   response:
-    body: {string: '[]'}
+    body:
+      string: '[]'
     headers:
-      Cache-Control: ['max-age=180, public']
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Sat, 22 Feb 2020 19:28:40 GMT']
-      ETag: [W/"8af8fec96bf10b03e52c25c1ed653bf6"]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [aa11a9bc-6de5-4774-a593-c517a4c06cdd]
-      X-Runtime: ['0.046203']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['2']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - max-age=180, public
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-E3SZ6IAr5t+liGciv9snXg=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 07 Nov 2022 19:54:43 GMT
+      ETag:
+      - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 3a8d032d-3038-4e1e-ace9-453e0c7c133c
+      X-Runtime:
+      - '0.010592'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

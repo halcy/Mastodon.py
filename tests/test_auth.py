@@ -26,8 +26,8 @@ def test_log_in_none(api_anonymous):
 @pytest.mark.vcr()
 def test_log_in_password(api_anonymous):
     token = api_anonymous.log_in(
-        username='admin@localhost',
-        password='mastodonadmin')
+        username='mastodonpy_test_2@localhost:3000',
+        password='5fc638e0e53eafd9c4145b6bb852667d')
     assert token
 
 @pytest.mark.vcr()
@@ -41,8 +41,8 @@ def test_log_in_password_incorrect(api_anonymous):
 def test_log_in_password_to_file(api_anonymous, tmpdir):
     filepath = tmpdir.join('token')
     api_anonymous.log_in(
-        username='admin@localhost',
-        password='mastodonadmin',
+        username='mastodonpy_test_2@localhost:3000',
+        password='5fc638e0e53eafd9c4145b6bb852667d',
         to_file=str(filepath))
     token = filepath.read_text('UTF-8').rstrip().split("\n")[0]
     assert token

@@ -1,13 +1,73 @@
 interactions:
 - request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body:
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.0.0rc1","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":10485760,"image_matrix_limit":16777216,"video_size_limit":41943040,"video_frame_rate_limit":60,"video_matrix_limit":2304000},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+    headers:
+      Cache-Control:
+      - max-age=180, public
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-oXXAE09Lh1X66GUUalQOkg=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 07 Nov 2022 19:54:46 GMT
+      ETag:
+      - W/"a17de89b698f0c42f267e69340e11e47"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 1a956d97-b4a5-4e2a-9d18-3fd0cb8e36c9
+      X-Runtime:
+      - '0.013517'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
     body: !!binary |
-      LS0xMjkyZjA0MzE0ZWY0ZTI5YThmYWRhZGY3MTZmZTBhOA0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      LS02ZGNiNWQwNGNkZTI5NzZkZmZkNDNmYTIzNjk1NTFlNA0KQ29udGVudC1EaXNwb3NpdGlvbjog
       Zm9ybS1kYXRhOyBuYW1lPSJkZXNjcmlwdGlvbiINCg0KSm9obiBMZW5ub24gZG9pbmcgYSBmdW5u
-      eSB3YWxrDQotLTEyOTJmMDQzMTRlZjRlMjlhOGZhZGFkZjcxNmZlMGE4DQpDb250ZW50LURpc3Bv
-      c2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZvY3VzIg0KDQotMC41LDAuMw0KLS0xMjkyZjA0MzE0
-      ZWY0ZTI5YThmYWRhZGY3MTZmZTBhOA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBu
-      YW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTU4MjM5OTcyOC43ODIzMDU3
-      X0xFM0FWOU85NTMuanBlIg0KQ29udGVudC1UeXBlOiBpbWFnZS9qcGVnDQoNCv/Y/+AAEEpGSUYA
+      eSB3YWxrDQotLTZkY2I1ZDA0Y2RlMjk3NmRmZmQ0M2ZhMjM2OTU1MWU0DQpDb250ZW50LURpc3Bv
+      c2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZvY3VzIg0KDQotMC41LDAuMw0KLS02ZGNiNWQwNGNk
+      ZTI5NzZkZmZkNDNmYTIzNjk1NTFlNA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBu
+      YW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTY2Nzg1MDg4Ni42NjE1NDM2
+      X0lLOTE0RzJHMkEuanBnIg0KQ29udGVudC1UeXBlOiBpbWFnZS9qcGVnDQoNCv/Y/+AAEEpGSUYA
       AQEBAEgASAAA/+ICHElDQ19QUk9GSUxFAAEBAAACDGxjbXMCEAAAbW50clJHQiBYWVogB9wAAQAZ
       AAMAKQA5YWNzcEFQUEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1sY21zAAAA
       AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKZGVzYwAAAPwAAABe
@@ -943,63 +1003,129 @@ interactions:
       qYg3CP1hg5XagwuSZZej1N96VKgeHKRZSii9BM7fep2iK8u6Y69PxSpUVZtsdoSiQO3N/mozLhcI
       xMSN89s+KVKgU4XMHLHOFF7LVZRJrFV22pUqBoKKIKucrmmTAxMZfilSoFO2xicuMnjFStYMZkHV
       3XP4pUqC5Zbdy3MwJvu7U0AjASTLfOy9aVKgjPC5Yj9imCTIjyrGTjBn9aVKgY09xujjo55uzvSp
-      UqD/2Q0KLS0xMjkyZjA0MzE0ZWY0ZTI5YThmYWRhZGY3MTZmZTBhOC0tDQo=
+      UqD/2Q0KLS02ZGNiNWQwNGNkZTI5NzZkZmZkNDNmYTIzNjk1NTFlNC0tDQo=
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['53738']
-      Content-Type: [multipart/form-data; boundary=1292f04314ef4e29a8fadadf716fe0a8]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '53738'
+      Content-Type:
+      - multipart/form-data; boundary=6dcb5d04cde2976dffd43fa2369551e4
+      User-Agent:
+      - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/media
+    uri: http://localhost:3000/api/v2/media
   response:
-    body: {string: '{"id":"3","type":"image","url":"http://localhost/system/media_attachments/files/000/000/003/original/aa98af395e0fcdf2.jpeg?1582399728","preview_url":"http://localhost/system/media_attachments/files/000/000/003/small/aa98af395e0fcdf2.jpeg?1582399728","remote_url":null,"text_url":"http://localhost/media/aRhpj5TqOQi3Mw8m4Kg","meta":{"focus":{"x":-0.5,"y":0.3},"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":400,"height":400,"size":"400x400","aspect":1.0}},"description":"John
-        Lennon doing a funny walk","blurhash":"UGD9YgIo00j[NFofR%M{IURj%Ms;D%of%MR%"}'}
+    body:
+      string: '{"id":"109304275717926981","type":"image","url":"http://localhost:3000/system/media_attachments/files/109/304/275/717/926/981/original/6a91c9414954282c.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/109/304/275/717/926/981/small/6a91c9414954282c.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0},"focus":{"x":-0.5,"y":0.3}},"description":"John
+        Lennon doing a funny walk","blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [1a6b2fe2-de43-49b1-aaa4-016e21d92035]
-      X-Runtime: ['0.356358']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['590']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-QoJ/C9j4xlcKRmI28eJ97A=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"137f5730a5bb73cb17efb13d81c255aa"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 58aac5f0-ec17-44a3-adc1-106c9b697d71
+      X-Runtime:
+      - '0.133905'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
-    body: focus=0.69%2C0.69&description=John+Lennon+doing+a+cool+walk
+    body: description=John+Lennon+doing+a+cool+walk&focus=0.69%2C0.69
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['59']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '59'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: PUT
-    uri: http://localhost:3000/api/v1/media/3
+    uri: http://localhost:3000/api/v1/media/109304275717926981
   response:
-    body: {string: '{"id":"3","type":"image","url":"http://localhost/system/media_attachments/files/000/000/003/original/aa98af395e0fcdf2.jpeg?1582399728","preview_url":"http://localhost/system/media_attachments/files/000/000/003/small/aa98af395e0fcdf2.jpeg?1582399728","remote_url":null,"text_url":"http://localhost/media/aRhpj5TqOQi3Mw8m4Kg","meta":{"focus":{"x":0.69,"y":0.69},"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":400,"height":400,"size":"400x400","aspect":1.0}},"description":"John
-        Lennon doing a cool walk","blurhash":"UGD9YgIo00j[NFofR%M{IURj%Ms;D%of%MR%"}'}
+    body:
+      string: '{"id":"109304275717926981","type":"image","url":"http://localhost:3000/system/media_attachments/files/109/304/275/717/926/981/original/6a91c9414954282c.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/109/304/275/717/926/981/small/6a91c9414954282c.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"focus":{"x":0.69,"y":0.69},"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0}},"description":"John
+        Lennon doing a cool walk","blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [509a16dd-89ca-4ad0-8a01-cfdb3030d37c]
-      X-Runtime: ['0.041738']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['590']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-gK1rbRIFJANVp1EWSQZqdA=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"2980ac39ec2bdffb36e9f9ab6d9613aa"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 770a4f6b-b8c0-42d0-8cd8-809f0f5ac474
+      X-Runtime:
+      - '0.013655'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

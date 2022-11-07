@@ -237,8 +237,8 @@ you can also just write
 and everything will work as intended. The class used for this is exposed as
 `AttribAccessDict`.
 
-User dicts
-~~~~~~~~~~
+User / account dicts
+~~~~~~~~~~~~~~~~~~~~
 .. _user dict:
 
 .. code-block:: python
@@ -274,6 +274,7 @@ User dicts
                   # For fields with "this is me" type verification, verified_at is set to the
                   # last verification date (It is None otherwise)
         'emojis': # List of custom emoji used in name, bio or fields
+        'discoverable': # Indicates whether or not a user is visible on the discovery page
     }
 
     mastodon.account_verify_credentials()["source"]

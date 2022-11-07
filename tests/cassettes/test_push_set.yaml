@@ -1,58 +1,122 @@
 interactions:
 - request:
-    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BDqo0y%2BobJuoQj%2BtQQP3Sf9gSkR49Nli8WZdxsIOHhgA9kC3v5v9kAgpi8cn5g%2BnN6hsKXfurFwKzVX1aEA%2B5MQ%3D&subscription%5Bkeys%5D%5Bauth%5D=o5mjIYrUKouhbtiymLLwkA%3D%3D
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BOqK%2BBFKWVL3y5bzJ0flceU3RlwlMLkCn14TufF0BP%2BL0LKc0wpJzXEJX%2BB8upYfUPg0vbe8c3EhfCUb8CPiZ6M%3D&subscription%5Bkeys%5D%5Bauth%5D=D%2BFsvuT7XJF9NmtoccCFbQ%3D%3D
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['248']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '248'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":1,"endpoint":"https://example.com","alerts":{},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":1,"endpoint":"https://example.com","alerts":{},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [6ab3edf5-2aba-4cba-96cc-b49f4eee636a]
-      X-Runtime: ['0.064364']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['157']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-0L6vzkLsm8vr0Amb2GskYw=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"84d1ccad0cee8aa71855bc8ba7c81e0d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 788002f3-4047-48cc-a58b-7993a9a3234b
+      X-Runtime:
+      - '0.020483'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":1,"endpoint":"https://example.com","alerts":{},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":1,"endpoint":"https://example.com","alerts":{},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [3fcf73c1-5966-473d-937b-9dcb07859cff]
-      X-Runtime: ['0.063734']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['157']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-To8ysnGAzZSQ9J16jqmZvQ=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"84d1ccad0cee8aa71855bc8ba7c81e0d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 43ac3987-277d-441d-87b1-3eb02e769e3d
+      X-Runtime:
+      - '0.007561'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

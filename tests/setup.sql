@@ -51,7 +51,7 @@ INSERT INTO accounts (
 ) VALUES (
     1234567890123457,
     'mastodonpy_test_2',
-    't',
+    'f',
     now(),
     now(),
     't'
@@ -64,7 +64,8 @@ INSERT INTO users (
     created_at,
     updated_at,
     confirmed_at,
-    locale
+    locale,
+    encrypted_password
 ) VALUES (
     1234567890123457,
     'mastodonpy_test_2@localhost:3000',
@@ -72,7 +73,8 @@ INSERT INTO users (
     now(),
     now(),
     now(),
-    'ja'  -- japanese locale for unicode testing :p
+    'ja', -- japanese locale for unicode testing :p
+    '$2a$10$8eAdhF69RiZiV0puZ.8iOOgMqBACmwJu8Z9X4CiN91iwRXbeC2jvi'
 );
 
 INSERT INTO oauth_applications (

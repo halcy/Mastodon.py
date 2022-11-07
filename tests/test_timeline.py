@@ -5,9 +5,10 @@ from mastodon.Mastodon import MastodonAPIError,\
                               MastodonUnauthorizedError
 
 @pytest.mark.vcr()
-def test_public_tl_anonymous(api_anonymous, status):
+def test_public_tl_anonymous(api_anonymous, status3):
+    time.sleep(3)
     tl = api_anonymous.timeline_public()
-    assert status['id'] in map(lambda st: st['id'], tl)
+    assert status3['id'] in list(map(lambda st: st['id'], tl))
 
 @pytest.mark.vcr()
 def test_public_tl(api, status):
@@ -23,6 +24,7 @@ def test_unauthed_home_tl_throws(api_anonymous, status):
 
 @pytest.mark.vcr()
 def test_home_tl(api, status):
+    time.sleep(3)
     tl = api.timeline_home()
     assert status['id'] in map(lambda st: st['id'], tl)
 

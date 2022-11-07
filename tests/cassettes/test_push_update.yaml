@@ -1,170 +1,362 @@
 interactions:
 - request:
-    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BKLKkhUwlSEHYmTxHWUkcTfm1nfwbhvp47tSO4AF8%2FvA5YUssHzMblywqcdq7y0lZtKvSIVYpRLRpSdmKgnhIX4%3D&subscription%5Bkeys%5D%5Bauth%5D=oelFe68rpnwll8h7vWYZkw%3D%3D&data%5Balerts%5D%5Bfollow%5D=0&data%5Balerts%5D%5Bfavourite%5D=0&data%5Balerts%5D%5Breblog%5D=0&data%5Balerts%5D%5Bmention%5D=0
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BKxwCXGxFgdUBy37k4Swt2l6iGFfuidAoCWWRYKno6YwUyMFMjiyoSzYZUU7TLmUItIVP1yREGW0c0tdktzNtf4%3D&subscription%5Bkeys%5D%5Bauth%5D=dD4vutRTLYUiXPBxqQkxcw%3D%3D&data%5Balerts%5D%5Bfollow%5D=0&data%5Balerts%5D%5Bfavourite%5D=0&data%5Balerts%5D%5Breblog%5D=0&data%5Balerts%5D%5Bmention%5D=0
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['370']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '368'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":2,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":2,"endpoint":"https://example.com","alerts":{"mention":false,"reblog":false,"follow":false,"favourite":false},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [24aaab97-8db2-477a-9153-b2580eb291f8]
-      X-Runtime: ['0.037218']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['220']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-dtAjo4nPQtWOILRZkBVHag=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"b7f5c9cdba03977ec4af45b88cc3c6cc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 9bf49a81-2b6e-46f1-9be7-446c5b218440
+      X-Runtime:
+      - '0.022528'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: data%5Balerts%5D%5Bfollow%5D=1&data%5Balerts%5D%5Bfavourite%5D=1&data%5Balerts%5D%5Breblog%5D=1&data%5Balerts%5D%5Bmention%5D=1
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['127']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '127'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: PUT
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":2,"endpoint":"https://example.com","alerts":{"follow":true,"favourite":true,"reblog":true,"mention":true},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":2,"endpoint":"https://example.com","alerts":{"mention":true,"reblog":true,"follow":true,"favourite":true},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [6b278a6a-1307-4538-a866-37fe5693e156]
-      X-Runtime: ['0.033939']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['216']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-Sx2Oj8kDfwt9QJNKwsuVcA=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"11d6dbe485a001e7404531a19a22c388"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 2a820fe0-6842-46a1-86f9-7a9fe419f11e
+      X-Runtime:
+      - '0.010899'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":2,"endpoint":"https://example.com","alerts":{"follow":true,"favourite":true,"reblog":true,"mention":true},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":2,"endpoint":"https://example.com","alerts":{"mention":true,"reblog":true,"follow":true,"favourite":true},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [f8777881-aa4d-4460-8426-bd7412b67b29]
-      X-Runtime: ['0.027582']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['216']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-Q5hw0wiZzqeNtRSMrUUZ9A=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"11d6dbe485a001e7404531a19a22c388"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - a3d05117-54ad-47e1-8c7d-67fd815c5563
+      X-Runtime:
+      - '0.008378'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: data%5Balerts%5D%5Bfollow%5D=0&data%5Balerts%5D%5Bfavourite%5D=0&data%5Balerts%5D%5Breblog%5D=0&data%5Balerts%5D%5Bmention%5D=0
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      Content-Length: ['127']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '127'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: PUT
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":2,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":2,"endpoint":"https://example.com","alerts":{"mention":false,"reblog":false,"follow":false,"favourite":false},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [e9eb1030-4c89-4a96-abf0-6bb19146e0c4]
-      X-Runtime: ['0.040965']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['220']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-Vw+8US2CPbzjBeuVmNuo3Q=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"b7f5c9cdba03977ec4af45b88cc3c6cc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 147b7caa-c559-44f3-b6e6-8d66bd96d0ff
+      X-Runtime:
+      - '0.011152'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":2,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":2,"endpoint":"https://example.com","alerts":{"mention":false,"reblog":false,"follow":false,"favourite":false},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [c164dee0-74fe-4a2a-b604-95c63e52db76]
-      X-Runtime: ['0.027418']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['220']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-AVSZyIBBuWLdZUNyJ+tLBA=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"b7f5c9cdba03977ec4af45b88cc3c6cc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - aa1429bd-fd88-4311-a0b9-6fe1303aa75b
+      X-Runtime:
+      - '0.007709'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/push/subscription
   response:
-    body: {string: '{"id":2,"endpoint":"https://example.com","alerts":{"follow":false,"favourite":false,"reblog":false,"mention":false},"server_key":"BPSW9N0oBHCeTlN6VgEPwlf36QQzuU6XtxguTJSM9xyW9kxnN2I_lzcHsk3ShJMRa0Na7t2kiE9UyJWrtQOsTJo="}'}
+    body:
+      string: '{"id":2,"endpoint":"https://example.com","alerts":{"mention":false,"reblog":false,"follow":false,"favourite":false},"server_key":"BFsPJBvWr6iQB4n0QAxBbqg5_MLh-Rm1we2OefcfRUaqTrZrB6k0E9FdzlBWD_xp8KAJrsWetwf2-l11cvSQnDU="}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [67f329f9-0f19-44c8-bef3-59d5bd55f4eb]
-      X-Runtime: ['0.031697']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['220']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-Dy8mwK8CsCGGo8lV/FhbHg=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"b7f5c9cdba03977ec4af45b88cc3c6cc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - c8813294-4e96-49e4-83f0-cea347fe30df
+      X-Runtime:
+      - '0.007939'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

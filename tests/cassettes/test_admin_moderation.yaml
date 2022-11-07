@@ -2,375 +2,794 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","avatar_static":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","header":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","header_static":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","source":{"privacy":"public","sensitive":false,"language":null,"note":"I
-        walk funny","fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}],"follow_requests_count":0},"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"I
+        walk funny","fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}],"follow_requests_count":1},"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}],"role":{"id":"-99","name":"","permissions":"65536","color":"","highlighted":false}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [bbd092f2-ef97-4a64-b214-62c7f882bed0]
-      X-Runtime: ['0.076734']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['1220']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-1KhgfPxBBaTnhWJxMJahIw=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"2ee229c3aee8eac5aa82aa96affda7b0"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 519e085f-0d24-4464-b694-0a0d73e6390f
+      X-Runtime:
+      - '0.014624'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: send_email_notification=1&type=disable
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['38']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '38'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/action
   response:
-    body: {string: '{}'}
+    body:
+      string: '{}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [bb9c5ba4-3255-4897-a7cc-b65c63e408e9]
-      X-Runtime: ['0.910998']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['2']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-YnfrpUteFJdWzm1jnnJAAw=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 7514de81-1d82-4830-8541-bd9d1b4859eb
+      X-Runtime:
+      - '0.053786'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":true,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","avatar_static":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","header":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","header_static":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":false,"disabled":true,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [416e1ee6-c4a9-45d6-86b3-497fd2a0738f]
-      X-Runtime: ['0.058314']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['1300']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-agITfwuor5SaqcLIIt+j/g=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"cd4c525e35f21988b433d10003f640c9"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 658a926f-93b6-4e38-877b-76d5eddb5ba2
+      X-Runtime:
+      - '0.014700'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/enable
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","avatar_static":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","header":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","header_static":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [faf334d4-2960-4d4b-b642-bba86aa5d0db]
-      X-Runtime: ['0.102111']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['1301']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-+FwvmziVDAPM18N8NFH0/g=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4a35556e80b9e252623b52538d60a640"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 2a6edfeb-fd2a-4ee2-8f44-4607236e010f
+      X-Runtime:
+      - '0.031596'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: send_email_notification=1&type=silence
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['38']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '38'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/action
   response:
-    body: {string: '{}'}
+    body:
+      string: '{}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [be91b9e5-42db-43f2-86a8-9b0db78112b6]
-      X-Runtime: ['0.505571']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['2']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-bIAcuL8D+TgmHpXV5y96gA=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 25d20974-a154-4cd8-b227-6bd2881633d5
+      X-Runtime:
+      - '0.025571'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":true,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","avatar_static":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","header":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","header_static":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":true,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","limited":true,"noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [1c36ac73-6cf6-42aa-bcf3-85383e507bec]
-      X-Runtime: ['0.100968']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['1300']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-QZ0reswO4WKg2JWdeb9H8Q=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"2512f2602ce50dd232f04807c2729fbe"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - b03042eb-9953-4290-90e8-b88d288f6a12
+      X-Runtime:
+      - '0.016708'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/unsilence
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","avatar_static":"http://localhost/system/accounts/avatars/123/456/789/012/345/original/4cb344b864cbd0bf.jpeg?1582399672","header":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","header_static":"http://localhost/system/accounts/headers/123/456/789/012/345/original/9b01d187d95da821.jpeg?1582399672","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [0cb4500e-36a3-40c3-9403-67aff8c02afc]
-      X-Runtime: ['0.135202']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['1301']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-7bI+ImR+RnLGUDkBbgi6hw=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4a35556e80b9e252623b52538d60a640"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 4b456101-ea9e-4037-baff-31f60c32199b
+      X-Runtime:
+      - '0.035982'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: send_email_notification=1&type=suspend
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['38']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '38'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/action
   response:
-    body: {string: '{}'}
+    body:
+      string: '{}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [86ec9bad-644c-489c-a48e-2b19083f6d12]
-      X-Runtime: ['0.674901']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['2']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-6L8lj9HEdMYfsm08ujYMhg=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - a488bcdd-0458-42e8-999f-d8a1a8ea6678
+      X-Runtime:
+      - '0.040094'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
     method: GET
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":true,"silenced":false,"disabled":true,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"discoverable":false,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":true,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"discoverable":false,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","suspended":true,"noindex":false,"emojis":[],"fields":[]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [b47295e8-4f7f-4aa1-ab77-e0c8fd350a40]
-      X-Runtime: ['0.204272']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['943']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-3FgrFi1I17gh9ZCWWOo5UQ=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"04e40af368f3a4fe298cde713ebc84d2"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - aa48c035-5e36-4db2-920a-9d0e56301532
+      X-Runtime:
+      - '0.018107'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/unsuspend
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"discoverable":false,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [01a5da71-d1f1-4e0e-80ca-bcc4a43d4459]
-      X-Runtime: ['0.243651']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['945']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-bg7DEW4byIJKa6v2/ZWwcg=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4a35556e80b9e252623b52538d60a640"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 0033b114-a0d1-422d-8568-68d61452adb1
+      X-Runtime:
+      - '0.037843'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/unsuspend
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"discoverable":false,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[]}}'}
+    body:
+      string: '{"error":"This action is not allowed"}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [0e6b9e7d-9db4-4245-bf36-558dbf175ebb]
-      X-Runtime: ['0.081688']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['945']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-iXHp825pN2I5Nb20AHDirw=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - c7b99e97-4ed2-40a3-9a3d-195a9d06ee2d
+      X-Runtime:
+      - '0.010722'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 403
+      message: Forbidden
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/enable
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"discoverable":false,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [c97426c7-15a4-43f0-8c80-5c3d69133e98]
-      X-Runtime: ['0.094445']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['945']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-nWcLJOq38YMkCVGVGEeMSg=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4a35556e80b9e252623b52538d60a640"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 29695fbc-aebd-4789-b549-df8244ac48bf
+      X-Runtime:
+      - '0.025492'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2]
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
     method: POST
     uri: http://localhost:3000/api/v1/admin/accounts/1234567890123456/unsilence
   response:
-    body: {string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2020-02-22T20:26:54.402Z","email":"mastodonpy_test@localhost:3000","ip":"127.0.0.1","role":"user","confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":false,"bot":false,"discoverable":false,"group":false,"created_at":"2020-02-22T20:26:54.402Z","note":"\u003cp\u003e\u003c/p\u003e","url":"http://localhost/@mastodonpy_test","avatar":"http://localhost/avatars/original/missing.png","avatar_static":"http://localhost/avatars/original/missing.png","header":"http://localhost/headers/original/missing.png","header_static":"http://localhost/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2020-02-22","emojis":[],"fields":[]}}'}
+    body:
+      string: '{"id":"1234567890123456","username":"mastodonpy_test","domain":null,"created_at":"2022-11-07T21:53:04.581Z","email":"mastodonpy_test@localhost:3000","ip":null,"role":{"id":-99,"name":"","color":"","position":-1,"permissions":65536,"highlighted":false,"created_at":"2022-11-07T19:53:02.782Z","updated_at":"2022-11-07T19:53:02.782Z"},"confirmed":true,"suspended":false,"silenced":false,"disabled":false,"approved":true,"locale":"ja","invite_request":null,"ips":[],"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
+        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
+        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]}}'
     headers:
-      Cache-Control: ['no-cache, no-store']
-      Content-Type: [application/json; charset=utf-8]
-      Referrer-Policy: [strict-origin-when-cross-origin]
-      Transfer-Encoding: [chunked]
-      Vary: ['Accept-Encoding, Origin']
-      X-Content-Type-Options: [nosniff]
-      X-Download-Options: [noopen]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Permitted-Cross-Domain-Policies: [none]
-      X-Request-Id: [3aa6caa4-0ade-4e63-abb1-0b4d5103bb02]
-      X-Runtime: ['0.113679']
-      X-XSS-Protection: [1; mode=block]
-      content-length: ['945']
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-RF9QcEw0L4l/mwBSIy4Jdw=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4a35556e80b9e252623b52538d60a640"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 50e26ec9-92b5-4fbc-8ecc-0c493b5f9425
+      X-Runtime:
+      - '0.029715'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -701,7 +701,8 @@ class Mastodon:
         """
         Basic health check. Returns True if healthy, False if not.
         """
-        return self.__api_request('GET', '/health', parse=False).decode("utf-8") == "success"
+        status = self.__api_request('GET', '/health', parse=False).decode("utf-8")
+        return status in ["OK", "success"]
     
     @api_version("3.0.0", "3.0.0", "3.0.0")
     def instance_nodeinfo(self, schema = "http://nodeinfo.diaspora.software/ns/schema/2.0"):
@@ -2522,8 +2523,8 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0", "2.9.1", __DICT_VERSION_MEDIA)
-    def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None):
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_MEDIA)
+    def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None, synchronous=False):
         """
         Post an image, video or audio file. `media_file` can either be image data or
         a file name. If image data is passed directly, the mime
@@ -2542,6 +2543,12 @@ class Mastodon:
 
         Returns a `media dict`_. This contains the id that can be used in
         status_post to attach the media file to a toot.
+
+        When using the v2 API (post Mastodon version 3.1.4), the `url` in the
+        returned dict will be `null`, since attachments are processed
+        asynchronously. You can fetch an updated dict using `media`. Pass
+        "synchronous" to emulate the old behaviour. Not recommended, inefficient
+        and deprecated, you know the deal.
         """
         if mime_type is None and (isinstance(media_file, str) and os.path.isfile(media_file)):
             mime_type = guess_type(media_file)
@@ -2562,10 +2569,32 @@ class Mastodon:
             focus = str(focus[0]) + "," + str(focus[1])
             
         media_file_description = (file_name, media_file, mime_type)
-        return self.__api_request('POST', '/api/v1/media',
-                                  files={'file': media_file_description},
-                                  params={'description': description, 'focus': focus})
-    
+        
+        # Disambiguate URL by version
+        if self.verify_minimum_version("3.1.4"):
+            ret_dict = self.__api_request('POST', '/api/v2/media',
+                                    files={'file': media_file_description},
+                                    params={'description': description, 'focus': focus})
+        else:
+            ret_dict = self.__api_request('POST', '/api/v1/media',
+                                    files={'file': media_file_description},
+                                    params={'description': description, 'focus': focus})
+        
+        # Wait for processing?
+        if synchronous:
+            if self.verify_minimum_version("3.1.4"):
+                while not "url" in ret_dict or ret_dict.url == None:
+                    try:
+                        ret_dict = self.media(ret_dict)
+                        time.sleep(1.0)
+                    except:
+                        raise MastodonAPIError("Attachment could not be processed")
+            else:
+                # Old version always waits
+                return ret_dict
+        
+        return ret_dict
+
     @api_version("2.3.0", "2.3.0", __DICT_VERSION_MEDIA)
     def media_update(self, id, description=None, focus=None):
         """
@@ -2582,6 +2611,15 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])  
         return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
     
+    @api_version("3.1.4", "3.1.4", __DICT_VERSION_MEDIA)
+    def media(self, id):
+        """
+        Get the updated JSON for one non-attached / in progress media upload belonging
+        to the logged-in user.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', '/api/v1/media/{0}'.format(str(id)))
+
     ###
     # Writing data: Domain blocks
     ###
