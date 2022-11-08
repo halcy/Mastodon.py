@@ -28,7 +28,7 @@ To set this up, follow the development guide and set up the database using "rail
 
 It also needs various things to be set up for it. The following command should do the trick:
 
-    RAILS_ENV=development rails db:setup && RAILS_ENV=development bin/tootctl accounts create admin2 --email alice@example.com --confirmed --role Owner &&  psql -d mastodon_development < ~/Mastodon.py/tests/setup.sql && sleep 4 && foreman start
+    sudo redis-cli flushall && sleep 3 && sudo /etc/init.d/redis-server restart  && RAILS_ENV=development rails db:setup && RAILS_ENV=development bin/tootctl accounts create admin2 --email zerocool@example.com --confirmed --role Owner &&  psql -d mastodon_development < ~/masto/Mastodon.py/tests/setup.sql && sleep 4 && foreman start
 
 Tests that send requests to Mastodon should be marked as needing VCR with the `pytest.mark.vcr` decorator.
 

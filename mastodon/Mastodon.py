@@ -1817,10 +1817,7 @@ class Mastodon:
                 if not isinstance(media_ids, (list, tuple)):
                     media_ids = [media_ids]
                 for media_id in media_ids:
-                    if isinstance(media_id, dict):
-                        media_ids_proper.append(media_id["id"])
-                    else:
-                        media_ids_proper.append(media_id)
+                    media_ids_proper.append(self.__unpack_id(media_id))
             except Exception as e:
                 raise MastodonIllegalArgumentError("Invalid media "
                                                    "dict: %s" % e)
