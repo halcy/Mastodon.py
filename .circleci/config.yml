@@ -13,7 +13,7 @@ jobs:
           command: "pip install codecov"   
       - run:
           name: "Run tests"
-          command: "python setup.py pytest"
+          command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
       - store_test_results:
           path: test
       - run:
