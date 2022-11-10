@@ -61,8 +61,8 @@ Mastodon.py contains work by a large amount of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog. 
 
-.. image:: https://travis-ci.org/halcy/Mastodon.py.svg?branch=master
-    :target: https://travis-ci.org/halcy/Mastodon.py
+.. image:: https://circleci.com/gh/halcy/Mastodon.py.svg?style=svg
+    :target: https://app.circleci.com/pipelines/github/halcy/Mastodon.py
 .. image:: https://codecov.io/gh/halcy/Mastodon.py/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/halcy/Mastodon.py
  
