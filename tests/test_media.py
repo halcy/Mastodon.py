@@ -62,6 +62,7 @@ def test_media_post(api, sensitive):
     finally:
         api.status_delete(status['id'])
 
+@pytest.mark.vcr(match_on=['path'])
 def test_media_post_multiple(api):
     media = api.media_post(
             'tests/image.jpg',
