@@ -28,7 +28,16 @@ To set this up, follow the development guide and set up the database using "rail
 
 It also needs various things to be set up for it. The following command should do the trick:
 
-    sudo redis-cli flushall && sleep 3 && sudo /etc/init.d/redis-server restart  && RAILS_ENV=development rails db:setup && RAILS_ENV=development bin/tootctl accounts create admin2 --email zerocool@example.com --confirmed --role Owner &&  psql -d mastodon_development < ~/masto/Mastodon.py/tests/setup.sql && sleep 4 && foreman start
+    sudo redis-cli flushall && sleep 3 && \
+    sudo /etc/init.d/redis-server restart && \
+    RAILS_ENV=development rails db:setup && \
+    RAILS_ENV=development bin/tootctl accounts create admin2 --email zerocool@example.com --confirmed --role Owner && \
+    RAILS_ENV=development bin/tootctl accounts create mastodonpy_test --email mastodonpy_test@localhost:3000 --confirmed && \
+    RAILS_ENV=development bin/tootctl accounts create mastodonpy_test_2 --email mastodonpy_test_2@localhost:3000 --confirmed && \
+    sql -d mastodon_development < ~/masto/Mastodon.py/tests/setup.sql && sleep 4 && \
+    RAILS_ENV=development DB_PASS="" foreman start
+
+You _may_ additionally have to set up a database password and pass it as DB_PASS for the streaming tests to function.
 
 Tests that send requests to Mastodon should be marked as needing VCR with the `pytest.mark.vcr` decorator.
 

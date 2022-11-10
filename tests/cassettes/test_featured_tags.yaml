@@ -1,78 +1,5 @@
 interactions:
 - request:
-    body: status=cool+free+%23ringtones
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Authorization:
-      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '29'
-      Content-Type:
-      - application/x-www-form-urlencoded
-      User-Agent:
-      - tests/v311
-    method: POST
-    uri: http://localhost:3000/api/v1/statuses
-  response:
-    body:
-      string: '{"id":"109304274610657135","created_at":"2022-11-07T19:54:29.915Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/109304274610657135","url":"http://localhost:3000/@mastodonpy_test/109304274610657135","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003ecool
-        free \u003ca href=\"http://localhost:3000/tags/ringtones\" class=\"mention
-        hashtag\" rel=\"tag\"\u003e#\u003cspan\u003eringtones\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":1,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]},"media_attachments":[],"mentions":[],"tags":[{"name":"ringtones","url":"http://localhost:3000/tags/ringtones"}],"emojis":[],"card":null,"poll":null}'
-    headers:
-      Cache-Control:
-      - no-store
-      Content-Security-Policy:
-      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-IyWunBzArjObfeEE5UX8ig=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
-        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
-        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
-        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
-        worker-src ''self'' blob: http://localhost:3000'
-      Content-Type:
-      - application/json; charset=utf-8
-      ETag:
-      - W/"10de32dfe2720e59b17044cba0f146a8"
-      Referrer-Policy:
-      - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '295'
-      X-RateLimit-Reset:
-      - '2022-11-07T21:00:00.940009Z'
-      X-Request-Id:
-      - e754fb62-d767-48e0-b88e-13b394800b32
-      X-Runtime:
-      - '0.037297'
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
     body: name=ringtones
     headers:
       Accept:
@@ -93,153 +20,14 @@ interactions:
     uri: http://localhost:3000/api/v1/featured_tags
   response:
     body:
-      string: "OpenSSL::PKey::RSAError at /api/v1/featured_tags\n================================================\n\nNeither
-        PUB key nor PRIV key: no start line\n\n> To access an interactive console
-        with this error, point your browser to: /__better_errors\n\n\napp/models/account.rb,
-        line 271\n-------------------------------\n\n``` ruby\n  266     def previous_strikes_count\n
-        \ 267       strikes.where(overruled_at: nil).count\n  268     end\n  269   \n
-        \ 270     def keypair\n> 271       @keypair ||= OpenSSL::PKey::RSA.new(private_key
-        || public_key)\n  272     end\n  273   \n  274     def tags_as_strings=(tag_names)\n
-        \ 275       hashtags_map = Tag.find_or_create_by_names(tag_names).index_by(&:name)\n
-        \ 276   \n```\n\nApp backtrace\n-------------\n\n - app/models/account.rb:271:in
-        `keypair'\n - app/lib/activitypub/linked_data_signature.rb:45:in `sign!'\n
-        - app/services/concerns/payloadable.rb:19:in `serialize_payload'\n - app/services/create_featured_tag_service.rb:23:in
-        `build_json'\n - app/services/create_featured_tag_service.rb:10:in `block
-        in call'\n - app/services/create_featured_tag_service.rb:9:in `call'\n - app/controllers/api/v1/featured_tags_controller.rb:16:in
-        `create'\n - app/controllers/concerns/localized.rb:11:in `set_locale'\n -
-        lib/mastodon/rack_middleware.rb:9:in `call'\n\nFull backtrace\n--------------\n\n
-        - openssl (3.0.0) lib/openssl/pkey.rb:348:in `new'\n - app/models/account.rb:271:in
-        `keypair'\n - app/lib/activitypub/linked_data_signature.rb:45:in `sign!'\n
-        - app/services/concerns/payloadable.rb:19:in `serialize_payload'\n - app/services/create_featured_tag_service.rb:23:in
-        `build_json'\n - app/services/create_featured_tag_service.rb:10:in `block
-        in call'\n - <internal:kernel>:90:in `tap'\n - app/services/create_featured_tag_service.rb:9:in
-        `call'\n - app/controllers/api/v1/featured_tags_controller.rb:16:in `create'\n
-        - actionpack (6.1.7) lib/action_controller/metal/basic_implicit_render.rb:6:in
-        `send_action'\n - actionpack (6.1.7) lib/abstract_controller/base.rb:228:in
-        `process_action'\n - actionpack (6.1.7) lib/action_controller/metal/rendering.rb:30:in
-        `process_action'\n - actionpack (6.1.7) lib/abstract_controller/callbacks.rb:42:in
-        `block in process_action'\n - activesupport (6.1.7) lib/active_support/callbacks.rb:117:in
-        `block in run_callbacks'\n - i18n (1.12.0) lib/i18n.rb:322:in `with_locale'\n
-        - app/controllers/concerns/localized.rb:11:in `set_locale'\n - activesupport
-        (6.1.7) lib/active_support/callbacks.rb:126:in `block in run_callbacks'\n
-        - activesupport (6.1.7) lib/active_support/callbacks.rb:137:in `run_callbacks'\n
-        - actionpack (6.1.7) lib/abstract_controller/callbacks.rb:41:in `process_action'\n
-        - actionpack (6.1.7) lib/action_controller/metal/rescue.rb:22:in `process_action'\n
-        - actionpack (6.1.7) lib/action_controller/metal/instrumentation.rb:34:in
-        `block in process_action'\n - activesupport (6.1.7) lib/active_support/notifications.rb:203:in
-        `block in instrument'\n - activesupport (6.1.7) lib/active_support/notifications/instrumenter.rb:24:in
-        `instrument'\n - activesupport (6.1.7) lib/active_support/notifications.rb:203:in
-        `instrument'\n - actionpack (6.1.7) lib/action_controller/metal/instrumentation.rb:33:in
-        `process_action'\n - actionpack (6.1.7) lib/action_controller/metal/params_wrapper.rb:249:in
-        `process_action'\n - activerecord (6.1.7) lib/active_record/railties/controller_runtime.rb:27:in
-        `process_action'\n - actionpack (6.1.7) lib/abstract_controller/base.rb:165:in
-        `process'\n - actionview (6.1.7) lib/action_view/rendering.rb:39:in `process'\n
-        - actionpack (6.1.7) lib/action_controller/metal.rb:190:in `dispatch'\n -
-        actionpack (6.1.7) lib/action_controller/metal.rb:254:in `dispatch'\n - actionpack
-        (6.1.7) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'\n - actionpack
-        (6.1.7) lib/action_dispatch/routing/route_set.rb:33:in `serve'\n - actionpack
-        (6.1.7) lib/action_dispatch/journey/router.rb:50:in `block in serve'\n - actionpack
-        (6.1.7) lib/action_dispatch/journey/router.rb:32:in `serve'\n - actionpack
-        (6.1.7) lib/action_dispatch/routing/route_set.rb:842:in `call'\n - omniauth
-        (1.9.2) lib/omniauth/builder.rb:45:in `call'\n - bullet (7.0.3) lib/bullet/rack.rb:15:in
-        `call'\n - rack-attack (6.6.1) lib/rack/attack.rb:103:in `call'\n - http_accept_language
-        (2.1.1) lib/http_accept_language/middleware.rb:14:in `call'\n - makara (0.5.1)
-        lib/makara/middleware.rb:16:in `call'\n - lib/mastodon/rack_middleware.rb:9:in
-        `call'\n - rack-attack (6.6.1) lib/rack/attack.rb:110:in `call'\n - warden
-        (1.2.9) lib/warden/manager.rb:36:in `block in call'\n - warden (1.2.9) lib/warden/manager.rb:34:in
-        `call'\n - rack (2.2.4) lib/rack/tempfile_reaper.rb:15:in `call'\n - rack
-        (2.2.4) lib/rack/etag.rb:27:in `call'\n - rack (2.2.4) lib/rack/conditional_get.rb:40:in
-        `call'\n - rack (2.2.4) lib/rack/head.rb:12:in `call'\n - actionpack (6.1.7)
-        lib/action_dispatch/http/permissions_policy.rb:22:in `call'\n - actionpack
-        (6.1.7) lib/action_dispatch/http/content_security_policy.rb:19:in `call'\n
-        - rack (2.2.4) lib/rack/session/abstract/id.rb:266:in `context'\n - rack (2.2.4)
-        lib/rack/session/abstract/id.rb:260:in `call'\n - actionpack (6.1.7) lib/action_dispatch/middleware/cookies.rb:689:in
-        `call'\n - activerecord (6.1.7) lib/active_record/migration.rb:601:in `call'\n
-        - actionpack (6.1.7) lib/action_dispatch/middleware/callbacks.rb:27:in `block
-        in call'\n - activesupport (6.1.7) lib/active_support/callbacks.rb:98:in `run_callbacks'\n
-        - actionpack (6.1.7) lib/action_dispatch/middleware/callbacks.rb:26:in `call'\n
-        - actionpack (6.1.7) lib/action_dispatch/middleware/executor.rb:14:in `call'\n
-        - actionpack (6.1.7) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in
-        `call'\n - better_errors (2.9.1) lib/better_errors/middleware.rb:87:in `protected_app_call'\n
-        - better_errors (2.9.1) lib/better_errors/middleware.rb:82:in `better_errors_call'\n
-        - better_errors (2.9.1) lib/better_errors/middleware.rb:60:in `call'\n - actionpack
-        (6.1.7) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'\n
-        - actionpack (6.1.7) lib/action_dispatch/middleware/show_exceptions.rb:33:in
-        `call'\n - chewy (7.2.4) lib/chewy/railtie.rb:21:in `block in call'\n - chewy
-        (7.2.4) lib/chewy/strategy.rb:57:in `wrap'\n - chewy (7.2.4) lib/chewy.rb:154:in
-        `strategy'\n - chewy (7.2.4) lib/chewy/railtie.rb:21:in `call'\n - railties
-        (6.1.7) lib/rails/rack/logger.rb:37:in `call_app'\n - railties (6.1.7) lib/rails/rack/logger.rb:26:in
-        `block in call'\n - activesupport (6.1.7) lib/active_support/tagged_logging.rb:99:in
-        `block in tagged'\n - activesupport (6.1.7) lib/active_support/tagged_logging.rb:37:in
-        `tagged'\n - activesupport (6.1.7) lib/active_support/tagged_logging.rb:99:in
-        `tagged'\n - railties (6.1.7) lib/rails/rack/logger.rb:26:in `call'\n - sprockets-rails
-        (3.4.2) lib/sprockets/rails/quiet_assets.rb:13:in `call'\n - actionpack (6.1.7)
-        lib/action_dispatch/middleware/remote_ip.rb:81:in `call'\n - actionpack (6.1.7)
-        lib/action_dispatch/middleware/request_id.rb:26:in `call'\n - rack (2.2.4)
-        lib/rack/method_override.rb:24:in `call'\n - rack (2.2.4) lib/rack/runtime.rb:22:in
-        `call'\n - activesupport (6.1.7) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in
-        `call'\n - actionpack (6.1.7) lib/action_dispatch/middleware/executor.rb:14:in
-        `call'\n - actionpack (6.1.7) lib/action_dispatch/middleware/static.rb:24:in
-        `call'\n - rack (2.2.4) lib/rack/sendfile.rb:110:in `call'\n - actionpack
-        (6.1.7) lib/action_dispatch/middleware/host_authorization.rb:148:in `call'\n
-        - rack-cors (1.1.1) lib/rack/cors.rb:100:in `call'\n - webpacker (5.4.3) lib/webpacker/dev_server_proxy.rb:25:in
-        `perform_request'\n - rack-proxy (0.7.0) lib/rack/proxy.rb:63:in `call'\n
-        - railties (6.1.7) lib/rails/engine.rb:539:in `call'\n - puma (5.6.5) lib/puma/configuration.rb:252:in
-        `call'\n - puma (5.6.5) lib/puma/request.rb:77:in `block in handle_request'\n
-        - puma (5.6.5) lib/puma/thread_pool.rb:340:in `with_force_shutdown'\n - puma
-        (5.6.5) lib/puma/request.rb:76:in `handle_request'\n - puma (5.6.5) lib/puma/server.rb:443:in
-        `process_client'\n - puma (5.6.5) lib/puma/thread_pool.rb:147:in `block in
-        spawn_thread'\n\n"
-    headers:
-      Content-Type:
-      - text/plain; charset=utf-8
-      Set-Cookie:
-      - BetterErrors-2.9.1-CSRF-Token=4580aa73-9d66-4bfa-870b-46593e252bde; path=/;
-        HttpOnly; SameSite=Strict
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Origin
-      X-Request-Id:
-      - de262fec-8e84-4b04-85bb-5da30813c411
-      X-Runtime:
-      - '0.049918'
-    status:
-      code: 500
-      message: Internal Server Error
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Authorization:
-      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '0'
-      Cookie:
-      - BetterErrors-2.9.1-CSRF-Token=4580aa73-9d66-4bfa-870b-46593e252bde
-      User-Agent:
-      - tests/v311
-    method: DELETE
-    uri: http://localhost:3000/api/v1/statuses/109304274610657135
-  response:
-    body:
-      string: '{"id":"109304274610657135","created_at":"2022-11-07T19:54:29.915Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/users/mastodonpy_test/statuses/109304274610657135","url":"http://localhost:3000/@mastodonpy_test/109304274610657135","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"text":"cool
-        free #ringtones","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"1234567890123456","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"John
-        Lennon","locked":true,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-07T00:00:00.000Z","note":"\u003cp\u003eI
-        walk funny\u003c/p\u003e","url":"http://localhost:3000/@mastodonpy_test","avatar":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","avatar_static":"http://localhost:3000/system/accounts/avatars/123/456/789/012/345/original/2d5ad2a2a4ca9e32.jpg","header":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","header_static":"http://localhost:3000/system/accounts/headers/123/456/789/012/345/original/51bc27ef4d67326e.jpg","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2022-11-07","noindex":false,"emojis":[],"fields":[{"name":"bread","value":"toasty.","verified_at":null},{"name":"lasagna","value":"no!!!","verified_at":null}]},"media_attachments":[],"mentions":[],"tags":[{"name":"ringtones","url":"http://localhost:3000/tags/ringtones"}],"emojis":[],"card":null,"poll":null}'
+      string: '{"id":"1","name":"ringtones","url":"http://localhost:3000/@mastodonpy_test/tagged/ringtones","statuses_count":"0","last_status_at":null}'
     headers:
       Cache-Control:
       - no-store
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-Hf3Oo/m+v4J/Ait+/fAFZw=='';
+        style-src ''self'' http://localhost:3000 ''nonce-GjXyZZckExmvwzB75bXrRw=='';
         media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
         https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
         data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
@@ -249,7 +37,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"b6c97f90f2b33e78eb4d27015883bb39"
+      - W/"aa2380f6b72962d051f0cd1ca31074a1"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
@@ -265,9 +53,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 7f8027d9-bdd5-4ed5-b652-110deb8cf5b2
+      - 40a41ecb-53f4-4d6a-816b-ea0bdec7283c
       X-Runtime:
-      - '0.023956'
+      - '0.262286'
       X-XSS-Protection:
       - 1; mode=block
     status:

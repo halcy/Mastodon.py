@@ -1,5 +1,8 @@
 import pytest
 
+# Set this to True to debug issues with tests
+DEBUG_REQUESTS = True
+
 def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN', version="3.1.1", version_check_mode="created"):
     import mastodon
     return mastodon.Mastodon(
@@ -9,7 +12,8 @@ def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN', version="3.1.1", versio
             access_token=access_token,
             mastodon_version=version,
             version_check_mode=version_check_mode,
-            user_agent='tests/v311')
+            user_agent='tests/v311',
+            debug_requests=DEBUG_REQUESTS)
 
 
 @pytest.fixture

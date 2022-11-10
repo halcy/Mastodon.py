@@ -2321,7 +2321,7 @@ class Mastodon:
     ###
     # Writing data: Featured hashtags
     ###
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "4.0.0", __DICT_VERSION_FEATURED_TAG)
     def featured_tag_create(self, name):
         """
         Creates a new featured hashtag displayed on the logged-in users profile.

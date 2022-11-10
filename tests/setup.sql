@@ -9,73 +9,23 @@ DELETE FROM users WHERE id = 1234567890123457;
 DELETE FROM accounts WHERE id = 1234567890123456;
 DELETE FROM accounts WHERE id = 1234567890123457;
 
-INSERT INTO accounts (
-    id,
-    username,
-    locked,
-    created_at,
-    updated_at
-) VALUES (
-    1234567890123456,
-    'mastodonpy_test',
-    't',
-    now(),
-    now()
-);
+UPDATE accounts SET
+    locked = 't'
+WHERE username = 'mastodonpy_test';
 
-INSERT INTO users (
-    id,
-    email,
-    account_id,
-    created_at,
-    updated_at,
-    confirmed_at,
-    locale
-) VALUES (
-    1234567890123456,
-    'mastodonpy_test@localhost:3000',
-    1234567890123456,
-    now(),
-    now(),
-    now(),
-    'ja'  -- japanese locale for unicode testing :p
-);
+UPDATE users SET 
+    locale = 'ja'  -- japanese locale for unicode testing :p
+WHERE email = 'mastodonpy_test@localhost:3000';
 
-INSERT INTO accounts (
-    id,
-    username,
-    locked,
-    created_at,
-    updated_at,
-    discoverable
-) VALUES (
-    1234567890123457,
-    'mastodonpy_test_2',
-    'f',
-    now(),
-    now(),
-    't'
-);
+UPDATE accounts SET
+    locked = 'f',
+    discoverable = 't'
+WHERE username = 'mastodonpy_test_2';
 
-INSERT INTO users (
-    id,
-    email,
-    account_id,
-    created_at,
-    updated_at,
-    confirmed_at,
-    locale,
-    encrypted_password
-) VALUES (
-    1234567890123457,
-    'mastodonpy_test_2@localhost:3000',
-    1234567890123457,
-    now(),
-    now(),
-    now(),
-    'ja', -- japanese locale for unicode testing :p
-    '$2a$10$8eAdhF69RiZiV0puZ.8iOOgMqBACmwJu8Z9X4CiN91iwRXbeC2jvi'
-);
+UPDATE users SET
+    locale = 'ja',  -- japanese locale for unicode testing :p
+    encrypted_password = '$2a$10$8eAdhF69RiZiV0puZ.8iOOgMqBACmwJu8Z9X4CiN91iwRXbeC2jvi'
+WHERE email = 'mastodonpy_test_2@localhost:3000';
 
 INSERT INTO oauth_applications (
     id,
@@ -96,7 +46,7 @@ INSERT INTO oauth_applications (
     'urn:ietf:wg:oauth:2.0:oob',
     'read write follow push admin:read admin:write',
     'User',
-    1234567890123456,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
     now(),
     now()
 );
@@ -113,7 +63,7 @@ INSERT INTO oauth_access_tokens (
     '__MASTODON_PY_TEST_ACCESS_TOKEN',
     'read write follow push',
     1234567890123456,
-    1234567890123456,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
     now()
 ),
 (
@@ -121,7 +71,7 @@ INSERT INTO oauth_access_tokens (
     '__MASTODON_PY_TEST_ACCESS_TOKEN_3',
     'read write follow push',
     1234567890123456,
-    1234567890123457,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
     now()
 ),
 (
@@ -146,7 +96,7 @@ INSERT INTO settings (
     'notification_emails',
     E'---\nfollow_request: false',
     'User',
-    1234567890123456,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
     now(),
     now()
 );
@@ -163,7 +113,7 @@ INSERT INTO settings (
     'default_privacy', 
     E'--- public\n...\n', 
     'User',
-    1234567890123456,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
     now(),
     now()
 );
@@ -180,7 +130,7 @@ INSERT INTO settings (
     'default_sensitive',
     E'--- false\n...\n',
     'User',
-    1234567890123456,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
     now(),
     now()
 );
@@ -199,7 +149,7 @@ INSERT INTO settings (
     'notification_emails',
     E'---\nfollow_request: false',
     'User',
-    1234567890123457,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
     now(),
     now()
 );
@@ -216,7 +166,7 @@ INSERT INTO settings (
     'default_privacy', 
     E'--- public\n...\n', 
     'User',
-    1234567890123457,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
     now(),
     now()
 );
@@ -233,7 +183,7 @@ INSERT INTO settings (
     'default_sensitive',
     E'--- false\n...\n',
     'User',
-    1234567890123457,
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
     now(),
     now()
 );
