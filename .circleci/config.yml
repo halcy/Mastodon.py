@@ -14,6 +14,8 @@ jobs:
       - run:
           name: "Run tests"
           command: "python setup.py pytest"
+      - store_test_results:
+          path: test
       - run:
           name: "Notify codecov"
           command: "codecov"
