@@ -14,7 +14,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 3.2.0
 -----
-* [ ] Add personal notes for accounts
+* [x] Add personal notes for accounts
 * [x] Add customizable thumbnails for audio and video attachments
 * [x] Add color extraction for thumbnails
 
@@ -62,5 +62,5 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 General improvements that would be good to do before doing another release:
 * [ ] Split mastodon.py into parts in some way that makes sense, it's getting very unwieldy
-* [ ] Fix the CI
+* [x] Fix the CI
 * [ ] Get test coverage like, real high

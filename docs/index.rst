@@ -493,6 +493,7 @@ Relationship dicts
                            # logged-in users Timeline
         'endorsed': # Boolean denoting wheter the specified user is being endorsed / featured by the
                     # logged-in user
+        'note': # A free text note the logged in user has created for this account (not publicly visible)
     }
 
 Filter dicts
@@ -1176,6 +1177,7 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_pin
 .. automethod:: Mastodon.account_unpin
 .. automethod:: Mastodon.account_update_credentials
+.. automethod:: Mastodon.account_note_set
 
 Writing data: Featured tags
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

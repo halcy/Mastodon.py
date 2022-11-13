@@ -233,26 +233,9 @@ def test_suggested_tags(api):
 @pytest.mark.vcr()
 def test_featured_tags(api):
     featured_tag = api.featured_tag_create("ringtones")
-    """try:
-        status = api.status_post("cool free #ringtones")
-        time.sleep(2)
 
-        featured_tag = api.featured_tag_create("ringtones")
-        assert featured_tag
-        
-        tag_list = api.featured_tags()
-        assert featured_tag.name in list(map(lambda x: x.name, tag_list))
-        
-        api.featured_tag_delete(featured_tag)
-        tag_list = api.featured_tags()
-        assert not featured_tag.name in list(map(lambda x: x.name, tag_list))
-    finally:
-        api.status_delete(status)"""
-        
-        
-        
-        
-        
-        
-        
-        
+@pytest.mark.vcr()
+def test_account_notes(api, api2):
+    relationship = api.account_note_set(api2.account_verify_credentials(), "top ebayer gerne wieder")
+    assert relationship
+    assert relationship.note == "top ebayer gerne wieder"

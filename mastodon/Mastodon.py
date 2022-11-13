@@ -215,7 +215,7 @@ class Mastodon:
     __DICT_VERSION_INSTANCE = bigger_version("3.1.4", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
-    __DICT_VERSION_RELATIONSHIP = "2.5.0"
+    __DICT_VERSION_RELATIONSHIP = "3.2.0"
     __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
@@ -2260,6 +2260,16 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unpin'.format(str(id))
         return self.__api_request('POST', url)
 
+    def account_note_set(self, id, comment):
+        """
+        Set a note (visible to the logged in user only) for the given account.
+
+        returns a `status dict`_ with the `note` updated.
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ["id"])
+        return self.__api_request('POST', '/api/v1/accounts/{0}/note'.format(str(id)), params)
+    
     ###
     # Writing data: Featured hashtags
     ###
