@@ -130,11 +130,12 @@ allows you to specify the largest id you want. By specifying either min_id or `m
 (generally, only one, not both, though specifying both is supported starting with Mastodon
 version 3.3.0) of them you can go through pages forwards and backwards.
 
-On Mastodon mainline, you can, pass datetime objects as IDs, since the IDs used are
-Snowflake IDs and dates can be approximately converted to those. This is guaranteed
-to work on mainline Mastodon servers and very likely to work on all forks, but will
-**not** work on other servers implementing the API, like Pleroma, Misskey or Gotosocial. 
-You should not use this if you want your application to be universally compatible.
+On Mastodon mainline, you can, pass datetime objects as IDs when fetching posts,
+since the IDs used are Snowflake IDs and dates can be approximately converted to those. 
+This is guaranteed to work on mainline Mastodon servers and very likely to work on all 
+forks, but will **not** work on other servers implementing the API, like Pleroma, Misskey 
+or Gotosocial. You should not use this if you want your application to be universally
+compatible.
 
 `limit` allows you to specify how many results you would like returned. Note that an
 instance may choose to return less results than you requested - by default, Mastodon 
@@ -1178,6 +1179,7 @@ These functions allow you to interact with other accounts: To (un)follow and
 .. automethod:: Mastodon.account_unpin
 .. automethod:: Mastodon.account_update_credentials
 .. automethod:: Mastodon.account_note_set
+.. automethod:: Mastodon.account_featured_tags
 
 Writing data: Featured tags
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

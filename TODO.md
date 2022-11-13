@@ -24,8 +24,8 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [ ] Add duration option to the mute function
 * [ ] Add ability to block access or limit sign-ups from chosen IPs
 * [ ] Add support for managing multiple stream subscriptions in a single connection
-* [ ] Add support for limiting results by both min_id and max_id at the same time in REST API
-* [ ] Add GET /api/v1/accounts/:id/featured_tags to REST API
+* [x] Add support for limiting results by both min_id and max_id at the same time in REST API
+* [x] Add GET /api/v1/accounts/:id/featured_tags to REST API
 
 3.4.0
 -----

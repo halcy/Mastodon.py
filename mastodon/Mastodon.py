@@ -2265,12 +2265,22 @@ class Mastodon:
         """
         Set a note (visible to the logged in user only) for the given account.
 
-        returns a `status dict`_ with the `note` updated.
+        Returns a `status dict`_ with the `note` updated.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('POST', '/api/v1/accounts/{0}/note'.format(str(id)), params)
     
+    @api_version("3.3.0", "3.3.0", __DICT_VERSION_HASHTAG)
+    def account_featured_tags(self, id):
+        """
+        Get an accounts featured hashtags.
+
+        Returns a list of `hashtag dicts`_ (NOT `featured tag dicts`_).
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', '/api/v1/accounts/{0}/featured_tags'.format(str(id)))
+        
     ###
     # Writing data: Featured hashtags
     ###

@@ -232,7 +232,26 @@ def test_suggested_tags(api):
     
 @pytest.mark.vcr()
 def test_featured_tags(api):
-    featured_tag = api.featured_tag_create("ringtones")
+    try:
+        featured_tag = api.featured_tag_create("ringtones")
+        assert featured_tag
+        assert featured_tag.name == "ringtones"
+
+        featured_tag_2 = api.featured_tag_create("#coolfree")
+        assert featured_tag_2
+        assert featured_tag_2.name == "coolfree"
+
+        api.featured_tag_delete(featured_tag)
+        featured_tag = None
+
+        featured_tag_list = api.account_featured_tags(api.account_verify_credentials())
+        assert len(featured_tag_list) == 1
+        assert featured_tag_list[0].name == "coolfree"
+        assert "url" in featured_tag_list[0]
+    finally:
+        if not featured_tag is None:
+            api.featured_tag_delete(featured_tag)
+        api.featured_tag_delete(featured_tag_2) 
 
 @pytest.mark.vcr()
 def test_account_notes(api, api2):
