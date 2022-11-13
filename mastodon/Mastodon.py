@@ -210,9 +210,8 @@ class Mastodon:
     __DICT_VERSION_MEDIA = "2.8.2"
     __DICT_VERSION_ACCOUNT = "3.1.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("3.1.0", 
-            __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
-    __DICT_VERSION_INSTANCE = bigger_version("2.9.2", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
+    __DICT_VERSION_INSTANCE = bigger_version("3.1.4", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "2.5.0"
@@ -220,8 +219,7 @@ class Mastodon:
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
     __DICT_VERSION_CARD = "2.0.0"
-    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", 
-            __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
+    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2" 
     __DICT_VERSION_REPORT = "2.9.1"
     __DICT_VERSION_PUSH = "2.4.0"
@@ -735,31 +733,40 @@ class Mastodon:
     ###
     # Reading data: Timelines
     ##
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
-    def timeline(self, timeline="home", max_id=None, min_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    def timeline(self, timeline="home", max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
         'tag/hashtag' or 'list/id'. See the following functions documentation for what those do.
-        Local hashtag timelines are supported via the `timeline_hashtag()`_ function.
         
         The default timeline is the "home" timeline.
 
-        Media only queries are supported via the `timeline_public()`_ and `timeline_hashtag()`_ functions.
+        Specify `only_media` to only get posts with attached media. Specify `local` to only get local statuses,
+        and `remote` to only get remote statuses. Some options are mutually incompatible as dictated by logic.
         
         May or may not require authentication depending on server settings and what is specifically requested.
 
         Returns a list of `toot dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
             
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
         
         params_initial = locals()
+
+        if local == False:
+            del params_initial['local']
+        
+        if remote == False:
+            del params_initial['remote']
+
+        if only_media == False:
+            del params_initial['only_media']
 
         if timeline == "local":
             timeline = "public"
@@ -769,100 +776,54 @@ class Mastodon:
         url = '/api/v1/timelines/{0}'.format(timeline)
         return self.__api_request('GET', url, params)
     
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
-    def timeline_home(self, max_id=None, min_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    def timeline_home(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
-        Fetch the logged-in users home timeline (i.e. followed users and self).
+        Convenience method: Fetches the logged-in users home timeline (i.e. followed users and self). Params as in `timeline()`.
 
         Returns a list of `toot dicts`_.
         """
-        return self.timeline('home', max_id=max_id, min_id=min_id, 
-                             since_id=since_id, limit=limit)
+        return self.timeline('home', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
-    def timeline_local(self, max_id=None, min_id=None, since_id=None, limit=None):
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    def timeline_local(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False):
         """
-        Fetches the local / instance-wide timeline, not including replies.
+        Convenience method: Fetches the local / instance-wide timeline, not including replies. Params as in `timeline()`.
 
         Returns a list of `toot dicts`_.
         """
-        return self.timeline('local', max_id=max_id, min_id=min_id,
-                             since_id=since_id, limit=limit)
+        return self.timeline('local', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media)
 
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
-    def timeline_public(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False):
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    def timeline_public(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
-        Fetches the public / visible-network timeline, not including replies.
-
-        Set `only_media` to True to retrieve only statuses with media attachments.
+        Convenience method: Fetches the public / visible-network / federated timeline, not including replies. Params as in `timeline()`.
 
         Returns a list of `toot dicts`_.
         """
-        if max_id != None:
-            max_id = self.__unpack_id(max_id)
-            
-        if min_id != None:
-            min_id = self.__unpack_id(min_id)
+        return self.timeline('public', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
         
-        if since_id != None:
-            since_id = self.__unpack_id(since_id)
-        
-        params_initial = locals()        
-        
-        if only_media == False:
-            del params_initial['only_media']
-            
-        url = '/api/v1/timelines/public'        
-        params = self.__generate_params(params_initial)
-        
-        return self.__api_request('GET', url, params)
-
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)    
-    def timeline_hashtag(self, hashtag, local=False, max_id=None, min_id=None, since_id=None, limit=None, only_media=False):
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)    
+    def timeline_hashtag(self, hashtag, local=False, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, remote=False):
         """
-        Fetch a timeline of toots with a given hashtag. The hashtag parameter
-        should not contain the leading #.
-
-        Set `local` to True to retrieve only instance-local tagged posts.
-        Set `only_media` to True to retrieve only statuses with media attachments.
+        Convenience method: Fetch a timeline of toots with a given hashtag. The hashtag parameter
+        should not contain the leading #. Params as in `timeline()`.
         
         Returns a list of `toot dicts`_.
         """
         if hashtag.startswith("#"):
             raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
-            
-        if max_id != None:
-            max_id = self.__unpack_id(max_id)
-        
-        if min_id != None:
-            min_id = self.__unpack_id(min_id)        
-        
-        if since_id != None:
-            since_id = self.__unpack_id(since_id)
-            
-        params_initial = locals()        
-        
-        if local == False:
-            del params_initial['local']
-        
-        if only_media == False:
-            del params_initial['only_media']
-            
-        url = '/api/v1/timelines/tag/{0}'.format(hashtag)        
-        params = self.__generate_params(params_initial, ['hashtag'])
-        
-        return self.__api_request('GET', url, params)
+        return self.timeline('tag/{0}'.format(hashtag), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("2.1.0", "2.6.0", __DICT_VERSION_STATUS)
-    def timeline_list(self, id, max_id=None, min_id=None, since_id=None, limit=None):
+    @api_version("2.1.0", "3.1.4", __DICT_VERSION_STATUS)
+    def timeline_list(self, id, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
-        Fetches a timeline containing all the toots by users in a given list.
+        Convenience method: Fetches a timeline containing all the toots by users in a given list. Params as in `timeline()`.
 
         Returns a list of `toot dicts`_.
         """
         id = self.__unpack_id(id)
-        return self.timeline('list/{0}'.format(id), max_id=max_id,
-                             min_id=min_id, since_id=since_id, limit=limit)
+        return self.timeline('list/{0}'.format(id), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
     @api_version("2.6.0", "2.6.0", __DICT_VERSION_CONVERSATION)
     def conversations(self, max_id=None, min_id=None, since_id=None, limit=None):
@@ -872,13 +833,13 @@ class Mastodon:
         Returns a list of `conversation dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
             
         if since_id != None:
-            since_id = self.__unpack_id(since_id)            
+            since_id = self.__unpack_id(since_id, dateconv=True)            
         
         params = self.__generate_params(locals())
         return self.__api_request('GET', "/api/v1/conversations/", params)
@@ -1023,13 +984,13 @@ class Mastodon:
             del mentions_only
             
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
         
         if account_id != None:
             account_id = self.__unpack_id(account_id)
@@ -1098,13 +1059,13 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
         
         params = self.__generate_params(locals(), ['id'])
         if pinned == False:
@@ -1128,13 +1089,13 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/following'.format(str(id))
@@ -1149,13 +1110,13 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/followers'.format(str(id))
@@ -1460,13 +1421,13 @@ class Mastodon:
         id = self.__unpack_id(id)
         
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
         
         params = self.__generate_params(locals(), ['id']) 
         return self.__api_request('GET', '/api/v1/lists/{0}/accounts'.format(id))
@@ -1482,13 +1443,13 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)        
+            min_id = self.__unpack_id(min_id, dateconv=True)        
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
@@ -1501,13 +1462,13 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/blocks', params)
@@ -1538,13 +1499,13 @@ class Mastodon:
         Returns a list of `toot dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)        
+            min_id = self.__unpack_id(min_id, dateconv=True)        
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/favourites', params)
@@ -1560,13 +1521,13 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)        
+            min_id = self.__unpack_id(min_id, dateconv=True)        
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/follow_requests', params)
@@ -1582,13 +1543,13 @@ class Mastodon:
         Returns a list of blocked domain URLs (as strings, without protocol specifier).
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)        
+            min_id = self.__unpack_id(min_id, dateconv=True)        
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
             
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
@@ -1692,13 +1653,13 @@ class Mastodon:
         Returns a list of `toot dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
 
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
 
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/bookmarks', params)
@@ -2824,13 +2785,13 @@ class Mastodon:
         Returns a list of `admin account dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
         
         params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'])
         
@@ -2955,13 +2916,13 @@ class Mastodon:
         Returns a list of `report dicts`_.
         """
         if max_id != None:
-            max_id = self.__unpack_id(max_id)
+            max_id = self.__unpack_id(max_id, dateconv=True)
         
         if min_id != None:
-            min_id = self.__unpack_id(min_id)
+            min_id = self.__unpack_id(min_id, dateconv=True)
         
         if since_id != None:
-            since_id = self.__unpack_id(since_id)
+            since_id = self.__unpack_id(since_id, dateconv=True)
         
         if not account_id is None:
             account_id = self.__unpack_id(account_id)
@@ -3027,7 +2988,7 @@ class Mastodon:
         
     ###
     # Push subscription crypto utilities
-    ###     
+    ### 
     def push_subscription_generate_keys(self):
         """
         Generates a private key, public key and shared secret for use in webpush subscriptions.
@@ -3062,6 +3023,7 @@ class Mastodon:
         
         return priv_dict, pub_dict
     
+    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH_NOTIF)
     def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
         """
         Decrypts `data` received in a webpush request. Requires the private key dict 
@@ -3810,7 +3772,7 @@ class Mastodon:
             
         return params
     
-    def __unpack_id(self, id):
+    def __unpack_id(self, id, dateconv=False):
         """
         Internal object-to-id converter
         
@@ -3819,9 +3781,10 @@ class Mastodon:
         the id straight.
         """
         if isinstance(id, dict) and "id" in id:
-            return id["id"]
-        else:
-            return id
+            id =  id["id"]
+        if dateconv and isinstance(id, datetime):
+            id = (int(id) << 16) * 1000
+        return id
     
     def __decode_webpush_b64(self, data):
         """

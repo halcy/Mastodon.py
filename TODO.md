@@ -8,8 +8,8 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 3.1.4
 -----
-* [ ] Add ability to exclude local content from federated timeline
-* [ ] Add ability to exclude remote content from hashtag timelines in web UI
+* [x] Add ability to exclude local content from federated timeline
+* [x] Add ability to exclude remote content from hashtag timelines in web UI
 * [ ] Add invites_enabled attribute to GET /api/v1/instance in REST API
 
 3.2.0

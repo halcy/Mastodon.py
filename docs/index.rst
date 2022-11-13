@@ -121,15 +121,22 @@ Many of Mastodons API endpoints are paginated. What this means is that if you re
 data from them, you might not get all the data at once - instead, you might only get the
 first few results.
 
-All endpoints that are paginated have four parameters: since_id, max_id, min_id and 
-limit. since_id allows you to specify the smallest id you want in the returned data, but
+All endpoints that are paginated have four parameters: `since_id`, `max_id`, `min_id` and 
+`limit`. `since_id` allows you to specify the smallest id you want in the returned data, but
 you will still always get the newest data, so if there are too many statuses between
-the newest one and since_id, some will not be returned. min_id, on the other hand, gives
-you statuses with that minimum id and newer, starting at the given id. max_id, similarly, 
-allows you to specify the largest id you want. By specifying either min_id or max_id 
-(generally, only one, not both) of them you can go through pages forwards and backwards.
+the newest one and `since_id`, some will not be returned. `min_id`, on the other hand, gives
+you statuses with that minimum id and newer, starting at the given id. `max_id`, similarly, 
+allows you to specify the largest id you want. By specifying either min_id or `max_id` 
+(generally, only one, not both, though specifying both is supported starting with Mastodon
+version 3.3.0) of them you can go through pages forwards and backwards.
 
-limit allows you to specify how many results you would like returned. Note that an
+On Mastodon mainline, you can, pass datetime objects as IDs, since the IDs used are
+Snowflake IDs and dates can be approximately converted to those. This is guaranteed
+to work on mainline Mastodon servers and very likely to work on all forks, but will
+**not** work on other servers implementing the API, like Pleroma, Misskey or Gotosocial. 
+You should not use this if you want your application to be universally compatible.
+
+`limit` allows you to specify how many results you would like returned. Note that an
 instance may choose to return less results than you requested - by default, Mastodon 
 will return no more than 40 statues and no more than 80 accounts no matter how high
 you set the limit.
