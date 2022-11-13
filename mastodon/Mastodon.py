@@ -262,7 +262,7 @@ class Mastodon:
                    api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT, session=None):
         """
         Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
-        - more granular scopes are available, please refere to Mastodon documentation for which).
+        - more granular scopes are available, please refer to Mastodon documentation for which).
 
         Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating in an OAuth flow.
         You can specify multiple URLs by passing a list. Note that if you wish to use OAuth authentication with redirects,
