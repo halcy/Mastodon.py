@@ -208,7 +208,7 @@ class Mastodon:
     # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
-    __DICT_VERSION_MEDIA = "2.8.2"
+    __DICT_VERSION_MEDIA = "3.2.0"
     __DICT_VERSION_ACCOUNT = "3.1.0"
     __DICT_VERSION_POLL = "2.8.0"
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
@@ -219,7 +219,7 @@ class Mastodon:
     __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
-    __DICT_VERSION_CARD = "2.0.0"
+    __DICT_VERSION_CARD = "3.2.0"
     __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2" 
     __DICT_VERSION_REPORT = "2.9.1"

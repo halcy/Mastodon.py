@@ -571,12 +571,12 @@ Media dicts
         'remote_url': # The remote URL for the media (if the image is from a remote instance)
         'preview_url': # The URL for the media preview
         'text_url': # The display text for the media (what shows up in toots)
-        'meta': # Dictionary of two image metadata dicts (see below), 
+        'meta': # Dictionary of two metadata dicts (see below), 
                 # 'original' and 'small' (preview). Either may be empty.
                 # May additionally contain an "fps" field giving a videos frames per second (possibly
                 # rounded), and a "length" field giving a videos length in a human-readable format.
                 # Note that a video may have an image as preview.
-                # May also contain a 'focus' dict.
+                # May also contain a 'focus' dict and a media 'colors' dict.
         'blurhash': # The blurhash for the image, used for preview / placeholder generation
         'description': # If set, the user-provided description for this media.
     }
@@ -598,6 +598,12 @@ Media dicts
         'duration': # Duration of the video in seconds
         'bitrate': # Average bit-rate of the video in bytes per second
     }
+
+    # Metadata dicts (audio) - all fields are optional:
+    {
+        'duration': # Duration of the audio file in seconds
+        'bitrate': # Average bit-rate of the audio file in bytes per second
+    }    
     
     # Focus Metadata dict:
     {
@@ -605,6 +611,12 @@ Media dicts
         'y': Focus point x coordinate (between -1 and 1)
     }
     
+    # Media colors dict:
+    {
+        'foreground': # Estimated foreground colour for the attachment thumbnail
+        'background': # Estimated background colour for the attachment thumbnail
+        'accent': # Estimated accent colour for the attachment thumbnail
+
 Card dicts
 ~~~~~~~~~~
 .. _card dict:
@@ -629,6 +641,7 @@ Card dicts
         'html': # HTML string of the embed
         'provider_name': # Name of the provider from which the embed originates
         'provider_url': # URL pointing to the embeds provider
+        'blurhash': # (optional) Blurhash of the preview image
     }
 
 Search result dicts

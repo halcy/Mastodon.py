@@ -16,7 +16,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 -----
 * [ ] Add personal notes for accounts
 * [x] Add customizable thumbnails for audio and video attachments
-* [ ] Add color extraction for thumbnails
+* [x] Add color extraction for thumbnails
 
 3.3.0
 -----
