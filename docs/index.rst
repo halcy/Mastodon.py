@@ -1407,6 +1407,6 @@ Mastodon.py contains work by a large amount of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog.
 
-.. _Mastodon: https://github.com/tootsuite/mastodon
+.. _Mastodon: https://github.com/mastodon/mastodon
 .. _Mastodon flagship instance: http://mastodon.social/
 .. _Official Mastodon api docs: https://docs.joinmastodon.org/api/rest
