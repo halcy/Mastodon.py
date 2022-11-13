@@ -2260,6 +2260,7 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/unpin'.format(str(id))
         return self.__api_request('POST', url)
 
+    @api_version("3.2.0", "3.2.0", __DICT_VERSION_RELATIONSHIP)
     def account_note_set(self, id, comment):
         """
         Set a note (visible to the logged in user only) for the given account.
@@ -2273,7 +2274,7 @@ class Mastodon:
     ###
     # Writing data: Featured hashtags
     ###
-    @api_version("3.0.0", "4.0.0", __DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
     def featured_tag_create(self, name):
         """
         Creates a new featured hashtag displayed on the logged-in users profile.
