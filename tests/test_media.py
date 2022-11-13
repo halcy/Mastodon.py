@@ -103,16 +103,19 @@ def test_media_post_multiple(api):
 @pytest.mark.vcr(match_on=['path'])
 def test_media_update(api):
     media = api.media_post(
-            'tests/image.jpg',
-            description="John Lennon doing a funny walk",
-            focus=(-0.5, 0.3))
+        'tests/video.mp4',
+        description="me when a cat",
+        focus=(-0.5, 0.3)
+    )
     
     assert media
 
     media_up = api.media_update(
-            media,
-            description="John Lennon doing a cool walk",
-            focus=(0.69, 0.69))
+        media,
+        description="John Lennon doing a cool walk",
+        focus=(0.69, 0.69),
+        thumbnail='tests/amewatson.jpg'
+    )
 
     assert media_up
     assert media_up['description'] == "John Lennon doing a cool walk"

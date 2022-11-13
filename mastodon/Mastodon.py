@@ -2212,24 +2212,6 @@ class Mastodon:
         """
         params_initial = collections.OrderedDict(locals())
         
-        # Load avatar, if specified
-        if not avatar is None:
-            if avatar_mime_type is None and (isinstance(avatar, str) and os.path.isfile(avatar)):
-                avatar_mime_type = guess_type(avatar)
-                avatar = open(avatar, 'rb')
-
-            if avatar_mime_type is None:
-                raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
-        
-        # Load header, if specified
-        if not header is None:
-            if header_mime_type is None and (isinstance(header, str) and os.path.isfile(header)):
-                header_mime_type = guess_type(header)
-                header = open(header, 'rb')
-
-            if header_mime_type is None:
-                raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
-        
         # Convert fields
         if fields != None:
             if len(fields) > 4:
@@ -2248,11 +2230,9 @@ class Mastodon:
         # Create file info
         files = {}
         if not avatar is None:
-            avatar_file_name = "mastodonpyupload_" + mimetypes.guess_extension(avatar_mime_type)
-            files["avatar"] = (avatar_file_name, avatar, avatar_mime_type)
+            files["avatar"] = self.__load_media_file(avatar, avatar_mime_type)
         if not header is None:
-            header_file_name = "mastodonpyupload_" + mimetypes.guess_extension(header_mime_type)
-            files["header"] = (header_file_name, header, header_mime_type)
+            files["header"] = self.__load_media_file(header, header_mime_type)
         
         params = self.__generate_params(params_initial)
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
@@ -2511,37 +2491,15 @@ class Mastodon:
         "synchronous" to emulate the old behaviour. Not recommended, inefficient
         and deprecated, you know the deal.
         """
-        if mime_type is None and (isinstance(media_file, str) and os.path.isfile(media_file)):
-            mime_type = guess_type(media_file)
-            media_file = open(media_file, 'rb')
-        elif isinstance(media_file, str) and os.path.isfile(media_file):
-            media_file = open(media_file, 'rb')
-
-        if mime_type is None:
-            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
-
-        if file_name is None:
-            random_suffix = uuid.uuid4().hex
-            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
+        files = {'file': self.__load_media_file(media_file, mime_type, file_name)}
 
         if focus != None:
-            focus = str(focus[0]) + "," + str(focus[1])
-            
-        files = {'file': (file_name, media_file, mime_type)}
+            focus = str(focus[0]) + "," + str(focus[1])    
 
         if not thumbnail is None:
             if not self.verify_minimum_version("3.2.0"):
                 raise MastodonVersionError('Thumbnail requires version > 3.2.0')
-            if isinstance(thumbnail, str) and os.path.isfile(thumbnail):
-                thumbnail_mime_type = guess_type(thumbnail)
-                thumbnail = open(thumbnail, 'rb')
-            elif isinstance(thumbnail, str) and os.path.isfile(thumbnail):
-                thumbnail = open(thumbnail, 'rb')
-
-            if thumbnail_mime_type is None:
-                raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
-
-            files["thumbnail"] = ("thumb" + mimetypes.guess_extension(mime_type), thumbnail, thumbnail_mime_type)
+            files["thumbnail"] = self.__load_media_file(thumbnail, thumbnail_mime_type)
 
         # Disambiguate URL by version
         if self.verify_minimum_version("3.1.4"):
@@ -2564,11 +2522,11 @@ class Mastodon:
         
         return ret_dict
 
-    @api_version("2.3.0", "2.3.0", __DICT_VERSION_MEDIA)
-    def media_update(self, id, description=None, focus=None):
+    @api_version("2.3.0", "3.2.0", __DICT_VERSION_MEDIA)
+    def media_update(self, id, description=None, focus=None, thumbnail=None, thumbnail_mime_type=None):
         """
         Update the metadata of the media file with the given `id`. `description` and 
-        `focus` are as in `media_post()`_ .
+        `focus` and `thumbnail` are as in `media_post()`_ .
         
         Returns the updated `media dict`_.
         """
@@ -2576,9 +2534,16 @@ class Mastodon:
 
         if focus != None:
             focus = str(focus[0]) + "," + str(focus[1])
-            
-        params = self.__generate_params(locals(), ['id'])  
-        return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
+        
+        params = self.__generate_params(locals(), ['id', 'thumbnail', 'thumbnail_mime_type'])  
+
+        if not thumbnail is None:
+            if not self.verify_minimum_version("3.2.0"):
+                raise MastodonVersionError('Thumbnail requires version > 3.2.0')
+            files = {"thumbnail": self.__load_media_file(thumbnail, thumbnail_mime_type)}
+            return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params, files = files)
+        else:
+            return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
     
     @api_version("3.1.4", "3.1.4", __DICT_VERSION_MEDIA)
     def media(self, id):
@@ -3823,7 +3788,29 @@ class Mastodon:
         """Internal helper for oauth code"""
         self._refresh_token = value
         return
-    
+
+    def __guess_type(self, media_file):
+        """Internal helper to guess media file type"""
+        mime_type = None
+        try:
+            mime_type = magic.from_file(media_file, mime=True)
+        except AttributeError:
+            mime_type = mimetypes.guess_type(media_file)[0]
+        return mime_type
+
+    def __load_media_file(self, media_file, mime_type = None, file_name = None):
+        if isinstance(media_file, str) and os.path.isfile(media_file):
+            mime_type = self.__guess_type(media_file)
+            media_file = open(media_file, 'rb')
+        elif isinstance(media_file, str) and os.path.isfile(media_file):
+            media_file = open(media_file, 'rb')
+        if mime_type is None:
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+        if file_name is None:
+            random_suffix = uuid.uuid4().hex
+            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)            
+        return (file_name, media_file, mime_type)
+
     @staticmethod
     def __protocolize(base_url):
         """Internal add-protocol-to-url helper"""
@@ -3913,10 +3900,3 @@ class MastodonMalformedEventError(MastodonError):
     """Raised when the server-sent event stream is malformed"""
     pass
 
-def guess_type(media_file):
-    mime_type = None
-    try:
-        mime_type = magic.from_file(media_file, mime=True)
-    except AttributeError:
-        mime_type = mimetypes.guess_type(media_file)[0]
-    return mime_type
