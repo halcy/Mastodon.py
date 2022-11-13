@@ -3270,7 +3270,7 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at", "last_status_at", "starts_at", "ends_at", "published_at"]
+        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v != None:
