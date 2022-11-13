@@ -5,7 +5,7 @@ import time
 
 @pytest.mark.vcr()
 def test_account(api):
-    account = api.account(1234567890123456)
+    account = api.account(api.account_verify_credentials())
     assert account
 
 @pytest.mark.vcr()
@@ -17,19 +17,19 @@ def test_verify_credentials(api):
     
 @pytest.mark.vcr()
 def test_account_following(api):
-    following = api.account_following(1234567890123456)
+    following = api.account_following(api.account_verify_credentials())
     assert isinstance(following, list)
 
 
 @pytest.mark.vcr()
 def test_account_followers(api):
-    followers = api.account_followers(1234567890123456)
+    followers = api.account_followers(api.account_verify_credentials())
     assert isinstance(followers, list)
 
 
 @pytest.mark.vcr()
 def test_account_relationships(api):
-    relationships = api.account_relationships(1234567890123456)
+    relationships = api.account_relationships(api.account_verify_credentials())
     assert isinstance(relationships, list)
     assert len(relationships) == 1
 
@@ -57,41 +57,47 @@ def test_account_search(api):
     assert len(results) == 2
     
 @pytest.mark.vcr()
-def test_account_follow_unfollow(api):
-    relationship = api.account_follow(1234567890123457)
+def test_account_follow_unfollow(api, api2):
+    api2_id = api2.account_verify_credentials().id
+    relationship = api.account_follow(api2_id)
     try:
         assert relationship
         print(relationship)
         assert relationship['following']
     finally:
-        relationship = api.account_unfollow(1234567890123457)
+        relationship = api.account_unfollow(api2_id)
         assert relationship
         assert not relationship['following']
 
 
 @pytest.mark.vcr()
-def test_account_block_unblock(api):
-    relationship = api.account_block(1234567890123457)
+def test_account_block_unblock(api, api2):
+    api2_id = api2.account_verify_credentials().id
+    relationship = api.account_block(api2_id)
     try:
         assert relationship
         assert relationship['blocking']
     finally:
-        relationship = api.account_unblock(1234567890123457)
+        relationship = api.account_unblock(api2_id)
         assert relationship
         assert not relationship['blocking']
 
 
 @pytest.mark.vcr()
-def test_account_mute_unmute(api):
-    relationship = api.account_mute(1234567890123457)
+def test_account_mute_unmute(api, api2):
+    api2_id = api2.account_verify_credentials().id
+    relationship = api.account_mute(api2_id)
     try:
         assert relationship
         assert relationship['muting']
     finally:
-        relationship = api.account_unmute(1234567890123457)
+        relationship = api.account_unmute(api2_id)
         assert relationship
         assert not relationship['muting']
 
+    relationship = api.account_mute(api2_id, duration = 3)
+    time.sleep(8)
+    assert not api.account_relationships(api2_id)[0].muting        
 
 @pytest.mark.vcr()
 def test_mutes(api):

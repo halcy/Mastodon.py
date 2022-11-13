@@ -209,7 +209,7 @@ class Mastodon:
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "3.2.0"
-    __DICT_VERSION_ACCOUNT = "3.1.0"
+    __DICT_VERSION_ACCOUNT = "3.3.0"
     __DICT_VERSION_POLL = "2.8.0"
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("3.1.4", __DICT_VERSION_ACCOUNT)
@@ -2160,12 +2160,13 @@ class Mastodon:
         return self.__api_request('POST', url)
 
     @api_version("1.1.0", "2.4.3", __DICT_VERSION_RELATIONSHIP)
-    def account_mute(self, id, notifications=True):
+    def account_mute(self, id, notifications=True, duration=None):
         """
         Mute a user.
 
         Set `notifications` to False to receive notifications even though the user is
-        muted from timelines.
+        muted from timelines. Pass a `duration` in seconds to have Mastodon automatically
+        lift the mute after that many seconds.
 
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """

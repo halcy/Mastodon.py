@@ -1,5 +1,6 @@
 import pytest
 import vcr
+import time
 
 @pytest.fixture()
 def mention(api2):
@@ -9,11 +10,13 @@ def mention(api2):
 
 @pytest.mark.vcr()
 def test_notifications(api, mention):
+    time.sleep(3)
     notifications = api.notifications()
     api.notifications(notifications[0])
 
 @pytest.mark.vcr()
 def test_notifications_dismiss(api, mention):
+    time.sleep(3)
     notifications = api.notifications()
     api.notifications_dismiss(notifications[0])
     

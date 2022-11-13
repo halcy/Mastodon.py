@@ -483,6 +483,7 @@ Relationship dicts
         'following': # Boolean denoting whether the logged-in user follows the specified user
         'followed_by': # Boolean denoting whether the specified user follows the logged-in user
         'blocking': # Boolean denoting whether the logged-in user has blocked the specified user
+        'blocked_by': # Boolean denoting whether the logged-in user has been blocked by the specified user, if information is available
         'muting': # Boolean denoting whether the logged-in user has muted the specified user
         'muting_notifications': # Boolean denoting wheter the logged-in user has muted notifications 
                                 # related to the specified user

@@ -7,25 +7,23 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
       - keep-alive
-      Content-Length:
-      - '0'
       User-Agent:
       - tests/v311
-    method: POST
-    uri: http://localhost:3000/api/v1/accounts/1234567890123457/block
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
     body:
-      string: '{"id":"1234567890123457","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":true,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false,"endorsed":false,"note":""}'
+      string: '{"id":"109336623096259500","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"group":false,"created_at":"2022-11-13T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0},"emojis":[],"fields":[],"role":{"id":"3","name":"Owner","permissions":"1048575","color":"","highlighted":true}}'
     headers:
       Cache-Control:
       - no-store
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-o3m1mPDdDjPr48Bz4TafGQ=='';
+        style-src ''self'' http://localhost:3000 ''nonce-wQPZxoRHh1Sx2JwE0YEr5g=='';
         media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
         https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
         data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
@@ -35,7 +33,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"d052ad9fec41d112bf876acf058a0afa"
+      - W/"045b82c55c495fceaaae2b0dc2b6d8db"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
@@ -51,9 +49,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 6bebf8a3-6083-47f2-8dc3-d76a40213e7d
+      - 94b24adf-36e2-4a67-b36e-c2b6cec49d62
       X-Runtime:
-      - '0.026087'
+      - '0.011970'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -75,17 +73,17 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/1234567890123457/unblock
+    uri: http://localhost:3000/api/v1/accounts/109336623096259500/block
   response:
     body:
-      string: '{"id":"1234567890123457","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false,"endorsed":false,"note":""}'
+      string: '{"id":"109336623096259500","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":true,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false,"endorsed":false,"note":""}'
     headers:
       Cache-Control:
       - no-store
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-uid/bJj/PP2h/k5oT2S4bg=='';
+        style-src ''self'' http://localhost:3000 ''nonce-kmle48j/3xVPuzbFh5EdJA=='';
         media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
         https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
         data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
@@ -95,7 +93,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"25b4d9d745f6bc92c8314562f7461bc8"
+      - W/"ca4303e759c5001f8af1161336791d79"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
@@ -111,9 +109,69 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - bbd711f6-9170-410c-886c-a299b8981e1a
+      - 31b7b6ea-bebc-485a-a50f-42d5daa2dec9
       X-Runtime:
-      - '0.018084'
+      - '0.019852'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/accounts/109336623096259500/unblock
+  response:
+    body:
+      string: '{"id":"109336623096259500","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"domain_blocking":false,"endorsed":false,"note":""}'
+    headers:
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-KYJQ20iuM0rPW8HAC2r4MA=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"945f7c7731010ff2bfa8f3f3889c235c"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 6a193e03-8b5a-4449-90df-fdcbce18f9b4
+      X-Runtime:
+      - '0.015411'
       X-XSS-Protection:
       - 1; mode=block
     status:
