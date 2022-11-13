@@ -10,12 +10,12 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 -----
 * [x] Add ability to exclude local content from federated timeline
 * [x] Add ability to exclude remote content from hashtag timelines in web UI
-* [ ] Add invites_enabled attribute to GET /api/v1/instance in REST API
+* [x] Add invites_enabled attribute to GET /api/v1/instance in REST API
 
 3.2.0
 -----
 * [ ] Add personal notes for accounts
-* [ ] Add customizable thumbnails for audio and video attachments
+* [x] Add customizable thumbnails for audio and video attachments
 * [ ] Add color extraction for thumbnails
 
 3.3.0

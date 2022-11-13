@@ -19,6 +19,7 @@ import copy
 import threading
 import sys
 import six
+import uuid
 from decorator import decorate
 import hashlib
 
@@ -2481,16 +2482,14 @@ class Mastodon:
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_MEDIA)
-    def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None, synchronous=False):
+    @api_version("1.0.0", "3.2.0", __DICT_VERSION_MEDIA)
+    def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None, thumbnail=None, thumbnail_mime_type=None, synchronous=False):
         """
-        Post an image, video or audio file. `media_file` can either be image data or
-        a file name. If image data is passed directly, the mime
-        type has to be specified manually, otherwise, it is
-        determined from the file name. `focus` should be a tuple
-        of floats between -1 and 1, giving the x and y coordinates
-        of the images focus point for cropping (with the origin being the images
-        center).
+        Post an image, video or audio file. `media_file` can either be data or
+        a file name. If data is passed directly, the mime type has to be specified 
+        manually, otherwise, it is determined from the file name. `focus` should be a tuple
+        of floats between -1 and 1, giving the x and y coordinates of the images 
+        focus point for cropping (with the origin being the images center).
 
         Throws a `MastodonIllegalArgumentError` if the mime type of the
         passed data or file can not be determined properly.
@@ -2498,6 +2497,10 @@ class Mastodon:
         `file_name` can be specified to upload a file with the given name,
         which is ignored by Mastodon, but some other Fediverse server software
         will display it. If no name is specified, a random name will be generated.
+        The filename of a file specified in media_file will be ignored.
+
+        Starting with Mastodon 3.2.0, `thumbnail` can be specified in the same way as `media_file`
+        to upload a custom thumbnail image for audio and video files.
 
         Returns a `media dict`_. This contains the id that can be used in
         status_post to attach the media file to a toot.
@@ -2515,28 +2518,36 @@ class Mastodon:
             media_file = open(media_file, 'rb')
 
         if mime_type is None:
-            raise MastodonIllegalArgumentError('Could not determine mime type'
-                                               ' or data passed directly '
-                                               'without mime type.')
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
 
         if file_name is None:
-            random_suffix = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            random_suffix = uuid.uuid4().hex
             file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
 
         if focus != None:
             focus = str(focus[0]) + "," + str(focus[1])
             
-        media_file_description = (file_name, media_file, mime_type)
-        
+        files = {'file': (file_name, media_file, mime_type)}
+
+        if not thumbnail is None:
+            if not self.verify_minimum_version("3.2.0"):
+                raise MastodonVersionError('Thumbnail requires version > 3.2.0')
+            if isinstance(thumbnail, str) and os.path.isfile(thumbnail):
+                thumbnail_mime_type = guess_type(thumbnail)
+                thumbnail = open(thumbnail, 'rb')
+            elif isinstance(thumbnail, str) and os.path.isfile(thumbnail):
+                thumbnail = open(thumbnail, 'rb')
+
+            if thumbnail_mime_type is None:
+                raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+
+            files["thumbnail"] = ("thumb" + mimetypes.guess_extension(mime_type), thumbnail, thumbnail_mime_type)
+
         # Disambiguate URL by version
         if self.verify_minimum_version("3.1.4"):
-            ret_dict = self.__api_request('POST', '/api/v2/media',
-                                    files={'file': media_file_description},
-                                    params={'description': description, 'focus': focus})
+            ret_dict = self.__api_request('POST', '/api/v2/media', files = files, params={'description': description, 'focus': focus})
         else:
-            ret_dict = self.__api_request('POST', '/api/v1/media',
-                                    files={'file': media_file_description},
-                                    params={'description': description, 'focus': focus})
+            ret_dict = self.__api_request('POST', '/api/v1/media', files = files, params={'description': description, 'focus': focus})
         
         # Wait for processing?
         if synchronous:

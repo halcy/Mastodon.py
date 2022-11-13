@@ -33,9 +33,11 @@ def test_media_post_v1(api):
 @pytest.mark.parametrize('sensitive', (False, True))
 def test_media_post(api, sensitive):
     media = api.media_post(
-            'tests/video.mp4',
-            description="me when a cat",
-            focus=(-0.5, 0.3))
+        'tests/video.mp4',
+        description="me when a cat",
+        focus=(-0.5, 0.3),
+        thumbnail='tests/amewatson.jpg'
+    )
     
     assert media
     assert media.url is None
@@ -46,10 +48,10 @@ def test_media_post(api, sensitive):
     assert not media2.url is None
 
     status = api.status_post(
-            'LOL check this out',
-            media_ids=media2,
-            sensitive=sensitive
-            )
+        'LOL check this out',
+        media_ids=media2,
+        sensitive=sensitive
+    )
 
     assert status
 
