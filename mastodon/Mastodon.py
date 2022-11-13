@@ -1,5 +1,7 @@
 # coding: utf-8
 
+import json
+import base64
 import os
 import os.path
 import mimetypes
@@ -31,15 +33,13 @@ try:
     from cryptography.hazmat.primitives import serialization
 except:
     IMPL_HAS_CRYPTO = False
-    
-IMPL_HAS_ECE = True    
+
+IMPL_HAS_ECE = True
 try:
     import http_ece
 except:
     IMPL_HAS_ECE = False
 
-import base64
-import json
 
 IMPL_HAS_BLURHASH = True
 try:
@@ -60,15 +60,18 @@ except ImportError:
 ###
 # Version check functions, including decorator and parser
 ###
+
+
 def parse_version_string(version_string):
     """Parses a semver version string, stripping off "rc" stuff if present."""
-    string_parts =  version_string.split(".")
+    string_parts = version_string.split(".")
     version_parts = [
         int(re.match("([0-9]*)", string_parts[0]).group(0)),
         int(re.match("([0-9]*)", string_parts[1]).group(0)),
         int(re.match("([0-9]*)", string_parts[2]).group(0))
     ]
     return version_parts
+
 
 def bigger_version(version_string_a, version_string_b):
     """Returns the bigger version of two version strings."""
@@ -83,25 +86,31 @@ def bigger_version(version_string_a, version_string_b):
         return version_string_a
     return version_string_b
 
+
 def api_version(created_ver, last_changed_ver, return_value_ver):
     """Version check decorator. Currently only checks Bigger Than."""
-    def api_min_version_decorator(function):      
+    def api_min_version_decorator(function):
         def wrapper(function, self, *args, **kwargs):
             if not self.version_check_mode == "none":
                 if self.version_check_mode == "created":
                     version = created_ver
                 else:
-                    version = bigger_version(last_changed_ver, return_value_ver)
+                    version = bigger_version(
+                        last_changed_ver, return_value_ver)
                 major, minor, patch = parse_version_string(version)
                 if major > self.mastodon_major:
-                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                    raise MastodonVersionError(
+                        "Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
                     print(self.mastodon_minor)
-                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                    raise MastodonVersionError(
+                        "Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-                    raise MastodonVersionError("Version check failed (Need version " + version + ", patch is " + str(self.mastodon_patch) + ")")
+                    raise MastodonVersionError(
+                        "Version check failed (Need version " + version + ", patch is " + str(self.mastodon_patch) + ")")
             return function(self, *args, **kwargs)
-        function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
+        function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + \
+            created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
         return decorate(function, wrapper)
     return api_min_version_decorator
 
@@ -109,13 +118,15 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
 # Dict helper class.
 # Defined at top level so it can be pickled.
 ###
+
+
 class AttribAccessDict(dict):
     def __getattr__(self, attr):
         if attr in self:
             return self[attr]
         else:
             raise AttributeError("Attribute not found: " + str(attr))
-    
+
     def __setattr__(self, attr, val):
         if attr in self:
             raise AttributeError("Attribute-style access is read only")
@@ -145,10 +156,10 @@ class AttribAccessList(list):
 class Mastodon:
     """
     Thorough and easy to use Mastodon
-    api wrapper in python.
+    API wrapper in Python.
 
     If anything is unclear, check the official API docs at
-    https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
+    https://github.com/mastodon/documentation/blob/master/content/en/client/intro.md
     """
     __DEFAULT_BASE_URL = 'https://mastodon.social'
     __DEFAULT_TIMEOUT = 300
@@ -157,29 +168,29 @@ class Mastodon:
     __DEFAULT_SCOPES = ['read', 'write', 'follow', 'push']
     __SCOPE_SETS = {
         'read': [
-            'read:accounts', 
-            'read:blocks', 
-            'read:favourites', 
-            'read:filters', 
-            'read:follows', 
-            'read:lists', 
-            'read:mutes', 
-            'read:notifications', 
-            'read:search', 
+            'read:accounts',
+            'read:blocks',
+            'read:favourites',
+            'read:filters',
+            'read:follows',
+            'read:lists',
+            'read:mutes',
+            'read:notifications',
+            'read:search',
             'read:statuses',
             'read:bookmarks'
         ],
         'write': [
-            'write:accounts', 
-            'write:blocks', 
-            'write:favourites', 
-            'write:filters', 
-            'write:follows', 
-            'write:lists', 
-            'write:media', 
-            'write:mutes', 
-            'write:notifications', 
-            'write:reports', 
+            'write:accounts',
+            'write:blocks',
+            'write:favourites',
+            'write:filters',
+            'write:follows',
+            'write:lists',
+            'write:media',
+            'write:mutes',
+            'write:notifications',
+            'write:reports',
             'write:statuses',
             'write:bookmarks'
         ],
@@ -187,54 +198,62 @@ class Mastodon:
             'read:blocks',
             'read:follows',
             'read:mutes',
-            'write:blocks',  
+            'write:blocks',
             'write:follows',
-            'write:mutes', 
+            'write:mutes',
         ],
         'admin:read': [
-            'admin:read:accounts', 
+            'admin:read:accounts',
             'admin:read:reports',
         ],
         'admin:write': [
-            'admin:write:accounts', 
+            'admin:write:accounts',
             'admin:write:reports',
         ],
     }
     __VALID_SCOPES = ['read', 'write', 'follow', 'push', 'admin:read', 'admin:write'] + \
-        __SCOPE_SETS['read'] + __SCOPE_SETS['write'] + __SCOPE_SETS['admin:read'] + __SCOPE_SETS['admin:write']
-        
+        __SCOPE_SETS['read'] + __SCOPE_SETS['write'] + \
+        __SCOPE_SETS['admin:read'] + __SCOPE_SETS['admin:write']
+
     __SUPPORTED_MASTODON_VERSION = "3.1.1"
-    
+
     # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "3.2.0"
     __DICT_VERSION_ACCOUNT = "3.3.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version("3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version(
+        "3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
     __DICT_VERSION_INSTANCE = bigger_version("3.1.4", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "3.3.0"
-    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version(
+        "1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
     __DICT_VERSION_CARD = "3.2.0"
-    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
-    __DICT_VERSION_ACTIVITY = "2.1.2" 
+    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version(
+        "1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
+    __DICT_VERSION_ACTIVITY = "2.1.2"
     __DICT_VERSION_REPORT = "2.9.1"
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
-    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
-    __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
+    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version(
+        "2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_SCHEDULED_STATUS = bigger_version(
+        "2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("2.9.1", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version(
+        "2.9.1", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
     __DICT_VERSION_REACTION = "3.1.0"
-    __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
-    
+    __DICT_VERSION_ANNOUNCEMENT = bigger_version(
+        "3.1.0", __DICT_VERSION_REACTION)
+
     ###
     # Registering apps
     ###
@@ -242,23 +261,23 @@ class Mastodon:
     def create_app(client_name, scopes=__DEFAULT_SCOPES, redirect_uris=None, website=None, to_file=None,
                    api_base_url=__DEFAULT_BASE_URL, request_timeout=__DEFAULT_TIMEOUT, session=None):
         """
-        Create a new app with given `client_name` and `scopes` (The basic scropse are "read", "write", "follow" and "push" 
+        Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
         - more granular scopes are available, please refere to Mastodon documentation for which).
 
-        Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating in an oauth flow.
+        Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating in an OAuth flow.
         You can specify multiple URLs by passing a list. Note that if you wish to use OAuth authentication with redirects,
         the redirect URI must be one of the URLs specified here.
-        
-        Specify `to_file` to persist your apps info to a file so you can use them in the constructor.
-        Specify `api_base_url` if you want to register an app on an instance different from the flagship one.        
+
+        Specify `to_file` to persist your app's info to a file so you can use it in the constructor.
+        Specify `api_base_url` if you want to register an app on an instance different from the flagship one.
         Specify `website` to give a website for your app.
 
-        Specify `session` with a requests.Session for it to be used instead of the deafult. This can be
-        used to, amongst other things, adjust proxy or ssl certificate settings.
-        
+        Specify `session` with a requests.Session for it to be used instead of the default. This can be
+        used to, amongst other things, adjust proxy or SSL certificate settings.
+
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
-        future mastodon instances or even the flagship instance in the future.
-        
+        Mastodon instances in the future.
+
 
         Returns `client_id` and `client_secret`, both as strings.
         """
@@ -279,10 +298,12 @@ class Mastodon:
             if website is not None:
                 request_data['website'] = website
             if session:
-                ret = session.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
+                ret = session.post(api_base_url + '/api/v1/apps',
+                                   data=request_data, timeout=request_timeout)
                 response = ret.json()
             else:
-                response = requests.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
+                response = requests.post(
+                    api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
                 response = response.json()
         except Exception as e:
             raise MastodonNetworkError("Could not complete request: %s" % e)
@@ -293,7 +314,7 @@ class Mastodon:
                 secret_file.write(response['client_secret'] + "\n")
                 secret_file.write(api_base_url + "\n")
                 secret_file.write(client_name + "\n")
-                
+
         return (response['client_id'], response['client_secret'])
 
     ###
@@ -303,13 +324,13 @@ class Mastodon:
                  api_base_url=None, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1,
                  request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode = "created", session=None, feature_set="mainline", user_agent="mastodonpy"):
+                 version_check_mode="created", session=None, feature_set="mainline", user_agent="mastodonpy"):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id`. If you
         give a `client_id` and it is not a file, you must also give a secret. If you specify an
         `access_token` then you don't need to specify a `client_id`. It is allowed to specify
         neither - in this case, you will be restricted to only using endpoints that do not
-        require authentication.  If a file is given as `client_id`, client ID, secret and 
+        require authentication. If a file is given as `client_id`, client ID, secret and
         base url are read from that file.
 
         You can also specify an `access_token`, directly or as a file (as written by `log_in()`_). If
@@ -320,7 +341,7 @@ class Mastodon:
         "throw" makes functions throw a `MastodonRatelimitError` when the rate
         limit is hit. "wait" mode will, once the limit is hit, wait and retry the request as soon
         as the rate limit resets, until it succeeds. "pace" works like throw, but tries to wait in
-        between calls so that the limit is generally not hit (How hard it tries to not hit the rate
+        between calls so that the limit is generally not hit (how hard it tries to avoid hitting the rate
         limit can be controlled by ratelimit_pacefactor). The default setting is "wait". Note that
         even in "wait" and "pace" mode, requests can still fail due to network or other problems! Also
         note that "pace" and "wait" are NOT thread safe.
@@ -333,33 +354,33 @@ class Mastodon:
         pass the desired timeout (in seconds) as `request_timeout`.
 
         For fine-tuned control over the requests object use `session` with a requests.Session.
-                
+
         The `mastodon_version` parameter can be used to specify the version of Mastodon that Mastodon.py will
-        expect to be installed on the server. The function will throw an error if an unparseable 
-        Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the 
+        expect to be installed on the server. The function will throw an error if an unparseable
+        Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the
         detected version.
-        
-        The version check mode can be set to "created" (the default behaviour), "changed" or "none". If set to 
+
+        The version check mode can be set to "created" (the default behaviour), "changed" or "none". If set to
         "created", Mastodon.py will throw an error if the version of Mastodon it is connected to is too old
-        to have an endpoint. If it is set to "changed", it will throw an error if the endpoints behaviour has
+        to have an endpoint. If it is set to "changed", it will throw an error if the endpoint's behaviour has
         changed after the version of Mastodon that is connected has been released. If it is set to "none",
         version checking is disabled.
-        
+
         `feature_set` can be used to enable behaviour specific to non-mainline Mastodon API implementations.
         Details are documented in the functions that provide such functionality. Currently supported feature
         sets are `mainline`, `fedibird` and `pleroma`.
 
-        For some mastodon-instances a `User-Agent` header is needed. This can be set by parameter `user_agent`. Starting from
+        For some Mastodon instances a `User-Agent` header is needed. This can be set by parameter `user_agent`. Starting from
         Mastodon.py 1.5.2 `create_app()` stores the application name into the client secret file. If `client_id` points to this file,
-        the app name will be used as `User-Agent` header as default. It's possible to modify old secret files and append
+        the app name will be used as `User-Agent` header as default. It is possible to modify old secret files and append
         a client app name to use it as a `User-Agent` name.
 
-        If no other user agent is specified, "mastodonpy" will be used.
+        If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
         self.api_base_url = None
         if not api_base_url is None:
             self.api_base_url = Mastodon.__protocolize(api_base_url)
-        
+
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = access_token
@@ -367,9 +388,9 @@ class Mastodon:
         self.ratelimit_method = ratelimit_method
         self._token_expired = datetime.datetime.now()
         self._refresh_token = None
-        
+
         self.__logged_in_id = None
-        
+
         self.ratelimit_limit = 300
         self.ratelimit_reset = time.time()
         self.ratelimit_remaining = 300
@@ -389,19 +410,20 @@ class Mastodon:
 
         # General defined user-agent
         self.user_agent = user_agent
-        
+
         # Token loading
         if self.client_id is not None:
             if os.path.isfile(self.client_id):
                 with open(self.client_id, 'r') as secret_file:
                     self.client_id = secret_file.readline().rstrip()
                     self.client_secret = secret_file.readline().rstrip()
-                    
+
                     try_base_url = secret_file.readline().rstrip()
                     if (not try_base_url is None) and len(try_base_url) != 0:
                         try_base_url = Mastodon.__protocolize(try_base_url)
                         if not (self.api_base_url is None or try_base_url == self.api_base_url):
-                            raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
+                            raise MastodonIllegalArgumentError(
+                                'Mismatch in base URLs between files and/or specified')
                         self.api_base_url = try_base_url
 
                     # With new registrations we support the 4th line to store a client_name and use it as user-agent
@@ -410,17 +432,19 @@ class Mastodon:
                         self.user_agent = client_name.rstrip()
             else:
                 if self.client_secret is None:
-                    raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
+                    raise MastodonIllegalArgumentError(
+                        'Specified client id directly, but did not supply secret')
 
         if self.access_token is not None and os.path.isfile(self.access_token):
             with open(self.access_token, 'r') as token_file:
                 self.access_token = token_file.readline().rstrip()
-                
+
                 try_base_url = token_file.readline().rstrip()
                 if (not try_base_url is None) and len(try_base_url) != 0:
                     try_base_url = Mastodon.__protocolize(try_base_url)
                     if not (self.api_base_url is None or try_base_url == self.api_base_url):
-                         raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
+                        raise MastodonIllegalArgumentError(
+                            'Mismatch in base URLs between files and/or specified')
                     self.api_base_url = try_base_url
 
         if not version_check_mode in ["created", "changed", "none"]:
@@ -430,25 +454,25 @@ class Mastodon:
         self.mastodon_major = 1
         self.mastodon_minor = 0
         self.mastodon_patch = 0
-        
+
         # Versioning
         if mastodon_version == None and self.version_check_mode != 'none':
             self.retrieve_mastodon_version()
         elif self.version_check_mode != 'none':
             try:
-                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
+                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(
+                    mastodon_version)
             except:
                 raise MastodonVersionError("Bad version specified")
-        
+
         # Ratelimiting parameter check
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
-        
-        
+
     def retrieve_mastodon_version(self):
         """
-        Determine installed mastodon version and set major, minor and patch (not including RC info) accordingly.
-        
+        Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
+
         Returns the version string, possibly including rc info.
         """
         try:
@@ -456,16 +480,17 @@ class Mastodon:
         except:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
-            
-        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
+
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(
+            version_str)
         return version_str
-        
+
     def verify_minimum_version(self, version_str, cached=False):
         """
         Update version info from server and verify that at least the specified version is present.
-        
+
         If you specify "cached", the version info update part is skipped.
-        
+
         Returns True if version requirement is satisfied, False if not.
         """
         if not cached:
@@ -485,22 +510,22 @@ class Mastodon:
         Retrieve the maximum version of Mastodon supported by this version of Mastodon.py
         """
         return Mastodon.__SUPPORTED_MASTODON_VERSION
-    
+
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
                          scopes=__DEFAULT_SCOPES, force_login=False):
         """
-        Returns the url that a client needs to request an oauth grant from the server.
-        
-        To log in with oauth, send your user to this URL. The user will then log in and
+        Returns the URL that a client needs to request an OAuth grant from the server.
+
+        To log in with OAuth, send your user to this URL. The user will then log in and
         get a code which you can pass to log_in.
-        
+
         scopes are as in `log_in()`_, redirect_uris is where the user should be redirected to
         after authentication. Note that redirect_uris must be one of the URLs given during
         app registration. When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed,
         otherwise it is added to the given URL as the "code" request parameter.
-        
+
         Pass force_login if you want the user to always log in even when already logged
-        into web mastodon (i.e. when registering multiple different accounts in an app).
+        into web Mastodon (i.e. when registering multiple different accounts in an app).
         """
         if client_id is None:
             client_id = self.client_id
@@ -523,18 +548,18 @@ class Mastodon:
                scopes=__DEFAULT_SCOPES, to_file=None):
         """
         Get the access token for a user.
-        
-        The username is the e-mail used to log in into mastodon.
+
+        The username is the email address used to log in into Mastodon.
 
         Can persist access token to file `to_file`, to be used in the constructor.
 
         Handles password and OAuth-based authorization.
-        
+
         Will throw a `MastodonIllegalArgumentError` if the OAuth or the
         username / password credentials given are incorrect, and
         `MastodonAPIError` if all of the requested scopes were not granted.
 
-        For OAuth2, obtain a code via having your user go to the url returned by 
+        For OAuth 2, obtain a code via having your user go to the URL returned by
         `auth_request_url()`_ and pass it as the code parameter. In this case,
         make sure to also pass the same redirect_uri parameter as you used when
         generating the auth request URL.
@@ -542,31 +567,38 @@ class Mastodon:
         Returns the access token as a string.
         """
         if username is not None and password is not None:
-            params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
+            params = self.__generate_params(
+                locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
             params['grant_type'] = 'password'
         elif code is not None:
-            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'refresh_token'])
+            params = self.__generate_params(
+                locals(), ['scopes', 'to_file', 'username', 'password', 'refresh_token'])
             params['grant_type'] = 'authorization_code'
         elif refresh_token is not None:
-            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
+            params = self.__generate_params(
+                locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
             params['grant_type'] = 'refresh_token'
         else:
-            raise MastodonIllegalArgumentError('Invalid arguments given. username and password or code are required.')
+            raise MastodonIllegalArgumentError(
+                'Invalid arguments given. username and password or code are required.')
 
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
         params['scope'] = " ".join(scopes)
 
         try:
-            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting=False)
+            response = self.__api_request(
+                'POST', '/oauth/token', params, do_ratelimiting=False)
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
         except Exception as e:
             if username is not None or password is not None:
-                raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
+                raise MastodonIllegalArgumentError(
+                    'Invalid user name, password, or redirect_uris: %s' % e)
             elif code is not None:
-                raise MastodonIllegalArgumentError('Invalid access token or redirect_uris: %s' % e)
+                raise MastodonIllegalArgumentError(
+                    'Invalid access token or redirect_uris: %s' % e)
             else:
                 raise MastodonIllegalArgumentError('Invalid request: %s' % e)
 
@@ -574,7 +606,7 @@ class Mastodon:
         for scope_set in self.__SCOPE_SETS.keys():
             if scope_set in received_scopes:
                 received_scopes += self.__SCOPE_SETS[scope_set]
-        
+
         if not set(scopes) <= set(received_scopes):
             raise MastodonAPIError(
                 'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
@@ -583,35 +615,35 @@ class Mastodon:
             with open(to_file, 'w') as token_file:
                 token_file.write(response['access_token'] + "\n")
                 token_file.write(self.api_base_url + "\n")
-                
+
         self.__logged_in_id = None
-        
+
         return response['access_token']
-    
+
     @api_version("2.7.0", "2.7.0", "2.7.0")
     def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=__DEFAULT_SCOPES, to_file=None):
         """
         Creates a new user account with the given username, password and email. "agreement"
-        must be set to true (after showing the user the instances user agreement and having
-        them agree to it), "locale" specifies the language for the confirmation e-mail as an
+        must be set to true (after showing the user the instance's user agreement and having
+        them agree to it), "locale" specifies the language for the confirmation email as an
         ISO 639-1 (two-letter) language code. `reason` can be used to specify why a user
         would like to join if approved-registrations mode is on.
-        
+
         Does not require an access token, but does require a client grant.
-        
+
         By default, this method is rate-limited by IP to 5 requests per 30 minutes.
-        
+
         Returns an access token (just like log_in), which it can also persist to to_file,
-        and sets it internally so that the user is now logged in. Note that this token 
-        can only be used after the user has confirmed their e-mail.
+        and sets it internally so that the user is now logged in. Note that this token
+        can only be used after the user has confirmed their email.
         """
         params = self.__generate_params(locals(), ['to_file', 'scopes'])
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
-        
+
         if agreement == False:
             del params['agreement']
-        
+
         # Step 1: Get a user-free token via oauth
         try:
             oauth_params = {}
@@ -619,41 +651,43 @@ class Mastodon:
             oauth_params['client_id'] = self.client_id
             oauth_params['client_secret'] = self.client_secret
             oauth_params['grant_type'] = 'client_credentials'
-            
-            response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False)
+
+            response = self.__api_request(
+                'POST', '/oauth/token', oauth_params, do_ratelimiting=False)
             temp_access_token = response['access_token']
         except Exception as e:
-            raise MastodonIllegalArgumentError('Invalid request during oauth phase: %s' % e)
-        
+            raise MastodonIllegalArgumentError(
+                'Invalid request during oauth phase: %s' % e)
+
         # Step 2: Use that to create a user
         try:
-            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, 
-                                          access_token_override = temp_access_token)
+            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False,
+                                          access_token_override=temp_access_token)
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
         except Exception as e:
             raise MastodonIllegalArgumentError('Invalid request: %s' % e)
-        
+
         # Step 3: Check scopes, persist, et cetera
         received_scopes = response["scope"].split(" ")
         for scope_set in self.__SCOPE_SETS.keys():
             if scope_set in received_scopes:
                 received_scopes += self.__SCOPE_SETS[scope_set]
-        
+
         if not set(scopes) <= set(received_scopes):
             raise MastodonAPIError(
                 'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
-        
+
         if to_file is not None:
             with open(to_file, 'w') as token_file:
                 token_file.write(response['access_token'] + "\n")
                 token_file.write(self.api_base_url + "\n")
-                
+
         self.__logged_in_id = None
-        
+
         return response['access_token']
-        
+
     ###
     # Reading data: Instances
     ###
@@ -680,9 +714,9 @@ class Mastodon:
         """
         Retrieve activity stats about the instance. May be disabled by the instance administrator - throws
         a MastodonNotFoundError in that case.
-        
+
         Activity is returned for 12 weeks going back from the current week.
-        
+
         Returns a list of `activity dicts`_.
         """
         return self.__api_request('GET', '/api/v1/instance/activity')
@@ -692,7 +726,7 @@ class Mastodon:
         """
         Retrieve the instances that this instance knows about. May be disabled by the instance administrator - throws
         a MastodonNotFoundError in that case.
-        
+
         Returns a list of URL strings.
         """
         return self.__api_request('GET', '/api/v1/instance/peers')
@@ -702,37 +736,39 @@ class Mastodon:
         """
         Basic health check. Returns True if healthy, False if not.
         """
-        status = self.__api_request('GET', '/health', parse=False).decode("utf-8")
+        status = self.__api_request(
+            'GET', '/health', parse=False).decode("utf-8")
         return status in ["OK", "success"]
-    
+
     @api_version("3.0.0", "3.0.0", "3.0.0")
-    def instance_nodeinfo(self, schema = "http://nodeinfo.diaspora.software/ns/schema/2.0"):
+    def instance_nodeinfo(self, schema="http://nodeinfo.diaspora.software/ns/schema/2.0"):
         """
-        Retrieves the instances nodeinfo information.
-        
+        Retrieves the instance's nodeinfo information.
+
         For information on what the nodeinfo can contain, see the nodeinfo
         specification: https://github.com/jhass/nodeinfo . By default,
         Mastodon.py will try to retrieve the version 2.0 schema nodeinfo.
-        
+
         To override the schema, specify the desired schema with the `schema`
         parameter.
         """
         links = self.__api_request('GET', '/.well-known/nodeinfo')["links"]
-        
+
         schema_url = None
         for available_schema in links:
             if available_schema.rel == schema:
                 schema_url = available_schema.href
-                
+
         if schema_url is None:
-            raise MastodonIllegalArgumentError("Requested nodeinfo schema is not available.")
-        
+            raise MastodonIllegalArgumentError(
+                "Requested nodeinfo schema is not available.")
+
         try:
             return self.__api_request('GET', schema_url, base_url_override="")
         except MastodonNotFoundError:
             parse = urlparse(schema_url)
             return self.__api_request('GET', parse.path + parse.params + parse.query + parse.fragment)
-    
+
     ###
     # Reading data: Timelines
     ##
@@ -741,30 +777,30 @@ class Mastodon:
         """
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
         'tag/hashtag' or 'list/id'. See the following functions documentation for what those do.
-        
+
         The default timeline is the "home" timeline.
 
         Specify `only_media` to only get posts with attached media. Specify `local` to only get local statuses,
         and `remote` to only get remote statuses. Some options are mutually incompatible as dictated by logic.
-        
+
         May or may not require authentication depending on server settings and what is specifically requested.
 
         Returns a list of `toot dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-            
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-        
+
         params_initial = locals()
 
         if local == False:
             del params_initial['local']
-        
+
         if remote == False:
             del params_initial['remote']
 
@@ -778,11 +814,11 @@ class Mastodon:
         params = self.__generate_params(params_initial, ['timeline'])
         url = '/api/v1/timelines/{0}'.format(timeline)
         return self.__api_request('GET', url, params)
-    
+
     @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
     def timeline_home(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
-        Convenience method: Fetches the logged-in users home timeline (i.e. followed users and self). Params as in `timeline()`.
+        Convenience method: Fetches the logged-in user's home timeline (i.e. followed users and self). Params as in `timeline()`.
 
         Returns a list of `toot dicts`_.
         """
@@ -805,17 +841,18 @@ class Mastodon:
         Returns a list of `toot dicts`_.
         """
         return self.timeline('public', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
-        
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)    
+
+    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
     def timeline_hashtag(self, hashtag, local=False, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, remote=False):
         """
         Convenience method: Fetch a timeline of toots with a given hashtag. The hashtag parameter
         should not contain the leading #. Params as in `timeline()`.
-        
+
         Returns a list of `toot dicts`_.
         """
         if hashtag.startswith("#"):
-            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
+            raise MastodonIllegalArgumentError(
+                "Hashtag parameter should omit leading #")
         return self.timeline('tag/{0}'.format(hashtag), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
     @api_version("2.1.0", "3.1.4", __DICT_VERSION_STATUS)
@@ -831,22 +868,22 @@ class Mastodon:
     @api_version("2.6.0", "2.6.0", __DICT_VERSION_CONVERSATION)
     def conversations(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
-        Fetches a users conversations.
-        
+        Fetches a user's conversations.
+
         Returns a list of `conversation dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-            
+
         if since_id != None:
-            since_id = self.__unpack_id(since_id, dateconv=True)            
-        
+            since_id = self.__unpack_id(since_id, dateconv=True)
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', "/api/v1/conversations/", params)
-        
+
     ###
     # Reading data: Statuses
     ###
@@ -873,7 +910,7 @@ class Mastodon:
 
         This function is deprecated as of 3.0.0 and the endpoint does not
         exist anymore - you should just use the "card" field of the status dicts
-        instead. Mastodon.py will try to mimick the old behaviour, but this
+        instead. Mastodon.py will try to mimic the old behaviour, but this
         is somewhat inefficient and not guaranteed to be the case forever.
 
         Returns a `card dict`_.
@@ -935,7 +972,7 @@ class Mastodon:
         Returns a list of `scheduled toot dicts`_.
         """
         return self.__api_request('GET', '/api/v1/scheduled_statuses')
-    
+
     @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
     def scheduled_status(self, id):
         """
@@ -946,7 +983,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
         return self.__api_request('GET', url)
-    
+
     ###
     # Reading data: Polls
     ###
@@ -960,7 +997,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/polls/{0}'.format(str(id))
         return self.__api_request('GET', url)
-    
+
     ###
     # Reading data: Notifications
     ###
@@ -973,7 +1010,7 @@ class Mastodon:
         Parameter `exclude_types` is an array of the following `follow`, `favourite`, `reblog`,
         `mention`, `poll`, `follow_request`. Specifying `mentions_only` is a deprecated way to
         set `exclude_types` to all but mentions.
-        
+
         Can be passed an `id` to fetch a single notification.
 
         Returns a list of `notification dicts`_.
@@ -981,23 +1018,25 @@ class Mastodon:
         if not mentions_only is None:
             if not exclude_types is None:
                 if mentions_only:
-                    exclude_types = ["follow", "favourite", "reblog", "poll", "follow_request"]
+                    exclude_types = ["follow", "favourite",
+                                     "reblog", "poll", "follow_request"]
             else:
-                raise MastodonIllegalArgumentError('Cannot specify exclude_types when mentions_only is present')
+                raise MastodonIllegalArgumentError(
+                    'Cannot specify exclude_types when mentions_only is present')
             del mentions_only
-            
+
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-        
+
         if account_id != None:
             account_id = self.__unpack_id(account_id)
-        
+
         if id is None:
             params = self.__generate_params(locals(), ['id'])
             return self.__api_request('GET', '/api/v1/notifications', params)
@@ -1013,15 +1052,15 @@ class Mastodon:
     def account(self, id):
         """
         Fetch account information by user `id`.
-        
+
         Does not require authentication for publicly visible accounts.
-        
+
         Returns a `user dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}'.format(str(id))
         return self.__api_request('GET', url)
-    
+
     @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
     def account_verify_credentials(self):
         """
@@ -1034,12 +1073,12 @@ class Mastodon:
     @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
     def me(self):
         """
-        Get this users account. Symonym for `account_verify_credentials()`, does exactly
+        Get this user's account. Synonym for `account_verify_credentials()`, does exactly
         the same thing, just exists becase `account_verify_credentials()` has a confusing
         name.
         """
         return self.account_verify_credentials()
-    
+
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, exclude_reblogs=False, tagged=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
@@ -1049,7 +1088,7 @@ class Mastodon:
         included.
 
         If `only_media` is set, return only statuses with media attachments.
-        If `pinned` is set, return only statuses that have been pinned. Note that 
+        If `pinned` is set, return only statuses that have been pinned. Note that
         as of Mastodon 2.1.0, this only works properly for instance-local users.
         If `exclude_replies` is set, filter out all statuses that are replies.
         If `exclude_reblogs` is set, filter out all statuses that are reblogs.
@@ -1063,13 +1102,13 @@ class Mastodon:
         id = self.__unpack_id(id)
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-        
+
         params = self.__generate_params(locals(), ['id'])
         if pinned == False:
             del params["pinned"]
@@ -1093,13 +1132,13 @@ class Mastodon:
         id = self.__unpack_id(id)
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/following'.format(str(id))
         return self.__api_request('GET', url, params)
@@ -1114,21 +1153,21 @@ class Mastodon:
         id = self.__unpack_id(id)
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/followers'.format(str(id))
         return self.__api_request('GET', url, params)
-    
+
     @api_version("1.0.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
     def account_relationships(self, id):
         """
-        Fetch relationship (following, followed_by, blocking, follow requested) of 
+        Fetch relationship (following, followed_by, blocking, follow requested) of
         the logged in user to a given account. `id` can be a list.
 
         Returns a list of `relationship dicts`_.
@@ -1148,92 +1187,92 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         params = self.__generate_params(locals())
-        
+
         if params["following"] == False:
             del params["following"]
-            
+
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
     @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
     def account_lists(self, id):
         """
-        Get all of the logged-in users lists which the specified user is
+        Get all of the logged-in user's lists which the specified user is
         a member of.
-        
+
         Returns a list of `list dicts`_.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/accounts/{0}/lists'.format(str(id))
         return self.__api_request('GET', url, params)
-    
+
     ###
     # Reading data: Featured hashtags
     ###
     @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
     def featured_tags(self):
         """
-        Return the hashtags the logged-in user has set to be featured on 
+        Return the hashtags the logged-in user has set to be featured on
         their profile as a list of `featured tag dicts`_.
-        
+
         Returns a list of `featured tag dicts`_.
         """
         return self.__api_request('GET', '/api/v1/featured_tags')
-    
+
     @api_version("3.0.0", "3.0.0", __DICT_VERSION_HASHTAG)
     def featured_tag_suggestions(self):
         """
-        Returns the logged-in users 10 most commonly hashtags.
-        
+        Returns the logged-in user's 10 most commonly-used hashtags.
+
         Returns a list of `hashtag dicts`_.
         """
         return self.__api_request('GET', '/api/v1/featured_tags/suggestions')
-    
+
     ###
     # Reading data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
     def filters(self):
         """
-        Fetch all of the logged-in users filters.
-        
+        Fetch all of the logged-in user's filters.
+
         Returns a list of `filter dicts`_. Not paginated.
         """
         return self.__api_request('GET', '/api/v1/filters')
-        
+
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
     def filter(self, id):
         """
         Fetches information about the filter with the specified `id`.
-        
+
         Returns a `filter dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/filters/{0}'.format(str(id))
         return self.__api_request('GET', url)
-    
+
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
     def filters_apply(self, objects, filters, context):
         """
-        Helper function: Applies a list of filters to a list of either statuses 
+        Helper function: Applies a list of filters to a list of either statuses
         or notifications and returns only those matched by none. This function will
         apply all filters that match the context provided in `context`, i.e.
         if you want to apply only notification-relevant filters, specify
         'notifications'. Valid contexts are 'home', 'notifications', 'public' and 'thread'.
         """
-        
+
         # Build filter regex
         filter_strings = []
-        for keyword_filter in filters: 
+        for keyword_filter in filters:
             if not context in keyword_filter["context"]:
                 continue
-            
+
             filter_string = re.escape(keyword_filter["phrase"])
             if keyword_filter["whole_word"] == True:
                 filter_string = "\\b" + filter_string + "\\b"
             filter_strings.append(filter_string)
-        filter_re = re.compile("|".join(filter_strings), flags = re.IGNORECASE)
-        
+        filter_re = re.compile("|".join(filter_strings), flags=re.IGNORECASE)
+
         # Apply
         filter_results = []
         for filter_object in objects:
@@ -1246,7 +1285,7 @@ class Mastodon:
             if not filter_re.search(filter_text):
                 filter_results.append(filter_object)
         return filter_results
-    
+
     ###
     # Reading data: Follow suggestions
     ###
@@ -1256,10 +1295,10 @@ class Mastodon:
         Fetch follow suggestions for the logged-in user.
 
         Returns a list of `user dicts`_.
-        
+
         """
         return self.__api_request('GET', '/api/v1/suggestions')
-    
+
     ###
     # Reading data: Follow suggestions
     ###
@@ -1269,27 +1308,27 @@ class Mastodon:
         Fetch the contents of the profile directory, if enabled on the server.
 
         Returns a list of `user dicts`_.
-        
+
         """
         return self.__api_request('GET', '/api/v1/directory')
-    
+
     ###
     # Reading data: Endorsements
     ###
     @api_version("2.5.0", "2.5.0", __DICT_VERSION_ACCOUNT)
     def endorsements(self):
         """
-        Fetch list of users endorsemed by the logged-in user.
+        Fetch list of users endorsed by the logged-in user.
 
         Returns a list of `user dicts`_.
-        
+
         """
         return self.__api_request('GET', '/api/v1/endorsements')
-    
-    
+
     ###
     # Reading data: Searching
     ###
+
     def __ensure_search_params_acceptable(self, account_id, offset, min_id, max_id):
         """
         Internal Helper: Throw a MastodonVersionError if version is < 2.8.0 but parameters
@@ -1297,8 +1336,9 @@ class Mastodon:
         """
         if not account_id is None or not offset is None or not min_id is None or not max_id is None:
             if self.verify_minimum_version("2.8.0", cached=True) == False:
-                raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
-            
+                raise MastodonVersionError(
+                    "Advanced search parameters require Mastodon 2.8.0+")
+
     @api_version("1.1.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
     def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
         """
@@ -1306,32 +1346,33 @@ class Mastodon:
         lookups if resolve is True. Full-text search is only enabled if
         the instance supports it, and is restricted to statuses the logged-in
         user wrote or was mentioned in.
-        
+
         `result_type` can be one of "accounts", "hashtags" or "statuses", to only
         search for that type of object.
-        
+
         Specify `account_id` to only get results from the account with that id.
-        
+
         `offset`, `min_id` and `max_id` can be used to paginate.
 
         `exclude_unreviewed` can be used to restrict search results for hashtags to only
         those that have been reviewed by moderators. It is on by default.
-    
-        Will use search_v1 (no tag dicts in return values) on Mastodon versions before 
+
+        Will use search_v1 (no tag dicts in return values) on Mastodon versions before
         2.4.1), search_v2 otherwise. Parameters other than resolve are only available
         on Mastodon 2.8.0 or above - this function will throw a MastodonVersionError
         if you try to use them on versions before that. Note that the cached version
-        number will be used for this to avoid uneccesary requests. 
+        number will be used for this to avoid uneccesary requests.
 
         Returns a `search result dict`_, with tags as `hashtag dicts`_.
         """
         if self.verify_minimum_version("2.4.1", cached=True) == True:
             return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id,
-                                offset=offset, min_id=min_id, max_id=max_id)
+                                  offset=offset, min_id=min_id, max_id=max_id)
         else:
-            self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
+            self.__ensure_search_params_acceptable(
+                account_id, offset, min_id, max_id)
             return self.search_v1(q, resolve=resolve)
-        
+
     @api_version("1.1.0", "2.1.0", "2.1.0")
     def search_v1(self, q, resolve=False):
         """
@@ -1350,43 +1391,44 @@ class Mastodon:
         """
         Identical to `search_v1()`, except in that it returns tags as
         `hashtag dicts`_, has more parameters, and resolves by default.
-        
+
         For more details documentation, please see `search()`
 
         Returns a `search result dict`_.
         """
-        self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
+        self.__ensure_search_params_acceptable(
+            account_id, offset, min_id, max_id)
         params = self.__generate_params(locals())
-        
+
         if resolve == False:
             del params["resolve"]
-        
+
         if exclude_unreviewed == False or not self.verify_minimum_version("3.0.0", cached=True):
             del params["exclude_unreviewed"]
-        
+
         if "result_type" in params:
             params["type"] = params["result_type"]
             del params["result_type"]
-        
+
         return self.__api_request('GET', '/api/v2/search', params)
 
     ###
     # Reading data: Trends
     ###
     @api_version("2.4.3", "3.0.0", __DICT_VERSION_HASHTAG)
-    def trends(self, limit = None):
+    def trends(self, limit=None):
         """
         Fetch trending-hashtag information, if the instance provides such information.
-        
+
         Specify `limit` to limit how many results are returned (the maximum number
         of results is 10, the endpoint is not paginated).
-        
+
         Does not require authentication unless locked down by the administrator.
-        
+
         Important versioning note: This endpoint does not exist for Mastodon versions
         between 2.8.0 (inclusive) and 3.0.0 (exclusive).
-        
-        Returns a list of `hashtag dicts`_, sorted by the instances trending algorithm,
+
+        Returns a list of `hashtag dicts`_, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -1399,7 +1441,7 @@ class Mastodon:
     def lists(self):
         """
         Fetch a list of all the Lists by the logged-in user.
-        
+
         Returns a list of `list dicts`_.
         """
         return self.__api_request('GET', '/api/v1/lists')
@@ -1408,37 +1450,37 @@ class Mastodon:
     def list(self, id):
         """
         Fetch info about a specific list.
-        
+
         Returns a `list dict`_.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
 
     @api_version("2.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)
     def list_accounts(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get the accounts that are on the given list.
-        
+
         Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
-        
+
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-        
-        params = self.__generate_params(locals(), ['id']) 
+
+        params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', '/api/v1/lists/{0}/accounts'.format(id))
 
     ###
     # Reading data: Mutes and Blocks
     ###
-    @api_version("1.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)    
+    @api_version("1.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)
     def mutes(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch a list of users muted by the logged-in user.
@@ -1447,13 +1489,13 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
-            min_id = self.__unpack_id(min_id, dateconv=True)        
-        
+            min_id = self.__unpack_id(min_id, dateconv=True)
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
@@ -1466,13 +1508,13 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/blocks', params)
 
@@ -1485,9 +1527,9 @@ class Mastodon:
         Fetch a list of reports made by the logged-in user.
 
         Returns a list of `report dicts`_.
-        
-        Warning: This method has now finally been removed, and will not 
-        work on mastodon versions 2.5.0 and above.
+
+        Warning: This method has now finally been removed, and will not
+        work on Mastodon versions 2.5.0 and above.
         """
         return self.__api_request('GET', '/api/v1/reports')
 
@@ -1503,13 +1545,13 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
-            min_id = self.__unpack_id(min_id, dateconv=True)        
-        
+            min_id = self.__unpack_id(min_id, dateconv=True)
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/favourites', params)
 
@@ -1525,13 +1567,13 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
-            min_id = self.__unpack_id(min_id, dateconv=True)        
-        
+            min_id = self.__unpack_id(min_id, dateconv=True)
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/follow_requests', params)
 
@@ -1547,13 +1589,13 @@ class Mastodon:
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
-            min_id = self.__unpack_id(min_id, dateconv=True)        
-        
+            min_id = self.__unpack_id(min_id, dateconv=True)
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-            
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
 
@@ -1568,7 +1610,6 @@ class Mastodon:
         Does not require authentication unless locked down by the administrator.
 
         Returns a list of `emoji dicts`_.
-        
         """
         return self.__api_request('GET', '/api/v1/custom_emojis')
 
@@ -1581,7 +1622,6 @@ class Mastodon:
         Fetch information about the current application.
 
         Returns an `application dict`_.
-        
         """
         return self.__api_request('GET', '/api/v1/apps/verify_credentials')
 
@@ -1594,7 +1634,6 @@ class Mastodon:
         Fetch the current push subscription the logged-in user has for this app.
 
         Returns a `push subscription dict`_.
-        
         """
         return self.__api_request('GET', '/api/v1/push/subscription')
 
@@ -1604,28 +1643,27 @@ class Mastodon:
     @api_version("2.8.0", "2.8.0", __DICT_VERSION_PREFERENCES)
     def preferences(self):
         """
-        Fetch the users preferences, which can be used to set some default options.
+        Fetch the user's preferences, which can be used to set some default options.
         As of 2.8.0, apps can only fetch, not update preferences.
 
         Returns a `preference dict`_.
-        
         """
         return self.__api_request('GET', '/api/v1/preferences')
 
     ##
     # Reading data: Announcements
     ##
-    
-    #/api/v1/announcements
+
+    # /api/v1/announcements
     @api_version("3.1.0", "3.1.0", __DICT_VERSION_ANNOUNCEMENT)
     def announcements(self):
         """
-        Fetch currently active annoucements.
-        
-        Returns a list of `annoucement dicts`_.
+        Fetch currently active announcements.
+
+        Returns a list of `announcement dicts`_.
         """
         return self.__api_request('GET', '/api/v1/announcements')
-    
+
     ##
     # Reading data: Read markers
     ##
@@ -1634,15 +1672,15 @@ class Mastodon:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
         are the same as in `timeline()`_
-        
+
         Note that despite the singular name, `timeline` can be a list.
-        
+
         Returns a dict of `read marker dicts`_, keyed by timeline name.
         """
         if not isinstance(timeline, (list, tuple)):
             timeline = [timeline]
         params = self.__generate_params(locals())
-        
+
         return self.__api_request('GET', '/api/v1/markers', params)
 
     ###
@@ -1652,7 +1690,7 @@ class Mastodon:
     def bookmarks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get a list of statuses bookmarked by the logged-in user.
-        
+
         Returns a list of `toot dicts`_.
         """
         if max_id != None:
@@ -1666,7 +1704,7 @@ class Mastodon:
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/bookmarks', params)
-    
+
     ###
     # Writing data: Statuses
     ###
@@ -1678,10 +1716,10 @@ class Mastodon:
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
-        
+
         `media_ids` should be a list. (If it's not, the function will turn it
-        into one.) It can contain up to four pieces of media (uploaded via 
-        `media_post()`_). `media_ids` can also be the `media dicts`_ returned 
+        into one.) It can contain up to four pieces of media (uploaded via
+        `media_post()`_). `media_ids` can also be the `media dicts`_ returned
         by `media_post()`_ - they are unpacked automatically.
 
         The `sensitive` boolean decides whether or not media attached to the post
@@ -1717,44 +1755,48 @@ class Mastodon:
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
         constructed using `make_poll()`_ . Note that as of Mastodon version
-        2.8.2, you can only have either media or a poll attached, not both at 
+        2.8.2, you can only have either media or a poll attached, not both at
         the same time.
 
-        **Specific to `pleroma` feature set:**: Specify `content_type` to set 
-        the content type of your post on Pleroma. It accepts 'text/plain' (default), 
-        'text/markdown', 'text/html' and 'text/bbcode. This parameter is not 
+        **Specific to "pleroma" feature set:**: Specify `content_type` to set
+        the content type of your post on Pleroma. It accepts 'text/plain' (default),
+        'text/markdown', 'text/html' and 'text/bbcode'. This parameter is not
         supported on Mastodon servers, but will be safely ignored if set.
 
-        **Specific to `fedibird` feature set:**: The `quote_id` parameter is 
+        **Specific to "fedibird" feature set:**: The `quote_id` parameter is
         a non-standard extension that specifies the id of a quoted status.
 
         Returns a `toot dict`_ with the new status.
         """
         if quote_id != None:
             if self.feature_set != "fedibird":
-                raise MastodonIllegalArgumentError('quote_id is only available with feature set fedibird')
+                raise MastodonIllegalArgumentError(
+                    'quote_id is only available with feature set fedibird')
             quote_id = self.__unpack_id(quote_id)
-           
+
         if content_type != None:
             if self.feature_set != "pleroma":
-                raise MastodonIllegalArgumentError('content_type is only available with feature set pleroma')
+                raise MastodonIllegalArgumentError(
+                    'content_type is only available with feature set pleroma')
             # It would be better to read this from nodeinfo and cache, but this is easier
             if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
-                raise MastodonIllegalArgumentError('Invalid content type specified')
-            
+                raise MastodonIllegalArgumentError(
+                    'Invalid content type specified')
+
         if in_reply_to_id != None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
-        
+
         if scheduled_at != None:
             scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
-        
+
         params_initial = locals()
-        
+
         # Validate poll/media exclusivity
         if not poll is None:
             if (not media_ids is None) and len(media_ids) != 0:
-                raise ValueError('Status can have media or poll attached - not both.')
-        
+                raise ValueError(
+                    'Status can have media or poll attached - not both.')
+
         # Validate visibility parameter
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
         if params_initial['visibility'] == None:
@@ -1763,7 +1805,7 @@ class Mastodon:
             params_initial['visibility'] = params_initial['visibility'].lower()
             if params_initial['visibility'] not in valid_visibilities:
                 raise ValueError('Invalid visibility value! Acceptable '
-                                'values are %s' % valid_visibilities)
+                                 'values are %s' % valid_visibilities)
 
         if params_initial['language'] == None:
             del params_initial['language']
@@ -1774,7 +1816,7 @@ class Mastodon:
         headers = {}
         if idempotency_key != None:
             headers['Idempotency-Key'] = idempotency_key
-            
+
         if media_ids is not None:
             try:
                 media_ids_proper = []
@@ -1796,7 +1838,7 @@ class Mastodon:
             use_json = True
 
         params = self.__generate_params(params_initial, ['idempotency_key'])
-        return self.__api_request('POST', '/api/v1/statuses', params, headers = headers, use_json = use_json)
+        return self.__api_request('POST', '/api/v1/statuses', params, headers=headers, use_json=use_json)
 
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def toot(self, status):
@@ -1811,14 +1853,14 @@ class Mastodon:
 
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, in_reply_to_id=None, media_ids=None,
-                    sensitive=False, visibility=None, spoiler_text=None,
-                    language=None, idempotency_key=None, content_type=None,
-                    scheduled_at=None, poll=None, untag=False):
+                     sensitive=False, visibility=None, spoiler_text=None,
+                     language=None, idempotency_key=None, content_type=None,
+                     scheduled_at=None, poll=None, untag=False):
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to to the status text and retains
         CW and visibility if not explicitly overridden.
-        
+
         Set `untag` to True if you want the reply to only go to the user you
         are replying to, removing every other mentioned user from the
         conversation.
@@ -1827,52 +1869,53 @@ class Mastodon:
         del keyword_args["self"]
         del keyword_args["to_status"]
         del keyword_args["untag"]
-        
+
         user_id = self.__get_logged_in_id()
-        
+
         # Determine users to mention
         mentioned_accounts = collections.OrderedDict()
         mentioned_accounts[to_status.account.id] = to_status.account.acct
-        
+
         if not untag:
             for account in to_status.mentions:
                 if account.id != user_id and not account.id in mentioned_accounts.keys():
                     mentioned_accounts[account.id] = account.acct
-                
+
         # Join into one piece of text. The space is added inside because of self-replies.
-        status = "".join(map(lambda x: "@" + x + " ", mentioned_accounts.values())) + status
-            
+        status = "".join(map(lambda x: "@" + x + " ",
+                         mentioned_accounts.values())) + status
+
         # Retain visibility / cw
         if visibility == None and 'visibility' in to_status:
             visibility = to_status.visibility
         if spoiler_text == None and 'spoiler_text' in to_status:
             spoiler_text = to_status.spoiler_text
-        
+
         keyword_args["status"] = status
         keyword_args["visibility"] = visibility
         keyword_args["spoiler_text"] = spoiler_text
         keyword_args["in_reply_to_id"] = to_status.id
         return self.status_post(**keyword_args)
-    
+
     @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
     def make_poll(self, options, expires_in, multiple=False, hide_totals=False):
         """
         Generate a poll object that can be passed as the `poll` option when posting a status.
-        
+
         options is an array of strings with the poll options (Maximum, by default: 4),
         expires_in is the time in seconds for which the poll should be open.
         Set multiple to True to allow people to choose more than one answer. Set
         hide_totals to True to hide the results of the poll until it has expired.
-        """            
+        """
         poll_params = locals()
         del poll_params["self"]
         return poll_params
-    
+
     @api_version("1.0.0", "1.0.0", "1.0.0")
     def status_delete(self, id):
         """
         Delete a status
-        
+
         Returns the now-deleted status, with an added "source" attribute that contains
         the text that was used to compose this status (this can be used to power
         "delete and redraft" functionality)
@@ -1885,7 +1928,7 @@ class Mastodon:
     def status_reblog(self, id, visibility=None):
         """
         Reblog / boost a status.
-        
+
         The visibility parameter functions the same as in `status_post()`_ and
         allows you to reduce the visibility of a reblogged status.
 
@@ -1897,8 +1940,8 @@ class Mastodon:
             params['visibility'] = params['visibility'].lower()
             if params['visibility'] not in valid_visibilities:
                 raise ValueError('Invalid visibility value! Acceptable '
-                                'values are %s' % valid_visibilities)
-        
+                                 'values are %s' % valid_visibilities)
+
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
         return self.__api_request('POST', url, params)
@@ -1935,7 +1978,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
         return self.__api_request('POST', url)
-    
+
     @api_version("1.4.0", "2.0.0", __DICT_VERSION_STATUS)
     def status_mute(self, id):
         """
@@ -1979,8 +2022,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unpin'.format(str(id))
         return self.__api_request('POST', url)
-    
-    
+
     @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
     def status_bookmark(self, id):
         """
@@ -2010,9 +2052,9 @@ class Mastodon:
     def scheduled_status_update(self, id, scheduled_at):
         """
         Update the scheduled time of a scheduled status.
-        
+
         New time must be at least 5 minutes into the future.
-        
+
         Returns a `scheduled toot dict`_
         """
         scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
@@ -2020,7 +2062,7 @@ class Mastodon:
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
         return self.__api_request('PUT', url, params)
-    
+
     @api_version("2.7.0", "2.7.0", "2.7.0")
     def scheduled_status_delete(self, id):
         """
@@ -2029,7 +2071,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
         self.__api_request('DELETE', url)
-    
+
     ###
     # Writing data: Polls
     ###
@@ -2037,37 +2079,36 @@ class Mastodon:
     def poll_vote(self, id, choices):
         """
         Vote in the given poll.
-        
-        `choices` is the index of the choice you wish to register a vote for 
-        (i.e. its index in the corresponding polls `options` field. In case 
+
+        `choices` is the index of the choice you wish to register a vote for
+        (i.e. its index in the corresponding polls `options` field. In case
         of a poll that allows selection of more than one option, a list of
         indices can be passed.
-        
+
         You can only submit choices for any given poll once in case of
         single-option polls, or only once per option in case of multi-option
         polls.
-        
+
         Returns the updated `poll dict`_
         """
         id = self.__unpack_id(id)
         if not isinstance(choices, list):
             choices = [choices]
         params = self.__generate_params(locals(), ['id'])
-        
+
         url = '/api/v1/polls/{0}/votes'.format(id)
         self.__api_request('POST', url, params)
-        
-    
+
     ###
     # Writing data: Notifications
     ###
+
     @api_version("1.0.0", "1.0.0", "1.0.0")
     def notifications_clear(self):
         """
-        Clear out a users notifications
+        Clear out a user's notifications
         """
         self.__api_request('POST', '/api/v1/notifications/clear')
-
 
     @api_version("1.3.0", "2.9.2", "2.9.2")
     def notifications_dismiss(self, id):
@@ -2075,7 +2116,7 @@ class Mastodon:
         Deletes a single notification
         """
         id = self.__unpack_id(id)
-        
+
         if self.verify_minimum_version("2.9.2"):
             url = '/api/v1/notifications/{0}/dismiss'.format(str(id))
             self.__api_request('POST', url)
@@ -2090,7 +2131,7 @@ class Mastodon:
     def conversations_read(self, id):
         """
         Marks a single conversation as read.
-        
+
         Returns the updated `conversation dict`_.
         """
         id = self.__unpack_id(id)
@@ -2112,10 +2153,10 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
-        
+
         if params["reblogs"] == None:
             del params["reblogs"]
-            
+
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
         return self.__api_request('POST', url, params)
 
@@ -2192,8 +2233,8 @@ class Mastodon:
     @api_version("1.1.1", "3.1.0", __DICT_VERSION_ACCOUNT)
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, avatar_mime_type=None,
-                                   header=None, header_mime_type=None, 
-                                   locked=None, bot=None, 
+                                   header=None, header_mime_type=None,
+                                   locked=None, bot=None,
                                    discoverable=None, fields=None):
         """
         Update the profile for the currently logged-in user.
@@ -2202,51 +2243,53 @@ class Mastodon:
 
         `avatar` and 'header' are images. As with media uploads, it is possible to either
         pass image data and a mime type, or a filename of an image file, for either.
-        
+
         `locked` specifies whether the user needs to manually approve follow requests.
-        
+
         `bot` specifies whether the user should be set to a bot.
-        
+
         `discoverable` specifies whether the user should appear in the user directory.
-        
-        `fields` can be a list of up to four name-value pairs (specified as tuples) to 
-        appear as semi-structured information in the users profile.
-        
+
+        `fields` can be a list of up to four name-value pairs (specified as tuples) to
+        appear as semi-structured information in the user's profile.
+
         Returns the updated `user dict` of the logged-in user.
         """
         params_initial = collections.OrderedDict(locals())
-        
+
         # Convert fields
         if fields != None:
             if len(fields) > 4:
-                raise MastodonIllegalArgumentError('A maximum of four fields are allowed.')
-            
+                raise MastodonIllegalArgumentError(
+                    'A maximum of four fields are allowed.')
+
             fields_attributes = []
             for idx, (field_name, field_value) in enumerate(fields):
-                params_initial['fields_attributes[' + str(idx) + '][name]'] = field_name
-                params_initial['fields_attributes[' + str(idx) + '][value]'] = field_value
-            
+                params_initial['fields_attributes[' +
+                               str(idx) + '][name]'] = field_name
+                params_initial['fields_attributes[' +
+                               str(idx) + '][value]'] = field_value
+
         # Clean up params
         for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields"]:
             if param in params_initial:
                 del params_initial[param]
-        
+
         # Create file info
         files = {}
         if not avatar is None:
             files["avatar"] = self.__load_media_file(avatar, avatar_mime_type)
         if not header is None:
             files["header"] = self.__load_media_file(header, header_mime_type)
-        
+
         params = self.__generate_params(params_initial)
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
-
 
     @api_version("2.5.0", "2.5.0", __DICT_VERSION_RELATIONSHIP)
     def account_pin(self, id):
         """
         Pin / endorse a user.
-        
+
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
@@ -2274,34 +2317,34 @@ class Mastodon:
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('POST', '/api/v1/accounts/{0}/note'.format(str(id)), params)
-    
+
     @api_version("3.3.0", "3.3.0", __DICT_VERSION_HASHTAG)
     def account_featured_tags(self, id):
         """
-        Get an accounts featured hashtags.
+        Get an account's featured hashtags.
 
         Returns a list of `hashtag dicts`_ (NOT `featured tag dicts`_).
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/accounts/{0}/featured_tags'.format(str(id)))
-        
+
     ###
     # Writing data: Featured hashtags
     ###
     @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
     def featured_tag_create(self, name):
         """
-        Creates a new featured hashtag displayed on the logged-in users profile.
-        
+        Creates a new featured hashtag displayed on the logged-in user's profile.
+
         Returns a `featured tag dict`_ with the newly featured tag.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/featured_tags', params)
-    
+
     @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
     def featured_tag_delete(self, id):
         """
-        Deletes one of the logged-in users featured hashtags.
+        Deletes one of the logged-in user's featured hashtags.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/featured_tags/{0}'.format(str(id))
@@ -2311,44 +2354,44 @@ class Mastodon:
     # Writing data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filter_create(self, phrase, context, irreversible = False, whole_word = True, expires_in = None):
+    def filter_create(self, phrase, context, irreversible=False, whole_word=True, expires_in=None):
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
         filtered out, `context` specifies from where to filter the keywords.
         Valid contexts are 'home', 'notifications', 'public' and 'thread'.
-        
+
         Set `irreversible` to True if you want the filter to just delete statuses
         server side. This works only for the 'home' and 'notifications' contexts.
-        
+
         Set `whole_word` to False if you want to allow filter matches to
         start or end within a word, not only at word boundaries.
-        
+
         Set `expires_in` to specify for how many seconds the filter should be
         kept around.
-        
-        Returns the `filter dict`_ of the newly created filter. 
+
+        Returns the `filter dict`_ of the newly created filter.
         """
         params = self.__generate_params(locals())
-        
+
         for context_val in context:
             if not context_val in ['home', 'notifications', 'public', 'thread']:
                 raise MastodonIllegalArgumentError('Invalid filter context.')
-        
+
         return self.__api_request('POST', '/api/v1/filters', params)
-        
+
     @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
-    def filter_update(self, id, phrase = None, context = None, irreversible = None, whole_word = None, expires_in = None):
+    def filter_update(self, id, phrase=None, context=None, irreversible=None, whole_word=None, expires_in=None):
         """
         Updates the filter with the given `id`. Parameters are the same
         as in `filter_create()`.
-        
-        Returns the `filter dict`_ of the updated filter. 
+
+        Returns the `filter dict`_ of the updated filter.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         url = '/api/v1/filters/{0}'.format(str(id))
         return self.__api_request('PUT', url, params)
-    
+
     @api_version("2.4.3", "2.4.3", "2.4.3")
     def filter_delete(self, id):
         """
@@ -2357,7 +2400,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         url = '/api/v1/filters/{0}'.format(str(id))
         self.__api_request('DELETE', url)
-        
+
     ###
     # Writing data: Follow suggestions
     ###
@@ -2377,23 +2420,23 @@ class Mastodon:
     def list_create(self, title):
         """
         Create a new list with the given `title`.
-        
+
         Returns the `list dict`_ of the created list.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/lists', params)
-    
+
     @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
     def list_update(self, id, title):
         """
         Update info about a list, where "info" is really the lists `title`.
-        
+
         Returns the `list dict`_ of the modified list.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('PUT', '/api/v1/lists/{0}'.format(id), params)
-    
+
     @api_version("2.1.0", "2.1.0", "2.1.0")
     def list_delete(self, id):
         """
@@ -2401,61 +2444,63 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
-    
+
     @api_version("2.1.0", "2.1.0", "2.1.0")
     def list_accounts_add(self, id, account_ids):
         """
         Add the account(s) given in `account_ids` to the list.
         """
         id = self.__unpack_id(id)
-        
+
         if not isinstance(account_ids, list):
             account_ids = [account_ids]
         account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
-        
-        params = self.__generate_params(locals(), ['id'])        
-        self.__api_request('POST', '/api/v1/lists/{0}/accounts'.format(id), params)
-        
+
+        params = self.__generate_params(locals(), ['id'])
+        self.__api_request(
+            'POST', '/api/v1/lists/{0}/accounts'.format(id), params)
+
     @api_version("2.1.0", "2.1.0", "2.1.0")
     def list_accounts_delete(self, id, account_ids):
         """
         Remove the account(s) given in `account_ids` from the list.
         """
         id = self.__unpack_id(id)
-        
+
         if not isinstance(account_ids, list):
             account_ids = [account_ids]
         account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
-        
-        params = self.__generate_params(locals(), ['id'])        
-        self.__api_request('DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
-        
+
+        params = self.__generate_params(locals(), ['id'])
+        self.__api_request(
+            'DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
+
     ###
     # Writing data: Reports
     ###
     @api_version("1.1.0", "2.5.0", __DICT_VERSION_REPORT)
-    def report(self, account_id, status_ids = None, comment = None, forward = False):
+    def report(self, account_id, status_ids=None, comment=None, forward=False):
         """
         Report statuses to the instances administrators.
 
         Accepts a list of toot IDs associated with the report, and a comment.
-        
+
         Set forward to True to forward a report of a remote user to that users
         instance as well as sending it to the instance local administrators.
 
         Returns a `report dict`_.
         """
         account_id = self.__unpack_id(account_id)
-        
+
         if not status_ids is None:
             if not isinstance(status_ids, list):
                 status_ids = [status_ids]
             status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
-        
-        params_initial = locals()        
+
+        params_initial = locals()
         if forward == False:
             del params_initial['forward']
-        
+
         params = self.__generate_params(params_initial)
         return self.__api_request('POST', '/api/v1/reports/', params)
 
@@ -2466,7 +2511,7 @@ class Mastodon:
     def follow_request_authorize(self, id):
         """
         Accept an incoming follow request.
-        
+
         Returns the updated `relationship dict`_ for the requesting account.
         """
         id = self.__unpack_id(id)
@@ -2477,7 +2522,7 @@ class Mastodon:
     def follow_request_reject(self, id):
         """
         Reject an incoming follow request.
-        
+
         Returns the updated `relationship dict`_ for the requesting account.
         """
         id = self.__unpack_id(id)
@@ -2491,9 +2536,9 @@ class Mastodon:
     def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None, thumbnail=None, thumbnail_mime_type=None, synchronous=False):
         """
         Post an image, video or audio file. `media_file` can either be data or
-        a file name. If data is passed directly, the mime type has to be specified 
+        a file name. If data is passed directly, the mime type has to be specified
         manually, otherwise, it is determined from the file name. `focus` should be a tuple
-        of floats between -1 and 1, giving the x and y coordinates of the images 
+        of floats between -1 and 1, giving the x and y coordinates of the images
         focus point for cropping (with the origin being the images center).
 
         Throws a `MastodonIllegalArgumentError` if the mime type of the
@@ -2516,22 +2561,27 @@ class Mastodon:
         "synchronous" to emulate the old behaviour. Not recommended, inefficient
         and deprecated, you know the deal.
         """
-        files = {'file': self.__load_media_file(media_file, mime_type, file_name)}
+        files = {'file': self.__load_media_file(
+            media_file, mime_type, file_name)}
 
         if focus != None:
-            focus = str(focus[0]) + "," + str(focus[1])    
+            focus = str(focus[0]) + "," + str(focus[1])
 
         if not thumbnail is None:
             if not self.verify_minimum_version("3.2.0"):
-                raise MastodonVersionError('Thumbnail requires version > 3.2.0')
-            files["thumbnail"] = self.__load_media_file(thumbnail, thumbnail_mime_type)
+                raise MastodonVersionError(
+                    'Thumbnail requires version > 3.2.0')
+            files["thumbnail"] = self.__load_media_file(
+                thumbnail, thumbnail_mime_type)
 
         # Disambiguate URL by version
         if self.verify_minimum_version("3.1.4"):
-            ret_dict = self.__api_request('POST', '/api/v2/media', files = files, params={'description': description, 'focus': focus})
+            ret_dict = self.__api_request(
+                'POST', '/api/v2/media', files=files, params={'description': description, 'focus': focus})
         else:
-            ret_dict = self.__api_request('POST', '/api/v1/media', files = files, params={'description': description, 'focus': focus})
-        
+            ret_dict = self.__api_request(
+                'POST', '/api/v1/media', files=files, params={'description': description, 'focus': focus})
+
         # Wait for processing?
         if synchronous:
             if self.verify_minimum_version("3.1.4"):
@@ -2540,36 +2590,40 @@ class Mastodon:
                         ret_dict = self.media(ret_dict)
                         time.sleep(1.0)
                     except:
-                        raise MastodonAPIError("Attachment could not be processed")
+                        raise MastodonAPIError(
+                            "Attachment could not be processed")
             else:
                 # Old version always waits
                 return ret_dict
-        
+
         return ret_dict
 
     @api_version("2.3.0", "3.2.0", __DICT_VERSION_MEDIA)
     def media_update(self, id, description=None, focus=None, thumbnail=None, thumbnail_mime_type=None):
         """
-        Update the metadata of the media file with the given `id`. `description` and 
+        Update the metadata of the media file with the given `id`. `description` and
         `focus` and `thumbnail` are as in `media_post()`_ .
-        
+
         Returns the updated `media dict`_.
         """
         id = self.__unpack_id(id)
 
         if focus != None:
             focus = str(focus[0]) + "," + str(focus[1])
-        
-        params = self.__generate_params(locals(), ['id', 'thumbnail', 'thumbnail_mime_type'])  
+
+        params = self.__generate_params(
+            locals(), ['id', 'thumbnail', 'thumbnail_mime_type'])
 
         if not thumbnail is None:
             if not self.verify_minimum_version("3.2.0"):
-                raise MastodonVersionError('Thumbnail requires version > 3.2.0')
-            files = {"thumbnail": self.__load_media_file(thumbnail, thumbnail_mime_type)}
-            return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params, files = files)
+                raise MastodonVersionError(
+                    'Thumbnail requires version > 3.2.0')
+            files = {"thumbnail": self.__load_media_file(
+                thumbnail, thumbnail_mime_type)}
+            return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params, files=files)
         else:
             return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
-    
+
     @api_version("3.1.4", "3.1.4", __DICT_VERSION_MEDIA)
     def media(self, id):
         """
@@ -2605,124 +2659,125 @@ class Mastodon:
     def markers_set(self, timelines, last_read_ids):
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
-        
+
         Note that if you give an invalid timeline name, this will silently do nothing.
-        
+
         Returns a dict with the updated `read marker dicts`_, keyed by timeline name.
         """
         if not isinstance(timelines, (list, tuple)):
             timelines = [timelines]
-            
+
         if not isinstance(last_read_ids, (list, tuple)):
             last_read_ids = [last_read_ids]
-            
+
         if len(last_read_ids) != len(timelines):
-            raise MastodonIllegalArgumentError("Number of specified timelines and ids must be the same")
-        
+            raise MastodonIllegalArgumentError(
+                "Number of specified timelines and ids must be the same")
+
         params = collections.OrderedDict()
         for timeline, last_read_id in zip(timelines, last_read_ids):
             params[timeline] = collections.OrderedDict()
             params[timeline]["last_read_id"] = self.__unpack_id(last_read_id)
-        
+
         return self.__api_request('POST', '/api/v1/markers', params, use_json=True)
 
     ###
     # Writing data: Push subscriptions
     ###
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
-    def push_subscription_set(self, endpoint, encrypt_params, follow_events=None, 
-                              favourite_events=None, reblog_events=None, 
+    def push_subscription_set(self, endpoint, encrypt_params, follow_events=None,
+                              favourite_events=None, reblog_events=None,
                               mention_events=None, poll_events=None,
                               follow_request_events=None):
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
-        
+
         `endpoint` is the endpoint URL mastodon should call for pushes. Note that mastodon
         requires https for this URL. `encrypt_params` is a dict with key parameters that allow
         the server to encrypt data for you: A public key `pubkey` and a shared secret `auth`.
-        You can generate this as well as the corresponding private key using the 
+        You can generate this as well as the corresponding private key using the
         `push_subscription_generate_keys()`_ function.
-        
+
         The rest of the parameters controls what kind of events you wish to subscribe to.
-        
+
         Returns a `push subscription dict`_.
         """
         endpoint = Mastodon.__protocolize(endpoint)
-        
+
         push_pubkey_b64 = base64.b64encode(encrypt_params['pubkey'])
         push_auth_b64 = base64.b64encode(encrypt_params['auth'])
-        
+
         params = {
             'subscription[endpoint]': endpoint,
             'subscription[keys][p256dh]': push_pubkey_b64,
             'subscription[keys][auth]': push_auth_b64
         }
-        
+
         if follow_events != None:
             params['data[alerts][follow]'] = follow_events
-        
+
         if favourite_events != None:
             params['data[alerts][favourite]'] = favourite_events
-            
+
         if reblog_events != None:
             params['data[alerts][reblog]'] = reblog_events
-            
+
         if mention_events != None:
             params['data[alerts][mention]'] = mention_events
-            
+
         if poll_events != None:
             params['data[alerts][poll]'] = poll_events
-            
+
         if follow_request_events != None:
             params['data[alerts][follow_request]'] = follow_request_events
-        
+
         # Canonicalize booleans
         params = self.__generate_params(params)
-        
+
         return self.__api_request('POST', '/api/v1/push/subscription', params)
-    
+
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
-    def push_subscription_update(self, follow_events=None, 
-                              favourite_events=None, reblog_events=None, 
-                              mention_events=None, poll_events=None,
-                              follow_request_events=None):
+    def push_subscription_update(self, follow_events=None,
+                                 favourite_events=None, reblog_events=None,
+                                 mention_events=None, poll_events=None,
+                                 follow_request_events=None):
         """
         Modifies what kind of events the app wishes to subscribe to.
-        
+
         Returns the updated `push subscription dict`_.
         """
         params = {}
-        
+
         if follow_events != None:
             params['data[alerts][follow]'] = follow_events
-        
+
         if favourite_events != None:
             params['data[alerts][favourite]'] = favourite_events
-            
+
         if reblog_events != None:
             params['data[alerts][reblog]'] = reblog_events
-            
+
         if mention_events != None:
             params['data[alerts][mention]'] = mention_events
-            
+
         if poll_events != None:
             params['data[alerts][poll]'] = poll_events
-            
+
         if follow_request_events != None:
             params['data[alerts][follow_request]'] = follow_request_events
-            
+
         # Canonicalize booleans
-        params = self.__generate_params(params)            
-            
+        params = self.__generate_params(params)
+
         return self.__api_request('PUT', '/api/v1/push/subscription', params)
-    
+
     @api_version("2.4.0", "2.4.0", "2.4.0")
     def push_subscription_delete(self):
         """
         Remove the current push subscription the logged-in user has for this app.
         """
         self.__api_request('DELETE', '/api/v1/push/subscription')
-    
+
     ###
     # Writing data: Annoucements
     ###
@@ -2732,37 +2787,39 @@ class Mastodon:
         Set the given annoucement to read.
         """
         id = self.__unpack_id(id)
-        
+
         url = '/api/v1/announcements/{0}/dismiss'.format(str(id))
         self.__api_request('POST', url)
-        
+
     @api_version("3.1.0", "3.1.0", "3.1.0")
     def announcement_reaction_create(self, id, reaction):
         """
         Add a reaction to an announcement. `reaction` can either be a unicode emoji
         or the name of one of the instances custom emoji.
-        
+
         Will throw an API error if the reaction name is not one of the allowed things
         or when trying to add a reaction that the user has already added (adding a
         reaction that a different user added is legal and increments the count).
         """
         id = self.__unpack_id(id)
-        
-        url = '/api/v1/announcements/{0}/reactions/{1}'.format(str(id), reaction)
+
+        url = '/api/v1/announcements/{0}/reactions/{1}'.format(
+            str(id), reaction)
         self.__api_request('PUT', url)
-     
+
     @api_version("3.1.0", "3.1.0", "3.1.0")
     def announcement_reaction_delete(self, id, reaction):
         """
         Remove a reaction to an announcement.
-        
+
         Will throw an API error if the reaction does not exist.
-        """        
+        """
         id = self.__unpack_id(id)
-        
-        url = '/api/v1/announcements/{0}/reactions/{1}'.format(str(id), reaction)
+
+        url = '/api/v1/announcements/{0}/reactions/{1}'.format(
+            str(id), reaction)
         self.__api_request('DELETE', url)
-        
+
     ###
     # Moderation API
     ###
@@ -2770,7 +2827,7 @@ class Mastodon:
     def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
-        
+
         * Set `remote` to True to get remote accounts, otherwise local accounts are returned (default: local accounts)
         * Set `by_domain` to a domain to get only accounts from that domain.
         * Set `status` to one of "active", "pending", "disabled", "silenced" or "suspended" to get only accounts with that moderation status (default: active)
@@ -2779,64 +2836,66 @@ class Mastodon:
         * Set `email` to an email to get only accounts with that email (this only works on local accounts).
         * Set `ip` to an ip (as a string, standard v4/v6 notation) to get only accounts whose last active ip is that ip (this only works on local accounts).
         * Set `staff_only` to True to only get staff accounts (this only works on local accounts).
-        
+
         Note that setting the boolean parameters to False does not mean "give me users to which this does not apply" but
         instead means "I do not care if users have this attribute".
-        
+
         Returns a list of `admin account dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-        
-        params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'])
-        
+
+        params = self.__generate_params(
+            locals(), ['remote', 'status', 'staff_only'])
+
         if remote == True:
             params["remote"] = True
-        
-        mod_statuses = ["active", "pending", "disabled", "silenced", "suspended"]
+
+        mod_statuses = ["active", "pending",
+                        "disabled", "silenced", "suspended"]
         if not status in mod_statuses:
             raise ValueError("Invalid moderation status requested.")
-        
+
         if staff_only == True:
             params["staff"] = True
-        
+
         for mod_status in mod_statuses:
             if status == mod_status:
                 params[status] = True
-        
+
         return self.__api_request('GET', '/api/v1/admin/accounts', params)
-        
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account(self, id):
         """
         Fetches a single `admin account dict`_ for the user with the given id.
-        
+
         Returns that dict.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/admin/accounts/{0}'.format(id))
-    
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_enable(self, id):
         """
         Reenables login for a local account for which login has been disabled.
-        
+
         Returns the updated `admin account dict`_.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/enable'.format(id))
-        
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_approve(self, id):
         """
         Approves a pending account.
-        
+
         Returns the updated `admin account dict`_.
         """
         id = self.__unpack_id(id)
@@ -2846,37 +2905,37 @@ class Mastodon:
     def admin_account_reject(self, id):
         """
         Rejects and deletes a pending account.
-        
+
         Returns the updated `admin account dict`_ for the account that is now gone.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/reject'.format(id))
-      
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsilence(self, id):
         """
         Unsilences an account.
-        
+
         Returns the updated `admin account dict`_.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsilence'.format(id))
-        
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsuspend(self, id):
         """
         Unsuspends an account.
-        
+
         Returns the updated `admin account dict`_.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsuspend'.format(id))
-    
+
     @api_version("3.3.0", "3.3.0", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_delete(self, id):
         """
         Delete a local user account.
-        
+
         The deleted accounts `admin account dict`_.
         """
         id = self.__unpack_id(id)
@@ -2886,7 +2945,7 @@ class Mastodon:
     def admin_account_unsensitive(self, id):
         """
         Unmark an account as force-sensitive.
-        
+
         Returns the updated `admin account dict`_.
         """
         id = self.__unpack_id(id)
@@ -2896,209 +2955,221 @@ class Mastodon:
     def admin_account_moderate(self, id, action=None, report_id=None, warning_preset_id=None, text=None, send_email_notification=True):
         """
         Perform a moderation action on an account.
-        
+
         Valid actions are:
             * "disable" - for a local user, disable login.
             * "silence" - hide the users posts from all public timelines.
-            * "suspend" - irreversibly delete all the users posts, past and future.
+            * "suspend" - irreversibly delete all the user's posts, past and future.
             * "sensitive" - forcce an accounts media visibility to always be sensitive.
+
         If no action is specified, the user is only issued a warning.
-        
+
         Specify the id of a report as `report_id` to close the report with this moderation action as the resolution.
         Specify `warning_preset_id` to use a warning preset as the notification text to the user, or `text` to specify text directly.
         If both are specified, they are concatenated (preset first). Note that there is currently no API to retrieve or create
         warning presets.
-        
-        Set `send_email_notification` to False to not send the user an e-mail notification informing them of the moderation action.
+
+        Set `send_email_notification` to False to not send the user an email notification informing them of the moderation action.
         """
         if action is None:
             action = "none"
-        
+
         if send_email_notification == False:
             send_email_notification = None
-            
+
         id = self.__unpack_id(id)
         if not report_id is None:
             report_id = self.__unpack_id(report_id)
-            
+
         params = self.__generate_params(locals(), ['id', 'action'])
-        
+
         params["type"] = action
-        
-        self.__api_request('POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
-        
+
+        self.__api_request(
+            'POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_reports(self, resolved=False, account_id=None, target_account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
-        Fetches the list of reports. 
-        
+        Fetches the list of reports.
+
         Set `resolved` to True to search for resolved reports. `account_id` and `target_account_id`
         can be used to get reports filed by or about a specific user.
-        
+
         Returns a list of `report dicts`_.
         """
         if max_id != None:
             max_id = self.__unpack_id(max_id, dateconv=True)
-        
+
         if min_id != None:
             min_id = self.__unpack_id(min_id, dateconv=True)
-        
+
         if since_id != None:
             since_id = self.__unpack_id(since_id, dateconv=True)
-        
+
         if not account_id is None:
             account_id = self.__unpack_id(account_id)
-            
+
         if not target_account_id is None:
             target_account_id = self.__unpack_id(target_account_id)
-            
+
         if resolved == False:
             resolved = None
-            
+
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/reports', params)
-        
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)    
+
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report(self, id):
         """
         Fetches the report with the given id.
-        
+
         Returns a `report dict`_.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/admin/reports/{0}'.format(id))
-    
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_assign(self, id):
         """
         Assigns the given report to the logged-in user.
-        
+
         Returns the updated `report dict`_.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_self'.format(id))
-    
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_unassign(self, id):
         """
         Unassigns the given report from the logged-in user.
-        
+
         Returns the updated `report dict`_.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/unassign'.format(id))
-    
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_reopen(self, id):
         """
         Reopens a closed report.
-        
+
         Returns the updated `report dict`_.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/reopen'.format(id))
-        
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
     def admin_report_resolve(self, id):
         """
         Marks a report as resolved (without taking any action).
-        
+
         Returns the updated `report dict`_.
         """
-        id = self.__unpack_id(id)        
+        id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
-        
+
     ###
     # Push subscription crypto utilities
-    ### 
+    ###
     def push_subscription_generate_keys(self):
         """
         Generates a private key, public key and shared secret for use in webpush subscriptions.
-        
-        Returns two dicts: One with the private key and shared secret and another with the 
+
+        Returns two dicts: One with the private key and shared secret and another with the
         public key and shared secret.
         """
         if not IMPL_HAS_CRYPTO:
-            raise NotImplementedError('To use the crypto tools, please install the webpush feature dependencies.')
-        
-        push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
+            raise NotImplementedError(
+                'To use the crypto tools, please install the webpush feature dependencies.')
+
+        push_key_pair = ec.generate_private_key(
+            ec.SECP256R1(), default_backend())
         push_key_priv = push_key_pair.private_numbers().private_value
-        
+
         crypto_ver = cryptography.__version__
         if len(crypto_ver) < 5:
             crypto_ver += ".0"
         if bigger_version(crypto_ver, "2.5.0") == crypto_ver:
-            push_key_pub = push_key_pair.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
+            push_key_pub = push_key_pair.public_key().public_bytes(
+                serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
         else:
-            push_key_pub = push_key_pair.public_key().public_numbers().encode_point() 
+            push_key_pub = push_key_pair.public_key().public_numbers().encode_point()
         push_shared_secret = os.urandom(16)
-        
+
         priv_dict = {
             'privkey': push_key_priv,
             'auth': push_shared_secret
         }
-        
+
         pub_dict = {
             'pubkey': push_key_pub,
             'auth': push_shared_secret
         }
-        
+
         return priv_dict, pub_dict
-    
+
     @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH_NOTIF)
     def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
         """
-        Decrypts `data` received in a webpush request. Requires the private key dict 
-        from `push_subscription_generate_keys()`_ (`decrypt_params`) as well as the 
+        Decrypts `data` received in a webpush request. Requires the private key dict
+        from `push_subscription_generate_keys()`_ (`decrypt_params`) as well as the
         Encryption and server Crypto-Key headers from the received webpush
-        
+
         Returns the decoded webpush as a `push notification dict`_.
         """
         if (not IMPL_HAS_ECE) or (not IMPL_HAS_CRYPTO):
-            raise NotImplementedError('To use the crypto tools, please install the webpush feature dependencies.')
-        
-        salt = self.__decode_webpush_b64(encryption_header.split("salt=")[1].strip())
-        dhparams = self.__decode_webpush_b64(crypto_key_header.split("dh=")[1].split(";")[0].strip())
-        p256ecdsa = self.__decode_webpush_b64(crypto_key_header.split("p256ecdsa=")[1].strip())
-        dec_key = ec.derive_private_key(decrypt_params['privkey'], ec.SECP256R1(), default_backend())
+            raise NotImplementedError(
+                'To use the crypto tools, please install the webpush feature dependencies.')
+
+        salt = self.__decode_webpush_b64(
+            encryption_header.split("salt=")[1].strip())
+        dhparams = self.__decode_webpush_b64(
+            crypto_key_header.split("dh=")[1].split(";")[0].strip())
+        p256ecdsa = self.__decode_webpush_b64(
+            crypto_key_header.split("p256ecdsa=")[1].strip())
+        dec_key = ec.derive_private_key(
+            decrypt_params['privkey'], ec.SECP256R1(), default_backend())
         decrypted = http_ece.decrypt(
             data,
-            salt = salt,
-            key = p256ecdsa,
-            private_key = dec_key, 
-            dh = dhparams, 
+            salt=salt,
+            key=p256ecdsa,
+            private_key=dec_key,
+            dh=dhparams,
             auth_secret=decrypt_params['auth'],
-            keylabel = "P-256",
-            version = "aesgcm"
+            keylabel="P-256",
+            version="aesgcm"
         )
-        
-        return json.loads(decrypted.decode('utf-8'), object_hook = Mastodon.__json_hooks)
-   
+
+        return json.loads(decrypted.decode('utf-8'), object_hook=Mastodon.__json_hooks)
+
     ###
     # Blurhash utilities
-    ###    
-    def decode_blurhash(self, media_dict, out_size = (16, 16), size_per_component = True, return_linear = True):
+    ###
+    def decode_blurhash(self, media_dict, out_size=(16, 16), size_per_component=True, return_linear=True):
         """
         Basic media-dict blurhash decoding.
-        
+
         out_size is the desired result size in pixels, either absolute or per blurhash
         component (this is the default).
-        
+
         By default, this function will return the image as linear RGB, ready for further
-        scaling operations. If you want to display the image directly, set return_linear 
+        scaling operations. If you want to display the image directly, set return_linear
         to False.
-        
+
         Returns the decoded blurhash image as a three-dimensional list: [height][width][3],
         with the last dimension being RGB colours.
-        
+
         For further info and tips for advanced usage, refer to the documentation for the
         blurhash module: https://github.com/halcy/blurhash-python
         """
         if not IMPL_HAS_BLURHASH:
-            raise NotImplementedError('To use the blurhash functions, please install the blurhash python module.')
+            raise NotImplementedError(
+                'To use the blurhash functions, please install the blurhash Python module.')
 
         # Figure out what size to decode to
-        decode_components_x, decode_components_y = blurhash.components(media_dict["blurhash"])
+        decode_components_x, decode_components_y = blurhash.components(
+            media_dict["blurhash"])
         if size_per_component == False:
             decode_size_x = out_size[0]
             decode_size_y = out_size[1]
@@ -3107,11 +3178,12 @@ class Mastodon:
             decode_size_y = decode_components_y * out_size[1]
 
         # Decode
-        decoded_image = blurhash.decode(media_dict["blurhash"], decode_size_x, decode_size_y, linear = return_linear)
+        decoded_image = blurhash.decode(
+            media_dict["blurhash"], decode_size_x, decode_size_y, linear=return_linear)
 
         # And that's pretty much it.
         return decoded_image
-        
+
     ###
     # Pagination
     ###
@@ -3185,7 +3257,7 @@ class Mastodon:
     ###
     # Streaming
     ###
-    @api_version("1.1.0", "1.4.2", __DICT_VERSION_STATUS)    
+    @api_version("1.1.0", "1.4.2", __DICT_VERSION_STATUS)
     def stream_user(self, listener, run_async=False, timeout=__DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams events that are relevant to the authorized user, i.e. home
@@ -3212,11 +3284,12 @@ class Mastodon:
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
         instance.
-        
+
         Set local to True to only get local statuses.
         """
         if tag.startswith("#"):
-            raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
+            raise MastodonIllegalArgumentError(
+                "Tag parameter should omit leading #")
         base = '/api/v1/streaming/hashtag'
         if local:
             base += '/local'
@@ -3226,28 +3299,29 @@ class Mastodon:
     def stream_list(self, id, listener, run_async=False, timeout=__DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Stream events for the current user, restricted to accounts on the given
-        list. 
+        list.
         """
-        id =  self.__unpack_id(id)
+        id = self.__unpack_id(id)
         return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
-    
+
     @api_version("2.6.0", "2.6.0", __DICT_VERSION_STATUS)
     def stream_direct(self, listener, run_async=False, timeout=__DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=__DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams direct message events for the logged-in user, as conversation events.
         """
         return self.__stream('/api/v1/streaming/direct', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
-    
+
     @api_version("2.5.0", "2.5.0", "2.5.0")
     def stream_healthy(self):
         """
         Returns without True if streaming API is okay, False or raises an error otherwise.
         """
-        api_okay = self.__api_request('GET', '/api/v1/streaming/health', base_url_override = self.__get_streaming_base(), parse=False)
+        api_okay = self.__api_request(
+            'GET', '/api/v1/streaming/health', base_url_override=self.__get_streaming_base(), parse=False)
         if api_okay == b'OK':
             return True
         return False
-    
+
     ###
     # Internal helpers, dragons probably
     ###
@@ -3264,18 +3338,18 @@ class Mastodon:
         else:
             date_time_utc = date_time.astimezone(pytz.utc)
 
-        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
+        epoch_utc = datetime.datetime.utcfromtimestamp(
+            0).replace(tzinfo=pytz.utc)
 
         return (date_time_utc - epoch_utc).total_seconds()
 
     def __get_logged_in_id(self):
         """
-        Fetch the logged in users ID, with caching. ID is reset on calls to log_in.
+        Fetch the logged in user's ID, with caching. ID is reset on calls to log_in.
         """
         if self.__logged_in_id == None:
             self.__logged_in_id = self.account_verify_credentials().id
         return self.__logged_in_id
-            
 
     @staticmethod
     def __json_allow_dict_attrs(json_object):
@@ -3292,13 +3366,15 @@ class Mastodon:
         """
         Parse dates in certain known json fields, if possible.
         """
-        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at", "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at"]
+        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at",
+                             "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v != None:
                     try:
                         if isinstance(v, int):
-                            json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
+                            json_object[k] = datetime.datetime.fromtimestamp(
+                                v, pytz.utc)
                         else:
                             json_object[k] = dateutil.parser.parse(v)
                     except:
@@ -3317,7 +3393,7 @@ class Mastodon:
                 if json_object[key].lower() == 'false':
                     json_object[key] = False
         return json_object
-    
+
     @staticmethod
     def __json_strnum_to_bignum(json_object):
         """
@@ -3331,13 +3407,13 @@ class Mastodon:
                     pass
 
         return json_object
-    
+
     @staticmethod
     def __json_hooks(json_object):
         """
         All the json hooks. Used in request parsing.
         """
-        json_object = Mastodon.__json_strnum_to_bignum(json_object)        
+        json_object = Mastodon.__json_strnum_to_bignum(json_object)
         json_object = Mastodon.__json_date_parse(json_object)
         json_object = Mastodon.__json_truefalse_parse(json_object)
         json_object = Mastodon.__json_allow_dict_attrs(json_object)
@@ -3350,7 +3426,8 @@ class Mastodon:
         every time instead of randomly doing different things on some systems
         and also it represents that time as the equivalent UTC time.
         """
-        isotime = datetime_val.astimezone(pytz.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
+        isotime = datetime_val.astimezone(
+            pytz.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
         if isotime[-2] != ":":
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
@@ -3361,7 +3438,7 @@ class Mastodon:
         """
         response = None
         remaining_wait = 0
-        
+
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
         if do_ratelimiting and self.ratelimit_method == "pace":
@@ -3373,7 +3450,8 @@ class Mastodon:
                     time.sleep(to_next)
             else:
                 time_waited = time.time() - self.ratelimit_lastcall
-                time_wait = float(self.ratelimit_reset - time.time()) / float(self.ratelimit_remaining)
+                time_wait = float(self.ratelimit_reset -
+                                  time.time()) / float(self.ratelimit_remaining)
                 remaining_wait = time_wait - time_waited
 
             if remaining_wait > 0:
@@ -3398,7 +3476,8 @@ class Mastodon:
             base_url = base_url_override
 
         if self.debug_requests:
-            print('Mastodon: Request to endpoint "' + base_url + endpoint + '" using method "' + method + '".')
+            print('Mastodon: Request to endpoint "' + base_url +
+                  endpoint + '" using method "' + method + '".')
             print('Parameters: ' + str(params))
             print('Headers: ' + str(headers))
             print('Files: ' + str(files))
@@ -3419,61 +3498,74 @@ class Mastodon:
                         kwargs['data'] = params
                 else:
                     kwargs['json'] = params
-                
+
                 # Block list with exactly three entries, matching on hashes of the instance API domain
                 # For more information, have a look at the docs
                 if hashlib.sha256(",".join(base_url.split("//")[-1].split("/")[0].split(".")[-2:]).encode("utf-8")).hexdigest() in \
                     [
-                        "f3b50af8594eaa91dc440357a92691ff65dbfc9555226e9545b8e083dc10d2e1", 
+                        "f3b50af8594eaa91dc440357a92691ff65dbfc9555226e9545b8e083dc10d2e1",
                         "b96d2de9784efb5af0af56965b8616afe5469c06e7188ad0ccaee5c7cb8a56b6",
                         "2dc0cbc89fad4873f665b78cc2f8b6b80fae4af9ac43c0d693edfda27275f517"
-                    ]:
+                ]:
                     raise Exception("Access denied.")
-                    
-                response_object = self.session.request(method, base_url + endpoint, **kwargs)
+
+                response_object = self.session.request(
+                    method, base_url + endpoint, **kwargs)
             except Exception as e:
-                raise MastodonNetworkError("Could not complete request: %s" % e)
+                raise MastodonNetworkError(
+                    "Could not complete request: %s" % e)
 
             if response_object is None:
                 raise MastodonIllegalArgumentError("Illegal request.")
 
             # Parse rate limiting headers
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
-                self.ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
-                self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
-                
+                self.ratelimit_remaining = int(
+                    response_object.headers['X-RateLimit-Remaining'])
+                self.ratelimit_limit = int(
+                    response_object.headers['X-RateLimit-Limit'])
+
                 # For gotosocial, we need an int representation, but for non-ints this would crash
                 try:
-                    ratelimit_intrep = str(int(response_object.headers['X-RateLimit-Reset']))
+                    ratelimit_intrep = str(
+                        int(response_object.headers['X-RateLimit-Reset']))
                 except:
                     ratelimit_intrep = None
 
                 try:
                     if not ratelimit_intrep is None and ratelimit_intrep == response_object.headers['X-RateLimit-Reset']:
-                        self.ratelimit_reset = int(response_object.headers['X-RateLimit-Reset'])
+                        self.ratelimit_reset = int(
+                            response_object.headers['X-RateLimit-Reset'])
                     else:
-                        ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
-                        self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
+                        ratelimit_reset_datetime = dateutil.parser.parse(
+                            response_object.headers['X-RateLimit-Reset'])
+                        self.ratelimit_reset = self.__datetime_to_epoch(
+                            ratelimit_reset_datetime)
 
                     # Adjust server time to local clock
                     if 'Date' in response_object.headers:
-                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
-                        server_time = self.__datetime_to_epoch(server_time_datetime)
+                        server_time_datetime = dateutil.parser.parse(
+                            response_object.headers['Date'])
+                        server_time = self.__datetime_to_epoch(
+                            server_time_datetime)
                         server_time_diff = time.time() - server_time
                         self.ratelimit_reset += server_time_diff
                         self.ratelimit_lastcall = time.time()
                 except Exception as e:
-                    raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
+                    raise MastodonRatelimitError(
+                        "Rate limit time calculations failed: %s" % e)
 
             # Handle response
             if self.debug_requests:
-                print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
+                print('Mastodon: Response received with code ' +
+                      str(response_object.status_code) + '.')
                 print('response headers: ' + str(response_object.headers))
                 print('Response text content: ' + str(response_object.text))
 
             if not response_object.ok:
                 try:
-                    response = response_object.json(object_hook=self.__json_hooks)
+                    response = response_object.json(
+                        object_hook=self.__json_hooks)
                     if isinstance(response, dict) and 'error' in response:
                         error_msg = response['error']
                     elif isinstance(response, str):
@@ -3514,28 +3606,29 @@ class Mastodon:
                 elif response_object.status_code == 504:
                     ex_type = MastodonGatewayTimeoutError
                 elif response_object.status_code >= 500 and \
-                     response_object.status_code <= 511:
+                        response_object.status_code <= 511:
                     ex_type = MastodonServerError
                 else:
                     ex_type = MastodonAPIError
 
                 raise ex_type(
-                        'Mastodon API returned error',
-                        response_object.status_code,
-                        response_object.reason,
-                        error_msg)
+                    'Mastodon API returned error',
+                    response_object.status_code,
+                    response_object.reason,
+                    error_msg)
 
             if parse == True:
                 try:
-                    response = response_object.json(object_hook=self.__json_hooks)
+                    response = response_object.json(
+                        object_hook=self.__json_hooks)
                 except:
                     raise MastodonAPIError(
                         "Could not parse response as JSON, response code was %s, "
                         "bad json content was '%s'" % (response_object.status_code,
-                                                    response_object.content))
+                                                       response_object.content))
             else:
                 response = response_object.content
-                
+
             # Parse link headers
             if isinstance(response, list) and \
                     'Link' in response_object.headers and \
@@ -3550,7 +3643,8 @@ class Mastodon:
                     if url['rel'] == 'next':
                         # Be paranoid and extract max_id specifically
                         next_url = url['url']
-                        matchgroups = re.search(r"[?&]max_id=([^&]+)", next_url)
+                        matchgroups = re.search(
+                            r"[?&]max_id=([^&]+)", next_url)
 
                         if matchgroups:
                             next_params = copy.deepcopy(params)
@@ -3575,9 +3669,10 @@ class Mastodon:
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id or min_id specifically
                         prev_url = url['url']
-                        
+
                         # Old and busted (pre-2.6.0): since_id pagination
-                        matchgroups = re.search(r"[?&]since_id=([^&]+)", prev_url)
+                        matchgroups = re.search(
+                            r"[?&]since_id=([^&]+)", prev_url)
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
@@ -3597,7 +3692,8 @@ class Mastodon:
                                 response[0]._pagination_prev = prev_params
 
                         # New and fantastico (post-2.6.0): min_id pagination
-                        matchgroups = re.search(r"[?&]min_id=([^&]+)", prev_url)
+                        matchgroups = re.search(
+                            r"[?&]min_id=([^&]+)", prev_url)
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
@@ -3621,7 +3717,7 @@ class Mastodon:
     def __get_streaming_base(self):
         """
         Internal streaming API helper.
-        
+
         Returns the correct URL for the streaming API.
         """
         instance = self.instance()
@@ -3635,8 +3731,8 @@ class Mastodon:
                 url = "http://" + parse.netloc
             else:
                 raise MastodonAPIError(
-                        "Could not parse streaming api location returned from server: {}.".format(
-                            instance["urls"]["streaming_api"]))
+                    "Could not parse streaming api location returned from server: {}.".format(
+                        instance["urls"]["streaming_api"]))
         else:
             url = self.api_base_url
         return url
@@ -3655,20 +3751,22 @@ class Mastodon:
         # The streaming server can't handle two slashes in a path, so remove trailing slashes
         if url[-1] == '/':
             url = url[:-1]
-        
+
         # Connect function (called and then potentially passed to async handler)
         def connect_func():
-            headers = {"Authorization": "Bearer " + self.access_token} if self.access_token else {}
+            headers = {"Authorization": "Bearer " +
+                       self.access_token} if self.access_token else {}
             if self.user_agent:
                 headers['User-Agent'] = self.user_agent
-            connection = self.session.get(url + endpoint, headers = headers, data = params, stream = True,
-                                  timeout=(self.request_timeout, timeout))
+            connection = self.session.get(url + endpoint, headers=headers, data=params, stream=True,
+                                          timeout=(self.request_timeout, timeout))
 
             if connection.status_code != 200:
-                raise MastodonNetworkError("Could not connect to streaming server: %s" % connection.reason)
+                raise MastodonNetworkError(
+                    "Could not connect to streaming server: %s" % connection.reason)
             return connection
         connection = None
-        
+
         # Async stream handler
         class __stream_handle():
             def __init__(self, connection, connect_func, reconnect_async, reconnect_async_wait_sec):
@@ -3679,7 +3777,7 @@ class Mastodon:
                 self.reconnect_async = reconnect_async
                 self.reconnect_async_wait_sec = reconnect_async_wait_sec
                 self.reconnecting = False
-                
+
             def close(self):
                 self.closed = True
                 if not self.connection is None:
@@ -3696,15 +3794,16 @@ class Mastodon:
 
             def _sleep_attentive(self):
                 if self._thread != threading.current_thread():
-                    raise RuntimeError ("Illegal call from outside the stream_handle thread")
+                    raise RuntimeError(
+                        "Illegal call from outside the stream_handle thread")
                 time_remaining = self.reconnect_async_wait_sec
-                while time_remaining>0 and not self.closed:
+                while time_remaining > 0 and not self.closed:
                     time.sleep(0.5)
                     time_remaining -= 0.5
 
             def _threadproc(self):
                 self._thread = threading.current_thread()
-                
+
                 # Run until closed or until error if not autoreconnecting
                 while self.running:
                     if not self.connection is None:
@@ -3750,14 +3849,15 @@ class Mastodon:
                 return 0
 
         if run_async:
-            handle = __stream_handle(connection, connect_func, reconnect_async, reconnect_async_wait_sec)
+            handle = __stream_handle(
+                connection, connect_func, reconnect_async, reconnect_async_wait_sec)
             t = threading.Thread(args=(), target=handle._threadproc)
             t.daemon = True
             t.start()
             return handle
         else:
             # Blocking, never returns (can only leave via exception)
-            connection = connect_func()            
+            connection = connect_func()
             with closing(connection) as r:
                 listener.handle_stream(r)
 
@@ -3774,14 +3874,14 @@ class Mastodon:
 
         if 'self' in params:
             del params['self']
-        
+
         param_keys = list(params.keys())
         for key in param_keys:
             if isinstance(params[key], bool) and params[key] == False:
                 params[key] = '0'
             if isinstance(params[key], bool) and params[key] == True:
                 params[key] = '1'
-                
+
         for key in param_keys:
             if params[key] is None or key in exclude:
                 del params[key]
@@ -3791,23 +3891,23 @@ class Mastodon:
             if isinstance(params[key], list):
                 params[key + "[]"] = params[key]
                 del params[key]
-            
+
         return params
-    
+
     def __unpack_id(self, id, dateconv=False):
         """
         Internal object-to-id converter
-        
+
         Checks if id is a dict that contains id and
         returns the id inside, otherwise just returns
         the id straight.
         """
         if isinstance(id, dict) and "id" in id:
-            id =  id["id"]
+            id = id["id"]
         if dateconv and isinstance(id, datetime):
             id = (int(id) << 16) * 1000
         return id
-    
+
     def __decode_webpush_b64(self, data):
         """
         Re-pads and decodes urlsafe base64.
@@ -3816,7 +3916,7 @@ class Mastodon:
         if missing_padding != 0:
             data += '=' * (4 - missing_padding)
         return base64.urlsafe_b64decode(data)
-    
+
     def __get_token_expired(self):
         """Internal helper for oauth code"""
         return self._token_expired < datetime.datetime.now()
@@ -3844,17 +3944,20 @@ class Mastodon:
             mime_type = mimetypes.guess_type(media_file)[0]
         return mime_type
 
-    def __load_media_file(self, media_file, mime_type = None, file_name = None):
+    def __load_media_file(self, media_file, mime_type=None, file_name=None):
         if isinstance(media_file, str) and os.path.isfile(media_file):
             mime_type = self.__guess_type(media_file)
             media_file = open(media_file, 'rb')
         elif isinstance(media_file, str) and os.path.isfile(media_file):
             media_file = open(media_file, 'rb')
         if mime_type is None:
-            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+            raise MastodonIllegalArgumentError(
+                'Could not determine mime type or data passed directly without mime type.')
         if file_name is None:
             random_suffix = uuid.uuid4().hex
-            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)            
+            file_name = "mastodonpyupload_" + \
+                str(time.time()) + "_" + str(random_suffix) + \
+                mimetypes.guess_extension(mime_type)
         return (file_name, media_file, mime_type)
 
     @staticmethod
@@ -3874,9 +3977,11 @@ class Mastodon:
 class MastodonError(Exception):
     """Base class for Mastodon.py exceptions"""
 
+
 class MastodonVersionError(MastodonError):
     """Raised when a function is called that the version of Mastodon for which
        Mastodon.py was instantiated does not support"""
+
 
 class MastodonIllegalArgumentError(ValueError, MastodonError):
     """Raised when an incorrect parameter is passed to a function"""
@@ -3896,6 +4001,7 @@ class MastodonNetworkError(MastodonIOError):
     """Raised when network communication with the server fails"""
     pass
 
+
 class MastodonReadTimeout(MastodonNetworkError):
     """Raised when a stream times out"""
     pass
@@ -3905,32 +4011,39 @@ class MastodonAPIError(MastodonError):
     """Raised when the mastodon API generates a response that cannot be handled"""
     pass
 
+
 class MastodonServerError(MastodonAPIError):
     """Raised if the Server is malconfigured and returns a 5xx error code"""
     pass
+
 
 class MastodonInternalServerError(MastodonServerError):
     """Raised if the Server returns a 500 error"""
     pass
 
+
 class MastodonBadGatewayError(MastodonServerError):
     """Raised if the Server returns a 502 error"""
     pass
+
 
 class MastodonServiceUnavailableError(MastodonServerError):
     """Raised if the Server returns a 503 error"""
     pass
 
+
 class MastodonGatewayTimeoutError(MastodonServerError):
     """Raised if the Server returns a 504 error"""
     pass
 
+
 class MastodonNotFoundError(MastodonAPIError):
-    """Raised when the mastodon API returns a 404 Not Found error"""
+    """Raised when the Mastodon API returns a 404 Not Found error"""
     pass
 
+
 class MastodonUnauthorizedError(MastodonAPIError):
-    """Raised when the mastodon API returns a 401 Unauthorized error
+    """Raised when the Mastodon API returns a 401 Unauthorized error
 
        This happens when an OAuth token is invalid or has been revoked,
        or when trying to access an endpoint that can't be used without
@@ -3942,7 +4055,7 @@ class MastodonRatelimitError(MastodonError):
     """Raised when rate limiting is set to manual mode and the rate limit is exceeded"""
     pass
 
+
 class MastodonMalformedEventError(MastodonError):
     """Raised when the server-sent event stream is malformed"""
     pass
-

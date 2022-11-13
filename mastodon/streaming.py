@@ -1,6 +1,6 @@
 """
 Handlers for the Streaming API:
-https://github.com/tootsuite/mastodon/blob/master/docs/Using-the-API/Streaming-API.md
+https://github.com/mastodon/documentation/blob/master/content/en/methods/timelines/streaming.md
 """
 
 import json
@@ -13,6 +13,7 @@ except:
 from mastodon import Mastodon
 from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from requests.exceptions import ChunkedEncodingError, ReadTimeout
+
 
 class StreamListener(object):
     """Callbacks for the streaming API. Create a subclass, override the on_xxx
@@ -39,7 +40,7 @@ class StreamListener(object):
         """There was a connection error, read timeout or other error fatal to
         the streaming connection. The exception object about to be raised
         is passed to this function for reference.
-        
+
         Note that the exception will be raised properly once you return from this
         function, so if you are using this handler to reconnect, either never
         return or start a thread and then catch and ignore the exception.
@@ -55,7 +56,7 @@ class StreamListener(object):
         contains the resulting conversation dict."""
         pass
 
-    def on_unknown_event(self, name, unknown_event = None):
+    def on_unknown_event(self, name, unknown_event=None):
         """An unknown mastodon API event has been received. The name contains the event-name and unknown_event
         contains the content of the unknown event.
 
@@ -65,13 +66,12 @@ class StreamListener(object):
         self.on_abort(exception)
         raise exception
 
-
     def handle_heartbeat(self):
         """The server has sent us a keep-alive message. This callback may be
         useful to carry out periodic housekeeping tasks, or just to confirm
         that the connection is still open."""
         pass
-    
+
     def handle_stream(self, response):
         """
         Handles a stream of events from the Mastodon server. When each event
@@ -87,7 +87,7 @@ class StreamListener(object):
         event = {}
         line_buffer = bytearray()
         try:
-            for chunk in response.iter_content(chunk_size = 1):
+            for chunk in response.iter_content(chunk_size=1):
                 if chunk:
                     for chunk_part in chunk:
                         chunk_part = bytearray([chunk_part])
@@ -95,7 +95,8 @@ class StreamListener(object):
                             try:
                                 line = line_buffer.decode('utf-8')
                             except UnicodeDecodeError as err:
-                                exception = MastodonMalformedEventError("Malformed UTF-8")
+                                exception = MastodonMalformedEventError(
+                                    "Malformed UTF-8")
                                 self.on_abort(exception)
                                 six.raise_from(
                                     exception,
@@ -117,7 +118,8 @@ class StreamListener(object):
                 err
             )
         except MastodonReadTimeout as err:
-            exception = MastodonReadTimeout("Timed out while reading from server."),
+            exception = MastodonReadTimeout(
+                "Timed out while reading from server."),
             self.on_abort(exception)
             six.raise_from(
                 exception,
@@ -141,7 +143,7 @@ class StreamListener(object):
             else:
                 event[key] = value
         return event
-    
+
     def _dispatch(self, event):
         try:
             name = event['event']
@@ -150,9 +152,11 @@ class StreamListener(object):
                 for_stream = json.loads(event['stream'])
             except:
                 for_stream = None
-            payload = json.loads(data, object_hook = Mastodon._Mastodon__json_hooks)
+            payload = json.loads(
+                data, object_hook=Mastodon._Mastodon__json_hooks)
         except KeyError as err:
-            exception = MastodonMalformedEventError('Missing field', err.args[0], event)
+            exception = MastodonMalformedEventError(
+                'Missing field', err.args[0], event)
             self.on_abort(exception)
             six.raise_from(
                 exception,
@@ -170,7 +174,7 @@ class StreamListener(object):
         # New mastodon API also supports event names with dots,
         # specifically, status_update.
         handler_name = 'on_' + name.replace('.', '_')
-        
+
         # A generic way to handle unknown events to make legacy code more stable for future changes
         handler = getattr(self, handler_name, self.on_unknown_event)
         try:
@@ -191,6 +195,7 @@ class StreamListener(object):
             else:
                 handler(name, payload)
 
+
 class CallbackStreamListener(StreamListener):
     """
     Simple callback stream handler class.
@@ -198,7 +203,8 @@ class CallbackStreamListener(StreamListener):
     Define an unknown_event_handler for new Mastodon API events. If not, the
     listener will raise an error on new, not handled, events from the API.
     """
-    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None, conversation_handler = None, unknown_event_handler = None, status_update_handler = None):
+
+    def __init__(self, update_handler=None, local_update_handler=None, delete_handler=None, notification_handler=None, conversation_handler=None, unknown_event_handler=None, status_update_handler=None):
         super(CallbackStreamListener, self).__init__()
         self.update_handler = update_handler
         self.local_update_handler = local_update_handler
@@ -211,29 +217,29 @@ class CallbackStreamListener(StreamListener):
     def on_update(self, status):
         if self.update_handler != None:
             self.update_handler(status)
-        
+
         try:
             if self.local_update_handler != None and not "@" in status["account"]["acct"]:
                 self.local_update_handler(status)
         except Exception as err:
             six.raise_from(
-               MastodonMalformedEventError('received bad update', status),
-               err
+                MastodonMalformedEventError('received bad update', status),
+                err
             )
-    
+
     def on_delete(self, deleted_id):
         if self.delete_handler != None:
             self.delete_handler(deleted_id)
-    
+
     def on_notification(self, notification):
         if self.notification_handler != None:
             self.notification_handler(notification)
-            
+
     def on_conversation(self, conversation):
         if self.conversation_handler != None:
-            self.conversation_handler(conversation)            
+            self.conversation_handler(conversation)
 
-    def on_unknown_event(self, name, unknown_event = None):
+    def on_unknown_event(self, name, unknown_event=None):
         if self.unknown_event_handler != None:
             self.unknown_event_handler(name, unknown_event)
         else:
