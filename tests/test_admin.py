@@ -20,30 +20,24 @@ def test_admin_moderation(api, api2):
     account = account_initial
     
     try: 
-        print("A")
         api2.admin_account_moderate(account, "disable")
         account = api2.admin_account(account_initial)
         assert(account.disabled)
         
-        print("B")
         account = api2.admin_account_enable(account)
         assert(not account.disabled)
         
-        print("C")
         api2.admin_account_moderate(account, "silence")
         account = api2.admin_account(account_initial)
         assert(account.silenced)
         
-        print("D")
         account = api2.admin_account_unsilence(account)
         assert(not account.silenced)
         
-        print("E")
         api2.admin_account_moderate(account, "suspend")
         account = api2.admin_account(account_initial)
         assert(account.suspended)
         
-        print("F")
         account = api2.admin_account_unsuspend(account)
         assert(not account.suspended)
     finally:
