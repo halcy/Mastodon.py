@@ -14,7 +14,7 @@ def test_admin_accounts(api2):
     assert(account_admin)
     assert(account_admin.id == account_self.id)
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['path'])
 def test_admin_moderation(api, api2):
     account_initial = api.account_verify_credentials()
     account = account_initial
@@ -34,6 +34,25 @@ def test_admin_moderation(api, api2):
         account = api2.admin_account_unsilence(account)
         assert(not account.silenced)
         
+        api2.admin_account_moderate(account, "sensitive")
+        account = api2.admin_account(account_initial)
+        image = api.media_post('tests/image.jpg')
+        assert image
+        status = api.status_post("oh no!", media_ids=image, sensitive=False)
+        assert status
+        status = api2.status(status)
+        assert status.sensitive
+        api.status_delete(status)
+
+        account = api2.admin_account_unsensitive(account)
+        image = api.media_post('tests/image.jpg')
+        assert image
+        status = api.status_post("oh no!", media_ids=image, sensitive=False)
+        assert status
+        status = api2.status(status)
+        assert not status.sensitive
+        api.status_delete(status)
+
         api2.admin_account_moderate(account, "suspend")
         account = api2.admin_account(account_initial)
         assert(account.suspended)
@@ -53,7 +72,10 @@ def test_admin_moderation(api, api2):
             api2.admin_account_unsilence(account)
         except:
             pass
-    time.sleep(4)
+        try:
+            api.status_delete(status)
+        except:
+            pass
 
 @pytest.mark.vcr()
 def test_admin_reports(api, api2, status):

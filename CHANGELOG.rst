@@ -2,9 +2,27 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.5.3 (in progress)
+--------------------
+* 3.1.3 support
+    * Add v2 media_post api
+* 3.1.4 support
+    * Add "remote", "local" and "only_media" parameter for timelines more broadly
+    * Document updates to instance information api return value
+* 3.2.0 support
+    * Add account notes API
+    * Add thumbnail support to media_post / media_update
+    * Document new keys in media API
+* 3.3.0 support
+    * Add "notify" parameter for following.
+    * Add support for timed mutes
+    * Add support for getting an accounts features tags via account_featured_tags
+* Fixes
+    * Various small and big fixes, improving reliablity and test coverage
+    
 v1.5.2
 ------
-* BREAKING CHANGE: Greatly improve how pagination info is stored (arittner)
+* BREAKING CHANGE (but to a representation that was intended to be internal): Greatly improve how pagination info is stored (arittner)
 * Add "unknown event" handler for streaming (arittner)
 * Add support for exclude_types in notifications api (MicroCheapFx)
 * Add pagination to bookmarks (arittner)

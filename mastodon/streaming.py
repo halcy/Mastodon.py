@@ -5,6 +5,11 @@ https://github.com/tootsuite/mastodon/blob/master/docs/Using-the-API/Streaming-A
 
 import json
 import six
+try:
+    from inspect import signature
+except:
+    pass
+
 from mastodon import Mastodon
 from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from requests.exceptions import ChunkedEncodingError, ReadTimeout
@@ -16,8 +21,13 @@ class StreamListener(object):
     Mastodon.hashtag_stream()."""
 
     def on_update(self, status):
-        """A new status has appeared! 'status' is the parsed JSON dictionary
+        """A new status has appeared. 'status' is the parsed JSON dictionary
         describing the status."""
+        pass
+
+    def on_status_update(self, status):
+        """A status has been edited. 'status' is the parsed JSON dictionary
+        describing the updated status."""
         pass
 
     def on_notification(self, notification):
@@ -54,6 +64,7 @@ class StreamListener(object):
         exception = MastodonMalformedEventError('Bad event type', name)
         self.on_abort(exception)
         raise exception
+
 
     def handle_heartbeat(self):
         """The server has sent us a keep-alive message. This callback may be
@@ -135,6 +146,10 @@ class StreamListener(object):
         try:
             name = event['event']
             data = event['data']
+            try:
+                for_stream = json.loads(event['stream'])
+            except:
+                for_stream = None
             payload = json.loads(data, object_hook = Mastodon._Mastodon__json_hooks)
         except KeyError as err:
             exception = MastodonMalformedEventError('Missing field', err.args[0], event)
@@ -152,15 +167,29 @@ class StreamListener(object):
                 exception,
                 err
             )
-        # New mastodon API also supports event names with dots:
+        # New mastodon API also supports event names with dots,
+        # specifically, status_update.
         handler_name = 'on_' + name.replace('.', '_')
+        
         # A generic way to handle unknown events to make legacy code more stable for future changes
         handler = getattr(self, handler_name, self.on_unknown_event)
-        if handler != self.on_unknown_event:
-            handler(payload)
-        else:
-            handler(name, payload)
+        try:
+            handler_args = list(signature(handler).parameters)
+        except:
+            handler_args = handler.__code__.co_varnames[:handler.__code__.co_argcount]
 
+        # The "for_stream" is right now only theoretical - it's only supported on websocket,
+        # and we do not support websocket based multiplexed streams (yet).
+        if "for_stream" in handler_args:
+            if handler != self.on_unknown_event:
+                handler(payload, for_stream)
+            else:
+                handler(name, payload, for_stream)
+        else:
+            if handler != self.on_unknown_event:
+                handler(payload)
+            else:
+                handler(name, payload)
 
 class CallbackStreamListener(StreamListener):
     """
@@ -169,7 +198,7 @@ class CallbackStreamListener(StreamListener):
     Define an unknown_event_handler for new Mastodon API events. If not, the
     listener will raise an error on new, not handled, events from the API.
     """
-    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None, conversation_handler = None, unknown_event_handler = None):
+    def __init__(self, update_handler = None, local_update_handler = None, delete_handler = None, notification_handler = None, conversation_handler = None, unknown_event_handler = None, status_update_handler = None):
         super(CallbackStreamListener, self).__init__()
         self.update_handler = update_handler
         self.local_update_handler = local_update_handler
@@ -177,6 +206,7 @@ class CallbackStreamListener(StreamListener):
         self.notification_handler = notification_handler
         self.conversation_handler = conversation_handler
         self.unknown_event_handler = unknown_event_handler
+        self.status_update_handler = status_update_handler
 
     def on_update(self, status):
         if self.update_handler != None:
@@ -210,3 +240,7 @@ class CallbackStreamListener(StreamListener):
             exception = MastodonMalformedEventError('Bad event type', name)
             self.on_abort(exception)
             raise exception
+
+    def on_status_update(self, status):
+        if self.status_update_handler != None:
+            self.status_update_handler(status)

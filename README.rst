@@ -1,7 +1,7 @@
 Mastodon.py
 ===========
 Python wrapper for the Mastodon ( https://github.com/mastodon/mastodon/ ) API.
-Feature complete for public API as of Mastodon version 3.0.1 and easy to get started with:
+Feature complete for public API as of Mastodon version 3.0.1 (pypi) / 3.3.0 (current master) and easy to get started with:
 
 .. code-block:: python
 
@@ -21,10 +21,7 @@ Feature complete for public API as of Mastodon version 3.0.1 and easy to get sta
 
     from mastodon import Mastodon
     
-    mastodon = Mastodon(
-        client_id = 'pytooter_clientcred.secret',
-        api_base_url = 'https://mastodon.social'
-    )
+    mastodon = Mastodon(client_id = 'pytooter_clientcred.secret')
     mastodon.log_in(
         'my_login_email@example.com',
         'incrediblygoodpassword',
@@ -35,10 +32,7 @@ Feature complete for public API as of Mastodon version 3.0.1 and easy to get sta
 
     from mastodon import Mastodon
     
-    mastodon = Mastodon(
-        access_token = 'pytooter_usercred.secret',
-        api_base_url = 'https://mastodon.social'
-    )
+    mastodon = Mastodon(access_token = 'pytooter_usercred.secret')
     mastodon.toot('Tooting from python using #mastodonpy !')
 
 You can install Mastodon.py via pypi:
