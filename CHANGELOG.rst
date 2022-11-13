@@ -5,38 +5,44 @@ version number. Breaking changes will be indicated by a change in the minor
 v1.5.3 (in progress)
 --------------------
 * 3.1.3 support
-    * Add v2 media_post api
+    * Added v2 media_post api
 * 3.1.4 support
-    * Add "remote", "local" and "only_media" parameter for timelines more broadly
-    * Document updates to instance information api return value
+    * Added "remote", "local" and "only_media" parameter for timelines more broadly
+    * Documented updates to instance information api return value
 * 3.2.0 support
-    * Add account notes API
-    * Add thumbnail support to media_post / media_update
-    * Document new keys in media API
+    * Added account notes API
+    * Added thumbnail support to media_post / media_update
+    * Documented new keys in media API
 * 3.3.0 support
-    * Add "notify" parameter for following.
-    * Add support for timed mutes
-    * Add support for getting an accounts features tags via account_featured_tags
+    * Added "notify" parameter for following.
+    * Added support for timed mutes
+    * Added support for getting an accounts features tags via account_featured_tags
+* Miscelaneous additions
+    * Added support for paginating by date via converting dates to snowflake IDs (on Mastodon only - thanks to edent for the suggestion)
+    * Added a method to revoke oauth tokens (thanks fluffy-critter)
 * Fixes
     * Various small and big fixes, improving reliablity and test coverage
-    
+    * Changed URLs from "tootsuite" to "mastodon" in several places (thanks andypiper)
+    * Fixed some fields not converting to datetimes (thanks SouthFox-D)
+    * Improved oauth web flow support
+
 v1.5.2
 ------
 * BREAKING CHANGE (but to a representation that was intended to be internal): Greatly improve how pagination info is stored (arittner)
-* Add "unknown event" handler for streaming (arittner)
-* Add support for exclude_types in notifications api (MicroCheapFx)
-* Add pagination to bookmarks (arittner)
-* Make connecting for streaming more resilient (arittner)
-* Allow specifying a user agent header (arittner)
-* Add support for tagged and exclude_reblogs on account_statuses api (arittner)
-* Add support for reports without attached statuses (arittner)
+* Added "unknown event" handler for streaming (arittner)
+* Added support for exclude_types in notifications api (MicroCheapFx)
+* Added pagination to bookmarks (arittner)
+* Made connecting for streaming more resilient (arittner)
+* Allowed specifying a user agent header (arittner)
+* Addeded support for tagged and exclude_reblogs on account_statuses api (arittner)
+* Added support for reports without attached statuses (arittner)
 * General fixes
-    * Fix a typo in __json_fruefalse_parse (zen-tools)
+    * Fixed a typo in __json_fruefalse_parse (zen-tools)
 * Some non-mastodon related fixes
-    * Fix a typo in error message for content_type (rinpatch
-    * Add support for specifying file name when uploading (animeavi)
-    * Fix several crashes related to gotosocials version string (fwaggle)
-    * Fix an issue related to hometowns version string
+    * Fixed a typo in error message for content_type (rinpatch
+    * Added support for specifying file name when uploading (animeavi)
+    * Fixed several crashes related to gotosocials version string (fwaggle)
+    * Fixed an issue related to hometowns version string
 
 v1.5.1
 ------
