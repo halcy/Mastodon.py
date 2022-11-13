@@ -486,8 +486,7 @@ class Mastodon:
         """
         return Mastodon.__SUPPORTED_MASTODON_VERSION
     
-    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
-                         scopes=__DEFAULT_SCOPES, force_login=False):
+    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob", scopes=__DEFAULT_SCOPES, force_login=False, state=None):
         """
         Returns the url that a client needs to request an oauth grant from the server.
         
@@ -501,6 +500,10 @@ class Mastodon:
         
         Pass force_login if you want the user to always log in even when already logged
         into web mastodon (i.e. when registering multiple different accounts in an app).
+
+        State is the oauth `state`parameter to pass to the server. It is strongly suggested
+        to use a random, nonguessable value (i.e. nothing meaningful and no incrementing ID)
+        to preserve security guarantees. It can be left out for non-web login flows.
         """
         if client_id is None:
             client_id = self.client_id
@@ -515,12 +518,11 @@ class Mastodon:
         params['redirect_uri'] = redirect_uris
         params['scope'] = " ".join(scopes)
         params['force_login'] = force_login
+        params['state'] = state
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
-    def log_in(self, username=None, password=None,
-               code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None,
-               scopes=__DEFAULT_SCOPES, to_file=None):
+    def log_in(self, username=None, password=None, code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None, scopes=__DEFAULT_SCOPES, to_file=None):
         """
         Get the access token for a user.
         
@@ -588,6 +590,25 @@ class Mastodon:
         
         return response['access_token']
     
+    def revoke_access_token(self):
+        """
+        Revoke the oauth token the user is currently authenticated with, effectively removing
+        the apps access and requiring the user to log in again.
+        """
+        if self.access_token is None:
+            raise MastodonIllegalArgumentError("Not logged in, do not have a token to revoke.")
+        if self.client_id is None or self.client_secret is None:
+            raise MastodonIllegalArgumentError("Client authentication (id + secret) is required to revoke tokens.")
+        params = collections.OrderedDict([])
+        params['client_id'] = self.client_id
+        params['client_secret'] = self.client_secret
+        params['token'] = self.access_token
+        self.__api_request('POST', '/oauth/revoke', params)
+        
+        # We are now logged out, clear token and logged in id
+        self.access_token = None
+        self.__logged_in_id = None
+
     @api_version("2.7.0", "2.7.0", "2.7.0")
     def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=__DEFAULT_SCOPES, to_file=None):
         """

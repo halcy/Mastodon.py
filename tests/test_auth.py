@@ -22,13 +22,36 @@ def test_log_in_none(api_anonymous):
     with pytest.raises(MastodonIllegalArgumentError):
         api_anonymous.log_in()
 
-
 @pytest.mark.vcr()
 def test_log_in_password(api_anonymous):
     token = api_anonymous.log_in(
         username='mastodonpy_test_2@localhost:3000',
-        password='5fc638e0e53eafd9c4145b6bb852667d')
+        password='5fc638e0e53eafd9c4145b6bb852667d'
+    )
     assert token
+
+@pytest.mark.vcr()
+def test_revoke(api_anonymous):
+    token = api_anonymous.log_in(
+        username='mastodonpy_test_2@localhost:3000',
+        password='5fc638e0e53eafd9c4145b6bb852667d'
+    )
+    api_anonymous.revoke_access_token()
+
+    try:
+        api_anonymous.toot("illegal access detected")
+        assert False
+    except Exception as e:
+        print(e)
+        pass
+
+    api_revoked_token = Mastodon(access_token = token)
+    try:
+        api_anonymous.toot("illegal access detected")
+        assert False
+    except Exception as e:
+        print(e)
+        pass
 
 @pytest.mark.vcr()
 def test_log_in_password_incorrect(api_anonymous):
