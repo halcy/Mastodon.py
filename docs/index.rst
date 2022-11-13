@@ -496,6 +496,7 @@ Relationship dicts
         'endorsed': # Boolean denoting wheter the specified user is being endorsed / featured by the
                     # logged-in user
         'note': # A free text note the logged in user has created for this account (not publicly visible)
+        'notifying' # Boolean denoting whether the logged-in user has requested to get notified every time the followed user posts
     }
 
 Filter dicts

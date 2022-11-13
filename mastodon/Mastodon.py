@@ -215,7 +215,7 @@ class Mastodon:
     __DICT_VERSION_INSTANCE = bigger_version("3.1.4", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
-    __DICT_VERSION_RELATIONSHIP = "3.2.0"
+    __DICT_VERSION_RELATIONSHIP = "3.3.0"
     __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
@@ -2098,12 +2098,13 @@ class Mastodon:
     ###
     # Writing data: Accounts
     ###
-    @api_version("1.0.0", "2.4.3", __DICT_VERSION_RELATIONSHIP)
-    def account_follow(self, id, reblogs=True):
+    @api_version("1.0.0", "3.3.0", __DICT_VERSION_RELATIONSHIP)
+    def account_follow(self, id, reblogs=True, notify=False):
         """
         Follow a user.
 
         Set `reblogs` to False to hide boosts by the followed user.
+        Set `notify` to True to get a notification every time the followed user posts.
 
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """

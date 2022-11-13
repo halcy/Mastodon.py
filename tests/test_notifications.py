@@ -34,3 +34,4 @@ def test_notifications_dismiss_pre_2_9_2(api, api2):
 @pytest.mark.vcr()
 def test_notifications_clear(api):
     api.notifications_clear()
+

@@ -69,7 +69,6 @@ def test_account_follow_unfollow(api, api2):
         assert relationship
         assert not relationship['following']
 
-
 @pytest.mark.vcr()
 def test_account_block_unblock(api, api2):
     api2_id = api2.account_verify_credentials().id
@@ -81,7 +80,6 @@ def test_account_block_unblock(api, api2):
         relationship = api.account_unblock(api2_id)
         assert relationship
         assert not relationship['blocking']
-
 
 @pytest.mark.vcr()
 def test_account_mute_unmute(api, api2):
@@ -109,7 +107,6 @@ def test_mutes(api):
 def test_blocks(api):
     blocks = api.blocks()
     assert isinstance(blocks, list)
-
 
 @pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials(api):
@@ -264,3 +261,22 @@ def test_account_notes(api, api2):
     relationship = api.account_note_set(api2.account_verify_credentials(), "top ebayer gerne wieder")
     assert relationship
     assert relationship.note == "top ebayer gerne wieder"
+
+@pytest.mark.vcr()
+def test_follow_with_notify_reblog(api, api2, api3):
+    api2_id = api2.account_verify_credentials()
+    try:
+        api.account_follow(api2_id, notify = True, reblogs = False)
+        status1 = api3.toot("rootin tooting and shootin")
+        time.sleep(1)
+        status2 = api2.toot("horses are not real")
+        api2.status_reblog(status1)
+        time.sleep(3)
+        notifications = api.notifications()
+        timeline = api.timeline(local=True)
+        assert timeline[0].id == status2.id
+        assert notifications[0].status.id == status2.id
+    finally:
+        api.account_unfollow(api2_id)
+        api3.status_delete(status1)
+        api2.status_delete(status2)

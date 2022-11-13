@@ -20,8 +20,8 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 3.3.0
 -----
-* [ ] Add option to be notified when a followed user posts
-* [ ] Add duration option to the mute function
+* [x] Add option to be notified when a followed user posts
+* [x] Add duration option to the mute function
 * [ ] Add ability to block access or limit sign-ups from chosen IPs
 * [ ] Add support for managing multiple stream subscriptions in a single connection
 * [x] Add support for limiting results by both min_id and max_id at the same time in REST API
