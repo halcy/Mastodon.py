@@ -23,6 +23,7 @@ v1.6.0
     * Added a method to revoke oauth tokens (thanks fluffy-critter)
 * Fixes
     * Various small and big fixes, improving reliablity and test coverage
+    * Changed health APIs to work with newer Mastodon versions
     * Changed URLs from "tootsuite" to "mastodon" in several places (thanks andypiper)
     * Fixed some fields not converting to datetimes (thanks SouthFox-D)
     * Improved oauth web flow support

@@ -3341,9 +3341,8 @@ class Mastodon:
         """
         Returns without True if streaming API is okay, False or raises an error otherwise.
         """
-        api_okay = self.__api_request(
-            'GET', '/api/v1/streaming/health', base_url_override=self.__get_streaming_base(), parse=False)
-        if api_okay == b'OK':
+        api_okay = self.__api_request('GET', '/api/v1/streaming/health', base_url_override=self.__get_streaming_base(), parse=False)
+        if api_okay in [b'OK', b'success']:
             return True
         return False
 
