@@ -2,7 +2,7 @@ Mastodon.py
 ===========
 .. py:module:: mastodon
 .. py:class: Mastodon
-   
+
 Register your app! This only needs to be done once. Uncomment the code and substitute in your information:
 
 .. code-block:: python
@@ -22,7 +22,7 @@ Then login. This can be done every time, or you can use the persisted informatio
 .. code-block:: python
 
    from mastodon import Mastodon
-   
+
    mastodon = Mastodon(
        client_id = 'pytooter_clientcred.secret',
        api_base_url = 'https://mastodon.social'
@@ -38,38 +38,38 @@ To post, create an actual API instance:
 .. code-block:: python
 
    from mastodon import Mastodon
-   
+
    mastodon = Mastodon(
        access_token = 'pytooter_usercred.secret',
        api_base_url = 'https://mastodon.social'
    )
-   mastodon.toot('Tooting from python using #mastodonpy !')   
+   mastodon.toot('Tooting from Python using #mastodonpy !')
 
-`Mastodon`_ is an ActivityPub and OStatus based twitter-like federated social 
-network node. It has an API that allows you to interact with its 
-every aspect. This is a simple python wrapper for that api, provided
-as a single python module. By default, it talks to the 
-`Mastodon flagship instance`_, but it can be set to talk to any 
+`Mastodon`_ is an ActivityPub-based Twitter-like federated social
+network node. It has an API that allows you to interact with its
+every aspect. This is a simple Python wrapper for that API, provided
+as a single Python module. By default, it talks to the
+`Mastodon flagship instance`_, but it can be set to talk to any
 node running Mastodon by setting `api_base_url` when creating the
-api object (or creating an app).
+API object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 3.0.1. Pleromas
+of this time, it is feature complete for Mastodon version 3.0.1. Pleroma's
 Mastodon API layer, while not an official target, should also be basically
 compatible, and Mastodon.py does make some allowances for behaviour that isn't
-strictly like Mastodons.
+strictly like that of Mastodon.
 
 A note about rate limits
 ------------------------
-Mastodons API rate limits per user account. By default, the limit is 300 requests 
+Mastodon's API rate limits per user account. By default, the limit is 300 requests
 per 5 minute time slot. This can differ from instance to instance and is subject to change.
-Mastodon.py has three modes for dealing with rate limiting that you can pass to 
+Mastodon.py has three modes for dealing with rate limiting that you can pass to
 the constructor, "throw", "wait" and "pace", "wait" being the default.
 
 In "throw" mode, Mastodon.py makes no attempt to stick to rate limits. When
 a request hits the rate limit, it simply throws a `MastodonRateLimitError`. This is
-for applications that need to handle all rate limiting themselves (i.e. interactive apps), 
-or applications wanting to use Mastodon.py in a multi-threaded context ("wait" and "pace" 
+for applications that need to handle all rate limiting themselves (i.e. interactive apps),
+or applications wanting to use Mastodon.py in a multi-threaded context ("wait" and "pace"
 modes are not thread safe).
 
 .. note::
@@ -95,10 +95,10 @@ modes are not thread safe).
 In "wait" mode, once a request hits the rate limit, Mastodon.py will wait until
 the rate limit resets and then try again, until the request succeeds or an error
 is encountered. This mode is for applications that would rather just not worry about rate limits
-much, don't poll the api all that often, and are okay with a call sometimes just taking
+much, don't poll the API all that often, and are okay with a call sometimes just taking
 a while.
 
-In "pace" mode, Mastodon.py will delay each new request after the first one such that, 
+In "pace" mode, Mastodon.py will delay each new request after the first one such that,
 if requests were to continue at the same rate, only a certain fraction (set in the
 constructor as `ratelimit_pacefactor`) of the rate limit will be used up. The fraction can
 be (and by default, is) greater than one. If the rate limit is hit, "pace" behaves like
@@ -107,7 +107,7 @@ a loop without ever sleeping at all yourself. It is for applications that would 
 just pretend there is no such thing as a rate limit and are fine with sometimes not
 being very interactive.
 
-In addition to the per-user limit, there is a per-IP limit of 7500 requests per 5 
+In addition to the per-user limit, there is a per-IP limit of 7500 requests per 5
 minute time slot, and tighter limits on logins. Mastodon.py does not make any effort
 to respect these.
 
@@ -117,36 +117,36 @@ in, do consider using Mastodon.py without authenticating to get the full per-IP 
 
 A note about pagination
 -----------------------
-Many of Mastodons API endpoints are paginated. What this means is that if you request
+Many of Mastodon's API endpoints are paginated. What this means is that if you request
 data from them, you might not get all the data at once - instead, you might only get the
 first few results.
 
-All endpoints that are paginated have four parameters: `since_id`, `max_id`, `min_id` and 
+All endpoints that are paginated have four parameters: `since_id`, `max_id`, `min_id` and
 `limit`. `since_id` allows you to specify the smallest id you want in the returned data, but
 you will still always get the newest data, so if there are too many statuses between
 the newest one and `since_id`, some will not be returned. `min_id`, on the other hand, gives
-you statuses with that minimum id and newer, starting at the given id. `max_id`, similarly, 
-allows you to specify the largest id you want. By specifying either min_id or `max_id` 
+you statuses with that minimum id and newer, starting at the given id. `max_id`, similarly,
+allows you to specify the largest id you want. By specifying either min_id or `max_id`
 (generally, only one, not both, though specifying both is supported starting with Mastodon
 version 3.3.0) of them you can go through pages forwards and backwards.
 
 On Mastodon mainline, you can, pass datetime objects as IDs when fetching posts,
-since the IDs used are Snowflake IDs and dates can be approximately converted to those. 
-This is guaranteed to work on mainline Mastodon servers and very likely to work on all 
-forks, but will **not** work on other servers implementing the API, like Pleroma, Misskey 
+since the IDs used are Snowflake IDs and dates can be approximately converted to those.
+This is guaranteed to work on mainline Mastodon servers and very likely to work on all
+forks, but will **not** work on other servers implementing the API, like Pleroma, Misskey
 or Gotosocial. You should not use this if you want your application to be universally
 compatible.
 
 `limit` allows you to specify how many results you would like returned. Note that an
-instance may choose to return less results than you requested - by default, Mastodon 
-will return no more than 40 statues and no more than 80 accounts no matter how high
+instance may choose to return less results than you requested - by default, Mastodon
+will return no more than 40 statuses and no more than 80 accounts no matter how high
 you set the limit.
 
 The responses returned by paginated endpoints contain a "link" header that specifies
 which parameters to use to get the next and previous pages. Mastodon.py parses these
-and stores them (if present) in the first (for the previous page) and last (for the 
+and stores them (if present) in the first (for the previous page) and last (for the
 next page) item of the returned list as _pagination_prev and _pagination_next. They
-are accessible only via attribute-style access. Note that this means that if you 
+are accessible only via attribute-style access. Note that this means that if you
 want to persist pagination info with your data, you'll have to take care of that
 manually (or persist objects, not just dicts).
 
@@ -155,9 +155,9 @@ a paginated request as well as for fetching all pages starting from a first page
 
 Two notes about IDs
 -------------------
-Mastodons API uses IDs in several places: User IDs, Toot IDs, ...
+Mastodon's API uses IDs in several places: User IDs, Toot IDs, ...
 
-While debugging, it might be tempting to copy-paste in IDs from the
+While debugging, it might be tempting to copy-paste IDs from the
 web interface into your code. This will not work, as the IDs on the web
 interface and in the URLs are not the same as the IDs used internally
 in the API, so don't do that.
@@ -165,30 +165,30 @@ in the API, so don't do that.
 ID unpacking
 ~~~~~~~~~~~~
 Wherever Mastodon.py expects an ID as a parameter, you can also pass a
-dict that contains an id - this means that, for example, instead of writing 
+dict that contains an id - this means that, for example, instead of writing
 
 .. code-block:: python
 
     mastodon.status_post("@somebody wow!", in_reply_to_id = toot["id"])
-    
+
 you can also just write
 
 .. code-block:: python
 
     mastodon.status_post("@somebody wow!", in_reply_to_id = toot)
-    
+
 and everything will work as intended.
 
 Error handling
 --------------
 When Mastodon.py encounters an error, it will raise an exception, generally with
-some text included to tell you what went wrong. 
+some text included to tell you what went wrong.
 
-The base class that all mastodon exceptions inherit from is `MastodonError`. 
+The base class that all Mastodon exceptions inherit from is `MastodonError`.
 If you are only interested in the fact an error was raised somewhere in
 Mastodon.py, and not the details, this is the exception you can catch.
 
-`MastodonIllegalArgumentError` is generally a programming problem - you asked the 
+`MastodonIllegalArgumentError` is generally a programming problem - you asked the
 API to do something obviously invalid (i.e. specify a privacy option that does
 not exist).
 
@@ -199,16 +199,16 @@ of `MastodonNetworkError`, `MastodonReadTimeout`, which is thrown when a streami
 API stream times out during reading.
 
 `MastodonAPIError` is an error returned from the Mastodon instance - the server
-has decided it can't fullfill your request (i.e. you requested info on a user that
+has decided it can't fulfil your request (i.e. you requested info on a user that
 does not exist). It is further split into `MastodonNotFoundError` (API returned 404)
 and `MastodonUnauthorizedError` (API returned 401). Different error codes might exist,
 but are not currently handled separately.
 
 `MastodonMalformedEventError` is raised when a streaming API listener receives an
 invalid event. There have been reports that this can sometimes happen after prolonged
-operation due to an upstream problem in the requests/urllib libraries. 
+operation due to an upstream problem in the requests/urllib libraries.
 
-`MastodonRatelimitError` is raised when you hit an API rate limit. You should try 
+`MastodonRatelimitError` is raised when you hit an API rate limit. You should try
 again after a while (see the rate limiting section above).
 
 `MastodonServerError` is raised when the server throws an internal error, likely due
@@ -224,9 +224,9 @@ While you take the extra step of removing the code, please take a moment to cons
 
 Return values
 -------------
-Unless otherwise specified, all data is returned as python dictionaries, matching 
+Unless otherwise specified, all data is returned as Python dictionaries, matching
 the JSON format used by the API. Dates returned by the API are in ISO 8601 format
-and are parsed into python datetime objects.
+and are parsed into Python datetime objects.
 
 To make access easier, the dictionaries returned are wrapped by a class that adds
 read-only attributes for all dict values - this means that, for example, instead of
@@ -235,13 +235,13 @@ writing
 .. code-block:: python
 
     description = mastodon.account_verify_credentials()["source"]["note"]
-    
+
 you can also just write
 
 .. code-block:: python
 
     description = mastodon.account_verify_credentials().source.note
-    
+
 and everything will work as intended. The class used for this is exposed as
 `AttribAccessDict`.
 
@@ -268,12 +268,12 @@ User / account dicts
         'followers_count': # How many followers they have
         'statuses_count': # How many statuses they have
         'note': # Their bio
-        'url': # Their URL; usually 'https://mastodon.social/users/<acct>'
+        'url': # Their URL; for example 'https://mastodon.social/users/<acct>'
         'avatar': # URL for their avatar, can be animated
         'header': # URL for their header image, can be animated
         'avatar_static': # URL for their avatar, never animated
         'header_static': # URL for their header image, never animated
-        'source': # Additional information - only present for user dict returned 
+        'source': # Additional information - only present for user dict returned
                   # from account_verify_credentials()
         'moved_to_account': # If set, a user dict of the account this user has
                             # set up as their moved-to address.
@@ -288,11 +288,11 @@ User / account dicts
     mastodon.account_verify_credentials()["source"]
     # Returns the following dictionary:
     {
-        'privacy': # The users default visibility setting ("private", "unlisted" or "public")
+        'privacy': # The user's default visibility setting ("private", "unlisted" or "public")
         'sensitive': # Denotes whether user media should be marked sensitive by default
-        'note': # Plain text version of the users bio
+        'note': # Plain text version of the user's bio
     }
-    
+
 Toot dicts
 ~~~~~~~~~~
 .. _toot dict:
@@ -327,9 +327,9 @@ Toot dicts
         'application': # Application dict for the client used to post the toot (Does not federate
                        # and is therefore always None for remote toots, can also be None for
                        # local toots for some legacy applications).
-        'language': # The language of the toot, if specified by the server, 
+        'language': # The language of the toot, if specified by the server,
                     # as ISO 639-1 (two-letter) language code.
-        'muted': # Boolean denoting whether the user has muted this status by 
+        'muted': # Boolean denoting whether the user has muted this status by
                  # way of conversation muting
         'pinned': # Boolean denoting whether or not the status is currently pinned for the
                   # associated account.
@@ -346,12 +346,12 @@ Mention dicts
 .. code-block:: python
 
     {
-        'url': # Mentioned users profile URL (potentially remote)
-        'username': # Mentioned users user name (not including domain)
-        'acct': # Mentioned users account name (including domain)
-        'id': # Mentioned users (local) account ID
+        'url': # Mentioned user's profile URL (potentially remote)
+        'username': # Mentioned user's user name (not including domain)
+        'acct': # Mentioned user's account name (including domain)
+        'id': # Mentioned user's (local) account ID
     }
-  
+
 Scheduled toot dicts
 ~~~~~~~~~~~~~~~~~~~~
 .. _scheduled toot dict:
@@ -400,25 +400,25 @@ Poll dicts
         'emojis': # List of emoji dicts for all emoji used in answer strings,
         'own_votes': # The logged-in users votes, as a list of indices to the options.
     }
-        
+
 
 Conversation dicts
 ~~~~~~~~~~~~~~~~~~
 .. _conversation dict:
 
 .. code-block:: python
-    
+
     mastodon.conversations()[0]
     # Returns the following dictionary:
     {
         'id': # The ID of this conversation object
-        'unread': # Boolean indicating whether this conversation has yet to be 
+        'unread': # Boolean indicating whether this conversation has yet to be
                   # read by the user
-        'accounts': # List of accounts (other than the logged-in account) that 
+        'accounts': # List of accounts (other than the logged-in account) that
                     # are part of this conversation
-        'last_status': # The newest status in this conversation 
+        'last_status': # The newest status in this conversation
     }
-    
+
 Hashtag dicts
 ~~~~~~~~~~~~~
 .. _hashtag dict:
@@ -442,7 +442,7 @@ Hashtag usage history dicts
         'uses': # Number of statuses using this hashtag on that day
         'accounts': # Number of accounts using this hashtag in at least one status on that day
     }
-    
+
 Emoji dicts
 ~~~~~~~~~~~
 .. _emoji dict:
@@ -451,16 +451,16 @@ Emoji dicts
 
     {
         'shortcode': # Emoji shortcode, without surrounding colons
-        'url': # URL for the emoji image, can be animated 
+        'url': # URL for the emoji image, can be animated
         'static_url': # URL for the emoji image, never animated
         'visible_in_picker': # True if the emoji is enabled, False if not.
         'category': # The category to display the emoji under (not present if none is set)
     }
- 
+
 Application dicts
 ~~~~~~~~~~~~~~~~~
  .. _application dict:
- 
+
 .. code-block:: python
 
     {
@@ -468,8 +468,8 @@ Application dicts
         'website': # The applications website
         'vapid_key': # A vapid key that can be used in web applications
     }
- 
- 
+
+
 Relationship dicts
 ~~~~~~~~~~~~~~~~~~
 .. _relationship dict:
@@ -485,11 +485,11 @@ Relationship dicts
         'blocking': # Boolean denoting whether the logged-in user has blocked the specified user
         'blocked_by': # Boolean denoting whether the logged-in user has been blocked by the specified user, if information is available
         'muting': # Boolean denoting whether the logged-in user has muted the specified user
-        'muting_notifications': # Boolean denoting wheter the logged-in user has muted notifications 
+        'muting_notifications': # Boolean denoting wheter the logged-in user has muted notifications
                                 # related to the specified user
-        'requested': # Boolean denoting whether the logged-in user has sent the specified 
+        'requested': # Boolean denoting whether the logged-in user has sent the specified
                      # user a follow request
-        'domain_blocking': # Boolean denoting whether the logged-in user has blocked the 
+        'domain_blocking': # Boolean denoting whether the logged-in user has blocked the
                            # specified users domain
         'showing_reblogs': # Boolean denoting whether the specified users reblogs show up on the
                            # logged-in users Timeline
@@ -502,7 +502,7 @@ Relationship dicts
 Filter dicts
 ~~~~~~~~~~~~
 .. _filter dict:
- 
+
 .. code-block:: python
 
     mastodon.filter(<numerical id>)
@@ -516,7 +516,7 @@ Filter dicts
                         # or if it should be ran client-side.
         'whole_word': # Boolean denoting whether this filter can match partial words
     }
-    
+
 Notification dicts
 ~~~~~~~~~~~~~~~~~~
 .. _notification dict:
@@ -552,14 +552,14 @@ List dicts
 .. _list dict:
 
 .. code-block:: python
-    
+
     mastodon.list(<numerical id>)
     # Returns the following dictionary:
     {
         'id': # id of the list
         'title': # title of the list
     }
-    
+
 Media dicts
 ~~~~~~~~~~~
 .. _media dict:
@@ -575,7 +575,7 @@ Media dicts
         'remote_url': # The remote URL for the media (if the image is from a remote instance)
         'preview_url': # The URL for the media preview
         'text_url': # The display text for the media (what shows up in toots)
-        'meta': # Dictionary of two metadata dicts (see below), 
+        'meta': # Dictionary of two metadata dicts (see below),
                 # 'original' and 'small' (preview). Either may be empty.
                 # May additionally contain an "fps" field giving a videos frames per second (possibly
                 # rounded), and a "length" field giving a videos length in a human-readable format.
@@ -584,7 +584,7 @@ Media dicts
         'blurhash': # The blurhash for the image, used for preview / placeholder generation
         'description': # If set, the user-provided description for this media.
     }
-    
+
     # Metadata dicts (image) - all fields are optional:
     {
        'width': # Width of the image in pixels
@@ -592,7 +592,7 @@ Media dicts
        'aspect': # Aspect ratio of the image as a floating point number
        'size': # Textual representation of the image size in pixels, e.g. '800x600'
     }
-    
+
     # Metadata dicts (video, gifv) - all fields are optional:
     {
         'width': # Width of the video in pixels
@@ -607,14 +607,14 @@ Media dicts
     {
         'duration': # Duration of the audio file in seconds
         'bitrate': # Average bit-rate of the audio file in bytes per second
-    }    
-    
+    }
+
     # Focus Metadata dict:
     {
         'x': Focus point x coordinate (between -1 and 1)
         'y': Focus point x coordinate (between -1 and 1)
     }
-    
+
     # Media colors dict:
     {
         'foreground': # Estimated foreground colour for the attachment thumbnail
@@ -635,7 +635,7 @@ Card dicts
         'description': # The description of the card.
         'type': # Embed type: 'link', 'photo', 'video', or 'rich'
         'image': # (optional) The image associated with the card.
-        
+
         # OEmbed data (all optional):
         'author_name': # Name of the embedded contents author
         'author_url': # URL pointing to the embedded contents author
@@ -660,8 +660,8 @@ Search result dicts
         'accounts': # List of user dicts resulting from the query
         'hashtags': # List of hashtag dicts resulting from the query
         'statuses': # List of toot dicts resulting from the query
-    }    
-    
+    }
+
 Instance dicts
 ~~~~~~~~~~~~~~
 .. _instance dict:
@@ -673,17 +673,17 @@ Instance dicts
     {
         'description': # A brief instance description set by the admin
         'short_description': # An even briefer instance description
-        'email': # The admin contact e-mail
-        'title': # The instances title
-        'uri': # The instances URL
-        'version': # The instances mastodon version
-        'urls': # Additional URLs dict, presently only 'streaming_api' with the 
+        'email': # The admin contact email
+        'title': # The instance's title
+        'uri': # The instance's URL
+        'version': # The instance's Mastodon version
+        'urls': # Additional URLs dict, presently only 'streaming_api' with the
                 # stream websocket address.
         'stats: # A dictionary containing three stats, user_count (number of local users),
                 # status_count (number of local statuses) and domain_count (number of known
                 # instance domains other than this one).
         'contact_account': # User dict of the primary contact for the instance
-        'languages': # Array of ISO 639-1 (two-letter) language codes the instance 
+        'languages': # Array of ISO 639-1 (two-letter) language codes the instance
                      # has chosen to advertise.
         'registrations': # Boolean indication whether registrations on this instance are open
                          # (True) or not (False)
@@ -703,8 +703,8 @@ Activity dicts
         'logins': # Number of users that logged in that week
         'registrations': # Number of new users that week
         'statuses': # Number of statuses posted that week
-    }    
-    
+    }
+
 Report dicts
 ~~~~~~~~~~~~
 .. _report dict:
@@ -717,19 +717,19 @@ Report dicts
         'id': # Numerical id of the report
         'action_taken': # True if a moderator or admin has processed the
                         # report, False otherwise.
-        
+
         # The following fields are only present in the report dicts returned by moderation API:
         'comment': # Text comment submitted with the report
         'created_at': # Time at which this report was created, as a datetime object
         'updated_at': # Last time this report has been updated, as a datetime object
         'account': # User dict of the user that filed this report
         'target_account': # Account that has been reported with this report
-        'assigned_account': # If the report as been assigned to an account, 
+        'assigned_account': # If the report as been assigned to an account,
                             # User dict of that account (None if not)
         'action_taken_by_account': # User dict of the account that processed this report
         'statuses': # List of statuses attached to the report, as toot dicts
     }
-    
+
 Push subscription dicts
 ~~~~~~~~~~~~~~~~~~~~~~~
 .. _push subscription dict:
@@ -746,7 +746,7 @@ Push subscription dicts
                   # 'favourite', 'reblog' and 'mention', with value True
                   # if webpushes have been requested for those events.
     }
-    
+
 Push notification dicts
 ~~~~~~~~~~~~~~~~~~~~~~~
 .. _push notification dict:
@@ -756,37 +756,37 @@ Push notification dicts
     mastodon.push_subscription_decrypt_push(...)
     # Returns the following dictionary
     {
-        'access_token': # Access token that can be used to access the API as the 
+        'access_token': # Access token that can be used to access the API as the
                         # notified user
         'body': # Text body of the notification
         'icon': # URL to an icon for the notification
-        'notification_id': # ID that can be passed to notification() to get the full 
+        'notification_id': # ID that can be passed to notification() to get the full
                            # notification object,
         'notification_type': # 'mention', 'reblog', 'follow' or 'favourite'
-        'preferred_locale': # The users preferred locale
+        'preferred_locale': # The user's preferred locale
         'title': # Title for the notification
     }
-    
+
 Preference dicts
 ~~~~~~~~~~~~~~~~
 .. _preference dict:
 
 .. code-block:: python
-    
+
     mastodon.preferences()
     # Returns the following dictionary
     {
-        'posting:default:visibility': # The default visibility setting for the users posts,
+        'posting:default:visibility': # The default visibility setting for the user's posts,
                                       # as a string
-        'posting:default:sensitive': # Boolean indicating whether the users uploads should
+        'posting:default:sensitive': # Boolean indicating whether the user's uploads should
                                      # be marked sensitive by default
-        'posting:default:language': # The users default post language, if set (None if not)
+        'posting:default:language': # The user's default post language, if set (None if not)
         'reading:expand:media': # How the user wishes to be shown sensitive media. Can be
                                 # 'default' (hide if sensitive), 'hide_all' or 'show_all'
         'reading:expand:spoilers': # Boolean indicating whether the user wishes to expand
                                    # content warnings by default
     }
-    
+
 Featured tag dicts
 ~~~~~~~~~~~~~~~~~~
 .. _featured tag dict:
@@ -799,10 +799,10 @@ Featured tag dicts
         'id': # The featured tags id
         'name': # The featured tags name (without leading #)
         'statuses_count': # Number of publicly visible statuses posted with this hashtag that this instance knows about
-        'last_status_at': # The last time a public status containing this hashtag was added to this instances database
+        'last_status_at': # The last time a public status containing this hashtag was added to this instance's database
                           # (can be None if there are none)
     }
-    
+
 Read marker dicts
 ~~~~~~~~~~~~~~~~~
 .. _read marker dict:
@@ -815,7 +815,7 @@ Read marker dicts
         'last_read_id': # ID of the last read object in the timeline
         'version': # A counter that is incremented whenever the marker is set to a new status
         'updated_at': # The time the marker was last set, as a datetime object
-    }    
+    }
 
 Announcement dicts
 ~~~~~~~~~~~~~~~~~~
@@ -824,7 +824,7 @@ Announcement dicts
 .. code-block:: python
 
     mastodon.annoucements()[0]
-    # Returns the following dictionary:    
+    # Returns the following dictionary:
     {
         'id': # The annoucements id
         'content': # The contents of the annoucement, as an html string
@@ -852,7 +852,7 @@ Admin account dicts
 .. _admin account dict:
 
 .. code-block:: python
-    
+
     mastodon.admin_account(id)
     # Returns the following dictionary
     {
@@ -860,10 +860,10 @@ Admin account dicts
         'username': # The users username, no leading @
         'domain': # The users domain
         'created_at': # The time of account creation
-        'email': # For local users, the users e-mail
-        'ip': # For local users, the users last known IP address
+        'email': # For local users, the user's email
+        'ip': # For local users, the user's last known IP address
         'role': # 'admin', 'moderator' or None
-        'confirmed': # For local users, False if the user has not confirmed their e-mail, True otherwise
+        'confirmed': # For local users, False if the user has not confirmed their email, True otherwise
         'suspended': # Boolean indicating whether the user has been suspended
         'silenced': # Boolean indicating whether the user has been suspended
         'disabled': # For local users, boolean indicating whether the user has had their login disabled
@@ -871,29 +871,29 @@ Admin account dicts
         'locale': # For local users, the locale the user has set,
         'invite_request': # If the user requested an invite, the invite request comment of that user. (TODO permanent?)
         'invited_by_account_id': # Present if the user was invited by another user and set to the inviting users id.
-        'account': # The users account, as a standard user dict
+        'account': # The user's account, as a standard user dict
     }
-    
+
 App registration and user authentication
 ----------------------------------------
-Before you can use the mastodon API, you have to register your 
-application (which gets you a client key and client secret) 
-and then log in (which gets you an access token). These functions 
+Before you can use the Mastodon API, you have to register your
+application (which gets you a client key and client secret)
+and then log in (which gets you an access token). These functions
 allow you to do those things. Additionally, it is also possible
 to programmatically register a new user.
 
-For convenience, once you have a client id, secret and access token, 
+For convenience, once you have a client id, secret and access token,
 you can simply pass them to the constructor of the class, too!
 
-Note that while it is perfectly reasonable to log back in whenever 
-your app starts, registering a new application on every 
-startup is not, so don't do that - instead, register an application 
+Note that while it is perfectly reasonable to log back in whenever
+your app starts, registering a new application on every
+startup is not, so don't do that - instead, register an application
 once, and then persist your client id and secret. A convenient method
 for this is provided by the functions dealing with registering the app,
 logging in and the Mastodon classes constructor.
 
 To talk to an instance different from the flagship instance, specify
-the api_base_url (usually, just the URL of the instance, i.e. 
+the api_base_url (usually, just the URL of the instance, i.e.
 https://mastodon.social/ for the flagship instance). If no protocol
 is specified, Mastodon.py defaults to https.
 
@@ -909,17 +909,17 @@ Versioning
 ----------
 Mastodon.py will check if a certain endpoint is available before doing API
 calls. By default, it checks against the version of Mastodon retrieved on
-init(), or the version you specified. Mastodon.py can be set (in the 
-constructor) to either check if an endpoint is available at all (this is the 
-default) or to check if the endpoint is available and behaves as in the newest 
-Mastodon version (with regards to parameters as well as return values). 
-Version checking can also be disabled altogether. If a version check fails, 
+init(), or the version you specified. Mastodon.py can be set (in the
+constructor) to either check if an endpoint is available at all (this is the
+default) or to check if the endpoint is available and behaves as in the newest
+Mastodon version (with regards to parameters as well as return values).
+Version checking can also be disabled altogether. If a version check fails,
 Mastodon.py throws a `MastodonVersionError`.
 
-With the following functions, you can make Mastodon.py re-check the server 
+With the following functions, you can make Mastodon.py re-check the server
 version or explicitly determine if a specific minimum Version is available.
 Long-running applications that aim to support multiple Mastodon versions
-should do this from time to time in case a server they are running against 
+should do this from time to time in case a server they are running against
 updated.
 
 .. automethod:: Mastodon.retrieve_mastodon_version
@@ -979,7 +979,7 @@ This function allows you to get and refresh information about polls.
 
 Reading data: Notifications
 ---------------------------
-This function allows you to get information about a users notifications.
+This function allows you to get information about a user's notifications.
 
 .. automethod:: Mastodon.notifications
 
@@ -1020,7 +1020,7 @@ Reading data: Follow suggestions
 Reading data: Profile directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. authomethod:: Mastodon.directory
+.. automethod:: Mastodon.directory
 
 Reading data: Lists
 -------------------
@@ -1033,7 +1033,7 @@ These functions allow you to view information about lists.
 Reading data: Follows
 ---------------------
 
-.. automethod:: Mastodon.followshttps://docs.joinmastodon.org/api/rest
+.. automethod:: Mastodon.follows
 
 Reading data: Favourites
 ------------------------
@@ -1078,7 +1078,7 @@ of reports filed by the logged in user. It has since been removed.
 
 
 Writing data: Last-read markers
---------------------------
+--------------------------------
 This function allows you to set get last read position for timelines.
 
 .. automethod:: Mastodon.markers_get
@@ -1139,8 +1139,8 @@ interact with already posted statuses.
 
 Writing data: Scheduled statuses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Mastodon allows you to schedule statuses (using `status_post()`_.
-The functions in this section allow you to update or delete thusly
+Mastodon allows you to schedule statuses (using `status_post()`_).
+The functions in this section allow you to update or delete
 scheduled statuses.
 
 .. automethod:: Mastodon.scheduled_status_update
@@ -1171,7 +1171,6 @@ These functions allow you to interact with other accounts: To (un)follow and
 (un)block.
 
 .. automethod:: Mastodon.account_follow
-.. automethod:: Mastodon.follows
 .. automethod:: Mastodon.account_unfollow
 .. automethod:: Mastodon.account_block
 .. automethod:: Mastodon.account_unblock
@@ -1185,7 +1184,7 @@ These functions allow you to interact with other accounts: To (un)follow and
 
 Writing data: Featured tags
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-These functions allow setting which tags are featured on a users profile.
+These functions allow setting which tags are featured on a user's profile.
 
 .. automethod:: Mastodon.featured_tag_create
 .. automethod:: Mastodon.featured_tag_delete
@@ -1240,7 +1239,7 @@ Writing data: Reports
 .. automethod:: Mastodon.report
 
 Writing data: Last-read markers
---------------------------
+-------------------------------
 This function allows you to set the last read position for timelines to
 allow for persisting where the user was reading a timeline between sessions
 and clients / devices.
@@ -1296,12 +1295,12 @@ using the `on_abort` handler to fill in events since the last received one and t
 Both `run_async` and `reconnect_async` default to false, and you'll have to set each to true
 separately to get the behaviour described above.
 
-The connection may be closed at any time by calling the handles close() method. The 
+The connection may be closed at any time by calling the handles close() method. The
 current status of the handler thread can be checked with the handles is_alive() function,
 and the streaming status can be checked by calling is_receiving().
 
 The streaming functions take instances of `StreamListener` as the `listener` parameter.
-A `CallbackStreamListener` class that allows you to specify function callbacks 
+A `CallbackStreamListener` class that allows you to specify function callbacks
 directly is included for convenience.
 
 For new well-known events implement the streaming function in `StreamListener` or `CallbackStreamListener`.
@@ -1335,7 +1334,7 @@ StreamListener
 .. automethod:: StreamListener.on_notification
 .. automethod:: StreamListener.on_delete
 .. automethod:: StreamListener.on_conversation
-.. automethod:: StreamListener.on_status_update    
+.. automethod:: StreamListener.on_status_update
 .. automethod:: StreamListener.on_unknown_event
 .. automethod:: StreamListener.on_abort
 .. automethod:: StreamListener.handle_heartbeat
@@ -1348,14 +1347,14 @@ CallbackStreamListener
 Push subscriptions
 ------------------
 These functions allow you to manage webpush subscriptions and to decrypt received
-pushes. Note that the intended setup is not mastodon pushing directly to a users client - 
-the push endpoint should usually be a relay server that then takes care of delivering the 
+pushes. Note that the intended setup is not Mastodon pushing directly to a user's client -
+the push endpoint should usually be a relay server that then takes care of delivering the
 (encrypted) push to the end user via some mechanism, where it can then be decrypted and
 displayed.
 
 Mastodon allows an application to have one webpush subscription per user at a time.
 
-All crypto utilities require Mastodon.pys optional "webpush" feature dependencies
+All crypto utilities require Mastodon.py's optional "webpush" feature dependencies
 (specifically, the "cryptography" and "http_ece" packages).
 
 .. automethod:: Mastodon.push_subscription
@@ -1372,8 +1371,8 @@ Moderation API
 --------------
 These functions allow you to perform moderation actions on users and generally
 process reports using the API. To do this, you need access to the "admin:read" and/or
-"admin:write" scopes or their more granular variants (both for the application and the 
-access token), as well as at least moderator access. Mastodon.py will not request these 
+"admin:write" scopes or their more granular variants (both for the application and the
+access token), as well as at least moderator access. Mastodon.py will not request these
 by default, as that would be very dangerous.
 
 BIG WARNING: TREAT ANY ACCESS TOKENS THAT HAVE ADMIN CREDENTIALS AS EXTREMELY, MASSIVELY
@@ -1403,10 +1402,10 @@ have admin: scopes attached with a lot of care, but be extra careful with those 
 
 Acknowledgements
 ----------------
-Mastodon.py contains work by a large amount of contributors, many of which have
+Mastodon.py contains work by a large number of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog.
 
 .. _Mastodon: https://github.com/mastodon/mastodon
-.. _Mastodon flagship instance: http://mastodon.social/
-.. _Official Mastodon api docs: https://docs.joinmastodon.org/api/rest
+.. _Mastodon flagship instance: https://mastodon.social/
+.. _Official Mastodon API docs: https://docs.joinmastodon.org/client/intro/
