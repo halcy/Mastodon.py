@@ -2,7 +2,7 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v1.6.0
+v1.6.1
 ------
 * BREAKING CHANGE: Change behaviour of streaming api handlers to no longer raise an exception when an unknown event is received and change the contract of the unknown event handler to explicitly state that it will not receive events once Mastodon.py updates.
 * 3.1.3 support
