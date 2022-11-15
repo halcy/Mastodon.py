@@ -1307,13 +1307,16 @@ For new well-known events implement the streaming function in `StreamListener` o
 The function name is `on_` + the event name. If the event name contains dots, they are replaced with
 underscored, e.g. for an event called 'status.update' the listener function should be named `on_status_update`.
 
-It may be that future Mastodon versions will come with completely new (unknown) event names. In this
-case a (deprecated) Mastodon.py would throw an error. If you want to avoid this in general, you can
-override the listener function `on_unknown_event`. This has an additional parameter `name` which informs
-about the name of the event. `unknown_event` contains the content of the event.
+It may be that future Mastodon versions will come with completely new (unknown) event names.
+If you want to do something when such an event is received, override the listener function `on_unknown_event`. 
+This has an additional parameter `name` which informs about the name of the event. `unknown_event` contains the 
+content of the event. Alternatively, a callback function can be passed in the `unknown_event_handler` parameter 
+in the `CallbackStreamListener` constructor.
 
-Alternatively, a callback function can be passed in the `unknown_event_handler` parameter in the
-`CallbackStreamListener` constructor.
+Note that the `unknown_event` handler is *not* guaranteed to receive events once they have been implemented.
+Events will only go to this handler temporarily, while Mastodon.py has not been updated. Changes to what events
+do and do not go into the handler will not be considered a breaking change. If you want to handle a new event whose
+name you _do_ know, define an appropriate handler in your StreamListener, which will work even if it is not listed here.
 
 When in not-async mode or async mode without async_reconnect, the stream functions may raise
 various exceptions: `MastodonMalformedEventError` if a received event cannot be parsed and

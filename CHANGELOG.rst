@@ -2,8 +2,9 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v1.5.3 (in progress)
---------------------
+v1.6.0
+------
+* BREAKING CHANGE: Change behaviour of streaming api handlers to no longer raise an exception when an unknown event is received and change the contract of the unknown event handler to explicitly state that it will not receive events once Mastodon.py updates.
 * 3.1.3 support
     * Added v2 media_post api
 * 3.1.4 support
@@ -25,6 +26,7 @@ v1.5.3 (in progress)
     * Changed URLs from "tootsuite" to "mastodon" in several places (thanks andypiper)
     * Fixed some fields not converting to datetimes (thanks SouthFox-D)
     * Improved oauth web flow support
+    * Improved documentation consistency (thanks andypiper)
 
 v1.5.2
 ------

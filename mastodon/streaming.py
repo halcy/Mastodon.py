@@ -59,13 +59,9 @@ class StreamListener(object):
     def on_unknown_event(self, name, unknown_event=None):
         """An unknown mastodon API event has been received. The name contains the event-name and unknown_event
         contains the content of the unknown event.
-
-        This function must be implemented, if unknown events should be handled without an error.
         """
-        exception = MastodonMalformedEventError('Bad event type', name)
-        self.on_abort(exception)
-        raise exception
-
+        pass
+    
     def handle_heartbeat(self):
         """The server has sent us a keep-alive message. This callback may be
         useful to carry out periodic housekeeping tasks, or just to confirm
@@ -171,6 +167,7 @@ class StreamListener(object):
                 exception,
                 err
             )
+
         # New mastodon API also supports event names with dots,
         # specifically, status_update.
         handler_name = 'on_' + name.replace('.', '_')
@@ -200,8 +197,9 @@ class CallbackStreamListener(StreamListener):
     """
     Simple callback stream handler class.
     Can optionally additionally send local update events to a separate handler.
-    Define an unknown_event_handler for new Mastodon API events. If not, the
-    listener will raise an error on new, not handled, events from the API.
+    Define an unknown_event_handler for new Mastodon API events. This handler is
+    *not* guaranteed to receive these events forever, and should only be used
+    for diagnostics.
     """
 
     def __init__(self, update_handler=None, local_update_handler=None, delete_handler=None, notification_handler=None, conversation_handler=None, unknown_event_handler=None, status_update_handler=None):
@@ -242,10 +240,6 @@ class CallbackStreamListener(StreamListener):
     def on_unknown_event(self, name, unknown_event=None):
         if self.unknown_event_handler != None:
             self.unknown_event_handler(name, unknown_event)
-        else:
-            exception = MastodonMalformedEventError('Bad event type', name)
-            self.on_abort(exception)
-            raise exception
 
     def on_status_update(self, status):
         if self.status_update_handler != None:
