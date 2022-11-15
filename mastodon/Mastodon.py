@@ -511,9 +511,6 @@ class Mastodon:
         """
         return Mastodon.__SUPPORTED_MASTODON_VERSION
 
-    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob",
-                         scopes=__DEFAULT_SCOPES, force_login=False):
-
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob", scopes=__DEFAULT_SCOPES, force_login=False, state=None):
         """
         Returns the URL that a client needs to request an OAuth grant from the server.

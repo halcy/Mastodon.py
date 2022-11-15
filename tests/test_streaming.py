@@ -201,16 +201,6 @@ def test_dotted_unknown_event():
     assert listener.deletes == []
     assert listener.heartbeats == 0
 
-def test_invalid_event():
-    """But not too tolerant"""
-    listener = Listener()
-    with pytest.raises(MastodonMalformedEventError):
-        listener.handle_stream_([
-            'event: whatup',
-            'data: {"k": "v"}',
-            '',
-        ])
-
 def test_invalid_json():
     """But not too tolerant"""
     listener = Listener()
