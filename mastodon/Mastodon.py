@@ -3925,7 +3925,7 @@ class Mastodon:
         """
         if isinstance(id, dict) and "id" in id:
             id = id["id"]
-        if dateconv and isinstance(id, datetime):
+        if dateconv and isinstance(id, datetime.datetime):
             id = (int(id) << 16) * 1000
         return id
 
