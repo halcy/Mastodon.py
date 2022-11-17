@@ -3,6 +3,7 @@ from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
 import datetime
 import pytz
 import vcr
+import time
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -170,3 +171,11 @@ def test_scheduled_status(api):
     api.scheduled_status_delete(scheduled_toot_2)
     scheduled_toot_list_2 = api.scheduled_statuses()
     assert not scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list_2)
+
+    the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=5)
+    scheduled_toot_4 = api.status_post("please ensure adequate headroom", scheduled_at=the_very_immediate_future)
+    time.sleep(15)
+    statuses = api.timeline_home()
+    scheduled_toot_list_3 = api.scheduled_statuses()
+    assert scheduled_toot_4.id in map(lambda x: x.id, statuses)
+    assert not scheduled_toot_4.id in map(lambda x: x.id, scheduled_toot_list_3)
