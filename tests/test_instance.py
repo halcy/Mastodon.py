@@ -2,6 +2,8 @@ import pytest
 
 from mastodon.Mastodon import MastodonVersionError
 import datetime
+import os
+import pickle
 
 @pytest.mark.vcr()
 def test_instance(api):
@@ -40,7 +42,18 @@ def test_health(api):
 
 @pytest.mark.vcr()
 def test_server_time(api):
+     # present date...
+    present_time = api.get_approx_server_time()
+    # hahahahaha
+
+    if os.path.exists("tests/cassettes/test_server_time_datetimeobjects.pkl"):
+        present_time_real = datetime.datetime.fromtimestamp(pickle.load(open("tests/cassettes/test_server_time_datetimeobjects.pkl", 'rb')))
+    else:
+        present_time_real = datetime.datetime.now()
+        pickle.dump(present_time_real.timestamp(), open("tests/cassettes/test_server_time_datetimeobjects.pkl", 'wb'))
+    
     assert isinstance(api.get_approx_server_time(), datetime.datetime)
+    assert abs((api.get_approx_server_time() - present_time_real).total_seconds()) < 5
 
 @pytest.mark.vcr()
 def test_nodeinfo(api):
