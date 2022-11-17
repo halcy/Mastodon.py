@@ -481,8 +481,7 @@ class Mastodon:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
 
-        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(
-            version_str)
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
         return version_str
 
     def verify_minimum_version(self, version_str, cached=False):
@@ -503,7 +502,24 @@ class Mastodon:
         elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
             return False
         return True
+    
+    def get_approx_server_time(self):
+        """
+        Retrieve the approximate server time
 
+        We parse this from the hopefully present "Date" header, but make no effort to compensate for latency.
+        """
+        response = self.__api_request("HEAD", "/", return_response_object=True)
+        print(response.headers)
+        if 'Date' in response.headers:
+            server_time_datetime = dateutil.parser.parse(response.headers['Date'])
+
+            # Make sure we're in local time
+            epoch_time = self.__datetime_to_epoch(server_time_datetime)
+            return datetime.datetime.fromtimestamp(epoch_time)
+        else:
+            raise MastodonAPIError("No server time in response.")
+            
     @staticmethod
     def get_supported_version():
         """
@@ -937,7 +953,7 @@ class Mastodon:
 
         Returns a `card dict`_.
         """
-        if self.verify_minimum_version("3.0.0"):
+        if self.verify_minimum_version("3.0.0", cached=True):
             return self.status(id).card
         else:
             id = self.__unpack_id(id)
@@ -2139,7 +2155,7 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
 
-        if self.verify_minimum_version("2.9.2"):
+        if self.verify_minimum_version("2.9.2", cached=True):
             url = '/api/v1/notifications/{0}/dismiss'.format(str(id))
             self.__api_request('POST', url)
         else:
@@ -2590,14 +2606,14 @@ class Mastodon:
             focus = str(focus[0]) + "," + str(focus[1])
 
         if not thumbnail is None:
-            if not self.verify_minimum_version("3.2.0"):
+            if not self.verify_minimum_version("3.2.0", cached=True):
                 raise MastodonVersionError(
                     'Thumbnail requires version > 3.2.0')
             files["thumbnail"] = self.__load_media_file(
                 thumbnail, thumbnail_mime_type)
 
         # Disambiguate URL by version
-        if self.verify_minimum_version("3.1.4"):
+        if self.verify_minimum_version("3.1.4", cached=True):
             ret_dict = self.__api_request(
                 'POST', '/api/v2/media', files=files, params={'description': description, 'focus': focus})
         else:
@@ -2637,7 +2653,7 @@ class Mastodon:
             locals(), ['id', 'thumbnail', 'thumbnail_mime_type'])
 
         if not thumbnail is None:
-            if not self.verify_minimum_version("3.2.0"):
+            if not self.verify_minimum_version("3.2.0", cached=True):
                 raise MastodonVersionError(
                     'Thumbnail requires version > 3.2.0')
             files = {"thumbnail": self.__load_media_file(
@@ -3359,8 +3375,7 @@ class Mastodon:
         else:
             date_time_utc = date_time.astimezone(pytz.utc)
 
-        epoch_utc = datetime.datetime.utcfromtimestamp(
-            0).replace(tzinfo=pytz.utc)
+        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
 
         return (date_time_utc - epoch_utc).total_seconds()
 
@@ -3632,7 +3647,7 @@ class Mastodon:
                     response_object.status_code,
                     response_object.reason,
                     error_msg)
-                    
+
             if return_response_object:
                 return response_object
 

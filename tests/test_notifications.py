@@ -26,6 +26,7 @@ def test_notifications_dismiss_pre_2_9_2(api, api2):
         try:
             status = api2.status_post('@mastodonpy_test hello!')
             notifications = api.notifications()
+            api.verify_minimum_version("2.9.2", cached=False)
             api.notifications_dismiss(notifications[0])
         finally:
             if not status is None:

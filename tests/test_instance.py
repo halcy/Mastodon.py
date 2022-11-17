@@ -1,6 +1,7 @@
 import pytest
 
 from mastodon.Mastodon import MastodonVersionError
+import datetime
 
 @pytest.mark.vcr()
 def test_instance(api):
@@ -36,7 +37,11 @@ def test_emoji(api):
 @pytest.mark.vcr()
 def test_health(api):
     assert api.instance_health() == True
-    
+
+@pytest.mark.vcr()
+def test_server_time(api):
+    assert isinstance(api.get_approx_server_time(), datetime.datetime)
+
 @pytest.mark.vcr()
 def test_nodeinfo(api):
     nodeinfo = api.instance_nodeinfo()
