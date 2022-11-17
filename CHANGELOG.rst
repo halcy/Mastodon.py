@@ -4,7 +4,6 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.6.2
 ------
-* Add ability to schedule statuses with automatic conversion to server timezone.
 * Fix some issues with datetime conversion
 
 v1.6.1
