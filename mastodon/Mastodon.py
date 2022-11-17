@@ -3926,7 +3926,7 @@ class Mastodon:
         if isinstance(id, dict) and "id" in id:
             id = id["id"]
         if dateconv and isinstance(id, datetime.datetime):
-            id = (int(id) << 16) * 1000
+            id = (int(id.timestamp()) << 16) * 1000
         return id
 
     def __decode_webpush_b64(self, data):

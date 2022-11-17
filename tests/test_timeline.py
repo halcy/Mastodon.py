@@ -1,8 +1,7 @@
 import pytest
 import time
-from mastodon.Mastodon import MastodonAPIError,\
-                              MastodonIllegalArgumentError,\
-                              MastodonUnauthorizedError
+from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError, MastodonUnauthorizedError
+import datetime
 
 @pytest.mark.vcr()
 def test_public_tl_anonymous(api_anonymous, status3):
@@ -61,3 +60,31 @@ def test_conversations(api, api2):
     assert account.id in map(lambda x: x.accounts[0].id, conversations)
     assert conversations[0].unread == True
     assert conversations2[0].unread == False
+
+@pytest.mark.vcr()
+def test_min_max_id(api, status):
+    time.sleep(3)
+    tl = api.timeline_home(min_id = status.id - 1000, max_id = status.id + 1000)
+    assert status['id'] in map(lambda st: st['id'], tl)
+
+    tl = api.timeline_home(min_id = status.id - 2000, max_id = status.id - 1000)
+    assert not status['id'] in map(lambda st: st['id'], tl)
+
+    tl = api.timeline_home(min_id = status.id + 1000, max_id = status.id + 2000)
+    assert not status['id'] in map(lambda st: st['id'], tl)
+
+    tl = api.timeline_home(since_id = status.id - 1000)
+    assert status['id'] in map(lambda st: st['id'], tl)
+
+@pytest.mark.vcr()
+def test_min_max_id_datetimes(api, status):
+    the_past = datetime.datetime.now() - datetime.timedelta(seconds=20)
+    the_future = datetime.datetime.now() + datetime.timedelta(seconds=20)
+    the_far_future = datetime.datetime.now() + datetime.timedelta(seconds=40)
+
+    time.sleep(3)
+    tl = api.timeline_home(min_id = the_past, max_id = the_future)
+    assert status['id'] in map(lambda st: st['id'], tl)
+
+    tl = api.timeline_home(min_id = the_future, max_id = the_far_future)
+    assert not status['id'] in map(lambda st: st['id'], tl)

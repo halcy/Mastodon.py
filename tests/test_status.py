@@ -179,3 +179,4 @@ def test_scheduled_status(api):
     scheduled_toot_list_3 = api.scheduled_statuses()
     assert scheduled_toot_4.id in map(lambda x: x.id, statuses)
     assert not scheduled_toot_4.id in map(lambda x: x.id, scheduled_toot_list_3)
+    
