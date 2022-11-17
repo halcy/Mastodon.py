@@ -4,6 +4,8 @@ import datetime
 import pytz
 import vcr
 import time
+import pickle
+import os
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -171,8 +173,12 @@ def test_scheduled_status(api):
     api.scheduled_status_delete(scheduled_toot_2)
     scheduled_toot_list_2 = api.scheduled_statuses()
     assert not scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list_2)
-
-    the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=5)
+    
+    if os.path.exists("tests/cassettes/test_scheduled_status_datetimeobjects.pkl"):
+        the_very_immediate_future = pickle.load(open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'rb'))
+    else:
+        the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=5)
+        pickle.dump(the_very_immediate_future, open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'wb'))
     scheduled_toot_4 = api.status_post("please ensure adequate headroom", scheduled_at=the_very_immediate_future)
     time.sleep(15)
     statuses = api.timeline_home()

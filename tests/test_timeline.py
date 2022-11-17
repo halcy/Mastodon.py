@@ -2,6 +2,8 @@ import pytest
 import time
 from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError, MastodonUnauthorizedError
 import datetime
+import pickle
+import os
 
 @pytest.mark.vcr()
 def test_public_tl_anonymous(api_anonymous, status3):
@@ -78,9 +80,13 @@ def test_min_max_id(api, status):
 
 @pytest.mark.vcr()
 def test_min_max_id_datetimes(api, status):
-    the_past = datetime.datetime.now() - datetime.timedelta(seconds=20)
-    the_future = datetime.datetime.now() + datetime.timedelta(seconds=20)
-    the_far_future = datetime.datetime.now() + datetime.timedelta(seconds=40)
+    if os.path.exists("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl"):
+        the_past, the_future, the_far_future = pickle.load(open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'rb'))
+    else:
+        the_past = datetime.datetime.now() - datetime.timedelta(seconds=20)
+        the_future = datetime.datetime.now() + datetime.timedelta(seconds=20)
+        the_far_future = datetime.datetime.now() + datetime.timedelta(seconds=40)
+        pickle.dump((the_past, the_future, the_far_future), open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'wb'))
 
     time.sleep(3)
     tl = api.timeline_home(min_id = the_past, max_id = the_future)

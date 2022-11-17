@@ -3447,13 +3447,12 @@ class Mastodon:
         every time instead of randomly doing different things on some systems
         and also it represents that time as the equivalent UTC time.
         """
-        isotime = datetime_val.astimezone(
-            pytz.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
+        isotime = datetime_val.astimezone(pytz.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
         if isotime[-2] != ":":
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, do_ratelimiting=True, use_json=False, parse=True):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, do_ratelimiting=True, use_json=False, parse=True, return_response_object=False):
         """
         Internal API request helper.
         """
@@ -3471,8 +3470,7 @@ class Mastodon:
                     time.sleep(to_next)
             else:
                 time_waited = time.time() - self.ratelimit_lastcall
-                time_wait = float(self.ratelimit_reset -
-                                  time.time()) / float(self.ratelimit_remaining)
+                time_wait = float(self.ratelimit_reset - time.time()) / float(self.ratelimit_remaining)
                 remaining_wait = time_wait - time_waited
 
             if remaining_wait > 0:
@@ -3510,8 +3508,7 @@ class Mastodon:
 
             response_object = None
             try:
-                kwargs = dict(headers=headers, files=files,
-                              timeout=self.request_timeout)
+                kwargs = dict(headers=headers, files=files, timeout=self.request_timeout)
                 if use_json == False:
                     if method == 'GET':
                         kwargs['params'] = params
@@ -3565,10 +3562,8 @@ class Mastodon:
 
                     # Adjust server time to local clock
                     if 'Date' in response_object.headers:
-                        server_time_datetime = dateutil.parser.parse(
-                            response_object.headers['Date'])
-                        server_time = self.__datetime_to_epoch(
-                            server_time_datetime)
+                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                        server_time = self.__datetime_to_epoch(server_time_datetime)
                         server_time_diff = time.time() - server_time
                         self.ratelimit_reset += server_time_diff
                         self.ratelimit_lastcall = time.time()
@@ -3637,6 +3632,9 @@ class Mastodon:
                     response_object.status_code,
                     response_object.reason,
                     error_msg)
+                    
+            if return_response_object:
+                return response_object
 
             if parse == True:
                 try:
