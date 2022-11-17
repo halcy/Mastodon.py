@@ -81,12 +81,19 @@ def test_min_max_id(api, status):
 @pytest.mark.vcr()
 def test_min_max_id_datetimes(api, status):
     if os.path.exists("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl"):
-        the_past, the_future, the_far_future = pickle.load(open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'rb'))
+        data_dict = pickle.load(open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'rb'))
+        the_past = data_dict["the_past"]
+        the_future = data_dict["the_future"]
+        the_far_future = data_dict["the_far_future"]
     else:
         the_past = datetime.datetime.now() - datetime.timedelta(seconds=20)
         the_future = datetime.datetime.now() + datetime.timedelta(seconds=20)
         the_far_future = datetime.datetime.now() + datetime.timedelta(seconds=40)
-        pickle.dump((the_past, the_future, the_far_future), open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'wb'))
+        pickle.dump({
+            "the_past": the_past,
+            "the_future": the_future,
+            "the_far_future": the_far_future,
+        }, open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'wb'))
 
     time.sleep(3)
     tl = api.timeline_home(min_id = the_past, max_id = the_future)
