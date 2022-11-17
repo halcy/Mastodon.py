@@ -82,10 +82,9 @@ def test_min_max_id(api, status):
 def test_min_max_id_datetimes(api, status):
     if os.path.exists("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl"):
         data_dict = pickle.load(open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'rb'))
-        the_past = data_dict["the_past"]
-        the_future = data_dict["the_future"]
-        the_far_future = data_dict["the_far_future"]
-        print("restoring from dict\n", the_past, the_future, the_far_future)
+        the_past = datetime.datetime.fromtimestamp(data_dict["the_past"])
+        the_future = datetime.datetime.fromtimestamp(data_dict["the_future"])
+        the_far_future = datetime.datetime.fromtimestamp(data_dict["the_far_future"])
     else:
         epoch_time = datetime.datetime.now().timestamp()
         now = datetime.datetime.fromtimestamp(epoch_time)
@@ -93,9 +92,9 @@ def test_min_max_id_datetimes(api, status):
         the_future = now + datetime.timedelta(seconds=20)
         the_far_future = now + datetime.timedelta(seconds=40)
         pickle.dump({
-            "the_past": the_past,
-            "the_future": the_future,
-            "the_far_future": the_far_future,
+            "the_past": the_past.timestamp(),
+            "the_future": the_future.timestamp(),
+            "the_far_future": the_far_future.timestamp(),
         }, open("tests/cassettes/test_min_max_id_datetimes_datetimeobjects.pkl", 'wb'))
 
     time.sleep(3)

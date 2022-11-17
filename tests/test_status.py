@@ -176,10 +176,10 @@ def test_scheduled_status(api):
     assert not scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list_2)
     
     if os.path.exists("tests/cassettes/test_scheduled_status_datetimeobjects.pkl"):
-        the_very_immediate_future = pickle.load(open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'rb'))
+        the_very_immediate_future = datetime.datetime.fromtimestamp(pickle.load(open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'rb')))
     else:
         the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=5)
-        pickle.dump(the_very_immediate_future, open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'wb'))
+        pickle.dump(the_very_immediate_future.timestamp(), open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'wb'))
     scheduled_toot_4 = api.status_post("please ensure adequate headroom", scheduled_at=the_very_immediate_future)
     time.sleep(15)
     statuses = api.timeline_home()
