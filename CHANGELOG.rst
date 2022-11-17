@@ -2,6 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.6.2
+------
+* Add ability to schedule statuses with automatic conversion to server timezone.
+* Fix some issues with datetime conversion
+
 v1.6.1
 ------
 * BREAKING CHANGE: Change behaviour of streaming api handlers to no longer raise an exception when an unknown event is received and change the contract of the unknown event handler to explicitly state that it will not receive events once Mastodon.py updates.

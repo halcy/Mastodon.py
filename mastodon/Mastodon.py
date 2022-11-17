@@ -519,7 +519,7 @@ class Mastodon:
             return datetime.datetime.fromtimestamp(epoch_time)
         else:
             raise MastodonAPIError("No server time in response.")
-            
+
     @staticmethod
     def get_supported_version():
         """
@@ -3409,8 +3409,7 @@ class Mastodon:
                 if v != None:
                     try:
                         if isinstance(v, int):
-                            json_object[k] = datetime.datetime.fromtimestamp(
-                                v, pytz.utc)
+                            json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
                         else:
                             json_object[k] = dateutil.parser.parse(v)
                     except:
