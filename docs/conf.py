@@ -135,7 +135,7 @@ todo_include_todos = False
 # documentation.
 #
 html_theme_options = {
-    "collapse_navigation": False,
+    "collapse_navigation": True,
     "navigation_depth": -1
 }
 
