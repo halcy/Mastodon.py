@@ -774,8 +774,7 @@ class Mastodon:
         """
         Basic health check. Returns True if healthy, False if not.
         """
-        status = self.__api_request(
-            'GET', '/health', parse=False).decode("utf-8")
+        status = self.__api_request('GET', '/health', parse=False).decode("utf-8")
         return status in ["OK", "success"]
 
     @api_version("3.0.0", "3.0.0", "3.0.0")
@@ -806,6 +805,15 @@ class Mastodon:
         except MastodonNotFoundError:
             parse = urlparse(schema_url)
             return self.__api_request('GET', parse.path + parse.params + parse.query + parse.fragment)
+
+    @api_version("3.4.0", "3.4.0", __DICT_VERSION_INSTANCE)
+    def instance_rules(self):
+        """
+        Retrieve instance rules.
+
+        Returns a list of `id` + `text` dicts, same as the `rules` field in the `instance dicts`_.
+        """
+        return self.__api_request('GET', '/api/v1/instance/rules')
 
     ###
     # Reading data: Timelines

@@ -72,4 +72,6 @@ def test_directory(api):
     assert isinstance(directory, list)
     assert len(directory) > 0
 
-    
+@pytest.mark.vcr()
+def test_instance_rules(api):
+    assert isinstance(api.instance_rules(), list)
