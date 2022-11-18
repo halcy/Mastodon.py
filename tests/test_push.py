@@ -26,10 +26,17 @@ def test_decrypt(api):
 @pytest.mark.vcr(match_on=['path'])
 def test_push_set(api):
     priv, pub = api.push_subscription_generate_keys()
-    sub = api.push_subscription_set("example.com", pub)
-    
+    sub = api.push_subscription_set("example.com", pub, follow_events=True, favourite_events=True, reblog_events=True, mention_events=True, poll_events=True, follow_request_events=True, status_events=True, policy='none')
     assert sub == api.push_subscription()
     assert sub.endpoint == "https://example.com"
+
+    should_throw = False
+    try:
+        sub = api.push_subscription_set("example.com", pub, follow_events=True, favourite_events=True, reblog_events=True, mention_events=True, poll_events=True, follow_request_events=True, status_events=True, policy='not a valid value')
+        should_throw = True
+    except:
+        pass
+    assert not should_throw
 
 @pytest.mark.vcr(match_on=['path'])
 def test_push_update(api):

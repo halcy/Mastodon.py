@@ -42,7 +42,7 @@ def test_health(api):
 
 @pytest.mark.vcr()
 def test_server_time(api):
-     # present date...
+    # present date...
     present_time = api.get_approx_server_time()
     # hahahahaha
 

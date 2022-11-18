@@ -7,6 +7,7 @@ v1.6.3
 * Add server rules API (`instance_rules`)
 * Add confirmation email resend API (`email_resend_confirmation`)
 * Add account lookup API (`account_lookup`)
+* Add `policy` param to control notification sources for `push_subscription_set`
 
 v1.6.2
 ------

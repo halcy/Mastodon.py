@@ -2756,7 +2756,7 @@ class Mastodon:
     def push_subscription_set(self, endpoint, encrypt_params, follow_events=None,
                               favourite_events=None, reblog_events=None,
                               mention_events=None, poll_events=None,
-                              follow_request_events=None):
+                              follow_request_events=None, status_events=None, policy='all'):
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
 
@@ -2766,10 +2766,16 @@ class Mastodon:
         You can generate this as well as the corresponding private key using the
         `push_subscription_generate_keys()`_ function.
 
+        `policy` controls what sources will generate webpush events. Valid values are
+        `all`, `none`, `follower` and `followed`.
+
         The rest of the parameters controls what kind of events you wish to subscribe to.
 
         Returns a `push subscription dict`_.
         """
+        if not policy in ['all', 'none', 'follower', 'followed']:
+            raise MastodonIllegalArgumentError("Valid values for policy are 'all', 'none', 'follower' or 'followed'.")
+            
         endpoint = Mastodon.__protocolize(endpoint)
 
         push_pubkey_b64 = base64.b64encode(encrypt_params['pubkey'])
@@ -2778,7 +2784,8 @@ class Mastodon:
         params = {
             'subscription[endpoint]': endpoint,
             'subscription[keys][p256dh]': push_pubkey_b64,
-            'subscription[keys][auth]': push_auth_b64
+            'subscription[keys][auth]': push_auth_b64,
+            'policy': policy
         }
 
         if follow_events != None:
@@ -2798,6 +2805,9 @@ class Mastodon:
 
         if follow_request_events != None:
             params['data[alerts][follow_request]'] = follow_request_events
+
+        if follow_request_events != None:
+            params['data[alerts][status]'] = status_events
 
         # Canonicalize booleans
         params = self.__generate_params(params)
