@@ -905,7 +905,8 @@ is specified, Mastodon.py defaults to https.
 .. _auth_request_url():
 .. automethod:: Mastodon.auth_request_url
 .. automethod:: Mastodon.create_account
-
+.. automethod:: Mastodon.email_resend_confirmation
+    
 Versioning
 ----------
 Mastodon.py will check if a certain endpoint is available before doing API
@@ -936,6 +937,7 @@ current instance.
 .. automethod:: Mastodon.instance_peers
 .. automethod:: Mastodon.instance_health
 .. automethod:: Mastodon.instance_nodeinfo
+.. automethod:: Mastodon.instance_rules
 
 Reading data: Timelines
 -----------------------
@@ -1417,4 +1419,3 @@ about who helped with which particular feature or fix in the changelog.
 .. toctree::
    :maxdepth: -1
    :collapse_navigation: False
-   

@@ -66,4 +66,9 @@ def test_app_account_create():
     )
     test_token = test_app_api.create_account("coolguy" + suffix, "swordfish", "email@localhost" + suffix, agreement=True)
     assert test_token
-    
+
+    # We can also test resending (marginally)
+    test_app_api.email_resend_confirmation()
+
+
+

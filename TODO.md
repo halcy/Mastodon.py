@@ -30,7 +30,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 3.4.0
 -----
 * [x] Add server rules
-* [ ] Add POST /api/v1/emails/confirmations to REST API
+* [x] Add POST /api/v1/emails/confirmations to REST API
 * [ ] Add GET /api/v1/accounts/lookup to REST API
 * [ ] Add policy param to POST /api/v1/push/subscriptions in REST API
 * [ ] Add details to error response for POST /api/v1/accounts in REST API

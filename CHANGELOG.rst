@@ -2,6 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.6.3
+------
+* Add server rules API (`instance_rules`)
+* Add confirmation email resend API (`email_resend_confirmation`)
+
 v1.6.2
 ------
 * Fix some issues with datetime conversion

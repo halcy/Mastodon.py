@@ -726,6 +726,15 @@ class Mastodon:
 
         return response['access_token']
 
+    @api_version("3.4.0", "3.4.0", "3.4.0")
+    def email_resend_confirmation(self):
+        """
+        Requests a re-send of the users confirmation mail for an unconfirmed logged in user.
+
+        Only available to the app that the user originally signed up with.
+        """
+        self.__api_request('POST', '/api/v1/emails/confirmations')
+
     ###
     # Reading data: Instances
     ###
