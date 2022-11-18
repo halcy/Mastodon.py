@@ -1413,3 +1413,8 @@ about who helped with which particular feature or fix in the changelog.
 .. _Mastodon: https://github.com/mastodon/mastodon
 .. _Mastodon flagship instance: https://mastodon.social/
 .. _Official Mastodon API docs: https://docs.joinmastodon.org/client/intro/
+
+.. toctree::
+   :maxdepth: -1
+   :collapse_navigation: False
+   
