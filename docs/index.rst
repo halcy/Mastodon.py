@@ -687,7 +687,8 @@ Instance dicts
                      # has chosen to advertise.
         'registrations': # Boolean indication whether registrations on this instance are open
                          # (True) or not (False)
-        'approval_required': # True if account approval is required when registering
+        'approval_required': # True if account approval is required when registering,
+        'rules': # List of dicts with `id` and `text` fields, one for each server rule set by the admin
     }
 
 Activity dicts

@@ -225,7 +225,7 @@ class Mastodon:
     __DICT_VERSION_POLL = "2.8.0"
     __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version(
         "3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
-    __DICT_VERSION_INSTANCE = bigger_version("3.1.4", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_INSTANCE = bigger_version("3.4.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "3.3.0"
