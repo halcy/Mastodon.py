@@ -135,7 +135,7 @@ since the IDs used are Snowflake IDs and dates can be approximately converted to
 This is guaranteed to work on mainline Mastodon servers and very likely to work on all
 forks, but will **not** work on other servers implementing the API, like Pleroma, Misskey
 or Gotosocial. You should not use this if you want your application to be universally
-compatible.
+compatible. It's also relatively coarse-grained.
 
 `limit` allows you to specify how many results you would like returned. Note that an
 instance may choose to return less results than you requested - by default, Mastodon

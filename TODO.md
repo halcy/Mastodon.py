@@ -65,3 +65,4 @@ General improvements that would be good to do before doing another release:
 * [ ] Split mastodon.py into parts in some way that makes sense, it's getting very unwieldy
 * [x] Fix the CI
 * [ ] Get test coverage like, real high
+* [ ] Add all those streaming events??

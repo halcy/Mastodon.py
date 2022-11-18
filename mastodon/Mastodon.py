@@ -3934,6 +3934,8 @@ class Mastodon:
         Checks if id is a dict that contains id and
         returns the id inside, otherwise just returns
         the id straight.
+
+        Also unpacks datetimes to snowflake IDs if requested.
         """
         if isinstance(id, dict) and "id" in id:
             id = id["id"]

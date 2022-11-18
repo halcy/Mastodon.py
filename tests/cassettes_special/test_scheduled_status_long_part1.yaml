@@ -1,0 +1,133 @@
+interactions:
+- request:
+    body: status=please+ensure+maximum+headroom+at+2022-11-19+00%3A13%3A28.641336&scheduled_at=2022-11-18T22%3A13%3A28%2B00%3A00
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '118'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/statuses
+  response:
+    body:
+      string: '{"id":"5","scheduled_at":"2022-11-18T22:13:28.000Z","params":{"text":"please
+        ensure maximum headroom at 2022-11-19 00:13:28.641336","media_ids":null,"sensitive":null,"spoiler_text":null,"visibility":null,"language":null,"scheduled_at":null,"poll":null,"idempotency":null,"with_rate_limit":false,"in_reply_to_id":null,"application_id":1234567890123456},"media_attachments":[]}'
+    headers:
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-oDT7L0vwLx8ThpkVmR2WkQ=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"961ec598899e68bf0f28ef2d0339120d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '300'
+      X-RateLimit-Reset:
+      - '2022-11-19T00:00:00.671086Z'
+      X-Request-Id:
+      - 3ccd3249-4aa7-4366-8722-caaa9c427e6f
+      X-Runtime:
+      - '0.025260'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/scheduled_statuses
+  response:
+    body:
+      string: '[{"id":"5","scheduled_at":"2022-11-18T22:13:28.000Z","params":{"poll":null,"text":"please
+        ensure maximum headroom at 2022-11-19 00:13:28.641336","language":null,"media_ids":null,"sensitive":null,"visibility":null,"idempotency":null,"scheduled_at":null,"spoiler_text":null,"application_id":1234567890123456,"in_reply_to_id":null,"with_rate_limit":false},"media_attachments":[]},{"id":"4","scheduled_at":"2022-11-18T22:12:21.000Z","params":{"poll":null,"text":"please
+        ensure maximum headroom at 2022-11-19 00:12:21.805020","language":null,"media_ids":null,"sensitive":null,"visibility":null,"idempotency":null,"scheduled_at":null,"spoiler_text":null,"application_id":1234567890123456,"in_reply_to_id":null,"with_rate_limit":false},"media_attachments":[]}]'
+    headers:
+      Cache-Control:
+      - no-store
+      Content-Security-Policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-vlVvEXWNgaJdWW23jKfZqA=='';
+        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
+        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
+        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
+        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
+        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
+        worker-src ''self'' blob: http://localhost:3000'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"41f6a2d732beea8c5ef0286133506b91"
+      Link:
+      - <http://localhost:3000/api/v1/scheduled_statuses?min_id=5>; rel="prev"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 8194fc5d-2433-4359-8d25-3a0446703c61
+      X-Runtime:
+      - '0.011068'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

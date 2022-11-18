@@ -187,3 +187,29 @@ def test_scheduled_status(api):
     assert scheduled_toot_4.id in map(lambda x: x.id, statuses)
     assert not scheduled_toot_4.id in map(lambda x: x.id, scheduled_toot_list_3)
     
+# The following two tests need to be manually (!) ran 10 minutes apart when recording.
+# Sorry, I can't think of a better way to test scheduled statuses actually work as intended.
+@pytest.mark.vcr(match_on=['path'])
+def test_scheduled_status_long_part1(api):
+    with vcr.use_cassette('test_scheduled_status_long_part1.yaml', cassette_library_dir='tests/cassettes_special', record_mode='once'):  
+        if os.path.exists("tests/cassettes_special/test_scheduled_status_long_datetimeobjects.pkl"):
+            the_medium_term_future = datetime.datetime.fromtimestamp(pickle.load(open("tests/cassettes_special/test_scheduled_status_long_datetimeobjects.pkl", 'rb')))
+        else:
+            the_medium_term_future = datetime.datetime.now() + datetime.timedelta(minutes=6)
+            pickle.dump(the_medium_term_future.timestamp(), open("tests/cassettes_special/test_scheduled_status_long_datetimeobjects.pkl", 'wb'))
+        scheduled_toot = api.status_post("please ensure maximum headroom at " + str(the_medium_term_future), scheduled_at=the_medium_term_future)
+        scheduled_toot_list = api.scheduled_statuses()
+        assert scheduled_toot.id in map(lambda x: x.id, scheduled_toot_list)
+        pickle.dump(scheduled_toot.params.text, open("tests/cassettes_special/test_scheduled_status_long_text.pkl", 'wb'))
+
+@pytest.mark.vcr(match_on=['path'])    
+def test_scheduled_status_long_part2(api):
+        with vcr.use_cassette('test_scheduled_status_long_part2.yaml', cassette_library_dir='tests/cassettes_special', record_mode='once'):
+            text = pickle.load(open("tests/cassettes_special/test_scheduled_status_long_text.pkl", 'rb'))
+            statuses = api.timeline_home()
+            print(text)
+            found_status = False
+            for status in statuses:
+                if text in status.content:
+                    found_status = True
+            assert found_status
