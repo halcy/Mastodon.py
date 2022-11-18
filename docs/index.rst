@@ -906,7 +906,7 @@ is specified, Mastodon.py defaults to https.
 .. automethod:: Mastodon.auth_request_url
 .. automethod:: Mastodon.create_account
 .. automethod:: Mastodon.email_resend_confirmation
-    
+
 Versioning
 ----------
 Mastodon.py will check if a certain endpoint is available before doing API
@@ -999,6 +999,8 @@ their relationships.
 .. automethod:: Mastodon.account_followers
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
+.. automethod:: Mastodon.account_lists
+.. automethod:: Mastodon.account_lookup
 
 Reading data: Featured tags
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

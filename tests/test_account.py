@@ -280,3 +280,14 @@ def test_follow_with_notify_reblog(api, api2, api3):
         api.account_unfollow(api2_id)
         api3.status_delete(status1)
         api2.status_delete(status2)
+
+@pytest.mark.vcr()
+def test_account_lookup(api, api3):
+    id = api.me().id
+    try:
+        api.account_lookup("kljadklajsdkljlkjlkjlkjasdasd")
+        assert False
+    except:
+        pass
+    assert(api.account_lookup("mastodonpy_test").id == id)
+    assert(api.account_lookup("mastodonpy_test@localhost:3000").id == id)

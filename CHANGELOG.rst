@@ -6,6 +6,7 @@ v1.6.3
 ------
 * Add server rules API (`instance_rules`)
 * Add confirmation email resend API (`email_resend_confirmation`)
+* Add account lookup API (`account_lookup`)
 
 v1.6.2
 ------

@@ -1261,6 +1261,19 @@ class Mastodon:
         url = '/api/v1/accounts/{0}/lists'.format(str(id))
         return self.__api_request('GET', url, params)
 
+    @api_version("3.4.0", "3.4.0", __DICT_VERSION_ACCOUNT)
+    def account_lookup(self, acct):
+        """
+        Look up an account from user@instance form (@instance allowed but not required for
+        local accounts). Will only return accounts that the instance already knows about, 
+        and not do any webfinger requests. Use `account_search` if you need to resolve users 
+        through webfinger from remote.
+
+        Returns an `account dict`_.
+        """
+        return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
+    
+
     ###
     # Reading data: Featured hashtags
     ###
