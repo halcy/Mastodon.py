@@ -454,14 +454,14 @@ class Mastodon:
         self.mastodon_major = 1
         self.mastodon_minor = 0
         self.mastodon_patch = 0
+        self.version_check_worked = None
 
         # Versioning
         if mastodon_version == None and self.version_check_mode != 'none':
             self.retrieve_mastodon_version()
         elif self.version_check_mode != 'none':
             try:
-                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(
-                    mastodon_version)
+                self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(mastodon_version)
             except:
                 raise MastodonVersionError("Bad version specified")
 
@@ -477,9 +477,11 @@ class Mastodon:
         """
         try:
             version_str = self.__instance()["version"].split('+')[0]
+            self.version_check_worked = True
         except:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
+            self.version_check_worked = False
 
         self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
         return version_str
@@ -585,20 +587,16 @@ class Mastodon:
         Returns the access token as a string.
         """
         if username is not None and password is not None:
-            params = self.__generate_params(
-                locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
+            params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
             params['grant_type'] = 'password'
         elif code is not None:
-            params = self.__generate_params(
-                locals(), ['scopes', 'to_file', 'username', 'password', 'refresh_token'])
+            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'refresh_token'])
             params['grant_type'] = 'authorization_code'
         elif refresh_token is not None:
-            params = self.__generate_params(
-                locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
+            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
             params['grant_type'] = 'refresh_token'
         else:
-            raise MastodonIllegalArgumentError(
-                'Invalid arguments given. username and password or code are required.')
+            raise MastodonIllegalArgumentError('Invalid arguments given. username and password or code are required.')
 
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
@@ -611,11 +609,9 @@ class Mastodon:
             self.__set_token_expired(int(response.get('expires_in', 0)))
         except Exception as e:
             if username is not None or password is not None:
-                raise MastodonIllegalArgumentError(
-                    'Invalid user name, password, or redirect_uris: %s' % e)
+                raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
             elif code is not None:
-                raise MastodonIllegalArgumentError(
-                    'Invalid access token or redirect_uris: %s' % e)
+                raise MastodonIllegalArgumentError('Invalid access token or redirect_uris: %s' % e)
             else:
                 raise MastodonIllegalArgumentError('Invalid request: %s' % e)
 
@@ -634,6 +630,10 @@ class Mastodon:
                 token_file.write(self.api_base_url + "\n")
 
         self.__logged_in_id = None
+
+        # Retry version check if needed (might be required in limited federation mode)
+        if self.version_check_worked == False:
+            self.retrieve_mastodon_version()
 
         return response['access_token']
 
@@ -1427,8 +1427,7 @@ class Mastodon:
         """
         if not account_id is None or not offset is None or not min_id is None or not max_id is None:
             if self.verify_minimum_version("2.8.0", cached=True) == False:
-                raise MastodonVersionError(
-                    "Advanced search parameters require Mastodon 2.8.0+")
+                raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
     @api_version("1.1.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
     def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
@@ -1457,8 +1456,7 @@ class Mastodon:
         Returns a `search result dict`_, with tags as `hashtag dicts`_.
         """
         if self.verify_minimum_version("2.4.1", cached=True) == True:
-            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id,
-                                  offset=offset, min_id=min_id, max_id=max_id)
+            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id)
         else:
             self.__ensure_search_params_acceptable(
                 account_id, offset, min_id, max_id)
