@@ -70,5 +70,24 @@ def test_app_account_create():
     # We can also test resending (marginally)
     test_app_api.email_resend_confirmation()
 
-
-
+@pytest.mark.vcr(match_on=['path'])
+def test_app_account_create_invalid():    
+    suffix = str(time.time()).replace(".", "")[-5:]
+    
+    test_app = test_app = Mastodon.create_app(
+        "mastodon.py generated test app", 
+        api_base_url="http://localhost:3000/"
+    )
+    
+    test_app_api = Mastodon(
+        test_app[0], 
+        test_app[1], 
+        api_base_url="http://localhost:3000/"
+    )
+    test_token, error = test_app_api.create_account("coolguy" + suffix, "", "email@localhost" + suffix, agreement=False, return_detailed_error=True)
+    assert test_token is None
+    assert "details" in error
+    assert "password" in error.details
+    assert "password" in error.details
+    assert not "username" in error.details
+    

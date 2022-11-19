@@ -605,8 +605,7 @@ class Mastodon:
         params['scope'] = " ".join(scopes)
 
         try:
-            response = self.__api_request(
-                'POST', '/oauth/token', params, do_ratelimiting=False)
+            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting=False)
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
@@ -658,8 +657,8 @@ class Mastodon:
         self.access_token = None
         self.__logged_in_id = None
 
-    @api_version("2.7.0", "2.7.0", "2.7.0")
-    def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=__DEFAULT_SCOPES, to_file=None):
+    @api_version("2.7.0", "2.7.0", "3.4.0")
+    def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=__DEFAULT_SCOPES, to_file=None, return_detailed_error=False):
         """
         Creates a new user account with the given username, password and email. "agreement"
         must be set to true (after showing the user the instance's user agreement and having
@@ -674,6 +673,26 @@ class Mastodon:
         Returns an access token (just like log_in), which it can also persist to to_file,
         and sets it internally so that the user is now logged in. Note that this token
         can only be used after the user has confirmed their email.
+
+        By default, the function will throw if the account could not be created. Alternately,
+        when `return_detailed_error` is passed, Mastodon.py will return the detailed error
+        response that the API provides (Starting from version 3.4.0 - not checked here) as an dict with 
+        error details as the second return value and the token returned as `None` in case of error. 
+        The dict will contain a text `error` values as well as a `details` value which is a dict with 
+        one optional key for each potential field (`username`, `password`, `email` and `agreement`), 
+        each if present containing a dict with an `error` category and free text `description`. 
+        Valid error categories are:
+
+            * ERR_BLOCKED - When e-mail provider is not allowed
+            * ERR_UNREACHABLE - When e-mail address does not resolve to any IP via DNS (MX, A, AAAA)
+            * ERR_TAKEN - When username or e-mail are already taken
+            * ERR_RESERVED - When a username is reserved, e.g. "webmaster" or "admin"
+            * ERR_ACCEPTED - When agreement has not been accepted
+            * ERR_BLANK - When a required attribute is blank
+            * ERR_INVALID - When an attribute is malformed, e.g. wrong characters or invalid e-mail address
+            * ERR_TOO_LONG - When an attribute is over the character limit
+            * ERR_TOO_SHORT - When an attribute is under the character requirement
+            * ERR_INCLUSION - When an attribute is not one of the allowed values, e.g. unsupported locale
         """
         params = self.__generate_params(locals(), ['to_file', 'scopes'])
         params['client_id'] = self.client_id
@@ -690,8 +709,7 @@ class Mastodon:
             oauth_params['client_secret'] = self.client_secret
             oauth_params['grant_type'] = 'client_credentials'
 
-            response = self.__api_request(
-                'POST', '/oauth/token', oauth_params, do_ratelimiting=False)
+            response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False)
             temp_access_token = response['access_token']
         except Exception as e:
             raise MastodonIllegalArgumentError(
@@ -699,13 +717,16 @@ class Mastodon:
 
         # Step 2: Use that to create a user
         try:
-            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False,
-                                          access_token_override=temp_access_token)
+            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True)
+            if "error" in response:
+                if return_detailed_error:
+                    return None, response
+                raise MastodonIllegalArgumentError('Invalid request: %s' % e)
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
-            self.__set_token_expired(int(response.get('expires_in', 0)))
+            self.__set_token_expired(int(response.get('expires_in', 0)))            
         except Exception as e:
-            raise MastodonIllegalArgumentError('Invalid request: %s' % e)
+            raise MastodonIllegalArgumentError('Invalid request')
 
         # Step 3: Check scopes, persist, et cetera
         received_scopes = response["scope"].split(" ")
@@ -714,8 +735,7 @@ class Mastodon:
                 received_scopes += self.__SCOPE_SETS[scope_set]
 
         if not set(scopes) <= set(received_scopes):
-            raise MastodonAPIError(
-                'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
+            raise MastodonAPIError('Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
 
         if to_file is not None:
             with open(to_file, 'w') as token_file:
@@ -724,7 +744,10 @@ class Mastodon:
 
         self.__logged_in_id = None
 
-        return response['access_token']
+        if return_detailed_error:
+            return response['access_token'], {}
+        else:
+            return response['access_token']
 
     @api_version("3.4.0", "3.4.0", "3.4.0")
     def email_resend_confirmation(self):
@@ -2775,7 +2798,7 @@ class Mastodon:
         """
         if not policy in ['all', 'none', 'follower', 'followed']:
             raise MastodonIllegalArgumentError("Valid values for policy are 'all', 'none', 'follower' or 'followed'.")
-            
+
         endpoint = Mastodon.__protocolize(endpoint)
 
         push_pubkey_b64 = base64.b64encode(encrypt_params['pubkey'])
@@ -3506,7 +3529,7 @@ class Mastodon:
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, do_ratelimiting=True, use_json=False, parse=True, return_response_object=False):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False):
         """
         Internal API request helper.
         """
@@ -3657,35 +3680,32 @@ class Mastodon:
                             time.sleep(to_next)
                             request_complete = False
                             continue
+                
+                if skip_error_check == False:
+                    if response_object.status_code == 404:
+                        ex_type = MastodonNotFoundError
+                        if not error_msg:
+                            error_msg = 'Endpoint not found.'
+                            # this is for compatibility with older versions
+                            # which raised MastodonAPIError('Endpoint not found.')
+                            # on any 404
+                    elif response_object.status_code == 401:
+                        ex_type = MastodonUnauthorizedError
+                    elif response_object.status_code == 500:
+                        ex_type = MastodonInternalServerError
+                    elif response_object.status_code == 502:
+                        ex_type = MastodonBadGatewayError
+                    elif response_object.status_code == 503:
+                        ex_type = MastodonServiceUnavailableError
+                    elif response_object.status_code == 504:
+                        ex_type = MastodonGatewayTimeoutError
+                    elif response_object.status_code >= 500 and \
+                            response_object.status_code <= 511:
+                        ex_type = MastodonServerError
+                    else:
+                        ex_type = MastodonAPIError
 
-                if response_object.status_code == 404:
-                    ex_type = MastodonNotFoundError
-                    if not error_msg:
-                        error_msg = 'Endpoint not found.'
-                        # this is for compatibility with older versions
-                        # which raised MastodonAPIError('Endpoint not found.')
-                        # on any 404
-                elif response_object.status_code == 401:
-                    ex_type = MastodonUnauthorizedError
-                elif response_object.status_code == 500:
-                    ex_type = MastodonInternalServerError
-                elif response_object.status_code == 502:
-                    ex_type = MastodonBadGatewayError
-                elif response_object.status_code == 503:
-                    ex_type = MastodonServiceUnavailableError
-                elif response_object.status_code == 504:
-                    ex_type = MastodonGatewayTimeoutError
-                elif response_object.status_code >= 500 and \
-                        response_object.status_code <= 511:
-                    ex_type = MastodonServerError
-                else:
-                    ex_type = MastodonAPIError
-
-                raise ex_type(
-                    'Mastodon API returned error',
-                    response_object.status_code,
-                    response_object.reason,
-                    error_msg)
+                    raise ex_type('Mastodon API returned error', response_object.status_code, response_object.reason, error_msg)
 
             if return_response_object:
                 return response_object

@@ -8,6 +8,7 @@ v1.6.3
 * Add confirmation email resend API (`email_resend_confirmation`)
 * Add account lookup API (`account_lookup`)
 * Add `policy` param to control notification sources for `push_subscription_set`
+* Add ability to get detailed signup error to `create_account`
 
 v1.6.2
 ------
