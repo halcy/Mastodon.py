@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: null
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BBEd3VOJHPLQSApTKwZSs4RNTDfOqN7bhzi4FJohKwxAVJlGkEKZKG98jLvCxaD%2FdgRIpyWSwsQuMlwVRlzZz4w%3D&subscription%5Bkeys%5D%5Bauth%5D=4P24%2BSpke%2BIYRfppXuVksA%3D%3D&policy=none&data%5Balerts%5D%5Bfollow%5D=1&data%5Balerts%5D%5Bfavourite%5D=1&data%5Balerts%5D%5Breblog%5D=1&data%5Balerts%5D%5Bmention%5D=1&data%5Balerts%5D%5Bpoll%5D=1&data%5Balerts%5D%5Bfollow_request%5D=1&data%5Balerts%5D%5Bstatus%5D=1
     headers:
       Accept:
       - '*/*'
@@ -10,20 +10,24 @@ interactions:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
       - keep-alive
+      Content-Length:
+      - '485'
+      Content-Type:
+      - application/x-www-form-urlencoded
       User-Agent:
       - tests/v311
-    method: GET
-    uri: http://localhost:3000/.well-known/nodeinfo
+    method: POST
+    uri: http://localhost:3000/api/v1/push/subscription
   response:
     body:
-      string: '{"links":[{"rel":"http://nodeinfo.diaspora.software/ns/schema/2.0","href":"http://localhost:3000/nodeinfo/2.0"}]}'
+      string: '{"id":1,"endpoint":"https://example.com","alerts":{"mention":true,"status":true,"reblog":true,"follow":true,"follow_request":true,"favourite":true,"poll":true},"server_key":"BAXUE0TaUgsrhjLqzO_370WUzChXfo5ss7qFTZeLYPeo_wUOf25JdejEjdssCvwKgGIHcrwvQ26Bjz7DdYWqKHY="}'
     headers:
       Cache-Control:
-      - max-age=259200, public
+      - no-store
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-AhDBmQyesQQ8YB86mJSs9g=='';
+        style-src ''self'' http://localhost:3000 ''nonce-Dc9MrnTXvCmmvYQgw2jDrA=='';
         media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
         https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
         data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
@@ -32,10 +36,8 @@ interactions:
         worker-src ''self'' blob: http://localhost:3000'
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 19 Nov 2022 00:43:08 GMT
       ETag:
-      - W/"30113ea20db19da6a25dac6491c2351e"
+      - W/"7ae737871abe0dc2574c27e609811d87"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
@@ -51,9 +53,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - f7bf1e0e-68f0-443c-9b4b-fcd1673d733f
+      - 43cad700-7e18-4d16-8b54-362804853d12
       X-Runtime:
-      - '0.009757'
+      - '0.017986'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -73,17 +75,17 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/nodeinfo/2.0
+    uri: http://localhost:3000/api/v1/push/subscription
   response:
     body:
-      string: '{"version":"2.0","software":{"name":"mastodon","version":"4.0.0rc2"},"protocols":["activitypub"],"services":{"outbound":[],"inbound":[]},"usage":{"users":{"total":4,"activeMonth":0,"activeHalfyear":0},"localPosts":5},"openRegistrations":true,"metadata":[]}'
+      string: '{"id":1,"endpoint":"https://example.com","alerts":{"mention":true,"status":true,"reblog":true,"follow":true,"follow_request":true,"favourite":true,"poll":true},"server_key":"BAXUE0TaUgsrhjLqzO_370WUzChXfo5ss7qFTZeLYPeo_wUOf25JdejEjdssCvwKgGIHcrwvQ26Bjz7DdYWqKHY="}'
     headers:
       Cache-Control:
-      - max-age=1800, public
+      - no-store
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-4naiQ0coORpGU4JL82PqzQ=='';
+        style-src ''self'' http://localhost:3000 ''nonce-Ba5XOKeQ8mtZNjsBDaEefg=='';
         media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
         https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
         data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
@@ -92,16 +94,14 @@ interactions:
         worker-src ''self'' blob: http://localhost:3000'
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 19 Nov 2022 00:43:08 GMT
       ETag:
-      - W/"1ea548a67e3cb465a2fb880fd7fa7e77"
+      - W/"7ae737871abe0dc2574c27e609811d87"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept
+      - Accept, Origin
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -111,9 +111,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 2fa5d86e-089f-42a2-bfbb-219c06831ec9
+      - 491472bd-0527-4587-8a49-36ca95f46553
       X-Runtime:
-      - '0.010958'
+      - '0.007572'
       X-XSS-Protection:
       - 1; mode=block
     status:

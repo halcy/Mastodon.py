@@ -9,10 +9,11 @@ v1.6.3
 * Add account lookup API (`account_lookup`)
 * Add `policy` param to control notification sources for `push_subscription_set`
 * Add ability to get detailed signup error to `create_account`
+* Fix version check for limited federation instances (Thanks to ulysseus-eu for the report)
 
 v1.6.2
 ------
-* Fix some issues with datetime conversion
+* Fix some issues with datetime conversion (thanks to various people for reporting it)
 
 v1.6.1
 ------
