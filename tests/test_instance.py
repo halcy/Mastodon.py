@@ -38,7 +38,7 @@ def test_emoji(api):
 
 @pytest.mark.vcr()
 def test_health(api):
-    assert api.instance_health() == True
+    assert api.instance_health() is True
 
 @pytest.mark.vcr()
 def test_server_time(api):

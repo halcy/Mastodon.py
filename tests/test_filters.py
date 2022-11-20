@@ -7,12 +7,12 @@ def test_filter_create(api):
     with vcr.use_cassette('test_filter_create.yaml', cassette_library_dir='tests/cassettes_pre_4_0_0', record_mode='none'):
         keyword_filter = api.filter_create("anime", ['notifications'], irreversible = False, whole_word = True, expires_in = None)
         try:
-            assert(keyword_filter)
+            assert keyword_filter
             
             all_filters = api.filters()
-            assert(keyword_filter in all_filters)
-            assert(keyword_filter.irreversible == False)
-            assert(keyword_filter.whole_word == True)
+            assert keyword_filter in all_filters
+            assert keyword_filter.irreversible is False
+            assert keyword_filter.whole_word is True
             
             keyword_filter_2 = api.filter(keyword_filter.id)
             assert(keyword_filter == keyword_filter_2)
@@ -22,9 +22,9 @@ def test_filter_create(api):
     
         keyword_filter = api.filter_create("anime", ['notifications'], irreversible = False, whole_word = False, expires_in = None)
         try:
-            assert(keyword_filter)
-            assert(keyword_filter.irreversible == False)
-            assert(keyword_filter.whole_word == False)
+            assert keyword_filter
+            assert keyword_filter.irreversible is False
+            assert keyword_filter.whole_word is False
             
             all_filters = api.filters()
             assert(keyword_filter in all_filters)

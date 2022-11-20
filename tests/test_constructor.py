@@ -33,9 +33,9 @@ def test_constructor_missing_client_secret():
 
 @pytest.mark.vcr()
 def test_verify_version(api):
-    assert api.verify_minimum_version("2.3.3") == True
-    assert api.verify_minimum_version("9999.9999.9999") == False
-    assert api.verify_minimum_version("1.0.0") == True
+    assert api.verify_minimum_version("2.3.3") is True
+    assert api.verify_minimum_version("9999.9999.9999") is False
+    assert api.verify_minimum_version("1.0.0") is True
     
 def test_supported_version(api):
     assert Mastodon.get_supported_version()

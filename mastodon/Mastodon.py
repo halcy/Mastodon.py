@@ -632,7 +632,7 @@ class Mastodon:
         self.__logged_in_id = None
 
         # Retry version check if needed (might be required in limited federation mode)
-        if self.version_check_worked == False:
+        if not self.version_check_worked:
             self.retrieve_mastodon_version()
 
         return response['access_token']
@@ -698,7 +698,7 @@ class Mastodon:
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
 
-        if agreement == False:
+        if not agreement:
             del params['agreement']
 
         # Step 1: Get a user-free token via oauth
@@ -876,13 +876,13 @@ class Mastodon:
 
         params_initial = locals()
 
-        if local == False:
+        if not local:
             del params_initial['local']
 
-        if remote == False:
+        if not remote:
             del params_initial['remote']
 
-        if only_media == False:
+        if not only_media:
             del params_initial['only_media']
 
         if timeline == "local":
@@ -1188,13 +1188,13 @@ class Mastodon:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
-        if pinned == False:
+        if not pinned:
             del params["pinned"]
-        if only_media == False:
+        if not only_media:
             del params["only_media"]
-        if exclude_replies == False:
+        if not exclude_replies:
             del params["exclude_replies"]
-        if exclude_reblogs == False:
+        if not exclude_reblogs:
             del params["exclude_reblogs"]
 
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
@@ -1359,7 +1359,7 @@ class Mastodon:
                 continue
 
             filter_string = re.escape(keyword_filter["phrase"])
-            if keyword_filter["whole_word"] == True:
+            if keyword_filter["whole_word"]:
                 filter_string = "\\b" + filter_string + "\\b"
             filter_strings.append(filter_string)
         filter_re = re.compile("|".join(filter_strings), flags=re.IGNORECASE)
@@ -1426,7 +1426,7 @@ class Mastodon:
         for search that are available only starting with 2.8.0 are specified.
         """
         if any(item is not None for item in (account_id, offset, min_id, max_id)):
-            if self.verify_minimum_version("2.8.0", cached=True) == False:
+            if not self.verify_minimum_version("2.8.0", cached=True):
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
     @api_version("1.1.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
@@ -1455,7 +1455,7 @@ class Mastodon:
 
         Returns a `search result dict`_, with tags as `hashtag dicts`_.
         """
-        if self.verify_minimum_version("2.4.1", cached=True) == True:
+        if self.verify_minimum_version("2.4.1", cached=True):
             return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id)
         else:
             self.__ensure_search_params_acceptable(
@@ -1471,7 +1471,7 @@ class Mastodon:
         Returns a `search result dict`_.
         """
         params = self.__generate_params(locals())
-        if resolve == False:
+        if not resolve:
             del params['resolve']
         return self.__api_request('GET', '/api/v1/search', params)
 
@@ -1489,10 +1489,10 @@ class Mastodon:
             account_id, offset, min_id, max_id)
         params = self.__generate_params(locals())
 
-        if resolve == False:
+        if not resolve:
             del params["resolve"]
 
-        if exclude_unreviewed == False or not self.verify_minimum_version("3.0.0", cached=True):
+        if not exclude_unreviewed or not self.verify_minimum_version("3.0.0", cached=True):
             del params["exclude_unreviewed"]
 
         if "result_type" in params:
@@ -2587,7 +2587,7 @@ class Mastodon:
             status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
 
         params_initial = locals()
-        if forward == False:
+        if not forward:
             del params_initial['forward']
 
         params = self.__generate_params(params_initial)
@@ -2953,7 +2953,7 @@ class Mastodon:
         params = self.__generate_params(
             locals(), ['remote', 'status', 'staff_only'])
 
-        if remote == True:
+        if remote:
             params["remote"] = True
 
         mod_statuses = ["active", "pending",
@@ -2961,7 +2961,7 @@ class Mastodon:
         if not status in mod_statuses:
             raise ValueError("Invalid moderation status requested.")
 
-        if staff_only == True:
+        if staff_only:
             params["staff"] = True
 
         for mod_status in mod_statuses:
@@ -3073,7 +3073,7 @@ class Mastodon:
         if action is None:
             action = "none"
 
-        if send_email_notification == False:
+        if not send_email_notification:
             send_email_notification = None
 
         id = self.__unpack_id(id)
@@ -3112,7 +3112,7 @@ class Mastodon:
         if target_account_id is not None:
             target_account_id = self.__unpack_id(target_account_id)
 
-        if resolved == False:
+        if not resolved:
             resolved = None
 
         params = self.__generate_params(locals())
@@ -3269,12 +3269,12 @@ class Mastodon:
         # Figure out what size to decode to
         decode_components_x, decode_components_y = blurhash.components(
             media_dict["blurhash"])
-        if size_per_component == False:
-            decode_size_x = out_size[0]
-            decode_size_y = out_size[1]
-        else:
+        if size_per_component:
             decode_size_x = decode_components_x * out_size[0]
             decode_size_y = decode_components_y * out_size[1]
+        else:
+            decode_size_x = out_size[0]
+            decode_size_y = out_size[1]
 
         # Decode
         decoded_image = blurhash.decode(
@@ -3584,13 +3584,12 @@ class Mastodon:
             response_object = None
             try:
                 kwargs = dict(headers=headers, files=files, timeout=self.request_timeout)
-                if use_json == False:
-                    if method == 'GET':
-                        kwargs['params'] = params
-                    else:
-                        kwargs['data'] = params
-                else:
+                if use_json:
                     kwargs['json'] = params
+                elif method == 'GET':
+                    kwargs['params'] = params
+                else:
+                    kwargs['data'] = params
 
                 # Block list with exactly three entries, matching on hashes of the instance API domain
                 # For more information, have a look at the docs
@@ -3679,7 +3678,7 @@ class Mastodon:
                             request_complete = False
                             continue
                 
-                if skip_error_check == False:
+                if not skip_error_check:
                     if response_object.status_code == 404:
                         ex_type = MastodonNotFoundError
                         if not error_msg:
@@ -3708,7 +3707,7 @@ class Mastodon:
             if return_response_object:
                 return response_object
 
-            if parse == True:
+            if parse:
                 try:
                     response = response_object.json(
                         object_hook=self.__json_hooks)
@@ -3968,10 +3967,8 @@ class Mastodon:
 
         param_keys = list(params.keys())
         for key in param_keys:
-            if isinstance(params[key], bool) and params[key] == False:
-                params[key] = '0'
-            if isinstance(params[key], bool) and params[key] == True:
-                params[key] = '1'
+            if isinstance(params[key], bool):
+                params[key] = '1' if params[key] else '0'
 
         for key in param_keys:
             if params[key] is None or key in exclude:

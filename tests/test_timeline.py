@@ -60,8 +60,8 @@ def test_conversations(api, api2):
     assert conversations
     assert status.id in map(lambda x: x.last_status.id, conversations)
     assert account.id in map(lambda x: x.accounts[0].id, conversations)
-    assert conversations[0].unread == True
-    assert conversations2[0].unread == False
+    assert conversations[0].unread is True
+    assert conversations2[0].unread is False
 
 @pytest.mark.vcr()
 def test_min_max_id(api, status):

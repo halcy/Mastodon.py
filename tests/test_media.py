@@ -21,7 +21,7 @@ def test_media_post_v1(api):
         assert status
 
         try:
-            assert status['sensitive'] == False
+            assert status['sensitive'] is False
             assert status['media_attachments']
             assert status['media_attachments'][0]['description'] == "John Lennon doing a funny walk"
             assert status['media_attachments'][0]['meta']['focus']['x'] == -0.5
