@@ -21,6 +21,6 @@ def test_bookmarks(api, status):
     assert status_unbookmarked.bookmarked == False
     
     bookmarked_statuses_2 = api.bookmarks()
-    assert not bookmarked_statuses_2 is None
+    assert bookmarked_statuses_2 is not None
     assert len(bookmarked_statuses_2) == len(bookmarked_statuses) - 1
     

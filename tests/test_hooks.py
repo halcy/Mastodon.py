@@ -32,7 +32,7 @@ def test_date_hook(status):
 
 @pytest.mark.vcr()
 def test_attribute_access(status):
-    assert status.id != None
+    assert status.id is not None
     with pytest.raises(AttributeError):
         status.id = 420
     

@@ -252,7 +252,7 @@ def test_featured_tags(api):
         assert featured_tag_list[0].name == "coolfree"
         assert "url" in featured_tag_list[0]
     finally:
-        if not featured_tag is None:
+        if featured_tag is not None:
             api.featured_tag_delete(featured_tag)
         api.featured_tag_delete(featured_tag_2) 
 

@@ -378,7 +378,7 @@ class Mastodon:
         If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
         self.api_base_url = None
-        if not api_base_url is None:
+        if api_base_url is not None:
             self.api_base_url = Mastodon.__protocolize(api_base_url)
 
         self.client_id = client_id
@@ -419,7 +419,7 @@ class Mastodon:
                     self.client_secret = secret_file.readline().rstrip()
 
                     try_base_url = secret_file.readline().rstrip()
-                    if (not try_base_url is None) and len(try_base_url) != 0:
+                    if try_base_url is not None and len(try_base_url) != 0:
                         try_base_url = Mastodon.__protocolize(try_base_url)
                         if not (self.api_base_url is None or try_base_url == self.api_base_url):
                             raise MastodonIllegalArgumentError(
@@ -440,7 +440,7 @@ class Mastodon:
                 self.access_token = token_file.readline().rstrip()
 
                 try_base_url = token_file.readline().rstrip()
-                if (not try_base_url is None) and len(try_base_url) != 0:
+                if try_base_url is not None and len(try_base_url) != 0:
                     try_base_url = Mastodon.__protocolize(try_base_url)
                     if not (self.api_base_url is None or try_base_url == self.api_base_url):
                         raise MastodonIllegalArgumentError(
@@ -457,7 +457,7 @@ class Mastodon:
         self.version_check_worked = None
 
         # Versioning
-        if mastodon_version == None and self.version_check_mode != 'none':
+        if mastodon_version is None and self.version_check_mode != 'none':
             self.retrieve_mastodon_version()
         elif self.version_check_mode != 'none':
             try:
@@ -865,13 +865,13 @@ class Mastodon:
 
         Returns a list of `toot dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params_initial = locals()
@@ -950,13 +950,13 @@ class Mastodon:
 
         Returns a list of `conversation dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1093,8 +1093,8 @@ class Mastodon:
 
         Returns a list of `notification dicts`_.
         """
-        if not mentions_only is None:
-            if not exclude_types is None:
+        if mentions_only is not None:
+            if exclude_types is not None:
                 if mentions_only:
                     exclude_types = ["follow", "favourite",
                                      "reblog", "poll", "follow_request"]
@@ -1103,16 +1103,16 @@ class Mastodon:
                     'Cannot specify exclude_types when mentions_only is present')
             del mentions_only
 
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
-        if account_id != None:
+        if account_id is not None:
             account_id = self.__unpack_id(account_id)
 
         if id is None:
@@ -1178,13 +1178,13 @@ class Mastodon:
         Returns a list of `toot dicts`_.
         """
         id = self.__unpack_id(id)
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
@@ -1208,13 +1208,13 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
@@ -1229,13 +1229,13 @@ class Mastodon:
         Returns a list of `user dicts`_.
         """
         id = self.__unpack_id(id)
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
@@ -1425,7 +1425,7 @@ class Mastodon:
         Internal Helper: Throw a MastodonVersionError if version is < 2.8.0 but parameters
         for search that are available only starting with 2.8.0 are specified.
         """
-        if not account_id is None or not offset is None or not min_id is None or not max_id is None:
+        if any(item is not None for item in (account_id, offset, min_id, max_id)):
             if self.verify_minimum_version("2.8.0", cached=True) == False:
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
@@ -1554,13 +1554,13 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
 
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
@@ -1576,13 +1576,13 @@ class Mastodon:
 
         Returns a list of `user dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1595,13 +1595,13 @@ class Mastodon:
 
         Returns a list of `user dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1632,13 +1632,13 @@ class Mastodon:
 
         Returns a list of `toot dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1654,13 +1654,13 @@ class Mastodon:
 
         Returns a list of `user dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1676,13 +1676,13 @@ class Mastodon:
 
         Returns a list of blocked domain URLs (as strings, without protocol specifier).
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1782,13 +1782,13 @@ class Mastodon:
 
         Returns a list of `toot dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals())
@@ -1857,13 +1857,13 @@ class Mastodon:
 
         Returns a `toot dict`_ with the new status.
         """
-        if quote_id != None:
+        if quote_id is not None:
             if self.feature_set != "fedibird":
                 raise MastodonIllegalArgumentError(
                     'quote_id is only available with feature set fedibird')
             quote_id = self.__unpack_id(quote_id)
 
-        if content_type != None:
+        if content_type is not None:
             if self.feature_set != "pleroma":
                 raise MastodonIllegalArgumentError(
                     'content_type is only available with feature set pleroma')
@@ -1872,23 +1872,23 @@ class Mastodon:
                 raise MastodonIllegalArgumentError(
                     'Invalid content type specified')
 
-        if in_reply_to_id != None:
+        if in_reply_to_id is not None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
 
-        if scheduled_at != None:
+        if scheduled_at is not None:
             scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
 
         params_initial = locals()
 
         # Validate poll/media exclusivity
-        if not poll is None:
-            if (not media_ids is None) and len(media_ids) != 0:
+        if poll is not None:
+            if media_ids is not None and len(media_ids) != 0:
                 raise ValueError(
                     'Status can have media or poll attached - not both.')
 
         # Validate visibility parameter
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
-        if params_initial['visibility'] == None:
+        if params_initial['visibility'] is None:
             del params_initial['visibility']
         else:
             params_initial['visibility'] = params_initial['visibility'].lower()
@@ -1896,14 +1896,14 @@ class Mastodon:
                 raise ValueError('Invalid visibility value! Acceptable '
                                  'values are %s' % valid_visibilities)
 
-        if params_initial['language'] == None:
+        if params_initial['language'] is None:
             del params_initial['language']
 
         if params_initial['sensitive'] is False:
             del [params_initial['sensitive']]
 
         headers = {}
-        if idempotency_key != None:
+        if idempotency_key is not None:
             headers['Idempotency-Key'] = idempotency_key
 
         if media_ids is not None:
@@ -1919,11 +1919,11 @@ class Mastodon:
 
             params_initial["media_ids"] = media_ids_proper
 
-        if params_initial['content_type'] == None:
+        if params_initial['content_type'] is None:
             del params_initial['content_type']
 
         use_json = False
-        if not poll is None:
+        if poll is not None:
             use_json = True
 
         params = self.__generate_params(params_initial, ['idempotency_key'])
@@ -1975,9 +1975,9 @@ class Mastodon:
                          mentioned_accounts.values())) + status
 
         # Retain visibility / cw
-        if visibility == None and 'visibility' in to_status:
+        if visibility is None and 'visibility' in to_status:
             visibility = to_status.visibility
-        if spoiler_text == None and 'spoiler_text' in to_status:
+        if spoiler_text is None and 'spoiler_text' in to_status:
             spoiler_text = to_status.spoiler_text
 
         keyword_args["status"] = status
@@ -2243,7 +2243,7 @@ class Mastodon:
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
 
-        if params["reblogs"] == None:
+        if params["reblogs"] is None:
             del params["reblogs"]
 
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
@@ -2347,7 +2347,7 @@ class Mastodon:
         params_initial = collections.OrderedDict(locals())
 
         # Convert fields
-        if fields != None:
+        if fields is not None:
             if len(fields) > 4:
                 raise MastodonIllegalArgumentError(
                     'A maximum of four fields are allowed.')
@@ -2366,9 +2366,9 @@ class Mastodon:
 
         # Create file info
         files = {}
-        if not avatar is None:
+        if avatar is not None:
             files["avatar"] = self.__load_media_file(avatar, avatar_mime_type)
-        if not header is None:
+        if header is not None:
             files["header"] = self.__load_media_file(header, header_mime_type)
 
         params = self.__generate_params(params_initial)
@@ -2581,7 +2581,7 @@ class Mastodon:
         """
         account_id = self.__unpack_id(account_id)
 
-        if not status_ids is None:
+        if status_ids is not None:
             if not isinstance(status_ids, list):
                 status_ids = [status_ids]
             status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
@@ -2653,10 +2653,10 @@ class Mastodon:
         files = {'file': self.__load_media_file(
             media_file, mime_type, file_name)}
 
-        if focus != None:
+        if focus is not None:
             focus = str(focus[0]) + "," + str(focus[1])
 
-        if not thumbnail is None:
+        if thumbnail is not None:
             if not self.verify_minimum_version("3.2.0", cached=True):
                 raise MastodonVersionError(
                     'Thumbnail requires version > 3.2.0')
@@ -2674,7 +2674,7 @@ class Mastodon:
         # Wait for processing?
         if synchronous:
             if self.verify_minimum_version("3.1.4"):
-                while not "url" in ret_dict or ret_dict.url == None:
+                while not "url" in ret_dict or ret_dict.url is None:
                     try:
                         ret_dict = self.media(ret_dict)
                         time.sleep(1.0)
@@ -2697,13 +2697,13 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
 
-        if focus != None:
+        if focus is not None:
             focus = str(focus[0]) + "," + str(focus[1])
 
         params = self.__generate_params(
             locals(), ['id', 'thumbnail', 'thumbnail_mime_type'])
 
-        if not thumbnail is None:
+        if thumbnail is not None:
             if not self.verify_minimum_version("3.2.0", cached=True):
                 raise MastodonVersionError(
                     'Thumbnail requires version > 3.2.0')
@@ -2809,25 +2809,25 @@ class Mastodon:
             'policy': policy
         }
 
-        if follow_events != None:
+        if follow_events is not None:
             params['data[alerts][follow]'] = follow_events
 
-        if favourite_events != None:
+        if favourite_events is not None:
             params['data[alerts][favourite]'] = favourite_events
 
-        if reblog_events != None:
+        if reblog_events is not None:
             params['data[alerts][reblog]'] = reblog_events
 
-        if mention_events != None:
+        if mention_events is not None:
             params['data[alerts][mention]'] = mention_events
 
-        if poll_events != None:
+        if poll_events is not None:
             params['data[alerts][poll]'] = poll_events
 
-        if follow_request_events != None:
+        if follow_request_events is not None:
             params['data[alerts][follow_request]'] = follow_request_events
 
-        if follow_request_events != None:
+        if follow_request_events is not None:
             params['data[alerts][status]'] = status_events
 
         # Canonicalize booleans
@@ -2847,22 +2847,22 @@ class Mastodon:
         """
         params = {}
 
-        if follow_events != None:
+        if follow_events is not None:
             params['data[alerts][follow]'] = follow_events
 
-        if favourite_events != None:
+        if favourite_events is not None:
             params['data[alerts][favourite]'] = favourite_events
 
-        if reblog_events != None:
+        if reblog_events is not None:
             params['data[alerts][reblog]'] = reblog_events
 
-        if mention_events != None:
+        if mention_events is not None:
             params['data[alerts][mention]'] = mention_events
 
-        if poll_events != None:
+        if poll_events is not None:
             params['data[alerts][poll]'] = poll_events
 
-        if follow_request_events != None:
+        if follow_request_events is not None:
             params['data[alerts][follow_request]'] = follow_request_events
 
         # Canonicalize booleans
@@ -2941,13 +2941,13 @@ class Mastodon:
 
         Returns a list of `admin account dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(
@@ -3077,7 +3077,7 @@ class Mastodon:
             send_email_notification = None
 
         id = self.__unpack_id(id)
-        if not report_id is None:
+        if report_id is not None:
             report_id = self.__unpack_id(report_id)
 
         params = self.__generate_params(locals(), ['id', 'action'])
@@ -3097,19 +3097,19 @@ class Mastodon:
 
         Returns a list of `report dicts`_.
         """
-        if max_id != None:
+        if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
 
-        if min_id != None:
+        if min_id is not None:
             min_id = self.__unpack_id(min_id, dateconv=True)
 
-        if since_id != None:
+        if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
-        if not account_id is None:
+        if account_id is not None:
             account_id = self.__unpack_id(account_id)
 
-        if not target_account_id is None:
+        if target_account_id is not None:
             target_account_id = self.__unpack_id(target_account_id)
 
         if resolved == False:
@@ -3444,7 +3444,7 @@ class Mastodon:
         """
         Fetch the logged in user's ID, with caching. ID is reset on calls to log_in.
         """
-        if self.__logged_in_id == None:
+        if self.__logged_in_id is None:
             self.__logged_in_id = self.account_verify_credentials().id
         return self.__logged_in_id
 
@@ -3467,7 +3467,7 @@ class Mastodon:
                              "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at"]
         for k, v in json_object.items():
             if k in known_date_fields:
-                if v != None:
+                if v is not None:
                     try:
                         if isinstance(v, int):
                             json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
@@ -3555,9 +3555,9 @@ class Mastodon:
 
         # Generate request headers
         headers = copy.deepcopy(headers)
-        if not self.access_token is None:
+        if self.access_token is not None:
             headers['Authorization'] = 'Bearer ' + self.access_token
-        if not access_token_override is None:
+        if access_token_override is not None:
             headers['Authorization'] = 'Bearer ' + access_token_override
 
         # Add user-agent
@@ -3566,7 +3566,7 @@ class Mastodon:
 
         # Determine base URL
         base_url = self.api_base_url
-        if not base_url_override is None:
+        if base_url_override is not None:
             base_url = base_url_override
 
         if self.debug_requests:
@@ -3626,7 +3626,7 @@ class Mastodon:
                     ratelimit_intrep = None
 
                 try:
-                    if not ratelimit_intrep is None and ratelimit_intrep == response_object.headers['X-RateLimit-Reset']:
+                    if ratelimit_intrep is not None and ratelimit_intrep == response_object.headers['X-RateLimit-Reset']:
                         self.ratelimit_reset = int(
                             response_object.headers['X-RateLimit-Reset'])
                     else:
@@ -3871,7 +3871,7 @@ class Mastodon:
 
             def close(self):
                 self.closed = True
-                if not self.connection is None:
+                if self.connection is not None:
                     self.connection.close()
 
             def is_alive(self):
@@ -3897,7 +3897,7 @@ class Mastodon:
 
                 # Run until closed or until error if not autoreconnecting
                 while self.running:
-                    if not self.connection is None:
+                    if self.connection is not None:
                         with closing(self.connection) as r:
                             try:
                                 listener.handle_stream(r)
