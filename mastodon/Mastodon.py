@@ -2241,7 +2241,7 @@ class Mastodon:
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        params = self.__generate_params(locals())
+        params = self.__generate_params(locals(), ["id"])
 
         if params["reblogs"] is None:
             del params["reblogs"]
