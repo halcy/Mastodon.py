@@ -213,3 +213,19 @@ def test_scheduled_status_long_part2(api):
                 if text in status.content:
                     found_status = True
             assert found_status
+
+@pytest.mark.vcr()
+def test_status_edit(api, api2):
+    status = api.status_post("the best editor? why, of course it is VS Code")
+    edit_list_1 = api2.status_history(status)
+    status_edited = api.status_update(status, "the best editor? why, of course it is the KDE Advanced Text Editor, Kate")
+    status_result = api2.status(status)
+    edit_list_2 = api2.status_history(status)
+
+    assert len(edit_list_1) == 0
+    assert len(edit_list_2) == 2
+    assert "the best editor? why, of course it is the KDE Advanced Text Editor, Kate" in status_result.content
+
+    source = api2.status_source(status)
+    assert source.text == "the best editor? why, of course it is the KDE Advanced Text Editor, Kate"
+    

@@ -876,6 +876,19 @@ Admin account dicts
         'account': # The user's account, as a standard user dict
     }
 
+Status edit dicts
+~~~~~~~~~~~~~~~~~
+.. _status edit dict:
+
+.. code-block:: python
+
+    mastodonstatus_history(id)[0]
+    # Returns the following dictionary
+    {
+        TODO
+    }
+
+
 App registration and user authentication
 ----------------------------------------
 Before you can use the Mastodon API, you have to register your
@@ -967,6 +980,8 @@ These functions allow you to get information about single statuses.
 .. automethod:: Mastodon.status_reblogged_by
 .. automethod:: Mastodon.status_favourited_by
 .. automethod:: Mastodon.status_card
+.. automethod:: Mastodon.status_history
+.. automethod:: Mastodon.status_source
 
 Reading data: Scheduled statuses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1142,6 +1157,8 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_bookmark
 .. automethod:: Mastodon.status_unbookmark
 .. automethod:: Mastodon.status_delete
+.. automethod:: Mastodon.status_update
+
 
 Writing data: Scheduled statuses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

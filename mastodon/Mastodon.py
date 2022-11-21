@@ -229,30 +229,25 @@ class Mastodon:
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "3.3.0"
-    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version(
-        "1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
     __DICT_VERSION_CARD = "3.2.0"
-    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version(
-        "1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
+    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2"
     __DICT_VERSION_REPORT = "2.9.1"
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
-    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version(
-        "2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
-    __DICT_VERSION_SCHEDULED_STATUS = bigger_version(
-        "2.7.0", __DICT_VERSION_STATUS)
+    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version(
-        "2.9.1", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("2.9.1", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
     __DICT_VERSION_REACTION = "3.1.0"
-    __DICT_VERSION_ANNOUNCEMENT = bigger_version(
-        "3.1.0", __DICT_VERSION_REACTION)
+    __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
+    __DICT_VERSION_STATUS_EDIT = "3.5.0"
 
     ###
     # Registering apps
@@ -1797,6 +1792,82 @@ class Mastodon:
     ###
     # Writing data: Statuses
     ###
+    def __status_internal(self, status, in_reply_to_id=None, media_ids=None,
+                    sensitive=False, visibility=None, spoiler_text=None,
+                    language=None, idempotency_key=None, content_type=None,
+                    scheduled_at=None, poll=None, quote_id=None, edit=False):
+        if quote_id is not None:
+            if self.feature_set != "fedibird":
+                raise MastodonIllegalArgumentError('quote_id is only available with feature set fedibird')
+            quote_id = self.__unpack_id(quote_id)
+
+        if content_type is not None:
+            if self.feature_set != "pleroma":
+                raise MastodonIllegalArgumentError('content_type is only available with feature set pleroma')
+            # It would be better to read this from nodeinfo and cache, but this is easier
+            if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
+                raise MastodonIllegalArgumentError('Invalid content type specified')
+
+        if in_reply_to_id is not None:
+            in_reply_to_id = self.__unpack_id(in_reply_to_id)
+
+        if scheduled_at is not None:
+            scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
+
+        params_initial = locals()
+
+        # Validate poll/media exclusivity
+        if poll is not None:
+            if media_ids is not None and len(media_ids) != 0:
+                raise ValueError(
+                    'Status can have media or poll attached - not both.')
+
+        # Validate visibility parameter
+        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
+        if params_initial['visibility'] is None:
+            del params_initial['visibility']
+        else:
+            params_initial['visibility'] = params_initial['visibility'].lower()
+            if params_initial['visibility'] not in valid_visibilities:
+                raise ValueError('Invalid visibility value! Acceptable values are %s' % valid_visibilities)
+
+        if params_initial['language'] is None:
+            del params_initial['language']
+
+        if params_initial['sensitive'] is False:
+            del [params_initial['sensitive']]
+
+        headers = {}
+        if idempotency_key is not None:
+            headers['Idempotency-Key'] = idempotency_key
+
+        if media_ids is not None:
+            try:
+                media_ids_proper = []
+                if not isinstance(media_ids, (list, tuple)):
+                    media_ids = [media_ids]
+                for media_id in media_ids:
+                    media_ids_proper.append(self.__unpack_id(media_id))
+            except Exception as e:
+                raise MastodonIllegalArgumentError("Invalid media dict: %s" % e)
+
+            params_initial["media_ids"] = media_ids_proper
+
+        if params_initial['content_type'] is None:
+            del params_initial['content_type']
+
+        use_json = False
+        if poll is not None:
+            use_json = True
+
+        params = self.__generate_params(params_initial, ['idempotency_key', 'edit'])
+        if edit is None:
+            # Post
+            return self.__api_request('POST', '/api/v1/statuses', params, headers=headers, use_json=use_json)
+        else:
+            # Edit
+            return self.__api_request('PUT', '/api/v1/statuses/{0}'.format(str(self.__unpack_id(edit))), params, headers=headers, use_json=use_json)
+
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
@@ -1857,77 +1928,21 @@ class Mastodon:
 
         Returns a `toot dict`_ with the new status.
         """
-        if quote_id is not None:
-            if self.feature_set != "fedibird":
-                raise MastodonIllegalArgumentError(
-                    'quote_id is only available with feature set fedibird')
-            quote_id = self.__unpack_id(quote_id)
-
-        if content_type is not None:
-            if self.feature_set != "pleroma":
-                raise MastodonIllegalArgumentError(
-                    'content_type is only available with feature set pleroma')
-            # It would be better to read this from nodeinfo and cache, but this is easier
-            if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
-                raise MastodonIllegalArgumentError(
-                    'Invalid content type specified')
-
-        if in_reply_to_id is not None:
-            in_reply_to_id = self.__unpack_id(in_reply_to_id)
-
-        if scheduled_at is not None:
-            scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
-
-        params_initial = locals()
-
-        # Validate poll/media exclusivity
-        if poll is not None:
-            if media_ids is not None and len(media_ids) != 0:
-                raise ValueError(
-                    'Status can have media or poll attached - not both.')
-
-        # Validate visibility parameter
-        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
-        if params_initial['visibility'] is None:
-            del params_initial['visibility']
-        else:
-            params_initial['visibility'] = params_initial['visibility'].lower()
-            if params_initial['visibility'] not in valid_visibilities:
-                raise ValueError('Invalid visibility value! Acceptable '
-                                 'values are %s' % valid_visibilities)
-
-        if params_initial['language'] is None:
-            del params_initial['language']
-
-        if params_initial['sensitive'] is False:
-            del [params_initial['sensitive']]
-
-        headers = {}
-        if idempotency_key is not None:
-            headers['Idempotency-Key'] = idempotency_key
-
-        if media_ids is not None:
-            try:
-                media_ids_proper = []
-                if not isinstance(media_ids, (list, tuple)):
-                    media_ids = [media_ids]
-                for media_id in media_ids:
-                    media_ids_proper.append(self.__unpack_id(media_id))
-            except Exception as e:
-                raise MastodonIllegalArgumentError("Invalid media "
-                                                   "dict: %s" % e)
-
-            params_initial["media_ids"] = media_ids_proper
-
-        if params_initial['content_type'] is None:
-            del params_initial['content_type']
-
-        use_json = False
-        if poll is not None:
-            use_json = True
-
-        params = self.__generate_params(params_initial, ['idempotency_key'])
-        return self.__api_request('POST', '/api/v1/statuses', params, headers=headers, use_json=use_json)
+        return self.__status_internal( 
+            status, 
+            in_reply_to_id, 
+            media_ids, 
+            sensitive, 
+            visibility, 
+            spoiler_text, 
+            language, 
+            idempotency_key, 
+            content_type, 
+            scheduled_at, 
+            poll, 
+            quote_id, 
+            edit=None
+        )
 
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def toot(self, status):
@@ -1939,6 +1954,45 @@ class Mastodon:
         Returns a `toot dict`_ with the new status.
         """
         return self.status_post(status)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
+    def status_update(self, id, status = None, spoiler_text = None, sensitive = None, media_ids = None, poll = None):
+        """
+        Edit a status. The meanings of the fields are largely the same as in `status_post()`_,
+        though not every field can be edited.
+
+        Note that editing a poll will reset the votes.
+        """
+        return self.__status_internal(
+            status = status, 
+            media_ids = media_ids, 
+            sensitive = sensitive, 
+            spoiler_text = spoiler_text, 
+            poll = poll, 
+            edit = id
+        ) 
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS_EDIT)
+    def status_history(self, id):
+        """
+        Returns the edit history of a status as a list of `status edit dicts`_, starting
+        from the original form. Note that this means that a status that has been edited
+        once will have *two* entries in this list, a status that has been edited twice
+        will have three, and so on.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', "/api/v1/statuses/{0}/history".format(str(id)))
+
+    def status_source(self, id):
+        """
+        Returns the source of a status for editing.
+
+        Return value is a dictionary containing exactly the parameters you could pass to
+        `status_update()`_ to change nothing about the status, except `status` is `text`
+        instead.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', "/api/v1/statuses/{0}/source".format(str(id)))
 
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, in_reply_to_id=None, media_ids=None,
