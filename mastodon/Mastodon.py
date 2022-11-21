@@ -1389,14 +1389,24 @@ class Mastodon:
     # Reading data: Follow suggestions
     ###
     @api_version("3.0.0", "3.0.0", __DICT_VERSION_ACCOUNT)
-    def directory(self):
+    def directory(self, offset=None, limit=None, order=None, local=None):
         """
         Fetch the contents of the profile directory, if enabled on the server.
+
+        `offset` how many accounts to skip before returning results. Default 0.
+
+        `limit` how many accounts to load. Default 40.
+
+        `order` "active" to sort by most recently posted statuses (default) or
+                "new" to sort by most recently created profiles.
+
+        `local` True to return only local accounts.
 
         Returns a list of `user dicts`_.
 
         """
-        return self.__api_request('GET', '/api/v1/directory')
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/directory', params)
 
     ###
     # Reading data: Endorsements
