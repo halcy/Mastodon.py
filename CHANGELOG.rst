@@ -2,7 +2,7 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v1.7.4
+v1.7.0
 ------
 * Clean code up a bit (thanks eumiro)
 * Fix some Pleroma related issues (thanks aveao, taraletti, adbenitez)
