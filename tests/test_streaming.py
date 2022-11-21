@@ -308,21 +308,31 @@ def test_multiline_payload():
     assert listener.updates == [{"foo": "bar"}]
 
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_user(api, api2):
+def test_stream_user_direct(api, api2, api3):
     patch_streaming()
     
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
     api.account_unfollow(user)
     time.sleep(2)
-    
+
     updates = []
+    local_updates = []
     notifications = []
     deletes = []
+    conversations = []
     listener = CallbackStreamListener(
         update_handler = lambda x: updates.append(x),
+        local_update_handler = lambda x: local_updates.append(x),
         notification_handler = lambda x: notifications.append(x),
-        delete_handler = lambda x: deletes.append(x)
+        delete_handler = lambda x: deletes.append(x),
+        conversation_handler = lambda x: conversations.append(x),
+        status_update_handler = lambda x: 0, # TODO
+        filters_changed_handler = lambda x: 0,
+        announcement_handler = lambda x: 0,
+        announcement_reaction_handler = lambda x: 0,
+        announcement_delete_handler = lambda x: 0,
+        encryted_message_handler = lambda x: 0,
     )
     
     posted = []
@@ -331,6 +341,8 @@ def test_stream_user(api, api2):
         posted.append(api.status_post("only real cars respond."))
         posted.append(api2.status_post("@mastodonpy_test beep beep I'm a jeep"))
         posted.append(api2.status_post("on the internet, nobody knows you're a plane"))
+        posted.append(api.status_post("@mastodonpy_test_2 pssssst", visibility="direct"))
+        posted.append(api3.status_post("@mastodonpy_test pssssst!", visibility="direct", in_reply_to_id=posted[-1]))
         time.sleep(1)
         api.status_delete(posted[0])
         time.sleep(10)
@@ -340,13 +352,17 @@ def test_stream_user(api, api2):
     t.start()
     
     stream = api.stream_user(listener, run_async=True)
+    stream2 = api.stream_direct(listener, run_async=True)
     time.sleep(20)
     stream.close()
+    stream2.close()
         
-    assert len(updates) == 1
-    assert len(notifications) == 1
+    assert len(updates) == 2
+    assert len(local_updates) == 2
+    assert len(notifications) == 2
     assert len(deletes) == 1
-    
+    assert len(conversations) == 2
+
     assert updates[0].id == posted[0].id
     assert deletes[0] == posted[0].id
     assert notifications[0].status.id == posted[1].id
