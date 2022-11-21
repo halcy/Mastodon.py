@@ -41,7 +41,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 3.5.0
 -----
-* [ ] Add support for incoming edited posts
+* [x] Add support for incoming edited posts
 * [ ] Add notifications for posts deleted by moderators
 * [ ] Add explore page with trending posts and links
 * [ ] Add graphs and retention metrics to admin dashboard

@@ -2,6 +2,16 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.7.4
+------
+* Clean code up a bit (thanks eumiro)
+* Fix some Pleroma related issues (thanks aveao, taraletti, adbenitez)
+* Add post editing (`status_update`, `status_source`, `status_history`)
+* Add missing streaming events
+* Add missing parameters on directory endpoint (thanks heharkon)
+* This isn't somehing I changed but thank you a / triggerofsol for answering Many questions I had about specifics of what the API does that are not documented
+* TECHNICALLY BREAKING CHANGE, but I would be quite surprised if this actually breaks anyone: Date parsing will now, when the date string is empty, return Jan. 1st, 1970 instead. This is to work around what I assume is a bug in Pleroma.
+
 v1.6.3
 ------
 * Add server rules API (`instance_rules`)

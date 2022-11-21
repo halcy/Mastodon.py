@@ -3538,7 +3538,11 @@ class Mastodon:
                         else:
                             json_object[k] = dateutil.parser.parse(v)
                     except:
-                        raise MastodonAPIError('Encountered invalid date.')
+                        if isinstance(v, str) and len(x.strip()) == 0:
+                            # Pleroma bug workaround: Empty string becomes start of epoch
+                            json_object[k] = datetime.datetime.fromtimestamp(0)
+                        else:
+                            raise MastodonAPIError('Encountered invalid date.')
         return json_object
 
     @staticmethod
@@ -3693,10 +3697,8 @@ class Mastodon:
                         self.ratelimit_reset = int(
                             response_object.headers['X-RateLimit-Reset'])
                     else:
-                        ratelimit_reset_datetime = dateutil.parser.parse(
-                            response_object.headers['X-RateLimit-Reset'])
-                        self.ratelimit_reset = self.__datetime_to_epoch(
-                            ratelimit_reset_datetime)
+                        ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                        self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
 
                     # Adjust server time to local clock
                     if 'Date' in response_object.headers:

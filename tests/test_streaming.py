@@ -321,13 +321,14 @@ def test_stream_user_direct(api, api2, api3):
     notifications = []
     deletes = []
     conversations = []
+    edits = []
     listener = CallbackStreamListener(
         update_handler = lambda x: updates.append(x),
         local_update_handler = lambda x: local_updates.append(x),
         notification_handler = lambda x: notifications.append(x),
         delete_handler = lambda x: deletes.append(x),
         conversation_handler = lambda x: conversations.append(x),
-        status_update_handler = lambda x: 0, # TODO
+        status_update_handler = lambda x: edits.append(x),
         filters_changed_handler = lambda x: 0,
         announcement_handler = lambda x: 0,
         announcement_reaction_handler = lambda x: 0,
@@ -342,10 +343,13 @@ def test_stream_user_direct(api, api2, api3):
         posted.append(api2.status_post("@mastodonpy_test beep beep I'm a jeep"))
         posted.append(api2.status_post("on the internet, nobody knows you're a plane"))
         posted.append(api.status_post("@mastodonpy_test_2 pssssst", visibility="direct"))
+        time.sleep(1)
         posted.append(api3.status_post("@mastodonpy_test pssssst!", visibility="direct", in_reply_to_id=posted[-1]))
+        time.sleep(2)
+        api.status_update(posted[0], "only real animals respond.")
         time.sleep(1)
         api.status_delete(posted[0])
-        time.sleep(10)
+        time.sleep(7)
         streaming_close()
         
     t = threading.Thread(args=(), target=do_activities)
@@ -353,7 +357,7 @@ def test_stream_user_direct(api, api2, api3):
     
     stream = api.stream_user(listener, run_async=True)
     stream2 = api.stream_direct(listener, run_async=True)
-    time.sleep(20)
+    time.sleep(25)
     stream.close()
     stream2.close()
         
@@ -362,6 +366,7 @@ def test_stream_user_direct(api, api2, api3):
     assert len(notifications) == 2
     assert len(deletes) == 1
     assert len(conversations) == 2
+    assert len(edits) == 1
 
     assert updates[0].id == posted[0].id
     assert deletes[0] == posted[0].id
