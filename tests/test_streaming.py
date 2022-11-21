@@ -20,7 +20,7 @@ close_connections = False
 def patch_streaming():
     global streaming_is_patched
     global close_connections
-    if streaming_is_patched == True:
+    if streaming_is_patched is True:
         return
     streaming_is_patched = True
     
@@ -35,7 +35,7 @@ def patch_streaming():
                 response = real_connection_real_get_response(*args, **kwargs)
                 real_body = b""
                 try:
-                    while close_connections == False:
+                    while close_connections is False:
                         if len(select.select([response], [], [], 0.01)[0]) > 0:
                             chunk = response.read(1)
                             real_body += chunk
@@ -165,7 +165,7 @@ def test_unknown_event():
         'data: {}',
         '',
     ])
-    assert listener.bla_called == True
+    assert listener.bla_called is True
     assert listener.updates == []
     assert listener.notifications == []
     assert listener.deletes == []
@@ -195,7 +195,7 @@ def test_dotted_unknown_event():
         'data: {}',
         '',
     ])
-    assert listener.do_something_called == True
+    assert listener.do_something_called is True
     assert listener.updates == []
     assert listener.notifications == []
     assert listener.deletes == []

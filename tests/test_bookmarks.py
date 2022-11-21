@@ -4,7 +4,7 @@ import pytest
 def test_bookmarks(api, status):
     status_bookmarked = api.status_bookmark(status)
     assert status_bookmarked
-    assert status_bookmarked.bookmarked == True
+    assert status_bookmarked.bookmarked
     
     bookmarked_statuses = api.bookmarks()
     assert bookmarked_statuses
@@ -18,9 +18,9 @@ def test_bookmarks(api, status):
 
     status_unbookmarked = api.status_unbookmark(status_bookmarked)
     assert status_unbookmarked
-    assert status_unbookmarked.bookmarked == False
+    assert not status_unbookmarked.bookmarked
     
     bookmarked_statuses_2 = api.bookmarks()
-    assert not bookmarked_statuses_2 is None
+    assert bookmarked_statuses_2 is not None
     assert len(bookmarked_statuses_2) == len(bookmarked_statuses) - 1
     

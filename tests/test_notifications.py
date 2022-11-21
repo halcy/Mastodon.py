@@ -29,7 +29,7 @@ def test_notifications_dismiss_pre_2_9_2(api, api2):
             api.verify_minimum_version("2.9.2", cached=False)
             api.notifications_dismiss(notifications[0])
         finally:
-            if not status is None:
+            if status is not None:
                 api2.status_delete(status)            
 
 @pytest.mark.vcr()

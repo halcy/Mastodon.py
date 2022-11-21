@@ -57,14 +57,14 @@ def test_push_update(api):
     print(sub3)
     print(api.push_subscription())
     
-    assert sub3.alerts.follow == False
-    assert sub3.alerts.favourite == False
-    assert sub3.alerts.reblog == False
-    assert sub3.alerts.mention == False
-    assert sub2.alerts.follow == True
-    assert sub2.alerts.favourite == True
-    assert sub2.alerts.reblog == True
-    assert sub2.alerts.mention == True
+    assert sub3.alerts.follow is False
+    assert sub3.alerts.favourite is False
+    assert sub3.alerts.reblog is False
+    assert sub3.alerts.mention is False
+    assert sub2.alerts.follow is True
+    assert sub2.alerts.favourite is True
+    assert sub2.alerts.reblog is True
+    assert sub2.alerts.mention is True
   
 
 @pytest.mark.vcr(match_on=['path'])

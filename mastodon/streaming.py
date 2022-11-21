@@ -213,11 +213,11 @@ class CallbackStreamListener(StreamListener):
         self.status_update_handler = status_update_handler
 
     def on_update(self, status):
-        if self.update_handler != None:
+        if self.update_handler is not None:
             self.update_handler(status)
 
         try:
-            if self.local_update_handler != None and not "@" in status["account"]["acct"]:
+            if self.local_update_handler is not None and not "@" in status["account"]["acct"]:
                 self.local_update_handler(status)
         except Exception as err:
             six.raise_from(
@@ -226,21 +226,21 @@ class CallbackStreamListener(StreamListener):
             )
 
     def on_delete(self, deleted_id):
-        if self.delete_handler != None:
+        if self.delete_handler is not None:
             self.delete_handler(deleted_id)
 
     def on_notification(self, notification):
-        if self.notification_handler != None:
+        if self.notification_handler is not None:
             self.notification_handler(notification)
 
     def on_conversation(self, conversation):
-        if self.conversation_handler != None:
+        if self.conversation_handler is not None:
             self.conversation_handler(conversation)
 
     def on_unknown_event(self, name, unknown_event=None):
-        if self.unknown_event_handler != None:
+        if self.unknown_event_handler is not None:
             self.unknown_event_handler(name, unknown_event)
 
     def on_status_update(self, status):
-        if self.status_update_handler != None:
+        if self.status_update_handler is not None:
             self.status_update_handler(status)
