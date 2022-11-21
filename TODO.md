@@ -37,7 +37,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 3.4.2
 -----
-* [ ] Add configuration attribute to GET /api/v1/instance
+* [postpone to later] Add configuration attribute to GET /api/v1/instance
 
 3.5.0
 -----
@@ -66,3 +66,4 @@ General improvements that would be good to do before doing another release:
 * [x] Fix the CI
 * [ ] Get test coverage like, real high
 * [ ] Add all those streaming events??
+* [ ] Document return values

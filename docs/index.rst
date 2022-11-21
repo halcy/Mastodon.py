@@ -671,6 +671,7 @@ Instance dicts
     mastodon.instance()
     # Returns the following dictionary
     {
+        'domain': # The instances domain name
         'description': # A brief instance description set by the admin
         'short_description': # An even briefer instance description
         'email': # The admin contact email
