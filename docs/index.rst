@@ -218,9 +218,15 @@ to server misconfiguration.
 
 A brief note on block lists
 ---------------------------
-The default distribution of Mastodon.py prevents you from logging in to instances on a very short list of domains. The purpose of this is to disassociate the developers of Mastodon.py from these instances and to disavow the ideology of violence that they represent. You could, of course, take that part out - Mastodon.py is free software, and you have the right to modify it to suit your needs.
+Mastodon.py used to block three instances because these were particularly notorious for
+harassing trans people and I don't feel like I have an obligation to let software I 
+distribute help people who want my friends to die. I don't want to be associated with 
+that, at all. 
 
-While you take the extra step of removing the code, please take a moment to consider why reasonable people whose work you build and depend on every day thought it was necessary to put it in to begin with.
+Those instances are now all gone, any point that could have been has been made, and 
+there is no list anymore.
+
+Trans rights are human rights. 
 
 Return values
 -------------
