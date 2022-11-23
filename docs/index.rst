@@ -938,6 +938,14 @@ Mastodon version (with regards to parameters as well as return values).
 Version checking can also be disabled altogether. If a version check fails,
 Mastodon.py throws a `MastodonVersionError`.
 
+Some functions need to check what version of Mastodon they are talking to.
+These will generally use a cached version to avoid sending a lot of pointless
+requests.
+
+Many non-mainline forks have various different formats for their versions and
+they have different, incompatible ideas about how to report version. Mastodon.py
+tries its best to figure out what is going on, but success is not guaranteed.
+
 With the following functions, you can make Mastodon.py re-check the server
 version or explicitly determine if a specific minimum Version is available.
 Long-running applications that aim to support multiple Mastodon versions

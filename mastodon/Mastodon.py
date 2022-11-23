@@ -235,7 +235,7 @@ class Mastodon:
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "3.3.0"
-    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("1.0.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("3.5.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
     __DICT_VERSION_CARD = "3.2.0"
@@ -1080,15 +1080,25 @@ class Mastodon:
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0", "2.9.0", __DICT_VERSION_NOTIFICATION)
-    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, exclude_types=None, mentions_only=None):
+    @api_version("1.0.0", "3.5.0", __DICT_VERSION_NOTIFICATION)
+    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, exclude_types=None, types=None, mentions_only=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
 
-        Parameter `exclude_types` is an array of the following `follow`, `favourite`, `reblog`,
-        `mention`, `poll`, `follow_request`. Specifying `mentions_only` is a deprecated way to
-        set `exclude_types` to all but mentions.
+        There are different types of notifications: 
+            * `follow` - A user followed the logged in user
+            * `follow_request` - A user has requested to follow the logged in user (for locked accounts)
+            * `favourite` - A user favourited a post by the logged in user
+            * `reblog` - A user reblogged a post by the logged in user
+            * `mention` - A user mentioned the logged in user
+            * `poll` - A poll the logged in user created or voted in has ended
+            * `update` - A status the logged in user has reblogged (and only those, as of 4.0.0) has been edited
+            * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see `account_follow()`_)
+            * `admin.sign_up` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new user has signed up
+            * `admin.report ` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new report has been received
+        Parameters `exclude_types` or alternately `types` are array of these types, specifying them will in- or exclude the
+        types of notifications given. Specifying `mentions_only` is a deprecated way to set `exclude_types` to all but mentions.
 
         Can be passed an `id` to fetch a single notification.
 
@@ -1097,11 +1107,13 @@ class Mastodon:
         if mentions_only is not None:
             if exclude_types is not None:
                 if mentions_only:
-                    exclude_types = ["follow", "favourite",
-                                     "reblog", "poll", "follow_request"]
+                    if self.verify_minimum_version("3.5.0", cached=True):
+                        types = ["mention"]
+                    else:
+                        exclude_types = ["follow", "favourite",
+                                        "reblog", "poll", "follow_request"]
             else:
-                raise MastodonIllegalArgumentError(
-                    'Cannot specify exclude_types when mentions_only is present')
+                raise MastodonIllegalArgumentError('Cannot specify exclude_types when mentions_only is present')
             del mentions_only
 
         if max_id is not None:

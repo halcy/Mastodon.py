@@ -1,6 +1,7 @@
 import pytest
 import vcr
 import time
+import pathlib
 
 @pytest.mark.vcr(match_on=['path'])
 def test_media_post_v1(api):
@@ -127,3 +128,10 @@ def test_media_post_file(api):
     with open('tests/image.jpg', 'rb') as f:
         media = api.media_post(f, mime_type='image/jpeg')
         assert media
+
+@pytest.mark.vcr(match_on=['path'])
+def test_media_post_pathlib(api):
+    path = pathlib.Path(".") / "tests" / "image.jpg"
+    media = api.media_post(path)
+    assert media
+    
