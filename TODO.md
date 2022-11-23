@@ -42,7 +42,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 3.5.0
 -----
 * [x] Add support for incoming edited posts
-* [ ] Add notifications for posts deleted by moderators
+* [x] Add notifications for posts deleted by moderators <- by email. not actually API relevant.
 * [ ] Add explore page with trending posts and links
 * [ ] Add graphs and retention metrics to admin dashboard
 * [ ] Add GET /api/v1/accounts/familiar_followers to REST API
@@ -50,7 +50,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [ ] Add category and rule_ids params to POST /api/v1/reports IN REST API
 * [ ] Add global lang param to REST API
 * [x] Add types param to GET /api/v1/notifications in REST API
-* [ ] Add notifications for moderators about new sign-ups
+* [x] Add notifications for moderators about new sign-ups
 * [ ] v2 admin account api
 
 3.5.3
