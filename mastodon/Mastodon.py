@@ -57,6 +57,12 @@ try:
 except ImportError:
     magic = None
 
+try:
+    from pathlib import PurePath
+except:
+    class PurePath:
+        pass
+
 ###
 # Version check functions, including decorator and parser
 ###
@@ -1450,7 +1456,8 @@ class Mastodon:
         `offset`, `min_id` and `max_id` can be used to paginate.
 
         `exclude_unreviewed` can be used to restrict search results for hashtags to only
-        those that have been reviewed by moderators. It is on by default.
+        those that have been reviewed by moderators. It is on by default. When using the
+        v1 search API (pre 2.4.1), it is ignored.
 
         Will use search_v1 (no tag dicts in return values) on Mastodon versions before
         2.4.1), search_v2 otherwise. Parameters other than resolve are only available
@@ -1461,7 +1468,7 @@ class Mastodon:
         Returns a `search result dict`_, with tags as `hashtag dicts`_.
         """
         if self.verify_minimum_version("2.4.1", cached=True):
-            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id)
+            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed)
         else:
             self.__ensure_search_params_acceptable(
                 account_id, offset, min_id, max_id)
@@ -4101,6 +4108,8 @@ class Mastodon:
         return mime_type
 
     def __load_media_file(self, media_file, mime_type=None, file_name=None):
+        if isinstance(media_file, PurePath):
+            media_file = str(media_file)
         if isinstance(media_file, str) and os.path.isfile(media_file):
             mime_type = self.__guess_type(media_file)
             media_file = open(media_file, 'rb')

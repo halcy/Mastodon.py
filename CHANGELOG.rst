@@ -10,6 +10,8 @@ v1.7.0
 * Add missing streaming events
 * Add missing parameters on directory endpoint (thanks heharkon)
 * This isn't somehing I changed but thank you a / triggerofsol for answering Many questions I had about specifics of what the API does that are not documented
+* Fixed search ignoring `exclude_unreviewed` (Thanks acidghost)
+* Add support for using pathlib paths when loading media files (Thanks reagle)
 * TECHNICALLY BREAKING CHANGE, but I would be quite surprised if this actually breaks anyone: Date parsing will now, when the date string is empty, return Jan. 1st, 1970 instead. This is to work around what I assume is a bug in Pleroma.
 
 v1.6.3
