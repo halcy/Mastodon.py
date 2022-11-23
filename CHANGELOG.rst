@@ -4,17 +4,18 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.7.0
 ------
-* Clean code up a bit (thanks eumiro)
-* Fix some Pleroma related issues (thanks aveao, taraletti, adbenitez)
-* Add post editing (`status_update`, `status_source`, `status_history`)
-* Add missing streaming events
-* Add missing parameters on directory endpoint (thanks heharkon)
+* Cleaned code up a bit (thanks eumiro)
+* Fixed some Pleroma related issues (thanks aveao, taraletti, adbenitez)
+* Added post editing (`status_update`, `status_source`, `status_history`)
+* Added missing streaming events
+* Added missing parameters on directory endpoint (thanks heharkon)
 * This isn't somehing I changed but thank you a / triggerofsol for answering Many questions I had about specifics of what the API does that are not documented
 * Fixed search ignoring `exclude_unreviewed` (Thanks acidghost)
-* Add support for using pathlib paths when loading media files (Thanks reagle)
-* Remove blocklist with long dead instances
-* Add `types` parameter to notifications.
-* Document additional notification types
+* Added support for using pathlib paths when loading media files (Thanks reagle)
+* Removed blocklist with long dead instances
+* Added `types` parameter to notifications.
+* Documented additional notification types
+* Made version parsing more robust against varions things that Mastodon-compatible APIs might throw at it.
 * TECHNICALLY BREAKING CHANGE, but I would be quite surprised if this actually breaks anyone: Date parsing will now, when the date string is empty, return Jan. 1st, 1970 instead. This is to work around what I assume is a bug in Pleroma.
 
 v1.6.3

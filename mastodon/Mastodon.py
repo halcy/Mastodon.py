@@ -470,6 +470,17 @@ class Mastodon:
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
 
+    def __normalize_version_string(self, version_string):
+        # Split off everything after the first space, to take care of Pleromalikes so that the parser doesn't get confused in case those have a + somewhere in their version
+        version_string = version_string.split(" ")[0]
+        try:
+            # Attempt to split at + and check if the part after parses as a version string, to account for hometown
+            parse_version_string(version_string.split("+")[1])
+            return version_string.split("+")[1]
+        except:
+            # If this fails, assume that if there is a +, what is before that is the masto version (or that there is no +)
+            return version_string.split("+")[0]
+            
     def retrieve_mastodon_version(self):
         """
         Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
@@ -477,7 +488,7 @@ class Mastodon:
         Returns the version string, possibly including rc info.
         """
         try:
-            version_str = self.__instance()["version"].split('+')[0]
+            version_str = self.__normalize_version_string(self.__instance()["version"])
             self.version_check_worked = True
         except:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
