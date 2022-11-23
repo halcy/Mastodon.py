@@ -12,7 +12,46 @@ def mention(api2):
 def test_notifications(api, mention):
     time.sleep(3)
     notifications = api.notifications()
-    api.notifications(notifications[0])
+    assert api.notifications(notifications[0])
+    assert notifications[0].status.id == mention.id
+
+@pytest.mark.vcr()
+def test_notifications_mentions_only(api, mention):
+    time.sleep(3)
+    notifications = api.notifications(mentions_only=True)
+    assert api.notifications(notifications[0])
+    assert notifications[0].status.id == mention.id
+
+@pytest.mark.vcr()
+def test_notifications_exclude_types(api, mention):
+    time.sleep(3)
+    notifications = api.notifications(exclude_types=["mention"])
+    if len(notifications) > 0:
+        assert notifications[0].status.id == mention.id
+
+@pytest.mark.vcr()
+def test_notifications_types(api, mention):
+    time.sleep(3)
+    notifications = api.notifications(types=["follow_request"])
+    if len(notifications) > 0:
+        assert notifications[0].status.id == mention.id
+    notifications = api.notifications(types=["follow", "mention"])
+    assert api.notifications(notifications[0])
+    assert notifications[0].status.id == mention.id
+
+@pytest.mark.vcr()
+def test_notifications_exclude_and_types(api, mention):
+    time.sleep(3)
+    notifications = api.notifications(exclude_types=["mention"], types=["mention"])
+    if len(notifications) > 0:
+        assert notifications[0].status.id == mention.id
+    notifications = api.notifications(exclude_types=["mention"], types=["follow_request"])
+    if len(notifications) > 0:
+        assert notifications[0].status.id == mention.id
+    notifications = api.notifications(exclude_types=["follow_request"], types=["mention"])
+    assert notifications[0].status.id == mention.id
+    notifications = api.notifications(exclude_types=["follow_request"], types=["mention", "follow_request"])
+    assert notifications[0].status.id == mention.id
 
 @pytest.mark.vcr()
 def test_notifications_dismiss(api, mention):

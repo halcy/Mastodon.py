@@ -1108,23 +1108,24 @@ class Mastodon:
             * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see `account_follow()`_)
             * `admin.sign_up` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new user has signed up
             * `admin.report ` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new report has been received
-        Parameters `exclude_types` or alternately `types` are array of these types, specifying them will in- or exclude the
-        types of notifications given. Specifying `mentions_only` is a deprecated way to set `exclude_types` to all but mentions.
+        Parameters `exclude_types` and `types` are array of these types, specifying them will in- or exclude the
+        types of notifications given. It is legal to give both parameters at the same tine, the result will then
+        be the intersection of the results of both filters. Specifying `mentions_only` is a deprecated way to set 
+        `exclude_types` to all but mentions.
 
         Can be passed an `id` to fetch a single notification.
 
         Returns a list of `notification dicts`_.
         """
         if mentions_only is not None:
-            if exclude_types is not None:
+            if exclude_types is None and types is None:
                 if mentions_only:
                     if self.verify_minimum_version("3.5.0", cached=True):
                         types = ["mention"]
                     else:
-                        exclude_types = ["follow", "favourite",
-                                        "reblog", "poll", "follow_request"]
+                        exclude_types = ["follow", "favourite", "reblog", "poll", "follow_request"]
             else:
-                raise MastodonIllegalArgumentError('Cannot specify exclude_types when mentions_only is present')
+                raise MastodonIllegalArgumentError('Cannot specify exclude_types/types when mentions_only is present')
             del mentions_only
 
         if max_id is not None:
