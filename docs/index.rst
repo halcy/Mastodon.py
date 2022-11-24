@@ -1089,6 +1089,9 @@ Reading data: Searching
 Reading data: Trends
 --------------------
 
+.. automethod:: Mastodon.trending_tags
+.. automethod:: Mastodon.trending_statuses
+.. automethod:: Mastodon.trending_links
 .. automethod:: Mastodon.trends
 
 Reading data: Mutes and blocks

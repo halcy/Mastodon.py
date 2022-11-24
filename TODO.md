@@ -66,4 +66,4 @@ General improvements that would be good to do before doing another release:
 * [x] Fix the CI
 * [ ] Get test coverage like, real high
 * [x] Add all those streaming events??
-* [ ] Document return values
+* [ ] Document return values (skipping this for a bit to then do it at the end with tooling)

@@ -264,7 +264,7 @@ class Mastodon:
         Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
         - more granular scopes are available, please refer to Mastodon documentation for which) on the instance given
         by `api_base_url`.
-        
+
         Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating in an OAuth flow.
         You can specify multiple URLs by passing a list. Note that if you wish to use OAuth authentication with redirects,
         the redirect URI must be one of the URLs specified here.
@@ -1535,8 +1535,15 @@ class Mastodon:
     ###
     # Reading data: Trends
     ###
-    @api_version("2.4.3", "3.0.0", __DICT_VERSION_HASHTAG)
+    @api_version("2.4.3", "3.5.0", __DICT_VERSION_HASHTAG)
     def trends(self, limit=None):
+        """
+        Alias for `trending_tags()`_
+        """
+        return self.trending_tags(limit = limit) 
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_HASHTAG)
+    def trending_tags(self, limit=None):
         """
         Fetch trending-hashtag information, if the instance provides such information.
 
@@ -1546,13 +1553,45 @@ class Mastodon:
         Does not require authentication unless locked down by the administrator.
 
         Important versioning note: This endpoint does not exist for Mastodon versions
-        between 2.8.0 (inclusive) and 3.0.0 (exclusive).
+        between 2.8.0 (inclusive) and 3.0.0 (exclusive). 
 
         Returns a list of `hashtag dicts`_, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('GET', '/api/v1/trends', params)
+        if self.verify_minimum_version("3.5.0", cached=True):
+            # Starting 3.5.0, old version is deprecated
+            return self.__api_request('GET', '/api/v1/trends/tags', params)
+        else:
+            return self.__api_request('GET', '/api/v1/trends', params)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
+    def trending_statuses(self):
+        """
+        Fetch trending-status information, if the instance provides such information.
+
+        Specify `limit` to limit how many results are returned (the maximum number
+        of results is 10, the endpoint is not paginated).
+
+        Returns a list of `status dicts`_, sorted by the instances's trending algorithm,
+        descending.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/trends/statuses', params)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_CARD)
+    def trending_links(self):
+        """
+        Fetch trending-link information, if the instance provides such information.
+
+        Specify `limit` to limit how many results are returned (the maximum number
+        of results is 10, the endpoint is not paginated).
+
+        Returns a list of `card dicts`_, sorted by the instances's trending algorithm,
+        descending.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/trends/links', params)
 
     ###
     # Reading data: Lists

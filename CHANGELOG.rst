@@ -2,6 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v1.8.0
+------
+* BREAKING CHANGE: Switch the base URL to None, throw an error when no base url is passed. Having mastosoc as default was sensible when there were only three mastodon servers. It is not sensible now and trips people up constantly.
+* Fix an issue with the fix for the Pleroma date bug (thanks adbenitez)
+
 v1.7.0
 ------
 * Cleaned code up a bit (thanks eumiro)
