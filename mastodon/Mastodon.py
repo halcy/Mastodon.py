@@ -3263,6 +3263,68 @@ class Mastodon:
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
 
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    def admin_domain_blocks(self, id=None):
+        """
+        Fetches a list of blocked domains
+
+        * Set `remote` to True to get remote accounts, otherwise local accounts are returned (default: local accounts)
+        * Set `by_domain` to a domain to get only accounts from that domain.
+        * Set `status` to one of "active", "pending", "disabled", "silenced" or "suspended" to get only accounts with that moderation status (default: active)
+        * Set `username` to a string to get only accounts whose username contains this string.
+        * Set `display_name` to a string to get only accounts whose display name contains this string.
+        * Set `email` to an email to get only accounts with that email (this only works on local accounts).
+        * Set `ip` to an ip (as a string, standard v4/v6 notation) to get only accounts whose last active ip is that ip (this only works on local accounts).
+        * Set `staff_only` to True to only get staff accounts (this only works on local accounts).
+
+        Note that setting the boolean parameters to False does not mean "give me users to which this does not apply" but
+        instead means "I do not care if users have this attribute".
+
+        Returns a list of `admin account dicts`_.
+        """
+        id = self.__unpack_id(id)
+        if id is not None:
+            return self.__api_request('GET', '/api/v1/admin/domain_blocks/{0}'.format(id))
+        else
+            return self.__api_request('GET', '/api/v1/admin/domain_blocks/'.format(id))
+    
+    @api_version("2.9.1", "2.9.1", "2.9.1")
+    def admin_domain_block(self, domain: str, severity=None, reject_media=None, reject_reports=None, private_comment=None, public_comment=None, obfuscate=None):
+        """
+        Perform a moderation action on an account.
+
+        Valid actions are:
+            * "disable" - for a local user, disable login.
+            * "silence" - hide the users posts from all public timelines.
+            * "suspend" - irreversibly delete all the user's posts, past and future.
+            * "sensitive" - forcce an accounts media visibility to always be sensitive.
+
+        If no action is specified, the user is only issued a warning.
+
+        Specify the id of a report as `report_id` to close the report with this moderation action as the resolution.
+        Specify `warning_preset_id` to use a warning preset as the notification text to the user, or `text` to specify text directly.
+        If both are specified, they are concatenated (preset first). Note that there is currently no API to retrieve or create
+        warning presets.
+
+        Set `send_email_notification` to False to not send the user an email notification informing them of the moderation action.
+        """
+        if action is None:
+            action = "none"
+
+        if not send_email_notification:
+            send_email_notification = None
+
+        id = self.__unpack_id(id)
+        if report_id is not None:
+            report_id = self.__unpack_id(report_id)
+
+        params = self.__generate_params(locals(), ['id', 'action'])
+
+        params["type"] = action
+
+        self.__api_request(
+            'POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
+
     ###
     # Push subscription crypto utilities
     ###
