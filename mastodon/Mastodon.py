@@ -320,11 +320,9 @@ class Mastodon:
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id=None, client_secret=None, access_token=None,
-                 api_base_url=None, debug_requests=False,
-                 ratelimit_method="wait", ratelimit_pacefactor=1.1,
-                 request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode="created", session=None, feature_set="mainline", user_agent="mastodonpy"):
+    def __init__(self, client_id=None, client_secret=None, access_token=None, api_base_url=None, debug_requests=False,
+                 ratelimit_method="wait", ratelimit_pacefactor=1.1, request_timeout=__DEFAULT_TIMEOUT, mastodon_version=None,
+                 version_check_mode="created", session=None, feature_set="mainline", user_agent="mastodonpy", lang=None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
         instance given by `api_base_url`. If you give a `client_id` and it is not a file, you must 
@@ -371,6 +369,10 @@ class Mastodon:
         the app name will be used as `User-Agent` header as default. It is possible to modify old secret files and append
         a client app name to use it as a `User-Agent` name.
 
+        `lang` can be used to change the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter)
+        or for a language that has none, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and 
+        trends. You can change the language using `set_language()`_.
+
         If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
         self.api_base_url = api_base_url
@@ -383,7 +385,7 @@ class Mastodon:
         self.ratelimit_method = ratelimit_method
         self._token_expired = datetime.datetime.now()
         self._refresh_token = None
-
+        
         self.__logged_in_id = None
 
         self.ratelimit_limit = 300
@@ -405,6 +407,9 @@ class Mastodon:
 
         # General defined user-agent
         self.user_agent = user_agent
+
+        # Save language
+        self.lang = lang
 
         # Token loading
         if self.client_id is not None:
@@ -466,6 +471,13 @@ class Mastodon:
         # Ratelimiting parameter check
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
+
+    def set_language(self, lang):
+        """
+        Set the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter) or, for languages that do
+        not have one, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and trends.
+        """
+        self.lang = lang
 
     def __normalize_version_string(self, version_string):
         # Split off everything after the first space, to take care of Pleromalikes so that the parser doesn't get confused in case those have a + somewhere in their version
@@ -538,24 +550,27 @@ class Mastodon:
         """
         return Mastodon.__SUPPORTED_MASTODON_VERSION
 
-    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob", scopes=__DEFAULT_SCOPES, force_login=False, state=None):
+    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob", scopes=__DEFAULT_SCOPES, force_login=False, state=None, lang=None):
         """
         Returns the URL that a client needs to request an OAuth grant from the server.
 
         To log in with OAuth, send your user to this URL. The user will then log in and
-        get a code which you can pass to log_in.
+        get a code which you can pass to `log_in()`_.
 
-        scopes are as in `log_in()`_, redirect_uris is where the user should be redirected to
-        after authentication. Note that redirect_uris must be one of the URLs given during
+        `scopes` are as in `log_in()`_, redirect_uris is where the user should be redirected to
+        after authentication. Note that `redirect_uris` must be one of the URLs given during
         app registration. When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed,
         otherwise it is added to the given URL as the "code" request parameter.
 
         Pass force_login if you want the user to always log in even when already logged
         into web Mastodon (i.e. when registering multiple different accounts in an app).
 
-        State is the oauth `state`parameter to pass to the server. It is strongly suggested
+        `state` is the oauth `state` parameter to pass to the server. It is strongly suggested
         to use a random, nonguessable value (i.e. nothing meaningful and no incrementing ID)
         to preserve security guarantees. It can be left out for non-web login flows.
+
+        Pass an ISO 639-1 (two letter) or, for languages that do not have one, 639-3 (three letter)
+        language code as `lang` to control the display language for the oauth form.
         """
         if client_id is None:
             client_id = self.client_id
@@ -571,6 +586,7 @@ class Mastodon:
         params['scope'] = " ".join(scopes)
         params['force_login'] = force_login
         params['state'] = state
+        params['lang'] = lang
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
@@ -672,8 +688,9 @@ class Mastodon:
         Creates a new user account with the given username, password and email. "agreement"
         must be set to true (after showing the user the instance's user agreement and having
         them agree to it), "locale" specifies the language for the confirmation email as an
-        ISO 639-1 (two-letter) language code. `reason` can be used to specify why a user
-        would like to join if approved-registrations mode is on.
+        ISO 639-1 (two letter) or, if a language does not have one, 639-3 (three letter) language 
+        code. `reason` can be used to specify why a user would like to join if approved-registrations 
+        mode is on.
 
         Does not require an access token, but does require a client grant.
 
@@ -1542,10 +1559,10 @@ class Mastodon:
         """
         Alias for `trending_tags()`_
         """
-        return self.trending_tags(limit = limit) 
+        return self.trending_tags(limit=limit) 
 
     @api_version("3.5.0", "3.5.0", __DICT_VERSION_HASHTAG)
-    def trending_tags(self, limit=None):
+    def trending_tags(self, limit=None, lang=None):
         """
         Fetch trending-hashtag information, if the instance provides such information.
 
@@ -1556,6 +1573,8 @@ class Mastodon:
 
         Important versioning note: This endpoint does not exist for Mastodon versions
         between 2.8.0 (inclusive) and 3.0.0 (exclusive). 
+
+        Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
         Returns a list of `hashtag dicts`_, sorted by the instance's trending algorithm,
         descending.
@@ -1574,6 +1593,8 @@ class Mastodon:
 
         Specify `limit` to limit how many results are returned (the maximum number
         of results is 10, the endpoint is not paginated).
+
+        Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
         Returns a list of `toot dicts`_, sorted by the instances's trending algorithm,
         descending.
@@ -1981,7 +2002,8 @@ class Mastodon:
         displayed.
 
         Specify `language` to override automatic language detection. The parameter
-        accepts all valid ISO 639-2 language codes.
+        accepts all valid ISO 639-1 (2-letter) or for languages where that do not
+        have one, 639-3 (three letter) language codes.
 
         You can set `idempotency_key` to a value to uniquely identify an attempt
         at posting a status. Even if you call this function more than once,
@@ -3638,6 +3660,7 @@ class Mastodon:
         """
         known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at",
                              "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at"]
+        mark_delete = []
         for k, v in json_object.items():
             if k in known_date_fields:
                 if v is not None:
@@ -3648,7 +3671,10 @@ class Mastodon:
                             json_object[k] = dateutil.parser.parse(v)
                     except:
                         # When we can't parse a date, we just leave the field out
-                        del json_object[k]
+                        mark_delete.append(k)
+        # Two step process because otherwise python gets very upset
+        for k in mark_delete:
+            del json_object[k]                        
         return json_object
 
     @staticmethod
@@ -3701,12 +3727,20 @@ class Mastodon:
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False):
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, 
+                        do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None):
         """
         Internal API request helper.
         """
         response = None
         remaining_wait = 0
+        
+        # Add language to params if not None
+        lang = self.lang
+        if lang_override is not None:
+            lang = lang_override
+        if lang is not None:
+            params["lang"] = lang
 
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
@@ -3765,8 +3799,7 @@ class Mastodon:
                 else:
                     kwargs['data'] = params
 
-                response_object = self.session.request(
-                    method, base_url + endpoint, **kwargs)
+                response_object = self.session.request(method, base_url + endpoint, **kwargs)
             except Exception as e:
                 raise MastodonNetworkError(
                     "Could not complete request: %s" % e)
@@ -3809,15 +3842,14 @@ class Mastodon:
 
             # Handle response
             if self.debug_requests:
-                print('Mastodon: Response received with code ' +
-                      str(response_object.status_code) + '.')
+                print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
                 print('response headers: ' + str(response_object.headers))
                 print('Response text content: ' + str(response_object.text))
 
             if not response_object.ok:
                 try:
-                    response = response_object.json(
-                        object_hook=self.__json_hooks)
+                    response = response_object.json(object_hook=self.__json_hooks)
+                    print(response)
                     if isinstance(response, dict) and 'error' in response:
                         error_msg = response['error']
                     elif isinstance(response, str):
@@ -3871,8 +3903,7 @@ class Mastodon:
 
             if parse:
                 try:
-                    response = response_object.json(
-                        object_hook=self.__json_hooks)
+                    response = response_object.json(object_hook=self.__json_hooks)
                 except:
                     raise MastodonAPIError(
                         "Could not parse response as JSON, response code was %s, "

@@ -6,6 +6,9 @@ v1.8.0
 ------
 * BREAKING CHANGE: Switch the base URL to None, throw an error when no base url is passed. Having mastosoc as default was sensible when there were only three mastodon servers. It is not sensible now and trips people up constantly.
 * Fix an issue with the fix for the Pleroma date bug (thanks adbenitez)
+* Add trending APIs (`trending_tags`, `trending_statuses`, `trending_links`, `admin_trending_tags`, `admin_trending_statuses`, `admin_trending_links`)
+* Add `lang` parameter and document what it does properly.
+* Add `category` and `rule_ids` to `reports``
 
 v1.7.0
 ------

@@ -48,7 +48,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [ ] Add GET /api/v1/accounts/familiar_followers to REST API
 * [ ] Add POST /api/v1/accounts/:id/remove_from_followers to REST API
 * [x] Add category and rule_ids params to POST /api/v1/reports IN REST API
-* [ ] Add global lang param to REST API
+* [x] Add global lang param to REST API
 * [x] Add types param to GET /api/v1/notifications in REST API
 * [x] Add notifications for moderators about new sign-ups
 * [ ] v2 admin account api
