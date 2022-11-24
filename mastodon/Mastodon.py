@@ -373,10 +373,9 @@ class Mastodon:
 
         If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
-        if api_base_url is None:
-            raise MastodonIllegalArgumentError("API base URL is required.")
-        self.api_base_url = Mastodon.__protocolize(api_base_url)
-
+        self.api_base_url = api_base_url
+        if self.api_base_url is not None:
+            self.api_base_url = self.__protocolize(self.api_base_url)
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = access_token
@@ -417,9 +416,9 @@ class Mastodon:
                     try_base_url = secret_file.readline().rstrip()
                     if try_base_url is not None and len(try_base_url) != 0:
                         try_base_url = Mastodon.__protocolize(try_base_url)
+                        print(self.api_base_url, try_base_url)
                         if not (self.api_base_url is None or try_base_url == self.api_base_url):
-                            raise MastodonIllegalArgumentError(
-                                'Mismatch in base URLs between files and/or specified')
+                            raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                         self.api_base_url = try_base_url
 
                     # With new registrations we support the 4th line to store a client_name and use it as user-agent
@@ -428,8 +427,7 @@ class Mastodon:
                         self.user_agent = client_name.rstrip()
             else:
                 if self.client_secret is None:
-                    raise MastodonIllegalArgumentError(
-                        'Specified client id directly, but did not supply secret')
+                    raise MastodonIllegalArgumentError('Specified client id directly, but did not supply secret')
 
         if self.access_token is not None and os.path.isfile(self.access_token):
             with open(self.access_token, 'r') as token_file:
@@ -439,9 +437,13 @@ class Mastodon:
                 if try_base_url is not None and len(try_base_url) != 0:
                     try_base_url = Mastodon.__protocolize(try_base_url)
                     if not (self.api_base_url is None or try_base_url == self.api_base_url):
-                        raise MastodonIllegalArgumentError(
-                            'Mismatch in base URLs between files and/or specified')
+                        raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                     self.api_base_url = try_base_url
+
+        # Verify we have a base URL, protocolize
+        if self.api_base_url is None:
+            raise MastodonIllegalArgumentError("API base URL is required.")        
+        self.api_base_url = Mastodon.__protocolize(self.api_base_url)
 
         if not version_check_mode in ["created", "changed", "none"]:
             raise MastodonIllegalArgumentError("Invalid version check method.")
@@ -994,7 +996,7 @@ class Mastodon:
         Does not require authentication for publicly visible statuses.
 
         This function is deprecated as of 3.0.0 and the endpoint does not
-        exist anymore - you should just use the "card" field of the status dicts
+        exist anymore - you should just use the "card" field of the toot dicts
         instead. Mastodon.py will try to mimic the old behaviour, but this
         is somewhat inefficient and not guaranteed to be the case forever.
 
@@ -1573,7 +1575,7 @@ class Mastodon:
         Specify `limit` to limit how many results are returned (the maximum number
         of results is 10, the endpoint is not paginated).
 
-        Returns a list of `status dicts`_, sorted by the instances's trending algorithm,
+        Returns a list of `toot dicts`_, sorted by the instances's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -1690,6 +1692,8 @@ class Mastodon:
         Warning: This method has now finally been removed, and will not
         work on Mastodon versions 2.5.0 and above.
         """
+        if self.verify_minimum_version("2.5.0", cached=True):
+            raise MastodonVersionError("API removed in Mastodon 2.5.0")
         return self.__api_request('GET', '/api/v1/reports')
 
     ###
@@ -2530,7 +2534,7 @@ class Mastodon:
         """
         Set a note (visible to the logged in user only) for the given account.
 
-        Returns a `status dict`_ with the `note` updated.
+        Returns a `toot dict`_ with the `note` updated.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
@@ -2696,18 +2700,25 @@ class Mastodon:
     ###
     # Writing data: Reports
     ###
-    @api_version("1.1.0", "2.5.0", __DICT_VERSION_REPORT)
-    def report(self, account_id, status_ids=None, comment=None, forward=False):
+    @api_version("1.1.0", "3.5.0", __DICT_VERSION_REPORT)
+    def report(self, account_id, status_ids=None, comment=None, forward=False, category=None, rule_ids=None):
         """
         Report statuses to the instances administrators.
 
         Accepts a list of toot IDs associated with the report, and a comment.
 
-        Set forward to True to forward a report of a remote user to that users
+        Starting with Mastodon 3.5.0, you can also pass a `category` (one out of
+        "spam", "violation" or "other") and `rule_ids` (a list of rule IDs corresponding
+        to the rules returned by the `instance()`_ API).
+
+        Set `forward` to True to forward a report of a remote user to that users
         instance as well as sending it to the instance local administrators.
 
         Returns a `report dict`_.
         """
+        if category is not None and not category in ["spam", "violation", "other"]:
+            raise MastodonIllegalArgumentError("Invalid report category (must be spam, violation or other)")
+
         account_id = self.__unpack_id(account_id)
 
         if status_ids is not None:
@@ -3296,6 +3307,39 @@ class Mastodon:
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_HASHTAG)
+    def admin_trending_tags(self, limit=None):
+        """
+        Admin version of `trending_tags()`_. Includes unapproved tags.
+
+        Returns a list of `hashtag dicts`_, sorted by the instance's trending algorithm,
+        descending.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/trends/tags', params)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
+    def admin_trending_statuses(self):
+        """
+        Admin version of `trending_statuses()`_. Includes unapproved tags.
+
+        Returns a list of `toot dicts`_, sorted by the instance's trending algorithm,
+        descending.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/trends/statuses', params)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_CARD)
+    def admin_trending_links(self):
+        """
+        Admin version of `trending_links()`_. Includes unapproved tags.
+
+        Returns a list of `card dicts`_, sorted by the instance's trending algorithm,
+        descending.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/trends/links', params)
 
     ###
     # Push subscription crypto utilities
