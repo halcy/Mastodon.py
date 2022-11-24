@@ -3569,7 +3569,7 @@ class Mastodon:
                         else:
                             json_object[k] = dateutil.parser.parse(v)
                     except:
-                        if isinstance(v, str) and len(x.strip()) == 0:
+                        if isinstance(v, str) and len(v.strip()) == 0:
                             # Pleroma bug workaround: Empty string becomes start of epoch
                             json_object[k] = datetime.datetime.fromtimestamp(0)
                         else:
