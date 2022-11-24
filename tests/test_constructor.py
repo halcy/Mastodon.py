@@ -8,8 +8,10 @@ def test_constructor_from_filenames(tmpdir):
     access = tmpdir.join('access')
     access.write_text(u'baz\n', 'UTF-8')
     api = Mastodon(
-            str(client),
-            access_token=str(access))
+        str(client),
+        access_token=str(access),
+        api_base_url="mastodon.social"
+    )
     assert api.client_id == 'foo'
     assert api.client_secret == 'bar'
     assert api.access_token == 'baz'
