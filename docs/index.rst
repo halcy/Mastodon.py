@@ -882,6 +882,25 @@ Admin account dicts
         'account': # The user's account, as a standard user dict
     }
 
+Admin domain block dicts
+~~~~~~~~~~~~~~~~~~~~~~~~
+.. _domain dicts
+
+.. code-block::python 
+    mastodon.domain_blocks(id=1)
+    #Returns the following dictionary:
+    {
+        'id': #Str. The database id of a domain block,
+        'domain': #Str. The root domain of a block, ie: "example.com",
+        'created_at': #Datetime of the block creation.
+        'severity': #Str. Severity of the domain block, ie: "suspend".
+        'reject_media': #Boolean. True if media is not downloaded from this domain.
+        'reject_reports': #Boolean. True if reports are automatically ignored from this domain.
+        'private_comment': #Str. Private admin comment for a block. None if not set.
+        'public_comment': #Str. Publicly viewable (depending on settings) comment about this domain. None if not set.
+        'obfuscate': #Boolean. True if domain name is obfuscated when listing.
+    }
+
 Status edit dicts
 ~~~~~~~~~~~~~~~~~
 .. _status edit dict:
@@ -1446,6 +1465,10 @@ have admin: scopes attached with a lot of care, but be extra careful with those 
 .. automethod:: Mastodon.admin_trending_tags
 .. automethod:: Mastodon.admin_trending_statuses
 .. automethod:: Mastodon.admin_trending_links
+.. automethod:: Mastodon.admin_domain_blocks
+.. automethod:: Mastodon.admin_domain_block
+.. automethod:: Mastodon.admin_update_domain_block
+.. automethod:: Mastodon.admin_delete_domain_block
 
 Acknowledgements
 ----------------

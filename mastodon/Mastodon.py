@@ -3363,6 +3363,88 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/links', params)
 
+    @api_version("4.0.0","4.0.0","4.0.0")
+    def admin_domain_blocks(self, id:str=None, limit:int=None):
+        """
+        Fetches a list of blocked domains. Requires scope `admin:read:domain_blocks`.
+
+        Provide an `id` to fetch a specific domain block based on its database id.
+
+        Returns a list of `domain dicts`_, or 404 if a domain is queried for and not found.
+        """
+        id = self.__unpack_id(id)
+        if id is not None:
+            return self.__api_request('GET', '/api/v1/admin/domain_blocks/{0}'.format(id))
+        else:
+            params = self.__generate_params(locals(),['limit'])
+            return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
+    
+    @api_version("4.0.0","4.0.0","4.0.0")
+    def admin_domain_block(self, domain:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
+        """
+        Perform a moderation action on a domain. 
+
+        Valid severities are:
+            * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user. 
+            * "suspend" - deny interactions with this instance going forward. This action is reversible.
+            * "limit" - generally used with reject_media=true to force reject media from an instance without silencing or suspending..
+
+        If no action is specified, the domain is only silenced.
+        `domain` is the domain to block. Note that using the top level domain will also imapct all subdomains. ie, example.com will also impact subdomain.example.com.
+        `reject_media` will not download remote media on to your local instance media storage.
+        `reject_reports` ignores all reports from the remote instance.
+        `private_comment` sets a private admin comment for the domain.
+        `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
+        `obfuscate` sensors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
+        """
+        if domain is None:
+            raise AttributeError("Must provide a domain to block a domain")
+
+        params = self.__generate_params(locals())
+
+
+        self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
+
+    @api_version("4.0.0","4.0.0","4.0.0")
+    def admin_update_domain_block(self, id:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
+        """
+        Modify existing moderation action on a domain. 
+
+        Valid severities are:
+            * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user. 
+            * "suspend" - deny interactions with this instance going forward. This action is reversible.
+            * "limit" - generally used with reject_media=true to force reject media from an instance without silencing or suspending.
+
+        If no action is specified, the domain is only silenced.
+        `domain` is the domain to block. Note that using the top level domain will also imapct all subdomains. ie, example.com will also impact subdomain.example.com.
+        `reject_media` will not download remote media on to your local instance media storage.
+        `reject_reports` ignores all reports from the remote instance.
+        `private_comment` sets a private admin comment for the domain.
+        `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
+        `obfuscate` sensors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
+        """
+        if id is None:
+            raise AttributeError("Must provide an id to modify the existing moderation actions on a given domain.")
+
+        params = self.__generate_params(locals())
+
+        self.__api_request('PUT', '/api/v1/admin/domain_blocks/', params)
+
+    @api_version("4.0.0","4.0.0","4.0.0")
+    def admin_delete_domain_blocks(self, id:str=None):
+        """
+        Removes moderation action against a given domain. Requires scope `admin:write:domain_blocks`.
+
+        Provide an `id` to remove a specific domain block based on its database id.
+
+        Returns 200 OK if successful.
+        """
+        id = self.__unpack_id(id)
+        if id is not None:
+            return self.__api_request('DELETE', '/api/v1/admin/domain_blocks/{0}'.format(id))
+        else:
+            raise AttributeError("You must provide an id of an existing domain block to remove it.")
+
     ###
     # Push subscription crypto utilities
     ###
