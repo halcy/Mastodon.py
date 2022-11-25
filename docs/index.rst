@@ -617,8 +617,8 @@ Media dicts
 
     # Focus Metadata dict:
     {
-        'x': Focus point x coordinate (between -1 and 1)
-        'y': Focus point x coordinate (between -1 and 1)
+        'x': # Focus point x coordinate (between -1 and 1)
+        'y': # Focus point x coordinate (between -1 and 1)
     }
 
     # Media colors dict:
@@ -686,9 +686,9 @@ Instance dicts
         'version': # The instance's Mastodon version
         'urls': # Additional URLs dict, presently only 'streaming_api' with the
                 # stream websocket address.
-        'stats: # A dictionary containing three stats, user_count (number of local users),
-                # status_count (number of local statuses) and domain_count (number of known
-                # instance domains other than this one).
+        'stats': # A dictionary containing three stats, user_count (number of local users),
+                 # status_count (number of local statuses) and domain_count (number of known
+                 # instance domains other than this one).
         'contact_account': # User dict of the primary contact for the instance
         'languages': # Array of ISO 639-1 (two-letter) language codes the instance
                      # has chosen to advertise.
@@ -847,7 +847,7 @@ Announcement dicts
         'emojis': # Custom emoji used in the annoucement, as a list of emoji dicts
         'reactions': # Reactions to the annoucement, as a list of reaction dicts (documented inline here):
         [ {
-            'name': '# Name of the custom emoji or unicode emoji of the reaction
+            'name': # Name of the custom emoji or unicode emoji of the reaction
             'count': # Reaction counter (i.e. number of users who have added this reaction)
             'me': # True if the logged-in user has reacted with this emoji, false otherwise
             'url': # URL for the custom emoji image
