@@ -120,3 +120,17 @@ def test_admin_trends(api2):
 def test_admin_accountrequests(api2):
     pass
 
+@pytest.mark.vcr()
+def test_admin_domain_blocks(api2):
+    block = api2.admin_create_domain_block(domain = "https://chitter.xyz/", public_comment="sicko behaviour", severity="suspend")
+    assert isinstance(api2.admin_domain_blocks(), list)
+    block2 = api2.admin_domain_blocks(block)
+    assert block.severity == "suspend"
+    assert block.public_comment == "sicko behaviour"
+    assert block.severity == block2.severity
+    block3 = api2.admin_update_domain_block(block, severity="silence", private_comment="jk ilu <3")
+    assert block3.severity == "silence"
+    assert block3.public_comment == "sicko behaviour"
+    assert block3.private_comment == "jk ilu <3"
+    api2.admin_delete_domain_block(block2)
+    assert not block3.id in map(lambda x: x.id, api2.admin_domain_blocks())

@@ -210,10 +210,20 @@ class Mastodon:
         'admin:read': [
             'admin:read:accounts',
             'admin:read:reports',
+            'admin:read:domain_allows',
+            'admin:read:domain_blocks',
+            'admin:read:ip_blocks',
+            'admin:read:email_domain_blocks',
+            'admin:read:canonical_email_blocks',
         ],
         'admin:write': [
             'admin:write:accounts',
             'admin:write:reports',
+            'admin:write:domain_allows',
+            'admin:write:domain_blocks',
+            'admin:write:ip_blocks',
+            'admin:write:email_domain_blocks',
+            'admin:write:canonical_email_blocks',
         ],
     }
     __VALID_SCOPES = ['read', 'write', 'follow', 'push', 'admin:read', 'admin:write'] + \
@@ -253,6 +263,7 @@ class Mastodon:
     __DICT_VERSION_REACTION = "3.1.0"
     __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
     __DICT_VERSION_STATUS_EDIT = "3.5.0"
+    __DICT_VERSION_ADMIN_DOMAIN_BLOCK = "4.0.0"
 
     ###
     # Registering apps
@@ -3363,26 +3374,26 @@ class Mastodon:
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/links', params)
 
-    @api_version("4.0.0","4.0.0","4.0.0")
-    def admin_domain_blocks(self, id:str=None, limit:int=None):
+    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    def admin_domain_blocks(self, id=None, limit:int=None):
         """
         Fetches a list of blocked domains. Requires scope `admin:read:domain_blocks`.
 
         Provide an `id` to fetch a specific domain block based on its database id.
 
-        Returns a list of `domain dicts`_, or 404 if a domain is queried for and not found.
+        Returns a list of `admin domain block dicts`_, raises a `MastodonAPIError` if the specified block does not exist.
         """
-        id = self.__unpack_id(id)
         if id is not None:
+            id = self.__unpack_id(id)
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/{0}'.format(id))
         else:
             params = self.__generate_params(locals(),['limit'])
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
     
-    @api_version("4.0.0","4.0.0","4.0.0")
-    def admin_domain_block(self, domain:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
+    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    def admin_create_domain_block(self, domain:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
         """
-        Perform a moderation action on a domain. 
+        Perform a moderation action on a domain. Requires scope `admin:write:domain_blocks`.
 
         Valid severities are:
             * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user. 
@@ -3395,20 +3406,19 @@ class Mastodon:
         `reject_reports` ignores all reports from the remote instance.
         `private_comment` sets a private admin comment for the domain.
         `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
-        `obfuscate` sensors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
+        `obfuscate` censors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
+
+        Returns the new domain block as an `admin domain block dict`_.
         """
         if domain is None:
             raise AttributeError("Must provide a domain to block a domain")
-
         params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
 
-
-        self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
-
-    @api_version("4.0.0","4.0.0","4.0.0")
-    def admin_update_domain_block(self, id:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
+    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    def admin_update_domain_block(self, id, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
         """
-        Modify existing moderation action on a domain. 
+        Modify existing moderation action on a domain. Requires scope `admin:write:domain_blocks`.
 
         Valid severities are:
             * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user. 
@@ -3421,27 +3431,28 @@ class Mastodon:
         `reject_reports` ignores all reports from the remote instance.
         `private_comment` sets a private admin comment for the domain.
         `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
-        `obfuscate` sensors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
+        `obfuscate` censors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
+
+        Returns the modified domain block as an `admin domain block dict`_, raises a `MastodonAPIError` if the specified block does not exist.
         """
         if id is None:
             raise AttributeError("Must provide an id to modify the existing moderation actions on a given domain.")
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ["id"])
+        return self.__api_request('PUT', '/api/v1/admin/domain_blocks/{0}'.format(id), params)
 
-        params = self.__generate_params(locals())
-
-        self.__api_request('PUT', '/api/v1/admin/domain_blocks/', params)
-
-    @api_version("4.0.0","4.0.0","4.0.0")
-    def admin_delete_domain_blocks(self, id:str=None):
+    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    def admin_delete_domain_block(self, id=None):
         """
         Removes moderation action against a given domain. Requires scope `admin:write:domain_blocks`.
 
         Provide an `id` to remove a specific domain block based on its database id.
 
-        Returns 200 OK if successful.
+        Raises a `MastodonAPIError` if the specified block does not exist.
         """
-        id = self.__unpack_id(id)
         if id is not None:
-            return self.__api_request('DELETE', '/api/v1/admin/domain_blocks/{0}'.format(id))
+            id = self.__unpack_id(id)
+            self.__api_request('DELETE', '/api/v1/admin/domain_blocks/{0}'.format(id))
         else:
             raise AttributeError("You must provide an id of an existing domain block to remove it.")
 

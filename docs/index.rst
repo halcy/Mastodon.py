@@ -884,9 +884,10 @@ Admin account dicts
 
 Admin domain block dicts
 ~~~~~~~~~~~~~~~~~~~~~~~~
-.. _domain dicts
+.. _admin domain block dict:
 
 .. code-block::python 
+
     mastodon.domain_blocks(id=1)
     #Returns the following dictionary:
     {
@@ -1466,7 +1467,7 @@ have admin: scopes attached with a lot of care, but be extra careful with those 
 .. automethod:: Mastodon.admin_trending_statuses
 .. automethod:: Mastodon.admin_trending_links
 .. automethod:: Mastodon.admin_domain_blocks
-.. automethod:: Mastodon.admin_domain_block
+.. automethod:: Mastodon.admin_create_domain_block
 .. automethod:: Mastodon.admin_update_domain_block
 .. automethod:: Mastodon.admin_delete_domain_block
 
