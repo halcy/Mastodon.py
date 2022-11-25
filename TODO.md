@@ -43,12 +43,12 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 -----
 * [x] Add support for incoming edited posts
 * [x] Add notifications for posts deleted by moderators <- by email. not actually API relevant.
-* [ ] Add explore page with trending posts and links
+* [x] Add explore page with trending posts and links
 * [ ] Add graphs and retention metrics to admin dashboard
 * [ ] Add GET /api/v1/accounts/familiar_followers to REST API
 * [ ] Add POST /api/v1/accounts/:id/remove_from_followers to REST API
-* [ ] Add category and rule_ids params to POST /api/v1/reports IN REST API
-* [ ] Add global lang param to REST API
+* [x] Add category and rule_ids params to POST /api/v1/reports IN REST API
+* [x] Add global lang param to REST API
 * [x] Add types param to GET /api/v1/notifications in REST API
 * [x] Add notifications for moderators about new sign-ups
 * [ ] v2 admin account api
@@ -66,4 +66,4 @@ General improvements that would be good to do before doing another release:
 * [x] Fix the CI
 * [ ] Get test coverage like, real high
 * [x] Add all those streaming events??
-* [ ] Document return values
+* [ ] Document return values (skipping this for a bit to then do it at the end with tooling)

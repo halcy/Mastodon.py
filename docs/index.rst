@@ -1089,6 +1089,9 @@ Reading data: Searching
 Reading data: Trends
 --------------------
 
+.. automethod:: Mastodon.trending_tags
+.. automethod:: Mastodon.trending_statuses
+.. automethod:: Mastodon.trending_links
 .. automethod:: Mastodon.trends
 
 Reading data: Mutes and blocks
@@ -1439,6 +1442,10 @@ have admin: scopes attached with a lot of care, but be extra careful with those 
 .. automethod:: Mastodon.admin_report_unassign
 .. automethod:: Mastodon.admin_report_reopen
 .. automethod:: Mastodon.admin_report_resolve
+
+.. automethod:: Mastodon.admin_trending_tags
+.. automethod:: Mastodon.admin_trending_statuses
+.. automethod:: Mastodon.admin_trending_links
 
 Acknowledgements
 ----------------

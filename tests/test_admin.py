@@ -108,7 +108,14 @@ def test_admin_reports(api, api2, status):
     report2 = api2.admin_report(report)
     assert(report2)
     assert(report2.id == report.id)     
-    
+
+@pytest.mark.vcr()
+def test_admin_trends(api2):
+    assert isinstance(api2.admin_trending_tags(), list)
+    assert isinstance(api2.admin_trending_statuses(), list)
+    assert isinstance(api2.admin_trending_links(), list)
+    assert isinstance(api2.admin_trending_tags(limit=5), list)
+
 @pytest.mark.skip(reason="reject / accept of account requests isn't really testable without modifying instance settings. anyone want to fumble those into the DB setup and write this test, please do.")
 def test_admin_accountrequests(api2):
     pass
