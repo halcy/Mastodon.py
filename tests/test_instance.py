@@ -63,10 +63,6 @@ def test_nodeinfo(api):
     assert nodeinfo.version == '2.0'
     
 @pytest.mark.vcr()
-def test_trends(api):
-    assert isinstance(api.trends(), list)
-    
-@pytest.mark.vcr()
 def test_directory(api):
     directory = api.directory()
     assert directory
