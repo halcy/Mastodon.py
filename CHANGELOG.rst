@@ -10,6 +10,8 @@ v1.8.0 (in progress)
 * Add `lang` parameter and document what it does properly.
 * Add `category` and `rule_ids` to `reports`
 * This too isn't really a changelog entry but in the same vein as the last post, thank you Claire and Gargron for clarifying many things about the API when asked.
+* Make the documentation a bit neater (thanks dieseltravis)
+* Add the domain blocking admin API (`admin_domain_blocks`, `admin_domain_block`, `admin_update_domain_block`, `admin_delete_domain_block` - thanks catgoat)
 
 v1.7.0
 ------
