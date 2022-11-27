@@ -58,8 +58,6 @@ about who helped with which particular feature or fix in the changelog.
 .. _Official Mastodon API docs: https://docs.joinmastodon.org/client/intro/
 
 .. toctree::
-   :maxdepth: -1
-   :collapse_navigation: False
 
    Mastodon.py <self>
    01_general
