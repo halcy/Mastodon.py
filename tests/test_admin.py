@@ -140,8 +140,8 @@ def test_admin_domain_blocks(api2):
 @pytest.mark.vcr()
 def test_admin_stats(api2):
     assert api2.admin_measures(
-        datetime.now() - timedelta(hours=24*5), 
-        datetime.now(), 
+        datetime(2020, 10, 10) - timedelta(hours=24*5), 
+        datetime(2020, 10, 10), 
         active_users=True,
         new_users=True,
         opened_reports=True,
@@ -158,8 +158,8 @@ def test_admin_stats(api2):
     )
 
     assert api2.admin_dimensions(
-        datetime.now() - timedelta(hours=24*5), 
-        datetime.now(),
+        datetime(2020, 10, 10) - timedelta(hours=24*5), 
+        datetime(2020, 10, 10),
         limit=3,
         languages=True,
         sources=True,
@@ -172,13 +172,13 @@ def test_admin_stats(api2):
     )
 
     api2.admin_retention(
-        datetime.now() - timedelta(days=10), 
-        datetime.now()
+        datetime(2020, 10, 10) - timedelta(days=10), 
+        datetime(2020, 10, 10)
     )
 
     with pytest.raises(MastodonIllegalArgumentError):
         api2.admin_retention(
-            datetime.now() - timedelta(days=10), 
-            datetime.now(),
+            datetime(2020, 10, 10) - timedelta(days=10), 
+            datetime(2020, 10, 10),
             frequency="dayz"
         )
