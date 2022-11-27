@@ -459,12 +459,13 @@ class Mastodon:
                     self.api_base_url = try_base_url
 
                 # For EVEN newer vesions, we ALSO ALSO store the client id and secret so that you don't need to reauth to revoke
-                try:
-                    self.client_id = token_file.readline().rstrip()
-                    self.client_secret = token_file.readline().rstrip()
-                except:
-                    pass
-                
+                if self.client_id is None:
+                    try:
+                        self.client_id = token_file.readline().rstrip()
+                        self.client_secret = token_file.readline().rstrip()
+                    except:
+                        pass
+
         # Verify we have a base URL, protocolize
         if self.api_base_url is None:
             raise MastodonIllegalArgumentError("API base URL is required.")        
@@ -1356,6 +1357,19 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
     
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ACCOUNT)
+    def account_familiar_followers(self, id):
+        """
+        Find followers for the account given by id (can be a list) that also follow the
+        logged in account.
+
+        Returns a list of `familiar follower dicts`_
+        """
+        if not isinstance(id, list):
+            id = [id]
+        for i in range(len(id)):
+            id[i] = self.__unpack_id(id[i])
+        return self.__api_request('GET', '/api/v1/accounts/familiar_followers', {'id': id}, use_json=True)
 
     ###
     # Reading data: Featured hashtags

@@ -4,6 +4,7 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.8.0 (in progress)
 --------------------
+* Overall: Support level is now 3.5.3 (last before 4.0.0)
 * BREAKING CHANGE: Switch the base URL to None, throw an error when no base url is passed. Having mastosoc as default was sensible when there were only three mastodon servers. It is not sensible now and trips people up constantly.
 * Fixed an issue with the fix for the Pleroma date bug (thanks adbenitez)
 * Added trending APIs (`trending_tags`, `trending_statuses`, `trending_links`, `admin_trending_tags`, `admin_trending_statuses`, `admin_trending_links`)
@@ -14,6 +15,7 @@ v1.8.0 (in progress)
 * Added the domain blocking admin API (`admin_domain_blocks`, `admin_domain_block`, `admin_update_domain_block`, `admin_delete_domain_block` - thanks catgoat)
 * Added the stats admin APIs (`admin_measures`, `admin_dimensions`, `admin_retention`)
 * Added client auth data to access token file.
+* Added `account_familiar_followers` API
 
 v1.7.0
 ------

@@ -291,3 +291,17 @@ def test_account_lookup(api, api3):
         pass
     assert(api.account_lookup("mastodonpy_test").id == id)
     assert(api.account_lookup("mastodonpy_test@localhost:3000").id == id)
+
+@pytest.mark.vcr()
+def test_account_familiar_followers(api, api2, api3):
+    followers_list = api.account_familiar_followers(api2.me())
+    assert followers_list
+    assert len(followers_list) == 1
+    assert followers_list[0].id == api2.me().id
+    assert "accounts" in followers_list[0]
+
+    followers_list = api.account_familiar_followers([api2.me(), api3.me()])
+    assert followers_list
+    assert len(followers_list) == 2
+    assert followers_list[0].id == api2.me().id
+    assert followers_list[1].id == api3.me().id

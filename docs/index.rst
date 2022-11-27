@@ -864,6 +864,18 @@ Announcement dicts
         } ],
     }
 
+Familiar follower dicts
+~~~~~~~~~~~~~~~~~~~~~~~
+.. _familiar follower dict:
+
+.. code-block:: python
+
+    mastodon.account_familiar_followers(1)[0]
+    # Returns the following dictionary:
+    {
+
+    }
+    
 Admin account dicts
 ~~~~~~~~~~~~~~~~~~~
 .. _admin account dict:
@@ -1087,8 +1099,9 @@ their relationships.
 .. automethod:: Mastodon.account_followers
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.account_search
-.. automethod:: Mastodon.account_lists
 .. automethod:: Mastodon.account_lookup
+.. automethod:: Mastodon.account_lists
+.. automethod:: Mastodon.account_familiar_followers
 
 Reading data: Featured tags
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
