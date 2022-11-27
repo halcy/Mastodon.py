@@ -40,7 +40,6 @@ try:
 except:
     IMPL_HAS_ECE = False
 
-
 IMPL_HAS_BLURHASH = True
 try:
     import blurhash
@@ -262,6 +261,7 @@ class Mastodon:
     __DICT_VERSION_REACTION = "3.1.0"
     __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
     __DICT_VERSION_STATUS_EDIT = "3.5.0"
+    __DICT_VERSION_FAMILIAR_FOLLOWERS = bigger_version("3.5.0", __DICT_VERSION_ACCOUNT)    
     __DICT_VERSION_ADMIN_DOMAIN_BLOCK = "4.0.0"
     __DICT_VERSION_ADMIN_MEASURE = "3.5.0"
     __DICT_VERSION_ADMIN_DIMENSION = "3.5.0"
@@ -1357,7 +1357,7 @@ class Mastodon:
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
     
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ACCOUNT)
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_FAMILIAR_FOLLOWERS)
     def account_familiar_followers(self, id):
         """
         Find followers for the account given by id (can be a list) that also follow the
@@ -2457,8 +2457,19 @@ class Mastodon:
         Returns a `relationship dict`_ containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}/unfollow'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', '/api/v1/accounts/{0}/unfollow'.format(str(id)))
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_RELATIONSHIP)
+    def account_remove_from_followers(self, id):
+        """
+        Remove a user from the logged in users followers (i.e. make them unfollow the logged in
+        user / "softblock" them).
+
+        Returns a `relationship dict`_ reflecting the updated following status.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', '/api/v1/accounts/{0}/remove_from_followers'.format(str(id)))
+    
 
     @api_version("1.0.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
     def account_block(self, id):
@@ -3618,16 +3629,14 @@ class Mastodon:
             raise NotImplementedError(
                 'To use the crypto tools, please install the webpush feature dependencies.')
 
-        push_key_pair = ec.generate_private_key(
-            ec.SECP256R1(), default_backend())
+        push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
         push_key_priv = push_key_pair.private_numbers().private_value
 
         crypto_ver = cryptography.__version__
         if len(crypto_ver) < 5:
             crypto_ver += ".0"
         if bigger_version(crypto_ver, "2.5.0") == crypto_ver:
-            push_key_pub = push_key_pair.public_key().public_bytes(
-                serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
+            push_key_pub = push_key_pair.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
         else:
             push_key_pub = push_key_pair.public_key().public_numbers().encode_point()
         push_shared_secret = os.urandom(16)
@@ -3657,14 +3666,10 @@ class Mastodon:
             raise NotImplementedError(
                 'To use the crypto tools, please install the webpush feature dependencies.')
 
-        salt = self.__decode_webpush_b64(
-            encryption_header.split("salt=")[1].strip())
-        dhparams = self.__decode_webpush_b64(
-            crypto_key_header.split("dh=")[1].split(";")[0].strip())
-        p256ecdsa = self.__decode_webpush_b64(
-            crypto_key_header.split("p256ecdsa=")[1].strip())
-        dec_key = ec.derive_private_key(
-            decrypt_params['privkey'], ec.SECP256R1(), default_backend())
+        salt = self.__decode_webpush_b64(encryption_header.split("salt=")[1].strip())
+        dhparams = self.__decode_webpush_b64(crypto_key_header.split("dh=")[1].split(";")[0].strip())
+        p256ecdsa = self.__decode_webpush_b64(crypto_key_header.split("p256ecdsa=")[1].strip())
+        dec_key = ec.derive_private_key(decrypt_params['privkey'], ec.SECP256R1(), default_backend())
         decrypted = http_ece.decrypt(
             data,
             salt=salt,
@@ -3703,8 +3708,7 @@ class Mastodon:
                 'To use the blurhash functions, please install the blurhash Python module.')
 
         # Figure out what size to decode to
-        decode_components_x, decode_components_y = blurhash.components(
-            media_dict["blurhash"])
+        decode_components_x, decode_components_y = blurhash.components(media_dict["blurhash"])
         if size_per_component:
             decode_size_x = decode_components_x * out_size[0]
             decode_size_y = decode_components_y * out_size[1]
@@ -3713,8 +3717,7 @@ class Mastodon:
             decode_size_y = out_size[1]
 
         # Decode
-        decoded_image = blurhash.decode(
-            media_dict["blurhash"], decode_size_x, decode_size_y, linear=return_linear)
+        decoded_image = blurhash.decode(media_dict["blurhash"], decode_size_x, decode_size_y, linear=return_linear)
 
         # And that's pretty much it.
         return decoded_image

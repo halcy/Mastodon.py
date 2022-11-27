@@ -16,6 +16,7 @@ v1.8.0 (in progress)
 * Added the stats admin APIs (`admin_measures`, `admin_dimensions`, `admin_retention`)
 * Added client auth data to access token file.
 * Added `account_familiar_followers` API
+* Added `account_remove_from_followers` API
 
 v1.7.0
 ------

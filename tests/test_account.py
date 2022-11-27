@@ -33,7 +33,6 @@ def test_account_relationships(api):
     assert isinstance(relationships, list)
     assert len(relationships) == 1
 
-
 @pytest.mark.vcr()
 def test_account_search(api):
     results = api.account_search('admin')
@@ -305,3 +304,10 @@ def test_account_familiar_followers(api, api2, api3):
     assert len(followers_list) == 2
     assert followers_list[0].id == api2.me().id
     assert followers_list[1].id == api3.me().id
+
+@pytest.mark.vcr()
+def test_account_remove_from_followers(api, api2):
+    api.account_follow(api2.me())
+    assert api.account_relationships(api2.me())[0].following == True
+    api2.account_remove_from_followers(api.me())
+    assert api.account_relationships(api2.me())[0].following == False

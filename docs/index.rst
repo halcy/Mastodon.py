@@ -1102,6 +1102,7 @@ their relationships.
 .. automethod:: Mastodon.account_lookup
 .. automethod:: Mastodon.account_lists
 .. automethod:: Mastodon.account_familiar_followers
+.. automethod:: Mastodon.account_remove_from_followers
 
 Reading data: Featured tags
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
