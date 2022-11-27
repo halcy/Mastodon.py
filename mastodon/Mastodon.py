@@ -900,7 +900,7 @@ class Mastodon:
 
         May or may not require authentication depending on server settings and what is specifically requested.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -935,7 +935,7 @@ class Mastodon:
         """
         Convenience method: Fetches the logged-in user's home timeline (i.e. followed users and self). Params as in `timeline()`.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         return self.timeline('home', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
@@ -944,7 +944,7 @@ class Mastodon:
         """
         Convenience method: Fetches the local / instance-wide timeline, not including replies. Params as in `timeline()`.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         return self.timeline('local', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media)
 
@@ -953,7 +953,7 @@ class Mastodon:
         """
         Convenience method: Fetches the public / visible-network / federated timeline, not including replies. Params as in `timeline()`.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         return self.timeline('public', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
@@ -963,7 +963,7 @@ class Mastodon:
         Convenience method: Fetch a timeline of toots with a given hashtag. The hashtag parameter
         should not contain the leading #. Params as in `timeline()`.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         if hashtag.startswith("#"):
             raise MastodonIllegalArgumentError(
@@ -975,7 +975,7 @@ class Mastodon:
         """
         Convenience method: Fetches a timeline containing all the toots by users in a given list. Params as in `timeline()`.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         id = self.__unpack_id(id)
         return self.timeline('list/{0}'.format(id), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
@@ -1009,7 +1009,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a `toot dict`_.
+        Returns a `status dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
@@ -1024,7 +1024,7 @@ class Mastodon:
         Does not require authentication for publicly visible statuses.
 
         This function is deprecated as of 3.0.0 and the endpoint does not
-        exist anymore - you should just use the "card" field of the toot dicts
+        exist anymore - you should just use the "card" field of the status dicts
         instead. Mastodon.py will try to mimic the old behaviour, but this
         is somewhat inefficient and not guaranteed to be the case forever.
 
@@ -1057,7 +1057,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
@@ -1070,7 +1070,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourited_by'.format(str(id))
@@ -1084,7 +1084,7 @@ class Mastodon:
         """
         Fetch a list of scheduled statuses
 
-        Returns a list of `scheduled toot dicts`_.
+        Returns a list of `scheduled status dicts`_.
         """
         return self.__api_request('GET', '/api/v1/scheduled_statuses')
 
@@ -1093,7 +1093,7 @@ class Mastodon:
         """
         Fetch information about the scheduled status with the given id.
 
-        Returns a `scheduled toot dict`_.
+        Returns a `scheduled status dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
@@ -1183,7 +1183,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible accounts.
 
-        Returns a `user dict`_.
+        Returns a `account dict`_.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}'.format(str(id))
@@ -1194,7 +1194,7 @@ class Mastodon:
         """
         Fetch logged-in user's account information.
 
-        Returns a `user dict`_ (Starting from 2.1.0, with an additional "source" field).
+        Returns a `account dict`_ (Starting from 2.1.0, with an additional "source" field).
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
@@ -1225,7 +1225,7 @@ class Mastodon:
         Does not require authentication for Mastodon versions after 2.7.0 (returns
         publicly visible statuses in that case), for publicly visible accounts.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -1255,7 +1255,7 @@ class Mastodon:
         """
         Fetch users the given user is following.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -1276,7 +1276,7 @@ class Mastodon:
         """
         Fetch users the given user is followed by.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -1312,7 +1312,7 @@ class Mastodon:
         in the username@domain format and not yet in the database. Set `following` to
         True to limit the search to users the logged-in user follows.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         params = self.__generate_params(locals())
 
@@ -1435,7 +1435,7 @@ class Mastodon:
         """
         Fetch follow suggestions for the logged-in user.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
 
         """
         return self.__api_request('GET', '/api/v1/suggestions')
@@ -1457,7 +1457,7 @@ class Mastodon:
 
         `local` True to return only local accounts.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
 
         """
         params = self.__generate_params(locals())
@@ -1471,7 +1471,7 @@ class Mastodon:
         """
         Fetch list of users endorsed by the logged-in user.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
 
         """
         return self.__api_request('GET', '/api/v1/endorsements')
@@ -1607,7 +1607,7 @@ class Mastodon:
 
         Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
-        Returns a list of `toot dicts`_, sorted by the instances's trending algorithm,
+        Returns a list of `status dicts`_, sorted by the instances's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -1654,7 +1654,7 @@ class Mastodon:
         """
         Get the accounts that are on the given list.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         id = self.__unpack_id(id)
 
@@ -1678,7 +1678,7 @@ class Mastodon:
         """
         Fetch a list of users muted by the logged-in user.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1697,7 +1697,7 @@ class Mastodon:
         """
         Fetch a list of users blocked by the logged-in user.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1736,7 +1736,7 @@ class Mastodon:
         """
         Fetch the logged-in user's favourited statuses.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1758,7 +1758,7 @@ class Mastodon:
         """
         Fetch the logged-in user's incoming follow requests.
 
-        Returns a list of `user dicts`_.
+        Returns a list of `account dicts`_.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1886,7 +1886,7 @@ class Mastodon:
         """
         Get a list of statuses bookmarked by the logged-in user.
 
-        Returns a list of `toot dicts`_.
+        Returns a list of `status dicts`_.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -2023,7 +2023,7 @@ class Mastodon:
 
         Pass a datetime as `scheduled_at` to schedule the toot for a specific time
         (the time must be at least 5 minutes into the future). If this is passed,
-        status_post returns a `scheduled toot dict`_ instead.
+        status_post returns a `scheduled status dict`_ instead.
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
         constructed using `make_poll()`_ . Note that as of Mastodon version
@@ -2038,7 +2038,7 @@ class Mastodon:
         **Specific to "fedibird" feature set:**: The `quote_id` parameter is
         a non-standard extension that specifies the id of a quoted status.
 
-        Returns a `toot dict`_ with the new status.
+        Returns a `status dict`_ with the new status.
         """
         return self.__status_internal( 
             status, 
@@ -2063,7 +2063,7 @@ class Mastodon:
 
         Usage in production code is not recommended.
 
-        Returns a `toot dict`_ with the new status.
+        Returns a `status dict`_ with the new status.
         """
         return self.status_post(status)
 
@@ -2187,7 +2187,7 @@ class Mastodon:
         The visibility parameter functions the same as in `status_post()`_ and
         allows you to reduce the visibility of a reblogged status.
 
-        Returns a `toot dict`_ with a new status that wraps around the reblogged one.
+        Returns a `status dict`_ with a new status that wraps around the reblogged one.
         """
         params = self.__generate_params(locals(), ['id'])
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
@@ -2206,7 +2206,7 @@ class Mastodon:
         """
         Un-reblog a status.
 
-        Returns a `toot dict`_ with the status that used to be reblogged.
+        Returns a `status dict`_ with the status that used to be reblogged.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
@@ -2217,7 +2217,7 @@ class Mastodon:
         """
         Favourite a status.
 
-        Returns a `toot dict`_ with the favourited status.
+        Returns a `status dict`_ with the favourited status.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourite'.format(str(id))
@@ -2228,7 +2228,7 @@ class Mastodon:
         """
         Un-favourite a status.
 
-        Returns a `toot dict`_ with the un-favourited status.
+        Returns a `status dict`_ with the un-favourited status.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
@@ -2239,7 +2239,7 @@ class Mastodon:
         """
         Mute notifications for a status.
 
-        Returns a `toot dict`_ with the now muted status
+        Returns a `status dict`_ with the now muted status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/mute'.format(str(id))
@@ -2250,7 +2250,7 @@ class Mastodon:
         """
         Unmute notifications for a status.
 
-        Returns a `toot dict`_ with the status that used to be muted.
+        Returns a `status dict`_ with the status that used to be muted.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unmute'.format(str(id))
@@ -2261,7 +2261,7 @@ class Mastodon:
         """
         Pin a status for the logged-in user.
 
-        Returns a `toot dict`_ with the now pinned status
+        Returns a `status dict`_ with the now pinned status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/pin'.format(str(id))
@@ -2272,7 +2272,7 @@ class Mastodon:
         """
         Unpin a pinned status for the logged-in user.
 
-        Returns a `toot dict`_ with the status that used to be pinned.
+        Returns a `status dict`_ with the status that used to be pinned.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unpin'.format(str(id))
@@ -2283,7 +2283,7 @@ class Mastodon:
         """
         Bookmark a status as the logged-in user.
 
-        Returns a `toot dict`_ with the now bookmarked status
+        Returns a `status dict`_ with the now bookmarked status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/bookmark'.format(str(id))
@@ -2294,7 +2294,7 @@ class Mastodon:
         """
         Unbookmark a bookmarked status for the logged-in user.
 
-        Returns a `toot dict`_ with the status that used to be bookmarked.
+        Returns a `status dict`_ with the status that used to be bookmarked.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unbookmark'.format(str(id))
@@ -2310,7 +2310,7 @@ class Mastodon:
 
         New time must be at least 5 minutes into the future.
 
-        Returns a `scheduled toot dict`_
+        Returns a `scheduled status dict`_
         """
         scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         id = self.__unpack_id(id)
@@ -2420,7 +2420,7 @@ class Mastodon:
         """
         Follow a remote user by uri (username@domain).
 
-        Returns a `user dict`_.
+        Returns a `account dict`_.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/follows', params)
@@ -2508,7 +2508,7 @@ class Mastodon:
         `fields` can be a list of up to four name-value pairs (specified as tuples) to
         appear as semi-structured information in the user's profile.
 
-        Returns the updated `user dict` of the logged-in user.
+        Returns the updated `account dict` of the logged-in user.
         """
         params_initial = collections.OrderedDict(locals())
 
@@ -2567,7 +2567,7 @@ class Mastodon:
         """
         Set a note (visible to the logged in user only) for the given account.
 
-        Returns a `toot dict`_ with the `note` updated.
+        Returns a `status dict`_ with the `note` updated.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
@@ -3357,7 +3357,7 @@ class Mastodon:
         """
         Admin version of `trending_statuses()`_. Includes unapproved tags.
 
-        Returns a list of `toot dicts`_, sorted by the instance's trending algorithm,
+        Returns a list of `status dicts`_, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())

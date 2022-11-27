@@ -254,6 +254,9 @@ and everything will work as intended. The class used for this is exposed as
 User / account dicts
 ~~~~~~~~~~~~~~~~~~~~
 .. _user dict:
+.. _user dicts:
+.. _account dict:
+.. _account dicts:
 
 .. code-block:: python
 
@@ -299,9 +302,12 @@ User / account dicts
         'note': # Plain text version of the user's bio
     }
 
-Toot dicts
+Toot / Status dicts
 ~~~~~~~~~~
 .. _toot dict:
+.. _toot dicts:
+.. _status dict:
+.. _status dicts:
 
 .. code-block:: python
 
@@ -1232,6 +1238,7 @@ interact with already posted statuses.
 .. automethod:: Mastodon.status_bookmark
 .. automethod:: Mastodon.status_unbookmark
 .. automethod:: Mastodon.status_delete
+.. _status_update():    
 .. automethod:: Mastodon.status_update
 
 
@@ -1268,6 +1275,7 @@ Writing data: Accounts
 These functions allow you to interact with other accounts: To (un)follow and
 (un)block.
 
+.. _account_follow():
 .. automethod:: Mastodon.account_follow
 .. automethod:: Mastodon.account_unfollow
 .. automethod:: Mastodon.account_block
