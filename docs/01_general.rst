@@ -1,3 +1,6 @@
+General information
+===================
+
 Rate limiting
 -------------
 Mastodon's API rate limits per user account. By default, the limit is 300 requests
@@ -116,6 +119,34 @@ you can also just write
     mastodon.status_post("@somebody wow!", in_reply_to_id = toot)
 
 and everything will work as intended.
+
+Versioning
+----------
+Mastodon.py will check if a certain endpoint is available before doing API
+calls. By default, it checks against the version of Mastodon retrieved on
+init(), or the version you specified. Mastodon.py can be set (in the
+constructor) to either check if an endpoint is available at all (this is the
+default) or to check if the endpoint is available and behaves as in the newest
+Mastodon version (with regards to parameters as well as return values).
+Version checking can also be disabled altogether. If a version check fails,
+Mastodon.py throws a `MastodonVersionError`.
+
+Some functions need to check what version of Mastodon they are talking to.
+These will generally use a cached version to avoid sending a lot of pointless
+requests.
+
+Many non-mainline forks have various different formats for their versions and
+they have different, incompatible ideas about how to report version. Mastodon.py
+tries its best to figure out what is going on, but success is not guaranteed.
+
+With the following functions, you can make Mastodon.py re-check the server
+version or explicitly determine if a specific minimum Version is available.
+Long-running applications that aim to support multiple Mastodon versions
+should do this from time to time in case a server they are running against
+updated.
+
+.. automethod:: Mastodon.retrieve_mastodon_version
+.. automethod:: Mastodon.verify_minimum_version
 
 A brief note on block lists
 ---------------------------

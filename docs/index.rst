@@ -58,6 +58,13 @@ about who helped with which particular feature or fix in the changelog.
 .. _Official Mastodon API docs: https://docs.joinmastodon.org/client/intro/
 
 .. toctree::
+    :caption: Introduction
+    Mastodon.py <self>
+    01_general
+    02_return_values
+    03_errors
 
-   Mastodon.py <self>
-   01_general
+.. toctree::
+    :caption: API methods
+    Mastodon.py <self>
+    04_auth
