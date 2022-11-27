@@ -23,15 +23,8 @@ Then login. This can be done every time, or you can use the persisted informatio
 
    from mastodon import Mastodon
 
-   mastodon = Mastodon(
-       client_id = 'pytooter_clientcred.secret',
-       api_base_url = 'https://mastodon.social'
-   )
-   mastodon.log_in(
-       'my_login_email@example.com',
-       'incrediblygoodpassword',
-       to_file = 'pytooter_usercred.secret'
-   )
+   mastodon = Mastodon(client_id = 'pytooter_clientcred.secret',)
+   mastodon.log_in('my_login_email@example.com', 'incrediblygoodpassword', to_file = 'pytooter_usercred.secret')
 
 To post, create an actual API instance:
 
@@ -39,19 +32,13 @@ To post, create an actual API instance:
 
    from mastodon import Mastodon
 
-   mastodon = Mastodon(
-       access_token = 'pytooter_usercred.secret',
-       api_base_url = 'https://mastodon.social'
-   )
+   mastodon = Mastodon(access_token = 'pytooter_usercred.secret')
    mastodon.toot('Tooting from Python using #mastodonpy !')
 
 `Mastodon`_ is an ActivityPub-based Twitter-like federated social
 network node. It has an API that allows you to interact with its
 every aspect. This is a simple Python wrapper for that API, provided
-as a single Python module. By default, it talks to the
-`Mastodon flagship instance`_, but it can be set to talk to any
-node running Mastodon by setting `api_base_url` when creating the
-API object (or creating an app).
+as a single Python module.
 
 Mastodon.py aims to implement the complete public Mastodon API. As
 of this time, it is feature complete for Mastodon version 3.5.0. The
@@ -1030,6 +1017,7 @@ Reading data: Instances
 These functions allow you to fetch information associated with the
 current instance.
 
+.. _instance():
 .. automethod:: Mastodon.instance
 .. automethod:: Mastodon.instance_activity
 .. automethod:: Mastodon.instance_peers
@@ -1159,8 +1147,11 @@ Reading data: Searching
 Reading data: Trends
 --------------------
 
+.. _trending_tags():
 .. automethod:: Mastodon.trending_tags
+.. _trending_statuses():
 .. automethod:: Mastodon.trending_statuses
+.. _trending_links():    
 .. automethod:: Mastodon.trending_links
 .. automethod:: Mastodon.trends
 
