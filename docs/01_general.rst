@@ -158,4 +158,5 @@ that, at all.
 Those instances are now all gone, any point that could have been has been made, and 
 there is no list anymore.
 
-Trans rights are human rights. 
+.. note::
+   Trans rights are human rights. 
