@@ -137,7 +137,7 @@ def test_admin_domain_blocks(api2):
     api2.admin_delete_domain_block(block2)
     assert not block3.id in map(lambda x: x.id, api2.admin_domain_blocks())
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['path'])
 def test_admin_stats(api2):
     assert api2.admin_measures(
         datetime(2020, 10, 10) - timedelta(hours=24*5), 
