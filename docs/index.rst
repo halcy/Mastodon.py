@@ -59,6 +59,7 @@ about who helped with which particular feature or fix in the changelog.
 
 .. toctree::
     :caption: Introduction
+
     Mastodon.py <self>
     01_general
     02_return_values
@@ -66,5 +67,5 @@ about who helped with which particular feature or fix in the changelog.
 
 .. toctree::
     :caption: API methods
-    Mastodon.py <self>
+
     04_auth
