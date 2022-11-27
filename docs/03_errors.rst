@@ -1,5 +1,8 @@
 Error handling
 ==============
+.. py:module:: mastodon
+.. py:class: Mastodon
+
 When Mastodon.py encounters an error, it will raise an exception, generally with
 some text included to tell you what went wrong.
 

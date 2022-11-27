@@ -1,5 +1,7 @@
 App registration and user authentication
 ========================================
+.. py:module:: mastodon
+.. py:class: Mastodon
 
 Before you can use the Mastodon API, you have to register your
 application (which gets you a client key and client secret)

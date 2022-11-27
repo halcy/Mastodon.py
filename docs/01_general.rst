@@ -1,5 +1,7 @@
 General information
 ===================
+.. py:module:: mastodon
+.. py:class: Mastodon
 
 Rate limiting
 -------------

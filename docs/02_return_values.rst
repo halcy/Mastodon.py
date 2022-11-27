@@ -1,5 +1,7 @@
 Return values
 =============
+.. py:module:: mastodon
+.. py:class: Mastodon
 
 Unless otherwise specified, all data is returned as Python dictionaries, matching
 the JSON format used by the API. Dates returned by the API are in ISO 8601 format
