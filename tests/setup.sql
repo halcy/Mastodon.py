@@ -27,6 +27,11 @@ UPDATE users SET
     encrypted_password = '$2a$10$8eAdhF69RiZiV0puZ.8iOOgMqBACmwJu8Z9X4CiN91iwRXbeC2jvi'
 WHERE email = 'mastodonpy_test_2@localhost:3000';
 
+UPDATE users SET
+    locale = 'de',
+    encrypted_password = '$2a$10$8eAdhF69RiZiV0puZ.8iOOgMqBACmwJu8Z9X4CiN91iwRXbeC2jvi'
+WHERE email = 'zerocool@example.com';
+
 INSERT INTO oauth_applications (
     id,
     name,

@@ -108,7 +108,6 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                     raise MastodonVersionError(
                         "Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
-                    print(self.mastodon_minor)
                     raise MastodonVersionError(
                         "Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
@@ -264,6 +263,9 @@ class Mastodon:
     __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
     __DICT_VERSION_STATUS_EDIT = "3.5.0"
     __DICT_VERSION_ADMIN_DOMAIN_BLOCK = "4.0.0"
+    __DICT_VERSION_ADMIN_MEASURE = "3.5.0"
+    __DICT_VERSION_ADMIN_DIMENSION = "3.5.0"
+    __DICT_VERSION_ADMIN_RETENTION = "3.5.0"
 
     ###
     # Registering apps
@@ -432,7 +434,6 @@ class Mastodon:
                     try_base_url = secret_file.readline().rstrip()
                     if try_base_url is not None and len(try_base_url) != 0:
                         try_base_url = Mastodon.__protocolize(try_base_url)
-                        print(self.api_base_url, try_base_url)
                         if not (self.api_base_url is None or try_base_url == self.api_base_url):
                             raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                         self.api_base_url = try_base_url
@@ -544,7 +545,6 @@ class Mastodon:
         We parse this from the hopefully present "Date" header, but make no effort to compensate for latency.
         """
         response = self.__api_request("HEAD", "/", return_response_object=True)
-        print(response.headers)
         if 'Date' in response.headers:
             server_time_datetime = dateutil.parser.parse(response.headers['Date'])
 
@@ -3456,6 +3456,130 @@ class Mastodon:
         else:
             raise AttributeError("You must provide an id of an existing domain block to remove it.")
 
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ADMIN_MEASURE)
+    def admin_measures(self, start_at, end_at, active_users=False, new_users=False, interactions=False, opened_reports = False, resolved_reports=False,
+                        tag_accounts=None, tag_uses=None, tag_servers=None, instance_accounts=None, instance_media_attachments=None, instance_reports=None,
+                        instance_statuses=None, instance_follows=None, instance_followers=None):
+        """
+        Retrieves numerical instance information for the time period (at day granularity) between `start_at` and `end_at`.
+
+            * `active_users`: Pass true to retrieve the number of active users on your instance within the time period
+            * `new_users`: Pass true to retrieve the number of users who joined your instance within the time period
+            * `interactions`: Pass true to retrieve the number of interactions (favourites, boosts, replies) on local statuses within the time period
+            * `opened_reports`: Pass true to retrieve the number of reports filed within the time period
+            * `resolved_reports` = Pass true to retrieve the number of reports resolved within the time period
+            * `tag_accounts`: Pass a tag ID to get the number of accounts which used that tag in at least one status within the time period
+            * `tag_uses`: Pass a tag ID to get the number of statuses which used that tag within the time period
+            * `tag_servers`: Pass a tag ID to to get the number of remote origin servers for statuses which used that tag within the time period
+            * `instance_accounts`: Pass a domain to get the number of accounts originating from that remote domain within the time period
+            * `instance_media_attachments`: Pass a domain to get the amount of space used by media attachments from that remote domain within the time period
+            * `instance_reports`: Pass a domain to get the number of reports filed against accounts from that remote domain within the time period
+            * `instance_statuses`: Pass a domain to get the number of statuses originating from that remote domain within the time period
+            * `instance_follows`: Pass a domain to get the number of accounts from a remote domain followed by that local user within the time period
+            * `instance_followers`: Pass a domain to get the number of local accounts followed by accounts from that remote domain within the time period
+
+        This API call is relatively expensive - watch your servers load if you want to get a lot of statistical data. Especially the instance_statuses stats
+        might take a long time to compute and, in fact, time out.
+
+        There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
+        release.
+
+        Returns a list of `admin measure dicts`_.
+        """
+        params_init = locals()
+        keys = []
+        for key in ["active_users", "new_users", "interactions", "opened_reports", "resolved_reports"]:
+            if params_init[key] == True:
+                keys.append(key)
+        
+        params = {}
+        for key in ["tag_accounts", "tag_uses", "tag_servers"]:
+            if params_init[key] is not None:
+                keys.append(key)
+                params[key] = {"id": self.__unpack_id(params_init[key])}
+        for key in ["instance_accounts", "instance_media_attachments", "instance_reports", "instance_statuses", "instance_follows", "instance_followers"]:
+            if params_init[key] is not None:
+                keys.append(key)
+                params[key] = {"domain": Mastodon.__deprotocolize(params_init[key]).split("/")[0]}
+
+        if len(keys) == 0:
+            raise MastodonIllegalArgumentError("Must request at least one metric.")
+
+        params["keys"] = keys
+        params["start_at"] = self.__consistent_isoformat_utc(start_at)
+        params["end_at"] = self.__consistent_isoformat_utc(end_at)
+        
+        return self.__api_request('POST', '/api/v1/admin/measures', params, use_json=True)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ADMIN_DIMENSION)
+    def admin_dimensions(self, start_at, end_at, limit=None, languages=False, sources=False, servers=False, space_usage=False, software_versions=False,
+                            tag_servers=None, tag_languages=None, instance_accounts=None, instance_languages=None):
+        """
+        Retrieves primarily categorical instance information for the time period (at day granularity) between `start_at` and `end_at`.
+
+            * `languages`: Pass true to get the most-used languages on this server
+            * `sources`: Pass true to get the most-used client apps on this server
+            * `servers`: Pass true to get the remote servers with the most statuses
+            * `space_usage`: Pass true to get the how much space is used by different components your software stack
+            * `software_versions`: Pass true to get the version numbers for your software stack
+            * `tag_servers`: Pass a tag ID to get the most-common servers for statuses including a trending tag
+            * `tag_languages`: Pass a tag ID to get the most-used languages for statuses including a trending tag
+            * `instance_accounts`: Pass a domain to get the most-followed accounts from a remote server
+            * `instance_languages`: Pass a domain to get the most-used languages from a remote server
+
+        Pass `limit` to set how many results you want on queries where that makes sense.
+
+        This API call is relatively expensive - watch your servers load if you want to get a lot of statistical data.
+
+        There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
+        release.
+
+        Returns a list of `admin dimensions dicts`_.
+        """
+        params_init = locals()
+        keys = []
+        for key in ["languages", "sources", "servers", "space_usage", "software_versions"]:
+            if params_init[key] == True:
+                keys.append(key)
+        
+        params = {}
+        for key in ["tag_servers", "tag_languages"]:
+            if params_init[key] is not None:
+                keys.append(key)
+                params[key] = {"id": self.__unpack_id(params_init[key])}
+        for key in ["instance_accounts", "instance_languages"]:
+            if params_init[key] is not None:
+                keys.append(key)
+                params[key] = {"domain": Mastodon.__deprotocolize(params_init[key]).split("/")[0]}
+
+        if len(keys) == 0:
+            raise MastodonIllegalArgumentError("Must request at least one dimension.")
+
+        params["keys"] = keys
+        if limit is not None:
+            params["limit"] = limit
+        params["start_at"] = self.__consistent_isoformat_utc(start_at)
+        params["end_at"] = self.__consistent_isoformat_utc(end_at)
+        
+        return self.__api_request('POST', '/api/v1/admin/dimensions', params, use_json=True)
+
+    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ADMIN_RETENTION)
+    def admin_retention(self, start_at, end_at, frequency="day"):
+        """
+        Gets user retention statistics (at `frequency` - "day" or "month" - granularity) between `start_at` and `end_at`.
+
+        Returns a list of `admin retention dicts`_
+        """
+        if not frequency in ["day", "month"]:
+            raise MastodonIllegalArgumentError("Frequency must be day or month")
+
+        params = {
+            "start_at": self.__consistent_isoformat_utc(start_at),
+            "end_at": self.__consistent_isoformat_utc(end_at),
+            "frequency": frequency
+        }
+        return self.__api_request('POST', '/api/v1/admin/retention', params)
+
     ###
     # Push subscription crypto utilities
     ###
@@ -3942,7 +4066,6 @@ class Mastodon:
             if not response_object.ok:
                 try:
                     response = response_object.json(object_hook=self.__json_hooks)
-                    print(response)
                     if isinstance(response, dict) and 'error' in response:
                         error_msg = response['error']
                     elif isinstance(response, str):
@@ -4348,6 +4471,14 @@ class Mastodon:
         base_url = base_url.rstrip("/")
         return base_url
 
+    @staticmethod
+    def __deprotocolize(base_url):
+        """Internal helper to strip http and https from a URL"""
+        if base_url.startswith("http://"):
+            base_url = base_url[7:]
+        elif base_url.startswith("https://") or base_url.startswith("onion://"):
+            base_url = base_url[8:]
+        return base_url
 
 ##
 # Exceptions

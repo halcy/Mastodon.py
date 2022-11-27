@@ -1,5 +1,7 @@
 import pytest
 import time
+from datetime import datetime, timedelta
+from mastodon import MastodonIllegalArgumentError
 
 @pytest.mark.vcr()
 def test_admin_accounts(api2):
@@ -134,3 +136,49 @@ def test_admin_domain_blocks(api2):
     assert block3.private_comment == "jk ilu <3"
     api2.admin_delete_domain_block(block2)
     assert not block3.id in map(lambda x: x.id, api2.admin_domain_blocks())
+
+@pytest.mark.vcr()
+def test_admin_stats(api2):
+    assert api2.admin_measures(
+        datetime.now() - timedelta(hours=24*5), 
+        datetime.now(), 
+        active_users=True,
+        new_users=True,
+        opened_reports=True,
+        resolved_reports=True,
+        instance_accounts="chitter.xyz",
+        instance_media_attachments="chitter.xyz",
+        instance_reports="http://chitter.xyz/",
+        instance_statuses="chitter.xyz",
+        instance_follows="http://chitter.xyz",
+        instance_followers="chitter.xyz",
+        #tag_accounts=0,
+        #tag_uses=0,
+        #tag_servers=0,
+    )
+
+    assert api2.admin_dimensions(
+        datetime.now() - timedelta(hours=24*5), 
+        datetime.now(),
+        limit=3,
+        languages=True,
+        sources=True,
+        servers=True,
+        space_usage=True,
+        #tag_servers=0,
+        #tag_languages=0,
+        instance_accounts="chitter.xyz",
+        instance_languages="https://chitter.xyz"
+    )
+
+    api2.admin_retention(
+        datetime.now() - timedelta(days=10), 
+        datetime.now()
+    )
+
+    with pytest.raises(MastodonIllegalArgumentError):
+        api2.admin_retention(
+            datetime.now() - timedelta(days=10), 
+            datetime.now(),
+            frequency="dayz"
+        )

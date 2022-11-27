@@ -345,6 +345,18 @@ Toot dicts
         'poll': # A poll dict if a poll is attached to this status.
     }
 
+Status edit dicts
+~~~~~~~~~~~~~~~~~
+.. _status edit dict:
+
+.. code-block:: python
+
+    mastodonstatus_history(id)[0]
+    # Returns the following dictionary
+    {
+        TODO
+    }
+
 Mention dicts
 ~~~~~~~~~~~~~
 .. _mention dict:
@@ -902,13 +914,37 @@ Admin domain block dicts
         'obfuscate': #Boolean. True if domain name is obfuscated when listing.
     }
 
-Status edit dicts
-~~~~~~~~~~~~~~~~~
-.. _status edit dict:
+Admin measure dicts
+~~~~~~~~~~~~~~~~~~~
+.. _admin measure dict:
 
 .. code-block:: python
 
-    mastodonstatus_history(id)[0]
+    api.admin_measures(datetime.now() - timedelta(hours=24*5), datetime.now(), active_users=True)
+    # Returns the following dictionary
+    {
+        TODO
+    }
+
+Admin dimension dicts
+~~~~~~~~~~~~~~~~~~~~~
+.. _admin dimension dict:
+
+.. code-block:: python
+
+    api.admin_dimensions(datetime.now() - timedelta(hours=24*5), datetime.now(), languages=True)
+    # Returns the following dictionary
+    {
+        TODO
+    }
+
+Admin retention dicts
+~~~~~~~~~~~~~~~~~~~~~
+.. _admin retention dict:
+
+.. code-block:: python
+
+    api.admin_retention(datetime.now() - timedelta(hours=24*5), datetime.now())
     # Returns the following dictionary
     {
         TODO
@@ -1470,6 +1506,11 @@ have admin: scopes attached with a lot of care, but be extra careful with those 
 .. automethod:: Mastodon.admin_create_domain_block
 .. automethod:: Mastodon.admin_update_domain_block
 .. automethod:: Mastodon.admin_delete_domain_block
+
+.. automethod:: Mastodon.admin_measures
+.. automethod:: Mastodon.admin_dimensions
+.. automethod:: Mastodon.admin_retention
+
 
 Acknowledgements
 ----------------

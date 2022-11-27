@@ -44,7 +44,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [x] Add support for incoming edited posts
 * [x] Add notifications for posts deleted by moderators <- by email. not actually API relevant.
 * [x] Add explore page with trending posts and links
-* [ ] Add graphs and retention metrics to admin dashboard
+* [x] Add graphs and retention metrics to admin dashboard
 * [ ] Add GET /api/v1/accounts/familiar_followers to REST API
 * [ ] Add POST /api/v1/accounts/:id/remove_from_followers to REST API
 * [x] Add category and rule_ids params to POST /api/v1/reports IN REST API
@@ -55,7 +55,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 
 3.5.3
 -----
-* [ ] Add limited attribute to accounts in REST API
+* [later with tool to update dicts] Add limited attribute to accounts in REST API
 
 4.0.0 and beyond
 ----------------
