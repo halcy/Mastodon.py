@@ -255,7 +255,7 @@ class Mastodon:
     __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
     __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("2.9.1", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("4.0.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
     __DICT_VERSION_REACTION = "3.1.0"
@@ -666,8 +666,7 @@ class Mastodon:
                 received_scopes += self.__SCOPE_SETS[scope_set]
 
         if not set(scopes) <= set(received_scopes):
-            raise MastodonAPIError(
-                'Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
+            raise MastodonAPIError('Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
 
         if to_file is not None:
             with open(to_file, 'w') as token_file:
@@ -3130,8 +3129,80 @@ class Mastodon:
     ###
     # Moderation API
     ###
+    @api_version("2.9.1", "4.0.0", __DICT_VERSION_ADMIN_ACCOUNT)
+    def admin_accounts_v2(self, origin=None, by_domain=None, status=None, username=None, display_name=None, email=None, ip=None, 
+                            permissions=None, invited_by=None, role_ids=None, max_id=None, min_id=None, since_id=None, limit=None):
+        """
+        Fetches a list of accounts that match given criteria. By default, local accounts are returned.
+
+        * Set `origin` to "local" or "remote" to get only local or remote accounts.
+        * Set `by_domain` to a domain to get only accounts from that domain.
+        * Set `status` to one of "active", "pending", "disabled", "silenced" or "suspended" to get only accounts with that moderation status (default: active)
+        * Set `username` to a string to get only accounts whose username contains this string.
+        * Set `display_name` to a string to get only accounts whose display name contains this string.
+        * Set `email` to an email to get only accounts with that email (this only works on local accounts).
+        * Set `ip` to an ip (as a string, standard v4/v6 notation) to get only accounts whose last active ip is that ip (this only works on local accounts).
+        * Set `permissions` to "staff" to only get accounts with staff permissions.
+        * Set `invited_by` to an account id to get only accounts invited by this user.
+        * Set `role_ids` to a list of role IDs to get only accounts with those roles.
+
+        Returns a list of `admin account dicts`_.
+        """
+        if max_id is not None:
+            max_id = self.__unpack_id(max_id, dateconv=True)
+
+        if min_id is not None:
+            min_id = self.__unpack_id(min_id, dateconv=True)
+
+        if since_id is not None:
+            since_id = self.__unpack_id(since_id, dateconv=True)
+
+        if role_ids is not None:
+            if not isinstance(role_ids, list):
+                role_ids = [role_ids]
+            role_ids = list(map(self.__unpack_id, role_ids))
+
+        if invited_by is not None:
+            invited_by = self.__unpack_id(invited_by)
+
+        if permissions is not None and not permissions in ["staff"]:
+            raise MastodonIllegalArgumentError("Permissions must be staff if passed")
+
+        if origin is not None and not origin in ["local", "remote"]:
+            raise MastodonIllegalArgumentError("Origin must be local or remote")
+
+        if status is not None and not status in ["active", "pending", "disabled", "silenced", "suspended"]:
+            raise MastodonIllegalArgumentError("Status must be local or active, pending, disabled, silenced or suspended")
+
+        if not by_domain is None:
+            by_domain = self.__deprotocolize(by_domain)
+
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v2/admin/accounts', params)
+
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
+        """
+        Currently a synonym for admin_accounts_v1, now deprecated. You are strongly encouraged to use admin_accounts_v2 instead, since this one is kind of bad. 
+        
+        !!!!! This function may be switched to calling the v2 API in the future. This is your warning. If you want to keep using v1, use it explicitly. !!!!!
+        """
+        return self.admin_accounts_v1(
+            remote=remote,
+            by_domain=by_domain,
+            status=status,
+            username=username,
+            display_name=display_name,
+            email=email,
+            ip=ip,
+            staff_only=staff_only,
+            max_id=max_id,
+            min_id=min_id,
+            since_id=since_id
+        )
+
+    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    def admin_accounts_v1(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
 
@@ -3147,6 +3218,8 @@ class Mastodon:
         Note that setting the boolean parameters to False does not mean "give me users to which this does not apply" but
         instead means "I do not care if users have this attribute".
 
+        Deprecated in Mastodon version 3.5.0.
+
         Returns a list of `admin account dicts`_.
         """
         if max_id is not None:
@@ -3158,14 +3231,12 @@ class Mastodon:
         if since_id is not None:
             since_id = self.__unpack_id(since_id, dateconv=True)
 
-        params = self.__generate_params(
-            locals(), ['remote', 'status', 'staff_only'])
+        params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'])
 
         if remote:
             params["remote"] = True
 
-        mod_statuses = ["active", "pending",
-                        "disabled", "silenced", "suspended"]
+        mod_statuses = ["active", "pending", "disabled", "silenced", "suspended"]
         if not status in mod_statuses:
             raise ValueError("Invalid moderation status requested.")
 
@@ -3175,6 +3246,9 @@ class Mastodon:
         for mod_status in mod_statuses:
             if status == mod_status:
                 params[status] = True
+
+        if not by_domain is None:
+            by_domain = self.__deprotocolize(by_domain)
 
         return self.__api_request('GET', '/api/v1/admin/accounts', params)
 

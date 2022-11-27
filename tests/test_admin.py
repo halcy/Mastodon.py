@@ -16,6 +16,44 @@ def test_admin_accounts(api2):
     assert(account_admin)
     assert(account_admin.id == account_self.id)
 
+@pytest.mark.vcr()
+def test_admin_accounts_v1(api2):
+    accounts = api2.admin_accounts_v1()
+    
+    assert accounts
+    assert len(accounts) > 0
+    
+    account_self = api2.account_verify_credentials()
+    account_admin = api2.admin_account(account_self)
+    
+    assert(account_admin)
+    assert(account_admin.id == account_self.id)
+
+@pytest.mark.vcr()
+def test_admin_accounts_v2(api2):
+    accounts = api2.admin_accounts_v2(permissions="staff", origin="local")
+    
+    assert accounts
+    assert len(accounts) > 0
+    
+    account_self = api2.account_verify_credentials()
+    account_admin = api2.admin_account(account_self)
+    
+    assert(account_admin)
+    assert(account_admin.id == account_self.id)
+
+    accounts = api2.admin_accounts_v2(permissions="staff", origin="remote")
+    assert len(accounts) == 0
+    
+    with pytest.raises(MastodonIllegalArgumentError):
+        accounts = api2.admin_accounts_v2(permissions="stave")
+
+    with pytest.raises(MastodonIllegalArgumentError):
+        accounts = api2.admin_accounts_v2(origin="global")
+
+    with pytest.raises(MastodonIllegalArgumentError):
+        accounts = api2.admin_accounts_v2(status="sick")
+
 @pytest.mark.vcr(match_on=['path'])
 def test_admin_moderation(api, api2):
     account_initial = api.account_verify_credentials()

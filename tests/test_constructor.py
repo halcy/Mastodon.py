@@ -18,9 +18,14 @@ def test_constructor_from_filenames(tmpdir):
 
 def test_constructor_illegal_ratelimit():
     with pytest.raises(MastodonIllegalArgumentError):
-        api = Mastodon(
-                'foo', client_secret='bar',
-                ratelimit_method='baz')
+        api = Mastodon('foo', client_secret='bar', ratelimit_method='baz', api_base_url="whatever")
+
+def test_constructor_no_url():
+    with pytest.raises(MastodonIllegalArgumentError):
+        api = Mastodon('foo', client_secret='bar')
+        
+    with pytest.raises(MastodonIllegalArgumentError):
+        api = Mastodon(access_token='baz')
 
 def test_constructor_illegal_versioncheckmode():
     with pytest.raises(MastodonIllegalArgumentError):

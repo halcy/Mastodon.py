@@ -51,7 +51,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [x] Add global lang param to REST API
 * [x] Add types param to GET /api/v1/notifications in REST API
 * [x] Add notifications for moderators about new sign-ups
-* [ ] v2 admin account api
+* [x] v2 admin account api
 
 3.5.3
 -----

@@ -1504,7 +1504,9 @@ EXTREME CARE.
 This is not to say that you should not treat access tokens from admin accounts that do not
 have admin: scopes attached with a lot of care, but be extra careful with those that do.
 
+.. automethod:: Mastodon.admin_accounts_v2
 .. automethod:: Mastodon.admin_accounts
+.. automethod:: Mastodon.admin_accounts_v1
 .. automethod:: Mastodon.admin_account
 .. automethod:: Mastodon.admin_account_enable
 .. automethod:: Mastodon.admin_account_approve

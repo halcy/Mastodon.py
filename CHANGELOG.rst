@@ -17,6 +17,8 @@ v1.8.0 (in progress)
 * Added client auth data to access token file.
 * Added `account_familiar_followers` API
 * Added `account_remove_from_followers` API
+* Added `admin_accounts_v2` API
+* FUTURE BREAKING CHANGE WARNING: For now, `admin_accounts` still calls v1, but this may change in the future. You are encouraged to use v2 instead.
 
 v1.7.0
 ------
