@@ -13,6 +13,7 @@ v1.8.0 (in progress)
 * Make the documentation a bit neater (thanks dieseltravis)
 * Add the domain blocking admin API (`admin_domain_blocks`, `admin_domain_block`, `admin_update_domain_block`, `admin_delete_domain_block` - thanks catgoat)
 * Add the stats admin APIs (`admin_measures`, `admin_dimensions`, `admin_retention`)
+
 v1.7.0
 ------
 * Cleaned code up a bit (thanks eumiro)

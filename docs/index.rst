@@ -54,10 +54,11 @@ node running Mastodon by setting `api_base_url` when creating the
 API object (or creating an app).
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 3.0.1. Pleroma's
-Mastodon API layer, while not an official target, should also be basically
+of this time, it is feature complete for Mastodon version 3.5.0. The
+Mastodon compatible API layers of various other pieces of software as well
+as forks, while not an official target, should also be basically
 compatible, and Mastodon.py does make some allowances for behaviour that isn't
-strictly like that of Mastodon.
+strictly like that of Mastodon, and attempts to support extensions to the API.
 
 A note about rate limits
 ------------------------
@@ -376,9 +377,12 @@ Mention dicts
         'id': # Mentioned user's (local) account ID
     }
 
-Scheduled toot dicts
-~~~~~~~~~~~~~~~~~~~~
+Scheduled status / toot dicts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _scheduled status dict:
+.. _scheduled status dicts:
 .. _scheduled toot dict:
+.. _scheduled toot dicts:
 
 .. code-block:: python
 
@@ -987,7 +991,9 @@ is specified, Mastodon.py defaults to https.
 .. automethod:: Mastodon.log_in
 .. _auth_request_url():
 .. automethod:: Mastodon.auth_request_url
-.. automedhod:: Mastodon.revoke_access_token
+.. _set_language():
+.. automethod:: Mastodon.set_language
+.. automethod:: Mastodon.revoke_access_token
 .. automethod:: Mastodon.create_account
 .. automethod:: Mastodon.email_resend_confirmation
 

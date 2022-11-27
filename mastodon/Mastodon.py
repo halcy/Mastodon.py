@@ -450,6 +450,7 @@ class Mastodon:
             with open(self.access_token, 'r') as token_file:
                 self.access_token = token_file.readline().rstrip()
 
+                # For newer versions, we also store the URL
                 try_base_url = token_file.readline().rstrip()
                 if try_base_url is not None and len(try_base_url) != 0:
                     try_base_url = Mastodon.__protocolize(try_base_url)
@@ -457,6 +458,13 @@ class Mastodon:
                         raise MastodonIllegalArgumentError('Mismatch in base URLs between files and/or specified')
                     self.api_base_url = try_base_url
 
+                # For EVEN newer vesions, we ALSO ALSO store the client id and secret so that you don't need to reauth to revoke
+                try:
+                    self.client_id = token_file.readline().rstrip()
+                    self.client_secret = token_file.readline().rstrip()
+                except:
+                    pass
+                
         # Verify we have a base URL, protocolize
         if self.api_base_url is None:
             raise MastodonIllegalArgumentError("API base URL is required.")        
@@ -611,7 +619,7 @@ class Mastodon:
 
         Handles password and OAuth-based authorization.
 
-        Will throw a `MastodonIllegalArgumentError` if the OAuth or the
+        Will throw a `MastodonIllegalArgumentError` if the OAuth flow data or the
         username / password credentials given are incorrect, and
         `MastodonAPIError` if all of the requested scopes were not granted.
 
@@ -664,6 +672,8 @@ class Mastodon:
             with open(to_file, 'w') as token_file:
                 token_file.write(response['access_token'] + "\n")
                 token_file.write(self.api_base_url + "\n")
+                token_file.write(self.client_id + "\n")
+                token_file.write(self.client_secret + "\n")
 
         self.__logged_in_id = None
 
@@ -1132,7 +1142,7 @@ class Mastodon:
             * `update` - A status the logged in user has reblogged (and only those, as of 4.0.0) has been edited
             * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see `account_follow()`_)
             * `admin.sign_up` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new user has signed up
-            * `admin.report ` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new report has been received
+            * `admin.report` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new report has been received
         Parameters `exclude_types` and `types` are array of these types, specifying them will in- or exclude the
         types of notifications given. It is legal to give both parameters at the same tine, the result will then
         be the intersection of the results of both filters. Specifying `mentions_only` is a deprecated way to set 
