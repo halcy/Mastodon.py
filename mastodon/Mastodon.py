@@ -3534,7 +3534,7 @@ class Mastodon:
         There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
         release.
 
-        Returns a list of `admin dimensions dicts`_.
+        Returns a list of `admin dimension dicts`_.
         """
         params_init = locals()
         keys = []
