@@ -53,9 +53,10 @@ Mastodon.py contains work by a large number of contributors, many of which have
 put significant work into making it a better library. You can find some information
 about who helped with which particular feature or fix in the changelog.
 
+.. _Mastodon.py on GitHub: https://github.com/halcy/Mastodon.py
 .. _Mastodon: https://github.com/mastodon/mastodon
-.. _Mastodon flagship instance: https://mastodon.social/
-.. _Official Mastodon API docs: https://docs.joinmastodon.org/client/intro/
+.. _The mastodon project as such: https://joinmastodon.org/
+.. _Official Mastodon API docs: https://docs.joinmastodon.org/api/guidelines/
 
 .. toctree::
     :caption: Introduction
@@ -69,3 +70,19 @@ about who helped with which particular feature or fix in the changelog.
     :caption: API methods
 
     04_auth
+    05_statuses
+    06_accounts
+    07_timelines
+    08_instances
+    09_notifications
+    10_streaming
+    11_misc
+    12_utilities
+    13_admin
+
+.. toctree::
+    :caption: Appendix
+
+    14_contributing
+    15_everything
+    

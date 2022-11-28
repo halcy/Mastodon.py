@@ -1,5 +1,5 @@
-App registration and user authentication
-========================================
+App registration, authentication and preferences
+================================================
 .. py:module:: mastodon
 .. py:class: Mastodon
 
@@ -20,12 +20,13 @@ once, and then persist your client id and secret. A convenient method
 for this is provided by the functions dealing with registering the app,
 logging in and the Mastodon classes constructor.
 
-To talk to an instance different from the flagship instance, specify
-the api_base_url (usually, just the URL of the instance, i.e.
-https://mastodon.social/ for the flagship instance). If no protocol
-is specified, Mastodon.py defaults to https.
-
+App registration and information
+--------------------------------
 .. automethod:: Mastodon.create_app
+.. automethod:: Mastodon.app_verify_credentials
+
+Authentication
+--------------    
 .. automethod:: Mastodon.__init__
 .. _log_in():
 .. automethod:: Mastodon.log_in
@@ -36,3 +37,7 @@ is specified, Mastodon.py defaults to https.
 .. automethod:: Mastodon.revoke_access_token
 .. automethod:: Mastodon.create_account
 .. automethod:: Mastodon.email_resend_confirmation
+
+User preferences
+----------------
+.. automethod:: Mastodon.preferences

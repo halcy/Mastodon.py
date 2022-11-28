@@ -95,6 +95,7 @@ manually (or persist objects, not just dicts).
 
 There are convenience functions available for fetching the previous and next page of
 a paginated request as well as for fetching all pages starting from a first page.
+For details, see `fetch_next()`_, `fetch_previous()`_. and `fetch_remaining()`_.
 
 IDs and unpacking
 -----------------

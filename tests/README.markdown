@@ -23,10 +23,10 @@ Note that some tests are slightly unstable, as they require sidekiq to do things
 
 This test suite uses [VCR.py][] to record requests to Mastodon and replay them in successive runs.
 
-If you want to add or change tests, you will need a Mastodon development server running on `http://localhost:3000`, with the default `admin` user and default password.
-To set this up, follow the development guide and set up the database using "rails db:setup".
+If you want to add or change tests, you will need a Mastodon development server running on `http://localhost:3000`.
+To set this up, follow the development guide at https://docs.joinmastodon.org/dev/setup/ .
 
-It also needs various things to be set up for it. The following command should do the trick:
+It also needs various things to be set up for it. The following command will do the trick:
 
     sudo redis-cli flushall && sleep 3 && \
     sudo /etc/init.d/redis-server restart && \
@@ -39,7 +39,8 @@ It also needs various things to be set up for it. The following command should d
 
 You _may_ additionally have to set up a database password and pass it as DB_PASS for the streaming tests to function.
 
-Tests that send requests to Mastodon should be marked as needing VCR with the `pytest.mark.vcr` decorator.
+Tests that send requests to Mastodon should be marked as needing VCR with the `pytest.mark.vcr` decorator. Streaming tests use a
+heavily monkeypatched version of VCR.py to work and may behave in weird ways sometimes.
 
 ```python
 import pytest
