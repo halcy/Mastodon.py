@@ -123,6 +123,16 @@ you can also just write
 
 and everything will work as intended.
 
+Snowflake IDs
+~~~~~~~~~~~~~
+Some IDs in Mastodon (such as those for statuses) are Snowflake IDs. These broadly
+correspond to times, with a low resolution, so it is possible to convert a time to
+a Snowflake ID and search for posts between two dates. Mastodon.py will do the
+conversion for you automatically when you pass a `datetime` object as the id.
+
+Note that this functionality will *not* work on anything but Mastodon and forks,
+and that it is somewhat inexact due to the relatively low resolution.
+
 Versioning
 ----------
 Mastodon.py will check if a certain endpoint is available before doing API
