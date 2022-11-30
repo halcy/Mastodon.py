@@ -32,7 +32,7 @@ Then, log in. This can be done every time your application starts (e.g. when wri
         to_file = 'pytooter_usercred.secret'
     )
 
-To post, create an actual API instance:
+Note that this won't work when using 2FA - you'll have to use OAuth, in that case. To post, create an actual API instance:
 
 .. code-block:: python
 
@@ -49,7 +49,7 @@ every aspect. This is a simple Python wrapper for that API, provided
 as a single Python module.
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 3.5.3. The
+of this time, it is feature complete for Mastodon version 3.5.5. The
 Mastodon compatible API layers of various other pieces of software as well
 as forks, while not an official target, should also be basically
 compatible, and Mastodon.py does make some allowances for behaviour that isn't
