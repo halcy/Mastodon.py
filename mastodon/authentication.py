@@ -1,3 +1,5 @@
+# authentication.py - app and user creation, login, oauth, getting app info, and the constructor
+
 import requests
 from requests.models import urlencode
 import datetime
@@ -5,9 +7,11 @@ import os
 import time
 import collections
 
-from .error import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
+from .errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
+from .versions import _DICT_VERSION_APPLICATION
 from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT
-from .utility import parse_version_string
+from .utility import parse_version_string, api_version
+
 from .internals import Mastodon as Internals
 
 class Mastodon(Internals):
@@ -368,3 +372,15 @@ class Mastodon(Internals):
         # We are now logged out, clear token and logged in id
         self.access_token = None
         self.__logged_in_id = None
+
+    ###
+    # Reading data: Apps
+    ###
+    @api_version("2.0.0", "2.7.2", _DICT_VERSION_APPLICATION)
+    def app_verify_credentials(self):
+        """
+        Fetch information about the current application.
+
+        Returns an :ref:`application dict <application dict>`.
+        """
+        return self.__api_request('GET', '/api/v1/apps/verify_credentials')

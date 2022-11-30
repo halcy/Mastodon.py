@@ -4,8 +4,9 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v1.8.0 (in progress)
 --------------------
-* Overall: Support level is now 3.5.3 (last before 4.0.0)
+* Overall: Support level is now 3.5.5 (last before 4.0.0)
 * BREAKING CHANGE: Switch the base URL to None, throw an error when no base url is passed. Having mastosoc as default was sensible when there were only three mastodon servers. It is not sensible now and trips people up constantly.
+* GENERAL WARNING: Currently, Mastodon.py does not support the "new" filter system. In the future, it will, and it will respect filters by default (i.e. remove filtered posts).
 * Fixed an issue with the fix for the Pleroma date bug (thanks adbenitez)
 * Added trending APIs (`trending_tags`, `trending_statuses`, `trending_links`, `admin_trending_tags`, `admin_trending_statuses`, `admin_trending_links`)
 * Added `lang` parameter and document what it does properly.
@@ -19,6 +20,11 @@ v1.8.0 (in progress)
 * Added `account_remove_from_followers` API
 * Added `admin_accounts_v2` API
 * FUTURE BREAKING CHANGE WARNING: For now, `admin_accounts` still calls v1, but this may change in the future. You are encouraged to use v2 instead.
+* Make the version comparisons a bit nicer (thanks eumiro)
+* Switch to more recent modules for datetime and timezone stuff (thanks eumiro)
+* Substantially restructure the documentation, making it a lot nicer to read
+* Substantially restructure the code, making it hopefully a lot easier to maintain
+    * This SHOULD NOT break anything. If this breaks your code, please let me know.
 
 v1.7.0
 ------

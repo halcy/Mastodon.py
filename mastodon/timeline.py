@@ -1,5 +1,7 @@
+# timeline.py - endpoints for reading various different timelines
+
 from .versions import _DICT_VERSION_STATUS, _DICT_VERSION_CONVERSATION
-from .error import MastodonIllegalArgumentError, MastodonNotFoundError
+from .errors import MastodonIllegalArgumentError, MastodonNotFoundError
 from .utility import api_version
 
 from .internals import Mastodon as Internals
@@ -101,21 +103,3 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.timeline('list/{0}'.format(id), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("2.6.0", "2.6.0", _DICT_VERSION_CONVERSATION)
-    def conversations(self, max_id=None, min_id=None, since_id=None, limit=None):
-        """
-        Fetches a user's conversations.
-
-        Returns a list of :ref:`conversation dicts <conversation dicts>`.
-        """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
-
-        params = self.__generate_params(locals())
-        return self.__api_request('GET', "/api/v1/conversations/", params)

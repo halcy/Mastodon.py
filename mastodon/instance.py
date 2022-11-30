@@ -1,5 +1,7 @@
-from .versions import _DICT_VERSION_INSTANCE, _DICT_VERSION_ACTIVITY
-from .error import MastodonIllegalArgumentError, MastodonNotFoundError
+# instance.py - instance-level endpoints, directory, emoji, announcements
+
+from .versions import _DICT_VERSION_INSTANCE, _DICT_VERSION_ACTIVITY, _DICT_VERSION_ACCOUNT, _DICT_VERSION_EMOJI, _DICT_VERSION_ANNOUNCEMENT
+from .errors import MastodonIllegalArgumentError, MastodonNotFoundError
 from .utility import api_version
 from .compat import urlparse
 
@@ -94,3 +96,94 @@ class Mastodon(Internals):
         Returns a list of `id` + `text` dicts, same as the `rules` field in the :ref:`instance dicts <instance dicts>`.
         """
         return self.__api_request('GET', '/api/v1/instance/rules')
+
+    ###
+    # Reading data: Directory
+    ###
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_ACCOUNT)
+    def directory(self, offset=None, limit=None, order=None, local=None):
+        """
+        Fetch the contents of the profile directory, if enabled on the server.
+
+        `offset` how many accounts to skip before returning results. Default 0.
+
+        `limit` how many accounts to load. Default 40.
+
+        `order` "active" to sort by most recently posted statuses (default) or
+                "new" to sort by most recently created profiles.
+
+        `local` True to return only local accounts.
+
+        Returns a list of :ref:`account dicts <account dicts>`.
+
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/directory', params)
+
+    ###
+    # Reading data: Emoji
+    ###
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_EMOJI)
+    def custom_emojis(self):
+        """
+        Fetch the list of custom emoji the instance has installed.
+
+        Does not require authentication unless locked down by the administrator.
+
+        Returns a list of :ref:`emoji dicts <emoji dicts>`.
+        """
+        return self.__api_request('GET', '/api/v1/custom_emojis')
+
+    ##
+    # Reading data: Announcements
+    ##
+    @api_version("3.1.0", "3.1.0", _DICT_VERSION_ANNOUNCEMENT)
+    def announcements(self):
+        """
+        Fetch currently active announcements.
+
+        Returns a list of :ref:`announcement dicts <announcement dicts>`.
+        """
+        return self.__api_request('GET', '/api/v1/announcements')
+
+    ###
+    # Writing data: Annoucements
+    ###
+    @api_version("3.1.0", "3.1.0", "3.1.0")
+    def announcement_dismiss(self, id):
+        """
+        Set the given annoucement to read.
+        """
+        id = self.__unpack_id(id)
+
+        url = '/api/v1/announcements/{0}/dismiss'.format(str(id))
+        self.__api_request('POST', url)
+
+    @api_version("3.1.0", "3.1.0", "3.1.0")
+    def announcement_reaction_create(self, id, reaction):
+        """
+        Add a reaction to an announcement. `reaction` can either be a unicode emoji
+        or the name of one of the instances custom emoji.
+
+        Will throw an API error if the reaction name is not one of the allowed things
+        or when trying to add a reaction that the user has already added (adding a
+        reaction that a different user added is legal and increments the count).
+        """
+        id = self.__unpack_id(id)
+
+        url = '/api/v1/announcements/{0}/reactions/{1}'.format(
+            str(id), reaction)
+        self.__api_request('PUT', url)
+
+    @api_version("3.1.0", "3.1.0", "3.1.0")
+    def announcement_reaction_delete(self, id, reaction):
+        """
+        Remove a reaction to an announcement.
+
+        Will throw an API error if the reaction does not exist.
+        """
+        id = self.__unpack_id(id)
+
+        url = '/api/v1/announcements/{0}/reactions/{1}'.format(
+            str(id), reaction)
+        self.__api_request('DELETE', url)
