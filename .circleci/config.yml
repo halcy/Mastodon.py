@@ -1,5 +1,18 @@
 version: 2.1
 jobs:
+  run-tests-36:
+    docker:
+      - image: cimg/python:3.6
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test]"
+      - run:
+          name: "Run tests"
+          command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
+      - store_test_results:
+          path: tests
   run-tests-37:
     docker:
       - image: cimg/python:3.7
@@ -8,9 +21,6 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test]"
-      - run:
-          name: "Install codecov"
-          command: "pip install codecov"   
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -42,10 +52,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]"
-      - run:
-          name: "Install codecov"
-          command: "pip install codecov"   
+          command: "pip install .[test]" 
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -58,10 +65,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]"
-      - run:
-          name: "Install codecov"
-          command: "pip install codecov"   
+          command: "pip install .[test]" 
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -70,6 +74,7 @@ jobs:
 workflows:
   run-tests-workflow:
     jobs:
+      - run-tests-36
       - run-tests-37
       - run-tests-38-cov
       - run-tests-39

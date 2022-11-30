@@ -1,7 +1,13 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
 import datetime
-import zoneinfo
+try:
+    import zoneinfo
+    timezone = zoneinfo.ZoneInfo
+except:
+    import pytz
+    timezone = pytz.timezone
+
 import vcr
 import time
 import pickle
@@ -154,7 +160,7 @@ def test_status_pin_unpin(status, api):
 
 @pytest.mark.vcr(match_on=['path'])
 def test_scheduled_status(api):
-    base_time = datetime.datetime(4000, 1, 1, 12, 13, 14, 0, zoneinfo.ZoneInfo("Etc/GMT+2"))
+    base_time = datetime.datetime(4000, 1, 1, 12, 13, 14, 0, timezone("Etc/GMT+2"))
     the_future = base_time + datetime.timedelta(minutes=20)
     scheduled_toot = api.status_post("please ensure adequate headroom", scheduled_at=the_future)
     assert scheduled_toot
