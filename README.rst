@@ -10,7 +10,6 @@ Feature complete for public API as of Mastodon version 3.5.5 and easy to get sta
     # Register your app! This only needs to be done once (per server, or when 
     # distributing rather than hosting an application, most likely per device and server). 
     # Uncomment the code and substitute in your information:
-
     '''
     Mastodon.create_app(
         'pytooterapp',
