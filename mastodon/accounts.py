@@ -2,7 +2,9 @@ from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS
 from .error import MastodonIllegalArgumentError, MastodonAPIError
 from .utility import api_version
 
-class Mastodon():
+from .internals import Mastodon as Internals
+
+class Mastodon(Internals):
     @api_version("2.7.0", "2.7.0", "3.4.0")
     def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=_DEFAULT_SCOPES, to_file=None, return_detailed_error=False):
         """

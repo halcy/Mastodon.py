@@ -13,7 +13,7 @@ import collections
 import base64
 import os
 
-from .utility import AttribAccessDict, AttribAccessList
+from .utility import AttribAccessDict, AttribAccessList, parse_version_string
 from .error import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
                     MastodonUnauthorizedError, MastodonInternalServerError, MastodonBadGatewayError, MastodonServiceUnavailableError, \
                     MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError
