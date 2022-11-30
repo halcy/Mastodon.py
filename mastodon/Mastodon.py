@@ -69,27 +69,12 @@ except:
 
 def parse_version_string(version_string):
     """Parses a semver version string, stripping off "rc" stuff if present."""
-    string_parts = version_string.split(".")
-    version_parts = [
-        int(re.match("([0-9]*)", string_parts[0]).group(0)),
-        int(re.match("([0-9]*)", string_parts[1]).group(0)),
-        int(re.match("([0-9]*)", string_parts[2]).group(0))
-    ]
-    return version_parts
+    return tuple(int(x) for x in re.findall(r"\d+", version_string))[:3]
 
 
-def bigger_version(version_string_a, version_string_b):
-    """Returns the bigger version of two version strings."""
-    major_a, minor_a, patch_a = parse_version_string(version_string_a)
-    major_b, minor_b, patch_b = parse_version_string(version_string_b)
-
-    if major_a > major_b:
-        return version_string_a
-    elif major_a == major_b and minor_a > minor_b:
-        return version_string_a
-    elif major_a == major_b and minor_a == minor_b and patch_a > patch_b:
-        return version_string_a
-    return version_string_b
+def max_version(*version_strings):
+    """Returns the maximum version of all provided version strings."""
+    return max(version_strings, key=parse_version_string)
 
 
 def api_version(created_ver, last_changed_ver, return_value_ver):
@@ -100,18 +85,14 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                 if self.version_check_mode == "created":
                     version = created_ver
                 else:
-                    version = bigger_version(
-                        last_changed_ver, return_value_ver)
+                    version = max_version(last_changed_ver, return_value_ver)
                 major, minor, patch = parse_version_string(version)
                 if major > self.mastodon_major:
-                    raise MastodonVersionError(
-                        "Version check failed (Need version " + version + ")")
+                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
-                    raise MastodonVersionError(
-                        "Version check failed (Need version " + version + ")")
+                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-                    raise MastodonVersionError(
-                        "Version check failed (Need version " + version + ", patch is " + str(self.mastodon_patch) + ")")
+                    raise MastodonVersionError("Version check failed (Need version " + version + ", patch is " + str(self.mastodon_patch) + ")")
             return function(self, *args, **kwargs)
         function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + \
             created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
@@ -122,8 +103,6 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
 # Dict helper class.
 # Defined at top level so it can be pickled.
 ###
-
-
 class AttribAccessDict(dict):
     def __getattr__(self, attr):
         if attr in self:
@@ -228,40 +207,40 @@ class Mastodon:
         __SCOPE_SETS['read'] + __SCOPE_SETS['write'] + \
         __SCOPE_SETS['admin:read'] + __SCOPE_SETS['admin:write']
 
-    __SUPPORTED_MASTODON_VERSION = "3.1.1"
+    __SUPPORTED_MASTODON_VERSION = "3.5.4"
 
     # Dict versions
+        # Dict versions
     __DICT_VERSION_APPLICATION = "2.7.2"
     __DICT_VERSION_MENTION = "1.0.0"
     __DICT_VERSION_MEDIA = "3.2.0"
     __DICT_VERSION_ACCOUNT = "3.3.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version(
-        "3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
-    __DICT_VERSION_INSTANCE = bigger_version("3.4.0", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_STATUS = max_version("3.1.0", __DICT_VERSION_MEDIA, __DICT_VERSION_ACCOUNT, __DICT_VERSION_APPLICATION, __DICT_VERSION_MENTION, __DICT_VERSION_POLL)
+    __DICT_VERSION_INSTANCE = max_version("3.4.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "3.3.0"
-    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("3.5.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
-    __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
+    __DICT_VERSION_NOTIFICATION = max_version("3.5.0",  __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS)
+    __DICT_VERSION_CONTEXT = max_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
     __DICT_VERSION_CARD = "3.2.0"
-    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
+    __DICT_VERSION_SEARCHRESULT = max_version("1.0.0", __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS, __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2"
     __DICT_VERSION_REPORT = "2.9.1"
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
-    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
-    __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
+    __DICT_VERSION_CONVERSATION = max_version("2.6.0", __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS)
+    __DICT_VERSION_SCHEDULED_STATUS = max_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("4.0.0", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_ADMIN_ACCOUNT = max_version("4.0.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
     __DICT_VERSION_REACTION = "3.1.0"
-    __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
+    __DICT_VERSION_ANNOUNCEMENT = max_version("3.1.0", __DICT_VERSION_REACTION)
     __DICT_VERSION_STATUS_EDIT = "3.5.0"
-    __DICT_VERSION_FAMILIAR_FOLLOWERS = bigger_version("3.5.0", __DICT_VERSION_ACCOUNT)    
+    __DICT_VERSION_FAMILIAR_FOLLOWERS = max_version("3.5.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_ADMIN_DOMAIN_BLOCK = "4.0.0"
     __DICT_VERSION_ADMIN_MEASURE = "3.5.0"
     __DICT_VERSION_ADMIN_DIMENSION = "3.5.0"
@@ -3709,8 +3688,8 @@ class Mastodon:
         crypto_ver = cryptography.__version__
         if len(crypto_ver) < 5:
             crypto_ver += ".0"
-        if bigger_version(crypto_ver, "2.5.0") == crypto_ver:
-            push_key_pub = push_key_pair.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
+        if parse_version_string(crypto_ver) == (2, 5, 0):
+            sapush_key_pub = push_key_pair.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
         else:
             push_key_pub = push_key_pair.public_key().public_numbers().encode_point()
         push_shared_secret = os.urandom(16)
