@@ -50,7 +50,7 @@ Writing
 Scheduled statuses
 ------------------
 These functions allow you to get information about scheduled statuses and to update scheduled statuses that already exist.
-To create new scheduled statuses, use `status_post()`_ with the `scheduled_at` parameter.
+To create new scheduled statuses, use :ref:`status_post() <status_post()>` with the `scheduled_at` parameter.
 
 Reading
 ~~~~~~~

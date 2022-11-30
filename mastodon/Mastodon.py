@@ -69,12 +69,27 @@ except:
 
 def parse_version_string(version_string):
     """Parses a semver version string, stripping off "rc" stuff if present."""
-    return tuple(int(x) for x in re.findall(r"\d+", version_string))[:3]
+    string_parts = version_string.split(".")
+    version_parts = [
+        int(re.match("([0-9]*)", string_parts[0]).group(0)),
+        int(re.match("([0-9]*)", string_parts[1]).group(0)),
+        int(re.match("([0-9]*)", string_parts[2]).group(0))
+    ]
+    return version_parts
 
 
-def max_version(*version_strings):
-    """Returns the maximum version of all provided version strings."""
-    return max(version_strings, key=parse_version_string)
+def bigger_version(version_string_a, version_string_b):
+    """Returns the bigger version of two version strings."""
+    major_a, minor_a, patch_a = parse_version_string(version_string_a)
+    major_b, minor_b, patch_b = parse_version_string(version_string_b)
+
+    if major_a > major_b:
+        return version_string_a
+    elif major_a == major_b and minor_a > minor_b:
+        return version_string_a
+    elif major_a == major_b and minor_a == minor_b and patch_a > patch_b:
+        return version_string_a
+    return version_string_b
 
 
 def api_version(created_ver, last_changed_ver, return_value_ver):
@@ -85,7 +100,8 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                 if self.version_check_mode == "created":
                     version = created_ver
                 else:
-                    version = max_version(last_changed_ver, return_value_ver)
+                    version = bigger_version(
+                        last_changed_ver, return_value_ver)
                 major, minor, patch = parse_version_string(version)
                 if major > self.mastodon_major:
                     raise MastodonVersionError(
@@ -220,33 +236,32 @@ class Mastodon:
     __DICT_VERSION_MEDIA = "3.2.0"
     __DICT_VERSION_ACCOUNT = "3.3.0"
     __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = max_version("3.1.0", __DICT_VERSION_MEDIA, __DICT_VERSION_ACCOUNT,
-                                        __DICT_VERSION_APPLICATION, __DICT_VERSION_MENTION, __DICT_VERSION_POLL)
-    __DICT_VERSION_INSTANCE = max_version("3.4.0", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_STATUS = bigger_version(bigger_version(bigger_version(bigger_version(bigger_version(
+        "3.1.0", __DICT_VERSION_MEDIA), __DICT_VERSION_ACCOUNT), __DICT_VERSION_APPLICATION), __DICT_VERSION_MENTION), __DICT_VERSION_POLL)
+    __DICT_VERSION_INSTANCE = bigger_version("3.4.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_HASHTAG = "2.3.4"
     __DICT_VERSION_EMOJI = "3.0.0"
     __DICT_VERSION_RELATIONSHIP = "3.3.0"
-    __DICT_VERSION_NOTIFICATION = max_version("3.5.0",  __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS)
-    __DICT_VERSION_CONTEXT = max_version("1.0.0",  __DICT_VERSION_STATUS)
+    __DICT_VERSION_NOTIFICATION = bigger_version(bigger_version("3.5.0",  __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_CONTEXT = bigger_version("1.0.0",  __DICT_VERSION_STATUS)
     __DICT_VERSION_LIST = "2.1.0"
     __DICT_VERSION_CARD = "3.2.0"
-    __DICT_VERSION_SEARCHRESULT = max_version("1.0.0", __DICT_VERSION_ACCOUNT,
-                                              __DICT_VERSION_STATUS, __DICT_VERSION_HASHTAG)
+    __DICT_VERSION_SEARCHRESULT = bigger_version(bigger_version(bigger_version("1.0.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS), __DICT_VERSION_HASHTAG)
     __DICT_VERSION_ACTIVITY = "2.1.2"
     __DICT_VERSION_REPORT = "2.9.1"
     __DICT_VERSION_PUSH = "2.4.0"
     __DICT_VERSION_PUSH_NOTIF = "2.4.0"
     __DICT_VERSION_FILTER = "2.4.3"
-    __DICT_VERSION_CONVERSATION = max_version("2.6.0", __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS)
-    __DICT_VERSION_SCHEDULED_STATUS = max_version("2.7.0", __DICT_VERSION_STATUS)
+    __DICT_VERSION_CONVERSATION = bigger_version(bigger_version("2.6.0", __DICT_VERSION_ACCOUNT), __DICT_VERSION_STATUS)
+    __DICT_VERSION_SCHEDULED_STATUS = bigger_version("2.7.0", __DICT_VERSION_STATUS)
     __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = max_version("4.0.0", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_ADMIN_ACCOUNT = bigger_version("4.0.0", __DICT_VERSION_ACCOUNT)
     __DICT_VERSION_FEATURED_TAG = "3.0.0"
     __DICT_VERSION_MARKER = "3.0.0"
     __DICT_VERSION_REACTION = "3.1.0"
-    __DICT_VERSION_ANNOUNCEMENT = max_version("3.1.0", __DICT_VERSION_REACTION)
+    __DICT_VERSION_ANNOUNCEMENT = bigger_version("3.1.0", __DICT_VERSION_REACTION)
     __DICT_VERSION_STATUS_EDIT = "3.5.0"
-    __DICT_VERSION_FAMILIAR_FOLLOWERS = max_version("3.5.0", __DICT_VERSION_ACCOUNT)
+    __DICT_VERSION_FAMILIAR_FOLLOWERS = bigger_version("3.5.0", __DICT_VERSION_ACCOUNT)    
     __DICT_VERSION_ADMIN_DOMAIN_BLOCK = "4.0.0"
     __DICT_VERSION_ADMIN_MEASURE = "3.5.0"
     __DICT_VERSION_ADMIN_DIMENSION = "3.5.0"
@@ -329,7 +344,7 @@ class Mastodon:
         that do not require authentication. If a file is given as `client_id`, client ID, secret and
         base url are read from that file.
 
-        You can also specify an `access_token`, directly or as a file (as written by `log_in()`_). If
+        You can also specify an `access_token`, directly or as a file (as written by :ref:`log_in() <log_in()>`). If
         a file is given, Mastodon.py also tries to load the base URL from this file, if present. A
         client id and secret are not required in this case.
 
@@ -369,7 +384,7 @@ class Mastodon:
 
         `lang` can be used to change the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter)
         or for a language that has none, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and 
-        trends. You can change the language using :ref:`set_language()`_.
+        trends. You can change the language using :ref:`set_language()`.
 
         If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
@@ -560,9 +575,9 @@ class Mastodon:
         Returns the URL that a client needs to request an OAuth grant from the server.
 
         To log in with OAuth, send your user to this URL. The user will then log in and
-        get a code which you can pass to `log_in()`_.
+        get a code which you can pass to :ref:`log_in() <log_in()>`.
 
-        `scopes` are as in `log_in()`_, redirect_uris is where the user should be redirected to
+        `scopes` are as in :ref:`log_in() <log_in()>`, redirect_uris is where the user should be redirected to
         after authentication. Note that `redirect_uris` must be one of the URLs given during
         app registration. When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed,
         otherwise it is added to the given URL as the "code" request parameter.
@@ -610,7 +625,7 @@ class Mastodon:
         `MastodonAPIError` if all of the requested scopes were not granted.
 
         For OAuth 2, obtain a code via having your user go to the URL returned by
-        `auth_request_url()`_ and pass it as the code parameter. In this case,
+        :ref:`auth_request_url() <auth_request_url()>` and pass it as the code parameter. In this case,
         make sure to also pass the same redirect_uri parameter as you used when
         generating the auth request URL.
 
@@ -800,7 +815,7 @@ class Mastodon:
 
         Does not require authentication unless locked down by the administrator.
 
-        Returns an `instance dict`_.
+        Returns an :ref:`instance dict <instance dict>`.
         """
         return self.__instance()
 
@@ -819,7 +834,7 @@ class Mastodon:
 
         Activity is returned for 12 weeks going back from the current week.
 
-        Returns a list of `activity dicts`_.
+        Returns a list of :ref:`activity dicts <activity dicts>`.
         """
         return self.__api_request('GET', '/api/v1/instance/activity')
 
@@ -875,7 +890,7 @@ class Mastodon:
         """
         Retrieve instance rules.
 
-        Returns a list of `id` + `text` dicts, same as the `rules` field in the `instance dicts`_.
+        Returns a list of `id` + `text` dicts, same as the `rules` field in the :ref:`instance dicts <instance dicts>`.
         """
         return self.__api_request('GET', '/api/v1/instance/rules')
 
@@ -895,7 +910,7 @@ class Mastodon:
 
         May or may not require authentication depending on server settings and what is specifically requested.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -930,7 +945,7 @@ class Mastodon:
         """
         Convenience method: Fetches the logged-in user's home timeline (i.e. followed users and self). Params as in `timeline()`.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         return self.timeline('home', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
@@ -939,7 +954,7 @@ class Mastodon:
         """
         Convenience method: Fetches the local / instance-wide timeline, not including replies. Params as in `timeline()`.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         return self.timeline('local', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media)
 
@@ -948,7 +963,7 @@ class Mastodon:
         """
         Convenience method: Fetches the public / visible-network / federated timeline, not including replies. Params as in `timeline()`.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         return self.timeline('public', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
@@ -958,7 +973,7 @@ class Mastodon:
         Convenience method: Fetch a timeline of toots with a given hashtag. The hashtag parameter
         should not contain the leading #. Params as in `timeline()`.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         if hashtag.startswith("#"):
             raise MastodonIllegalArgumentError(
@@ -970,7 +985,7 @@ class Mastodon:
         """
         Convenience method: Fetches a timeline containing all the toots by users in a given list. Params as in `timeline()`.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         id = self.__unpack_id(id)
         return self.timeline('list/{0}'.format(id), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
@@ -980,7 +995,7 @@ class Mastodon:
         """
         Fetches a user's conversations.
 
-        Returns a list of `conversation dicts`_.
+        Returns a list of :ref:`conversation dicts <conversation dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1004,7 +1019,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a `status dict`_.
+        Returns a :ref:`status dict <status dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}'.format(str(id))
@@ -1023,7 +1038,7 @@ class Mastodon:
         instead. Mastodon.py will try to mimic the old behaviour, but this
         is somewhat inefficient and not guaranteed to be the case forever.
 
-        Returns a `card dict`_.
+        Returns a :ref:`card dict <card dict>`.
         """
         if self.verify_minimum_version("3.0.0", cached=True):
             return self.status(id).card
@@ -1039,7 +1054,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a `context dict`_.
+        Returns a :ref:`context dict <context dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/context'.format(str(id))
@@ -1052,7 +1067,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
@@ -1065,7 +1080,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible statuses.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourited_by'.format(str(id))
@@ -1079,7 +1094,7 @@ class Mastodon:
         """
         Fetch a list of scheduled statuses
 
-        Returns a list of `scheduled status dicts`_.
+        Returns a list of :ref:`scheduled status dicts <scheduled status dicts>`.
         """
         return self.__api_request('GET', '/api/v1/scheduled_statuses')
 
@@ -1088,7 +1103,7 @@ class Mastodon:
         """
         Fetch information about the scheduled status with the given id.
 
-        Returns a `scheduled status dict`_.
+        Returns a :ref:`scheduled status dict <scheduled status dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
@@ -1102,7 +1117,7 @@ class Mastodon:
         """
         Fetch information about the poll with the given id
 
-        Returns a `poll dict`_.
+        Returns a :ref:`poll dict <poll dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/polls/{0}'.format(str(id))
@@ -1125,7 +1140,7 @@ class Mastodon:
             * `mention` - A user mentioned the logged in user
             * `poll` - A poll the logged in user created or voted in has ended
             * `update` - A status the logged in user has reblogged (and only those, as of 4.0.0) has been edited
-            * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see `account_follow()`_)
+            * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see :ref:`account_follow() <account_follow()>`)
             * `admin.sign_up` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new user has signed up
             * `admin.report` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new report has been received
         Parameters `exclude_types` and `types` are array of these types, specifying them will in- or exclude the
@@ -1135,7 +1150,7 @@ class Mastodon:
 
         Can be passed an `id` to fetch a single notification.
 
-        Returns a list of `notification dicts`_.
+        Returns a list of :ref:`notification dicts <notification dicts>`.
         """
         if mentions_only is not None:
             if exclude_types is None and types is None:
@@ -1178,7 +1193,7 @@ class Mastodon:
 
         Does not require authentication for publicly visible accounts.
 
-        Returns a `account dict`_.
+        Returns a :ref:`account dict <account dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}'.format(str(id))
@@ -1189,7 +1204,7 @@ class Mastodon:
         """
         Fetch logged-in user's account information.
 
-        Returns a `account dict`_ (Starting from 2.1.0, with an additional "source" field).
+        Returns a :ref:`account dict <account dict>` (Starting from 2.1.0, with an additional "source" field).
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
@@ -1205,7 +1220,7 @@ class Mastodon:
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, exclude_reblogs=False, tagged=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
-        Fetch statuses by user `id`. Same options as `timeline()`_ are permitted.
+        Fetch statuses by user `id`. Same options as :ref:`timeline() <timeline()>` are permitted.
         Returned toots are from the perspective of the logged-in user, i.e.
         all statuses visible to the logged-in user (including DMs) are
         included.
@@ -1220,7 +1235,7 @@ class Mastodon:
         Does not require authentication for Mastodon versions after 2.7.0 (returns
         publicly visible statuses in that case), for publicly visible accounts.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -1250,7 +1265,7 @@ class Mastodon:
         """
         Fetch users the given user is following.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -1271,7 +1286,7 @@ class Mastodon:
         """
         Fetch users the given user is followed by.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -1293,7 +1308,7 @@ class Mastodon:
         Fetch relationship (following, followed_by, blocking, follow requested) of
         the logged in user to a given account. `id` can be a list.
 
-        Returns a list of `relationship dicts`_.
+        Returns a list of :ref:`relationship dicts <relationship dicts>`.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
@@ -1307,7 +1322,7 @@ class Mastodon:
         in the username@domain format and not yet in the database. Set `following` to
         True to limit the search to users the logged-in user follows.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         params = self.__generate_params(locals())
 
@@ -1322,7 +1337,7 @@ class Mastodon:
         Get all of the logged-in user's lists which the specified user is
         a member of.
 
-        Returns a list of `list dicts`_.
+        Returns a list of :ref:`list dicts <list dicts>`.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
@@ -1337,7 +1352,7 @@ class Mastodon:
         and not do any webfinger requests. Use `account_search` if you need to resolve users 
         through webfinger from remote.
 
-        Returns an `account dict`_.
+        Returns an :ref:`account dict <account dict>`.
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
     
@@ -1347,7 +1362,7 @@ class Mastodon:
         Find followers for the account given by id (can be a list) that also follow the
         logged in account.
 
-        Returns a list of `familiar follower dicts`_
+        Returns a list of :ref:`familiar follower dicts <familiar follower dicts>`
         """
         if not isinstance(id, list):
             id = [id]
@@ -1362,9 +1377,9 @@ class Mastodon:
     def featured_tags(self):
         """
         Return the hashtags the logged-in user has set to be featured on
-        their profile as a list of `featured tag dicts`_.
+        their profile as a list of :ref:`featured tag dicts <featured tag dicts>`.
 
-        Returns a list of `featured tag dicts`_.
+        Returns a list of :ref:`featured tag dicts <featured tag dicts>`.
         """
         return self.__api_request('GET', '/api/v1/featured_tags')
 
@@ -1373,7 +1388,7 @@ class Mastodon:
         """
         Returns the logged-in user's 10 most commonly-used hashtags.
 
-        Returns a list of `hashtag dicts`_.
+        Returns a list of :ref:`hashtag dicts <hashtag dicts>`.
         """
         return self.__api_request('GET', '/api/v1/featured_tags/suggestions')
 
@@ -1385,7 +1400,7 @@ class Mastodon:
         """
         Fetch all of the logged-in user's filters.
 
-        Returns a list of `filter dicts`_. Not paginated.
+        Returns a list of :ref:`filter dicts <filter dicts>`. Not paginated.
         """
         return self.__api_request('GET', '/api/v1/filters')
 
@@ -1394,7 +1409,7 @@ class Mastodon:
         """
         Fetches information about the filter with the specified `id`.
 
-        Returns a `filter dict`_.
+        Returns a :ref:`filter dict <filter dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/filters/{0}'.format(str(id))
@@ -1443,7 +1458,7 @@ class Mastodon:
         """
         Fetch follow suggestions for the logged-in user.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
 
         """
         return self.__api_request('GET', '/api/v1/suggestions')
@@ -1465,7 +1480,7 @@ class Mastodon:
 
         `local` True to return only local accounts.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
 
         """
         params = self.__generate_params(locals())
@@ -1479,7 +1494,7 @@ class Mastodon:
         """
         Fetch list of users endorsed by the logged-in user.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
 
         """
         return self.__api_request('GET', '/api/v1/endorsements')
@@ -1522,7 +1537,7 @@ class Mastodon:
         if you try to use them on versions before that. Note that the cached version
         number will be used for this to avoid uneccesary requests.
 
-        Returns a `search result dict`_, with tags as `hashtag dicts`_.
+        Returns a :ref:`search result dict <search result dict>`, with tags as `hashtag dicts`_.
         """
         if self.verify_minimum_version("2.4.1", cached=True):
             return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed)
@@ -1535,9 +1550,9 @@ class Mastodon:
     def search_v1(self, q, resolve=False):
         """
         Identical to `search_v2()`, except in that it does not return
-        tags as `hashtag dicts`_.
+        tags as :ref:`hashtag dicts <hashtag dicts>`.
 
-        Returns a `search result dict`_.
+        Returns a :ref:`search result dict <search result dict>`.
         """
         params = self.__generate_params(locals())
         if not resolve:
@@ -1548,11 +1563,11 @@ class Mastodon:
     def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
         """
         Identical to `search_v1()`, except in that it returns tags as
-        `hashtag dicts`_, has more parameters, and resolves by default.
+        :ref:`hashtag dicts <hashtag dicts>`, has more parameters, and resolves by default.
 
         For more details documentation, please see `search()`
 
-        Returns a `search result dict`_.
+        Returns a :ref:`search result dict <search result dict>`.
         """
         self.__ensure_search_params_acceptable(
             account_id, offset, min_id, max_id)
@@ -1576,7 +1591,7 @@ class Mastodon:
     @api_version("2.4.3", "3.5.0", __DICT_VERSION_HASHTAG)
     def trends(self, limit=None):
         """
-        Alias for `trending_tags()`_
+        Alias for :ref:`trending_tags() <trending_tags()>`
         """
         return self.trending_tags(limit=limit) 
 
@@ -1595,7 +1610,7 @@ class Mastodon:
 
         Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
-        Returns a list of `hashtag dicts`_, sorted by the instance's trending algorithm,
+        Returns a list of :ref:`hashtag dicts <hashtag dicts>`, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -1615,7 +1630,7 @@ class Mastodon:
 
         Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
-        Returns a list of `status dicts`_, sorted by the instances's trending algorithm,
+        Returns a list of :ref:`status dicts <status dicts>`, sorted by the instances's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -1629,7 +1644,7 @@ class Mastodon:
         Specify `limit` to limit how many results are returned (the maximum number
         of results is 10, the endpoint is not paginated).
 
-        Returns a list of `card dicts`_, sorted by the instances's trending algorithm,
+        Returns a list of :ref:`card dicts <card dicts>`, sorted by the instances's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -1643,7 +1658,7 @@ class Mastodon:
         """
         Fetch a list of all the Lists by the logged-in user.
 
-        Returns a list of `list dicts`_.
+        Returns a list of :ref:`list dicts <list dicts>`.
         """
         return self.__api_request('GET', '/api/v1/lists')
 
@@ -1652,7 +1667,7 @@ class Mastodon:
         """
         Fetch info about a specific list.
 
-        Returns a `list dict`_.
+        Returns a :ref:`list dict <list dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
@@ -1662,7 +1677,7 @@ class Mastodon:
         """
         Get the accounts that are on the given list.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
 
@@ -1686,7 +1701,7 @@ class Mastodon:
         """
         Fetch a list of users muted by the logged-in user.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1705,7 +1720,7 @@ class Mastodon:
         """
         Fetch a list of users blocked by the logged-in user.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1727,7 +1742,7 @@ class Mastodon:
         """
         Fetch a list of reports made by the logged-in user.
 
-        Returns a list of `report dicts`_.
+        Returns a list of :ref:`report dicts <report dicts>`.
 
         Warning: This method has now finally been removed, and will not
         work on Mastodon versions 2.5.0 and above.
@@ -1744,7 +1759,7 @@ class Mastodon:
         """
         Fetch the logged-in user's favourited statuses.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1766,7 +1781,7 @@ class Mastodon:
         """
         Fetch the logged-in user's incoming follow requests.
 
-        Returns a list of `account dicts`_.
+        Returns a list of :ref:`account dicts <account dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1812,7 +1827,7 @@ class Mastodon:
 
         Does not require authentication unless locked down by the administrator.
 
-        Returns a list of `emoji dicts`_.
+        Returns a list of :ref:`emoji dicts <emoji dicts>`.
         """
         return self.__api_request('GET', '/api/v1/custom_emojis')
 
@@ -1824,7 +1839,7 @@ class Mastodon:
         """
         Fetch information about the current application.
 
-        Returns an `application dict`_.
+        Returns an :ref:`application dict <application dict>`.
         """
         return self.__api_request('GET', '/api/v1/apps/verify_credentials')
 
@@ -1836,7 +1851,7 @@ class Mastodon:
         """
         Fetch the current push subscription the logged-in user has for this app.
 
-        Returns a `push subscription dict`_.
+        Returns a :ref:`push subscription dict <push subscription dict>`.
         """
         return self.__api_request('GET', '/api/v1/push/subscription')
 
@@ -1849,7 +1864,7 @@ class Mastodon:
         Fetch the user's preferences, which can be used to set some default options.
         As of 2.8.0, apps can only fetch, not update preferences.
 
-        Returns a `preference dict`_.
+        Returns a :ref:`preference dict <preference dict>`.
         """
         return self.__api_request('GET', '/api/v1/preferences')
 
@@ -1863,7 +1878,7 @@ class Mastodon:
         """
         Fetch currently active announcements.
 
-        Returns a list of `announcement dicts`_.
+        Returns a list of :ref:`announcement dicts <announcement dicts>`.
         """
         return self.__api_request('GET', '/api/v1/announcements')
 
@@ -1874,11 +1889,11 @@ class Mastodon:
     def markers_get(self, timeline=["home"]):
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
-        are the same as in `timeline()`_
+        are the same as in :ref:`timeline() <timeline()>`
 
         Note that despite the singular name, `timeline` can be a list.
 
-        Returns a dict of `read marker dicts`_, keyed by timeline name.
+        Returns a dict of :ref:`read marker dicts <read marker dicts>`, keyed by timeline name.
         """
         if not isinstance(timeline, (list, tuple)):
             timeline = [timeline]
@@ -1894,7 +1909,7 @@ class Mastodon:
         """
         Get a list of statuses bookmarked by the logged-in user.
 
-        Returns a list of `status dicts`_.
+        Returns a list of :ref:`status dicts <status dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -1998,8 +2013,8 @@ class Mastodon:
 
         `media_ids` should be a list. (If it's not, the function will turn it
         into one.) It can contain up to four pieces of media (uploaded via
-        `media_post()`_). `media_ids` can also be the `media dicts`_ returned
-        by `media_post()`_ - they are unpacked automatically.
+        :ref:`media_post() <media_post()>`). `media_ids` can also be the `media dicts`_ returned
+        by :ref:`media_post() <media_post()>` - they are unpacked automatically.
 
         The `sensitive` boolean decides whether or not media attached to the post
         should be marked as sensitive, which hides it by default on the Mastodon
@@ -2031,10 +2046,10 @@ class Mastodon:
 
         Pass a datetime as `scheduled_at` to schedule the toot for a specific time
         (the time must be at least 5 minutes into the future). If this is passed,
-        status_post returns a `scheduled status dict`_ instead.
+        status_post returns a :ref:`scheduled status dict <scheduled status dict>` instead.
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
-        constructed using `make_poll()`_ . Note that as of Mastodon version
+        constructed using :ref:`make_poll() <make_poll()>` . Note that as of Mastodon version
         2.8.2, you can only have either media or a poll attached, not both at
         the same time.
 
@@ -2046,7 +2061,7 @@ class Mastodon:
         **Specific to "fedibird" feature set:**: The `quote_id` parameter is
         a non-standard extension that specifies the id of a quoted status.
 
-        Returns a `status dict`_ with the new status.
+        Returns a :ref:`status dict <status dict>` with the new status.
         """
         return self.__status_internal( 
             status, 
@@ -2067,18 +2082,18 @@ class Mastodon:
     @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
     def toot(self, status):
         """
-        Synonym for `status_post()`_ that only takes the status text as input.
+        Synonym for :ref:`status_post() <status_post()>` that only takes the status text as input.
 
         Usage in production code is not recommended.
 
-        Returns a `status dict`_ with the new status.
+        Returns a :ref:`status dict <status dict>` with the new status.
         """
         return self.status_post(status)
 
     @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
     def status_update(self, id, status = None, spoiler_text = None, sensitive = None, media_ids = None, poll = None):
         """
-        Edit a status. The meanings of the fields are largely the same as in `status_post()`_,
+        Edit a status. The meanings of the fields are largely the same as in :ref:`status_post() <status_post()>`,
         though not every field can be edited.
 
         Note that editing a poll will reset the votes.
@@ -2095,7 +2110,7 @@ class Mastodon:
     @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS_EDIT)
     def status_history(self, id):
         """
-        Returns the edit history of a status as a list of `status edit dicts`_, starting
+        Returns the edit history of a status as a list of :ref:`status edit dicts <status edit dicts>`, starting
         from the original form. Note that this means that a status that has been edited
         once will have *two* entries in this list, a status that has been edited twice
         will have three, and so on.
@@ -2108,7 +2123,7 @@ class Mastodon:
         Returns the source of a status for editing.
 
         Return value is a dictionary containing exactly the parameters you could pass to
-        `status_update()`_ to change nothing about the status, except `status` is `text`
+        :ref:`status_update() <status_update()>` to change nothing about the status, except `status` is `text`
         instead.
         """
         id = self.__unpack_id(id)
@@ -2192,10 +2207,10 @@ class Mastodon:
         """
         Reblog / boost a status.
 
-        The visibility parameter functions the same as in `status_post()`_ and
+        The visibility parameter functions the same as in :ref:`status_post() <status_post()>` and
         allows you to reduce the visibility of a reblogged status.
 
-        Returns a `status dict`_ with a new status that wraps around the reblogged one.
+        Returns a :ref:`status dict <status dict>` with a new status that wraps around the reblogged one.
         """
         params = self.__generate_params(locals(), ['id'])
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
@@ -2214,7 +2229,7 @@ class Mastodon:
         """
         Un-reblog a status.
 
-        Returns a `status dict`_ with the status that used to be reblogged.
+        Returns a :ref:`status dict <status dict>` with the status that used to be reblogged.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
@@ -2225,7 +2240,7 @@ class Mastodon:
         """
         Favourite a status.
 
-        Returns a `status dict`_ with the favourited status.
+        Returns a :ref:`status dict <status dict>` with the favourited status.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/favourite'.format(str(id))
@@ -2236,7 +2251,7 @@ class Mastodon:
         """
         Un-favourite a status.
 
-        Returns a `status dict`_ with the un-favourited status.
+        Returns a :ref:`status dict <status dict>` with the un-favourited status.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
@@ -2247,7 +2262,7 @@ class Mastodon:
         """
         Mute notifications for a status.
 
-        Returns a `status dict`_ with the now muted status
+        Returns a :ref:`status dict <status dict>` with the now muted status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/mute'.format(str(id))
@@ -2258,7 +2273,7 @@ class Mastodon:
         """
         Unmute notifications for a status.
 
-        Returns a `status dict`_ with the status that used to be muted.
+        Returns a :ref:`status dict <status dict>` with the status that used to be muted.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unmute'.format(str(id))
@@ -2269,7 +2284,7 @@ class Mastodon:
         """
         Pin a status for the logged-in user.
 
-        Returns a `status dict`_ with the now pinned status
+        Returns a :ref:`status dict <status dict>` with the now pinned status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/pin'.format(str(id))
@@ -2280,7 +2295,7 @@ class Mastodon:
         """
         Unpin a pinned status for the logged-in user.
 
-        Returns a `status dict`_ with the status that used to be pinned.
+        Returns a :ref:`status dict <status dict>` with the status that used to be pinned.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unpin'.format(str(id))
@@ -2291,7 +2306,7 @@ class Mastodon:
         """
         Bookmark a status as the logged-in user.
 
-        Returns a `status dict`_ with the now bookmarked status
+        Returns a :ref:`status dict <status dict>` with the now bookmarked status
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/bookmark'.format(str(id))
@@ -2302,7 +2317,7 @@ class Mastodon:
         """
         Unbookmark a bookmarked status for the logged-in user.
 
-        Returns a `status dict`_ with the status that used to be bookmarked.
+        Returns a :ref:`status dict <status dict>` with the status that used to be bookmarked.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/statuses/{0}/unbookmark'.format(str(id))
@@ -2318,7 +2333,7 @@ class Mastodon:
 
         New time must be at least 5 minutes into the future.
 
-        Returns a `scheduled status dict`_
+        Returns a :ref:`scheduled status dict <scheduled status dict>`
         """
         scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         id = self.__unpack_id(id)
@@ -2352,7 +2367,7 @@ class Mastodon:
         single-option polls, or only once per option in case of multi-option
         polls.
 
-        Returns the updated `poll dict`_
+        Returns the updated :ref:`poll dict <poll dict>`
         """
         id = self.__unpack_id(id)
         if not isinstance(choices, list):
@@ -2395,7 +2410,7 @@ class Mastodon:
         """
         Marks a single conversation as read.
 
-        Returns the updated `conversation dict`_.
+        Returns the updated :ref:`conversation dict <conversation dict>`.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/conversations/{0}/read'.format(str(id))
@@ -2412,7 +2427,7 @@ class Mastodon:
         Set `reblogs` to False to hide boosts by the followed user.
         Set `notify` to True to get a notification every time the followed user posts.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
@@ -2428,7 +2443,7 @@ class Mastodon:
         """
         Follow a remote user by uri (username@domain).
 
-        Returns a `account dict`_.
+        Returns a :ref:`account dict <account dict>`.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/follows', params)
@@ -2438,7 +2453,7 @@ class Mastodon:
         """
         Unfollow a user.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/accounts/{0}/unfollow'.format(str(id)))
@@ -2449,7 +2464,7 @@ class Mastodon:
         Remove a user from the logged in users followers (i.e. make them unfollow the logged in
         user / "softblock" them).
 
-        Returns a `relationship dict`_ reflecting the updated following status.
+        Returns a :ref:`relationship dict <relationship dict>` reflecting the updated following status.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/accounts/{0}/remove_from_followers'.format(str(id)))
@@ -2460,7 +2475,7 @@ class Mastodon:
         """
         Block a user.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/block'.format(str(id))
@@ -2471,7 +2486,7 @@ class Mastodon:
         """
         Unblock a user.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unblock'.format(str(id))
@@ -2486,7 +2501,7 @@ class Mastodon:
         muted from timelines. Pass a `duration` in seconds to have Mastodon automatically
         lift the mute after that many seconds.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
@@ -2498,7 +2513,7 @@ class Mastodon:
         """
         Unmute a user.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
@@ -2564,7 +2579,7 @@ class Mastodon:
         """
         Pin / endorse a user.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/pin'.format(str(id))
@@ -2575,7 +2590,7 @@ class Mastodon:
         """
         Unpin / un-endorse a user.
 
-        Returns a `relationship dict`_ containing the updated relationship to the user.
+        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/accounts/{0}/unpin'.format(str(id))
@@ -2586,7 +2601,7 @@ class Mastodon:
         """
         Set a note (visible to the logged in user only) for the given account.
 
-        Returns a `status dict`_ with the `note` updated.
+        Returns a :ref:`status dict <status dict>` with the `note` updated.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
@@ -2597,7 +2612,7 @@ class Mastodon:
         """
         Get an account's featured hashtags.
 
-        Returns a list of `hashtag dicts`_ (NOT `featured tag dicts`_).
+        Returns a list of :ref:`hashtag dicts <hashtag dicts>` (NOT `featured tag dicts`_).
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/accounts/{0}/featured_tags'.format(str(id)))
@@ -2610,7 +2625,7 @@ class Mastodon:
         """
         Creates a new featured hashtag displayed on the logged-in user's profile.
 
-        Returns a `featured tag dict`_ with the newly featured tag.
+        Returns a :ref:`featured tag dict <featured tag dict>` with the newly featured tag.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/featured_tags', params)
@@ -2643,7 +2658,7 @@ class Mastodon:
         Set `expires_in` to specify for how many seconds the filter should be
         kept around.
 
-        Returns the `filter dict`_ of the newly created filter.
+        Returns the :ref:`filter dict <filter dict>` of the newly created filter.
         """
         params = self.__generate_params(locals())
 
@@ -2659,7 +2674,7 @@ class Mastodon:
         Updates the filter with the given `id`. Parameters are the same
         as in `filter_create()`.
 
-        Returns the `filter dict`_ of the updated filter.
+        Returns the :ref:`filter dict <filter dict>` of the updated filter.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
@@ -2695,7 +2710,7 @@ class Mastodon:
         """
         Create a new list with the given `title`.
 
-        Returns the `list dict`_ of the created list.
+        Returns the :ref:`list dict <list dict>` of the created list.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/lists', params)
@@ -2705,7 +2720,7 @@ class Mastodon:
         """
         Update info about a list, where "info" is really the lists `title`.
 
-        Returns the `list dict`_ of the modified list.
+        Returns the :ref:`list dict <list dict>` of the modified list.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
@@ -2761,12 +2776,12 @@ class Mastodon:
 
         Starting with Mastodon 3.5.0, you can also pass a `category` (one out of
         "spam", "violation" or "other") and `rule_ids` (a list of rule IDs corresponding
-        to the rules returned by the `instance()`_ API).
+        to the rules returned by the :ref:`instance() <instance()>` API).
 
         Set `forward` to True to forward a report of a remote user to that users
         instance as well as sending it to the instance local administrators.
 
-        Returns a `report dict`_.
+        Returns a :ref:`report dict <report dict>`.
         """
         if category is not None and not category in ["spam", "violation", "other"]:
             raise MastodonIllegalArgumentError("Invalid report category (must be spam, violation or other)")
@@ -2793,7 +2808,7 @@ class Mastodon:
         """
         Accept an incoming follow request.
 
-        Returns the updated `relationship dict`_ for the requesting account.
+        Returns the updated :ref:`relationship dict <relationship dict>` for the requesting account.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
@@ -2804,7 +2819,7 @@ class Mastodon:
         """
         Reject an incoming follow request.
 
-        Returns the updated `relationship dict`_ for the requesting account.
+        Returns the updated :ref:`relationship dict <relationship dict>` for the requesting account.
         """
         id = self.__unpack_id(id)
         url = '/api/v1/follow_requests/{0}/reject'.format(str(id))
@@ -2833,7 +2848,7 @@ class Mastodon:
         Starting with Mastodon 3.2.0, `thumbnail` can be specified in the same way as `media_file`
         to upload a custom thumbnail image for audio and video files.
 
-        Returns a `media dict`_. This contains the id that can be used in
+        Returns a :ref:`media dict <media dict>`. This contains the id that can be used in
         status_post to attach the media file to a toot.
 
         When using the v2 API (post Mastodon version 3.1.4), the `url` in the
@@ -2883,9 +2898,9 @@ class Mastodon:
     def media_update(self, id, description=None, focus=None, thumbnail=None, thumbnail_mime_type=None):
         """
         Update the metadata of the media file with the given `id`. `description` and
-        `focus` and `thumbnail` are as in `media_post()`_ .
+        `focus` and `thumbnail` are as in :ref:`media_post() <media_post()>` .
 
-        Returns the updated `media dict`_.
+        Returns the updated :ref:`media dict <media dict>`.
         """
         id = self.__unpack_id(id)
 
@@ -2943,7 +2958,7 @@ class Mastodon:
 
         Note that if you give an invalid timeline name, this will silently do nothing.
 
-        Returns a dict with the updated `read marker dicts`_, keyed by timeline name.
+        Returns a dict with the updated :ref:`read marker dicts <read marker dicts>`, keyed by timeline name.
         """
         if not isinstance(timelines, (list, tuple)):
             timelines = [timelines]
@@ -2977,14 +2992,14 @@ class Mastodon:
         requires https for this URL. `encrypt_params` is a dict with key parameters that allow
         the server to encrypt data for you: A public key `pubkey` and a shared secret `auth`.
         You can generate this as well as the corresponding private key using the
-        `push_subscription_generate_keys()`_ function.
+        :ref:`push_subscription_generate_keys() <push_subscription_generate_keys()>` function.
 
         `policy` controls what sources will generate webpush events. Valid values are
         `all`, `none`, `follower` and `followed`.
 
         The rest of the parameters controls what kind of events you wish to subscribe to.
 
-        Returns a `push subscription dict`_.
+        Returns a :ref:`push subscription dict <push subscription dict>`.
         """
         if not policy in ['all', 'none', 'follower', 'followed']:
             raise MastodonIllegalArgumentError("Valid values for policy are 'all', 'none', 'follower' or 'followed'.")
@@ -3035,7 +3050,7 @@ class Mastodon:
         """
         Modifies what kind of events the app wishes to subscribe to.
 
-        Returns the updated `push subscription dict`_.
+        Returns the updated :ref:`push subscription dict <push subscription dict>`.
         """
         params = {}
 
@@ -3131,7 +3146,7 @@ class Mastodon:
         * Set `invited_by` to an account id to get only accounts invited by this user.
         * Set `role_ids` to a list of role IDs to get only accounts with those roles.
 
-        Returns a list of `admin account dicts`_.
+        Returns a list of :ref:`admin account dicts <admin account dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -3205,7 +3220,7 @@ class Mastodon:
 
         Deprecated in Mastodon version 3.5.0.
 
-        Returns a list of `admin account dicts`_.
+        Returns a list of :ref:`admin account dicts <admin account dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -3240,7 +3255,7 @@ class Mastodon:
     @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account(self, id):
         """
-        Fetches a single `admin account dict`_ for the user with the given id.
+        Fetches a single :ref:`admin account dict <admin account dict>` for the user with the given id.
 
         Returns that dict.
         """
@@ -3252,7 +3267,7 @@ class Mastodon:
         """
         Reenables login for a local account for which login has been disabled.
 
-        Returns the updated `admin account dict`_.
+        Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/enable'.format(id))
@@ -3262,7 +3277,7 @@ class Mastodon:
         """
         Approves a pending account.
 
-        Returns the updated `admin account dict`_.
+        Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/approve'.format(id))
@@ -3272,7 +3287,7 @@ class Mastodon:
         """
         Rejects and deletes a pending account.
 
-        Returns the updated `admin account dict`_ for the account that is now gone.
+        Returns the updated :ref:`admin account dict <admin account dict>` for the account that is now gone.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/reject'.format(id))
@@ -3282,7 +3297,7 @@ class Mastodon:
         """
         Unsilences an account.
 
-        Returns the updated `admin account dict`_.
+        Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsilence'.format(id))
@@ -3292,7 +3307,7 @@ class Mastodon:
         """
         Unsuspends an account.
 
-        Returns the updated `admin account dict`_.
+        Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsuspend'.format(id))
@@ -3302,7 +3317,7 @@ class Mastodon:
         """
         Delete a local user account.
 
-        The deleted accounts `admin account dict`_.
+        The deleted accounts :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('DELETE', '/api/v1/admin/accounts/{0}'.format(id))
@@ -3312,7 +3327,7 @@ class Mastodon:
         """
         Unmark an account as force-sensitive.
 
-        Returns the updated `admin account dict`_.
+        Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsensitive'.format(id))
@@ -3362,7 +3377,7 @@ class Mastodon:
         Set `resolved` to True to search for resolved reports. `account_id` and `target_account_id`
         can be used to get reports filed by or about a specific user.
 
-        Returns a list of `report dicts`_.
+        Returns a list of :ref:`report dicts <report dicts>`.
         """
         if max_id is not None:
             max_id = self.__unpack_id(max_id, dateconv=True)
@@ -3390,7 +3405,7 @@ class Mastodon:
         """
         Fetches the report with the given id.
 
-        Returns a `report dict`_.
+        Returns a :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/admin/reports/{0}'.format(id))
@@ -3400,7 +3415,7 @@ class Mastodon:
         """
         Assigns the given report to the logged-in user.
 
-        Returns the updated `report dict`_.
+        Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_self'.format(id))
@@ -3410,7 +3425,7 @@ class Mastodon:
         """
         Unassigns the given report from the logged-in user.
 
-        Returns the updated `report dict`_.
+        Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/unassign'.format(id))
@@ -3420,7 +3435,7 @@ class Mastodon:
         """
         Reopens a closed report.
 
-        Returns the updated `report dict`_.
+        Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/reopen'.format(id))
@@ -3430,7 +3445,7 @@ class Mastodon:
         """
         Marks a report as resolved (without taking any action).
 
-        Returns the updated `report dict`_.
+        Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
@@ -3438,9 +3453,9 @@ class Mastodon:
     @api_version("3.5.0", "3.5.0", __DICT_VERSION_HASHTAG)
     def admin_trending_tags(self, limit=None):
         """
-        Admin version of `trending_tags()`_. Includes unapproved tags.
+        Admin version of :ref:`trending_tags() <trending_tags()>`. Includes unapproved tags.
 
-        Returns a list of `hashtag dicts`_, sorted by the instance's trending algorithm,
+        Returns a list of :ref:`hashtag dicts <hashtag dicts>`, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -3449,9 +3464,9 @@ class Mastodon:
     @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
     def admin_trending_statuses(self):
         """
-        Admin version of `trending_statuses()`_. Includes unapproved tags.
+        Admin version of :ref:`trending_statuses() <trending_statuses()>`. Includes unapproved tags.
 
-        Returns a list of `status dicts`_, sorted by the instance's trending algorithm,
+        Returns a list of :ref:`status dicts <status dicts>`, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -3460,9 +3475,9 @@ class Mastodon:
     @api_version("3.5.0", "3.5.0", __DICT_VERSION_CARD)
     def admin_trending_links(self):
         """
-        Admin version of `trending_links()`_. Includes unapproved tags.
+        Admin version of :ref:`trending_links() <trending_links()>`. Includes unapproved tags.
 
-        Returns a list of `card dicts`_, sorted by the instance's trending algorithm,
+        Returns a list of :ref:`card dicts <card dicts>`, sorted by the instance's trending algorithm,
         descending.
         """
         params = self.__generate_params(locals())
@@ -3475,7 +3490,7 @@ class Mastodon:
 
         Provide an `id` to fetch a specific domain block based on its database id.
 
-        Returns a list of `admin domain block dicts`_, raises a `MastodonAPIError` if the specified block does not exist.
+        Returns a list of :ref:`admin domain block dicts <admin domain block dicts>`, raises a `MastodonAPIError` if the specified block does not exist.
         """
         if id is not None:
             id = self.__unpack_id(id)
@@ -3502,7 +3517,7 @@ class Mastodon:
         `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
         `obfuscate` censors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
 
-        Returns the new domain block as an `admin domain block dict`_.
+        Returns the new domain block as an :ref:`admin domain block dict <admin domain block dict>`.
         """
         if domain is None:
             raise AttributeError("Must provide a domain to block a domain")
@@ -3527,7 +3542,7 @@ class Mastodon:
         `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
         `obfuscate` censors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
 
-        Returns the modified domain block as an `admin domain block dict`_, raises a `MastodonAPIError` if the specified block does not exist.
+        Returns the modified domain block as an :ref:`admin domain block dict <admin domain block dict>`, raises a `MastodonAPIError` if the specified block does not exist.
         """
         if id is None:
             raise AttributeError("Must provide an id to modify the existing moderation actions on a given domain.")
@@ -3578,7 +3593,7 @@ class Mastodon:
         There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
         release.
 
-        Returns a list of `admin measure dicts`_.
+        Returns a list of :ref:`admin measure dicts <admin measure dicts>`.
         """
         params_init = locals()
         keys = []
@@ -3628,7 +3643,7 @@ class Mastodon:
         There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
         release.
 
-        Returns a list of `admin dimension dicts`_.
+        Returns a list of :ref:`admin dimension dicts <admin dimension dicts>`.
         """
         params_init = locals()
         keys = []
@@ -3662,7 +3677,7 @@ class Mastodon:
         """
         Gets user retention statistics (at `frequency` - "day" or "month" - granularity) between `start_at` and `end_at`.
 
-        Returns a list of `admin retention dicts`_
+        Returns a list of :ref:`admin retention dicts <admin retention dicts>`
         """
         if not frequency in ["day", "month"]:
             raise MastodonIllegalArgumentError("Frequency must be day or month")
@@ -3694,7 +3709,7 @@ class Mastodon:
         crypto_ver = cryptography.__version__
         if len(crypto_ver) < 5:
             crypto_ver += ".0"
-        if parse_version_string(crypto_ver) == (2, 5, 0):
+        if bigger_version(crypto_ver, "2.5.0") == crypto_ver:
             push_key_pub = push_key_pair.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
         else:
             push_key_pub = push_key_pair.public_key().public_numbers().encode_point()
@@ -3716,10 +3731,10 @@ class Mastodon:
     def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
         """
         Decrypts `data` received in a webpush request. Requires the private key dict
-        from `push_subscription_generate_keys()`_ (`decrypt_params`) as well as the
+        from :ref:`push_subscription_generate_keys() <push_subscription_generate_keys()>` (`decrypt_params`) as well as the
         Encryption and server Crypto-Key headers from the received webpush
 
-        Returns the decoded webpush as a `push notification dict`_.
+        Returns the decoded webpush as a :ref:`push notification dict <push notification dict>`.
         """
         if (not IMPL_HAS_ECE) or (not IMPL_HAS_CRYPTO):
             raise NotImplementedError(
