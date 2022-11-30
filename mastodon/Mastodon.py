@@ -69,13 +69,17 @@ except:
 
 def parse_version_string(version_string):
     """Parses a semver version string, stripping off "rc" stuff if present."""
-    return tuple(int(x) for x in re.findall(r"\d+", version_string))[:3]
-
+    string_parts = version_string.split(".")
+    version_parts = (
+        int(re.match("([0-9]*)", string_parts[0]).group(0)),
+        int(re.match("([0-9]*)", string_parts[1]).group(0)),
+        int(re.match("([0-9]*)", string_parts[2]).group(0))
+    )
+    return version_parts
 
 def max_version(*version_strings):
     """Returns the maximum version of all provided version strings."""
     return max(version_strings, key=parse_version_string)
-
 
 def api_version(created_ver, last_changed_ver, return_value_ver):
     """Version check decorator. Currently only checks Bigger Than."""
