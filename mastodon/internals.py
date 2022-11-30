@@ -4,7 +4,6 @@ import mimetypes
 import threading
 import six
 import uuid
-import pytz
 import dateutil.parser
 import time
 import copy
@@ -24,7 +23,7 @@ from .defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SE
 ###
 # Internal helpers, dragons probably
 ###
-class Mastodon():
+class Mastodon(): 
     def __datetime_to_epoch(self, date_time):
         """
         Converts a python datetime to unix epoch, accounting for
@@ -32,15 +31,10 @@ class Mastodon():
 
         Assumes UTC if timezone is not given.
         """
-        date_time_utc = None
         if date_time.tzinfo is None:
-            date_time_utc = date_time.replace(tzinfo=pytz.utc)
-        else:
-            date_time_utc = date_time.astimezone(pytz.utc)
+            date_time = date_time.replace(tzinfo=datetime.timezone.utc)
+        return date_time.timestamp()
 
-        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
-
-        return (date_time_utc - epoch_utc).total_seconds()
 
     def __get_logged_in_id(self):
         """
@@ -73,7 +67,7 @@ class Mastodon():
                 if v is not None:
                     try:
                         if isinstance(v, int):
-                            json_object[k] = datetime.datetime.fromtimestamp(v, pytz.utc)
+                            json_object[k] = datetime.datetime.fromtimestamp(v, datetime.timezone.utc)
                         else:
                             json_object[k] = dateutil.parser.parse(v)
                     except:
@@ -129,7 +123,7 @@ class Mastodon():
         every time instead of randomly doing different things on some systems
         and also it represents that time as the equivalent UTC time.
         """
-        isotime = datetime_val.astimezone(pytz.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
+        isotime = datetime_val.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
         if isotime[-2] != ":":
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime

@@ -7,6 +7,7 @@ import os.path
 import time
 import datetime
 import collections
+from contextlib import closing
 import requests
 from requests.models import urlencode
 import dateutil
@@ -3744,4 +3745,3 @@ class Mastodon(Internals):
         if api_okay in [b'OK', b'success']:
             return True
         return False
-
