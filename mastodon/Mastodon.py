@@ -17,7 +17,8 @@ import copy
 
 
 from .compat import IMPL_HAS_CRYPTO, IMPL_HAS_ECE, IMPL_HAS_BLURHASH
-from .compat import cryptography, default_backend, ec, serialization, http_ece
+from .compat import cryptography, default_backend, ec, serialization
+from .compat import http_ece
 from .compat import blurhash
 from .compat import urlparse
 
@@ -25,60 +26,33 @@ from .utility import parse_version_string, max_version, api_version
 from .utility import AttribAccessDict, AttribAccessDict
 
 from .error import *
+from .versions import _DICT_VERSION_APPLICATION, _DICT_VERSION_MENTION, _DICT_VERSION_MEDIA, _DICT_VERSION_ACCOUNT, _DICT_VERSION_POLL, \
+                        _DICT_VERSION_STATUS, _DICT_VERSION_INSTANCE, _DICT_VERSION_HASHTAG, _DICT_VERSION_EMOJI, _DICT_VERSION_RELATIONSHIP, \
+                        _DICT_VERSION_NOTIFICATION, _DICT_VERSION_CONTEXT, _DICT_VERSION_LIST, _DICT_VERSION_CARD, _DICT_VERSION_SEARCHRESULT, \
+                        _DICT_VERSION_ACTIVITY, _DICT_VERSION_REPORT, _DICT_VERSION_PUSH, _DICT_VERSION_PUSH_NOTIF, _DICT_VERSION_FILTER, \
+                        _DICT_VERSION_CONVERSATION, _DICT_VERSION_SCHEDULED_STATUS, _DICT_VERSION_PREFERENCES, _DICT_VERSION_ADMIN_ACCOUNT, \
+                        _DICT_VERSION_FEATURED_TAG, _DICT_VERSION_MARKER, _DICT_VERSION_REACTION, _DICT_VERSION_ANNOUNCEMENT, _DICT_VERSION_STATUS_EDIT, \
+                        _DICT_VERSION_FAMILIAR_FOLLOWERS, _DICT_VERSION_ADMIN_DOMAIN_BLOCK, _DICT_VERSION_ADMIN_MEASURE, _DICT_VERSION_ADMIN_DIMENSION, \
+                        _DICT_VERSION_ADMIN_RETENTION
+
 from .defaults import _DEFAULT_TIMEOUT, _DEFAULT_SCOPES, _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from .defaults import _SCOPE_SETS
 
 from .internals import Mastodon as Internals
+from .accounts import Mastodon as Accounts
 
 ##
 # The actual Mastodon class
 ###
-class Mastodon(Internals):
+class Mastodon(Internals, Accounts):
     """
     Thorough and easy to use Mastodon
     API wrapper in Python.
 
     Main class, imports most things from modules
     """
-
     # Support level
     __SUPPORTED_MASTODON_VERSION = "3.5.5"
-
-    # Dict versions
-    __DICT_VERSION_APPLICATION = "2.7.2"
-    __DICT_VERSION_MENTION = "1.0.0"
-    __DICT_VERSION_MEDIA = "3.2.0"
-    __DICT_VERSION_ACCOUNT = "3.3.0"
-    __DICT_VERSION_POLL = "2.8.0"
-    __DICT_VERSION_STATUS = max_version("3.1.0", __DICT_VERSION_MEDIA, __DICT_VERSION_ACCOUNT, __DICT_VERSION_APPLICATION, __DICT_VERSION_MENTION, __DICT_VERSION_POLL)
-    __DICT_VERSION_INSTANCE = max_version("3.4.0", __DICT_VERSION_ACCOUNT)
-    __DICT_VERSION_HASHTAG = "2.3.4"
-    __DICT_VERSION_EMOJI = "3.0.0"
-    __DICT_VERSION_RELATIONSHIP = "3.3.0"
-    __DICT_VERSION_NOTIFICATION = max_version("3.5.0",  __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS)
-    __DICT_VERSION_CONTEXT = max_version("1.0.0",  __DICT_VERSION_STATUS)
-    __DICT_VERSION_LIST = "2.1.0"
-    __DICT_VERSION_CARD = "3.2.0"
-    __DICT_VERSION_SEARCHRESULT = max_version("1.0.0", __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS, __DICT_VERSION_HASHTAG)
-    __DICT_VERSION_ACTIVITY = "2.1.2"
-    __DICT_VERSION_REPORT = "2.9.1"
-    __DICT_VERSION_PUSH = "2.4.0"
-    __DICT_VERSION_PUSH_NOTIF = "2.4.0"
-    __DICT_VERSION_FILTER = "2.4.3"
-    __DICT_VERSION_CONVERSATION = max_version("2.6.0", __DICT_VERSION_ACCOUNT, __DICT_VERSION_STATUS)
-    __DICT_VERSION_SCHEDULED_STATUS = max_version("2.7.0", __DICT_VERSION_STATUS)
-    __DICT_VERSION_PREFERENCES = "2.8.0"
-    __DICT_VERSION_ADMIN_ACCOUNT = max_version("4.0.0", __DICT_VERSION_ACCOUNT)
-    __DICT_VERSION_FEATURED_TAG = "3.0.0"
-    __DICT_VERSION_MARKER = "3.0.0"
-    __DICT_VERSION_REACTION = "3.1.0"
-    __DICT_VERSION_ANNOUNCEMENT = max_version("3.1.0", __DICT_VERSION_REACTION)
-    __DICT_VERSION_STATUS_EDIT = "3.5.0"
-    __DICT_VERSION_FAMILIAR_FOLLOWERS = max_version("3.5.0", __DICT_VERSION_ACCOUNT)
-    __DICT_VERSION_ADMIN_DOMAIN_BLOCK = "4.0.0"
-    __DICT_VERSION_ADMIN_MEASURE = "3.5.0"
-    __DICT_VERSION_ADMIN_DIMENSION = "3.5.0"
-    __DICT_VERSION_ADMIN_RETENTION = "3.5.0"
 
     ###
     # Registering apps
@@ -306,83 +280,6 @@ class Mastodon(Internals):
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
 
-    def set_language(self, lang):
-        """
-        Set the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter) or, for languages that do
-        not have one, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and trends.
-        """
-        self.lang = lang
-
-    def __normalize_version_string(self, version_string):
-        # Split off everything after the first space, to take care of Pleromalikes so that the parser doesn't get confused in case those have a + somewhere in their version
-        version_string = version_string.split(" ")[0]
-        try:
-            # Attempt to split at + and check if the part after parses as a version string, to account for hometown
-            parse_version_string(version_string.split("+")[1])
-            return version_string.split("+")[1]
-        except:
-            # If this fails, assume that if there is a +, what is before that is the masto version (or that there is no +)
-            return version_string.split("+")[0]
-            
-    def retrieve_mastodon_version(self):
-        """
-        Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
-
-        Returns the version string, possibly including rc info.
-        """
-        try:
-            version_str = self.__normalize_version_string(self.__instance()["version"])
-            self.version_check_worked = True
-        except:
-            # instance() was added in 1.1.0, so our best guess is 1.0.0.
-            version_str = "1.0.0"
-            self.version_check_worked = False
-
-        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
-        return version_str
-
-    def verify_minimum_version(self, version_str, cached=False):
-        """
-        Update version info from server and verify that at least the specified version is present.
-
-        If you specify "cached", the version info update part is skipped.
-
-        Returns True if version requirement is satisfied, False if not.
-        """
-        if not cached:
-            self.retrieve_mastodon_version()
-        major, minor, patch = parse_version_string(version_str)
-        if major > self.mastodon_major:
-            return False
-        elif major == self.mastodon_major and minor > self.mastodon_minor:
-            return False
-        elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-            return False
-        return True
-    
-    def get_approx_server_time(self):
-        """
-        Retrieve the approximate server time
-
-        We parse this from the hopefully present "Date" header, but make no effort to compensate for latency.
-        """
-        response = self.__api_request("HEAD", "/", return_response_object=True)
-        if 'Date' in response.headers:
-            server_time_datetime = dateutil.parser.parse(response.headers['Date'])
-
-            # Make sure we're in local time
-            epoch_time = self.__datetime_to_epoch(server_time_datetime)
-            return datetime.datetime.fromtimestamp(epoch_time)
-        else:
-            raise MastodonAPIError("No server time in response.")
-
-    @staticmethod
-    def get_supported_version():
-        """
-        Retrieve the maximum version of Mastodon supported by this version of Mastodon.py
-        """
-        return Mastodon.__SUPPORTED_MASTODON_VERSION
-
     def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob", scopes=_DEFAULT_SCOPES, force_login=False, state=None, lang=None):
         """
         Returns the URL that a client needs to request an OAuth grant from the server.
@@ -516,112 +413,76 @@ class Mastodon(Internals):
         self.access_token = None
         self.__logged_in_id = None
 
-    @api_version("2.7.0", "2.7.0", "3.4.0")
-    def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=_DEFAULT_SCOPES, to_file=None, return_detailed_error=False):
+    def set_language(self, lang):
         """
-        Creates a new user account with the given username, password and email. "agreement"
-        must be set to true (after showing the user the instance's user agreement and having
-        them agree to it), "locale" specifies the language for the confirmation email as an
-        ISO 639-1 (two letter) or, if a language does not have one, 639-3 (three letter) language 
-        code. `reason` can be used to specify why a user would like to join if approved-registrations 
-        mode is on.
-
-        Does not require an access token, but does require a client grant.
-
-        By default, this method is rate-limited by IP to 5 requests per 30 minutes.
-
-        Returns an access token (just like log_in), which it can also persist to to_file,
-        and sets it internally so that the user is now logged in. Note that this token
-        can only be used after the user has confirmed their email.
-
-        By default, the function will throw if the account could not be created. Alternately,
-        when `return_detailed_error` is passed, Mastodon.py will return the detailed error
-        response that the API provides (Starting from version 3.4.0 - not checked here) as an dict with 
-        error details as the second return value and the token returned as `None` in case of error. 
-        The dict will contain a text `error` values as well as a `details` value which is a dict with 
-        one optional key for each potential field (`username`, `password`, `email` and `agreement`), 
-        each if present containing a dict with an `error` category and free text `description`. 
-        Valid error categories are:
-
-            * ERR_BLOCKED - When e-mail provider is not allowed
-            * ERR_UNREACHABLE - When e-mail address does not resolve to any IP via DNS (MX, A, AAAA)
-            * ERR_TAKEN - When username or e-mail are already taken
-            * ERR_RESERVED - When a username is reserved, e.g. "webmaster" or "admin"
-            * ERR_ACCEPTED - When agreement has not been accepted
-            * ERR_BLANK - When a required attribute is blank
-            * ERR_INVALID - When an attribute is malformed, e.g. wrong characters or invalid e-mail address
-            * ERR_TOO_LONG - When an attribute is over the character limit
-            * ERR_TOO_SHORT - When an attribute is under the character requirement
-            * ERR_INCLUSION - When an attribute is not one of the allowed values, e.g. unsupported locale
+        Set the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter) or, for languages that do
+        not have one, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and trends.
         """
-        params = self.__generate_params(locals(), ['to_file', 'scopes'])
-        params['client_id'] = self.client_id
-        params['client_secret'] = self.client_secret
+        self.lang = lang
+            
+    def retrieve_mastodon_version(self):
+        """
+        Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
 
-        if not agreement:
-            del params['agreement']
-
-        # Step 1: Get a user-free token via oauth
+        Returns the version string, possibly including rc info.
+        """
         try:
-            oauth_params = {}
-            oauth_params['scope'] = " ".join(scopes)
-            oauth_params['client_id'] = self.client_id
-            oauth_params['client_secret'] = self.client_secret
-            oauth_params['grant_type'] = 'client_credentials'
+            version_str = self.__normalize_version_string(self.__instance()["version"])
+            self.version_check_worked = True
+        except:
+            # instance() was added in 1.1.0, so our best guess is 1.0.0.
+            version_str = "1.0.0"
+            self.version_check_worked = False
 
-            response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False)
-            temp_access_token = response['access_token']
-        except Exception as e:
-            raise MastodonIllegalArgumentError(
-                'Invalid request during oauth phase: %s' % e)
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
+        return version_str
 
-        # Step 2: Use that to create a user
-        try:
-            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True)
-            if "error" in response:
-                if return_detailed_error:
-                    return None, response
-                raise MastodonIllegalArgumentError('Invalid request: %s' % e)
-            self.access_token = response['access_token']
-            self.__set_refresh_token(response.get('refresh_token'))
-            self.__set_token_expired(int(response.get('expires_in', 0)))            
-        except Exception as e:
-            raise MastodonIllegalArgumentError('Invalid request')
+    def verify_minimum_version(self, version_str, cached=False):
+        """
+        Update version info from server and verify that at least the specified version is present.
 
-        # Step 3: Check scopes, persist, et cetera
-        received_scopes = response["scope"].split(" ")
-        for scope_set in _SCOPE_SETS.keys():
-            if scope_set in received_scopes:
-                received_scopes += _SCOPE_SETS[scope_set]
+        If you specify "cached", the version info update part is skipped.
 
-        if not set(scopes) <= set(received_scopes):
-            raise MastodonAPIError('Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
+        Returns True if version requirement is satisfied, False if not.
+        """
+        if not cached:
+            self.retrieve_mastodon_version()
+        major, minor, patch = parse_version_string(version_str)
+        if major > self.mastodon_major:
+            return False
+        elif major == self.mastodon_major and minor > self.mastodon_minor:
+            return False
+        elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
+            return False
+        return True
+    
+    def get_approx_server_time(self):
+        """
+        Retrieve the approximate server time
 
-        if to_file is not None:
-            with open(to_file, 'w') as token_file:
-                token_file.write(response['access_token'] + "\n")
-                token_file.write(self.api_base_url + "\n")
+        We parse this from the hopefully present "Date" header, but make no effort to compensate for latency.
+        """
+        response = self.__api_request("HEAD", "/", return_response_object=True)
+        if 'Date' in response.headers:
+            server_time_datetime = dateutil.parser.parse(response.headers['Date'])
 
-        self.__logged_in_id = None
-
-        if return_detailed_error:
-            return response['access_token'], {}
+            # Make sure we're in local time
+            epoch_time = self.__datetime_to_epoch(server_time_datetime)
+            return datetime.datetime.fromtimestamp(epoch_time)
         else:
-            return response['access_token']
+            raise MastodonAPIError("No server time in response.")
 
-    @api_version("3.4.0", "3.4.0", "3.4.0")
-    def email_resend_confirmation(self):
+    @staticmethod
+    def get_supported_version():
         """
-        Requests a re-send of the users confirmation mail for an unconfirmed logged in user.
-
-        Only available to the app that the user originally signed up with.
+        Retrieve the maximum version of Mastodon supported by this version of Mastodon.py
         """
-        self.__api_request('POST', '/api/v1/emails/confirmations')
+        return Mastodon.__SUPPORTED_MASTODON_VERSION
 
     ###
     # Reading data: Instances
     ###
-    @api_version("1.1.0", "2.3.0", __DICT_VERSION_INSTANCE)
+    @api_version("1.1.0", "2.3.0", _DICT_VERSION_INSTANCE)
     def instance(self):
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
@@ -639,7 +500,7 @@ class Mastodon(Internals):
         instance = self.__api_request('GET', '/api/v1/instance/')
         return instance
 
-    @api_version("2.1.2", "2.1.2", __DICT_VERSION_ACTIVITY)
+    @api_version("2.1.2", "2.1.2", _DICT_VERSION_ACTIVITY)
     def instance_activity(self):
         """
         Retrieve activity stats about the instance. May be disabled by the instance administrator - throws
@@ -698,7 +559,7 @@ class Mastodon(Internals):
             parse = urlparse(schema_url)
             return self.__api_request('GET', parse.path + parse.params + parse.query + parse.fragment)
 
-    @api_version("3.4.0", "3.4.0", __DICT_VERSION_INSTANCE)
+    @api_version("3.4.0", "3.4.0", _DICT_VERSION_INSTANCE)
     def instance_rules(self):
         """
         Retrieve instance rules.
@@ -710,7 +571,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Timelines
     ##
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline(self, timeline="home", max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
@@ -753,7 +614,7 @@ class Mastodon(Internals):
         url = '/api/v1/timelines/{0}'.format(timeline)
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_home(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
         Convenience method: Fetches the logged-in user's home timeline (i.e. followed users and self). Params as in `timeline()`.
@@ -762,7 +623,7 @@ class Mastodon(Internals):
         """
         return self.timeline('home', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_local(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False):
         """
         Convenience method: Fetches the local / instance-wide timeline, not including replies. Params as in `timeline()`.
@@ -771,7 +632,7 @@ class Mastodon(Internals):
         """
         return self.timeline('local', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media)
 
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_public(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
         Convenience method: Fetches the public / visible-network / federated timeline, not including replies. Params as in `timeline()`.
@@ -780,7 +641,7 @@ class Mastodon(Internals):
         """
         return self.timeline('public', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("1.0.0", "3.1.4", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_hashtag(self, hashtag, local=False, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, remote=False):
         """
         Convenience method: Fetch a timeline of toots with a given hashtag. The hashtag parameter
@@ -793,7 +654,7 @@ class Mastodon(Internals):
                 "Hashtag parameter should omit leading #")
         return self.timeline('tag/{0}'.format(hashtag), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("2.1.0", "3.1.4", __DICT_VERSION_STATUS)
+    @api_version("2.1.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_list(self, id, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
         """
         Convenience method: Fetches a timeline containing all the toots by users in a given list. Params as in `timeline()`.
@@ -803,7 +664,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.timeline('list/{0}'.format(id), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("2.6.0", "2.6.0", __DICT_VERSION_CONVERSATION)
+    @api_version("2.6.0", "2.6.0", _DICT_VERSION_CONVERSATION)
     def conversations(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a user's conversations.
@@ -825,7 +686,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Statuses
     ###
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status(self, id):
         """
         Fetch information about a single toot.
@@ -838,7 +699,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "3.0.0", __DICT_VERSION_CARD)
+    @api_version("1.0.0", "3.0.0", _DICT_VERSION_CARD)
     def status_card(self, id):
         """
         Fetch a card associated with a status. A card describes an object (such as an
@@ -860,7 +721,7 @@ class Mastodon(Internals):
             url = '/api/v1/statuses/{0}/card'.format(str(id))
             return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "1.0.0", __DICT_VERSION_CONTEXT)
+    @api_version("1.0.0", "1.0.0", _DICT_VERSION_CONTEXT)
     def status_context(self, id):
         """
         Fetch information about ancestors and descendants of a toot.
@@ -873,7 +734,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/context'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def status_reblogged_by(self, id):
         """
         Fetch a list of users that have reblogged a status.
@@ -886,7 +747,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def status_favourited_by(self, id):
         """
         Fetch a list of users that have favourited a status.
@@ -902,7 +763,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Scheduled statuses
     ###
-    @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
+    @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
     def scheduled_statuses(self):
         """
         Fetch a list of scheduled statuses
@@ -911,7 +772,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/scheduled_statuses')
 
-    @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
+    @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
     def scheduled_status(self, id):
         """
         Fetch information about the scheduled status with the given id.
@@ -925,7 +786,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Polls
     ###
-    @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
+    @api_version("2.8.0", "2.8.0", _DICT_VERSION_POLL)
     def poll(self, id):
         """
         Fetch information about the poll with the given id
@@ -939,7 +800,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0", "3.5.0", __DICT_VERSION_NOTIFICATION)
+    @api_version("1.0.0", "3.5.0", _DICT_VERSION_NOTIFICATION)
     def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, exclude_types=None, types=None, mentions_only=None):
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
@@ -999,7 +860,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Accounts
     ###
-    @api_version("1.0.0", "1.0.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "1.0.0", _DICT_VERSION_ACCOUNT)
     def account(self, id):
         """
         Fetch account information by user `id`.
@@ -1012,7 +873,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def account_verify_credentials(self):
         """
         Fetch logged-in user's account information.
@@ -1021,7 +882,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def me(self):
         """
         Get this user's account. Synonym for `account_verify_credentials()`, does exactly
@@ -1030,7 +891,7 @@ class Mastodon(Internals):
         """
         return self.account_verify_credentials()
 
-    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
     def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, exclude_reblogs=False, tagged=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch statuses by user `id`. Same options as :ref:`timeline() <timeline()>` are permitted.
@@ -1073,7 +934,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/statuses'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def account_following(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is following.
@@ -1094,7 +955,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/following'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def account_followers(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch users the given user is followed by.
@@ -1115,7 +976,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/followers'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("1.0.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_relationships(self, id):
         """
         Fetch relationship (following, followed_by, blocking, follow requested) of
@@ -1128,7 +989,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
 
-    @api_version("1.0.0", "2.3.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.3.0", _DICT_VERSION_ACCOUNT)
     def account_search(self, q, limit=None, following=False):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
@@ -1144,7 +1005,7 @@ class Mastodon(Internals):
 
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
     def account_lists(self, id):
         """
         Get all of the logged-in user's lists which the specified user is
@@ -1157,7 +1018,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/lists'.format(str(id))
         return self.__api_request('GET', url, params)
 
-    @api_version("3.4.0", "3.4.0", __DICT_VERSION_ACCOUNT)
+    @api_version("3.4.0", "3.4.0", _DICT_VERSION_ACCOUNT)
     def account_lookup(self, acct):
         """
         Look up an account from user@instance form (@instance allowed but not required for
@@ -1169,7 +1030,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
     
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_FAMILIAR_FOLLOWERS)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_FAMILIAR_FOLLOWERS)
     def account_familiar_followers(self, id):
         """
         Find followers for the account given by id (can be a list) that also follow the
@@ -1186,7 +1047,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Featured hashtags
     ###
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
     def featured_tags(self):
         """
         Return the hashtags the logged-in user has set to be featured on
@@ -1196,7 +1057,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/featured_tags')
 
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_HASHTAG)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_HASHTAG)
     def featured_tag_suggestions(self):
         """
         Returns the logged-in user's 10 most commonly-used hashtags.
@@ -1208,7 +1069,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Keyword filters
     ###
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
     def filters(self):
         """
         Fetch all of the logged-in user's filters.
@@ -1217,7 +1078,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/filters')
 
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
     def filter(self, id):
         """
         Fetches information about the filter with the specified `id`.
@@ -1228,7 +1089,7 @@ class Mastodon(Internals):
         url = '/api/v1/filters/{0}'.format(str(id))
         return self.__api_request('GET', url)
 
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
     def filters_apply(self, objects, filters, context):
         """
         Helper function: Applies a list of filters to a list of either statuses
@@ -1266,7 +1127,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Follow suggestions
     ###
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_ACCOUNT)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_ACCOUNT)
     def suggestions(self):
         """
         Fetch follow suggestions for the logged-in user.
@@ -1279,7 +1140,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Follow suggestions
     ###
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_ACCOUNT)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_ACCOUNT)
     def directory(self, offset=None, limit=None, order=None, local=None):
         """
         Fetch the contents of the profile directory, if enabled on the server.
@@ -1302,7 +1163,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Endorsements
     ###
-    @api_version("2.5.0", "2.5.0", __DICT_VERSION_ACCOUNT)
+    @api_version("2.5.0", "2.5.0", _DICT_VERSION_ACCOUNT)
     def endorsements(self):
         """
         Fetch list of users endorsed by the logged-in user.
@@ -1325,7 +1186,7 @@ class Mastodon(Internals):
             if not self.verify_minimum_version("2.8.0", cached=True):
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
-    @api_version("1.1.0", "2.8.0", __DICT_VERSION_SEARCHRESULT)
+    @api_version("1.1.0", "2.8.0", _DICT_VERSION_SEARCHRESULT)
     def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
         """
         Fetch matching hashtags, accounts and statuses. Will perform webfinger
@@ -1372,7 +1233,7 @@ class Mastodon(Internals):
             del params['resolve']
         return self.__api_request('GET', '/api/v1/search', params)
 
-    @api_version("2.4.1", "2.8.0", __DICT_VERSION_SEARCHRESULT)
+    @api_version("2.4.1", "2.8.0", _DICT_VERSION_SEARCHRESULT)
     def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
         """
         Identical to `search_v1()`, except in that it returns tags as
@@ -1401,14 +1262,14 @@ class Mastodon(Internals):
     ###
     # Reading data: Trends
     ###
-    @api_version("2.4.3", "3.5.0", __DICT_VERSION_HASHTAG)
+    @api_version("2.4.3", "3.5.0", _DICT_VERSION_HASHTAG)
     def trends(self, limit=None):
         """
         Alias for :ref:`trending_tags() <trending_tags()>`
         """
         return self.trending_tags(limit=limit) 
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_HASHTAG)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
     def trending_tags(self, limit=None, lang=None):
         """
         Fetch trending-hashtag information, if the instance provides such information.
@@ -1433,7 +1294,7 @@ class Mastodon(Internals):
         else:
             return self.__api_request('GET', '/api/v1/trends', params)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
     def trending_statuses(self):
         """
         Fetch trending-status information, if the instance provides such information.
@@ -1449,7 +1310,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/trends/statuses', params)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_CARD)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_CARD)
     def trending_links(self):
         """
         Fetch trending-link information, if the instance provides such information.
@@ -1466,7 +1327,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Lists
     ###
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
     def lists(self):
         """
         Fetch a list of all the Lists by the logged-in user.
@@ -1475,7 +1336,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/lists')
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
     def list(self, id):
         """
         Fetch info about a specific list.
@@ -1485,7 +1346,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
 
-    @api_version("2.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    @api_version("2.1.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def list_accounts(self, id, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get the accounts that are on the given list.
@@ -1509,7 +1370,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Mutes and Blocks
     ###
-    @api_version("1.1.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.1.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def mutes(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch a list of users muted by the logged-in user.
@@ -1528,7 +1389,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def blocks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch a list of users blocked by the logged-in user.
@@ -1550,7 +1411,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Reports
     ###
-    @api_version("1.1.0", "1.1.0", __DICT_VERSION_REPORT)
+    @api_version("1.1.0", "1.1.0", _DICT_VERSION_REPORT)
     def reports(self):
         """
         Fetch a list of reports made by the logged-in user.
@@ -1567,7 +1428,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Favourites
     ###
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.6.0", _DICT_VERSION_STATUS)
     def favourites(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's favourited statuses.
@@ -1589,7 +1450,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Follow requests
     ###
-    @api_version("1.0.0", "2.6.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def follow_requests(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetch the logged-in user's incoming follow requests.
@@ -1633,7 +1494,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Emoji
     ###
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_EMOJI)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_EMOJI)
     def custom_emojis(self):
         """
         Fetch the list of custom emoji the instance has installed.
@@ -1647,7 +1508,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Apps
     ###
-    @api_version("2.0.0", "2.7.2", __DICT_VERSION_APPLICATION)
+    @api_version("2.0.0", "2.7.2", _DICT_VERSION_APPLICATION)
     def app_verify_credentials(self):
         """
         Fetch information about the current application.
@@ -1659,7 +1520,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Webpush subscriptions
     ###
-    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
+    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
     def push_subscription(self):
         """
         Fetch the current push subscription the logged-in user has for this app.
@@ -1671,7 +1532,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Preferences
     ###
-    @api_version("2.8.0", "2.8.0", __DICT_VERSION_PREFERENCES)
+    @api_version("2.8.0", "2.8.0", _DICT_VERSION_PREFERENCES)
     def preferences(self):
         """
         Fetch the user's preferences, which can be used to set some default options.
@@ -1686,7 +1547,7 @@ class Mastodon(Internals):
     ##
 
     # /api/v1/announcements
-    @api_version("3.1.0", "3.1.0", __DICT_VERSION_ANNOUNCEMENT)
+    @api_version("3.1.0", "3.1.0", _DICT_VERSION_ANNOUNCEMENT)
     def announcements(self):
         """
         Fetch currently active announcements.
@@ -1698,7 +1559,7 @@ class Mastodon(Internals):
     ##
     # Reading data: Read markers
     ##
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_MARKER)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
     def markers_get(self, timeline=["home"]):
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
@@ -1717,7 +1578,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Bookmarks
     ###
-    @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
+    @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
     def bookmarks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get a list of statuses bookmarked by the logged-in user.
@@ -1815,7 +1676,7 @@ class Mastodon(Internals):
             # Edit
             return self.__api_request('PUT', '/api/v1/statuses/{0}'.format(str(self.__unpack_id(edit))), params, headers=headers, use_json=use_json)
 
-    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
                     language=None, idempotency_key=None, content_type=None,
@@ -1892,7 +1753,7 @@ class Mastodon(Internals):
             edit=None
         )
 
-    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
     def toot(self, status):
         """
         Synonym for :ref:`status_post() <status_post()>` that only takes the status text as input.
@@ -1903,7 +1764,7 @@ class Mastodon(Internals):
         """
         return self.status_post(status)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
     def status_update(self, id, status = None, spoiler_text = None, sensitive = None, media_ids = None, poll = None):
         """
         Edit a status. The meanings of the fields are largely the same as in :ref:`status_post() <status_post()>`,
@@ -1920,7 +1781,7 @@ class Mastodon(Internals):
             edit = id
         ) 
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS_EDIT)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS_EDIT)
     def status_history(self, id):
         """
         Returns the edit history of a status as a list of :ref:`status edit dicts <status edit dicts>`, starting
@@ -1942,7 +1803,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', "/api/v1/statuses/{0}/source".format(str(id)))
 
-    @api_version("1.0.0", "2.8.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, in_reply_to_id=None, media_ids=None,
                      sensitive=False, visibility=None, spoiler_text=None,
                      language=None, idempotency_key=None, content_type=None,
@@ -1988,7 +1849,7 @@ class Mastodon(Internals):
         keyword_args["in_reply_to_id"] = to_status.id
         return self.status_post(**keyword_args)
 
-    @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
+    @api_version("2.8.0", "2.8.0", _DICT_VERSION_POLL)
     def make_poll(self, options, expires_in, multiple=False, hide_totals=False):
         """
         Generate a poll object that can be passed as the `poll` option when posting a status.
@@ -2015,7 +1876,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}'.format(str(id))
         return self.__api_request('DELETE', url)
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_reblog(self, id, visibility=None):
         """
         Reblog / boost a status.
@@ -2037,7 +1898,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/reblog'.format(str(id))
         return self.__api_request('POST', url, params)
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_unreblog(self, id):
         """
         Un-reblog a status.
@@ -2048,7 +1909,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_favourite(self, id):
         """
         Favourite a status.
@@ -2059,7 +1920,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/favourite'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_unfavourite(self, id):
         """
         Un-favourite a status.
@@ -2070,7 +1931,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.4.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.4.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_mute(self, id):
         """
         Mute notifications for a status.
@@ -2081,7 +1942,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/mute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.4.0", "2.0.0", __DICT_VERSION_STATUS)
+    @api_version("1.4.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_unmute(self, id):
         """
         Unmute notifications for a status.
@@ -2092,7 +1953,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_STATUS)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
     def status_pin(self, id):
         """
         Pin a status for the logged-in user.
@@ -2103,7 +1964,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/pin'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_STATUS)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
     def status_unpin(self, id):
         """
         Unpin a pinned status for the logged-in user.
@@ -2114,7 +1975,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/unpin'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
+    @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
     def status_bookmark(self, id):
         """
         Bookmark a status as the logged-in user.
@@ -2125,7 +1986,7 @@ class Mastodon(Internals):
         url = '/api/v1/statuses/{0}/bookmark'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("3.1.0", "3.1.0", __DICT_VERSION_STATUS)
+    @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
     def status_unbookmark(self, id):
         """
         Unbookmark a bookmarked status for the logged-in user.
@@ -2139,7 +2000,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Scheduled statuses
     ###
-    @api_version("2.7.0", "2.7.0", __DICT_VERSION_SCHEDULED_STATUS)
+    @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
     def scheduled_status_update(self, id, scheduled_at):
         """
         Update the scheduled time of a scheduled status.
@@ -2166,7 +2027,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Polls
     ###
-    @api_version("2.8.0", "2.8.0", __DICT_VERSION_POLL)
+    @api_version("2.8.0", "2.8.0", _DICT_VERSION_POLL)
     def poll_vote(self, id, choices):
         """
         Vote in the given poll.
@@ -2218,7 +2079,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Conversations
     ###
-    @api_version("2.6.0", "2.6.0", __DICT_VERSION_CONVERSATION)
+    @api_version("2.6.0", "2.6.0", _DICT_VERSION_CONVERSATION)
     def conversations_read(self, id):
         """
         Marks a single conversation as read.
@@ -2232,7 +2093,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Accounts
     ###
-    @api_version("1.0.0", "3.3.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "3.3.0", _DICT_VERSION_RELATIONSHIP)
     def account_follow(self, id, reblogs=True, notify=False):
         """
         Follow a user.
@@ -2251,7 +2112,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/follow'.format(str(id))
         return self.__api_request('POST', url, params)
 
-    @api_version("1.0.0", "2.1.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def follows(self, uri):
         """
         Follow a remote user by uri (username@domain).
@@ -2261,7 +2122,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/follows', params)
 
-    @api_version("1.0.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_unfollow(self, id):
         """
         Unfollow a user.
@@ -2271,7 +2132,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/accounts/{0}/unfollow'.format(str(id)))
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_RELATIONSHIP)
     def account_remove_from_followers(self, id):
         """
         Remove a user from the logged in users followers (i.e. make them unfollow the logged in
@@ -2283,7 +2144,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/accounts/{0}/remove_from_followers'.format(str(id)))
     
 
-    @api_version("1.0.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_block(self, id):
         """
         Block a user.
@@ -2294,7 +2155,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/block'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_unblock(self, id):
         """
         Unblock a user.
@@ -2305,7 +2166,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/unblock'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.0", "2.4.3", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.1.0", "2.4.3", _DICT_VERSION_RELATIONSHIP)
     def account_mute(self, id, notifications=True, duration=None):
         """
         Mute a user.
@@ -2321,7 +2182,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/mute'.format(str(id))
         return self.__api_request('POST', url, params)
 
-    @api_version("1.1.0", "1.4.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.1.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_unmute(self, id):
         """
         Unmute a user.
@@ -2332,7 +2193,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/unmute'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.1.1", "3.1.0", __DICT_VERSION_ACCOUNT)
+    @api_version("1.1.1", "3.1.0", _DICT_VERSION_ACCOUNT)
     def account_update_credentials(self, display_name=None, note=None,
                                    avatar=None, avatar_mime_type=None,
                                    header=None, header_mime_type=None,
@@ -2387,7 +2248,7 @@ class Mastodon(Internals):
         params = self.__generate_params(params_initial)
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
 
-    @api_version("2.5.0", "2.5.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
     def account_pin(self, id):
         """
         Pin / endorse a user.
@@ -2398,7 +2259,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/pin'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("2.5.0", "2.5.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
     def account_unpin(self, id):
         """
         Unpin / un-endorse a user.
@@ -2409,7 +2270,7 @@ class Mastodon(Internals):
         url = '/api/v1/accounts/{0}/unpin'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("3.2.0", "3.2.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("3.2.0", "3.2.0", _DICT_VERSION_RELATIONSHIP)
     def account_note_set(self, id, comment):
         """
         Set a note (visible to the logged in user only) for the given account.
@@ -2420,7 +2281,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('POST', '/api/v1/accounts/{0}/note'.format(str(id)), params)
 
-    @api_version("3.3.0", "3.3.0", __DICT_VERSION_HASHTAG)
+    @api_version("3.3.0", "3.3.0", _DICT_VERSION_HASHTAG)
     def account_featured_tags(self, id):
         """
         Get an account's featured hashtags.
@@ -2433,7 +2294,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Featured hashtags
     ###
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
     def featured_tag_create(self, name):
         """
         Creates a new featured hashtag displayed on the logged-in user's profile.
@@ -2443,7 +2304,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/featured_tags', params)
 
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
     def featured_tag_delete(self, id):
         """
         Deletes one of the logged-in user's featured hashtags.
@@ -2455,7 +2316,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Keyword filters
     ###
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
     def filter_create(self, phrase, context, irreversible=False, whole_word=True, expires_in=None):
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
@@ -2481,7 +2342,7 @@ class Mastodon(Internals):
 
         return self.__api_request('POST', '/api/v1/filters', params)
 
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
     def filter_update(self, id, phrase=None, context=None, irreversible=None, whole_word=None, expires_in=None):
         """
         Updates the filter with the given `id`. Parameters are the same
@@ -2506,7 +2367,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Follow suggestions
     ###
-    @api_version("2.4.3", "2.4.3", __DICT_VERSION_ACCOUNT)
+    @api_version("2.4.3", "2.4.3", _DICT_VERSION_ACCOUNT)
     def suggestion_delete(self, account_id):
         """
         Remove the user with the given `account_id` from the follow suggestions.
@@ -2518,7 +2379,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Lists
     ###
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
     def list_create(self, title):
         """
         Create a new list with the given `title`.
@@ -2528,7 +2389,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/lists', params)
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_LIST)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
     def list_update(self, id, title):
         """
         Update info about a list, where "info" is really the lists `title`.
@@ -2580,7 +2441,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Reports
     ###
-    @api_version("1.1.0", "3.5.0", __DICT_VERSION_REPORT)
+    @api_version("1.1.0", "3.5.0", _DICT_VERSION_REPORT)
     def report(self, account_id, status_ids=None, comment=None, forward=False, category=None, rule_ids=None):
         """
         Report statuses to the instances administrators.
@@ -2616,7 +2477,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Follow requests
     ###
-    @api_version("1.0.0", "3.0.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "3.0.0", _DICT_VERSION_RELATIONSHIP)
     def follow_request_authorize(self, id):
         """
         Accept an incoming follow request.
@@ -2627,7 +2488,7 @@ class Mastodon(Internals):
         url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
         return self.__api_request('POST', url)
 
-    @api_version("1.0.0", "3.0.0", __DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "3.0.0", _DICT_VERSION_RELATIONSHIP)
     def follow_request_reject(self, id):
         """
         Reject an incoming follow request.
@@ -2641,7 +2502,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0", "3.2.0", __DICT_VERSION_MEDIA)
+    @api_version("1.0.0", "3.2.0", _DICT_VERSION_MEDIA)
     def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None, thumbnail=None, thumbnail_mime_type=None, synchronous=False):
         """
         Post an image, video or audio file. `media_file` can either be data or
@@ -2707,7 +2568,7 @@ class Mastodon(Internals):
 
         return ret_dict
 
-    @api_version("2.3.0", "3.2.0", __DICT_VERSION_MEDIA)
+    @api_version("2.3.0", "3.2.0", _DICT_VERSION_MEDIA)
     def media_update(self, id, description=None, focus=None, thumbnail=None, thumbnail_mime_type=None):
         """
         Update the metadata of the media file with the given `id`. `description` and
@@ -2733,7 +2594,7 @@ class Mastodon(Internals):
         else:
             return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
 
-    @api_version("3.1.4", "3.1.4", __DICT_VERSION_MEDIA)
+    @api_version("3.1.4", "3.1.4", _DICT_VERSION_MEDIA)
     def media(self, id):
         """
         Get the updated JSON for one non-attached / in progress media upload belonging
@@ -2764,7 +2625,7 @@ class Mastodon(Internals):
     ##
     # Writing data: Read markers
     ##
-    @api_version("3.0.0", "3.0.0", __DICT_VERSION_MARKER)
+    @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
     def markers_set(self, timelines, last_read_ids):
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
@@ -2793,7 +2654,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Push subscriptions
     ###
-    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
+    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
     def push_subscription_set(self, endpoint, encrypt_params, follow_events=None,
                               favourite_events=None, reblog_events=None,
                               mention_events=None, poll_events=None,
@@ -2855,7 +2716,7 @@ class Mastodon(Internals):
 
         return self.__api_request('POST', '/api/v1/push/subscription', params)
 
-    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH)
+    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
     def push_subscription_update(self, follow_events=None,
                                  favourite_events=None, reblog_events=None,
                                  mention_events=None, poll_events=None,
@@ -2942,7 +2803,7 @@ class Mastodon(Internals):
     ###
     # Moderation API
     ###
-    @api_version("2.9.1", "4.0.0", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "4.0.0", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_accounts_v2(self, origin=None, by_domain=None, status=None, username=None, display_name=None, email=None, ip=None, 
                             permissions=None, invited_by=None, role_ids=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
@@ -2993,7 +2854,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v2/admin/accounts', params)
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Currently a synonym for admin_accounts_v1, now deprecated. You are strongly encouraged to use admin_accounts_v2 instead, since this one is kind of bad. 
@@ -3014,7 +2875,7 @@ class Mastodon(Internals):
             since_id=since_id
         )
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_accounts_v1(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
@@ -3065,7 +2926,7 @@ class Mastodon(Internals):
 
         return self.__api_request('GET', '/api/v1/admin/accounts', params)
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account(self, id):
         """
         Fetches a single :ref:`admin account dict <admin account dict>` for the user with the given id.
@@ -3075,7 +2936,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/admin/accounts/{0}'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_enable(self, id):
         """
         Reenables login for a local account for which login has been disabled.
@@ -3085,7 +2946,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/enable'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_approve(self, id):
         """
         Approves a pending account.
@@ -3095,7 +2956,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/approve'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_reject(self, id):
         """
         Rejects and deletes a pending account.
@@ -3105,7 +2966,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/reject'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsilence(self, id):
         """
         Unsilences an account.
@@ -3115,7 +2976,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsilence'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsuspend(self, id):
         """
         Unsuspends an account.
@@ -3125,7 +2986,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsuspend'.format(id))
 
-    @api_version("3.3.0", "3.3.0", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("3.3.0", "3.3.0", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_delete(self, id):
         """
         Delete a local user account.
@@ -3135,7 +2996,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('DELETE', '/api/v1/admin/accounts/{0}'.format(id))
 
-    @api_version("3.3.0", "3.3.0", __DICT_VERSION_ADMIN_ACCOUNT)
+    @api_version("3.3.0", "3.3.0", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsensitive(self, id):
         """
         Unmark an account as force-sensitive.
@@ -3182,7 +3043,7 @@ class Mastodon(Internals):
         self.__api_request(
             'POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_reports(self, resolved=False, account_id=None, target_account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches the list of reports.
@@ -3213,7 +3074,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/reports', params)
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report(self, id):
         """
         Fetches the report with the given id.
@@ -3223,7 +3084,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', '/api/v1/admin/reports/{0}'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_assign(self, id):
         """
         Assigns the given report to the logged-in user.
@@ -3233,7 +3094,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_self'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_unassign(self, id):
         """
         Unassigns the given report from the logged-in user.
@@ -3243,7 +3104,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/unassign'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_reopen(self, id):
         """
         Reopens a closed report.
@@ -3253,7 +3114,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/reopen'.format(id))
 
-    @api_version("2.9.1", "2.9.1", __DICT_VERSION_REPORT)
+    @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_resolve(self, id):
         """
         Marks a report as resolved (without taking any action).
@@ -3263,7 +3124,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_HASHTAG)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
     def admin_trending_tags(self, limit=None):
         """
         Admin version of :ref:`trending_tags() <trending_tags()>`. Includes unapproved tags.
@@ -3274,7 +3135,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/tags', params)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_STATUS)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
     def admin_trending_statuses(self):
         """
         Admin version of :ref:`trending_statuses() <trending_statuses()>`. Includes unapproved tags.
@@ -3285,7 +3146,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/statuses', params)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_CARD)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_CARD)
     def admin_trending_links(self):
         """
         Admin version of :ref:`trending_links() <trending_links()>`. Includes unapproved tags.
@@ -3296,7 +3157,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/links', params)
 
-    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_domain_blocks(self, id=None, limit:int=None):
         """
         Fetches a list of blocked domains. Requires scope `admin:read:domain_blocks`.
@@ -3312,7 +3173,7 @@ class Mastodon(Internals):
             params = self.__generate_params(locals(),['limit'])
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
     
-    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_create_domain_block(self, domain:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
         """
         Perform a moderation action on a domain. Requires scope `admin:write:domain_blocks`.
@@ -3337,7 +3198,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
 
-    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_update_domain_block(self, id, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
         """
         Modify existing moderation action on a domain. Requires scope `admin:write:domain_blocks`.
@@ -3363,7 +3224,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('PUT', '/api/v1/admin/domain_blocks/{0}'.format(id), params)
 
-    @api_version("4.0.0", "4.0.0", __DICT_VERSION_ADMIN_DOMAIN_BLOCK)
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_delete_domain_block(self, id=None):
         """
         Removes moderation action against a given domain. Requires scope `admin:write:domain_blocks`.
@@ -3378,7 +3239,7 @@ class Mastodon(Internals):
         else:
             raise AttributeError("You must provide an id of an existing domain block to remove it.")
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ADMIN_MEASURE)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_MEASURE)
     def admin_measures(self, start_at, end_at, active_users=False, new_users=False, interactions=False, opened_reports = False, resolved_reports=False,
                         tag_accounts=None, tag_uses=None, tag_servers=None, instance_accounts=None, instance_media_attachments=None, instance_reports=None,
                         instance_statuses=None, instance_follows=None, instance_followers=None):
@@ -3433,7 +3294,7 @@ class Mastodon(Internals):
         
         return self.__api_request('POST', '/api/v1/admin/measures', params, use_json=True)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ADMIN_DIMENSION)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_DIMENSION)
     def admin_dimensions(self, start_at, end_at, limit=None, languages=False, sources=False, servers=False, space_usage=False, software_versions=False,
                             tag_servers=None, tag_languages=None, instance_accounts=None, instance_languages=None):
         """
@@ -3485,7 +3346,7 @@ class Mastodon(Internals):
         
         return self.__api_request('POST', '/api/v1/admin/dimensions', params, use_json=True)
 
-    @api_version("3.5.0", "3.5.0", __DICT_VERSION_ADMIN_RETENTION)
+    @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_RETENTION)
     def admin_retention(self, start_at, end_at, frequency="day"):
         """
         Gets user retention statistics (at `frequency` - "day" or "month" - granularity) between `start_at` and `end_at`.
@@ -3540,7 +3401,7 @@ class Mastodon(Internals):
 
         return priv_dict, pub_dict
 
-    @api_version("2.4.0", "2.4.0", __DICT_VERSION_PUSH_NOTIF)
+    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH_NOTIF)
     def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
         """
         Decrypts `data` received in a webpush request. Requires the private key dict
@@ -3682,7 +3543,7 @@ class Mastodon(Internals):
     ###
     # Streaming
     ###
-    @api_version("1.1.0", "1.4.2", __DICT_VERSION_STATUS)
+    @api_version("1.1.0", "1.4.2", _DICT_VERSION_STATUS)
     def stream_user(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams events that are relevant to the authorized user, i.e. home
@@ -3690,21 +3551,21 @@ class Mastodon(Internals):
         """
         return self.__stream('/api/v1/streaming/user', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
-    @api_version("1.1.0", "1.4.2", __DICT_VERSION_STATUS)
+    @api_version("1.1.0", "1.4.2", _DICT_VERSION_STATUS)
     def stream_public(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams public events.
         """
         return self.__stream('/api/v1/streaming/public', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
-    @api_version("1.1.0", "1.4.2", __DICT_VERSION_STATUS)
+    @api_version("1.1.0", "1.4.2", _DICT_VERSION_STATUS)
     def stream_local(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams local public events.
         """
         return self.__stream('/api/v1/streaming/public/local', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
-    @api_version("1.1.0", "1.4.2", __DICT_VERSION_STATUS)
+    @api_version("1.1.0", "1.4.2", _DICT_VERSION_STATUS)
     def stream_hashtag(self, tag, listener, local=False, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Stream for all public statuses for the hashtag 'tag' seen by the connected
@@ -3720,7 +3581,7 @@ class Mastodon(Internals):
             base += '/local'
         return self.__stream("{}?tag={}".format(base, tag), listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
-    @api_version("2.1.0", "2.1.0", __DICT_VERSION_STATUS)
+    @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
     def stream_list(self, id, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Stream events for the current user, restricted to accounts on the given
@@ -3729,7 +3590,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
-    @api_version("2.6.0", "2.6.0", __DICT_VERSION_STATUS)
+    @api_version("2.6.0", "2.6.0", _DICT_VERSION_STATUS)
     def stream_direct(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
         Streams direct message events for the logged-in user, as conversation events.

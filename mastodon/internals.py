@@ -656,3 +656,14 @@ class Mastodon():
         elif base_url.startswith("https://") or base_url.startswith("onion://"):
             base_url = base_url[8:]
         return base_url
+
+    def __normalize_version_string(self, version_string):
+        # Split off everything after the first space, to take care of Pleromalikes so that the parser doesn't get confused in case those have a + somewhere in their version
+        version_string = version_string.split(" ")[0]
+        try:
+            # Attempt to split at + and check if the part after parses as a version string, to account for hometown
+            parse_version_string(version_string.split("+")[1])
+            return version_string.split("+")[1]
+        except:
+            # If this fails, assume that if there is a +, what is before that is the masto version (or that there is no +)
+            return version_string.split("+")[0]
