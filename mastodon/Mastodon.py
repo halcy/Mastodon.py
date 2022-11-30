@@ -3925,15 +3925,9 @@ class Mastodon:
 
         Assumes UTC if timezone is not given.
         """
-        date_time_utc = None
         if date_time.tzinfo is None:
-            date_time_utc = date_time.replace(tzinfo=datetime.timezone.utc)
-        else:
-            date_time_utc = date_time.astimezone(datetime.timezone.utc)
-
-        epoch_utc = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=datetime.timezone.utc)
-
-        return (date_time_utc - epoch_utc).total_seconds()
+            date_time = date_time.replace(tzinfo=datetime.timezone.utc)
+        return date_time.timestamp()
 
     def __get_logged_in_id(self):
         """
