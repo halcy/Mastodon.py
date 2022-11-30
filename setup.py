@@ -7,7 +7,8 @@ test_deps = [
     'vcrpy', 
     'pytest-vcr', 
     'pytest-mock', 
-    'requests-mock'
+    'requests-mock',
+    'pytz'
 ]
 
 webpush_deps = [
