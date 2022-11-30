@@ -384,7 +384,7 @@ class Mastodon:
 
         `lang` can be used to change the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter)
         or for a language that has none, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and 
-        trends. You can change the language using `set_language()`_.
+        trends. You can change the language using :ref:`set_language()`_.
 
         If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
