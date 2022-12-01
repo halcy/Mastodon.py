@@ -62,7 +62,7 @@ class Mastodon():
         Parse dates in certain known json fields, if possible.
         """
         known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at",
-                                "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at"]
+                                "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at", "date", "period"]
         mark_delete = []
         for k, v in json_object.items():
             if k in known_date_fields:
@@ -85,7 +85,7 @@ class Mastodon():
         """
         Parse 'True' / 'False' strings in certain known fields
         """
-        for key in ('follow', 'favourite', 'reblog', 'mention'):
+        for key in ('follow', 'favourite', 'reblog', 'mention', 'confirmed', 'suspended', 'silenced', 'disabled', 'approved', 'all_day'):
             if (key in json_object and isinstance(json_object[key], six.text_type)):
                 if json_object[key].lower() == 'true':
                     json_object[key] = True
@@ -98,7 +98,8 @@ class Mastodon():
         """
         Converts json string numerals to native python bignums.
         """
-        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses', 'day', 'last_read_id'):
+        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses', 
+                    'day', 'last_read_id', 'value', 'frequency', 'rate', 'invited_by_account_id', 'count'):
             if (key in json_object and isinstance(json_object[key], six.text_type)):
                 try:
                     json_object[key] = int(json_object[key])

@@ -24,6 +24,10 @@ you can also just write
 and everything will work as intended. The class used for this is exposed as
 `AttribAccessDict`.
 
+Currently, some of these may be out of date - refer to the Mastodon documentation at
+https://docs.joinmastodon.org/entities/ for when fields seem to be missing. This will
+be addressed in the next version of Mastodon.py.
+
 User / account dicts
 --------------------
 .. _user dict:
@@ -133,7 +137,13 @@ Status edit dicts
     mastodonstatus_history(id)[0]
     # Returns the following dictionary
     {
-        TODO
+        'content': # Content for this version of the status
+        'spoiler_text': # CW / Spoiler text for this version of the status
+        'sensitive': # Whether media in this version of the status is marked as sensitive 
+        'created_at': # Time at which this version of the status was posted
+        'account': # Account dict of the user that posted the status
+        'media_attachments': # List of media dicts with the attached media for this version of the status
+        'emojis'# List of emoji dicts for this version of the status
     }
 
 Mention dicts
@@ -658,7 +668,8 @@ Familiar follower dicts
     mastodon.account_familiar_followers(1)[0]
     # Returns the following dictionary:
     {
-
+        'id': # ID of the account for which the familiar followers are being returned
+        'accounts': # List of account dicts of the familiar followers
     }
     
 Admin account dicts
@@ -683,7 +694,7 @@ Admin account dicts
         'disabled': # For local users, boolean indicating whether the user has had their login disabled
         'approved': # For local users, False if the user is pending, True otherwise
         'locale': # For local users, the locale the user has set,
-        'invite_request': # If the user requested an invite, the invite request comment of that user. (TODO permanent?)
+        'invite_request': # If the user requested an invite, the invite request comment of that user.
         'invited_by_account_id': # Present if the user was invited by another user and set to the inviting users id.
         'account': # The user's account, as a standard user dict
     }
@@ -717,7 +728,17 @@ Admin measure dicts
     api.admin_measures(datetime.now() - timedelta(hours=24*5), datetime.now(), active_users=True)
     # Returns the following dictionary
     {
-        TODO
+        'key': # Name of the measure returned
+        'unit': # Unit for the measure, if available
+        'total': # Value of the measure returned
+        'human_value': # Human readable variant of the measure returned
+        'data': # A list of dicts with the measure broken down by date, as below
+    }
+
+    # The data dicts:
+    [
+        'date': # Date for this row
+        'value': # Value of the measure for this row
     }
 
 Admin dimension dicts
@@ -729,9 +750,16 @@ Admin dimension dicts
     api.admin_dimensions(datetime.now() - timedelta(hours=24*5), datetime.now(), languages=True)
     # Returns the following dictionary
     {
-        TODO
+        'key': # Name of the dimension returned
+        'data': # A list of data dicts, as below
     }
-
+    
+    # the data dicts:
+    {
+        'key': # category for this row
+        'human_key': # Human readable name for the category for this row, when available
+        'value': # Numeric value for the category
+    },
 Admin retention dicts
 ---------------------
 .. _admin retention dict:
@@ -741,5 +769,15 @@ Admin retention dicts
     api.admin_retention(datetime.now() - timedelta(hours=24*5), datetime.now())
     # Returns the following dictionary
     {
-        TODO
+        'period': # Starting time of the period that the data is being returned for
+        'frequency': # Time resolution (day or month) for the returned data
+        'data': # List of data dicts, as below
     }
+
+    # the data dicts:
+    {
+        'date': # Date for this entry
+        'rate': # Fraction of users retained 
+        'value': # Absolute number of users retained
+    }
+    
