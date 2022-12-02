@@ -212,7 +212,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', f'/api/v1/admin/accounts/{f}/unsensitive')
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsensitive')
 
     @api_version("2.9.1", "2.9.1", "2.9.1")
     def admin_account_moderate(self, id, action=None, report_id=None, warning_preset_id=None, text=None, send_email_notification=True):

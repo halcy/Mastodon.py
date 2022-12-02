@@ -392,7 +392,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute', params)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute')
 
     @api_version("1.1.1", "3.1.0", _DICT_VERSION_ACCOUNT)
     def account_update_credentials(self, display_name=None, note=None,
