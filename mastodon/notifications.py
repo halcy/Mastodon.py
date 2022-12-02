@@ -64,8 +64,7 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/notifications', params)
         else:
             id = self.__unpack_id(id)
-            url = '/api/v1/notifications/{0}'.format(str(id))
-            return self.__api_request('GET', url)
+            return self.__api_request('GET', f"/api/v1/notifications/{id}")
 
     ###
     # Writing data: Notifications
@@ -85,8 +84,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
 
         if self.verify_minimum_version("2.9.2", cached=True):
-            url = '/api/v1/notifications/{0}/dismiss'.format(str(id))
-            self.__api_request('POST', url)
+            self.__api_request('POST', f'/api/v1/notifications/{id}/dismiss')
         else:
             params = self.__generate_params(locals())
             self.__api_request('POST', '/api/v1/notifications/dismiss', params)

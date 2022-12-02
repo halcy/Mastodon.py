@@ -16,7 +16,7 @@ UNLIKELY_HASHTAG = "fgiztsshwiaqqiztpmmjbtvmescsculuvmgjgopwoeidbcrixp"
 def many_statuses(api, n=10, suffix=''):
     statuses = list()
     for i in range(n):
-        status = api.status_post("Toot number {}!{}".format(i, suffix))
+        status = api.status_post(f"Toot number {i}!{suffix}")
         statuses.append(status)
     yield statuses
     for status in statuses:
@@ -102,10 +102,15 @@ def test_link_headers(api):
 
     _id='abc1234'
 
-    rmock.register_uri('GET', requests_mock.ANY, json=[{"foo": "bar"}], headers={"link":"""
-            <{base}/api/v1/timelines/tag/{tag}?max_id={_id}>; rel="next", <{base}/api/v1/timelines/tag/{tag}?since_id={_id}>; rel="prev"
-        """.format(base=api.api_base_url, tag=UNLIKELY_HASHTAG, _id=_id).strip()
-    })
+    rmock.register_uri(
+        'GET',
+        requests_mock.ANY,
+        json=[{"foo": "bar"}],
+        headers={
+            "link": f"<{api.api_base_url}/api/v1/timelines/tag/{UNLIKELY_HASHTAG}?max_id={_id}>; rel=\"next\", "
+                    f"<{api.api_base_url}/api/v1/timelines/tag/{UNLIKELY_HASHTAG}?since_id={_id}>; rel=\"prev\""
+        }
+    )
 
     resp = api.timeline_hashtag(UNLIKELY_HASHTAG)
     assert resp._pagination_next['max_id'] == _id

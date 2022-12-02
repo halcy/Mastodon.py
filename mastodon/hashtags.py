@@ -47,6 +47,4 @@ class Mastodon(Internals):
         Deletes one of the logged-in user's featured hashtags.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/featured_tags/{0}'.format(str(id))
-        self.__api_request('DELETE', url)
-                
+        self.__api_request('DELETE', f'/api/v1/featured_tags/{id}')

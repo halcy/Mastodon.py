@@ -64,7 +64,7 @@ def test_app_account_create():
         test_app[1], 
         api_base_url="http://localhost:3000/"
     )
-    test_token = test_app_api.create_account("coolguy" + suffix, "swordfish", "email@localhost" + suffix, agreement=True)
+    test_token = test_app_api.create_account(f"coolguy{suffix}", "swordfish", f"email@localhost{suffix}", agreement=True)
     assert test_token
 
     # We can also test resending (marginally)

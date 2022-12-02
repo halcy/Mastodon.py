@@ -142,7 +142,7 @@ class Mastodon(Internals):
         Returns that dict.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', '/api/v1/admin/accounts/{0}'.format(id))
+        return self.__api_request('GET', f'/api/v1/admin/accounts/{id}')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_enable(self, id):
@@ -152,7 +152,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/enable'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/enable')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_approve(self, id):
@@ -162,7 +162,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/approve'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/approve')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_reject(self, id):
@@ -172,7 +172,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>` for the account that is now gone.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/reject'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/reject')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsilence(self, id):
@@ -182,7 +182,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsilence'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsilence')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsuspend(self, id):
@@ -192,7 +192,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsuspend'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsuspend')
 
     @api_version("3.3.0", "3.3.0", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_delete(self, id):
@@ -202,7 +202,7 @@ class Mastodon(Internals):
         The deleted accounts :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('DELETE', '/api/v1/admin/accounts/{0}'.format(id))
+        return self.__api_request('DELETE', f'/api/v1/admin/accounts/{id}')
 
     @api_version("3.3.0", "3.3.0", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_account_unsensitive(self, id):
@@ -212,7 +212,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`admin account dict <admin account dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/accounts/{0}/unsensitive'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/accounts/{f}/unsensitive')
 
     @api_version("2.9.1", "2.9.1", "2.9.1")
     def admin_account_moderate(self, id, action=None, report_id=None, warning_preset_id=None, text=None, send_email_notification=True):
@@ -248,8 +248,7 @@ class Mastodon(Internals):
 
         params["type"] = action
 
-        self.__api_request(
-            'POST', '/api/v1/admin/accounts/{0}/action'.format(id), params)
+        self.__api_request('POST', f'/api/v1/admin/accounts/{id}/action', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_reports(self, resolved=False, account_id=None, target_account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
@@ -290,7 +289,7 @@ class Mastodon(Internals):
         Returns a :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', '/api/v1/admin/reports/{0}'.format(id))
+        return self.__api_request('GET', f'/api/v1/admin/reports/{id}')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_assign(self, id):
@@ -300,7 +299,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/reports/{0}/assign_to_self'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/reports/{id}/assign_to_self')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_unassign(self, id):
@@ -310,7 +309,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/reports/{0}/unassign'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/reports/{id}/unassign')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_reopen(self, id):
@@ -320,7 +319,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/reports/{0}/reopen'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/reports/{id}/reopen')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
     def admin_report_resolve(self, id):
@@ -330,7 +329,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/admin/reports/{0}/resolve'.format(id))
+        return self.__api_request('POST', f'/api/v1/admin/reports/{id}/resolve')
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
     def admin_trending_tags(self, limit=None):
@@ -376,7 +375,7 @@ class Mastodon(Internals):
         """
         if id is not None:
             id = self.__unpack_id(id)
-            return self.__api_request('GET', '/api/v1/admin/domain_blocks/{0}'.format(id))
+            return self.__api_request('GET', f'/api/v1/admin/domain_blocks/{id}')
         else:
             params = self.__generate_params(locals(),['limit'])
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
@@ -430,7 +429,7 @@ class Mastodon(Internals):
             raise AttributeError("Must provide an id to modify the existing moderation actions on a given domain.")
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
-        return self.__api_request('PUT', '/api/v1/admin/domain_blocks/{0}'.format(id), params)
+        return self.__api_request('PUT', f'/api/v1/admin/domain_blocks/{id}', params)
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_delete_domain_block(self, id=None):
@@ -443,7 +442,7 @@ class Mastodon(Internals):
         """
         if id is not None:
             id = self.__unpack_id(id)
-            self.__api_request('DELETE', '/api/v1/admin/domain_blocks/{0}'.format(id))
+            self.__api_request('DELETE', f'/api/v1/admin/domain_blocks/{id}')
         else:
             raise AttributeError("You must provide an id of an existing domain block to remove it.")
 

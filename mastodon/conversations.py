@@ -39,5 +39,4 @@ class Mastodon(Internals):
         Returns the updated :ref:`conversation dict <conversation dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/conversations/{0}/read'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/conversations/{id}/read')

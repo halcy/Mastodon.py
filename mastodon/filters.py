@@ -29,8 +29,7 @@ class Mastodon(Internals):
         Returns a :ref:`filter dict <filter dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/filters/{0}'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/filters/{id}')
 
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
     def filters_apply(self, objects, filters, context):
@@ -106,8 +105,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        url = '/api/v1/filters/{0}'.format(str(id))
-        return self.__api_request('PUT', url, params)
+        return self.__api_request('PUT', f'/api/v1/filters/{id}', params)
 
     @api_version("2.4.3", "2.4.3", "2.4.3")
     def filter_delete(self, id):
@@ -115,5 +113,4 @@ class Mastodon(Internals):
         Deletes the filter with the given `id`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/filters/{0}'.format(str(id))
-        self.__api_request('DELETE', url)        
+        self.__api_request('DELETE', f'/api/v1/filters/{id}')

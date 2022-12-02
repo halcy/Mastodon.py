@@ -28,5 +28,4 @@ class Mastodon(Internals):
         Remove the user with the given `account_id` from the follow suggestions.
         """
         account_id = self.__unpack_id(account_id)
-        url = '/api/v1/suggestions/{0}'.format(str(account_id))
-        self.__api_request('DELETE', url)        
+        self.__api_request('DELETE', f'/api/v1/suggestions/{account_id}')

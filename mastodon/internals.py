@@ -182,11 +182,10 @@ class Mastodon():
             base_url = base_url_override
 
         if self.debug_requests:
-            print('Mastodon: Request to endpoint "' + base_url +
-                    endpoint + '" using method "' + method + '".')
-            print('Parameters: ' + str(params))
-            print('Headers: ' + str(headers))
-            print('Files: ' + str(files))
+            print(f'Mastodon: Request to endpoint "{base_url}{endpoint}" using method "{method}".')
+            print(f'Parameters: {params}')
+            print(f'Headers: {headers}')
+            print(f'Files: {files}')
 
         # Make request
         request_complete = False
@@ -205,7 +204,7 @@ class Mastodon():
 
                 response_object = self.session.request(method, base_url + endpoint, **kwargs)
             except Exception as e:
-                raise MastodonNetworkError("Could not complete request: %s" % e)
+                raise MastodonNetworkError(f"Could not complete request: {e}")
 
             if response_object is None:
                 raise MastodonIllegalArgumentError("Illegal request.")
@@ -219,8 +218,7 @@ class Mastodon():
 
                 # For gotosocial, we need an int representation, but for non-ints this would crash
                 try:
-                    ratelimit_intrep = str(
-                        int(response_object.headers['X-RateLimit-Reset']))
+                    ratelimit_intrep = str(int(response_object.headers['X-RateLimit-Reset']))
                 except:
                     ratelimit_intrep = None
 
@@ -240,13 +238,13 @@ class Mastodon():
                         self.ratelimit_reset += server_time_diff
                         self.ratelimit_lastcall = time.time()
                 except Exception as e:
-                    raise MastodonRatelimitError("Rate limit time calculations failed: %s" % e)
+                    raise MastodonRatelimitError(f"Rate limit time calculations failed: {e}")
 
             # Handle response
             if self.debug_requests:
-                print('Mastodon: Response received with code ' + str(response_object.status_code) + '.')
-                print('response headers: ' + str(response_object.headers))
-                print('Response text content: ' + str(response_object.text))
+                print(f'Mastodon: Response received with code {response_object.status_code}.')
+                print(f'response headers: {response_object.headers}')
+                print(f'Response text content: {response_object.text}')
 
             if not response_object.ok:
                 try:
@@ -306,9 +304,9 @@ class Mastodon():
                     response = response_object.json(object_hook=self.__json_hooks)
                 except:
                     raise MastodonAPIError(
-                        "Could not parse response as JSON, response code was %s, "
-                        "bad json content was '%s'" % (response_object.status_code,
-                                                        response_object.content))
+                        f"Could not parse response as JSON, response code was {response_object.status_code}, "
+                        f"bad json content was {response_object.content!r}."
+                    )
             else:
                 response = response_object.content
 
@@ -413,8 +411,8 @@ class Mastodon():
                 url = "http://" + parse.netloc
             else:
                 raise MastodonAPIError(
-                    "Could not parse streaming api location returned from server: {}.".format(
-                        instance["urls"]["streaming_api"]))
+                    f"Could not parse streaming api location returned from server: {instance['urls']['streaming_api']}."
+                )
         else:
             url = self.api_base_url
         return url
@@ -436,16 +434,14 @@ class Mastodon():
 
         # Connect function (called and then potentially passed to async handler)
         def connect_func():
-            headers = {"Authorization": "Bearer " +
-                        self.access_token} if self.access_token else {}
+            headers = {"Authorization": "Bearer " + self.access_token} if self.access_token else {}
             if self.user_agent:
                 headers['User-Agent'] = self.user_agent
             connection = self.session.get(url + endpoint, headers=headers, data=params, stream=True,
                                             timeout=(self.request_timeout, timeout))
 
             if connection.status_code != 200:
-                raise MastodonNetworkError(
-                    "Could not connect to streaming server: %s" % connection.reason)
+                raise MastodonNetworkError(f"Could not connect to streaming server: {connection.reason}")
             return connection
         connection = None
 
@@ -638,7 +634,7 @@ class Mastodon():
             raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
         if file_name is None:
             random_suffix = uuid.uuid4().hex
-            file_name = "mastodonpyupload_" + str(time.time()) + "_" + str(random_suffix) + mimetypes.guess_extension(mime_type)
+            file_name = f"mastodonpyupload_{time.time()}_{random_suffix}{mimetypes.guess_extension(mime_type)}"
         return (file_name, media_file, mime_type)
 
     @staticmethod

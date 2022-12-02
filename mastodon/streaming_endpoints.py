@@ -46,7 +46,7 @@ class Mastodon(Internals):
         base = '/api/v1/streaming/hashtag'
         if local:
             base += '/local'
-        return self.__stream("{}?tag={}".format(base, tag), listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
+        return self.__stream(f"{base}?tag={tag}", listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
     def stream_list(self, id, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
@@ -55,7 +55,7 @@ class Mastodon(Internals):
         list.
         """
         id = self.__unpack_id(id)
-        return self.__stream("/api/v1/streaming/list?list={}".format(id), listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
+        return self.__stream(f"/api/v1/streaming/list?list={id}", listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("2.6.0", "2.6.0", _DICT_VERSION_STATUS)
     def stream_direct(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):

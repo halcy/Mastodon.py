@@ -19,7 +19,7 @@ class Mastodon(Internals):
         to the logged-in user.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', '/api/v1/media/{0}'.format(str(id)))
+        return self.__api_request('GET', f'/api/v1/media/{id}')
 
     ###
     # Writing data: Media
@@ -57,7 +57,7 @@ class Mastodon(Internals):
             media_file, mime_type, file_name)}
 
         if focus is not None:
-            focus = str(focus[0]) + "," + str(focus[1])
+            focus = f"{focus[0]},{focus[1]}"
 
         if thumbnail is not None:
             if not self.verify_minimum_version("3.2.0", cached=True):
@@ -99,7 +99,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
 
         if focus is not None:
-            focus = str(focus[0]) + "," + str(focus[1])
+            focus = f"{focus[0]},{focus[1]}"
 
         params = self.__generate_params(
             locals(), ['id', 'thumbnail', 'thumbnail_mime_type'])
@@ -109,6 +109,6 @@ class Mastodon(Internals):
                 raise MastodonVersionError('Thumbnail requires version > 3.2.0')
             files = {"thumbnail": self.__load_media_file(
                 thumbnail, thumbnail_mime_type)}
-            return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params, files=files)
+            return self.__api_request('PUT', f'/api/v1/media/{id}', params, files=files)
         else:
-            return self.__api_request('PUT', '/api/v1/media/{0}'.format(str(id)), params)
+            return self.__api_request('PUT', f'/api/v1/media/{id}', params)

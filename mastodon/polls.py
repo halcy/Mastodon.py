@@ -17,8 +17,7 @@ class Mastodon(Internals):
         Returns a :ref:`poll dict <poll dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/polls/{0}'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/polls/{id}')
 
     ###
     # Writing data: Polls
@@ -44,9 +43,8 @@ class Mastodon(Internals):
             choices = [choices]
         params = self.__generate_params(locals(), ['id'])
 
-        url = '/api/v1/polls/{0}/votes'.format(id)
-        self.__api_request('POST', url, params)
-    
+        self.__api_request('POST', f'/api/v1/polls/{id}/votes', params)
+
     def make_poll(self, options, expires_in, multiple=False, hide_totals=False):
         """
         Generate a poll object that can be passed as the `poll` option when posting a status.

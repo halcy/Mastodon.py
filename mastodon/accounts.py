@@ -66,7 +66,7 @@ class Mastodon(Internals):
             response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False)
             temp_access_token = response['access_token']
         except Exception as e:
-            raise MastodonIllegalArgumentError('Invalid request during oauth phase: %s' % e)
+            raise MastodonIllegalArgumentError(f'Invalid request during oauth phase: {e}')
 
         # Step 2: Use that to create a user
         try:
@@ -74,7 +74,7 @@ class Mastodon(Internals):
             if "error" in response:
                 if return_detailed_error:
                     return None, response
-                raise MastodonIllegalArgumentError('Invalid request: %s' % e)
+                raise MastodonIllegalArgumentError(f'Invalid request: {e}')
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))            
@@ -88,7 +88,10 @@ class Mastodon(Internals):
                 received_scopes += _SCOPE_SETS[scope_set]
 
         if not set(scopes) <= set(received_scopes):
-            raise MastodonAPIError('Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
+            raise MastodonAPIError(
+                f'Granted scopes "{" ".join(received_scopes)}" '
+                f'do not contain all of the requested scopes "{" ".join(scopes)}".'
+            )
 
         if to_file is not None:
             with open(to_file, 'w') as token_file:
@@ -124,8 +127,7 @@ class Mastodon(Internals):
         Returns a :ref:`account dict <account dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}')
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def account_verify_credentials(self):
@@ -185,8 +187,7 @@ class Mastodon(Internals):
         if not exclude_reblogs:
             del params["exclude_reblogs"]
 
-        url = '/api/v1/accounts/{0}/statuses'.format(str(id))
-        return self.__api_request('GET', url, params)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/statuses', params)
 
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def account_following(self, id, max_id=None, min_id=None, since_id=None, limit=None):
@@ -206,8 +207,7 @@ class Mastodon(Internals):
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
-        url = '/api/v1/accounts/{0}/following'.format(str(id))
-        return self.__api_request('GET', url, params)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/following', params)
 
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def account_followers(self, id, max_id=None, min_id=None, since_id=None, limit=None):
@@ -227,8 +227,7 @@ class Mastodon(Internals):
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
-        url = '/api/v1/accounts/{0}/followers'.format(str(id))
-        return self.__api_request('GET', url, params)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/followers', params)
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_relationships(self, id):
@@ -269,8 +268,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        url = '/api/v1/accounts/{0}/lists'.format(str(id))
-        return self.__api_request('GET', url, params)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/lists', params)
 
     @api_version("3.4.0", "3.4.0", _DICT_VERSION_ACCOUNT)
     def account_lookup(self, acct):
@@ -317,8 +315,7 @@ class Mastodon(Internals):
         if params["reblogs"] is None:
             del params["reblogs"]
 
-        url = '/api/v1/accounts/{0}/follow'.format(str(id))
-        return self.__api_request('POST', url, params)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/follow', params)
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def follows(self, uri):
@@ -338,7 +335,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/accounts/{0}/unfollow'.format(str(id)))
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/unfollow')
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_RELATIONSHIP)
     def account_remove_from_followers(self, id):
@@ -349,7 +346,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` reflecting the updated following status.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('POST', '/api/v1/accounts/{0}/remove_from_followers'.format(str(id)))
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/remove_from_followers')
     
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
@@ -360,8 +357,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}/block'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/block')
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_unblock(self, id):
@@ -371,8 +367,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}/unblock'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/unblock')
 
     @api_version("1.1.0", "2.4.3", _DICT_VERSION_RELATIONSHIP)
     def account_mute(self, id, notifications=True, duration=None):
@@ -387,8 +382,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        url = '/api/v1/accounts/{0}/mute'.format(str(id))
-        return self.__api_request('POST', url, params)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/mute', params)
 
     @api_version("1.1.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_unmute(self, id):
@@ -398,8 +392,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}/unmute'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute', params)
 
     @api_version("1.1.1", "3.1.0", _DICT_VERSION_ACCOUNT)
     def account_update_credentials(self, display_name=None, note=None,
@@ -436,10 +429,8 @@ class Mastodon(Internals):
 
             fields_attributes = []
             for idx, (field_name, field_value) in enumerate(fields):
-                params_initial['fields_attributes[' +
-                               str(idx) + '][name]'] = field_name
-                params_initial['fields_attributes[' +
-                               str(idx) + '][value]'] = field_value
+                params_initial[f'fields_attributes[{idx}][name]'] = field_name
+                params_initial[f'fields_attributes[{idx}][value]'] = field_value
 
         # Clean up params
         for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields"]:
@@ -464,8 +455,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}/pin'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/pin')
 
     @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
     def account_unpin(self, id):
@@ -475,8 +465,7 @@ class Mastodon(Internals):
         Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/accounts/{0}/unpin'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/unpin')
 
     @api_version("3.2.0", "3.2.0", _DICT_VERSION_RELATIONSHIP)
     def account_note_set(self, id, comment):
@@ -487,7 +476,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
-        return self.__api_request('POST', '/api/v1/accounts/{0}/note'.format(str(id)), params)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/note', params)
 
     @api_version("3.3.0", "3.3.0", _DICT_VERSION_HASHTAG)
     def account_featured_tags(self, id):
@@ -497,4 +486,4 @@ class Mastodon(Internals):
         Returns a list of :ref:`hashtag dicts <hashtag dicts>` (NOT `featured tag dicts`_).
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', '/api/v1/accounts/{0}/featured_tags'.format(str(id)))
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/featured_tags')

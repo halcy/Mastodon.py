@@ -50,8 +50,7 @@ class Mastodon(Internals):
             params_initial['local'] = True
 
         params = self.__generate_params(params_initial, ['timeline'])
-        url = '/api/v1/timelines/{0}'.format(timeline)
-        return self.__api_request('GET', url, params)
+        return self.__api_request('GET', f'/api/v1/timelines/{timeline}', params)
 
     @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_home(self, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
@@ -91,7 +90,7 @@ class Mastodon(Internals):
         if hashtag.startswith("#"):
             raise MastodonIllegalArgumentError(
                 "Hashtag parameter should omit leading #")
-        return self.timeline('tag/{0}'.format(hashtag), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
+        return self.timeline(f'tag/{hashtag}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
     @api_version("2.1.0", "3.1.4", _DICT_VERSION_STATUS)
     def timeline_list(self, id, max_id=None, min_id=None, since_id=None, limit=None, only_media=False, local=False, remote=False):
@@ -101,5 +100,5 @@ class Mastodon(Internals):
         Returns a list of :ref:`status dicts <status dicts>`.
         """
         id = self.__unpack_id(id)
-        return self.timeline('list/{0}'.format(id), max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
+        return self.timeline(f'list/{id}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
