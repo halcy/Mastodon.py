@@ -203,7 +203,7 @@ def test_scheduled_status_long_part1(api):
         else:
             the_medium_term_future = datetime.datetime.now() + datetime.timedelta(minutes=6)
             pickle.dump(the_medium_term_future.timestamp(), open("tests/cassettes_special/test_scheduled_status_long_datetimeobjects.pkl", 'wb'))
-        scheduled_toot = api.status_post("please ensure maximum headroom at " + str(the_medium_term_future), scheduled_at=the_medium_term_future)
+        scheduled_toot = api.status_post(f"please ensure maximum headroom at {the_medium_term_future}", scheduled_at=the_medium_term_future)
         scheduled_toot_list = api.scheduled_statuses()
         assert scheduled_toot.id in map(lambda x: x.id, scheduled_toot_list)
         pickle.dump(scheduled_toot.params.text, open("tests/cassettes_special/test_scheduled_status_long_text.pkl", 'wb'))

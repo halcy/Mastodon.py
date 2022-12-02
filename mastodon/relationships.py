@@ -102,8 +102,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`relationship dict <relationship dict>` for the requesting account.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/follow_requests/{0}/authorize'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/follow_requests/{id}/authorize')
 
     @api_version("1.0.0", "3.0.0", _DICT_VERSION_RELATIONSHIP)
     def follow_request_reject(self, id):
@@ -113,8 +112,7 @@ class Mastodon(Internals):
         Returns the updated :ref:`relationship dict <relationship dict>` for the requesting account.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/follow_requests/{0}/reject'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/follow_requests/{id}/reject')
 
     ###
     # Writing data: Domain blocks

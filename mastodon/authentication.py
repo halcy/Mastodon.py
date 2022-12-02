@@ -61,13 +61,13 @@ class Mastodon(Internals):
             if website is not None:
                 request_data['website'] = website
             if session:
-                ret = session.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
+                ret = session.post(f"{api_base_url}/api/v1/apps", data=request_data, timeout=request_timeout)
                 response = ret.json()
             else:
-                response = requests.post(api_base_url + '/api/v1/apps', data=request_data, timeout=request_timeout)
+                response = requests.post(f"{api_base_url}/api/v1/apps", data=request_data, timeout=request_timeout)
                 response = response.json()
         except Exception as e:
-            raise MastodonNetworkError("Could not complete request: %s" % e)
+            raise MastodonNetworkError(f"Could not complete request: {e}")
 
         if to_file is not None:
             with open(to_file, 'w') as secret_file:
@@ -325,11 +325,11 @@ class Mastodon(Internals):
             self.__set_token_expired(int(response.get('expires_in', 0)))
         except Exception as e:
             if username is not None or password is not None:
-                raise MastodonIllegalArgumentError('Invalid user name, password, or redirect_uris: %s' % e)
+                raise MastodonIllegalArgumentError(f'Invalid user name, password, or redirect_uris: {e}')
             elif code is not None:
-                raise MastodonIllegalArgumentError('Invalid access token or redirect_uris: %s' % e)
+                raise MastodonIllegalArgumentError(f'Invalid access token or redirect_uris: {e}')
             else:
-                raise MastodonIllegalArgumentError('Invalid request: %s' % e)
+                raise MastodonIllegalArgumentError(f'Invalid request: {e}')
 
         received_scopes = response["scope"].split(" ")
         for scope_set in _SCOPE_SETS.keys():

@@ -156,8 +156,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
 
-        url = '/api/v1/announcements/{0}/dismiss'.format(str(id))
-        self.__api_request('POST', url)
+        self.__api_request('POST', f'/api/v1/announcements/{id}/dismiss')
 
     @api_version("3.1.0", "3.1.0", "3.1.0")
     def announcement_reaction_create(self, id, reaction):
@@ -171,9 +170,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
 
-        url = '/api/v1/announcements/{0}/reactions/{1}'.format(
-            str(id), reaction)
-        self.__api_request('PUT', url)
+        self.__api_request('PUT', f'/api/v1/announcements/{id}/reactions/{reaction}')
 
     @api_version("3.1.0", "3.1.0", "3.1.0")
     def announcement_reaction_delete(self, id, reaction):
@@ -184,6 +181,4 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
 
-        url = '/api/v1/announcements/{0}/reactions/{1}'.format(
-            str(id), reaction)
-        self.__api_request('DELETE', url)
+        self.__api_request('DELETE', f'/api/v1/announcements/{id}/reactions/{reaction}')

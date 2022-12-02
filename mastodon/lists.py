@@ -26,7 +26,7 @@ class Mastodon(Internals):
         Returns a :ref:`list dict <list dict>`.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', '/api/v1/lists/{0}'.format(id))
+        return self.__api_request('GET', f'/api/v1/lists/{id}')
 
     @api_version("2.1.0", "2.6.0", _DICT_VERSION_ACCOUNT)
     def list_accounts(self, id, max_id=None, min_id=None, since_id=None, limit=None):
@@ -47,7 +47,7 @@ class Mastodon(Internals):
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', '/api/v1/lists/{0}/accounts'.format(id))
+        return self.__api_request('GET', f'/api/v1/lists/{id}/accounts')
 
     ###
     # Writing data: Lists
@@ -71,7 +71,7 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('PUT', '/api/v1/lists/{0}'.format(id), params)
+        return self.__api_request('PUT', f'/api/v1/lists/{id}', params)
 
     @api_version("2.1.0", "2.1.0", "2.1.0")
     def list_delete(self, id):
@@ -79,7 +79,7 @@ class Mastodon(Internals):
         Delete a list.
         """
         id = self.__unpack_id(id)
-        self.__api_request('DELETE', '/api/v1/lists/{0}'.format(id))
+        self.__api_request('DELETE', f'/api/v1/lists/{id}')
 
     @api_version("2.1.0", "2.1.0", "2.1.0")
     def list_accounts_add(self, id, account_ids):
@@ -93,8 +93,7 @@ class Mastodon(Internals):
         account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
 
         params = self.__generate_params(locals(), ['id'])
-        self.__api_request(
-            'POST', '/api/v1/lists/{0}/accounts'.format(id), params)
+        self.__api_request('POST', f'/api/v1/lists/{id}/accounts', params)
 
     @api_version("2.1.0", "2.1.0", "2.1.0")
     def list_accounts_delete(self, id, account_ids):
@@ -108,5 +107,4 @@ class Mastodon(Internals):
         account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
 
         params = self.__generate_params(locals(), ['id'])
-        self.__api_request(
-            'DELETE', '/api/v1/lists/{0}/accounts'.format(id), params)
+        self.__api_request('DELETE', f'/api/v1/lists/{id}/accounts', params)

@@ -39,14 +39,13 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                     version = max_version(last_changed_ver, return_value_ver)
                 major, minor, patch = parse_version_string(version)
                 if major > self.mastodon_major:
-                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                    raise MastodonVersionError(f"Version check failed (Need version {version})")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
-                    raise MastodonVersionError("Version check failed (Need version " + version + ")")
+                    raise MastodonVersionError(f"Version check failed (Need version {version})")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-                    raise MastodonVersionError("Version check failed (Need version " + version + ", patch is " + str(self.mastodon_patch) + ")")
+                    raise MastodonVersionError(f"Version check failed (Need version {version}, patch is {self.mastodon_patch})")
             return function(self, *args, **kwargs)
-        function.__doc__ = function.__doc__ + "\n\n        *Added: Mastodon v" + \
-            created_ver + ", last changed: Mastodon v" + last_changed_ver + "*"
+        function.__doc__ += f"\n\n        *Added: Mastodon v{created_ver}, last changed: Mastodon v{last_changed_ver}*"
         return decorate(function, wrapper)
     return api_min_version_decorator
 
@@ -59,7 +58,7 @@ class AttribAccessDict(dict):
         if attr in self:
             return self[attr]
         else:
-            raise AttributeError("Attribute not found: " + str(attr))
+            raise AttributeError(f"Attribute not found: {attr}")
 
     def __setattr__(self, attr, val):
         if attr in self:
@@ -76,7 +75,7 @@ class AttribAccessList(list):
         if attr in self:
             return self[attr]
         else:
-            raise AttributeError("Attribute not found: " + str(attr))
+            raise AttributeError(f"Attribute not found: {attr}")
 
     def __setattr__(self, attr, val):
         if attr in self:

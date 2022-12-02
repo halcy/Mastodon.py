@@ -23,8 +23,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/statuses/{id}')
 
     @api_version("1.0.0", "3.0.0", _DICT_VERSION_CARD)
     def status_card(self, id):
@@ -45,8 +44,7 @@ class Mastodon(Internals):
             return self.status(id).card
         else:
             id = self.__unpack_id(id)
-            url = '/api/v1/statuses/{0}/card'.format(str(id))
-            return self.__api_request('GET', url)
+            return self.__api_request('GET', f'/api/v1/statuses/{id}/card')
 
     @api_version("1.0.0", "1.0.0", _DICT_VERSION_CONTEXT)
     def status_context(self, id):
@@ -58,8 +56,7 @@ class Mastodon(Internals):
         Returns a :ref:`context dict <context dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/context'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/statuses/{id}/context')
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def status_reblogged_by(self, id):
@@ -71,8 +68,7 @@ class Mastodon(Internals):
         Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/reblogged_by'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/statuses/{id}/reblogged_by')
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def status_favourited_by(self, id):
@@ -84,8 +80,7 @@ class Mastodon(Internals):
         Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/favourited_by'.format(str(id))
-        return self.__api_request('GET', url)
+        return self.__api_request('GET', f'/api/v1/statuses/{id}/favourited_by')
 
     ###
     # Reading data: Scheduled statuses
@@ -107,9 +102,8 @@ class Mastodon(Internals):
         Returns a :ref:`scheduled status dict <scheduled status dict>`.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
-        return self.__api_request('GET', url)
-        
+        return self.__api_request('GET', f'/api/v1/scheduled_statuses/{id}')
+
     ###
     # Writing data: Statuses
     ###
@@ -150,7 +144,7 @@ class Mastodon(Internals):
         else:
             params_initial['visibility'] = params_initial['visibility'].lower()
             if params_initial['visibility'] not in valid_visibilities:
-                raise ValueError('Invalid visibility value! Acceptable values are %s' % valid_visibilities)
+                raise ValueError(f'Invalid visibility value! Acceptable values are {valid_visibilities}')
 
         if params_initial['language'] is None:
             del params_initial['language']
@@ -170,7 +164,7 @@ class Mastodon(Internals):
                 for media_id in media_ids:
                     media_ids_proper.append(self.__unpack_id(media_id))
             except Exception as e:
-                raise MastodonIllegalArgumentError("Invalid media dict: %s" % e)
+                raise MastodonIllegalArgumentError(f"Invalid media dict: {e}")
 
             params_initial["media_ids"] = media_ids_proper
 
@@ -187,7 +181,7 @@ class Mastodon(Internals):
             return self.__api_request('POST', '/api/v1/statuses', params, headers=headers, use_json=use_json)
         else:
             # Edit
-            return self.__api_request('PUT', '/api/v1/statuses/{0}'.format(str(self.__unpack_id(edit))), params, headers=headers, use_json=use_json)
+            return self.__api_request('PUT', f'/api/v1/statuses/{self.__unpack_id(edit)}', params, headers=headers, use_json=use_json)
 
     @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
@@ -303,7 +297,7 @@ class Mastodon(Internals):
         will have three, and so on.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', "/api/v1/statuses/{0}/history".format(str(id)))
+        return self.__api_request('GET', f"/api/v1/statuses/{id}/history")
 
     def status_source(self, id):
         """
@@ -314,7 +308,7 @@ class Mastodon(Internals):
         instead.
         """
         id = self.__unpack_id(id)
-        return self.__api_request('GET', "/api/v1/statuses/{0}/source".format(str(id)))
+        return self.__api_request('GET', f"/api/v1/statuses/{id}/source")
 
     @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
     def status_reply(self, to_status, status, in_reply_to_id=None, media_ids=None,
@@ -372,8 +366,7 @@ class Mastodon(Internals):
         "delete and redraft" functionality)
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}'.format(str(id))
-        return self.__api_request('DELETE', url)
+        return self.__api_request('DELETE', f'/api/v1/statuses/{id}')
 
     @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_reblog(self, id, visibility=None):
@@ -390,12 +383,10 @@ class Mastodon(Internals):
         if 'visibility' in params:
             params['visibility'] = params['visibility'].lower()
             if params['visibility'] not in valid_visibilities:
-                raise ValueError('Invalid visibility value! Acceptable '
-                                 'values are %s' % valid_visibilities)
+                raise ValueError(f'Invalid visibility value! Acceptable values are {valid_visibilities}')
 
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/reblog'.format(str(id))
-        return self.__api_request('POST', url, params)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/reblog', params)
 
     @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_unreblog(self, id):
@@ -405,8 +396,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the status that used to be reblogged.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/unreblog'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/unreblog')
 
     @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_favourite(self, id):
@@ -416,8 +406,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the favourited status.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/favourite'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/favourite')
 
     @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_unfavourite(self, id):
@@ -427,8 +416,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the un-favourited status.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/unfavourite'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/unfavourite')
 
     @api_version("1.4.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_mute(self, id):
@@ -438,8 +426,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the now muted status
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/mute'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/mute')
 
     @api_version("1.4.0", "2.0.0", _DICT_VERSION_STATUS)
     def status_unmute(self, id):
@@ -449,8 +436,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the status that used to be muted.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/unmute'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/unmute')
 
     @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
     def status_pin(self, id):
@@ -460,8 +446,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the now pinned status
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/pin'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/pin')
 
     @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
     def status_unpin(self, id):
@@ -471,8 +456,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the status that used to be pinned.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/unpin'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/unpin')
 
     @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
     def status_bookmark(self, id):
@@ -482,8 +466,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the now bookmarked status
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/bookmark'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/bookmark')
 
     @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
     def status_unbookmark(self, id):
@@ -493,8 +476,7 @@ class Mastodon(Internals):
         Returns a :ref:`status dict <status dict>` with the status that used to be bookmarked.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/statuses/{0}/unbookmark'.format(str(id))
-        return self.__api_request('POST', url)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/unbookmark')
 
     ###
     # Writing data: Scheduled statuses
@@ -511,8 +493,7 @@ class Mastodon(Internals):
         scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
-        return self.__api_request('PUT', url, params)
+        return self.__api_request('PUT', f'/api/v1/scheduled_statuses/{id}', params)
 
     @api_version("2.7.0", "2.7.0", "2.7.0")
     def scheduled_status_delete(self, id):
@@ -520,5 +501,4 @@ class Mastodon(Internals):
         Deletes a scheduled status.
         """
         id = self.__unpack_id(id)
-        url = '/api/v1/scheduled_statuses/{0}'.format(str(id))
-        self.__api_request('DELETE', url)
+        self.__api_request('DELETE', f'/api/v1/scheduled_statuses/{id}')
