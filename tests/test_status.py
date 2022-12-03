@@ -172,15 +172,15 @@ def test_scheduled_status(api):
     assert scheduled_toot_2.scheduled_at < scheduled_toot.scheduled_at
 
     scheduled_toot_list = api.scheduled_statuses()
-    assert scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list)
+    assert any(x.id == scheduled_toot_2.id for x in scheduled_toot_list)
 
     scheduled_toot_3 = api.scheduled_status(scheduled_toot.id)
     assert scheduled_toot_2.id == scheduled_toot_3.id
 
     api.scheduled_status_delete(scheduled_toot_2)
     scheduled_toot_list_2 = api.scheduled_statuses()
-    assert not scheduled_toot_2.id in map(lambda x: x.id, scheduled_toot_list_2)
-    
+    assert not any(x.id == scheduled_toot_2.id for x in scheduled_toot_list_2)
+
     if os.path.exists("tests/cassettes/test_scheduled_status_datetimeobjects.pkl"):
         the_very_immediate_future = datetime.datetime.fromtimestamp(pickle.load(open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'rb')))
     else:
@@ -190,9 +190,9 @@ def test_scheduled_status(api):
     time.sleep(15)
     statuses = api.timeline_home()
     scheduled_toot_list_3 = api.scheduled_statuses()
-    assert scheduled_toot_4.id in map(lambda x: x.id, statuses)
-    assert not scheduled_toot_4.id in map(lambda x: x.id, scheduled_toot_list_3)
-    
+    assert any(x.id == scheduled_toot_4.id for x in statuses)
+    assert not any(x.id == scheduled_toot_4.id for x in scheduled_toot_list_3)
+
 # The following two tests need to be manually (!) ran 10 minutes apart when recording.
 # Sorry, I can't think of a better way to test scheduled statuses actually work as intended.
 @pytest.mark.vcr(match_on=['path'])
@@ -205,7 +205,7 @@ def test_scheduled_status_long_part1(api):
             pickle.dump(the_medium_term_future.timestamp(), open("tests/cassettes_special/test_scheduled_status_long_datetimeobjects.pkl", 'wb'))
         scheduled_toot = api.status_post(f"please ensure maximum headroom at {the_medium_term_future}", scheduled_at=the_medium_term_future)
         scheduled_toot_list = api.scheduled_statuses()
-        assert scheduled_toot.id in map(lambda x: x.id, scheduled_toot_list)
+        assert any(x.id == scheduled_toot.id for x in scheduled_toot_list)
         pickle.dump(scheduled_toot.params.text, open("tests/cassettes_special/test_scheduled_status_long_text.pkl", 'wb'))
 
 @pytest.mark.vcr(match_on=['path'])    

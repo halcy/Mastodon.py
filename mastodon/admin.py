@@ -42,7 +42,7 @@ class Mastodon(Internals):
         if role_ids is not None:
             if not isinstance(role_ids, list):
                 role_ids = [role_ids]
-            role_ids = list(map(self.__unpack_id, role_ids))
+            role_ids = [self.__unpack_id(x) for x in role_ids]
 
         if invited_by is not None:
             invited_by = self.__unpack_id(invited_by)

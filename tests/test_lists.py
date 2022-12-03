@@ -24,15 +24,15 @@ def test_list_add_remove_account(api, api2, mastodon_list):
     
     api.account_follow(user)
     api.list_accounts_add(mastodon_list, user)
-    assert user.id in map(lambda x: x.id, api.list_accounts(mastodon_list))
+    assert any(x.id == user.id for x in api.list_accounts(mastodon_list))
     
     api.account_unfollow(user)
     assert len(api.list_accounts(mastodon_list)) == 0
     
     api.account_follow(user)
     api.list_accounts_add(mastodon_list, user)
-    assert user.id in map(lambda x: x.id, api.list_accounts(mastodon_list))
-    
+    assert any(x.id == user.id for x in api.list_accounts(mastodon_list))
+
     api.list_accounts_delete(mastodon_list, user)
     assert len(api.list_accounts(mastodon_list)) == 0
     
@@ -56,9 +56,8 @@ def test_list_timeline(api, api2, mastodon_list):
     
     status = api2.status_post("I have never stolen a ham in my life.", visibility="public")
     time.sleep(2)
-    list_tl = list(map(lambda x: x.id, api.timeline_list(mastodon_list)))
-    assert status.id in list_tl
-    
+    assert any(x.id == status.id for x in api.timeline_list(mastodon_list))
+
     api2.status_delete(status)
     api.account_unfollow(user)
     
