@@ -430,6 +430,7 @@ Media dicts
         'foreground': # Estimated foreground colour for the attachment thumbnail
         'background': # Estimated background colour for the attachment thumbnail
         'accent': # Estimated accent colour for the attachment thumbnail
+    }
 
 Card dicts
 ----------
