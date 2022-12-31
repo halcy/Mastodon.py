@@ -8,7 +8,7 @@ try:
 except ImportError:
     from unittest.mock import Mock
 
-def test_create_app(mocker, to_file=None, redirect_uris=None, website=None):
+def test_create_app(mocker, to_file=None, redirect_uris=None, website=None, user_agent="mastodonpy"):
     # there is no easy way to delete an anonymously created app so
     # instead we mock Requests
     resp = Mock()
@@ -22,7 +22,8 @@ def test_create_app(mocker, to_file=None, redirect_uris=None, website=None):
             api_base_url="example.com",
             to_file=to_file,
             redirect_uris=redirect_uris,
-            website=website
+            website=website,
+            user_agent=user_agent
             )
 
     assert app == ('foo', 'bar')
@@ -42,6 +43,11 @@ def test_create_app_website(mocker):
     test_create_app(mocker, website='http://example.net')
     kwargs = requests.post.call_args[1]
     assert kwargs['data']['website'] == 'http://example.net'
+
+def test_create_app_user_agent(mocker):
+    test_create_app(mocker, user_agent="pytest")
+    kwargs = requests.post.call_args[1]
+    assert kwargs['headers']['User-Agent'] == 'pytest'
 
 @pytest.mark.vcr()
 def test_app_verify_credentials(api):

@@ -14,13 +14,15 @@ from .utility import parse_version_string, api_version
 
 from .internals import Mastodon as Internals
 
+_DEFAULT_USER_AGENT = "mastodonpy"
+
 class Mastodon(Internals):
     ###
     # Registering apps
     ###
     @staticmethod
     def create_app(client_name, scopes=_DEFAULT_SCOPES, redirect_uris=None, website=None, to_file=None,
-                   api_base_url=None, request_timeout=_DEFAULT_TIMEOUT, session=None):
+                   api_base_url=None, request_timeout=_DEFAULT_TIMEOUT, session=None, user_agent=_DEFAULT_USER_AGENT):
         """
         Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
         - more granular scopes are available, please refer to Mastodon documentation for which) on the instance given
@@ -36,6 +38,8 @@ class Mastodon(Internals):
         Specify `session` with a requests.Session for it to be used instead of the default. This can be
         used to, amongst other things, adjust proxy or SSL certificate settings.
 
+        Specify `user_agent` if you want to use a specific name as `User-Agent` header, otherwise "mastodonpy" will be used.
+
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         Mastodon instances in the future.
 
@@ -50,6 +54,9 @@ class Mastodon(Internals):
             'client_name': client_name,
             'scopes': " ".join(scopes)
         }
+        headers = {
+            'User-Agent': user_agent
+        }
 
         try:
             if redirect_uris is not None:
@@ -61,10 +68,10 @@ class Mastodon(Internals):
             if website is not None:
                 request_data['website'] = website
             if session:
-                ret = session.post(f"{api_base_url}/api/v1/apps", data=request_data, timeout=request_timeout)
+                ret = session.post(f"{api_base_url}/api/v1/apps", data=request_data, headers=headers, timeout=request_timeout)
                 response = ret.json()
             else:
-                response = requests.post(f"{api_base_url}/api/v1/apps", data=request_data, timeout=request_timeout)
+                response = requests.post(f"{api_base_url}/api/v1/apps", data=request_data, headers=headers, timeout=request_timeout)
                 response = response.json()
         except Exception as e:
             raise MastodonNetworkError(f"Could not complete request: {e}")
@@ -83,7 +90,7 @@ class Mastodon(Internals):
     ###
     def __init__(self, client_id=None, client_secret=None, access_token=None, api_base_url=None, debug_requests=False,
                  ratelimit_method="wait", ratelimit_pacefactor=1.1, request_timeout=_DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode="created", session=None, feature_set="mainline", user_agent="mastodonpy", lang=None):
+                 version_check_mode="created", session=None, feature_set="mainline", user_agent=_DEFAULT_USER_AGENT, lang=None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
         instance given by `api_base_url`. If you give a `client_id` and it is not a file, you must 
