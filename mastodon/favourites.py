@@ -5,6 +5,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Favourites
@@ -49,4 +50,3 @@ class Mastodon(Internals):
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/bookmarks', params)
-        

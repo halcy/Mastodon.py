@@ -14,6 +14,7 @@ from .utility import parse_version_string, api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Registering apps
@@ -43,7 +44,7 @@ class Mastodon(Internals):
         Returns `client_id` and `client_secret`, both as strings.
         """
         if api_base_url is None:
-            raise MastodonIllegalArgumentError("API base URL is required.")  
+            raise MastodonIllegalArgumentError("API base URL is required.")
         api_base_url = Mastodon.__protocolize(api_base_url)
 
         request_data = {
@@ -86,9 +87,9 @@ class Mastodon(Internals):
                  version_check_mode="created", session=None, feature_set="mainline", user_agent="mastodonpy", lang=None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
-        instance given by `api_base_url`. If you give a `client_id` and it is not a file, you must 
+        instance given by `api_base_url`. If you give a `client_id` and it is not a file, you must
         also give a secret. If you specify an `access_token` then you don't need to specify a `client_id`.
-        It is allowed to specify neither - in this case, you will be restricted to only using endpoints 
+        It is allowed to specify neither - in this case, you will be restricted to only using endpoints
         that do not require authentication. If a file is given as `client_id`, client ID, secret and
         base url are read from that file.
 
@@ -216,7 +217,7 @@ class Mastodon(Internals):
 
         # Verify we have a base URL, protocolize
         if self.api_base_url is None:
-            raise MastodonIllegalArgumentError("API base URL is required.")        
+            raise MastodonIllegalArgumentError("API base URL is required.")
         self.api_base_url = Mastodon.__protocolize(self.api_base_url)
 
         if not version_check_mode in ["created", "changed", "none"]:

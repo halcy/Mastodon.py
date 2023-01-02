@@ -22,10 +22,11 @@ from .errors import MastodonNetworkError, MastodonIllegalArgumentError, Mastodon
 from .compat import urlparse, magic, PurePath
 from .defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 
+
 ###
 # Internal helpers, dragons probably
 ###
-class Mastodon(): 
+class Mastodon():
     def __datetime_to_epoch(self, date_time):
         """
         Converts a python datetime to unix epoch, accounting for
@@ -36,7 +37,6 @@ class Mastodon():
         if date_time.tzinfo is None:
             date_time = date_time.replace(tzinfo=datetime.timezone.utc)
         return date_time.timestamp()
-
 
     def __get_logged_in_id(self):
         """
@@ -77,7 +77,7 @@ class Mastodon():
                         mark_delete.append(k)
         # Two step process because otherwise python gets very upset
         for k in mark_delete:
-            del json_object[k]                        
+            del json_object[k]
         return json_object
 
     @staticmethod
@@ -98,7 +98,7 @@ class Mastodon():
         """
         Converts json string numerals to native python bignums.
         """
-        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses', 
+        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses',
                     'day', 'last_read_id', 'value', 'frequency', 'rate', 'invited_by_account_id', 'count'):
             if (key in json_object and isinstance(json_object[key], six.text_type)):
                 try:
@@ -131,14 +131,14 @@ class Mastodon():
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
-    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None, 
+    def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None,
                         do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None):
         """
         Internal API request helper.
         """
         response = None
         remaining_wait = 0
-        
+
         # Add language to params if not None
         lang = self.lang
         if lang_override is not None:
@@ -270,7 +270,7 @@ class Mastodon():
                             time.sleep(to_next)
                             request_complete = False
                             continue
-                
+
                 if not skip_error_check:
                     if response_object.status_code == 404:
                         ex_type = MastodonNotFoundError

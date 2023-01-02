@@ -9,6 +9,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     @api_version("2.7.0", "2.7.0", "3.4.0")
     def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=_DEFAULT_SCOPES, to_file=None, return_detailed_error=False):
@@ -16,8 +17,8 @@ class Mastodon(Internals):
         Creates a new user account with the given username, password and email. "agreement"
         must be set to true (after showing the user the instance's user agreement and having
         them agree to it), "locale" specifies the language for the confirmation email as an
-        ISO 639-1 (two letter) or, if a language does not have one, 639-3 (three letter) language 
-        code. `reason` can be used to specify why a user would like to join if approved-registrations 
+        ISO 639-1 (two letter) or, if a language does not have one, 639-3 (three letter) language
+        code. `reason` can be used to specify why a user would like to join if approved-registrations
         mode is on.
 
         Does not require an access token, but does require a client grant.
@@ -30,11 +31,11 @@ class Mastodon(Internals):
 
         By default, the function will throw if the account could not be created. Alternately,
         when `return_detailed_error` is passed, Mastodon.py will return the detailed error
-        response that the API provides (Starting from version 3.4.0 - not checked here) as an dict with 
-        error details as the second return value and the token returned as `None` in case of error. 
-        The dict will contain a text `error` values as well as a `details` value which is a dict with 
-        one optional key for each potential field (`username`, `password`, `email` and `agreement`), 
-        each if present containing a dict with an `error` category and free text `description`. 
+        response that the API provides (Starting from version 3.4.0 - not checked here) as an dict with
+        error details as the second return value and the token returned as `None` in case of error.
+        The dict will contain a text `error` values as well as a `details` value which is a dict with
+        one optional key for each potential field (`username`, `password`, `email` and `agreement`),
+        each if present containing a dict with an `error` category and free text `description`.
         Valid error categories are:
 
             * ERR_BLOCKED - When e-mail provider is not allowed
@@ -77,7 +78,7 @@ class Mastodon(Internals):
                 raise MastodonIllegalArgumentError(f'Invalid request: {e}')
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
-            self.__set_token_expired(int(response.get('expires_in', 0)))            
+            self.__set_token_expired(int(response.get('expires_in', 0)))
         except Exception as e:
             raise MastodonIllegalArgumentError('Invalid request')
 
@@ -274,14 +275,14 @@ class Mastodon(Internals):
     def account_lookup(self, acct):
         """
         Look up an account from user@instance form (@instance allowed but not required for
-        local accounts). Will only return accounts that the instance already knows about, 
-        and not do any webfinger requests. Use `account_search` if you need to resolve users 
+        local accounts). Will only return accounts that the instance already knows about,
+        and not do any webfinger requests. Use `account_search` if you need to resolve users
         through webfinger from remote.
 
         Returns an :ref:`account dict <account dict>`.
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
-    
+
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_FAMILIAR_FOLLOWERS)
     def account_familiar_followers(self, id):
         """
@@ -347,7 +348,6 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/remove_from_followers')
-    
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_block(self, id):

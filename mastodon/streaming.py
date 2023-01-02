@@ -84,7 +84,7 @@ class StreamListener(object):
         contains the content of the unknown event.
         """
         pass
-    
+
     def handle_heartbeat(self):
         """The server has sent us a keep-alive message. This callback may be
         useful to carry out periodic housekeeping tasks, or just to confirm
@@ -217,6 +217,7 @@ class StreamListener(object):
             else:
                 handler(name, payload)
 
+
 class CallbackStreamListener(StreamListener):
     """
     Simple callback stream handler class.
@@ -226,21 +227,20 @@ class CallbackStreamListener(StreamListener):
     for diagnostics.
     """
 
-    def __init__(self, 
-        update_handler=None, 
-        local_update_handler=None, 
-        delete_handler=None, 
-        notification_handler=None, 
-        conversation_handler=None, 
-        unknown_event_handler=None, 
-        status_update_handler=None,
-        filters_changed_handler=None,
-        announcement_handler=None,
-        announcement_reaction_handler=None,
-        announcement_delete_handler=None,
-        encryted_message_handler=None
-
-    ):
+    def __init__(self,
+                 update_handler=None,
+                 local_update_handler=None,
+                 delete_handler=None,
+                 notification_handler=None,
+                 conversation_handler=None,
+                 unknown_event_handler=None,
+                 status_update_handler=None,
+                 filters_changed_handler=None,
+                 announcement_handler=None,
+                 announcement_reaction_handler=None,
+                 announcement_delete_handler=None,
+                 encryted_message_handler=None
+                 ):
         super(CallbackStreamListener, self).__init__()
         self.update_handler = update_handler
         self.local_update_handler = local_update_handler
@@ -306,4 +306,4 @@ class CallbackStreamListener(StreamListener):
 
     def on_unknown_event(self, name, unknown_event=None):
         if self.unknown_event_handler is not None:
-            self.unknown_event_handler(name, unknown_event)        
+            self.unknown_event_handler(name, unknown_event)
