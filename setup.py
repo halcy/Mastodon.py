@@ -34,7 +34,7 @@ setup(name='Mastodon.py',
           'requests>=2.4.2', 
           'python-dateutil', 
           'six',
-          'python-magic-bin ; platform_system=="Windows"',
+          'python-magic-bin ; platform_system=="Windows"', # pragma: no cover
           'python-magic ; platform_system!="Windows"',
           'decorator>=4.0.0', 
       ] + blurhash_deps,
