@@ -47,7 +47,7 @@ class Mastodon(Internals):
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', f'/api/v1/lists/{id}/accounts')
+        return self.__api_request('GET', f'/api/v1/lists/{id}/accounts', params)
 
     ###
     # Writing data: Lists
