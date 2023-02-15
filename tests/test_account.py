@@ -119,8 +119,8 @@ def test_account_update_credentials(api):
         header = image,
         header_mime_type = "image/jpeg",
         fields = [
-            ("bread", "toasty."),
-            ("lasagna", "no!!!"),
+            ("bread", "toasty.", None),
+            ("lasagna", "no!!!", None),
         ]
     )
     
@@ -136,11 +136,11 @@ def test_account_update_credentials(api):
 def test_account_update_credentials_too_many_fields(api):
     with pytest.raises(MastodonIllegalArgumentError):
         api.account_update_credentials(fields = [
-            ('a', 'b'),
-            ('c', 'd'), 
-            ('e', 'f'), 
-            ('g', 'h'), 
-            ('i', 'j'),
+            ('a', 'b', 'c'),
+            ('d', 'e', 'f'), 
+            ('g', 'h', 'i'), 
+            ('j', 'k', 'l'), 
+            ('m', 'n', 'o'),
         ])
 
 @pytest.mark.vcr(match_on=['path'])

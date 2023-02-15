@@ -427,10 +427,10 @@ class Mastodon(Internals):
                 raise MastodonIllegalArgumentError(
                     'A maximum of four fields are allowed.')
 
-            fields_attributes = []
-            for idx, (field_name, field_value) in enumerate(fields):
+            for idx, (field_name, field_value, field_verified_at) in enumerate(fields):
                 params_initial[f'fields_attributes[{idx}][name]'] = field_name
                 params_initial[f'fields_attributes[{idx}][value]'] = field_value
+                params_initial[f'fields_attributes[{idx}][verified_at]'] = field_verified_at
 
         # Clean up params
         for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields"]:
