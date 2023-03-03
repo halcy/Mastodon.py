@@ -341,7 +341,10 @@ class Mastodon(Internals):
 
         # Determine users to mention
         mentioned_accounts = collections.OrderedDict()
-        mentioned_accounts[to_status.account.id] = to_status.account.acct
+        try:
+            mentioned_accounts[to_status.account.id] = to_status.account.acct
+        except AttributeError as e:
+            raise TypeError("to_status must specify a status dict!") from e
 
         if not untag:
             for account in to_status.mentions:
