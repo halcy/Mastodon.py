@@ -326,6 +326,8 @@ class Mastodon(Internals):
         the users that are being replied to to the status text and retains
         CW and visibility if not explicitly overridden.
 
+        Note that `to_status` should be a :ref:`status dict <status dict>` and not an ID. 
+
         Set `untag` to True if you want the reply to only go to the user you
         are replying to, removing every other mentioned user from the
         conversation.
