@@ -24,6 +24,9 @@ class Mastodon(Internals):
     def stream_public(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC, local=False, remote=False):
         """
         Streams public events.
+
+        Set `local` to True to only get local statuses.
+        Set `remote` to True to only get remote statuses.
         """
         base = '/api/v1/streaming/public'
         if local:
@@ -50,7 +53,7 @@ class Mastodon(Internals):
         Stream for all public statuses for the hashtag 'tag' seen by the connected
         instance.
 
-        Set local to True to only get local statuses.
+        Set `local` to True to only get local statuses.
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
