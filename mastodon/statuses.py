@@ -320,6 +320,8 @@ class Mastodon(Internals):
         the users that are being replied to to the status text and retains
         CW and visibility if not explicitly overridden.
 
+        Note that `to_status` should be a :ref:`status dict <status dict>` and not an ID. 
+
         Set `untag` to True if you want the reply to only go to the user you
         are replying to, removing every other mentioned user from the
         conversation.
@@ -333,7 +335,10 @@ class Mastodon(Internals):
 
         # Determine users to mention
         mentioned_accounts = collections.OrderedDict()
-        mentioned_accounts[to_status.account.id] = to_status.account.acct
+        try:
+            mentioned_accounts[to_status.account.id] = to_status.account.acct
+        except AttributeError as e:
+            raise TypeError("to_status must specify a status dict!") from e
 
         if not untag:
             for account in to_status.mentions:
