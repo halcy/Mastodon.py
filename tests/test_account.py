@@ -206,14 +206,14 @@ def test_account_pin_unpin(api, api2):
     try:
         assert relationship
         assert relationship['endorsed']
-        assert user["id"] in map(lambda x: x["id"], endorsed)
+        assert any(x["id"] == user["id"] for x in endorsed)
     finally:
         relationship = api.account_unpin(user)
         endorsed2 = api.endorsements()
         api.account_unfollow(user)        
         assert relationship
         assert not relationship['endorsed']
-        assert not user["id"] in map(lambda x: x["id"], endorsed2)
+        assert not any(x["id"] == user["id"] for x in endorsed2)
 
 @pytest.mark.vcr()
 def test_preferences(api):

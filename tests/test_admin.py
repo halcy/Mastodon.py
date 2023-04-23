@@ -173,7 +173,7 @@ def test_admin_domain_blocks(api2):
     assert block3.public_comment == "sicko behaviour"
     assert block3.private_comment == "jk ilu <3"
     api2.admin_delete_domain_block(block2)
-    assert not block3.id in map(lambda x: x.id, api2.admin_domain_blocks())
+    assert not any(x.id == block3.id for x in api2.admin_domain_blocks())
 
 @pytest.mark.vcr(match_on=['path'])
 def test_admin_stats(api2):

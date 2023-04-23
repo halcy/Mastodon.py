@@ -341,8 +341,7 @@ class Mastodon(Internals):
                     mentioned_accounts[account.id] = account.acct
 
         # Join into one piece of text. The space is added inside because of self-replies.
-        status = "".join(map(lambda x: "@" + x + " ",
-                         mentioned_accounts.values())) + status
+        status = " ".join(f"@{x}" for x in mentioned_accounts.values()) + " " + status
 
         # Retain visibility / cw
         if visibility is None and 'visibility' in to_status:

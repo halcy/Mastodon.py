@@ -58,10 +58,11 @@ def test_filter_serverside(api, api2):
         time.sleep(2)
         tl = api.timeline_home()
         try:
-            assert not status_1['id'] in map(lambda st: st['id'], tl)
-            assert not status_2['id'] in map(lambda st: st['id'], tl)
-            assert status_3['id'] in map(lambda st: st['id'], tl)
-            assert status_4['id'] in map(lambda st: st['id'], tl)
+            st_ids = {st["id"] for st in tl}
+            assert status_1["id"] not in st_ids
+            assert status_2["id"] not in st_ids
+            assert status_3["id"] in st_ids
+            assert status_4["id"] in st_ids
         finally:
             api.filter_delete(keyword_filter_1)
             api.filter_delete(keyword_filter_2)
@@ -94,16 +95,18 @@ def test_filter_clientside(api, api2):
         
         tl = api.timeline_home()
         try:
-            assert status_1['id'] in map(lambda st: st['id'], tl)
-            assert status_2['id'] in map(lambda st: st['id'], tl)
-            assert status_3['id'] in map(lambda st: st['id'], tl)
-            assert status_4['id'] in map(lambda st: st['id'], tl)
+            st_ids = {st["id"] for st in tl}
+            assert status_1['id'] in st_ids
+            assert status_2['id'] in st_ids
+            assert status_3['id'] in st_ids
+            assert status_4['id'] in st_ids
             
             filtered = api.filters_apply(tl, [keyword_filter_1, keyword_filter_2, keyword_filter_3], 'home')
-            assert not status_1['id'] in map(lambda st: st['id'], filtered)
-            assert not status_2['id'] in map(lambda st: st['id'], filtered)
-            assert status_3['id'] in map(lambda st: st['id'], filtered)
-            assert status_4['id'] in map(lambda st: st['id'], filtered)
+            st_ids = {st["id"] for st in filtered}
+            assert status_1['id'] not in st_ids
+            assert status_2['id'] not in st_ids
+            assert status_3['id'] in st_ids
+            assert status_4['id'] in st_ids
         finally:
             api.filter_delete(keyword_filter_1)
             api.filter_delete(keyword_filter_2)

@@ -9,14 +9,14 @@ import os
 def test_public_tl_anonymous(api_anonymous, status3):
     time.sleep(3)
     tl = api_anonymous.timeline_public()
-    assert status3['id'] in list(map(lambda st: st['id'], tl))
+    assert any(st["id"] == status3["id"] for st in tl)
 
 @pytest.mark.vcr()
 def test_public_tl(api, status):
     public = api.timeline_public()
     local = api.timeline_local()
-    assert status['id'] in map(lambda st: st['id'], public)
-    assert status['id'] in map(lambda st: st['id'], local)
+    assert any(st["id"] == status["id"] for st in public)
+    assert any(st["id"] == status["id"] for st in local)
 
 @pytest.mark.vcr()
 def test_unauthed_home_tl_throws(api_anonymous, status):
@@ -27,14 +27,14 @@ def test_unauthed_home_tl_throws(api_anonymous, status):
 def test_home_tl(api, status):
     time.sleep(3)
     tl = api.timeline_home()
-    assert status['id'] in map(lambda st: st['id'], tl)
+    assert any(st["id"] == status["id"] for st in tl)
 
 @pytest.mark.vcr()
 def test_hashtag_tl(api):
     status = api.status_post('#hoot (hashtag toot)')
     tl = api.timeline_hashtag('hoot')
     try:
-        assert status['id'] in map(lambda st: st['id'], tl)
+        assert any(st["id"] == status["id"] for st in tl)
     finally:
         api.status_delete(status['id'])
 
@@ -58,8 +58,8 @@ def test_conversations(api, api2):
     conversations2 = api2.conversations()
     api.status_delete(status)
     assert conversations
-    assert status.id in map(lambda x: x.last_status.id, conversations)
-    assert account.id in map(lambda x: x.accounts[0].id, conversations)
+    assert any(x.last_status.id == status.id for x in conversations)
+    assert any(x.accounts[0].id == account.id for x in conversations)
     assert conversations[0].unread is True
     assert conversations2[0].unread is False
 
@@ -67,16 +67,16 @@ def test_conversations(api, api2):
 def test_min_max_id(api, status):
     time.sleep(3)
     tl = api.timeline_home(min_id = status.id - 1000, max_id = status.id + 1000)
-    assert status['id'] in map(lambda st: st['id'], tl)
+    assert any(st["id"] == status["id"] for st in tl)
 
     tl = api.timeline_home(min_id = status.id - 2000, max_id = status.id - 1000)
-    assert not status['id'] in map(lambda st: st['id'], tl)
+    assert not any(st["id"] == status["id"] for st in tl)
 
     tl = api.timeline_home(min_id = status.id + 1000, max_id = status.id + 2000)
-    assert not status['id'] in map(lambda st: st['id'], tl)
+    assert not any(st["id"] == status["id"] for st in tl)
 
     tl = api.timeline_home(since_id = status.id - 1000)
-    assert status['id'] in map(lambda st: st['id'], tl)
+    assert any(st["id"] == status["id"] for st in tl)
 
 @pytest.mark.vcr()
 def test_min_max_id_datetimes(api, status):
@@ -99,7 +99,7 @@ def test_min_max_id_datetimes(api, status):
 
     time.sleep(3)
     tl = api.timeline_home(min_id = the_past, max_id = the_future)
-    assert status['id'] in map(lambda st: st['id'], tl)
+    assert any(st["id"] == status["id"] for st in tl)
 
     tl = api.timeline_home(min_id = the_future, max_id = the_far_future)
-    assert not status['id'] in map(lambda st: st['id'], tl)
+    assert not any(st["id"] == status["id"] for st in tl)
