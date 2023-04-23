@@ -53,7 +53,7 @@ class Mastodon(Internals):
         if status_ids is not None:
             if not isinstance(status_ids, list):
                 status_ids = [status_ids]
-            status_ids = list(map(lambda x: self.__unpack_id(x), status_ids))
+            status_ids = [self.__unpack_id(x) for x in status_ids]
 
         params_initial = locals()
         if not forward:

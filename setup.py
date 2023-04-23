@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from setuptools import setup
 
 test_deps = [
@@ -26,15 +28,21 @@ extras = {
     "blurhash": blurhash_deps,
 }
 
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.rst").read_text()
+
 setup(name='Mastodon.py',
       version='1.8.0',
       description='Python wrapper for the Mastodon API',
+      long_description=long_description,
+      long_description_content_type='text/x-rst',
       packages=['mastodon'],
       install_requires=[
           'requests>=2.4.2', 
           'python-dateutil', 
-          'six', 
-          'python-magic',
+          'six',
+          'python-magic-bin ; platform_system=="Windows"', # pragma: no cover
+          'python-magic ; platform_system!="Windows"',
           'decorator>=4.0.0', 
       ] + blurhash_deps,
       tests_require=test_deps,

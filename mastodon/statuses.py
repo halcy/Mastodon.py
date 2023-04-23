@@ -321,6 +321,8 @@ class Mastodon(Internals):
         the users that are being replied to the status text and retains
         CW and visibility if not explicitly overridden.
 
+        Note that `to_status` should be a :ref:`status dict <status dict>` and not an ID. 
+
         Set `untag` to True if you want the reply to only go to the user you
         are replying to, removing every other mentioned user from the
         conversation.
@@ -334,7 +336,10 @@ class Mastodon(Internals):
 
         # Determine users to mention
         mentioned_accounts = collections.OrderedDict()
-        mentioned_accounts[to_status.account.id] = to_status.account.acct
+        try:
+            mentioned_accounts[to_status.account.id] = to_status.account.acct
+        except AttributeError as e:
+            raise TypeError("to_status must specify a status dict!") from e
 
         if not untag:
             for account in to_status.mentions:
@@ -342,8 +347,7 @@ class Mastodon(Internals):
                     mentioned_accounts[account.id] = account.acct
 
         # Join into one piece of text. The space is added inside because of self-replies.
-        status = "".join(map(lambda x: "@" + x + " ",
-                         mentioned_accounts.values())) + status
+        status = " ".join(f"@{x}" for x in mentioned_accounts.values()) + " " + status
 
         # Retain visibility / cw
         if visibility is None and 'visibility' in to_status:

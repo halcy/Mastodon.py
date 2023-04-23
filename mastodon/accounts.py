@@ -143,7 +143,7 @@ class Mastodon(Internals):
     def me(self):
         """
         Get this user's account. Synonym for `account_verify_credentials()`, does exactly
-        the same thing, just exists becase `account_verify_credentials()` has a confusing
+        the same thing, just exists because `account_verify_credentials()` has a confusing
         name.
         """
         return self.account_verify_credentials()
@@ -244,7 +244,7 @@ class Mastodon(Internals):
                                   params)
 
     @api_version("1.0.0", "2.3.0", _DICT_VERSION_ACCOUNT)
-    def account_search(self, q, limit=None, following=False):
+    def account_search(self, q, limit=None, following=False, resolve=False):
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
         in the username@domain format and not yet in the database. Set `following` to

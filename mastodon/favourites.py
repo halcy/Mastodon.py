@@ -15,6 +15,11 @@ class Mastodon(Internals):
         """
         Fetch the logged-in user's favourited statuses.
 
+        This endpoint uses internal ids for pagination, passing status ids to
+        `max_id`, `min_id`, or `since_id` will not work. Pagination functions
+        :ref:`fetch_next() <fetch_next()>`
+        and :ref:`fetch_previous() <fetch_previous()>` should be used instead.
+
         Returns a list of :ref:`status dicts <status dicts>`.
         """
         if max_id is not None:
@@ -36,6 +41,11 @@ class Mastodon(Internals):
     def bookmarks(self, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Get a list of statuses bookmarked by the logged-in user.
+
+        This endpoint uses internal ids for pagination, passing status ids to
+        `max_id`, `min_id`, or `since_id` will not work. Pagination functions
+        :ref:`fetch_next() <fetch_next()>`
+        and :ref:`fetch_previous() <fetch_previous()>` should be used instead.
 
         Returns a list of :ref:`status dicts <status dicts>`.
         """

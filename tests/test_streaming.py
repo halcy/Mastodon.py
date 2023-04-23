@@ -323,17 +323,17 @@ def test_stream_user_direct(api, api2, api3):
     conversations = []
     edits = []
     listener = CallbackStreamListener(
-        update_handler = lambda x: updates.append(x),
-        local_update_handler = lambda x: local_updates.append(x),
-        notification_handler = lambda x: notifications.append(x),
-        delete_handler = lambda x: deletes.append(x),
-        conversation_handler = lambda x: conversations.append(x),
-        status_update_handler = lambda x: edits.append(x),
-        filters_changed_handler = lambda x: 0,
-        announcement_handler = lambda x: 0,
-        announcement_reaction_handler = lambda x: 0,
-        announcement_delete_handler = lambda x: 0,
-        encryted_message_handler = lambda x: 0,
+        update_handler=updates.append,
+        local_update_handler=local_updates.append,
+        notification_handler=notifications.append,
+        delete_handler=deletes.append,
+        conversation_handler=conversations.append,
+        status_update_handler=edits.append,
+        filters_changed_handler=lambda x: 0,
+        announcement_handler=lambda x: 0,
+        announcement_reaction_handler=lambda x: 0,
+        announcement_delete_handler=lambda x: 0,
+        encryted_message_handler=lambda x: 0,
     )
     
     posted = []
@@ -384,7 +384,7 @@ def test_stream_user_local(api, api2):
     
     updates = []
     listener = CallbackStreamListener(
-        local_update_handler = lambda x: updates.append(x),
+        local_update_handler=updates.append,
     )
     
     posted = []
@@ -412,7 +412,7 @@ def test_stream_direct(api, api2):
     
     conversations = []
     listener = CallbackStreamListener(
-        conversation_handler = lambda x: conversations.append(x),
+        conversation_handler=conversations.append,
     )
     
     def do_activities():

@@ -48,7 +48,7 @@ class Mastodon(Internals):
             since_id = self.__unpack_id(since_id, dateconv=True)
 
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', f'/api/v1/lists/{id}/accounts')
+        return self.__api_request('GET', f'/api/v1/lists/{id}/accounts', params)
 
     ###
     # Writing data: Lists
@@ -91,7 +91,7 @@ class Mastodon(Internals):
 
         if not isinstance(account_ids, list):
             account_ids = [account_ids]
-        account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
+        account_ids = [self.__unpack_id(x) for x in account_ids]
 
         params = self.__generate_params(locals(), ['id'])
         self.__api_request('POST', f'/api/v1/lists/{id}/accounts', params)
@@ -105,7 +105,7 @@ class Mastodon(Internals):
 
         if not isinstance(account_ids, list):
             account_ids = [account_ids]
-        account_ids = list(map(lambda x: self.__unpack_id(x), account_ids))
+        account_ids = [self.__unpack_id(x) for x in account_ids]
 
         params = self.__generate_params(locals(), ['id'])
         self.__api_request('DELETE', f'/api/v1/lists/{id}/accounts', params)
