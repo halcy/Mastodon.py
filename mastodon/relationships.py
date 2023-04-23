@@ -5,6 +5,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Mutes and Blocks
@@ -131,4 +132,4 @@ class Mastodon(Internals):
         Remove a domain block for the logged-in user.
         """
         params = self.__generate_params(locals())
-        self.__api_request('DELETE', '/api/v1/domain_blocks', params)        
+        self.__api_request('DELETE', '/api/v1/domain_blocks', params)

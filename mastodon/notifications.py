@@ -6,6 +6,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Notifications
@@ -16,7 +17,7 @@ class Mastodon(Internals):
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
 
-        There are different types of notifications: 
+        There are different types of notifications:
             * `follow` - A user followed the logged in user
             * `follow_request` - A user has requested to follow the logged in user (for locked accounts)
             * `favourite` - A user favourited a post by the logged in user
@@ -29,7 +30,7 @@ class Mastodon(Internals):
             * `admin.report` - For accounts with appropriate permissions (TODO: document which those are when adding the permission API): A new report has been received
         Parameters `exclude_types` and `types` are array of these types, specifying them will in- or exclude the
         types of notifications given. It is legal to give both parameters at the same tine, the result will then
-        be the intersection of the results of both filters. Specifying `mentions_only` is a deprecated way to set 
+        be the intersection of the results of both filters. Specifying `mentions_only` is a deprecated way to set
         `exclude_types` to all but mentions.
 
         Can be passed an `id` to fetch a single notification.

@@ -7,6 +7,7 @@ from .compat import urlparse
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Instances

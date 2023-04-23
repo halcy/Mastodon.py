@@ -64,13 +64,14 @@ from .push import Mastodon as Push
 from .admin import Mastodon as Admin
 from .streaming_endpoints import Mastodon as Streaming
 
+
 ###
 # The actual Mastodon class
 #
 # Almost all code is now imported from smaller files to make editing a bit more pleasant
 ###
-class Mastodon(Utility, Authentication, Accounts, Instance, Timeline, Statuses, Polls, Notifications, Hashtags, 
-                Filters, Suggestions, Endorsements, Relationships, Lists, Trends, Search, Favourites, Reports, 
+class Mastodon(Utility, Authentication, Accounts, Instance, Timeline, Statuses, Polls, Notifications, Hashtags,
+                Filters, Suggestions, Endorsements, Relationships, Lists, Trends, Search, Favourites, Reports,
                 Preferences, Push, Admin, Conversations, Media, Streaming):
     """
     Thorough and easy to use Mastodon

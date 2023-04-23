@@ -9,7 +9,8 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
-class Mastodon(Internals):    
+
+class Mastodon(Internals):
     ###
     # Reading data: Statuses
     ###
@@ -244,19 +245,19 @@ class Mastodon(Internals):
 
         Returns a :ref:`status dict <status dict>` with the new status.
         """
-        return self.__status_internal( 
-            status, 
-            in_reply_to_id, 
-            media_ids, 
-            sensitive, 
-            visibility, 
-            spoiler_text, 
-            language, 
-            idempotency_key, 
-            content_type, 
-            scheduled_at, 
-            poll, 
-            quote_id, 
+        return self.__status_internal(
+            status,
+            in_reply_to_id,
+            media_ids,
+            sensitive,
+            visibility,
+            spoiler_text,
+            language,
+            idempotency_key,
+            content_type,
+            scheduled_at,
+            poll,
+            quote_id,
             edit=None
         )
 
@@ -272,7 +273,7 @@ class Mastodon(Internals):
         return self.status_post(status)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
-    def status_update(self, id, status = None, spoiler_text = None, sensitive = None, media_ids = None, poll = None):
+    def status_update(self, id, status=None, spoiler_text=None, sensitive=None, media_ids=None, poll=None):
         """
         Edit a status. The meanings of the fields are largely the same as in :ref:`status_post() <status_post()>`,
         though not every field can be edited.
@@ -280,13 +281,13 @@ class Mastodon(Internals):
         Note that editing a poll will reset the votes.
         """
         return self.__status_internal(
-            status = status, 
-            media_ids = media_ids, 
-            sensitive = sensitive, 
-            spoiler_text = spoiler_text, 
-            poll = poll, 
-            edit = id
-        ) 
+            status=status,
+            media_ids=media_ids,
+            sensitive=sensitive,
+            spoiler_text=spoiler_text,
+            poll=poll,
+            edit=id
+        )
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS_EDIT)
     def status_history(self, id):
@@ -317,7 +318,7 @@ class Mastodon(Internals):
                      scheduled_at=None, poll=None, untag=False):
         """
         Helper function - acts like status_post, but prepends the name of all
-        the users that are being replied to to the status text and retains
+        the users that are being replied to the status text and retains
         CW and visibility if not explicitly overridden.
 
         Note that `to_status` should be a :ref:`status dict <status dict>` and not an ID. 

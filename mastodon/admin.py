@@ -7,12 +7,13 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Moderation API
     ###
     @api_version("2.9.1", "4.0.0", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_accounts_v2(self, origin=None, by_domain=None, status=None, username=None, display_name=None, email=None, ip=None, 
+    def admin_accounts_v2(self, origin=None, by_domain=None, status=None, username=None, display_name=None, email=None, ip=None,
                             permissions=None, invited_by=None, role_ids=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
@@ -65,8 +66,8 @@ class Mastodon(Internals):
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
     def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
         """
-        Currently a synonym for admin_accounts_v1, now deprecated. You are strongly encouraged to use admin_accounts_v2 instead, since this one is kind of bad. 
-        
+        Currently a synonym for admin_accounts_v1, now deprecated. You are strongly encouraged to use admin_accounts_v2 instead, since this one is kind of bad.
+
         !!!!! This function may be switched to calling the v2 API in the future. This is your warning. If you want to keep using v1, use it explicitly. !!!!!
         """
         return self.admin_accounts_v1(
@@ -377,16 +378,16 @@ class Mastodon(Internals):
             id = self.__unpack_id(id)
             return self.__api_request('GET', f'/api/v1/admin/domain_blocks/{id}')
         else:
-            params = self.__generate_params(locals(),['limit'])
+            params = self.__generate_params(locals(), ['limit'])
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
-    
+
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_create_domain_block(self, domain:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
         """
         Perform a moderation action on a domain. Requires scope `admin:write:domain_blocks`.
 
         Valid severities are:
-            * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user. 
+            * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user.
             * "suspend" - deny interactions with this instance going forward. This action is reversible.
             * "limit" - generally used with reject_media=true to force reject media from an instance without silencing or suspending..
 
@@ -411,7 +412,7 @@ class Mastodon(Internals):
         Modify existing moderation action on a domain. Requires scope `admin:write:domain_blocks`.
 
         Valid severities are:
-            * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user. 
+            * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user.
             * "suspend" - deny interactions with this instance going forward. This action is reversible.
             * "limit" - generally used with reject_media=true to force reject media from an instance without silencing or suspending.
 
@@ -481,7 +482,7 @@ class Mastodon(Internals):
         for key in ["active_users", "new_users", "interactions", "opened_reports", "resolved_reports"]:
             if params_init[key] == True:
                 keys.append(key)
-        
+
         params = {}
         for key in ["tag_accounts", "tag_uses", "tag_servers"]:
             if params_init[key] is not None:
@@ -498,7 +499,7 @@ class Mastodon(Internals):
         params["keys"] = keys
         params["start_at"] = self.__consistent_isoformat_utc(start_at)
         params["end_at"] = self.__consistent_isoformat_utc(end_at)
-        
+
         return self.__api_request('POST', '/api/v1/admin/measures', params, use_json=True)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_DIMENSION)
@@ -531,7 +532,7 @@ class Mastodon(Internals):
         for key in ["languages", "sources", "servers", "space_usage", "software_versions"]:
             if params_init[key] == True:
                 keys.append(key)
-        
+
         params = {}
         for key in ["tag_servers", "tag_languages"]:
             if params_init[key] is not None:
@@ -550,7 +551,7 @@ class Mastodon(Internals):
             params["limit"] = limit
         params["start_at"] = self.__consistent_isoformat_utc(start_at)
         params["end_at"] = self.__consistent_isoformat_utc(end_at)
-        
+
         return self.__api_request('POST', '/api/v1/admin/dimensions', params, use_json=True)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_RETENTION)

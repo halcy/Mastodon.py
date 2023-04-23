@@ -5,6 +5,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Trends
@@ -14,7 +15,7 @@ class Mastodon(Internals):
         """
         Alias for :ref:`trending_tags() <trending_tags()>`
         """
-        return self.trending_tags(limit=limit) 
+        return self.trending_tags(limit=limit)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
     def trending_tags(self, limit=None, lang=None):
@@ -27,7 +28,7 @@ class Mastodon(Internals):
         Does not require authentication unless locked down by the administrator.
 
         Important versioning note: This endpoint does not exist for Mastodon versions
-        between 2.8.0 (inclusive) and 3.0.0 (exclusive). 
+        between 2.8.0 (inclusive) and 3.0.0 (exclusive).
 
         Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
