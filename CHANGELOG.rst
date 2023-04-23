@@ -13,6 +13,7 @@ v1.8.1 (in progress)
 * Add readme to PyPi page (thanks hugovk)
 * Fix `list_accounts` to actually include request parameters (thanks leoncowle)
 * Small formatting changes (thanks amaargiru)
+* Add link to examples to docs and readme.
 
 v1.8.0
 ------
