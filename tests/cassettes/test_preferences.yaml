@@ -16,24 +16,16 @@ interactions:
     uri: http://localhost:3000/api/v1/preferences
   response:
     body:
-      string: '{"posting:default:visibility":"public","posting:default:sensitive":false,"posting:default:language":"ja","reading:expand:media":"default","reading:expand:spoilers":false}'
+      string: '{"posting:default:visibility":"public","posting:default:sensitive":false,"posting:default:language":"ja","reading:expand:media":"default","reading:expand:spoilers":false,"reading:autoplay:gifs":false}'
     headers:
       Cache-Control:
-      - no-store
+      - private, no-store
       Content-Security-Policy:
-      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-AuqbRuYFN9uLO9Ts5BfvLQ=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; connect-src ''self''
-        data: blob: http://localhost:3000 http://localhost:3000 ws://localhost:4000
-        ws://localhost:3035 http://localhost:3035; script-src ''self'' ''unsafe-inline''
-        ''unsafe-eval'' http://localhost:3000; child-src ''self'' blob: http://localhost:3000;
-        worker-src ''self'' blob: http://localhost:3000'
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"81528fc9d8eff3ec4bdeefb514b07d2b"
+      - W/"8fd4bab80a0d01081d346ad7dd8a0070"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
@@ -49,9 +41,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 03e2b839-7dc9-49c3-96ce-deedb12dff4c
+      - 09a5d3a8-626c-4360-8bd0-3315ec3e7cc6
       X-Runtime:
-      - '0.015428'
+      - '0.018037'
       X-XSS-Protection:
       - 1; mode=block
     status:
