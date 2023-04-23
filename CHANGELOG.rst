@@ -8,7 +8,7 @@ v1.8.1 (in progress)
 * Add `resolve` keyword to `account_search` (thanks zevaryx)
 * Add support for user agent header in `create_app` (thanks jkawamoto)
 * Update tox.ini for newer versions (thanks jkawamoto)
-* Various doc and argument check fixes (thanks cnotin, codl, alexmshepherd)
+* Various doc and argument check fixes (thanks cnotin, codl, alexmshepherd, RedactedCode)
 * Fix magic not working on windows (thanks xloem)
 * Add readme to PyPi page (thanks hugovk)
 * Fix `list_accounts` to actually include request parameters (thanks leoncowle)
@@ -18,6 +18,7 @@ v1.8.1 (in progress)
 * Fix `limit` and `lang` parameters on trend related functions not present or working (thanks for the report pdeitel)
 * Fix some issues with stream reconnect handling (thanks for the report ianh)
 * Added an example for how to receive webpush notifications (thanks JesseWeinstein)
+* Replaced `follows` with a backwards compatibility stub.
 
 v1.8.0
 ------
