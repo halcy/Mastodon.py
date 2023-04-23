@@ -12,6 +12,7 @@ from .compat import IMPL_HAS_ECE, http_ece
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Webpush subscriptions
@@ -148,14 +149,14 @@ class Mastodon(Internals):
 
         push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
         push_key_priv = push_key_pair.private_numbers().private_value
-        try: 
+        try:
             push_key_pub = push_key_pair.public_key().public_bytes(
                 serialization.Encoding.X962,
                 serialization.PublicFormat.UncompressedPoint,
             )
         except:
             push_key_pub = push_key_pair.public_key().public_numbers().encode_point()
-            
+
         push_shared_secret = os.urandom(16)
 
         priv_dict = {

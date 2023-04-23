@@ -5,6 +5,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Polls
@@ -56,4 +57,4 @@ class Mastodon(Internals):
         """
         poll_params = locals()
         del poll_params["self"]
-        return poll_params        
+        return poll_params

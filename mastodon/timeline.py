@@ -6,6 +6,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Timelines
@@ -101,4 +102,3 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.timeline(f'list/{id}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
-

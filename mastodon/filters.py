@@ -8,6 +8,7 @@ from .utility import api_version
 
 from .internals import Mastodon as Internals
 
+
 class Mastodon(Internals):
     ###
     # Reading data: Keyword filters

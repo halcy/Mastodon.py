@@ -24,9 +24,11 @@ def parse_version_string(version_string):
     )
     return version_parts
 
+
 def max_version(*version_strings):
     """Returns the maximum version of all provided version strings."""
     return max(version_strings, key=parse_version_string)
+
 
 def api_version(created_ver, last_changed_ver, return_value_ver):
     """Version check decorator. Currently only checks Bigger Than."""
@@ -48,6 +50,7 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
         function.__doc__ += f"\n\n        *Added: Mastodon v{created_ver}, last changed: Mastodon v{last_changed_ver}*"
         return decorate(function, wrapper)
     return api_min_version_decorator
+
 
 ###
 # Dict helper class.
@@ -91,7 +94,7 @@ class Mastodon():
         not have one, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and trends.
         """
         self.lang = lang
-            
+
     def retrieve_mastodon_version(self):
         """
         Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
@@ -127,7 +130,7 @@ class Mastodon():
         elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
             return False
         return True
-    
+
     def get_approx_server_time(self):
         """
         Retrieve the approximate server time
