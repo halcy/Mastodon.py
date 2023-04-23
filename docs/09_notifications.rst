@@ -59,3 +59,34 @@ All crypto utilities require Mastodon.py's optional "webpush" feature dependenci
 .. _push_subscription_generate_keys():
 .. automethod:: Mastodon.push_subscription_generate_keys
 .. automethod:: Mastodon.push_subscription_decrypt_push
+
+Usage example
+~~~~~~~~~~~~~
+
+This is a minimal usage example for the push API, including a small http server to receive webpush notifications.
+
+.. code-block:: python
+
+    api = Mastodon(...)
+    keys = api.push_subscription_generate_keys()
+    api.push_subscription_set(endpoint, keys[1], mention_events=1)
+
+    class Handler(http.server.BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.send_response(201)
+            self.send_header('Location', '')  # Mastodon doesn't seem to care about this
+            self.end_headers()
+            data = self.rfile.read(int(self.headers['content-length']))
+            np = api.push_subscription_decrypt_push(data, keys[0], self.headers['Encryption'], self.headers['Crypto-Key'])
+            n = api.notifications(id=np.notification_id)
+            s = n.status
+            self.log_message('\nFrom: %s\n%s', s.account.acct, s.content)
+    httpd = http.server.HTTPServer(('', 42069), Handler)
+    
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        httpd.server_close()
+        api.push_subscription_delete()

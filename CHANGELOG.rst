@@ -17,6 +17,7 @@ v1.8.1 (in progress)
 * Add `local` and `remote` parameter to `stream_public` (thank you for the report jeafreezy)
 * Fix `limit` and `lang` parameters on trend related functions not present or working (thanks for the report pdeitel)
 * Fix some issues with stream reconnect handling (thanks for the report ianh)
+* Added an example for how to receive webpush notifications (thanks JesseWeinstein)
 
 v1.8.0
 ------
