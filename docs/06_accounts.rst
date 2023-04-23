@@ -23,7 +23,6 @@ Reading
 .. automethod:: Mastodon.endorsements
 
 .. automethod:: Mastodon.account_statuses
-.. automethod:: Mastodon.account_following
 .. automethod:: Mastodon.account_familiar_followers
 
 .. automethod:: Mastodon.account_lists
@@ -53,6 +52,7 @@ manage that data - most importantly, follow and unfollow users.
 Reading
 ~~~~~~~
 .. automethod:: Mastodon.account_followers
+.. automethod:: Mastodon.account_following    
 .. automethod:: Mastodon.account_relationships
 .. automethod:: Mastodon.follows
 

@@ -4,7 +4,7 @@ import collections
 
 from .versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_STATUS, _DICT_VERSION_RELATIONSHIP, _DICT_VERSION_LIST, _DICT_VERSION_FAMILIAR_FOLLOWERS, _DICT_VERSION_HASHTAG
 from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS
-from .errors import MastodonIllegalArgumentError, MastodonAPIError
+from .errors import MastodonIllegalArgumentError, MastodonAPIError, MastodonNotFoundError
 from .utility import api_version
 
 from .internals import Mastodon as Internals
@@ -321,12 +321,17 @@ class Mastodon(Internals):
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def follows(self, uri):
         """
-        Follow a remote user by uri (username@domain).
+        Follow a remote user with username given in username@domain form.
 
         Returns a :ref:`account dict <account dict>`.
+
+        Deprecated - avoid using this. Currently uses a backwards compat implementation that may or may not work properly.
         """
-        params = self.__generate_params(locals())
-        return self.__api_request('POST', '/api/v1/follows', params)
+        try:
+            acct = self.account_search(uri)[0]
+        except:
+            raise MastodonNotFoundError("User not found")
+        return self.account_follow(acct)
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
     def account_unfollow(self, id):
