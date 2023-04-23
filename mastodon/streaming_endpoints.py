@@ -35,7 +35,7 @@ class Mastodon(Internals):
             if local:
                 raise MastodonIllegalArgumentError("Cannot pass both local and remote - use either one or the other.")
             base += '/remote'
-        return self.__stream(base listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
+        return self.__stream(base, listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("1.1.0", "1.4.2", _DICT_VERSION_STATUS)
     def stream_local(self, listener, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
