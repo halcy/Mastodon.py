@@ -9,12 +9,10 @@ import collections
 
 from .errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
 from .versions import _DICT_VERSION_APPLICATION
-from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT
+from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT, _DEFAULT_USER_AGENT
 from .utility import parse_version_string, api_version
 
 from .internals import Mastodon as Internals
-
-_DEFAULT_USER_AGENT = "mastodonpy"
 
 class Mastodon(Internals):
     ###

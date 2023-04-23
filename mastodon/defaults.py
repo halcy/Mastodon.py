@@ -3,6 +3,7 @@
 _DEFAULT_TIMEOUT = 300
 _DEFAULT_STREAM_TIMEOUT = 300
 _DEFAULT_STREAM_RECONNECT_WAIT_SEC = 5
+_DEFAULT_USER_AGENT = "mastodonpy"
 _DEFAULT_SCOPES = ['read', 'write', 'follow', 'push']
 _SCOPE_SETS = {
     'read': [
