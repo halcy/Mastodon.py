@@ -142,7 +142,7 @@ class Mastodon(Internals):
     def me(self):
         """
         Get this user's account. Synonym for `account_verify_credentials()`, does exactly
-        the same thing, just exists becase `account_verify_credentials()` has a confusing
+        the same thing, just exists because `account_verify_credentials()` has a confusing
         name.
         """
         return self.account_verify_credentials()
