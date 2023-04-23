@@ -12,7 +12,7 @@ except:
 
 from mastodon import Mastodon
 from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
-from requests.exceptions import ChunkedEncodingError, ReadTimeout
+from requests.exceptions import ChunkedEncodingError, ReadTimeout, ConnectionError
 
 
 class StreamListener(object):
@@ -136,9 +136,17 @@ class StreamListener(object):
                 exception,
                 err
             )
-        except MastodonReadTimeout as err:
+        except ReadTimeout as err:
             exception = MastodonReadTimeout(
                 "Timed out while reading from server."),
+            self.on_abort(exception)
+            six.raise_from(
+                exception,
+                err
+            )
+        except ConnectionError as err:
+            exception = MastodonNetworkError(
+                "Requests reports connection error."),
             self.on_abort(exception)
             six.raise_from(
                 exception,

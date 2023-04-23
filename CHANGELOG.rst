@@ -14,6 +14,9 @@ v1.8.1 (in progress)
 * Fix `list_accounts` to actually include request parameters (thanks leoncowle)
 * Small formatting changes (thanks amaargiru)
 * Add link to examples to docs and readme.
+* Add `local` and `remote` parameter to `stream_public` (thank you for the report jeafreezy)
+* Fix `limit` and `lang` parameters on trend related functions not present or working (thanks for the report pdeitel)
+* Fix some issues with stream reconnect handling (thanks for the report ianh)
 
 v1.8.0
 ------

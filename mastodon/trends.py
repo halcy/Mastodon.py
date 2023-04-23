@@ -13,7 +13,9 @@ class Mastodon(Internals):
     @api_version("2.4.3", "3.5.0", _DICT_VERSION_HASHTAG)
     def trends(self, limit=None):
         """
-        Alias for :ref:`trending_tags() <trending_tags()>`
+        Old alias for :ref:`trending_tags() <trending_tags()>`
+
+        Deprecated. Please use :ref:`trending_tags() <trending_tags()>` instead.
         """
         return self.trending_tags(limit=limit)
 
@@ -36,14 +38,16 @@ class Mastodon(Internals):
         descending.
         """
         params = self.__generate_params(locals())
+        if "lang" in params:
+            del params["lang"]
         if self.verify_minimum_version("3.5.0", cached=True):
             # Starting 3.5.0, old version is deprecated
-            return self.__api_request('GET', '/api/v1/trends/tags', params)
+            return self.__api_request('GET', '/api/v1/trends/tags', params, lang_override=lang)
         else:
-            return self.__api_request('GET', '/api/v1/trends', params)
+            return self.__api_request('GET', '/api/v1/trends', params, lang_override=lang)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
-    def trending_statuses(self):
+    def trending_statuses(self, limit=None, lang=None):
         """
         Fetch trending-status information, if the instance provides such information.
 
@@ -56,10 +60,12 @@ class Mastodon(Internals):
         descending.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('GET', '/api/v1/trends/statuses', params)
+        if "lang" in params:
+            del params["lang"]
+        return self.__api_request('GET', '/api/v1/trends/statuses', params, lang_override=lang)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_CARD)
-    def trending_links(self):
+    def trending_links(self, limit=None, lang=None):
         """
         Fetch trending-link information, if the instance provides such information.
 
@@ -70,4 +76,6 @@ class Mastodon(Internals):
         descending.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('GET', '/api/v1/trends/links', params)
+        if "lang" in params:
+            del params["lang"]        
+        return self.__api_request('GET', '/api/v1/trends/links', params, lang_override=lang)
