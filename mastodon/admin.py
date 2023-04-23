@@ -366,7 +366,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/admin/trends/links', params)
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
-    def admin_domain_blocks(self, id=None, limit:int=None):
+    def admin_domain_blocks(self, id=None, max_id=None, min_id=None, since_id=None, limit=None):
         """
         Fetches a list of blocked domains. Requires scope `admin:read:domain_blocks`.
 
@@ -374,6 +374,15 @@ class Mastodon(Internals):
 
         Returns a list of :ref:`admin domain block dicts <admin domain block dicts>`, raises a `MastodonAPIError` if the specified block does not exist.
         """
+        if max_id is not None:
+            max_id = self.__unpack_id(max_id)
+
+        if min_id is not None:
+            min_id = self.__unpack_id(min_id)
+
+        if since_id is not None:
+            since_id = self.__unpack_id(since_id)
+
         if id is not None:
             id = self.__unpack_id(id)
             return self.__api_request('GET', f'/api/v1/admin/domain_blocks/{id}')
