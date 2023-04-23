@@ -2,11 +2,17 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v1.8.0 (in progress)
+v1.8.1 (in progress)
 --------------------
 * Replace some lambdas with list comprenehsions (thanks eumiro)
 * Add `resolve` keyword to `account_search` (thanks zevaryx)
 * Add support for user agent header in `create_app` (thanks jkawamoto)
+* Update tox.ini for newer versions (thanks jkawamoto)
+* Various doc and argument check fixes (thanks cnotin, codl, alexmshepherd)
+* Fix magic not working on windows (thanks xloem)
+* Add readme to PyPi page (thanks hugovk)
+* Fix `list_accounts` to actually include request parameters (thanks leoncowle)
+* Small formatting changes (thanks amaargiru)
 
 v1.8.0
 ------

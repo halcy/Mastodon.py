@@ -55,6 +55,10 @@ as forks, while not an official target, should also be basically
 compatible, and Mastodon.py does make some allowances for behaviour that isn't
 strictly like that of Mastodon, and attempts to support extensions to the API.
 
+Some usage examples (not neccesarily following app development best practices,
+but enough to get you started if you learn best by example) can be found
+at https://github.com/halcy/MastodonpyExamples
+
 Acknowledgements
 ----------------
 Mastodon.py contains work by a large number of contributors, many of which have

@@ -43,7 +43,8 @@ We currently try to support Python 3.7 and above, and try to at least not break 
 below that. Python 2 support is no longer a goal.
 
 Full documentation and basic usage examples can be found
-at https://mastodonpy.readthedocs.io/en/stable/
+at https://mastodonpy.readthedocs.io/en/stable/ . Some more extensive examples can be
+found at https://github.com/halcy/MastodonpyExamples
 
 Acknowledgements
 ----------------
