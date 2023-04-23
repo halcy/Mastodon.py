@@ -627,7 +627,7 @@ class Mastodon():
             media_file = str(media_file)
         if isinstance(media_file, str):
             try: # Explicitly resolve to canonical for robustness. This can and will fail if Path isn't available because python too old.
-                media_file = Path(media_file).resolve()
+                media_file = str(Path(media_file).resolve())
             except:
                 pass
         if isinstance(media_file, str) and os.path.isfile(media_file):
