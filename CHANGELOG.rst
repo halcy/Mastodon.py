@@ -19,6 +19,7 @@ v1.8.1 (in progress)
 * Fix some issues with stream reconnect handling (thanks for the report ianh)
 * Added an example for how to receive webpush notifications (thanks JesseWeinstein)
 * Replaced `follows` with a backwards compatibility stub.
+* Added pagination parameters to `admin_domain_blocks` (thanks for the report defnull)
 
 v1.8.0
 ------
