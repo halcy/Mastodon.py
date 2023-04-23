@@ -32,7 +32,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.rst").read_text()
 
 setup(name='Mastodon.py',
-      version='1.8.0',
+      version='1.8.1',
       description='Python wrapper for the Mastodon API',
       long_description=long_description,
       long_description_content_type='text/x-rst',

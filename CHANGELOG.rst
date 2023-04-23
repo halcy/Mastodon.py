@@ -2,8 +2,8 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v1.8.1 (in progress)
---------------------
+v1.8.1
+------
 * Replace some lambdas with list comprenehsions (thanks eumiro)
 * Add `resolve` keyword to `account_search` (thanks zevaryx)
 * Add support for user agent header in `create_app` (thanks jkawamoto)
