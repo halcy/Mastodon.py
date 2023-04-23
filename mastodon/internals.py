@@ -19,7 +19,7 @@ from .utility import AttribAccessDict, AttribAccessList, parse_version_string
 from .errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
                     MastodonUnauthorizedError, MastodonInternalServerError, MastodonBadGatewayError, MastodonServiceUnavailableError, \
                     MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError
-from .compat import urlparse, magic, PurePath
+from .compat import urlparse, magic, PurePath, Path
 from .defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 
 
@@ -625,10 +625,13 @@ class Mastodon():
     def __load_media_file(self, media_file, mime_type=None, file_name=None):
         if isinstance(media_file, PurePath):
             media_file = str(media_file)
+        if isinstance(media_file, str):
+            try: # Explicitly resolve to canonical for robustness. This can and will fail if Path isn't available because python too old.
+                media_file = Path(media_file).resolve()
+            except:
+                pass
         if isinstance(media_file, str) and os.path.isfile(media_file):
             mime_type = self.__guess_type(media_file)
-            media_file = open(media_file, 'rb')
-        elif isinstance(media_file, str) and os.path.isfile(media_file):
             media_file = open(media_file, 'rb')
         if mime_type is None:
             raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')

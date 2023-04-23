@@ -38,8 +38,10 @@ except ImportError:
     magic = None
 
 try:
-    from pathlib import PurePath
+    from pathlib import PurePath, Path
 except:
     class PurePath:
+        pass
+    class Path:
         pass
 
