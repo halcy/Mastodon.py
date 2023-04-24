@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools"]
+build-backend= "setuptools.build_meta"
+
+[project]
+name = "Mastodon.py"
+version = "1.8.1"
+description = "Python wrapper for the Mastodon API"
+readme = "README.rst"
+authors = [
+    { name = "Lorenz Diener", email = "lorenzd+mastodonpypypi@gmail.com" },
+]
+license = {text = "MIT"}
+keywords = ["mastodon", "api", "microblogging"]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Developers',
+    'Topic :: Communications',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 3',
+]
+dependencies = [
+    'requests>=2.4.2',
+    'python-dateutil',
+    'six',
+    'python-magic-bin ; platform_system=="Windows"',
+    'python-magic ; platform_system!="Windows"',
+    'decorator>=4.0.0',
+    'blurhash>=1.1.4',
+]
+
+[project.optional-dependencies]
+webpush = [
+    # when adding/updating deps, don't forget to update the test deps
+    'http_ece>=1.0.5',
+    'cryptography>=1.6.0',
+]
+blurhash = [
+    # when adding/updating deps, don't forget to update the test deps
+    'blurhash>=1.1.4',
+]
+test = [
+    # webpush deps
+    'http_ece>=1.0.5',
+    'cryptography>=1.6.0',
+
+    # blurhash deps
+    'blurhash>=1.1.4',
+
+    'pytest',
+    'pytest-runner',
+    'pytest-cov',
+    'vcrpy',
+    'pytest-vcr',
+    'pytest-mock',
+    'requests-mock',
+    'pytz',
+]
+
+[project.urls]
+Repository="https://github.com/halcy/Mastodon.py"
+Documentation="https://mastodonpy.readthedocs.io/"
