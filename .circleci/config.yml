@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]"
+          command: "pip install .[test,webpush,blurhash]"
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]"
+          command: "pip install .[test,webpush,blurhash]"
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]"
+          command: "pip install .[test,webpush,blurhash]"
       - run:
           name: "Install codecov"
           command: "pip install codecov"   
@@ -52,7 +52,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]" 
+          command: "pip install .[test,webpush,blurhash]"
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -65,7 +65,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test]" 
+          command: "pip install .[test,webpush,blurhash]" 
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -79,4 +79,3 @@ workflows:
       - run-tests-38-cov
       - run-tests-39
       - run-tests-310
-      

@@ -2,7 +2,7 @@
 
 To run this test suite, install the testing dependencies:
 
-    pip install -e .[test]
+    pip install -e .[test,webpush,blurhash]
 
 Then, run `pytest`.
 

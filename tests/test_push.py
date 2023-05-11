@@ -2,6 +2,10 @@ import pytest
 import time
 from mastodon.Mastodon import MastodonNotFoundError
 
+import mastodon.compat
+if not mastodon.compat.IMPL_HAS_CRYPTO or not mastodon.compat.IMPL_HAS_ECE:
+    pytest.skip("webpush dependencies missing, skipping webpush tests", allow_module_level=True)
+
 def test_decrypt(api):
     priv = {
         'auth': b'\xe7y\x0fp\xb9\x92\xe0\xa0\xc5\xd5~Qr\xd7\xaa\x16',

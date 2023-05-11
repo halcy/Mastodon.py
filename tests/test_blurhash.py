@@ -1,5 +1,9 @@
 import pytest
 
+import mastodon.compat
+if not mastodon.compat.IMPL_HAS_BLURHASH:
+    pytest.skip("blurhash dependencies missing, skipping blurhash tests", allow_module_level=True)
+
 def test_blurhash_decode(api):
     fake_media_dict = {
         'width': 320,
