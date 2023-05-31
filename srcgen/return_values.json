@@ -160,7 +160,7 @@
             "emojis": {
                 "description": "List of custom emoji used in name, bio or fields",
                 "field_type": "list",
-                "field_subtype": "Emoji",
+                "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -187,7 +187,7 @@
             },
             "role": {
                 "description": "DESCRIPTION_MISSING_TODO",
-                "field_type": "AccountRole",
+                "field_type": "Role",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false
@@ -230,7 +230,7 @@
     },
     {
         "name": "Account role",
-        "python_name": "AccountRole",
+        "python_name": "Role",
         "func_call": "mastodon.account_verify_credentials().role",
         "func_call_real": "mastodon.account_verify_credentials().role",
         "last_changed": "TODO",
@@ -471,14 +471,14 @@
             "emojis": {
                 "description": "A list of custom emojis used in the toot, as Emoji dicts",
                 "field_type": "list",
-                "field_subtype": "Emoji",
+                "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false
             },
             "tags": {
                 "description": "A list of hashtag used in the toot, as Hashtag dicts",
                 "field_type": "list",
-                "field_subtype": "Hashtag",
+                "field_subtype": "Tag",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -548,7 +548,7 @@
             "filtered": {
                 "description": "DESCRIPTION_MISSING_TODO",
                 "field_type": "list",
-                "field_subtype": "StatusFilterAction",
+                "field_subtype": "FilterResult",
                 "is_optional": false,
                 "is_nullable": false
             }
@@ -610,7 +610,7 @@
             "emojis": {
                 "description": "DESCRIPTION_MISSING_TODO",
                 "field_type": "list",
-                "field_subtype": "Emoji",
+                "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -625,7 +625,7 @@
     },
     {
         "name": "Status filter action",
-        "python_name": "StatusFilterAction",
+        "python_name": "FilterResult",
         "func_call": "mastodon.status(<status id>).filtered[0]",
         "func_call_real": "mastodon.status(110447998920481458).filtered[0]",
         "last_changed": "TODO",
@@ -636,7 +636,7 @@
         "fields": {
             "filter": {
                 "description": "DESCRIPTION_MISSING_TODO",
-                "field_type": "Filter",
+                "field_type": "V1Filter",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false
@@ -906,7 +906,7 @@
             "emojis": {
                 "description": "List of emoji dicts for all emoji used in answer strings,",
                 "field_type": "list",
-                "field_subtype": "Emoji",
+                "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -996,7 +996,7 @@
     },
     {
         "name": "Hashtag",
-        "python_name": "Hashtag",
+        "python_name": "Tag",
         "func_call": "mastodon.trending_tags()[0]",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Tag/",
@@ -1071,7 +1071,7 @@
     },
     {
         "name": "Emoji",
-        "python_name": "Emoji",
+        "python_name": "CustomEmoji",
         "func_call": "mastodon.toot(\":sidekiqin:\").emojis[0]",
         "func_call_real": "mastodon.status(110446223051565765).emojis[0]",
         "last_changed": "TODO",
@@ -1271,7 +1271,7 @@
     },
     {
         "name": "Filter",
-        "python_name": "Filter",
+        "python_name": "V1Filter",
         "func_call": "mastodon.filters()[0]",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Filter/",
@@ -1738,7 +1738,7 @@
         "name": "Card",
         "func_call": "mastodon.status_card(<status id>)",
         "func_call_real": "mastodon.status_card(110447098625216345)",
-        "python_name": "Card",
+        "python_name": "PreviewCard",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/PreviewCard/",
         "func_call_additional": null,
@@ -1854,7 +1854,7 @@
     },
     {
         "name": "Search result",
-        "python_name": "SearchResult",
+        "python_name": "Search",
         "func_call": "mastodon.search(\"<search query>\")",
         "func_call_real": "mastodon.search(\"halcy\")",
         "last_changed": "TODO",
@@ -1873,7 +1873,7 @@
             "hashtags": {
                 "description": "List of hashtag dicts resulting from the query",
                 "field_type": "list",
-                "field_subtype": "Hashtag",
+                "field_subtype": "Tag",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -1888,7 +1888,7 @@
     },
     {
         "name": "Instance",
-        "python_name": "Instance",
+        "python_name": "V1Instance",
         "func_call": "mastodon.instance()",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
@@ -1991,7 +1991,7 @@
             "rules": {
                 "description": "List of dicts with `id` and `text` fields, one for each server rule set by the admin",
                 "field_type": "list",
-                "field_subtype": "InstanceRule",
+                "field_subtype": "Rule",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -2074,7 +2074,7 @@
     },
     {
         "name": "Instance rule",
-        "python_name": "InstanceRule",
+        "python_name": "Rule",
         "func_call": "mastodon.instance().rules[0]",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Rule/",
@@ -2456,6 +2456,7 @@
     {
         "name": "Nodeinfo metadata",
         "python_name": "NodeinfoMetadata",
+        "masto_doc_link": "TODO",
         "func_call": "mastodon.instance_nodeinfo().metadata",
         "fields": {}
     },
@@ -2502,7 +2503,7 @@
     },
     {
         "name": "Report",
-        "python_name": "Report",
+        "python_name": "AdminReport",
         "func_call": "mastodon.admin_reports()[0]",
         "func_alternate_acc": true,
         "func_call_real": "mastodon.admin_reports()[-1]",
@@ -2605,7 +2606,7 @@
             "rules": {
                 "description": "DESCRIPTION_MISSING_TODO",
                 "field_type": "list",
-                "field_subtype": "InstanceRule",
+                "field_subtype": "Rule",
                 "is_optional": false,
                 "is_nullable": false
             }
@@ -2613,7 +2614,7 @@
     },
     {
         "name": "Push subscription",
-        "python_name": "PushSubscription",
+        "python_name": "WebPushSubscription",
         "func_call": "mastodon.push_subscription()",
         "func_call_real": "mastodon_soc.push_subscription_set(\"http://halcy.de/\",mastodon_soc.push_subscription_generate_keys()[1],follow_events=True)",
         "last_changed": "TODO",
@@ -2819,7 +2820,7 @@
     },
     {
         "name": "Featured tag",
-        "python_name": "FeaturedHashtag",
+        "python_name": "FeaturedTag",
         "func_call": "mastodon.featured_tags()[0]",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/FeaturedTag/",
@@ -2867,7 +2868,7 @@
     },
     {
         "name": "Read marker",
-        "python_name": "ReadMarker",
+        "python_name": "Marker",
         "func_call": "mastodon.markers_get()[\"home\"]",
         "last_changed": "TODO",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Marker/",
@@ -2990,7 +2991,7 @@
             "reactions": {
                 "description": "Reactions to the annoucement, as a list of reaction dicts",
                 "field_type": "list",
-                "field_subtype": "AnnouncementReaction",
+                "field_subtype": "Reaction",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -3005,7 +3006,7 @@
     },
     {
         "name": "Announcement reaction",
-        "python_name": "AnnouncementReaction",
+        "python_name": "Reaction",
         "func_call": "mastodon.announcements()[0].reactions[0]",
         "func_alternate_acc": true,
         "last_changed": "TODO",
@@ -3053,7 +3054,7 @@
     },
     {
         "name": "Familiar follower",
-        "python_name": "FamiliarFollower",
+        "python_name": "FamiliarFollowers",
         "func_alternate_acc": true,
         "func_call": "mastodon.account_familiar_followers(<account id>)[0]",
         "func_call_real": "mastodon.account_familiar_followers(2)[0]",
@@ -3211,7 +3212,7 @@
             "ips": {
                 "description": "DESCRIPTION_MISSING_TODO",
                 "field_type": "list",
-                "field_subtype": "AdminAccountIp",
+                "field_subtype": "AdminIp",
                 "is_optional": false,
                 "is_nullable": false
             }
@@ -3219,7 +3220,7 @@
     },
     {
         "name": "Admin account IP",
-        "python_name": "AdminAccountIp",
+        "python_name": "AdminIp",
         "func_call": "mastodon.admin_account(<account id>).ips[0]",
         "func_call_real": "mastodon.admin_account(1).ips[0]",
         "func_alternate_acc": true,
@@ -3415,7 +3416,7 @@
             "data": {
                 "description": "List of data dicts, as below",
                 "field_type": "list",
-                "field_subtype": "AdminRetentionData",
+                "field_subtype": "AdminCohort",
                 "is_optional": false,
                 "is_nullable": false
             }
@@ -3423,7 +3424,7 @@
     },
     {
         "name": "Admin retention data",
-        "python_name": "AdminRetentionData",
+        "python_name": "AdminCohort",
         "func_call": "mastodon.admin_retention(datetime.now() - timedelta(hours=24*5), datetime.now())[0].data[0]",
         "func_alternate_acc": true,
         "last_changed": "TODO",

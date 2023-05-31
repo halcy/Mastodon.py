@@ -1,0 +1,5304 @@
+{
+    "ExtendedDescription": {
+        "updated_at": {
+            "description": "A timestamp of when the extended description was last updated.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "content": {
+            "description": "The rendered HTML content of the extended description.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminDomainBlock": {
+        "id": {
+            "description": "The ID of the DomainBlock in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "domain": {
+            "description": "The domain that is not allowed to federate.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "When the domain was blocked from federating.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "severity": {
+            "description": "The policy to be applied by this domain block.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `silence` = Account statuses from this domain will be hidden by default `suspend` = All incoming data from this domain will be rejected `noop` = Do nothing. Allows for rejecting media or reports",
+            "type": "String (Enumerable oneOf) `silence` = Account statuses from this domain will be hidden by default `suspend` = All incoming data from this domain will be rejected `noop` = Do nothing. Allows for rejecting media or reports",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "reject_media": {
+            "description": "Whether to reject media attachments from this domain",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "reject_reports": {
+            "description": "Whether to reject reports from this domain",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "private_comment": {
+            "description": "",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "public_comment": {
+            "description": "",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "obfuscate": {
+            "description": "Whether to obfuscate public displays of this domain block",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminDimension": {
+        "key": {
+            "description": "The unique keystring for the requested dimension.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "data": {
+            "description": "The data available for the requested dimension.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Hash",
+            "type": "Array of Hash",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "Data": {
+        "key": {
+            "description": "The unique keystring for this data item.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "human_key": {
+            "description": "A human-readable key for this data item.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "value": {
+            "description": "The value for this data item.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "unit": {
+            "description": "The units associated with this data item's value, if applicable.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "human_value": {
+            "description": "A human-readable formatted value for this data item.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "FilterResult": {
+        "filter": {
+            "description": "The filter that was matched.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Filter()",
+            "type": "Filter()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "keyword_matches": {
+            "description": "The keyword within the filter that was matched.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Array of String, or null",
+            "type": "Array of String, or null",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "status_matches": {
+            "description": "The status ID within the filter that was matched.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String, or null",
+            "type": "String, or null",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "Announcement": {
+        "id": {
+            "description": "The ID of the announcement in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "content": {
+            "description": "The text of the announcement.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "starts_at": {
+            "description": "When the announcement will start.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime) or null",
+            "type": "String (ISO 8601 Datetime) or null",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "ends_at": {
+            "description": "When the announcement will end.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime) or null",
+            "type": "String (ISO 8601 Datetime) or null",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "published": {
+            "description": "Whether the announcement is currently active.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "all_day": {
+            "description": "Whether the announcement should start and end on dates only instead of datetimes. Will be false if there is no `starts_at` or `ends_at` time.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "published_at": {
+            "description": "When the announcement was published.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "updated_at": {
+            "description": "When the announcement was last updated.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "read": {
+            "description": "Whether the announcement has been read by the current user.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "mentions": {
+            "description": "Accounts mentioned in the announcement text.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of AnnouncementAccount(#Account)",
+            "type": "Array of AnnouncementAccount(#Account)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "statuses": {
+            "description": "Statuses linked in the announcement text.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of AnnouncementStatus(#Status)",
+            "type": "Array of AnnouncementStatus(#Status)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "tags": {
+            "description": "Tags linked in the announcement text.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of StatusTag()",
+            "type": "Array of StatusTag()",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "emojis": {
+            "description": "Custom emoji used in the announcement text.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of CustomEmoji()",
+            "type": "Array of CustomEmoji()",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "reactions": {
+            "description": "Emoji reactions attached to the announcement.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Reaction()",
+            "type": "Array of Reaction()",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        }
+    },
+    "AnnouncementAccount": {
+        "id": {
+            "description": "The account ID of the mentioned user.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "username": {
+            "description": "The username of the mentioned user.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "url": {
+            "description": "The location of the mentioned user's profile.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "acct": {
+            "description": "The webfinger acct: URI of the mentioned user. Equivalent to `username` for local users, or `username@domain` for remote users.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        }
+    },
+    "AnnouncementStatus": {
+        "id": {
+            "description": "The ID of an attached Status in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "url": {
+            "description": "The URL of an attached Status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        }
+    },
+    "DomainBlock": {
+        "domain": {
+            "description": "The domain which is blocked. This may be obfuscated or partially censored.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "digest": {
+            "description": "The SHA256 hash digest of the domain string.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (SHA256)",
+            "type": "String (SHA256)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "severity": {
+            "description": "The level to which the domain is blocked.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "silence": "Users from this domain will be hidden from timelines, threads, and notifications (unless you follow the user).",
+                "suspend": "Incoming messages from this domain will be rejected and dropped entirely."
+            },
+            "type_key": "String (Enumerable, oneOf) `silence` = Users from this domain will be hidden from timelines, threads, and notifications (unless you follow the user). `suspend` = Incoming messages from this domain will be rejected and dropped entirely.",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "comment": {
+            "description": "An optional reason for the domain block.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "Status": {
+        "id": {
+            "description": "ID of the status in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer but not guaranteed to be a number)",
+            "type": "String (cast from an integer but not guaranteed to be a number)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "uri": {
+            "description": "URI of the status used for federation.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "The date when this status was created.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "account": {
+            "description": "The account that authored this status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account()",
+            "type": "Account()",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "content": {
+            "description": "HTML-encoded status content.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "visibility": {
+            "description": "Visibility of this status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `public` = Visible to everyone, shown in public timelines. `unlisted` = Visible to public, but not included in public timelines. `private` = Visible to followers only, and to any mentioned users. `direct` = Visible only to mentioned users.",
+            "type": "String (Enumerable oneOf) `public` = Visible to everyone, shown in public timelines. `unlisted` = Visible to public, but not included in public timelines. `private` = Visible to followers only, and to any mentioned users. `direct` = Visible only to mentioned users.",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "sensitive": {
+            "description": "Is this status marked as sensitive content?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "spoiler_text": {
+            "description": "Subject or summary line, below which status content is collapsed until expanded.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.0.0": "added"
+            }
+        },
+        "media_attachments": {
+            "description": "Media that is attached to this status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of MediaAttachment()",
+            "type": "Array of MediaAttachment()",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "application": {
+            "description": "The application used to post this status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        }
+    },
+    "StatusApplication": {
+        "name": {
+            "description": "The name of the application that posted this status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "website": {
+            "description": "The website associated with the application that posted this status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (URL) or null",
+            "type": "String (URL) or null",
+            "version_history": {
+                "0.9.9": "added",
+                "3.5.1": "this property is now nullable"
+            }
+        },
+        "mentions": {
+            "description": "Mentions of users within the status content.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of StatusMention(#Mention)",
+            "type": "Array of StatusMention(#Mention)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "tags": {
+            "description": "Hashtags used within the status content.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of StatusTag(#Tag)",
+            "type": "Array of StatusTag(#Tag)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "emojis": {
+            "description": "Custom emoji to be used when rendering status content.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of CustomEmoji()",
+            "type": "Array of CustomEmoji()",
+            "version_history": {
+                "2.0.0": "added"
+            }
+        },
+        "reblogs_count": {
+            "description": "How many boosts this status has received.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "favourites_count": {
+            "description": "How many favourites this status has received.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "replies_count": {
+            "description": "How many replies this status has received.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "2.5.0": "added"
+            }
+        },
+        "url": {
+            "description": "A link to the status's HTML representation.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (URL) or null",
+            "type": "String (URL) or null",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "in_reply_to_id": {
+            "description": "ID of the status being replied to.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (cast from an integer but not guaranteed to be a number) or null",
+            "type": "String (cast from an integer but not guaranteed to be a number) or null",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "in_reply_to_account_id": {
+            "description": "ID of the account that authored the status being replied to.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (cast from an integer but not guaranteed to be a number) or null",
+            "type": "String (cast from an integer but not guaranteed to be a number) or null",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "reblog": {
+            "description": "The status being reblogged.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Status(#) or null",
+            "type": "Status(#) or null",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "poll": {
+            "description": "The poll attached to the status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Poll() or null",
+            "type": "Poll() or null",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "card": {
+            "description": "Preview card for links included within status content.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " PreviewCard() or null",
+            "type": "PreviewCard() or null",
+            "version_history": {
+                "2.6.0": "added"
+            }
+        },
+        "language": {
+            "description": "Primary language of this status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 639 Part 1 two-letter language code) or null",
+            "type": "String (ISO 639 Part 1 two-letter language code) or null",
+            "version_history": {
+                "1.4.0": "added"
+            }
+        },
+        "text": {
+            "description": "Plain-text source of a status. Returned instead of `content` when status is deleted, so the user may redraft from the source text without the client having to reverse-engineer the original text from the HTML content.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String or null",
+            "type": "String or null",
+            "version_history": {
+                "2.9.0": "added"
+            }
+        },
+        "edited_at": {
+            "description": "Timestamp of when the status was last edited.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "favourited": {
+            "description": "If the current token has an authorized user: Have you favourited this status?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "reblogged": {
+            "description": "If the current token has an authorized user: Have you boosted this status?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "muted": {
+            "description": "If the current token has an authorized user: Have you muted notifications for this status's conversation?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "1.4.0": "added"
+            }
+        },
+        "bookmarked": {
+            "description": "If the current token has an authorized user: Have you bookmarked this status?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "pinned": {
+            "description": "If the current token has an authorized user: Have you pinned this status? Only appears if the status is pinnable.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "1.6.0": "added"
+            }
+        },
+        "filtered": {
+            "description": "If the current token has an authorized user: The filter and keywords that matched this status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of FilterResult()",
+            "type": "Array of FilterResult()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "StatusMention": {
+        "id": {
+            "description": "The account ID of the mentioned user.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "username": {
+            "description": "The username of the mentioned user.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "url": {
+            "description": "The location of the mentioned user's profile.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "acct": {
+            "description": "The webfinger acct: URI of the mentioned user. Equivalent to `username` for local users, or `username@domain` for remote users.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        }
+    },
+    "StatusTag": {
+        "name": {
+            "description": "The value of the hashtag after the # sign.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.9.0": "added"
+            }
+        },
+        "url": {
+            "description": "A link to the hashtag on the instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.9.0": "added"
+            }
+        }
+    },
+    "StatusEdit": {
+        "content": {
+            "description": "The content of the status at this revision.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "spoiler_text": {
+            "description": "The content of the subject or content warning at this revision.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "sensitive": {
+            "description": "Whether the status was marked sensitive at this revision.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "The timestamp of when the revision was published.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "account": {
+            "description": "The account that published this revision.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account",
+            "type": "Account",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "poll": {
+            "description": "The current state of the poll options at this revision. Note that edits changing the poll options will be collapsed together into one edit, since this action resets the poll.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "StatusEditPoll.Options": {
+        "": {
+            "description": "The poll options at this revision.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Hash",
+            "type": "Array of Hash",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "].titl": {
+            "description": "The text for a poll option.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "media_attachments": {
+            "description": "The current state of the poll options at this revision. Note that edits changing the poll options will be collapsed together into one edit, since this action resets the poll.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of MediaAttachment()",
+            "type": "Array of MediaAttachment()",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "emojis": {
+            "description": "Any custom emoji that are used in the current revision.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of CustomEmoji()",
+            "type": "Array of CustomEmoji()",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "Reaction": {
+        "name": {
+            "description": "The emoji used for the reaction. Either a unicode emoji, or a custom emoji's shortcode.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "count": {
+            "description": "The total number of users who have added this reaction.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "me": {
+            "description": "If there is a currently authorized user: Have you added this reaction?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "url": {
+            "description": "If the reaction is a custom emoji: A link to the custom emoji.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "static_url": {
+            "description": "If the reaction is a custom emoji: A link to a non-animated version of the custom emoji.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        }
+    },
+    "List": {
+        "id": {
+            "description": "The internal database ID of the list.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.1.0": "added"
+            }
+        },
+        "title": {
+            "description": "The user-defined title of the list.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.1.0": "added"
+            }
+        },
+        "replies_policy": {
+            "description": "Which replies should be shown in the list.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `followed` = Show replies to any followed user `list` = Show replies to members of the list `none` = Show replies to no one",
+            "type": "String (Enumerable oneOf) `followed` = Show replies to any followed user `list` = Show replies to members of the list `none` = Show replies to no one",
+            "version_history": {
+                "3.3.0": "added"
+            }
+        }
+    },
+    "Translation": {
+        "content": {
+            "description": "The translated text of the status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "detected_source_language": {
+            "description": "The language of the source text, as auto-detected by the machine translation provider.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 639 language code)",
+            "type": "String (ISO 639 language code)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "provider": {
+            "description": "The service that provided the machine translation.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "Preferences": {
+        "posting:default:visibility": {
+            "description": "Default visibility for new posts. Equivalent to CredentialAccount#source\\[privacy\\]().",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "public": "Public post",
+                "unlisted": "Unlisted post",
+                "private": "Followers-only post",
+                "direct": "Direct post"
+            },
+            "type_key": "String (Enumerable, oneOf) `public` = Public post `unlisted` = Unlisted post `private` = Followers-only post `direct` = Direct post",
+            "type": "String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "posting:default:sensitive": {
+            "description": "Default sensitivity flag for new posts. Equivalent to CredentialAccount#source\\[sensitive\\]().",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "posting:default:language": {
+            "description": "Default language for new posts. Equivalent to CredentialAccount#source\\[language\\]()",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 639-1 language two-letter code), or null",
+            "type": "String (ISO 639-1 language two-letter code), or null",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "reading:expand:media": {
+            "description": "Whether media attachments should be automatically displayed or blurred/hidden.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "default": "Hide media marked as sensitive",
+                "show_all": "Always show all media by default, regardless of sensitivity",
+                "hide_all": "Always hide all media by default, regardless of sensitivity"
+            },
+            "type_key": "String (Enumerable, oneOf) `default` = Hide media marked as sensitive `show_all` = Always show all media by default, regardless of sensitivity `hide_all` = Always hide all media by default, regardless of sensitivity",
+            "type": "String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "reading:expand:spoilers": {
+            "description": "Whether CWs should be expanded by default.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        }
+    },
+    "Filter": {
+        "id": {
+            "description": "The ID of the Filter in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "title": {
+            "description": "A title given by the user to name the filter.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "context": {
+            "description": "The contexts in which the filter should be applied.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String (Enumerable, anyOf) `home` = home timeline and lists `notifications` = notifications timeline `public` = public timelines `thread` = expanded thread of a detailed status `account` = when viewing a profile",
+            "type": "Array of String (Enumerable, anyOf) `home` = home timeline and lists `notifications` = notifications timeline `public` = public timelines `thread` = expanded thread of a detailed status `account` = when viewing a profile",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "expires_at": {
+            "description": "When the filter should no longer be applied.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime), or null if the filter does not expire",
+            "type": "String (ISO 8601 Datetime), or null if the filter does not expire",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "filter_action": {
+            "description": "The action to be taken when a status matches this filter.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "warn": "show a warning that identifies the matching filter by `title`, and allow the user to expand the filtered status. This is the default (and unknown values should be treated as equivalent to `warn`).",
+                "hide": "do not show this status if it is received"
+            },       
+            "type_key": "String (Enumerable, oneOf) `warn` = show a warning that identifies the matching filter by `title`, and allow the user to expand the filtered status. This is the default (and unknown values should be treated as equivalent to `warn`). `hide` = do not show this status if it is received",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "keywords": {
+            "description": "The keywords grouped under this filter.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of FilterKeyword()",
+            "type": "Array of FilterKeyword()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "statuses": {
+            "description": "The statuses grouped under this filter.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of FilterStatus()",
+            "type": "Array of FilterStatus()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminReport": {
+        "id": {
+            "description": "The ID of the report in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "action_taken": {
+            "description": "Whether an action was taken to resolve this report.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "action_taken_at": {
+            "description": "When an action was taken, if this report is currently resolved.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime) or null",
+            "type": "String (ISO 8601 Datetime) or null",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "category": {
+            "description": "The category under which the report is classified.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `spam` = Malicious, fake, or repetitive content `violation` = Violates one or more specific `rules`(#rules) `other` = The default (catch-all) category",
+            "type": "String (Enumerable oneOf) `spam` = Malicious, fake, or repetitive content `violation` = Violates one or more specific `rules`(#rules) `other` = The default (catch-all) category",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "comment": {
+            "description": "An optional reason for reporting.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "forwarded": {
+            "description": "Whether a report was forwarded to a remote instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "The time the report was filed.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "updated_at": {
+            "description": "The time of last action on this report.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "account": {
+            "description": "The account which filed the report.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "AdminAccount()",
+            "type": "AdminAccount()",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "target_account": {
+            "description": "The account being reported.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "AdminAccount()",
+            "type": "AdminAccount()",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "assigned_account": {
+            "description": "The account of the moderator assigned to this report.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " AdminAccount() or null",
+            "type": "AdminAccount() or null",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "action_taken_by_account": {
+            "description": "The account of the moderator who handled the report.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " AdminAccount() or null",
+            "type": "AdminAccount() or null",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "statuses": {
+            "description": "Statuses attached to the report, for context.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Status()",
+            "type": "Array of Status()",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "rules": {
+            "description": "Rules attached to the report, for context.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Rule()",
+            "type": "Array of Rule()",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "IdentityProof": {
+        "provider": {
+            "description": "The name of the identity provider.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "provider_username": {
+            "description": "The account owner's username on the identity provider's service.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "updated_at": {
+            "description": "When the identity proof was last updated.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "proof_url": {
+            "description": "A link to a statement of identity proof, hosted by the identity provider.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "profile_url": {
+            "description": "The account owner's profile URL on the identity provider.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        }
+    },
+    "Search": {
+        "accounts": {
+            "description": "Accounts which match the given query",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Account()",
+            "type": "Array of Account()",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "statuses": {
+            "description": "Statuses which match the given query",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Status()",
+            "type": "Array of Status()",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "hashtags": {
+            "description": "Hashtags which match the given query",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Tag()",
+            "type": "Array of Tag()",
+            "version_history": {
+                "1.1.0": "added",
+                "2.4.1": "v1/search deprecated because it returns Array of String. v2/search added which returns Array of Tag.",
+                "3.0.0": "v1 removed"
+            }
+        }
+    },
+    "FilterStatus": {
+        "id": {
+            "description": "The ID of the FilterStatus in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "status_id": {
+            "description": "The ID of the Status that will be filtered.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminDomainAllow": {
+        "id": {
+            "description": "The ID of the DomainAllow in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "domain": {
+            "description": "The domain that is allowed to federate.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "When the domain was allowed to federate.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminIp": {
+        "ip": {
+            "description": "The IP address.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (IP address)",
+            "type": "String (IP address)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "used_at": {
+            "description": "The timestamp of when the IP address was last used for this account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "ScheduledStatus": {
+        "id": {
+            "description": "ID of the scheduled status in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer but not guaranteed to be a number)",
+            "type": "String (cast from an integer but not guaranteed to be a number)",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "scheduled_at": {
+            "description": "The timestamp for when the status will be posted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "params": {
+            "description": "The parameters that were used when scheduling the status, to be used when the status is posted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        }
+    },
+    "ScheduledStatusParams": {
+        "text": {
+            "description": "Text to be used as status content.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "poll": {
+            "description": "Poll to be attached to the status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Hash",
+            "type": "Hash",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "]": {
+            "description": "The poll options to be used.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String",
+            "type": "Array of String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "expires_in": {
+            "description": "How many seconds the poll should last before closing.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer)",
+            "type": "String (cast from integer)",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "multiple": {
+            "description": "Whether the poll allows multiple choices.",
+            "nullable": false,
+            "optional": true,
+            "enum": null,
+            "type_key": " Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "hide_totals": {
+            "description": "Whether the poll should hide total votes until after voting has ended.",
+            "nullable": false,
+            "optional": true,
+            "enum": null,
+            "type_key": " Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "media_ids": {
+            "description": "IDs of the MediaAttachments that will be attached to the status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Array of String",
+            "type": "Array of String",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "sensitive": {
+            "description": "Whether the status will be marked as sensitive.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "spoiler_text": {
+            "description": "The text of the content warning or summary for the status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "visibility": {
+            "description": "The visibility that the status will have once it is posted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `public` = Visible to everyone, shown in public timelines. `unlisted` = Visible to public, but not included in public timelines. `private` = Visible to followers only, and to any mentioned users. `direct` = Visible only to mentioned users.",
+            "type": "String (Enumerable oneOf) `public` = Visible to everyone, shown in public timelines. `unlisted` = Visible to public, but not included in public timelines. `private` = Visible to followers only, and to any mentioned users. `direct` = Visible only to mentioned users.",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "in_reply_to_id": {
+            "description": "ID of the Status that will be replied to.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Integer",
+            "type": "Integer",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "language": {
+            "description": "The language that will be used for the status.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 639-1 two-letter language code)",
+            "type": "String (ISO 639-1 two-letter language code)",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "application_id": {
+            "description": "ID of the Application that posted the status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "scheduled_at": {
+            "description": "When the status will be scheduled. This will be null because the status is only scheduled once.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Null",
+            "type": "Null",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "idempotency": {
+            "description": "Idempotency key to prevent duplicate statuses.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "with_rate_limit": {
+            "description": "Whether the status should be rate limited <!-- TODO: What does this mean -->.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        },
+        "media_attachments": {
+            "description": "Media that will be attached when the status is posted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of MediaAttachment()",
+            "type": "Array of MediaAttachment()",
+            "version_history": {
+                "2.7.0": "added"
+            }
+        }
+    },
+    "Notification": {
+        "id": {
+            "description": "The id of the notification in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "type": {
+            "description": "The type of event that resulted in the notification.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `mention` = Someone mentioned you in their status `status` = Someone you enabled notifications for has posted a status `reblog` = Someone boosted one of your statuses `follow` = Someone followed you `follow_request` = Someone requested to follow you `favourite` = Someone favourited one of your statuses `poll` = A poll you have voted in or created has ended `update` = A status you interacted with has been edited `admin.sign_up` = Someone signed up (optionally sent to admins) `admin.report` = A new report has been filed",
+            "type": "String (Enumerable oneOf) `mention` = Someone mentioned you in their status `status` = Someone you enabled notifications for has posted a status `reblog` = Someone boosted one of your statuses `follow` = Someone followed you `follow_request` = Someone requested to follow you `favourite` = Someone favourited one of your statuses `poll` = A poll you have voted in or created has ended `update` = A status you interacted with has been edited `admin.sign_up` = Someone signed up (optionally sent to admins) `admin.report` = A new report has been filed",
+            "version_history": {
+                "0.9.9": "added",
+                "2.8.0": "added `poll`",
+                "3.1.0": "added `follow_request`",
+                "3.3.0": "added `status`",
+                "3.5.0": "added `update` and `admin.sign_up`",
+                "4.0.0": "added `admin.report`"
+            }
+        },
+        "created_at": {
+            "description": "The timestamp of the notification.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "account": {
+            "description": "The account that performed the action that generated the notification.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account()",
+            "type": "Account()",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "status": {
+            "description": "Status that was the object of the notification. Attached when `type` of the notification is `favourite`, `reblog`, `status`, `mention`, `poll`, or `update`.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Status()",
+            "type": "Status()",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "report": {
+            "description": "Report that was the object of the notification. Attached when `type` of the notification is `admin.report`.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Report()",
+            "type": "Report()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "V1Instance": {
+        "uri": {
+            "description": "The domain name of the instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "title": {
+            "description": "The title of the website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "short_description": {
+            "description": "A short, plain-text description defined by the admin.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.9.2": "added"
+            }
+        },
+        "description": {
+            "description": "An HTML-permitted description of the Mastodon site.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "email": {
+            "description": "An email that may be contacted for any inquiries.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "version": {
+            "description": "The version of Mastodon installed on the instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "urls": {
+            "description": "URLs of interest for clients apps.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "1.4.2": "added"
+            }
+        }
+    },
+    "V1InstanceUrls": {
+        "streaming_api": {
+            "description": "The Websockets URL for connecting to the streaming API.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.4.2": "added"
+            }
+        },
+        "stats": {
+            "description": "Statistics about how much information the instance contains.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "1.6.0": "added"
+            }
+        },
+        "user_count": {
+            "description": "Total users on this instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "1.6.0": "added"
+            }
+        },
+        "status_count": {
+            "description": "Total statuses on this instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "1.6.0": "added"
+            }
+        },
+        "domain_count": {
+            "description": "Total domains discovered by this instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "1.6.0": "added"
+            }
+        },
+        "thumbnail": {
+            "description": "Banner image for the website.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.6.1": "added"
+            }
+        },
+        "languages": {
+            "description": "Primary languages of the website and its staff.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String (ISO 639-1 two-letter code)",
+            "type": "Array of String (ISO 639-1 two-letter code)",
+            "version_history": {
+                "2.3.0": "added"
+            }
+        },
+        "registrations": {
+            "description": "Whether registrations are enabled.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.7.2": "added"
+            }
+        },
+        "approval_required": {
+            "description": "Whether registrations require moderator approval.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.2": "added"
+            }
+        },
+        "invites_enabled": {
+            "description": "Whether invites are enabled.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.4": "added"
+            }
+        },
+        "configuration": {
+            "description": "Configured values and limits for this website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "accounts": {
+            "description": "Limits related to accounts.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_featured_tags": {
+            "description": "The maximum number of featured tags allowed for each account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "statuses": {
+            "description": "Limits related to authoring statuses.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "max_characters": {
+            "description": "The maximum number of allowed characters per status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "max_media_attachments": {
+            "description": "The maximum number of media attachments that can be added to a status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "characters_reserved_per_url": {
+            "description": "Each URL in a status will be assumed to be exactly this many characters.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "media_attachments": {
+            "description": "Hints for which attachments will be accepted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "supported_mime_types": {
+            "description": "Contains MIME types that can be uploaded.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String",
+            "type": "Array of String",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "image_size_limit": {
+            "description": "The maximum size of any uploaded image, in bytes.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "image_matrix_limit": {
+            "description": "The maximum number of pixels (width times height) for image uploads.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "video_size_limit": {
+            "description": "The maximum size of any uploaded video, in bytes.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "video_frame_rate_limit": {
+            "description": "The maximum frame rate for any uploaded video.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "video_matrix_limit": {
+            "description": "The maximum number of pixels (width times height) for video uploads.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "polls": {
+            "description": "Limits related to polls.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "max_options": {
+            "description": "Each poll is allowed to have up to this many options.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "max_characters_per_option": {
+            "description": "Each poll option is allowed to have this many characters.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "min_expiration": {
+            "description": "The shortest allowed poll duration, in seconds.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "max_expiration": {
+            "description": "The longest allowed poll duration, in seconds.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.4.2": "added"
+            }
+        },
+        "contact_account": {
+            "description": "A user that can be contacted, as an alternative to `email`.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account()",
+            "type": "Account()",
+            "version_history": {
+                "2.3.0": "added"
+            }
+        },
+        "rules": {
+            "description": "An itemized list of rules for this website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Rule()",
+            "type": "Array of Rule()",
+            "version_history": {
+                "3.4.0": "added"
+            }
+        }
+    },
+    "Marker": {
+        "last_read_id": {
+            "description": "The ID of the most recently viewed entity.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer but not guaranteed to be a number) 3.0.0 - added",
+            "type": "String (cast from integer but not guaranteed to be a number) 3.0.0 - added"
+        },
+        "version": {
+            "description": "An incrementing counter, used for locking to prevent write conflicts.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        },
+        "updated_at": {
+            "description": "The timestamp of when the marker was set.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime) 3.0.0 - added",
+            "type": "String (ISO 8601 Datetime) 3.0.0 - added"
+        }
+    },
+    "Tag": {
+        "name": {
+            "description": "The value of the hashtag after the # sign.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.9.0": "added"
+            }
+        },
+        "url": {
+            "description": "A link to the hashtag on the instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.9.0": "added"
+            }
+        },
+        "history": {
+            "description": "Usage statistics for given days (typically the past week).",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Hash",
+            "type": "Array of Hash",
+            "version_history": {
+                "2.4.1": "added"
+            }
+        }
+    },
+    "TagHistory": {
+        "day": {
+            "description": "UNIX timestamp on midnight of the given day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (UNIX timestamp)",
+            "type": "String (UNIX timestamp)",
+            "version_history": {
+                "2.4.1": "added"
+            }
+        },
+        "uses": {
+            "description": "The counted usage of the tag within that day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer)",
+            "type": "String (cast from an integer)",
+            "version_history": {
+                "2.4.1": "added"
+            }
+        },
+        "accounts": {
+            "description": "The total of accounts using the tag within that day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer)",
+            "type": "String (cast from an integer)",
+            "version_history": {
+                "2.4.1": "added"
+            }
+        },
+        "following": {
+            "description": "Whether the current token's authorized user is following this tag.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminTag": {
+        "id": {
+            "description": "The ID of the Tag in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer, but not guaranteed to be a number)",
+            "type": "String (cast from integer, but not guaranteed to be a number)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "trendable": {
+            "description": "Whether the hashtag has been approved to trend.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "usable": {
+            "description": "Whether the hashtag has not been disabled from auto-linking.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "requires_review": {
+            "description": "Whether the hashtag has not been reviewed yet to approve or deny its trending.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "FeaturedTag": {
+        "id": {
+            "description": "The internal ID of the featured tag in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer but not guaranteed to be a number)",
+            "type": "String (cast from integer but not guaranteed to be a number)",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        },
+        "name": {
+            "description": "The name of the hashtag being featured.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        },
+        "url": {
+            "description": "A link to all statuses by a user that contain this hashtag.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "3.3.0": "added"
+            }
+        },
+        "statuses_count": {
+            "description": "The number of authored statuses containing this hashtag.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Number",
+            "type": "Number",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        },
+        "last_status_at": {
+            "description": "The timestamp of the last authored status containing this hashtag.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        }
+    },
+    "Instance": {
+        "domain": {
+            "description": "The domain name of the instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "title": {
+            "description": "The title of the website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "version": {
+            "description": "The version of Mastodon installed on the instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "source_url": {
+            "description": "The URL for the source code of the software running on this instance, in keeping with AGPL license requirements.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "description": {
+            "description": "A short, plain-text description defined by the admin.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "usage": {
+            "description": "Usage data for this instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "InstanceUsage": {
+        "users": {
+            "description": "Usage data related to users on this instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "active_month": {
+            "description": "The number of active users in the past 4 weeks.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "thumbnail": {
+            "description": "An image used to represent this instance.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "url": {
+            "description": "The URL for the thumbnail image.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "blurhash": {
+            "description": "A hash computed by the BlurHash algorithm(https://github.com/woltapp/blurhash), for generating colorful preview thumbnails when media has not been downloaded yet.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Blurhash)",
+            "type": "String (Blurhash)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "versions": {
+            "description": "Links to scaled resolution images, for high DPI screens.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "@1x": {
+            "description": "The URL for the thumbnail image at 1x resolution.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "@2x": {
+            "description": "The URL for the thumbnail image at 2x resolution.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "languages": {
+            "description": "Primary languages of the website and its staff.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String (ISO 639-1 two-letter code)",
+            "type": "Array of String (ISO 639-1 two-letter code)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "configuration": {
+            "description": "Configured values and limits for this website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "urls": {
+            "description": "URLs of interest for clients apps.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "streaming_api": {
+            "description": "The Websockets URL for connecting to the streaming API.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "accounts": {
+            "description": "Limits related to accounts.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_featured_tags": {
+            "description": "The maximum number of featured tags allowed for each account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "statuses": {
+            "description": "Limits related to authoring statuses.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_characters": {
+            "description": "The maximum number of allowed characters per status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_media_attachments": {
+            "description": "The maximum number of media attachments that can be added to a status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "characters_reserved_per_url": {
+            "description": "Each URL in a status will be assumed to be exactly this many characters.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "media_attachments": {
+            "description": "Hints for which attachments will be accepted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "supported_mime_types": {
+            "description": "Contains MIME types that can be uploaded.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String",
+            "type": "Array of String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "image_size_limit": {
+            "description": "The maximum size of any uploaded image, in bytes.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "image_matrix_limit": {
+            "description": "The maximum number of pixels (width times height) for image uploads.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "video_size_limit": {
+            "description": "The maximum size of any uploaded video, in bytes.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "video_frame_rate_limit": {
+            "description": "The maximum frame rate for any uploaded video.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "video_matrix_limit": {
+            "description": "The maximum number of pixels (width times height) for video uploads.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "polls": {
+            "description": "Limits related to polls.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_options": {
+            "description": "Each poll is allowed to have up to this many options.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_characters_per_option": {
+            "description": "Each poll option is allowed to have this many characters.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "min_expiration": {
+            "description": "The shortest allowed poll duration, in seconds.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "max_expiration": {
+            "description": "The longest allowed poll duration, in seconds.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "translation": {
+            "description": "Hints related to translation.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "enabled": {
+            "description": "Whether registrations are enabled.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "registrations": {
+            "description": "Information about registering for this website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "approval_required": {
+            "description": "Whether registrations require moderator approval.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "message": {
+            "description": "A custom message to be shown when registrations are closed.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (HTML) or null",
+            "type": "String (HTML) or null",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "contact": {
+            "description": "Hints related to contacting a representative of the website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "email": {
+            "description": "An email address that can be messaged regarding inquiries or issues.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Email)",
+            "type": "String (Email)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "account": {
+            "description": "An account that can be contacted natively over the network regarding inquiries or issues.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account()",
+            "type": "Account()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "rules": {
+            "description": "An itemized list of rules for this website.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Rule()",
+            "type": "Array of Rule()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminCohort": {
+        "period": {
+            "description": "The timestamp for the start of the period, at midnight.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "frequency": {
+            "description": "The size of the bucket for the returned data.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `day` = Daily buckets `month` = Monthly buckets",
+            "type": "String (Enumerable oneOf) `day` = Daily buckets `month` = Monthly buckets",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "data": {
+            "description": "Retention data for users who registered during the given period.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of CohortData(#CohortData)",
+            "type": "Array of CohortData(#CohortData)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "CohortData": {
+        "date": {
+            "description": "The timestamp for the start of the bucket, at midnight.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "rate": {
+            "description": "The percentage rate of users who registered in the specified `period` and were active for the given `date` bucket.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Number",
+            "type": "Number",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "value": {
+            "description": "How many users registered in the specified `period` and were active for the given `date` bucket.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "Account": {
+        "id": {
+            "description": "The account id.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "username": {
+            "description": "The username of the account, not including domain.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "acct": {
+            "description": "The Webfinger account URI. Equal to `username` for local users, or `username@domain` for remote users.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "url": {
+            "description": "The location of the user's profile page.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "display_name": {
+            "description": "The profile's display name.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "note": {
+            "description": "The profile's bio or description.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "avatar": {
+            "description": "An image icon that is shown next to statuses and in the profile.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "avatar_static": {
+            "description": "A static version of the avatar. Equal to `avatar` if its value is a static image; different if `avatar` is an animated GIF.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.1.2": "added"
+            }
+        },
+        "header": {
+            "description": "An image banner that is shown above the profile and in profile cards.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "header_static": {
+            "description": "A static version of the header. Equal to `header` if its value is a static image; different if `header` is an animated GIF.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.1.2": "added"
+            }
+        },
+        "locked": {
+            "description": "Whether the account manually approves follow requests.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "fields": {
+            "description": "Additional metadata attached to a profile as name-value pairs.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Field(#Field)",
+            "type": "Array of Field(#Field)",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "emojis": {
+            "description": "Custom emoji entities to be used when rendering the profile.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of CustomEmoji()",
+            "type": "Array of CustomEmoji()",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "bot": {
+            "description": "Indicates that the account may perform automated actions, may not be monitored, or identifies as a robot.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "group": {
+            "description": "Indicates that the account represents a Group actor.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "discoverable": {
+            "description": "Whether the account has opted into discovery features such as the profile directory.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "noindex": {
+            "description": "Whether the local user has opted out of being indexed by search engines.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "moved": {
+            "description": "Indicates that the profile is currently inactive and that its user has moved to a new account.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Account(), or null if the profile is suspended.",
+            "type": "Account(), or null if the profile is suspended.",
+            "version_history": {
+                "2.1.0": "added"
+            }
+        },
+        "suspended": {
+            "description": "An extra attribute returned only when an account is suspended.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.3.0": "added"
+            }
+        },
+        "limited": {
+            "description": "An extra attribute returned only when an account is silenced. If true, indicates that the account should be hidden behind a warning screen.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.3": "added"
+            }
+        },
+        "created_at": {
+            "description": "When the account was created.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "0.1.0": "added",
+                "3.4.0": "now resolves to midnight instead of an exact time"
+            }
+        },
+        "last_status_at": {
+            "description": "When the most recent status was posted.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Date), or null if no statuses",
+            "type": "String (ISO 8601 Date), or null if no statuses",
+            "version_history": {
+                "3.0.0": "added",
+                "3.1.0": "now returns date only, no time"
+            }
+        },
+        "statuses_count": {
+            "description": "How many statuses are attached to this account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "followers_count": {
+            "description": "The reported followers of this profile.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        },
+        "following_count": {
+            "description": "The reported follows of this profile.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "0.1.0": "added"
+            }
+        }
+    },
+    "CredentialAccount": {
+        "source": {
+            "description": "An extra attribute that contains source values to be used with API methods that verify credentials() and update credentials().",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        }
+    },
+    "CredentialAccountSource": {
+        "note": {
+            "description": "Profile bio, in plain-text instead of in HTML.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.5.0": "added"
+            }
+        },
+        "fields": {
+            "description": "Metadata about the account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Field(#Field)",
+            "type": "Array of Field(#Field)",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "privacy": {
+            "description": "The default post privacy to be used for new statuses.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "public": "Public post",
+                "unlisted": "Unlisted post",
+                "private": "Followers-only post",
+                "direct": "Direct post"
+            },
+            "type_key": "String (Enumerable, oneOf) `public` = Public post `unlisted` = Unlisted post `private` = Followers-only post `direct` = Direct post",
+            "type": "String",
+            "version_history": {
+                "1.5.0": "added"
+            }
+        },
+        "sensitive": {
+            "description": "Whether new statuses should be marked sensitive by default.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "1.5.0": "added"
+            }
+        },
+        "language": {
+            "description": "The default posting language for new statuses.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 639-1 language two-letter code) or empty string",
+            "type": "String (ISO 639-1 language two-letter code) or empty string",
+            "version_history": {
+                "2.4.2": "added"
+            }
+        },
+        "follow_requests_count": {
+            "description": "The number of pending follow requests.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        },
+        "role": {
+            "description": "The role assigned to the currently authorized user.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Role()",
+            "type": "Role()",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "MutedAccount": {
+        "mute_expires_at": {
+            "description": "When a timed mute will expire, if applicable.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime), or null if the mute is indefinite",
+            "type": "String (ISO 8601 Datetime), or null if the mute is indefinite",
+            "version_history": {
+                "3.3.0": "added"
+            }
+        }
+    },
+    "Field": {
+        "name": {
+            "description": "The key of a given field's key-value pair.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "value": {
+            "description": "The value associated with the `name` key.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "verified_at": {
+            "description": "Timestamp of when the server verified a URL value for a rel=\"me\" link.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime) if `value` is a verified URL. Otherwise, null.",
+            "type": "String (ISO 8601 Datetime) if `value` is a verified URL. Otherwise, null.",
+            "version_history": {
+                "2.6.0": "added"
+            }
+        }
+    },
+    "Context": {
+        "ancestors": {
+            "description": "Parents in the thread.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Status()",
+            "type": "Array of Status()",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "descendants": {
+            "description": "Children in the thread.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Status()",
+            "type": "Array of Status()",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        }
+    },
+    "AdminEmailDomainBlock": {
+        "id": {
+            "description": "The ID of the EmailDomainBlock in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "domain": {
+            "description": "The email domain that is not allowed to be used for signups.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "When the email domain was disallowed from signups.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "history": {
+            "description": "Usage statistics for given days (typically the past week).",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Hash",
+            "type": "Array of Hash",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminEmailDomainBlockHistory": {
+        "day": {
+            "description": "UNIX timestamp on midnight of the given day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (UNIX timestamp)",
+            "type": "String (UNIX timestamp)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "accounts": {
+            "description": "The counted accounts signup attempts using that email domain within that day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer)",
+            "type": "String (cast from an integer)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "uses": {
+            "description": "The counted IP signup attempts of that email domain within that day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer)",
+            "type": "String (cast from an integer)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "PreviewCard": {
+        "url": {
+            "description": "Location of linked resource.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.0.0": "added"
+            }
+        },
+        "title": {
+            "description": "Title of linked resource.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.0.0": "added"
+            }
+        },
+        "description": {
+            "description": "Description of preview.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.0.0": "added"
+            }
+        },
+        "type": {
+            "description": "The type of the preview card.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "link": "Link OEmbed",
+                "photo": "Photo OEmbed",
+                "video": "Video OEmbed",
+                "rich": "iframe OEmbed. Not currently accepted, so won't show up in practice."
+            },
+            "type_key": "String (Enumerable, oneOf) `link` = Link OEmbed `photo` = Photo OEmbed `video` = Video OEmbed `rich` = iframe OEmbed. Not currently accepted, so won't show up in practice.",
+            "type": "String",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "author_name": {
+            "description": "The author of the original resource.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "author_url": {
+            "description": "A link to the author of the original resource.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "provider_name": {
+            "description": "The provider of the original resource.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "provider_url": {
+            "description": "A link to the provider of the original resource.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "html": {
+            "description": "HTML to be used for generating the preview card.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (HTML)",
+            "type": "String (HTML)",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "width": {
+            "description": "Width of preview, in pixels.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "height": {
+            "description": "Height of preview, in pixels.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "1.3.0": "added"
+            }
+        },
+        "image": {
+            "description": "Preview thumbnail.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "1.0.0": "added"
+            }
+        },
+        "embed_url": {
+            "description": "Used for photo embeds, instead of custom `html`.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "2.1.0": "added"
+            }
+        },
+        "blurhash": {
+            "description": "A hash computed by the BlurHash algorithm(https://github.com/woltapp/blurhash), for generating colorful preview thumbnails when media has not been downloaded yet.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "3.2.0": "added"
+            }
+        }
+    },
+    "TrendsLink": {
+        "history": {
+            "description": "Usage statistics for given days (typically the past week).",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Hash",
+            "type": "Array of Hash",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "TrendsLinkHistory": {
+        "day": {
+            "description": "UNIX timestamp on midnight of the given day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (UNIX timestamp)",
+            "type": "String (UNIX timestamp)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "accounts": {
+            "description": "The counted accounts using the link within that day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer)",
+            "type": "String (cast from an integer)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "uses": {
+            "description": "The counted statuses using the link within that day.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer)",
+            "type": "String (cast from an integer)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "MediaAttachment": {
+        "id": {
+            "description": "The ID of the attachment in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer but not guaranteed to be a number)",
+            "type": "String (cast from an integer but not guaranteed to be a number)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "type": {
+            "description": "The type of the attachment.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "unknown": "unsupported or unrecognized file type",
+                "image": "Static image",
+                "gifv": "Looping, soundless animation",
+                "video": "Video clip",
+                "audio": "Audio track"
+            },
+            "type_key": "String (Enumerable, oneOf) `unknown` = unsupported or unrecognized file type `image` = Static image `gifv` = Looping, soundless animation `video` = Video clip `audio` = Audio track",
+            "type": "String",
+            "version_history": {
+                "0.6.0": "added",
+                "2.9.1": "added `audio`"
+            }
+        },
+        "url": {
+            "description": "The location of the original full-size attachment.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "preview_url": {
+            "description": "The location of a scaled-down preview of the attachment.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "remote_url": {
+            "description": "The location of the full-size original attachment on the remote website.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (URL), or null if the attachment is local",
+            "type": "String (URL), or null if the attachment is local",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "meta": {
+            "description": "Metadata returned by Paperclip.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "1.5.0": "added",
+                "2.3.0": "added `meta.focus`  May contain subtrees `small` and `original`, as well as various other top-level properties.  More importantly, there may be another topl-level `focus` Hash object on images as of 2.3.0, with coordinates can be used for smart thumbnail cropping -- see [Focal points for cropped media thumbnails]({{< relref \"api/guidelines#focal-points\" >}}) for more."
+            }
+        },
+        "description": {
+            "description": "Alternate text that describes what is in the media attachment, to be used for the visually impaired or when media attachments do not load.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.0.0": "added"
+            }
+        },
+        "blurhash": {
+            "description": "A hash computed by the BlurHash algorithm(https://github.com/woltapp/blurhash), for generating colorful preview thumbnails when media has not been downloaded yet.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Blurhash)",
+            "type": "String (Blurhash)",
+            "version_history": {
+                "2.8.1": "added"
+            }
+        }
+    },
+    "Deprecated": {
+        "text_url": {
+            "description": "A shorter URL for the attachment.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.6.0": "added",
+                "3.5.0": "removed"
+            }
+        }
+    },
+    "V1Filter": {
+        "id": {
+            "description": "The ID of the filter in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.4.3": "added"
+            }
+        },
+        "phrase": {
+            "description": "The text to be filtered.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.4.3": "added"
+            }
+        },
+        "context": {
+            "description": "The contexts in which the filter should be applied.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String (Enumerable anyOf) `home` = home timeline and lists `notifications` = notifications timeline `public` = public timelines `thread` = expanded thread of a detailed status `account` = when viewing a profile",
+            "type": "Array of String (Enumerable anyOf) `home` = home timeline and lists `notifications` = notifications timeline `public` = public timelines `thread` = expanded thread of a detailed status `account` = when viewing a profile",
+            "version_history": {
+                "2.4.3": "added",
+                "3.1.0": "added `account`"
+            }
+        },
+        "expires_at": {
+            "description": "When the filter should no longer be applied.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime), or null if the filter does not expire",
+            "type": "String (ISO 8601 Datetime), or null if the filter does not expire",
+            "version_history": {
+                "2.4.3": "added"
+            }
+        },
+        "irreversible": {
+            "description": "Should matching entities in home and notifications be dropped by the server? See implementation guidelines for filters().",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.3": "added"
+            }
+        },
+        "whole_word": {
+            "description": "Should the filter consider word boundaries? See implementation guidelines for filters().",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.3": "added"
+            }
+        }
+    },
+    "AdminCanonicalEmailBlock": {
+        "id": {
+            "description": "The ID of the email block in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "canonical_email_hash": {
+            "description": "The SHA256 hash of the canonical email address.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (SHA256)",
+            "type": "String (SHA256)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "AdminIpBlock": {
+        "id": {
+            "description": "The ID of the DomainBlock in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "ip": {
+            "description": "The IP address range that is not allowed to federate.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (IP address and prefix)",
+            "type": "String (IP address and prefix)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "severity": {
+            "description": "The associated policy with this IP block.",
+            "nullable": false,
+            "optional": false,
+            "enum": {
+                "sign_up_requires_approval": "Any signup from this IP range will create a pending account",
+                "sign_up_block": "Any signup from this IP range will be rejected",
+                "no_access": "Any activity from this IP range will be rejected entirely"
+            },
+            "type_key": "String (Enumerable, oneOf) `sign_up_requires_approval` = Any signup from this IP range will create a pending account `sign_up_block` = Any signup from this IP range will be rejected `no_access` = Any activity from this IP range will be rejected entirely",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "comment": {
+            "description": "The recorded reason for this IP block.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "created_at": {
+            "description": "When the IP block was created.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "expires_at": {
+            "description": "When the IP block will expire.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "Rule": {
+        "id": {
+            "description": "An identifier for the rule.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer, but not guaranteed to be a number)",
+            "type": "String (cast from integer, but not guaranteed to be a number)",
+            "version_history": {
+                "3.4.0": "added"
+            }
+        },
+        "text": {
+            "description": "The rule to be followed.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.4.0": "added"
+            }
+        }
+    },
+    "AdminAccount": {
+        "id": {
+            "description": "The ID of the account in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "username": {
+            "description": "The username of the account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "domain": {
+            "description": "The domain of the account, if it is remote.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String, or null for local accounts",
+            "type": "String, or null for local accounts",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "created_at": {
+            "description": "When the account was first discovered.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "email": {
+            "description": "The email address associated with the account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "ip": {
+            "description": "The IP address last used to login to this account.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "2.9.1": "added",
+                "3.5.0": "return type changed from String to [AdminIp]({{< relref \"entities/Admin_Ip\" >}}) due to a bug",
+                "4.0.0": "bug fixed, return type is now a String again"
+            }
+        },
+        "ips": {
+            "description": "All known IP addresses associated with this account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of AdminIp()",
+            "type": "Array of AdminIp()",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "locale": {
+            "description": "The locale of the account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 639 Part 1 two-letter language code)",
+            "type": "String (ISO 639 Part 1 two-letter language code)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "invite_request": {
+            "description": "The reason given when requesting an invite (for instances that require manual approval of registrations)",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String",
+            "type": "String",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "role": {
+            "description": "The current role of the account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Role()",
+            "type": "Role()",
+            "version_history": {
+                "2.9.1": "added, returns a String (enumerable, oneOf `user` `moderator` `admin`)",
+                "4.0.0": "now uses Role entity"
+            }
+        },
+        "confirmed": {
+            "description": "Whether the account has confirmed their email address.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "approved": {
+            "description": "Whether the account is currently approved.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "disabled": {
+            "description": "Whether the account is currently disabled.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "silenced": {
+            "description": "Whether the account is currently silenced.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "suspended": {
+            "description": "Whether the account is currently suspended.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "account": {
+            "description": "User-level information about the account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account()",
+            "type": "Account()",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "created_by_application_id": {
+            "description": "The ID of the Application() that created this account, if applicable.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        },
+        "invited_by_account_id": {
+            "description": "The ID of the Account() that invited this user, if applicable.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.9.1": "added"
+            }
+        }
+    },
+    "WebPushSubscription": {
+        "id": {
+            "description": "The ID of the Web Push subscription in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "endpoint": {
+            "description": "Where push alerts will be sent to.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "server_key": {
+            "description": "The streaming server's VAPID key.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "alerts": {
+            "description": "Which alerts should be delivered to the `endpoint`.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Hash",
+            "type": "Hash",
+            "version_history": {
+                "2.4.0": "added",
+                "2.8.0": "added `alerts[poll]`",
+                "3.1.0": "added `alerts[follow_request]`",
+                "3.3.0": "added `alerts[status]`",
+                "3.5.0": "added `alerts[update]` and `alerts[admin.sign_up]`",
+                "4.0.0": "added `alerts[admin.report]`"
+            }
+        }
+    },
+    "WebPushSubscriptionAlerts": {
+        "mention": {
+            "description": "Receive a push notification when someone else has mentioned you in a status?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "status": {
+            "description": "Receive a push notification when a subscribed account posts a status?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.3.0": "added"
+            }
+        },
+        "reblog": {
+            "description": "Receive a push notification when a status you created has been boosted by someone else?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "follow": {
+            "description": "Receive a push notification when someone has followed you?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "follow_request": {
+            "description": "Receive a push notification when someone has requested to followed you?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.1.0": "added"
+            }
+        },
+        "favourite": {
+            "description": "Receive a push notification when a status you created has been favourited by someone else?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.4.0": "added"
+            }
+        },
+        "poll": {
+            "description": "Receive a push notification when a poll you voted in or created has ended?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "update": {
+            "description": "Receive a push notification when a status you interacted with has been edited?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "admin.sign_up": {
+            "description": "Receive a push notification when a new user has signed up?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "admin.report": {
+            "description": "Receive a push notification when a new report has been filed?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "Conversation": {
+        "id": {
+            "description": "The ID of the conversation in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.6.0": "added"
+            }
+        },
+        "unread": {
+            "description": "Is the conversation currently marked as unread?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.6.0": "added"
+            }
+        },
+        "accounts": {
+            "description": "Participants in the conversation.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Account()",
+            "type": "Array of Account()",
+            "version_history": {
+                "2.6.0": "added"
+            }
+        },
+        "last_status": {
+            "description": "The last status in the conversation.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Status()",
+            "type": "Status()",
+            "version_history": {
+                "2.6.0": "added"
+            }
+        }
+    },
+    "AdminMeasure": {
+        "key": {
+            "description": "The unique keystring for the requested measure.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "unit": {
+            "description": "The units associated with this data item's value, if applicable.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String or null",
+            "type": "String or null",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "total": {
+            "description": "The numeric total associated with the requested measure.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer)",
+            "type": "String (cast from integer)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "human_value": {
+            "description": "A human-readable formatted value for this data item.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "previous_total": {
+            "description": "The numeric total associated with the requested measure, in the previous period. Previous period is calculated by subtracting the start_at and end_at dates, then offsetting both start and end dates backwards by the length of the time period.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer)",
+            "type": "String (cast from integer)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "data": {
+            "description": "The data available for the requested measure, split into daily buckets.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Hash",
+            "type": "Array of Hash",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "AdminMeasureData": {
+        "date": {
+            "description": "Midnight on the requested day in the time period.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (ISO 8601 Datetime)",
+            "type": "String (ISO 8601 Datetime)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "value": {
+            "description": "The numeric value for the requested measure.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from integer)",
+            "type": "String (cast from integer)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "Role": {
+        "id": {
+            "description": "The ID of the Role in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "name": {
+            "description": "The name of the role.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "color": {
+            "description": "The hex code assigned to this role. If no hex code is assigned, the string will be empty.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "permissions": {
+            "description": "A bitmask that represents the sum of all permissions granted to the role.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "highlighted": {
+            "description": "Whether the role is publicly visible as a badge on user profiles.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "Relationship": {
+        "id": {
+            "description": "The account ID.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "following": {
+            "description": "Are you following this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "showing_reblogs": {
+            "description": "Are you receiving this user's boosts in your home timeline?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.1.0": "added"
+            }
+        },
+        "notifying": {
+            "description": "Have you enabled notifications for this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "3.3.0": "added"
+            }
+        },
+        "languages": {
+            "description": "Which languages are you following from this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of String (ISO 639-1 language two-letter code)",
+            "type": "Array of String (ISO 639-1 language two-letter code)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "followed_by": {
+            "description": "Are you followed by this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "blocking": {
+            "description": "Are you blocking this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.6.0": "added"
+            }
+        },
+        "blocked_by": {
+            "description": "Is this user blocking you?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "muting": {
+            "description": "Are you muting this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "1.1.0": "added"
+            }
+        },
+        "muting_notifications": {
+            "description": "Are you muting notifications from this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.1.0": "added"
+            }
+        },
+        "requested": {
+            "description": "Do you have a pending follow request for this user?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "domain_blocking": {
+            "description": "Are you blocking this user's domain?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "1.4.0": "added"
+            }
+        },
+        "endorsed": {
+            "description": "Are you featuring this user on your profile?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.5.0": "added"
+            }
+        },
+        "note": {
+            "description": "This user's profile bio",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.2.0": "added"
+            }
+        }
+    },
+    "Suggestion": {
+        "source": {
+            "description": "The reason this account is being suggested.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (Enumerable oneOf) `staff` = This account was manually recommended by your administration team `past_interactions` = You have interacted with this account previously `global` = This account has many reblogs, favourites, and active local followers within the last 30 days",
+            "type": "String (Enumerable oneOf) `staff` = This account was manually recommended by your administration team `past_interactions` = You have interacted with this account previously `global` = This account has many reblogs, favourites, and active local followers within the last 30 days",
+            "version_history": {
+                "3.4.0": "added"
+            }
+        },
+        "account": {
+            "description": "The account being recommended to follow.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Account()",
+            "type": "Account()",
+            "version_history": {
+                "3.4.0": "added"
+            }
+        }
+    },
+    "Application": {
+        "name": {
+            "description": "The name of your application.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "website": {
+            "description": "The website associated with your application.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "0.9.9": "added",
+                "3.5.1": "this property is now nullable"
+            }
+        },
+        "vapid_key": {
+            "description": "Used for Push Streaming API. Returned with POST /api/v1/apps(). Equivalent to WebPushSubscription#server_key()",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "client_id": {
+            "description": "Client ID key, to be used for obtaining OAuth tokens",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        },
+        "client_secret": {
+            "description": "Client secret key, to be used for obtaining OAuth tokens",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "0.9.9": "added"
+            }
+        }
+    },
+    "FilterKeyword": {
+        "id": {
+            "description": "The ID of the FilterKeyword in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "keyword": {
+            "description": "The phrase to be matched against.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        },
+        "whole_word": {
+            "description": "Should the filter consider word boundaries? See implementation guidelines for filters().",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "4.0.0": "added"
+            }
+        }
+    },
+    "StatusSource": {
+        "id": {
+            "description": "ID of the status in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer but not guaranteed to be a number)",
+            "type": "String (cast from an integer but not guaranteed to be a number)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "text": {
+            "description": "The plain text used to compose the status.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "spoiler_text": {
+            "description": "The plain text used to compose the status's subject or content warning.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "FamiliarFollowers": {
+        "id": {
+            "description": "The ID of the Account in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        },
+        "accounts": {
+            "description": "Accounts you follow that also follow this account.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Account()",
+            "type": "Array of Account()",
+            "version_history": {
+                "3.5.0": "added"
+            }
+        }
+    },
+    "CustomEmoji": {
+        "shortcode": {
+            "description": "The name of the custom emoji.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.0.0": "added"
+            }
+        },
+        "url": {
+            "description": "A link to the custom emoji.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "2.0.0": "added"
+            }
+        },
+        "static_url": {
+            "description": "A link to a static copy of the custom emoji.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (URL)",
+            "type": "String (URL)",
+            "version_history": {
+                "2.0.0": "added"
+            }
+        },
+        "visible_in_picker": {
+            "description": "Whether this Emoji should be visible in the picker or unlisted.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.0.0": "added"
+            }
+        },
+        "category": {
+            "description": "Used for sorting custom emoji in the picker.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "3.0.0": "added"
+            }
+        }
+    },
+    "Poll": {
+        "id": {
+            "description": "The ID of the poll in the database.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String (cast from an integer, but not guaranteed to be a number)",
+            "type": "String (cast from an integer, but not guaranteed to be a number)",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "expires_at": {
+            "description": "When the poll ends.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " String (ISO 8601 Datetime), or null if the poll does not end",
+            "type": "String (ISO 8601 Datetime), or null if the poll does not end",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "expired": {
+            "description": "Is the poll currently expired?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "multiple": {
+            "description": "Does the poll allow multiple-choice answers?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "votes_count": {
+            "description": "How many votes have been received.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Integer",
+            "type": "Integer",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "voters_count": {
+            "description": "How many unique accounts have voted on a multiple-choice poll.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Integer, or null if `multiple` is false.",
+            "type": "Integer, or null if `multiple` is false.",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "options": {
+            "description": "Possible answers for the poll.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of PollOption(#Option)",
+            "type": "Array of PollOption(#Option)",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "emojis": {
+            "description": "Custom emoji to be used for rendering poll options.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of CustomEmoji()",
+            "type": "Array of CustomEmoji()",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "voted": {
+            "description": "When called with a user token, has the authorized user voted?",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Boolean",
+            "type": "Boolean",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "own_votes": {
+            "description": "When called with a user token, which options has the authorized user chosen? Contains an array of index values for `options`.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "Array of Integer",
+            "type": "Array of Integer",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        }
+    },
+    "PollOption": {
+        "title": {
+            "description": "The text value of the poll option.",
+            "nullable": false,
+            "optional": false,
+            "enum": null,
+            "type_key": "String",
+            "type": "String",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        },
+        "votes_count": {
+            "description": "The total number of received votes for this option.",
+            "nullable": true,
+            "optional": false,
+            "enum": null,
+            "type_key": " Integer, or null if results are not published yet.",
+            "type": "Integer, or null if results are not published yet.",
+            "version_history": {
+                "2.8.0": "added"
+            }
+        }
+    }
+}
