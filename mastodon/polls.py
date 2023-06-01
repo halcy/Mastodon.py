@@ -44,7 +44,7 @@ class Mastodon(Internals):
             choices = [choices]
         params = self.__generate_params(locals(), ['id'])
 
-        self.__api_request('POST', f'/api/v1/polls/{id}/votes', params)
+        return self.__api_request('POST', f'/api/v1/polls/{id}/votes', params)
 
     def make_poll(self, options, expires_in, multiple=False, hide_totals=False):
         """
