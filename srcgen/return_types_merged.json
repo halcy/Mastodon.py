@@ -88,7 +88,7 @@
                 "enum": null
             },
             "created_at": {
-                "description": "Account creation time",
+                "description": "The accounts creation time",
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
@@ -100,7 +100,7 @@
                 "enum": null
             },
             "following_count": {
-                "description": "How many people they follow",
+                "description": "How many accounts this account follows",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
@@ -111,7 +111,7 @@
                 "enum": null
             },
             "followers_count": {
-                "description": "How many followers they have",
+                "description": "How many followers this account has",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
@@ -122,13 +122,14 @@
                 "enum": null
             },
             "statuses_count": {
-                "description": "How many statuses they have",
+                "description": "How many statuses this account has created, excluding: 1) later deleted posts 2) direct messages / 'mentined users only' posts, except in earlier versions mastodon.",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
-                    "0.1.0": "added"
+                    "0.1.0": "added",
+                    "2.4.2": "no longer includes direct / mentioned-only visibility statuses"
                 },
                 "enum": null
             },
@@ -204,7 +205,7 @@
                 "enum": null
             },
             "moved_to_account": {
-                "description": "If set, a account dict of the account this user has set up as their moved-to address.",
+                "description": "If set, Account that this user has set up as their moved-to address.",
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": true,
@@ -247,7 +248,7 @@
                 "enum": null
             },
             "fields": {
-                "description": "List of up to four account field dicts",
+                "description": "List of up to four (by default) AccountFields",
                 "field_type": "list",
                 "field_subtype": "AccountField",
                 "is_optional": false,
@@ -297,7 +298,11 @@
                 "field_type": "list",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "0.1.0": "added",
+                    "4.0.0": "deprecated"
+                }
             },
             "role": {
                 "description": "The users role. Only present for account returned from account_verify_credentials()",
@@ -543,7 +548,7 @@
         "manual_update": false,
         "fields": {
             "id": {
-                "description": "Numerical id of this toot",
+                "description": "Numerical id of this status",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
@@ -554,7 +559,7 @@
                 "enum": null
             },
             "uri": {
-                "description": "Descriptor for the toot EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'",
+                "description": "Descriptor for the status EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -565,7 +570,7 @@
                 "enum": null
             },
             "url": {
-                "description": "URL of the toot",
+                "description": "URL of the status",
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -576,7 +581,7 @@
                 }
             },
             "account": {
-                "description": "Account dict for the account which posted the status",
+                "description": "Account which posted the status",
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": false,
@@ -587,7 +592,7 @@
                 "enum": null
             },
             "in_reply_to_id": {
-                "description": "Numerical id of the toot this toot is in response to",
+                "description": "Numerical id of the status this status is in response to",
                 "field_type": "IdType",
                 "field_subtype": null,
                 "is_optional": false,
@@ -597,7 +602,7 @@
                 }
             },
             "in_reply_to_account_id": {
-                "description": "Numerical id of the account this toot is in response to",
+                "description": "Numerical id of the account this status is in response to",
                 "field_type": "IdType",
                 "field_subtype": null,
                 "is_optional": false,
@@ -607,7 +612,7 @@
                 }
             },
             "reblog": {
-                "description": "Denotes whether the toot is a reblog. If so, set to the original toot dict.",
+                "description": "Denotes whether the status is a reblog. If so, set to the original status.",
                 "field_type": "Status",
                 "field_subtype": null,
                 "is_optional": false,
@@ -617,7 +622,8 @@
                 }
             },
             "content": {
-                "description": "Content of the toot, as HTML: '<p>Hello from Python</p>'",
+                "description": "Content of the status, as HTML: '<p>Hello from Python</p>'",
+                "field_structuretype": "HTML",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -659,7 +665,7 @@
                 }
             },
             "reblogged": {
-                "description": "Denotes whether the logged in user has boosted this toot",
+                "description": "Denotes whether the logged in user has boosted this status",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": true,
@@ -669,7 +675,7 @@
                 }
             },
             "favourited": {
-                "description": "Denotes whether the logged in user has favourited this toot",
+                "description": "Denotes whether the logged in user has favourited this status",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": true,
@@ -679,7 +685,7 @@
                 }
             },
             "sensitive": {
-                "description": "Denotes whether media attachments to the toot are marked sensitive",
+                "description": "Denotes whether media attachments to the status are marked sensitive",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
@@ -690,7 +696,7 @@
                 "enum": null
             },
             "spoiler_text": {
-                "description": "Warning text that should be displayed before the toot content",
+                "description": "Warning text that should be displayed before the status content",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -718,7 +724,7 @@
                 }
             },
             "mentions": {
-                "description": "A list of account dicts mentioned in the toot, as Mention dicts",
+                "description": "A list Mentions this status includes",
                 "field_type": "list",
                 "field_subtype": "Account",
                 "is_optional": false,
@@ -728,7 +734,7 @@
                 }
             },
             "media_attachments": {
-                "description": "A list of media dicts of attached files",
+                "description": "List files attached to this status",
                 "field_type": "list",
                 "field_subtype": "MediaAttachment",
                 "is_optional": false,
@@ -739,7 +745,7 @@
                 "enum": null
             },
             "emojis": {
-                "description": "A list of custom emojis used in the toot, as Emoji dicts",
+                "description": "A list of CustomEmoji used in the status",
                 "field_type": "list",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
@@ -749,7 +755,7 @@
                 }
             },
             "tags": {
-                "description": "A list of hashtag used in the toot, as Hashtag dicts",
+                "description": "A list of Tags used in the status",
                 "field_type": "list",
                 "field_subtype": "Tag",
                 "is_optional": false,
@@ -769,7 +775,7 @@
                 }
             },
             "application": {
-                "description": "Application dict for the client used to post the toot (Does not federate and is therefore always None for remote toots, can also be None for local toots for some legacy applications).",
+                "description": "Application for the client used to post the status (Does not federate and is therefore always None for remote statuses, can also be None for local statuses for some legacy applications registered before this field was introduced).",
                 "field_type": "Application",
                 "field_subtype": null,
                 "is_optional": true,
@@ -780,7 +786,7 @@
                 "enum": null
             },
             "language": {
-                "description": "The language of the toot, if specified by the server, as ISO 639-1 (two-letter) language code.",
+                "description": "The language of the status, if specified by the server, as ISO 639-1 (two-letter) language code.",
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
@@ -821,7 +827,7 @@
                 }
             },
             "card": {
-                "description": "A preview card for links from the status, if present at time of delivery, as card dict.",
+                "description": "A preview card for links from the status, if present at time of delivery.",
                 "field_type": "PreviewCard",
                 "field_subtype": null,
                 "is_optional": false,
@@ -831,7 +837,7 @@
                 }
             },
             "poll": {
-                "description": "A poll dict if a poll is attached to this status.",
+                "description": "A poll object if a poll is attached to this status.",
                 "field_type": "Poll",
                 "field_subtype": null,
                 "is_optional": false,
@@ -919,7 +925,7 @@
                 "enum": null
             },
             "account": {
-                "description": "Account dict of the user that posted the status",
+                "description": "Account object of the user that posted the status",
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": false,
@@ -930,18 +936,24 @@
                 "enum": null
             },
             "media_attachments": {
-                "description": "List of media dicts with the attached media for this version of the status",
+                "description": "List of MediaAttachment objects with the attached media for this version of the status",
                 "field_type": "list",
                 "field_subtype": "MediaAttachment",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             },
             "emojis": {
                 "description": "List of custom emoji used in this version of the status.",
                 "field_type": "list",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             },
             "poll": {
                 "description": "The current state of the poll options at this revision. Note that edits changing the poll options will be collapsed together into one edit, since this action resets the poll.",
@@ -1072,7 +1084,7 @@
         "manual_update": false,
         "fields": {
             "id": {
-                "description": "Scheduled toot ID (note: Not the id of the toot once it gets posted!)",
+                "description": "Scheduled status ID (note: Not the id of the status once it gets posted!)",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1083,7 +1095,7 @@
                 "enum": null
             },
             "scheduled_at": {
-                "description": "datetime object describing when the toot is to be posted",
+                "description": "datetime object describing when the status is to be posted",
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1094,7 +1106,7 @@
                 "enum": null
             },
             "params": {
-                "description": "Parameters for the scheduled toot, specifically",
+                "description": "Parameters for the scheduled status, specifically",
                 "field_type": "ScheduledStatusParams",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1105,11 +1117,14 @@
                 "enum": null
             },
             "media_attachments": {
-                "description": "Array of media dicts for the attachments to the scheduled toot",
+                "description": "Array of MediaAttachment objects for the attachments to the scheduled status",
                 "field_type": "list",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "2.7.0": "added"
+                }
             }
         }
     },
@@ -1136,7 +1151,7 @@
                 "enum": null
             },
             "in_reply_to_id": {
-                "description": "ID of the toot this one is a reply to",
+                "description": "ID of the status this one is a reply to",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1147,7 +1162,7 @@
                 "enum": null
             },
             "media_ids": {
-                "description": "IDs of media attached to this toot",
+                "description": "IDs of media attached to this status",
                 "field_type": "list",
                 "field_subtype": "str",
                 "is_optional": false,
@@ -1158,7 +1173,7 @@
                 "enum": null
             },
             "sensitive": {
-                "description": "Whether this toot is sensitive or not",
+                "description": "Whether this status is sensitive or not",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1169,7 +1184,7 @@
                 "enum": null
             },
             "visibility": {
-                "description": "Visibility of the toot",
+                "description": "Visibility of the status",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1180,7 +1195,7 @@
                 "enum": null
             },
             "idempotency": {
-                "description": "Idempotency key for the scheduled toot",
+                "description": "Idempotency key for the scheduled status",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1203,7 +1218,7 @@
                 "enum": null
             },
             "spoiler_text": {
-                "description": "CW text for this toot",
+                "description": "CW text for this status",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1214,7 +1229,7 @@
                 "enum": null
             },
             "application_id": {
-                "description": "ID of the application that scheduled the toot",
+                "description": "ID of the application that scheduled the status",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1225,7 +1240,7 @@
                 "enum": null
             },
             "poll": {
-                "description": "Poll parameters, as a poll dict",
+                "description": "Poll parameters",
                 "field_type": "Poll",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1350,7 +1365,7 @@
                 "enum": null
             },
             "options": {
-                "description": "The poll options as a list of poll option dicts",
+                "description": "The poll options",
                 "field_type": "list",
                 "field_subtype": "PollOption",
                 "is_optional": false,
@@ -1361,7 +1376,7 @@
                 "enum": null
             },
             "emojis": {
-                "description": "List of emoji dicts for all emoji used in answer strings,",
+                "description": "List of CustomEmoji used in answer strings,",
                 "field_type": "list",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
@@ -1522,9 +1537,9 @@
                 "enum": null
             },
             "history": {
-                "description": "List of usage history dicts for up to 7 days. Not present in statuses.",
+                "description": "List of TagHistory for up to 7 days. Not present in statuses.",
                 "field_type": "list",
-                "field_subtype": "HashtagUsage",
+                "field_subtype": "TagHistory",
                 "is_optional": true,
                 "is_nullable": false,
                 "version_history": {
@@ -1556,7 +1571,7 @@
         "manual_update": false,
         "fields": {
             "day": {
-                "description": "Date of the day this history dict is for",
+                "description": "Date of the day this TagHistory is for",
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1888,14 +1903,16 @@
     },
     {
         "name": "Filter",
-        "python_name": "V1Filter",
+        "python_name": "Filter",
         "func_call": "mastodon.filters()[0]",
         "last_changed": "0.0.0",
-        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Filter/",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Filter/",
+        "masto_doc_link_additional": "https://docs.joinmastodon.org/entities/V1_Filter/",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": false,
         "manual_update": false,
+        "has_versions": ["v1", "v2"],
         "fields": {
             "id": {
                 "description": "Numerical id of the filter",
@@ -1914,23 +1931,31 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
+                "api_version": "v1",
                 "version_history": {
-                    "2.4.3": "added"
+                    "2.4.3": "added",
+                    "4.0.0": "removed (still present in v1 API variant)"
                 },
                 "enum": null
             },
             "context": {
-                "description": "List of places where the filters are applied. Items can be: ('home', 'notifications', 'public', 'thread')",
+                "description": "List of places where the filters are applied.",
                 "field_type": "list",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "TimelineEnum",
+                "field_structuretype": "FilterContextEnum",
                 "version_history": {
                     "2.4.3": "added",
                     "3.1.0": "added `account`"
                 },
-                "enum": null
+                "enum": {
+                    "home": "Home timeline and lists",
+                    "notifications": "Notifications timeline",
+                    "public": "Puclic timelines",
+                    "thread": "Expanded view of a status with replies",
+                    "account": "Posts displayed when viewing a profile"
+                }
             },
             "expires_at": {
                 "description": "Expiry date for the filter",
@@ -1949,8 +1974,10 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
+                "api_version": "v1",
                 "version_history": {
-                    "2.4.3": "added"
+                    "2.4.3": "added",
+                    "4.0.0": "removed (still present in v1 API variant)"
                 },
                 "enum": null
             },
@@ -1960,8 +1987,62 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
+                "api_version": "v1",
                 "version_history": {
-                    "2.4.3": "added"
+                    "2.4.3": "added",
+                    "4.0.0": "removed (still present in v1 API variant)"
+                },
+                "enum": null
+            },
+            "title": {
+                "description": "Name the user has chosen for this filter",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            },
+            "filter_action": {
+                "description": "The action to be taken when a status matches this filter.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "FilterActionEnum",
+                "api_version": "v2",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": {
+                    "warn": "Display a note to the user that the status has been filtered, showing the title of the filter. The mastodon documentation suggests that absent any other information or if unknown values are encountered, this should be the default action to take.",
+                    "hide": "Hide the status from the user completely, as if it did not exist"
+                }
+            },
+            "keywords": {
+                "description": "A list of keywords that will trigger this filter.",
+                "field_type": "list",
+                "field_subtype": "FilterKeyword",
+                "is_optional": false,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            },
+            "statuses": {
+                "description": "A list of statuses that will trigger this filter.",
+                "field_type": "list",
+                "field_subtype": "FilterStatus",
+                "is_optional": false,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": {
+                    "4.0.0": "added"
                 },
                 "enum": null
             }
@@ -2018,7 +2099,7 @@
                 "enum": null
             },
             "account": {
-                "description": "Account dict of the user from whom the notification originates",
+                "description": "Account of the user from whom the notification originates",
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": false,
@@ -2053,7 +2134,7 @@
         "manual_update": false,
         "fields": {
             "ancestors": {
-                "description": "A list of status dicts of statuses that this status is a reply to",
+                "description": "A list of Statuses that the Status with this Context is a reply to",
                 "field_type": "list",
                 "field_subtype": "Status",
                 "is_optional": false,
@@ -2064,7 +2145,7 @@
                 "enum": null
             },
             "descendants": {
-                "description": "A list of status dicts of statuses that are replies to this status",
+                "description": "A list of Statuses that are replies to the Status with this Context",
                 "field_type": "list",
                 "field_subtype": "Status",
                 "is_optional": false,
@@ -2213,7 +2294,7 @@
                 }
             },
             "meta": {
-                "description": "Dictionary of two metadata dicts (see below), 'original' and 'small' (preview). Either may be empty. May additionally contain an \"fps\" field giving a videos frames per second (possibly rounded), and a \"length\" field giving a videos length in a human-readable format. Note that a video may have an image as preview. May also contain a 'focus' dict and a media 'colors' dict.",
+                "description": "MediaAttachmentMetadataContainer that contains metadata for 'original' and 'small' (preview) versions of the MediaAttachment. Either may be empty. May additionally contain an \"fps\" field giving a videos frames per second (possibly rounded), and a \"length\" field giving a videos length in a human-readable format. Note that a video may have an image as preview. May also contain a 'focus' object and a media 'colors' object.",
                 "field_type": "MediaAttachmentMetadataContainer",
                 "field_subtype": null,
                 "is_optional": false,
@@ -2512,21 +2593,30 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
             },
             "background": {
                 "description": "Estimated background colour for the attachment thumbnail, as a html format hex color (#rrggbb)",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
             },
             "accent": {
                 "description": "Estimated accent colour for the attachment thumbnail",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
             }
         }
     },
@@ -2649,9 +2739,10 @@
                 "enum": null
             },
             "html": {
-                "description": "HTML string of the embed",
+                "description": "HTML string representing the embed",
                 "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "HTML",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
@@ -2683,11 +2774,12 @@
                 "enum": null
             },
             "blurhash": {
-                "description": "(optional) Blurhash of the preview image",
+                "description": "Blurhash of the preview image",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
+                "field_structuretype": "Blurhash",
                 "version_history": {
                     "3.2.0": "added"
                 },
@@ -2699,7 +2791,10 @@
                 "field_subtype": null,
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": true,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "1.3.0": "added"
+                }
             },
             "embed_url": {
                 "description": "Used for photo embeds, instead of custom `html`.",
@@ -2727,7 +2822,7 @@
         "manual_update": false,
         "fields": {
             "accounts": {
-                "description": "List of account dicts resulting from the query",
+                "description": "List of Accounts resulting from the query",
                 "field_type": "list",
                 "field_subtype": "Account",
                 "is_optional": false,
@@ -2738,20 +2833,20 @@
                 "enum": null
             },
             "hashtags": {
-                "description": "List of hashtag dicts resulting from the query",
+                "description": "List of Tags resulting from the query",
                 "field_type": "list",
-                "field_subtype": "Tag",
+                "field_subtype": "Union[str, Tag]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
                     "1.1.0": "added",
-                    "2.4.1": "v1/search deprecated because it returns Array of String. v2/search added which returns Array of Tag.",
+                    "2.4.1": "v1 search deprecated because it returns a list of strings. v2 search added which returns a list of tags.",
                     "3.0.0": "v1 removed"
                 },
                 "enum": null
             },
             "statuses": {
-                "description": "List of status dicts resulting from the query",
+                "description": "List of Statuses resulting from the query",
                 "field_type": "list",
                 "field_subtype": "Status",
                 "is_optional": false,
@@ -2765,14 +2860,16 @@
     },
     {
         "name": "Instance",
-        "python_name": "V1Instance",
+        "python_name": "Instance",
         "func_call": "mastodon.instance()",
         "last_changed": "0.0.0",
-        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "masto_doc_link_additional": "https://docs.joinmastodon.org/entities/V1_Instance/",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": false,
         "manual_update": false,
+        "has_versions": ["v1", "v2"],
         "fields": {
             "domain": {
                 "description": "The instances domain name",
@@ -2785,35 +2882,44 @@
                 }
             },
             "description": {
-                "description": "A brief instance description set by the admin",
+                "description": "A brief instance description set by the admin. The V1 variant could contain html, but this is now deprecated.",
                 "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "HTML",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
-                    "1.1.0": "added"
+                    "1.1.0": "added",
+                    "4.0.0": "now contains what was previously short_description, no HTML allowed anymore"
                 },
                 "enum": null
             },
             "short_description": {
-                "description": "An even briefer instance description",
+                "description": "An even briefer instance description. Moved to just 'description' for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+                "moved_path": "description",
+                "deprecated": true,
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
-                    "2.9.2": "added"
+                    "2.9.2": "added",
+                    "4.0.0": "removed"
                 },
                 "enum": null
             },
             "email": {
-                "description": "The admin contact email",
+                "description": "The admin contact email. Moved to InstanceContacts for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+                "moved_path": "contact.email",
+                "deprecated": true,
                 "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "Email",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
-                    "1.1.0": "added"
+                    "1.1.0": "added",
+                    "4.0.0": "removed"
                 },
                 "enum": null
             },
@@ -2829,8 +2935,11 @@
                 "enum": null
             },
             "uri": {
-                "description": "The instance's URL",
+                "description": "The instance's domain name. Moved to 'domain' for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
                 "field_type": "str",
+                "deprecated:": true,
+                "moved_path": "domain",
+                "field_structuretype": "URL",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -2851,29 +2960,42 @@
                 "enum": null
             },
             "urls": {
-                "description": "Additional URLs dict, presently only 'streaming_api' with the stream websocket address.",
+                "description": "Additional InstanceURLs, at least 'streaming_api' with the stream server websocket address. Moved to the instance configuration for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
                 "field_type": "InstanceURLs",
+                "moved_path": "configuration.urls",
+                "deprecated": true,
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
-                    "1.4.2": "added"
+                    "1.4.2": "added",
+                    "4.0.0": "removed"
                 },
                 "enum": null
             },
             "stats": {
-                "description": "A dictionary containing three stats, user_count (number of local users), status_count (number of local statuses) and domain_count (number of known instance domains other than this one).",
+                "description": "InstanceStatistics containing three stats, user_count (number of local users), status_count (number of local statuses) and domain_count (number of known instance domains other than this one). Removed in the v2 API, if you want this, explicitly call instance_v1() instead, or check out instance_nodeinfo().",
                 "field_type": "InstanceStatistics",
                 "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": {
+                    "1.6.0": "added",
+                    "4.0.0": "removed (still present in instance_v1())"
+                }
             },
             "contact_account": {
-                "description": "Account dict of the primary contact for the instance",
+                "description": "Account of the primary contact for the instance. Moved to InstanceContacts for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+                "moved_path": "contact.account",
+                "deprecated": true,
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "1.1.0": "added",
+                    "4.0.0": "removed"
+                }
             },
             "languages": {
                 "description": "Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.",
@@ -2881,31 +3003,58 @@
                 "field_subtype": "str",
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "2.3.0": "added"
+                }
             },
             "registrations": {
-                "description": "Boolean indication whether registrations on this instance are open (True) or not (False)",
-                "field_type": "bool",
+                "description": "InstanceRegistrations object with information about how users can sign up on this instance. In the v1 version, a boolean indication whether registrations on this instance are open (True) or not (False). If you want this behaviour, explicitly use instance_v1().",
+                "field_type": "Union[InstanceRegistrations, bool]",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "1.6.0": "added",
+                    "4.0.0": "changed to be an InststanceRegistrations object instead of a bool"
+                }
             },
             "approval_required": {
-                "description": "True if account approval is required when registering, False if not",
+                "description": "True if account approval is required when registering, False if not. Moved to InstanceRegistrations object for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+                "moved_path": "registrations.approval_required",
                 "field_type": "bool",
+                "deprecated": true,
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "2.9.2": "added",
+                    "4.0.0": "removed"
+                }
             },
             "rules": {
-                "description": "List of dicts with `id` and `text` fields, one for each server rule set by the admin",
+                "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
                 "field_type": "list",
                 "field_subtype": "Rule",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.4.0": "added"
+                }
+            },
+            "source_url": {
+                "description": "URL pointing to a copy of the source code that is used to run this instance. For Mastodon instances, the AGPL requires that this code be available.",
+                "field_type": "Union[InstanceThumbnail, str]",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": {
+                    "3.4.0": "added"
+                }
             },
             "thumbnail": {
-                "description": "URL pointing to a banner image representing the instance.",
+                "description": "Information about thumbnails to represent the instance. In the v1 API variant, simply an URL pointing to a banner image representing the instance - if you want this behaviour, explicitly call instance_v1().",
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -2916,13 +3065,15 @@
                 }
             },
             "invites_enabled": {
-                "description": "Boolean indicating whether invites are enabled on this instance.",
+                "description": "Boolean indicating whether invites are enabled on this instance. Changed in 4.0.0 from being true when the instance setting to enable invites is true to be true when the default user role has invites enabled (i.e. everyone can invite people). Removed for the v2 API, if you need this field, explicitly use instance_v1() instead.",
+                "deprecated": true,
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
-                    "3.1.4": "added"
+                    "3.1.4": "added",
+                    "4.0.0": "removed (still present in instance_v1()). Changed specifics of when field is true."
                 }
             },
             "configuration": {
@@ -2938,9 +3089,96 @@
         }
     },
     {
+        "name": "Instance thumbnail",
+        "python_name": "InstanceThumbnail",
+        "func_call": "mastodon.instance().thumbnail",
+        "last_changed": "0.0.0",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "fields": {
+            "url": {
+                "description": "The URL for an image representing the instance.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            },
+            "blurhash": {
+                "description": "The blurhash for the image representing the instance.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "Blurhash",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            },
+            "versions": {
+                "description": "Different resolution versions of the image representing the instance.",
+                "field_type": "InstanceThumbnailVersions",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Instance thumbnail versions",
+        "python_name": "InstanceThumbnailVersions",
+        "func_call": "mastodon.instance().thumbnail.versions",
+        "last_changed": "0.0.0",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "fields": {
+            "1x": {
+                "description": "The URL for an image representing the instance, for devices with 1x resolution / 96 dpi",
+                "real_name": "@1x",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            },
+            "2x": {
+                "description": "The blurhash for the image representing the instance, for devices with 2x resolution / 192 dpi",
+                "field_type": "str",
+                "real_name": "@2x",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": {
+                    "4.0.0": "added"
+                },
+                "enum": null
+            }
+        }
+    },
+    {
         "name": "Instance urls",
         "python_name": "InstanceURLs",
-        "func_call": "mastodon.instance().urls",
+        "func_call": "mastodon.instance().configuration.urls",
         "last_changed": "0.0.0",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
         "func_call_real": null,
@@ -2959,6 +3197,17 @@
                     "1.4.2": "added"
                 },
                 "enum": null
+            },
+            "status": {
+                "description": "If present, a URL where the status and possibly current issues with the instance can be checked.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": {
+                    "4.0.0": "added"
+                }
             }
         }
     },
@@ -3041,6 +3290,84 @@
         }
     },
     {
+        "name": "Instance registration information",
+        "python_name": "InstanceRegistrations",
+        "func_call": "mastodon.instance().registrations",
+        "last_changed": "0.0.0",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "fields": {
+            "approval_required": {
+                "description": "Boolean indicating whether registrations on the instance require approval.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            },
+            "enabled": {
+                "description": "Boolean indicating whether registrations are enabled on this instance.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            },
+            "message": {
+                "description": "A message to be shown instead of the sign-up form when registrations are closed.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "field_structuretype": "HTML",
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            }
+        }
+    },
+    {
+        "name": "Instance contact information",
+        "python_name": "InstanceContacts",
+        "func_call": "mastodon.instance().contact",
+        "last_changed": "0.0.0",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "fields": {
+            "account": {
+                "description": "Account that has been designated as the instances contact account.",
+                "field_type": "Account",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            },
+            "email": {
+                "description": "E-mail address that can be used to contact the instance staff.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "Email",
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            }
+        }
+    },    
+    {
         "name": "Instance configuration",
         "python_name": "InstanceConfiguration",
         "func_call": "mastodon.instance().configuration",
@@ -3086,10 +3413,30 @@
                 "field_type": "InstancePollConfiguration",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.4.2": "added"
+                }
             },
-            "version_history": {
-                "3.4.2": "added"
+            "translation": {
+                "description": "Translation-related instance configuration fields. Only present for the v2 API variant of the instance API.",
+                "field_type": "InstanceTranslationConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            },
+            "urls": {
+                "description": "Instance related URLs. Only present for the v2 API variant of the instance API.",
+                "field_type": "InstanceURLs",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
             }
         }
     },
@@ -3159,6 +3506,29 @@
             }
         }
     },
+    {
+        "name": "Instance translation configuration",
+        "python_name": "InstanceTranslationConfiguration",
+        "func_call": "mastodon.instance().configuration.translation",
+        "last_changed": "0.0.0",
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "fields": {
+            "max_characters": {
+                "description": "Boolean indicating whether the translation API is enabled on this instance.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": {
+                    "4.0.0": "added"
+                }
+            }
+        }
+    },    
     {
         "name": "Instance media attachment configuration",
         "python_name": "InstanceMediaConfiguration",
@@ -3638,7 +4008,7 @@
                 "enum": null
             },
             "account": {
-                "description": "Account dict of the user that filed this report",
+                "description": "Account of the user that filed this report",
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": false,
@@ -3660,7 +4030,7 @@
                 "enum": null
             },
             "assigned_account": {
-                "description": "If the report as been assigned to an account, account dict of that account (None if not)",
+                "description": "If the report as been assigned to an account, that Account (None if not)",
                 "field_type": "AdminAccount",
                 "field_subtype": null,
                 "is_optional": false,
@@ -3671,7 +4041,7 @@
                 "enum": null
             },
             "action_taken_by_account": {
-                "description": "Account dict of the account that processed this report",
+                "description": "Account that processed this report",
                 "field_type": "AdminAccount",
                 "field_subtype": null,
                 "is_optional": false,
@@ -3682,7 +4052,7 @@
                 "enum": null
             },
             "statuses": {
-                "description": "List of statuses attached to the report, as status dicts",
+                "description": "List of Statuses attached to the report",
                 "field_type": "list",
                 "field_subtype": "Status",
                 "is_optional": false,
@@ -4212,7 +4582,9 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "version_history": [],
+                "version_history": {
+                    "3.0.0": "added"
+                },
                 "enum": null
             },
             "version": {
@@ -4232,7 +4604,9 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "version_history": [],
+                "version_history": {
+                    "3.0.0": "added"
+                },
                 "enum": null
             }
         }
@@ -4263,6 +4637,7 @@
                 "description": "The contents of the annoucement, as an html string",
                 "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "HTML",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
@@ -4337,7 +4712,7 @@
                 "enum": null
             },
             "mentions": {
-                "description": "Users mentioned in the annoucement, as a list of mention dicts",
+                "description": "Users mentioned in the annoucement",
                 "field_type": "list",
                 "field_subtype": "Mention",
                 "is_optional": false,
@@ -4348,7 +4723,7 @@
                 "enum": null
             },
             "tags": {
-                "description": "Hashtags mentioned in the announcement, as a list of hashtag dicts",
+                "description": "Hashtags mentioned in the announcement",
                 "field_type": "list",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4359,7 +4734,7 @@
                 "enum": null
             },
             "emojis": {
-                "description": "Custom emoji used in the annoucement, as a list of emoji dicts",
+                "description": "Custom emoji used in the annoucement",
                 "field_type": "list",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4370,7 +4745,7 @@
                 "enum": null
             },
             "reactions": {
-                "description": "Reactions to the annoucement, as a list of reaction dicts",
+                "description": "Reactions to the annoucement",
                 "field_type": "list",
                 "field_subtype": "Reaction",
                 "is_optional": false,
@@ -4486,7 +4861,7 @@
                 "enum": null
             },
             "accounts": {
-                "description": "List of account dicts of the familiar followers",
+                "description": "List of Accounts of the familiar followers",
                 "field_type": "list",
                 "field_subtype": "Account",
                 "is_optional": false,
@@ -4557,6 +4932,7 @@
                 "description": "For local users, the user's email",
                 "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "Email",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": {
@@ -4679,7 +5055,7 @@
                 "enum": null
             },
             "account": {
-                "description": "The user's account, as a standard account dict",
+                "description": "The user's Account",
                 "field_type": "Account",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4690,7 +5066,7 @@
                 "enum": null
             },
             "sensitized": {
-                "description": "Undocumented. If you know what this does, please let me know.",
+                "description": "Undocumented. If you know what this means, please let me know.",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4837,7 +5213,7 @@
                 "enum": null
             },
             "data": {
-                "description": "A list of dicts with the measure broken down by date, as below",
+                "description": "A list of AdminMeasureData with the measure broken down by date",
                 "field_type": "list",
                 "field_subtype": "AdminMeasureData",
                 "is_optional": false,
@@ -4907,7 +5283,7 @@
                 "enum": null
             },
             "data": {
-                "description": "A list of data dicts, as below",
+                "description": "A list of data AdminDimensionData objects",
                 "field_type": "list",
                 "field_subtype": "AdminDimensionData",
                 "is_optional": false,
@@ -4981,21 +5357,30 @@
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             },
             "frequency": {
                 "description": "Time resolution (day or month) for the returned data",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             },
             "data": {
-                "description": "List of data dicts, as below",
+                "description": "List of AdminCohort objects",
                 "field_type": "list",
                 "field_subtype": "AdminCohort",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             }
         }
     },
@@ -5015,21 +5400,30 @@
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             },
             "rate": {
                 "description": "Fraction of users retained",
                 "field_type": "float",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             },
             "value": {
                 "description": "Absolute number of users retained",
                 "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "version_history": {
+                    "3.5.0": "added"
+                }
             }
         }
     },
