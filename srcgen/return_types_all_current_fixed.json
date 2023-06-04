@@ -12,7 +12,7 @@
         "fields": {
             "id": {
                 "description": "The accounts id",
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -690,7 +690,7 @@
         "fields": {
             "id": {
                 "description": "Id of this status",
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -746,7 +746,7 @@
             },
             "in_reply_to_id": {
                 "description": "Id of the status this status is in response to",
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
@@ -759,7 +759,7 @@
             },
             "in_reply_to_account_id": {
                 "description": "Id of the account this status is in response to",
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
@@ -909,7 +909,9 @@
                     "public": "Publicly visible and discoverable in public timelines",
                     "unlisted": "Publicly visible, but not shown on public timelines and other discovery tools",
                     "private": "Visible only to followers",
-                    "direct": "Visible only to people mentioned in the status"
+                    "direct": "Visible only to people mentioned in the status",
+                    "list": "Visible only to people on a manually curated list (pleroma-specific)",
+                    "local": "Visible only to local followers (pleroma-specific)"
                 }
             },
             "mentions": {
@@ -1442,7 +1444,7 @@
             },
             "in_reply_to_id": {
                 "description": "ID of the status this one is a reply to",
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
@@ -2774,7 +2776,7 @@
         "fields": {
             "id": {
                 "description": "The ID of the attachment.",
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -7548,7 +7550,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "IdType",
+                "field_type": "SnowflakeIdType",
                 "field_subtype": null,
                 "field_structuretype": null,
                 "is_optional": false,
