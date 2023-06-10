@@ -55,3 +55,10 @@ Documentation="https://mastodonpy.readthedocs.io/"
 
 [tool.pytest.ini_options]
 addopts = "--cov=mastodon"
+
+# Workaround for some "autodiscovery" issue in setuptools? maybe? I don't know. 
+# setuptools and pyproject.toml docs seem to be intent on making everyone continue
+# the proud lineage of everyone just cargo-culting their makefiles.
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["."] by default)
+include = ["mastodon*"]  # package names should match these glob patterns (["*"] by default)
