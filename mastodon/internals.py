@@ -1,6 +1,6 @@
 # internals.py - many internal helpers
 
-import datetime
+from datetime import timezone, datetime
 from contextlib import closing
 import mimetypes
 import threading
@@ -14,20 +14,22 @@ import re
 import collections
 import base64
 import os
+import inspect
 
-from .utility import AttribAccessDict, AttribAccessList, parse_version_string
-from .errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
+from mastodon.versions import parse_version_string
+from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
                     MastodonUnauthorizedError, MastodonInternalServerError, MastodonBadGatewayError, MastodonServiceUnavailableError, \
                     MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError
-from .compat import urlparse, magic, PurePath, Path
-from .defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
-
+from mastodon.compat import urlparse, magic, PurePath, Path
+from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
+from mastodon.types import AttribAccessDict, try_cast_recurse
+from mastodon.types import *
 
 ###
 # Internal helpers, dragons probably
 ###
 class Mastodon():
-    def __datetime_to_epoch(self, date_time):
+    def __datetime_to_epoch(self, date_time: datetime) -> float:
         """
         Converts a python datetime to unix epoch, accounting for
         time zones and such.
@@ -35,7 +37,7 @@ class Mastodon():
         Assumes UTC if timezone is not given.
         """
         if date_time.tzinfo is None:
-            date_time = date_time.replace(tzinfo=datetime.timezone.utc)
+            date_time = date_time.replace(tzinfo=timezone.utc)
         return date_time.timestamp()
 
     def __get_logged_in_id(self):
@@ -47,94 +49,48 @@ class Mastodon():
         return self.__logged_in_id
 
     @staticmethod
-    def __json_allow_dict_attrs(json_object):
-        """
-        Makes it possible to use attribute notation to access a dicts
-        elements, while still allowing the dict to act as a dict.
-        """
-        if isinstance(json_object, dict):
-            return AttribAccessDict(json_object)
-        return json_object
-
-    @staticmethod
-    def __json_date_parse(json_object):
-        """
-        Parse dates in certain known json fields, if possible.
-        """
-        known_date_fields = ["created_at", "week", "day", "expires_at", "scheduled_at",
-                                "updated_at", "last_status_at", "starts_at", "ends_at", "published_at", "edited_at", "date", "period"]
-        mark_delete = []
-        for k, v in json_object.items():
-            if k in known_date_fields:
-                if v is not None:
-                    try:
-                        if isinstance(v, int):
-                            json_object[k] = datetime.datetime.fromtimestamp(v, datetime.timezone.utc)
-                        else:
-                            json_object[k] = dateutil.parser.parse(v)
-                    except:
-                        # When we can't parse a date, we just leave the field out
-                        mark_delete.append(k)
-        # Two step process because otherwise python gets very upset
-        for k in mark_delete:
-            del json_object[k]
-        return json_object
-
-    @staticmethod
-    def __json_truefalse_parse(json_object):
-        """
-        Parse 'True' / 'False' strings in certain known fields
-        """
-        for key in ('follow', 'favourite', 'reblog', 'mention', 'confirmed', 'suspended', 'silenced', 'disabled', 'approved', 'all_day'):
-            if (key in json_object and isinstance(json_object[key], six.text_type)):
-                if json_object[key].lower() == 'true':
-                    json_object[key] = True
-                if json_object[key].lower() == 'false':
-                    json_object[key] = False
-        return json_object
-
-    @staticmethod
-    def __json_strnum_to_bignum(json_object):
-        """
-        Converts json string numerals to native python bignums.
-        """
-        for key in ('id', 'week', 'in_reply_to_id', 'in_reply_to_account_id', 'logins', 'registrations', 'statuses',
-                    'day', 'last_read_id', 'value', 'frequency', 'rate', 'invited_by_account_id', 'count'):
-            if (key in json_object and isinstance(json_object[key], six.text_type)):
-                try:
-                    json_object[key] = int(json_object[key])
-                except ValueError:
-                    pass
-
-        return json_object
-
-    @staticmethod
-    def __json_hooks(json_object):
-        """
-        All the json hooks. Used in request parsing.
-        """
-        json_object = Mastodon.__json_strnum_to_bignum(json_object)
-        json_object = Mastodon.__json_date_parse(json_object)
-        json_object = Mastodon.__json_truefalse_parse(json_object)
-        json_object = Mastodon.__json_allow_dict_attrs(json_object)
-        return json_object
-
-    @staticmethod
-    def __consistent_isoformat_utc(datetime_val):
+    def __consistent_isoformat_utc(datetime_val: datetime) -> str:
         """
         Function that does what isoformat does but it actually does the same
         every time instead of randomly doing different things on some systems
         and also it represents that time as the equivalent UTC time.
         """
-        isotime = datetime_val.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
+        isotime = datetime_val.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
         if isotime[-2] != ":":
             isotime = isotime[:-2] + ":" + isotime[-2:]
         return isotime
 
+    def __try_cast_to_type(self, value, override_type = None):
+        """
+        Tries to cast a value to the type of the function two levels up in the call stack.
+        Tries to cast to AttribAccessDict if it doesn't know what to cast to.
+
+        This is used internally inside of __api_request.
+        """
+        try:
+            if override_type is None:
+                # Find type of function two frames up
+                caller_frame = inspect.currentframe().f_back.f_back
+                caller_function = caller_frame.f_code
+                caller_func_name = caller_function.co_name
+                func_obj = getattr(self, caller_func_name)
+
+                # Very carefully try to find what we need to cast to
+                return_type = AttribAccessDict
+                if func_obj is not None:
+                    return_type = func_obj.__annotations__.get('return', AttribAccessDict)
+            else:
+                return_type = override_type
+        except:
+            return_type = AttribAccessDict
+        return try_cast_recurse(return_type, value)
+
     def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None,
-                        do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None):
+                        do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None, override_type=None):
         """
         Internal API request helper.
+
+        Does a large amount of different things that I should document one day, but not today.
         """
         response = None
         remaining_wait = 0
@@ -248,7 +204,7 @@ class Mastodon():
 
             if not response_object.ok:
                 try:
-                    response = response_object.json(object_hook=self.__json_hooks)
+                    response = self.__try_cast_to_type(response_object.json(), override_type = override_type) # TODO actually cast to an error type
                     if isinstance(response, dict) and 'error' in response:
                         error_msg = response['error']
                     elif isinstance(response, str):
@@ -301,12 +257,16 @@ class Mastodon():
 
             if parse:
                 try:
-                    response = response_object.json(object_hook=self.__json_hooks)
-                except:
+                    # The new parsing is very basic, type conversion happens later,
+                    # within the new type system. This should be overall more robust.
+                    response = response_object.json()
+                except Exception as e:
                     raise MastodonAPIError(
                         f"Could not parse response as JSON, response code was {response_object.status_code}, "
-                        f"bad json content was {response_object.content!r}."
+                        f"bad json content was {response_object.content!r}.",
+                        f"Exception was: {e}"
                     )
+                response = self.__try_cast_to_type(response, override_type = override_type)
             else:
                 response = response_object.content
 
@@ -391,10 +351,10 @@ class Mastodon():
                             # Will be removed in future
                             if isinstance(response[0], AttribAccessDict):
                                 response[0]._pagination_prev = prev_params
-
+        
         return response
 
-    def __get_streaming_base(self):
+    def __get_streaming_base(self) -> str:
         """
         Internal streaming API helper.
 
@@ -415,6 +375,7 @@ class Mastodon():
                 )
         else:
             url = self.api_base_url
+        assert not url is None
         return url
 
     def __stream(self, endpoint, listener, params={}, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
@@ -570,7 +531,7 @@ class Mastodon():
 
         return params
 
-    def __unpack_id(self, id, dateconv=False):
+    def __unpack_id(self, id, dateconv = False, listify = False):
         """
         Internal object-to-id converter
 
@@ -579,10 +540,18 @@ class Mastodon():
         the id straight.
 
         Also unpacks datetimes to snowflake IDs if requested.
+
+        TODO: Rework this to use the new type system.
         """
+        if not isinstance(id, list) and listify:
+            id = [id]
+        if isinstance(id, list):
+            for i in range(len(id)):
+                id[i] = self.__unpack_id(id[i], dateconv = dateconv, listify = False)
+            return id
         if isinstance(id, dict) and "id" in id:
             id = id["id"]
-        if dateconv and isinstance(id, datetime.datetime):
+        if dateconv and isinstance(id, datetime):
             id = (int(id.timestamp()) << 16) * 1000
         return id
 
@@ -623,6 +592,7 @@ class Mastodon():
         return mime_type
 
     def __load_media_file(self, media_file, mime_type=None, file_name=None):
+        """Internal helper to load a media file"""
         if isinstance(media_file, PurePath):
             media_file = str(media_file)
         if isinstance(media_file, str):

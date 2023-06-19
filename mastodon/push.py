@@ -4,36 +4,39 @@ import base64
 import os
 import json
 
-from .versions import _DICT_VERSION_PUSH, _DICT_VERSION_PUSH_NOTIF
-from .errors import MastodonIllegalArgumentError
-from .utility import api_version
-from .compat import IMPL_HAS_CRYPTO, ec, serialization, default_backend
-from .compat import IMPL_HAS_ECE, http_ece
+from mastodon.versions import _DICT_VERSION_PUSH, _DICT_VERSION_PUSH_NOTIF
+from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.utility import api_version
+from mastodon.compat import IMPL_HAS_CRYPTO, ec, serialization, default_backend
+from mastodon.compat import IMPL_HAS_ECE, http_ece
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, WebPushSubscription, PushNotification, try_cast_recurse
+from typing import Optional, Tuple
 
 class Mastodon(Internals):
     ###
     # Reading data: Webpush subscriptions
     ###
     @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
-    def push_subscription(self):
+    def push_subscription(self) -> WebPushSubscription:
         """
         Fetch the current push subscription the logged-in user has for this app.
 
-        Returns a :ref:`push subscription dict <push subscription dict>`.
+        Only one webpush subscription can be active at a time for any given app.
         """
         return self.__api_request('GET', '/api/v1/push/subscription')
 
     ###
     # Writing data: Push subscriptions
     ###
-    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
-    def push_subscription_set(self, endpoint, encrypt_params, follow_events=None,
-                              favourite_events=None, reblog_events=None,
-                              mention_events=None, poll_events=None,
-                              follow_request_events=None, status_events=None, policy='all'):
+    @api_version("2.4.0", "4..0", _DICT_VERSION_PUSH)
+    def push_subscription_set(self, endpoint: str, encrypt_params: WebpushCryptoParamsPubkey, follow_events: Optional[bool] = None,
+                              favourite_events: Optional[bool] = None, reblog_events: Optional[bool] = None,
+                              mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
+                              follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
+                              policy: str = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
+                              admin_report_events: Optional[bool] = None) -> WebPushSubscription:
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
 
@@ -47,6 +50,18 @@ class Mastodon(Internals):
         `all`, `none`, `follower` and `followed`.
 
         The rest of the parameters controls what kind of events you wish to subscribe to.
+        Events whose names start with "admin" require admin privileges to subscribe to.
+
+        * `follow_events` controls whether you receive events when someone follows the logged in user.
+        * `favourite_events` controls whether you receive events when someone favourites one of the logged in users statuses.
+        * `reblog_events` controls whether you receive events when someone boosts one of the logged in users statuses.
+        * `mention_events` controls whether you receive events when someone mentions the logged in user in a status.
+        * `poll_events` controls whether you receive events when a poll the logged in user has voted in has ended.
+        * `follow_request_events` controls whether you receive events when someone requests to follow the logged in user.
+        * `status_events` controls whether you receive events when someone the logged in user has subscribed to notifications for posts a new status.
+        * `update_events` controls whether you receive events when a status that the logged in user has boosted has been edited.
+        * `admin_sign_up_events` controls whether you receive events when a new user signs up.
+        * `admin_report_events` controls whether you receive events when a new report is received.
 
         Returns a :ref:`push subscription dict <push subscription dict>`.
         """
@@ -86,22 +101,37 @@ class Mastodon(Internals):
         if follow_request_events is not None:
             params['data[alerts][status]'] = status_events
 
+        if update_events is not None:
+            params['data[alerts][update]'] = update_events
+        
+        if admin_sign_up_events is not None:
+            params['data[alerts][admin.sign_up]'] = admin_sign_up_events
+        
+        if admin_report_events is not None:
+            params['data[alerts][admin.report]'] = admin_report_events
+
         # Canonicalize booleans
         params = self.__generate_params(params)
 
         return self.__api_request('POST', '/api/v1/push/subscription', params)
 
     @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
-    def push_subscription_update(self, follow_events=None,
-                                 favourite_events=None, reblog_events=None,
-                                 mention_events=None, poll_events=None,
-                                 follow_request_events=None):
+    def push_subscription_update(self, follow_events: Optional[bool] = None,
+                              favourite_events: Optional[bool] = None, reblog_events: Optional[bool] = None,
+                              mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
+                              follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
+                              policy: Optional[str] = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
+                              admin_report_events: Optional[bool] = None) -> WebPushSubscription:
         """
         Modifies what kind of events the app wishes to subscribe to.
 
-        Returns the updated :ref:`push subscription dict <push subscription dict>`.
+        Parameters are as in :ref:`push_subscription_create() <push_subscription_create()>`.
+
+        Returned object reflects the updated push subscription.
         """
         params = {}
+        if policy is not None:
+            params['policy'] = policy
 
         if follow_events is not None:
             params['data[alerts][follow]'] = follow_events
@@ -121,6 +151,18 @@ class Mastodon(Internals):
         if follow_request_events is not None:
             params['data[alerts][follow_request]'] = follow_request_events
 
+        if follow_request_events is not None:
+            params['data[alerts][status]'] = status_events
+
+        if update_events is not None:
+            params['data[alerts][update]'] = update_events
+        
+        if admin_sign_up_events is not None:
+            params['data[alerts][admin.sign_up]'] = admin_sign_up_events
+        
+        if admin_report_events is not None:
+            params['data[alerts][admin.report]'] = admin_report_events
+
         # Canonicalize booleans
         params = self.__generate_params(params)
 
@@ -136,7 +178,7 @@ class Mastodon(Internals):
     ###
     # Push subscription crypto utilities
     ###
-    def push_subscription_generate_keys(self):
+    def push_subscription_generate_keys(self) -> Tuple[WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey]:
         """
         Generates a private key, public key and shared secret for use in webpush subscriptions.
 
@@ -144,8 +186,7 @@ class Mastodon(Internals):
         public key and shared secret.
         """
         if not IMPL_HAS_CRYPTO:
-            raise NotImplementedError(
-                'To use the crypto tools, please install the webpush feature dependencies.')
+            raise NotImplementedError('To use the crypto tools, please install the webpush feature dependencies.')
 
         push_key_pair = ec.generate_private_key(ec.SECP256R1(), default_backend())
         push_key_priv = push_key_pair.private_numbers().private_value
@@ -172,17 +213,14 @@ class Mastodon(Internals):
         return priv_dict, pub_dict
 
     @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH_NOTIF)
-    def push_subscription_decrypt_push(self, data, decrypt_params, encryption_header, crypto_key_header):
+    def push_subscription_decrypt_push(self, data: bytes, decrypt_params: WebpushCryptoParamsPrivkey, encryption_header: str, crypto_key_header: str) -> PushNotification:
         """
         Decrypts `data` received in a webpush request. Requires the private key dict
         from :ref:`push_subscription_generate_keys() <push_subscription_generate_keys()>` (`decrypt_params`) as well as the
         Encryption and server Crypto-Key headers from the received webpush
-
-        Returns the decoded webpush as a :ref:`push notification dict <push notification dict>`.
         """
         if (not IMPL_HAS_ECE) or (not IMPL_HAS_CRYPTO):
-            raise NotImplementedError(
-                'To use the crypto tools, please install the webpush feature dependencies.')
+            raise NotImplementedError('To use the crypto tools, please install the webpush feature dependencies.')
 
         salt = self.__decode_webpush_b64(encryption_header.split("salt=")[1].strip())
         dhparams = self.__decode_webpush_b64(crypto_key_header.split("dh=")[1].split(";")[0].strip())
@@ -199,4 +237,4 @@ class Mastodon(Internals):
             version="aesgcm"
         )
 
-        return json.loads(decrypted.decode('utf-8'), object_hook=Mastodon.__json_hooks)
+        return try_cast_recurse(PushNotification, json.loads(decrypted.decode('utf-8')))

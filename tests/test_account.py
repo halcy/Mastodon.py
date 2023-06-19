@@ -61,7 +61,6 @@ def test_account_follow_unfollow(api, api2):
     relationship = api.account_follow(api2_id)
     try:
         assert relationship
-        print(relationship)
         assert relationship['following']
     finally:
         relationship = api.account_unfollow(api2_id)
@@ -125,6 +124,7 @@ def test_account_update_credentials(api):
     )
     
     assert account
+    assert account.id
     assert account["display_name"] == 'John Lennon'
     assert re.sub("<.*?>", " ", account["note"]).strip() == 'I walk funny'
     assert account["fields"][0].name == "bread"
@@ -222,6 +222,7 @@ def test_preferences(api):
 
 @pytest.mark.vcr()
 def test_suggested_tags(api):
+    status = None
     try:
         status = api.status_post("cool free #ringtones")
         time.sleep(2)
@@ -234,6 +235,8 @@ def test_suggested_tags(api):
     
 @pytest.mark.vcr()
 def test_featured_tags(api):
+    featured_tag = None
+    featured_tag_2 = None
     try:
         featured_tag = api.featured_tag_create("ringtones")
         assert featured_tag
@@ -253,7 +256,8 @@ def test_featured_tags(api):
     finally:
         if featured_tag is not None:
             api.featured_tag_delete(featured_tag)
-        api.featured_tag_delete(featured_tag_2) 
+        if featured_tag_2 is not None:            
+            api.featured_tag_delete(featured_tag_2)
 
 @pytest.mark.vcr()
 def test_account_notes(api, api2):
@@ -264,6 +268,8 @@ def test_account_notes(api, api2):
 @pytest.mark.vcr()
 def test_follow_with_notify_reblog(api, api2, api3):
     api2_id = api2.account_verify_credentials()
+    status1 = None
+    status2 = None
     try:
         api.account_follow(api2_id, notify = True, reblogs = False)
         status1 = api3.toot("rootin tooting and shootin")

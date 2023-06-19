@@ -1,11 +1,12 @@
 # search.py - search endpoints
 
-from .versions import _DICT_VERSION_SEARCHRESULT
-from .errors import MastodonVersionError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_SEARCHRESULT
+from mastodon.errors import MastodonVersionError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import Search, SearchV2, Account, IdType
+from typing import Union, Optional
 
 class Mastodon(Internals):
     ###
@@ -21,7 +22,10 @@ class Mastodon(Internals):
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
     @api_version("1.1.0", "2.8.0", _DICT_VERSION_SEARCHRESULT)
-    def search(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
+    def search(self, q: str, resolve: bool = True, result_type: Optional[str] = None, 
+               account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None, 
+               min_id: Optional[IdType] = None, max_id: Optional[IdType] = None, 
+               exclude_unreviewed: bool = True) -> Union[Search, SearchV2]:
         """
         Fetch matching hashtags, accounts and statuses. Will perform webfinger
         lookups if resolve is True. Full-text search is only enabled if
@@ -44,17 +48,15 @@ class Mastodon(Internals):
         on Mastodon 2.8.0 or above - this function will throw a MastodonVersionError
         if you try to use them on versions before that. Note that the cached version
         number will be used for this to avoid uneccesary requests.
-
-        Returns a :ref:`search result dict <search result dict>`, with tags as `hashtag dicts`_.
         """
         if self.verify_minimum_version("2.4.1", cached=True):
-            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed)
+            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed, override_type=SearchV2)
         else:
             self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
-            return self.search_v1(q, resolve=resolve)
+            return self.search_v1(q, resolve=resolve, override_type=Search)
 
     @api_version("1.1.0", "2.1.0", "2.1.0")
-    def search_v1(self, q, resolve=False):
+    def search_v1(self, q: str, resolve: bool = False) -> Search:
         """
         Identical to `search_v2()`, except in that it does not return
         tags as :ref:`hashtag dicts <hashtag dicts>`.
@@ -67,7 +69,10 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/search', params)
 
     @api_version("2.4.1", "2.8.0", _DICT_VERSION_SEARCHRESULT)
-    def search_v2(self, q, resolve=True, result_type=None, account_id=None, offset=None, min_id=None, max_id=None, exclude_unreviewed=True):
+    def search_v2(self, q, resolve: bool = True, result_type: Optional[str] = None, 
+               account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None, 
+               min_id: Optional[IdType] = None, max_id: Optional[IdType] = None, 
+               exclude_unreviewed: bool = True) -> SearchV2:
         """
         Identical to `search_v1()`, except in that it returns tags as
         :ref:`hashtag dicts <hashtag dicts>`, has more parameters, and resolves by default.

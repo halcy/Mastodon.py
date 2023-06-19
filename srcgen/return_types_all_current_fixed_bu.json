@@ -377,7 +377,7 @@
                 "enum": null
             },
             "roles": {
-                "description": "Deprecated. Was a list of strings with the users roles. Now just an empty list. Mastodon.py makes no attempt to fill it, and the field may be removed if Mastodon removes it. use role field instead.",
+                "description": "Deprecated. Was a list of strings with the users roles. Now just an empty list. Mastodon.py makes no attempt to fill it, and the field may be removed if Mastodon removes it. Use the `role` field instead.",
                 "is_deprecated": true,
                 "field_type": "EntityList",
                 "field_subtype": null,
@@ -409,7 +409,7 @@
             },
             "source": {
                 "description": "Additional information about the account, useful for profile editing. Only present for account returned from account_verify_credentials()",
-                "field_type": "AccountSource",
+                "field_type": "CredentialAccountSource",
                 "field_subtype": null,
                 "is_optional": true,
                 "is_nullable": false,
@@ -438,7 +438,7 @@
     },
     {
         "name": "Account field",
-        "python_name": "Field",
+        "python_name": "AccountField",
         "func_call": "mastodon.account(<account id>).fields[0]",
         "func_call_real": "mastodon.account(23972).fields[0]",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Account/",
@@ -1237,7 +1237,7 @@
         "fields": {
             "filter": {
                 "description": "The filter that was matched.",
-                "field_type": "V1Filter",
+                "field_type": "Union[Filter, FilterV2]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -2371,15 +2371,15 @@
         }
     },
     {
-        "name": "Filter",
+        "name": "Filter (v1)",
         "python_name": "Filter",
         "func_call": "mastodon.filters()[0]",
-        "masto_doc_link": "https://docs.joinmastodon.org/entities/Filter/",
-        "masto_doc_link_additional": "https://docs.joinmastodon.org/entities/V1_Filter/",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Filter/",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": false,
         "manual_update": false,
+        "is_deprecated": true,
         "has_versions": [
             "v1",
             "v2"
@@ -2411,10 +2411,6 @@
                     [
                         "2.4.3",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed (still present in v1 API variant)"
                     ]
                 ],
                 "enum": null
@@ -2469,10 +2465,6 @@
                     [
                         "2.4.3",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed (still present in v1 API variant)"
                     ]
                 ],
                 "enum": null
@@ -2488,10 +2480,72 @@
                     [
                         "2.4.3",
                         "added"
-                    ],
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Filter (v2)",
+        "python_name": "FilterV2",
+        "func_call": "mastodon.filters()[0]",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Filter/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "description": "Information about a keyword / status filter",
+        "fields": {
+            "id": {
+                "description": "Id of the filter",
+                "field_type": "IdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
                     [
                         "4.0.0",
-                        "removed (still present in v1 API variant)"
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "context": {
+                "description": "List of places where the filters are applied.",
+                "field_type": "EntityList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "FilterContextEnum",
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "home": "Home timeline and lists",
+                    "notifications": "Notifications timeline",
+                    "public": "Puclic timelines",
+                    "thread": "Expanded view of a status with replies",
+                    "account": "Posts displayed when viewing a profile"
+                }
+            },
+            "expires_at": {
+                "description": "Expiry date for the filter",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
                     ]
                 ],
                 "enum": null
@@ -2859,7 +2913,7 @@
             },
             "text_url": {
                 "description": "Deprecated. The display text for the media (what shows up in text). May not be present in mastodon versions after 3.5.0",
-                "deprecated": true,
+                "is_deprecated": true,
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -3517,7 +3571,7 @@
         }
     },
     {
-        "name": "Search result",
+        "name": "Search result (v1)",
         "python_name": "Search",
         "func_call": "mastodon.search(\"<search query>\")",
         "func_call_real": "mastodon.search(\"halcy\")",
@@ -3526,6 +3580,11 @@
         "func_alternate_acc": false,
         "manual_update": false,
         "description": "A search result, with accounts, hashtags and statuses.",
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "is_deprecated": true,
         "fields": {
             "accounts": {
                 "description": "List of Accounts resulting from the query",
@@ -3544,9 +3603,10 @@
             "hashtags": {
                 "description": "List of Tags resulting from the query",
                 "field_type": "EntityList",
-                "field_subtype": "Union[str, Tag]",
+                "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
+                "is_deprecated": true,
                 "version_history": [
                     [
                         "1.1.0",
@@ -3580,12 +3640,70 @@
         }
     },
     {
-        "name": "Instance",
+        "name": "Search result (v2)",
+        "python_name": "SearchV2",
+        "func_call": "mastodon.search(\"<search query>\")",
+        "func_call_real": "mastodon.search(\"halcy\")",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Search/",
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A search result, with accounts, hashtags and statuses.",
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "fields": {
+            "accounts": {
+                "description": "List of Accounts resulting from the query",
+                "field_type": "EntityList",
+                "field_subtype": "Account",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "1.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "hashtags": {
+                "description": "List of Tags resulting from the query",
+                "field_type": "EntityList",
+                "field_subtype": "Tag",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.4.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "statuses": {
+                "description": "List of Statuses resulting from the query",
+                "field_type": "EntityList",
+                "field_subtype": "Status",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "1.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Instance (v1)",
         "python_name": "Instance",
-        "func_call": "mastodon.instance()",
-        "func_call_additional": "mastodon.instance_v1()",
-        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
-        "masto_doc_link_additional": "https://docs.joinmastodon.org/entities/V1_Instance/",
+        "func_call": "mastodon.instance_v1()",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
+        "masto_doc_link_additional": "https://docs.joinmastodon.org/entities/Instance/",
         "func_call_real": null,
         "func_alternate_acc": false,
         "manual_update": false,
@@ -3593,79 +3711,20 @@
             "v1",
             "v2"
         ],
-        "description": "Information about an instance",
+        "description": "Information about an instance. V1 API version.",
         "fields": {
-            "domain": {
-                "description": "The instances domain name",
+            "uri": {
+                "description": "The instance's domain name. Moved to 'domain' for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
                 "field_type": "str",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
+                "moved_path": "domain",
                 "field_structuretype": "DomainName",
-                "api_version": "v2",
-                "version_history": [
-                    [
-                        "4.0.0",
-                        "added"
-                    ]
-                ]
-            },
-            "description": {
-                "description": "A brief instance description set by the admin. The V1 variant could contain html, but this is now deprecated.",
-                "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": "HTML",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
                     [
                         "1.1.0",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "now contains what was previously short_description, no HTML allowed anymore"
-                    ]
-                ],
-                "enum": null
-            },
-            "short_description": {
-                "description": "An even briefer instance description. Moved to just 'description' for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
-                "moved_path": "description",
-                "deprecated": true,
-                "field_type": "str",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "2.9.2",
-                        "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed"
-                    ]
-                ],
-                "enum": null
-            },
-            "email": {
-                "description": "The admin contact email. Moved to InstanceContacts for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
-                "moved_path": "contact.email",
-                "deprecated": true,
-                "field_type": "str",
-                "field_subtype": null,
-                "field_structuretype": "Email",
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "1.1.0",
-                        "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed"
                     ]
                 ],
                 "enum": null
@@ -3683,14 +3742,48 @@
                     ]
                 ],
                 "enum": null
-            },
-            "uri": {
-                "description": "The instance's domain name. Moved to 'domain' for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+            },   
+            "short_description": {
+                "description": "An very brief text only instance description. Moved to 'description' for the v2 API.",
+                "moved_path": "description",
                 "field_type": "str",
-                "deprecated:": true,
-                "moved_path": "domain",
-                "field_structuretype": "DomainName",
                 "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.2",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "description": {
+                "description": "A brief instance description set by the admin. The V1 variant could contain html, but this is now deprecated. Likely to be empty on many instances.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "HTML",
+                "is_optional": false,
+                "is_nullable": false,
+                "is_deprecated": true,
+                "version_history": [
+                    [
+                        "1.1.0",
+                        "added"
+                    ],
+                    [
+                        "4.0.0",
+                        "deprecated - likely to be empty."
+                    ]
+                ],
+                "enum": null
+            },
+            "email": {
+                "description": "The admin contact email. Moved to InstanceContacts for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+                "moved_path": "contact.email",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "Email",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -3702,7 +3795,7 @@
                 "enum": null
             },
             "version": {
-                "description": "The instance's Mastodon version",
+                "description": "The instance's Mastodon version. For a more robust parsed major/minor/patch version see TODO IMPLEMENT FUNCTION TO RETURN VERSIONS",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -3716,10 +3809,9 @@
                 "enum": null
             },
             "urls": {
-                "description": "Additional InstanceURLs, at least 'streaming_api' with the stream server websocket address. Moved to the instance configuration for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
+                "description": "Additional InstanceURLs, in the v1 api version likely to be just 'streaming_api' with the stream server websocket address.",
                 "field_type": "InstanceURLs",
                 "moved_path": "configuration.urls",
-                "deprecated": true,
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -3727,61 +3819,34 @@
                     [
                         "1.4.2",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed"
                     ]
                 ],
                 "enum": null
             },
             "stats": {
-                "description": "InstanceStatistics containing three stats, user_count (number of local users), status_count (number of local statuses) and domain_count (number of known instance domains other than this one). Removed in the v2 API, if you want this, explicitly call instance_v1() instead, or check out instance_nodeinfo().",
+                "description": "InstanceStatistics containing three stats, user_count (number of local users), status_count (number of local statuses) and domain_count (number of known instance domains other than this one). This information is not present in the v2 API variant in this form - there is a 'usage' field instead.",
                 "field_type": "InstanceStatistics",
                 "field_subtype": null,
                 "is_optional": true,
                 "is_nullable": false,
-                "api_version": "v1",
                 "version_history": [
                     [
                         "1.6.0",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed (still present in instance_v1())"
                     ]
                 ]
             },
-            "usage": {
-                "description": "Information about recent activity on this instance.",
-                "field_type": "InstanceUsage",
+            "thumbnail": {
+                "description": "Information about thumbnails to represent the instance. In the v1 API variant, simply an URL pointing to a banner image representing the instance. The v2 API provides a more complex structure with a list of thumbnails of different sizes in this field.",
+                "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "URL",
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
-                        "4.0.0",
+                        "1.6.1",
                         "added"
-                    ]
-                ]
-            },
-            "contact_account": {
-                "description": "Account of the primary contact for the instance. Moved to InstanceContacts for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
-                "moved_path": "contact.account",
-                "deprecated": true,
-                "field_type": "Account",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "1.1.0",
-                        "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed"
                     ]
                 ]
             },
@@ -3800,8 +3865,8 @@
                 ]
             },
             "registrations": {
-                "description": "InstanceRegistrations object with information about how users can sign up on this instance. In the v1 version, a boolean indication whether registrations on this instance are open (True) or not (False). If you want this behaviour, explicitly use instance_v1().",
-                "field_type": "Union[InstanceRegistrations, bool]",
+                "description": "A boolean indication whether registrations on this instance are open (True) or not (False). The v2 API variant instead provides a dict with more information about possible registration requirements here.",
+                "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -3809,18 +3874,12 @@
                     [
                         "1.6.0",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "changed to be an InststanceRegistrations object instead of a bool"
                     ]
                 ]
             },
             "approval_required": {
-                "description": "True if account approval is required when registering, False if not. Moved to InstanceRegistrations object for the v2 API, though Mastodon.py will mirror it here for backwards compatibility.",
-                "moved_path": "registrations.approval_required",
+                "description": "True if account approval is required when registering, False if not. Moved to InstanceRegistrations object for the v2 API.",
                 "field_type": "bool",
-                "deprecated": true,
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -3828,62 +3887,16 @@
                     [
                         "2.9.2",
                         "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "removed"
-                    ]
-                ]
-            },
-            "rules": {
-                "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
-                "field_type": "EntityList",
-                "field_subtype": "Rule",
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "3.4.0",
-                        "added"
-                    ]
-                ]
-            },
-            "source_url": {
-                "description": "URL pointing to a copy of the source code that is used to run this instance. For Mastodon instances, the AGPL requires that this code be available.",
-                "field_type": "Union[InstanceThumbnail, str]",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "field_structuretype": "URL",
-                "version_history": [
-                    [
-                        "3.4.0",
-                        "added"
-                    ]
-                ]
-            },
-            "thumbnail": {
-                "description": "Information about thumbnails to represent the instance. In the v1 API variant, simply an URL pointing to a banner image representing the instance - if you want this behaviour, explicitly call instance_v1().",
-                "field_type": "str",
-                "field_subtype": null,
-                "field_structuretype": "URL",
-                "is_optional": false,
-                "is_nullable": true,
-                "version_history": [
-                    [
-                        "1.6.1",
-                        "added"
                     ]
                 ]
             },
             "invites_enabled": {
-                "description": "Boolean indicating whether invites are enabled on this instance. Changed in 4.0.0 from being true when the instance setting to enable invites is true to be true when the default user role has invites enabled (i.e. everyone can invite people). Removed for the v2 API, if you need this field, explicitly use instance_v1() instead.",
-                "deprecated": true,
+                "description": "Boolean indicating whether invites are enabled on this instance. Changed in 4.0.0 from being true when the instance setting to enable invites is true to be true when the default user role has invites enabled (i.e. everyone can invite people). The v2 API does not contain this field, and it is not clear whether it will stay around.",
+                "is_deprecated": true,
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "api_version": "v1",
                 "version_history": [
                     [
                         "3.1.4",
@@ -3891,7 +3904,7 @@
                     ],
                     [
                         "4.0.0",
-                        "removed (still present in instance_v1()). Changed specifics of when field is true."
+                        "changed specifics of when field is true, deprecated"
                     ]
                 ]
             },
@@ -3904,6 +3917,455 @@
                 "version_history": [
                     [
                         "3.1.4",
+                        "added"
+                    ]
+                ]
+            },
+            "contact_account": {
+                "description": "Account of the primary contact for the instance. Moved to InstanceContacts for the v2 API.",
+                "moved_path": "contact.account",
+                "field_type": "Account",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "1.1.0",
+                        "added"
+                    ]
+                ]
+            },        
+            "rules": {
+                "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
+                "field_type": "EntityList",
+                "field_subtype": "Rule",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance configuration (v1)",
+        "python_name": "InstanceConfiguration",
+        "func_call": "mastodon.instance_v1().configuration",
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "description": "Configuration values for this instance, especially limits and enabled features.",
+        "fields": {
+            "accounts": {
+                "description": "Account-related instance configuration fields",
+                "field_type": "InstanceAccountConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "statuses": {
+                "description": "Status-related instance configuration fields",
+                "field_type": "InstanceStatusConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "media_attachments": {
+                "description": "Media-related instance configuration fields",
+                "field_type": "InstanceMediaConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "polls": {
+                "description": "Poll-related instance configuration fields",
+                "field_type": "InstancePollConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance urls (v1)",
+        "python_name": "InstanceURLs",
+        "func_call": "mastodon.instance_v1().urls",
+        "func_call_additional": "mastodon.instance_v1().urls",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
+        "func_call_real": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A list of URLs related to an instance.",
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "fields": {
+            "streaming_api": {
+                "description": "The Websockets URL for connecting to the streaming API. Renamed to 'streaming' for the v2 API.",
+                "field_type": "str",
+                "moved_path": "streaming",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Instance (v2)",
+        "python_name": "InstanceV2",
+        "func_call": "mastodon.instance_v2()",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Information about an instance",
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "fields": {
+            "domain": {
+                "description": "The instances domain name",
+                "field_type": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "DomainName",
+                "field_subtype": null,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "title": {
+                "description": "The instance's title",
+                "field_type": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_subtype": null,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "version": {
+                "description": "The instance's Mastodon version. For a more robust parsed major/minor/patch version see TODO IMPLEMENT FUNCTION TO RETURN VERSIONS",
+                "field_type": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_subtype": null,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "source_url": {
+                "description": "URL pointing to a copy of the source code that is used to run this instance. For Mastodon instances, the AGPL requires that this code be available.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },        
+            "description": {
+                "description": "A brief instance description set by the admin. Contains what in the v1 version was the short description.",
+                "field_type": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "HTML",
+                "field_subtype": null,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "usage": {
+                "description": "Information about recent activity on this instance.",
+                "field_type": "InstanceUsage",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "thumbnail": {
+                "description": "Information about thumbnails to represent the instance.",
+                "field_type": "InstanceThumbnail",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "languages": {
+                "description": "Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.",
+                "field_type": "EntityList",
+                "field_subtype": "str",
+                "field_structuretype": "TwoLetterLanguageCodeEnum",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "configuration": {
+                "description": "Various instance configuration settings - especially various limits (character counts, media upload sizes, ...)",
+                "field_type": "InstanceConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.1.4",
+                        "added"
+                    ]
+                ]
+            },
+            "registrations": {
+                "description": "InstanceRegistrations object with information about how users can sign up on this instance.",
+                "field_type": "InstanceRegistrations",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "contact": {
+                "description": "Contact information for this instance.",
+                "field_type": "InstanceContact",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "rules": {
+                "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
+                "field_type": "EntityList",
+                "field_subtype": "Rule",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance configuration (v2)",
+        "python_name": "InstanceConfigurationV2",
+        "func_call": "mastodon.instance_v2().configuration",
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "description": "Configuration values for this instance, especially limits and enabled features.",
+        "fields": {
+            "accounts": {
+                "description": "Account-related instance configuration fields",
+                "field_type": "InstanceAccountConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "statuses": {
+                "description": "Status-related instance configuration fields",
+                "field_type": "InstanceStatusConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "media_attachments": {
+                "description": "Media-related instance configuration fields",
+                "field_type": "InstanceMediaConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "polls": {
+                "description": "Poll-related instance configuration fields",
+                "field_type": "InstancePollConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.4.2",
+                        "added"
+                    ]
+                ]
+            },
+            "translation": {
+                "description": "Translation-related instance configuration fields. Only present for the v2 API variant of the instance API.",
+                "field_type": "InstanceTranslationConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "urls": {
+                "description": "Instance related URLs. Only present for the v2 API variant of the instance API.",
+                "field_type": "InstanceURLsV2",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance urls (v2)",
+        "python_name": "InstanceURLsV2",
+        "func_call": "mastodon.instance_v2().configuration.urls",
+        "func_call_additional": "mastodon.instance_v1().urls",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A list of URLs related to an instance.",
+        "has_versions": [
+            "v1",
+            "v2"
+        ],
+        "fields": {
+            "streaming": {
+                "description": "The Websockets URL for connecting to the streaming API.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "status": {
+                "description": "If present, a URL where the status and possibly current issues with the instance can be checked.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.0.0",
                         "added"
                     ]
                 ]
@@ -4009,69 +4471,6 @@
                     ]
                 ],
                 "enum": null
-            }
-        }
-    },
-    {
-        "name": "Instance urls",
-        "python_name": "InstanceURLs",
-        "func_call": "mastodon.instance().configuration.urls",
-        "func_call_additional": "mastodon.instance_v1().urls",
-        "masto_doc_link": "https://docs.joinmastodon.org/entities/V1_Instance/",
-        "func_call_real": null,
-        "func_alternate_acc": false,
-        "manual_update": false,
-        "description": "A list of URLs related to an instance.",
-        "fields": {
-            "streaming": {
-                "description": "The Websockets URL for connecting to the streaming API. Was 'streaming_api' in v1",
-                "field_type": "str",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "field_structuretype": "URL",
-                "version_history": [
-                    [
-                        "1.4.2",
-                        "added"
-                    ]
-                ],
-                "enum": null
-            },
-            "streaming_api": {
-                "description": "The Websockets URL for connecting to the streaming API. Only present in v1, though Mastodon.py will mirror the appropriate value from 'streaming' for the v2 API.",
-                "field_type": "str",
-                "moved_path": "streaming",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "is_deprecated": true,
-                "field_structuretype": "URL",
-                "version_history": [
-                    [
-                        "3.4.2",
-                        "added"
-                    ],
-                    [
-                        "4.0.0",
-                        "deprecated"
-                    ]
-                ],
-                "enum": null
-            },
-            "status": {
-                "description": "If present, a URL where the status and possibly current issues with the instance can be checked.",
-                "field_type": "str",
-                "field_subtype": null,
-                "is_optional": true,
-                "is_nullable": false,
-                "field_structuretype": "URL",
-                "version_history": [
-                    [
-                        "4.0.0",
-                        "added"
-                    ]
-                ]
             }
         }
     },
@@ -4270,12 +4669,27 @@
                         "added"
                     ]
                 ]
+            },
+            "url": {
+                "description": "Presumably, a registration related URL. It is unclear what this is for.",
+                "field_type": "str",
+                "help_wanted": true,
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
     {
         "name": "Instance contact information",
-        "python_name": "InstanceContacts",
+        "python_name": "InstanceContact",
         "func_call": "mastodon.instance().contact",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
         "func_call_real": null,
@@ -4304,103 +4718,6 @@
                 "is_optional": false,
                 "is_nullable": false,
                 "field_structuretype": "Email",
-                "version_history": [
-                    [
-                        "4.0.0",
-                        "added"
-                    ]
-                ]
-            }
-        }
-    },
-    {
-        "name": "Instance configuration",
-        "python_name": "InstanceConfiguration",
-        "func_call": "mastodon.instance().configuration",
-        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/",
-        "func_call_real": null,
-        "func_call_additional": null,
-        "func_alternate_acc": false,
-        "manual_update": false,
-        "api_versions": [
-            "v1",
-            "v2"
-        ],
-        "description": "Configuration values for this instance, especially limits and enabled features.",
-        "fields": {
-            "accounts": {
-                "description": "Account-related instance configuration fields",
-                "field_type": "InstanceAccountConfiguration",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "4.0.0",
-                        "added"
-                    ]
-                ]
-            },
-            "statuses": {
-                "description": "Status-related instance configuration fields",
-                "field_type": "InstanceStatusConfiguration",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "3.4.2",
-                        "added"
-                    ]
-                ]
-            },
-            "media_attachments": {
-                "description": "Media-related instance configuration fields",
-                "field_type": "InstanceMediaConfiguration",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "3.4.2",
-                        "added"
-                    ]
-                ]
-            },
-            "polls": {
-                "description": "Poll-related instance configuration fields",
-                "field_type": "InstancePollConfiguration",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "3.4.2",
-                        "added"
-                    ]
-                ]
-            },
-            "translation": {
-                "description": "Translation-related instance configuration fields. Only present for the v2 API variant of the instance API.",
-                "field_type": "InstanceTranslationConfiguration",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "api_version": "v2",
-                "version_history": [
-                    [
-                        "4.0.0",
-                        "added"
-                    ]
-                ]
-            },
-            "urls": {
-                "description": "Instance related URLs. Only present for the v2 API variant of the instance API.",
-                "field_type": "InstanceURLs",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "api_version": "v2",
                 "version_history": [
                     [
                         "4.0.0",
@@ -5018,6 +5335,160 @@
     },
     {
         "name": "Report",
+        "python_name": "Report",
+        "func_call": "mastodon.report()[0]",
+        "func_alternate_acc": true,
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Report/",
+        "manual_update": false,
+        "description": "Information about a report that has been filed against a user. Currently largely pointless, as updated reports cannot be fetched.",
+        "fields": {
+            "id": {
+                "description": "Id of the report",
+                "field_type": "IdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "action_taken": {
+                "description": "True if a moderator or admin has processed the report, False otherwise.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "comment": {
+                "description": "Text comment submitted with the report",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "created_at": {
+                "description": "Time at which this report was created, as a datetime object",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "target_account": {
+                "description": "Account that has been reported with this report",
+                "field_type": "Account",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "status_ids": {
+                "description": "List of status IDs attached to the report",
+                "field_type": "EntityList",
+                "field_subtype": "IdType",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "action_taken_at": {
+                "description": "When an action was taken, if this report is currently resolved.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "2.9.1",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "category": {
+                "description": "The category under which the report is classified.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "ReportReasonEnum",
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "forwarded": {
+                "description": "Whether a report was forwarded to a remote instance.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "rules_ids": {
+                "description": "IDs of the rules selected for this report.",
+                "field_type": "EntityList",
+                "field_subtype": "IdType",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Admin report",
         "python_name": "AdminReport",
         "func_call": "mastodon.admin_reports()[0]",
         "func_alternate_acc": true,
@@ -5283,7 +5754,7 @@
             },
             "alerts": {
                 "description": "Subscribed events - object that may contain various keys, with value True if webpushes have been requested for those events.",
-                "field_type": "PushSubscriptionAlert",
+                "field_type": "WebPushSubscriptionAlerts",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -5620,7 +6091,7 @@
         "fields": {
             "posting:default:visibility": {
                 "python_name": "posting_default_visibility",
-                "description": "Default visibility for new posts. Equivalent to CredentialAccount#source\\[privacy\\]().",
+                "description": "Default visibility for new posts. Also found in CredentialAccountSource as `privacy`.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -5640,7 +6111,7 @@
             },
             "posting:default:sensitive": {
                 "python_name": "posting_default_sensitive",
-                "description": "Default sensitivity flag for new posts. Equivalent to CredentialAccount#source\\[sensitive\\]().",
+                "description": "Default sensitivity flag for new posts. Also found in CredentialAccountSource as `sensitive`.",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
@@ -5655,7 +6126,7 @@
             },
             "posting:default:language": {
                 "python_name": "posting_default_language",
-                "description": "Default language for new posts. Equivalent to CredentialAccount#source\\[language\\]()",
+                "description": "Default language for new posts. Also found in CredentialAccountSource as `language`.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -5985,7 +6456,7 @@
             "mentions": {
                 "description": "Users mentioned in the annoucement",
                 "field_type": "EntityList",
-                "field_subtype": "Mention",
+                "field_subtype": "StatusMention",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -6129,6 +6600,61 @@
                 "is_optional": false,
                 "is_nullable": false,
                 "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "3.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Announcement reaction (streaming edition)",
+        "python_name": "StreamReaction",
+        "func_call": "mastodon.announcements()[0].reactions[0]",
+        "func_alternate_acc": true,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/streaming/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "manual_update": false,
+        "description": "A reaction to an announcement.",
+        "fields": {
+            "name": {
+                "description": "Name of the custom emoji or unicode emoji of the reaction",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "count": {
+                "description": "Reaction counter (i.e. number of users who have added this reaction)",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "announcement_id": {
+                "description": "If of the announcement this reaction was for",
+                "field_type": "IdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
                 "version_history": [
                     [
                         "3.1.0",
@@ -6393,20 +6919,6 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
-                "version_history": [
-                    [
-                        "2.9.1",
-                        "added"
-                    ]
-                ],
-                "enum": null
-            },
-            "invited_by_account_id": {
-                "description": "Present if the user was invited by another user and set to the inviting users id.",
-                "field_type": "IdType",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
                 "version_history": [
                     [
                         "2.9.1",
@@ -7821,6 +8333,206 @@
                 "version_history": [
                     [
                         "4.0.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Account creation error",
+        "python_name": "AccountCreationError",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True)",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/accounts/#create",
+        "description": "An error response returned when creating an account fails.",
+        "fields": {
+            "error": {
+                "description": "The error as a localized string.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "2.7.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "details": {
+                "description": "A dictionary giving more details about what fields caused errors and in which ways.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetails",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Account creation error details",
+        "python_name": "AccountCreationErrorDetails",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', False).details",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/accounts/#create",
+        "description": "An object containing detailed errors for different fields in the account creation attempt.",
+        "fields": {
+            "username": {
+                "description": "An object giving more details about an error caused by the username.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetailsField",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "password": {
+                "description": "An object giving more details about an error caused by the password.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetailsField",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "email": {
+                "description": "An object giving more details about an error caused by the e-mail.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetailsField",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "agreement": {
+                "description": "An object giving more details about an error caused by the usage policy agreement.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetailsField",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "locale": {
+                "description": "An object giving more details about an error caused by the locale.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetailsField",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "reason": {
+                "description": "An object giving more details about an error caused by the registration reason.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "AccountCreationErrorDetailsField",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Account creation error details field",
+        "python_name": "AccountCreationErrorDetailsField",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True).details.email",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/accounts/#create",
+        "description": "An object giving details about what specifically is wrong with a given field in an account registration attempt.",
+        "fields": {
+            "error": {
+                "description": "A machine readable string giving an error category.",
+                "version_history": [
+                    [
+                        "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "enum": {
+                    "ERR_BLOCKED": "e-mail provider is not allowed",
+                    "ERR_UNREACHABLE": "e-mail address does not resolve to any IP via DNS (MX, A, AAAA)",
+                    "ERR_TAKEN": "username or e-mail are already taken",
+                    "ERR_RESERVED": "username is reserved, e.g. 'webmaster' or 'admin'",
+                    "ERR_ACCEPTED": "agreement has not been accepted",
+                    "ERR_BLANK": "a required attribute is blank",
+                    "ERR_INVALID": "an attribute is malformed, e.g. wrong characters or invalid e-mail address",
+                    "ERR_TOO_LONG": "an attribute is over the character limit",
+                    "ERR_TOO_SHORT": "an attribute is under the character requirement",
+                    "ERR_INCLUSION": "an attribute is not one of the allowed values, e.g. unsupported locale"
+                }
+            },
+            "description": {
+                "description": "A description of the issue as a localized string.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "3.4.0",
                         "added"
                     ]
                 ],

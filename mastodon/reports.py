@@ -1,28 +1,27 @@
 
 # reports.py - report endpoints
 
-from .versions import _DICT_VERSION_REPORT
-from .errors import MastodonVersionError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_REPORT
+from mastodon.errors import MastodonVersionError, MastodonIllegalArgumentError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import NonPaginatableList, Report, Account, IdType, Status, Rule
+from typing import Union, Optional, List
 
 class Mastodon(Internals):
     ###
     # Reading data: Reports
     ###
     @api_version("1.1.0", "1.1.0", _DICT_VERSION_REPORT)
-    def reports(self):
+    def reports(self) -> NonPaginatableList[Report]:
         """
         Fetch a list of reports made by the logged-in user.
-
-        Returns a list of :ref:`report dicts <report dicts>`.
 
         Warning: This method has now finally been removed, and will not
         work on Mastodon versions 2.5.0 and above.
         """
-        if self.verify_minimum_version("2.5.0", cached=True):
+        if self.verify_minimum_version("2.5.0", cached = True):
             raise MastodonVersionError("API removed in Mastodon 2.5.0")
         return self.__api_request('GET', '/api/v1/reports')
 
@@ -30,7 +29,8 @@ class Mastodon(Internals):
     # Writing data: Reports
     ###
     @api_version("1.1.0", "3.5.0", _DICT_VERSION_REPORT)
-    def report(self, account_id, status_ids=None, comment=None, forward=False, category=None, rule_ids=None):
+    def report(self, account_id: Union[Account, IdType], status_ids: Optional[Union[Status, IdType]] = None, comment: Optional[str] = None, 
+               forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None) -> Report:
         """
         Report statuses to the instances administrators.
 
@@ -42,8 +42,6 @@ class Mastodon(Internals):
 
         Set `forward` to True to forward a report of a remote user to that users
         instance as well as sending it to the instance local administrators.
-
-        Returns a :ref:`report dict <report dict>`.
         """
         if category is not None and not category in ["spam", "violation", "other"]:
             raise MastodonIllegalArgumentError("Invalid report category (must be spam, violation or other)")

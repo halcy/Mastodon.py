@@ -1,49 +1,48 @@
 # relationships.py - endpoints for user and domain blocks and mutes as well as follow requests
 
-from .versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_RELATIONSHIP
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_RELATIONSHIP
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import Account, Relationship, PaginatableList, IdType
+from typing import Optional, Union
 
 class Mastodon(Internals):
     ###
     # Reading data: Mutes and Blocks
     ###
     @api_version("1.1.0", "2.6.0", _DICT_VERSION_ACCOUNT)
-    def mutes(self, max_id=None, min_id=None, since_id=None, limit=None):
+    def mutes(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: 
+              Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[Account]:
         """
         Fetch a list of users muted by the logged-in user.
-
-        Returns a list of :ref:`account dicts <account dicts>`.
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/mutes', params)
 
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
-    def blocks(self, max_id=None, min_id=None, since_id=None, limit=None):
+    def blocks(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: 
+              Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[Account]:
         """
         Fetch a list of users blocked by the logged-in user.
-
-        Returns a list of :ref:`account dicts <account dicts>`.
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/blocks', params)
@@ -52,20 +51,19 @@ class Mastodon(Internals):
     # Reading data: Follow requests
     ###
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
-    def follow_requests(self, max_id=None, min_id=None, since_id=None, limit=None):
+    def follow_requests(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: 
+              Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[Account]:
         """
         Fetch the logged-in user's incoming follow requests.
-
-        Returns a list of :ref:`account dicts <account dicts>`.
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/follow_requests', params)
@@ -74,20 +72,21 @@ class Mastodon(Internals):
     # Reading data: Domain blocks
     ###
     @api_version("1.4.0", "2.6.0", "1.4.0")
-    def domain_blocks(self, max_id=None, min_id=None, since_id=None, limit=None):
+    def domain_blocks(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: 
+              Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[str]:
         """
         Fetch the logged-in user's blocked domains.
 
         Returns a list of blocked domain URLs (as strings, without protocol specifier).
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/domain_blocks', params)
@@ -96,21 +95,17 @@ class Mastodon(Internals):
     # Writing data: Follow requests
     ###
     @api_version("1.0.0", "3.0.0", _DICT_VERSION_RELATIONSHIP)
-    def follow_request_authorize(self, id):
+    def follow_request_authorize(self, id: Union[Account, IdType]) -> Relationship:
         """
-        Accept an incoming follow request.
-
-        Returns the updated :ref:`relationship dict <relationship dict>` for the requesting account.
+        Accept an incoming follow request from the given Account and returns the updated Relationship.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/follow_requests/{id}/authorize')
 
     @api_version("1.0.0", "3.0.0", _DICT_VERSION_RELATIONSHIP)
-    def follow_request_reject(self, id):
+    def follow_request_reject(self, id: Union[Account, IdType]) -> Relationship:
         """
-        Reject an incoming follow request.
-
-        Returns the updated :ref:`relationship dict <relationship dict>` for the requesting account.
+        Reject an incoming follow request from the given Account and returns the updated Relationship.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/follow_requests/{id}/reject')
@@ -119,7 +114,7 @@ class Mastodon(Internals):
     # Writing data: Domain blocks
     ###
     @api_version("1.4.0", "1.4.0", "1.4.0")
-    def domain_block(self, domain=None):
+    def domain_block(self, domain: str):
         """
         Add a block for all statuses originating from the specified domain for the logged-in user.
         """
@@ -127,7 +122,7 @@ class Mastodon(Internals):
         self.__api_request('POST', '/api/v1/domain_blocks', params)
 
     @api_version("1.4.0", "1.4.0", "1.4.0")
-    def domain_unblock(self, domain=None):
+    def domain_unblock(self, domain: str):
         """
         Remove a domain block for the logged-in user.
         """

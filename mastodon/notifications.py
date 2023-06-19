@@ -1,18 +1,21 @@
 # notifications.py - notification endpoints
 
-from .versions import _DICT_VERSION_NOTIFICATION
-from .errors import MastodonIllegalArgumentError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_NOTIFICATION
+from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import Notification, IdType, PaginatableList, Account
+from typing import Union, Optional, List
 
 class Mastodon(Internals):
     ###
     # Reading data: Notifications
     ###
     @api_version("1.0.0", "3.5.0", _DICT_VERSION_NOTIFICATION)
-    def notifications(self, id=None, account_id=None, max_id=None, min_id=None, since_id=None, limit=None, exclude_types=None, types=None, mentions_only=None):
+    def notifications(self, id: Optional[Union[Notification, IdType]] = None, account_id: Optional[Union[Account, IdType]] = None, max_id:  Optional[Union[Notification, IdType]] = None, 
+                      min_id:  Optional[Union[Notification, IdType]] = None, since_id:  Optional[Union[Notification, IdType]] = None, limit: Optional[int] = None, 
+                      exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None) -> PaginatableList[Notification]:
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
@@ -49,13 +52,13 @@ class Mastodon(Internals):
             del mentions_only
 
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         if account_id is not None:
             account_id = self.__unpack_id(account_id)
@@ -78,7 +81,7 @@ class Mastodon(Internals):
         self.__api_request('POST', '/api/v1/notifications/clear')
 
     @api_version("1.3.0", "2.9.2", "2.9.2")
-    def notifications_dismiss(self, id):
+    def notifications_dismiss(self, id: Union[Notification, IdType]):
         """
         Deletes a single notification
         """

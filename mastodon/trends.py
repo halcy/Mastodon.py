@@ -1,17 +1,18 @@
 # trends.py - trend-related endpoints
 
-from .versions import _DICT_VERSION_HASHTAG, _DICT_VERSION_STATUS, _DICT_VERSION_CARD
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_HASHTAG, _DICT_VERSION_STATUS, _DICT_VERSION_CARD
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import Tag, Status, PreviewCard, NonPaginatableList
+from typing import Optional, Union
 
 class Mastodon(Internals):
     ###
     # Reading data: Trends
     ###
     @api_version("2.4.3", "3.5.0", _DICT_VERSION_HASHTAG)
-    def trends(self, limit=None):
+    def trends(self, limit: Optional[int] = None):
         """
         Old alias for :ref:`trending_tags() <trending_tags()>`
 
@@ -20,7 +21,7 @@ class Mastodon(Internals):
         return self.trending_tags(limit=limit)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
-    def trending_tags(self, limit=None, lang=None):
+    def trending_tags(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[Tag]:
         """
         Fetch trending-hashtag information, if the instance provides such information.
 
@@ -34,8 +35,7 @@ class Mastodon(Internals):
 
         Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
-        Returns a list of :ref:`hashtag dicts <hashtag dicts>`, sorted by the instance's trending algorithm,
-        descending.
+        The results are sorted by the instances's trending algorithm, descending.
         """
         params = self.__generate_params(locals())
         if "lang" in params:
@@ -47,7 +47,7 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/trends', params, lang_override=lang)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
-    def trending_statuses(self, limit=None, lang=None):
+    def trending_statuses(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[Status]:
         """
         Fetch trending-status information, if the instance provides such information.
 
@@ -56,8 +56,7 @@ class Mastodon(Internals):
 
         Pass `lang` to override the global locale parameter, which may affect trend ordering.
 
-        Returns a list of :ref:`status dicts <status dicts>`, sorted by the instances's trending algorithm,
-        descending.
+        The results are sorted by the instances's trending algorithm, descending.
         """
         params = self.__generate_params(locals())
         if "lang" in params:
@@ -65,15 +64,14 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/trends/statuses', params, lang_override=lang)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_CARD)
-    def trending_links(self, limit=None, lang=None):
+    def trending_links(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[PreviewCard]:
         """
         Fetch trending-link information, if the instance provides such information.
 
         Specify `limit` to limit how many results are returned (the maximum number
         of results is 10, the endpoint is not paginated).
 
-        Returns a list of :ref:`card dicts <card dicts>`, sorted by the instances's trending algorithm,
-        descending.
+        The results are sorted by the instances's trending algorithm, descending.
         """
         params = self.__generate_params(locals())
         if "lang" in params:

@@ -1,11 +1,11 @@
     # relationships.py - endpoints for user and domain blocks and mutes as well as follow requests
 
-from .versions import _DICT_VERSION_STATUS
-from .errors import MastodonIllegalArgumentError
-from .defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_STATUS
+from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
+from mastodon.internals import Mastodon as Internals
 
 
 class Mastodon(Internals):
@@ -79,7 +79,7 @@ class Mastodon(Internals):
         return self.__stream('/api/v1/streaming/direct', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
 
     @api_version("2.5.0", "2.5.0", "2.5.0")
-    def stream_healthy(self):
+    def stream_healthy(self) -> bool:
         """
         Returns without True if streaming API is okay, False or raises an error otherwise.
         """

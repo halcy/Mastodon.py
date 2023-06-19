@@ -12,14 +12,28 @@ except:
 
 from mastodon import Mastodon
 from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
-from requests.exceptions import ChunkedEncodingError, ReadTimeout, ConnectionError
+from mastodon.types import AttribAccessDict, Status, Notification, IdType, Conversation, Announcement, StreamReaction, try_cast_recurse
 
+from requests.exceptions import ChunkedEncodingError, ReadTimeout, ConnectionError
 
 class StreamListener(object):
     """Callbacks for the streaming API. Create a subclass, override the on_xxx
     methods for the kinds of events you're interested in, then pass an instance
     of your subclass to Mastodon.user_stream(), Mastodon.public_stream(), or
     Mastodon.hashtag_stream()."""
+
+    __EVENT_NAME_TO_TYPE = {
+        "update": Status,
+        "delete": IdType,
+        "notification": Notification,
+        "filters_changed": None,
+        "conversation": Conversation,
+        "announcement": Announcement,
+        "announcement_reaction": StreamReaction,
+        "announcement_delete": IdType,
+        "status_update": Status,
+        "encrypted_message": AttribAccessDict,
+    }
 
     def on_update(self, status):
         """A new status has appeared. `status` is the parsed `status dict`
@@ -179,7 +193,9 @@ class StreamListener(object):
                 for_stream = json.loads(event['stream'])
             except:
                 for_stream = None
-            payload = json.loads(data, object_hook=Mastodon._Mastodon__json_hooks)
+            payload = json.loads(data)
+            cast_type = self.__EVENT_NAME_TO_TYPE.get(name, AttribAccessDict)
+            payload = try_cast_recurse(cast_type, payload)
         except KeyError as err:
             exception = MastodonMalformedEventError(
                 'Missing field', err.args[0], event)

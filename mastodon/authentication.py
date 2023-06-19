@@ -7,21 +7,25 @@ import os
 import time
 import collections
 
-from .errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
-from .versions import _DICT_VERSION_APPLICATION
-from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT, _DEFAULT_USER_AGENT
-from .utility import parse_version_string, api_version
+from mastodon.errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
+from mastodon.versions import _DICT_VERSION_APPLICATION
+from mastodon.defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT, _DEFAULT_USER_AGENT
+from mastodon.utility import parse_version_string, api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.utility import Mastodon as Utility
+from typing import List, Optional, Union, Tuple
+from mastodon.types import Application
+from mastodon.compat import PurePath
 
 class Mastodon(Internals):
     ###
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name, scopes=_DEFAULT_SCOPES, redirect_uris=None, website=None, to_file=None,
-                   api_base_url=None, request_timeout=_DEFAULT_TIMEOUT, session=None, user_agent=_DEFAULT_USER_AGENT):
+    def create_app(client_name, scopes: List[str] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None, 
+                   to_file: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, request_timeout: float = _DEFAULT_TIMEOUT, 
+                   session: Optional[requests.Session] = None, user_agent: str = _DEFAULT_USER_AGENT) -> Tuple[str, str]:
         """
         Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
         - more granular scopes are available, please refer to Mastodon documentation for which) on the instance given
@@ -41,7 +45,6 @@ class Mastodon(Internals):
 
         Presently, app registration is open by default, but this is not guaranteed to be the case for all
         Mastodon instances in the future.
-
 
         Returns `client_id` and `client_secret`, both as strings.
         """
@@ -87,9 +90,11 @@ class Mastodon(Internals):
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id=None, client_secret=None, access_token=None, api_base_url=None, debug_requests=False,
-                 ratelimit_method="wait", ratelimit_pacefactor=1.1, request_timeout=_DEFAULT_TIMEOUT, mastodon_version=None,
-                 version_check_mode="created", session=None, feature_set="mainline", user_agent=_DEFAULT_USER_AGENT, lang=None):
+    def __init__(self, client_id: Optional[Union[str, PurePath]] = None, client_secret: Optional[str] = None, 
+                 access_token: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, debug_requests: bool = False,
+                 ratelimit_method: str = "wait", ratelimit_pacefactor: float = 1.1, request_timeout: float = _DEFAULT_TIMEOUT, 
+                 mastodon_version: Optional[str] =None, version_check_mode: str = "created", session: Optional[requests.Session] = None, 
+                 feature_set: str = "mainline", user_agent: str = _DEFAULT_USER_AGENT, lang: Optional[str] = None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
         instance given by `api_base_url`. If you give a `client_id` and it is not a file, you must
@@ -247,7 +252,9 @@ class Mastodon(Internals):
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
 
-    def auth_request_url(self, client_id=None, redirect_uris="urn:ietf:wg:oauth:2.0:oob", scopes=_DEFAULT_SCOPES, force_login=False, state=None, lang=None):
+    def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", 
+                         scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None, 
+                         lang: Optional[str] = None) -> str:
         """
         Returns the URL that a client needs to request an OAuth grant from the server.
 
@@ -256,8 +263,9 @@ class Mastodon(Internals):
 
         `scopes` are as in :ref:`log_in() <log_in()>`, redirect_uris is where the user should be redirected to
         after authentication. Note that `redirect_uris` must be one of the URLs given during
-        app registration. When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed,
-        otherwise it is added to the given URL as the "code" request parameter.
+        app registration, and that despite the plural-like name, you only get to use one here.
+        When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed, otherwise it is added 
+        to the given URL as the "code" request parameter.
 
         Pass force_login if you want the user to always log in even when already logged
         into web Mastodon (i.e. when registering multiple different accounts in an app).
@@ -269,6 +277,7 @@ class Mastodon(Internals):
         Pass an ISO 639-1 (two letter) or, for languages that do not have one, 639-3 (three letter)
         language code as `lang` to control the display language for the oauth form.
         """
+        assert self.api_base_url is not None
         if client_id is None:
             client_id = self.client_id
         else:
@@ -287,7 +296,9 @@ class Mastodon(Internals):
         formatted_params = urlencode(params)
         return "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
-    def log_in(self, username=None, password=None, code=None, redirect_uri="urn:ietf:wg:oauth:2.0:oob", refresh_token=None, scopes=_DEFAULT_SCOPES, to_file=None):
+    def log_in(self, username: Optional[str] = None, password: Optional[str] = None, code: Optional[str] = None, 
+               redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES, 
+               to_file = Union[str, PurePath]) -> str:
         """
         Get the access token for a user.
 
@@ -346,12 +357,14 @@ class Mastodon(Internals):
             raise MastodonAPIError('Granted scopes "' + " ".join(received_scopes) + '" do not contain all of the requested scopes "' + " ".join(scopes) + '".')
 
         if to_file is not None:
+            assert self.api_base_url is not None
+            assert self.client_id is not None and isinstance(self.client_id, str)
+            assert self.client_secret is not None
             with open(to_file, 'w') as token_file:
                 token_file.write(response['access_token'] + "\n")
                 token_file.write(self.api_base_url + "\n")
                 token_file.write(self.client_id + "\n")
                 token_file.write(self.client_secret + "\n")
-
         self.__logged_in_id = None
 
         # Retry version check if needed (might be required in limited federation mode)
@@ -383,10 +396,8 @@ class Mastodon(Internals):
     # Reading data: Apps
     ###
     @api_version("2.0.0", "2.7.2", _DICT_VERSION_APPLICATION)
-    def app_verify_credentials(self):
+    def app_verify_credentials(self) -> Application:
         """
         Fetch information about the current application.
-
-        Returns an :ref:`application dict <application dict>`.
         """
         return self.__api_request('GET', '/api/v1/apps/verify_credentials')

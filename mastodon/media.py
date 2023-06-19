@@ -2,19 +2,21 @@
 
 import time
 
-from .versions import _DICT_VERSION_MEDIA
-from .errors import MastodonVersionError, MastodonAPIError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_MEDIA
+from mastodon.errors import MastodonVersionError, MastodonAPIError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import MediaAttachment, PathOrFile, IdType
 
+from typing import Optional, Union, Tuple, List, Dict, Any
 
 class Mastodon(Internals):
     ###
     # Reading data: Media
     ###
     @api_version("3.1.4", "3.1.4", _DICT_VERSION_MEDIA)
-    def media(self, id):
+    def media(self, id: Union[MediaAttachment, IdType]) -> MediaAttachment:
         """
         Get the updated JSON for one non-attached / in progress media upload belonging
         to the logged-in user.
@@ -26,7 +28,10 @@ class Mastodon(Internals):
     # Writing data: Media
     ###
     @api_version("1.0.0", "3.2.0", _DICT_VERSION_MEDIA)
-    def media_post(self, media_file, mime_type=None, description=None, focus=None, file_name=None, thumbnail=None, thumbnail_mime_type=None, synchronous=False):
+    def media_post(self, media_file: PathOrFile, mime_type: Optional[str] = None, description: Optional[str] = None, 
+                   focus: Optional[Tuple[float, float]] = None, file_name: Optional[str] = None, 
+                   thumbnail: Optional[PathOrFile] = None, thumbnail_mime_type: Optional[str] = None, 
+                   synchronous: bool = False) -> MediaAttachment:
         """
         Post an image, video or audio file. `media_file` can either be data or
         a file name. If data is passed directly, the mime type has to be specified
@@ -63,8 +68,7 @@ class Mastodon(Internals):
         if thumbnail is not None:
             if not self.verify_minimum_version("3.2.0", cached=True):
                 raise MastodonVersionError('Thumbnail requires version > 3.2.0')
-            files["thumbnail"] = self.__load_media_file(
-                thumbnail, thumbnail_mime_type)
+            files["thumbnail"] = self.__load_media_file(thumbnail, thumbnail_mime_type)
 
         # Disambiguate URL by version
         if self.verify_minimum_version("3.1.4", cached=True):
@@ -90,12 +94,14 @@ class Mastodon(Internals):
         return ret_dict
 
     @api_version("2.3.0", "3.2.0", _DICT_VERSION_MEDIA)
-    def media_update(self, id, description=None, focus=None, thumbnail=None, thumbnail_mime_type=None):
+    def media_update(self, id: Union[MediaAttachment, IdType], description: Optional[str] = None, 
+                     focus: Optional[Tuple[float, float]] = None, thumbnail: Optional[PathOrFile] = None, 
+                     thumbnail_mime_type=None) -> MediaAttachment:
         """
         Update the metadata of the media file with the given `id`. `description` and
         `focus` and `thumbnail` are as in :ref:`media_post() <media_post()>` .
-
-        Returns the updated :ref:`media dict <media dict>`.
+        
+        The returned dict reflects the updates to the media attachment.
         """
         id = self.__unpack_id(id)
 

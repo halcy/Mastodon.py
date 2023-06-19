@@ -1,20 +1,25 @@
 # admin.py - admin / moderation endpoints
 
-from .versions import _DICT_VERSION_ADMIN_ACCOUNT, _DICT_VERSION_REPORT, _DICT_VERSION_HASHTAG, _DICT_VERSION_STATUS, _DICT_VERSION_CARD, \
+from mastodon.versions import _DICT_VERSION_ADMIN_ACCOUNT, _DICT_VERSION_REPORT, _DICT_VERSION_HASHTAG, _DICT_VERSION_STATUS, _DICT_VERSION_CARD, \
                         _DICT_VERSION_ADMIN_DOMAIN_BLOCK, _DICT_VERSION_ADMIN_MEASURE, _DICT_VERSION_ADMIN_DIMENSION, _DICT_VERSION_ADMIN_RETENTION
-from .errors import MastodonIllegalArgumentError
-from .utility import api_version
+from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from typing import Optional, List, Union
+from mastodon.types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
+                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention
+from datetime import datetime
 
 class Mastodon(Internals):
     ###
     # Moderation API
     ###
     @api_version("2.9.1", "4.0.0", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_accounts_v2(self, origin=None, by_domain=None, status=None, username=None, display_name=None, email=None, ip=None,
-                            permissions=None, invited_by=None, role_ids=None, max_id=None, min_id=None, since_id=None, limit=None):
+    def admin_accounts_v2(self, origin: Optional[str] = None, by_domain: Optional[str] = None, status: Optional[str] = None, username: Optional[str] = None, 
+                          display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, permissions: Optional[str] = None, 
+                          invited_by: Union[Account, IdType] = None, role_ids: Optional[List[IdType]] = None, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
+                          since_id: Optional[IdType] = None, limit: Optional[int] = None) -> AdminAccount:
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
 
@@ -30,15 +35,17 @@ class Mastodon(Internals):
         * Set `role_ids` to a list of role IDs to get only accounts with those roles.
 
         Returns a list of :ref:`admin account dicts <admin account dicts>`.
+
+        Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         if role_ids is not None:
             if not isinstance(role_ids, list):
@@ -64,11 +71,16 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v2/admin/accounts', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_accounts(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
+    def admin_accounts(self, remote: bool = False, by_domain: Optional[str] = None, status: str = 'active', username: Optional[str] = None, 
+                       display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, staff_only: bool = False, 
+                       max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, 
+                       limit: Optional[int] = None):
         """
         Currently a synonym for admin_accounts_v1, now deprecated. You are strongly encouraged to use admin_accounts_v2 instead, since this one is kind of bad.
 
         !!!!! This function may be switched to calling the v2 API in the future. This is your warning. If you want to keep using v1, use it explicitly. !!!!!
+
+        Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
         return self.admin_accounts_v1(
             remote=remote,
@@ -85,7 +97,10 @@ class Mastodon(Internals):
         )
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_accounts_v1(self, remote=False, by_domain=None, status='active', username=None, display_name=None, email=None, ip=None, staff_only=False, max_id=None, min_id=None, since_id=None, limit=None):
+    def admin_accounts_v1(self, remote: bool = False, by_domain: Optional[str] = None, status: str = 'active', username: Optional[str] = None, 
+                          display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, staff_only: bool = False, 
+                          max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, 
+                          limit: Optional[int] = None) -> AdminAccount:
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
 
@@ -104,15 +119,17 @@ class Mastodon(Internals):
         Deprecated in Mastodon version 3.5.0.
 
         Returns a list of :ref:`admin account dicts <admin account dicts>`.
+
+        Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'])
 
@@ -136,87 +153,86 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/admin/accounts', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account(self, id):
+    def admin_account(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Fetches a single :ref:`admin account dict <admin account dict>` for the user with the given id.
-
-        Returns that dict.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/admin/accounts/{id}')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_enable(self, id):
+    def admin_account_enable(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Reenables login for a local account for which login has been disabled.
 
-        Returns the updated :ref:`admin account dict <admin account dict>`.
+        The returned object reflects the updates to the account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/enable')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_approve(self, id):
+    def admin_account_approve(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Approves a pending account.
 
-        Returns the updated :ref:`admin account dict <admin account dict>`.
+        The returned object reflects the updates to the account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/approve')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_reject(self, id):
+    def admin_account_reject(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Rejects and deletes a pending account.
 
-        Returns the updated :ref:`admin account dict <admin account dict>` for the account that is now gone.
+        The returned object is that of the now-deleted account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/reject')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_unsilence(self, id):
+    def admin_account_unsilence(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Unsilences an account.
 
-        Returns the updated :ref:`admin account dict <admin account dict>`.
+        The returned object reflects the updates to the account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsilence')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_unsuspend(self, id):
+    def admin_account_unsuspend(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Unsuspends an account.
 
-        Returns the updated :ref:`admin account dict <admin account dict>`.
+        The returned object reflects the updates to the account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsuspend')
 
     @api_version("3.3.0", "3.3.0", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_delete(self, id):
+    def admin_account_delete(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Delete a local user account.
 
-        The deleted accounts :ref:`admin account dict <admin account dict>`.
+        The returned object reflects the updates to the account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('DELETE', f'/api/v1/admin/accounts/{id}')
 
     @api_version("3.3.0", "3.3.0", _DICT_VERSION_ADMIN_ACCOUNT)
-    def admin_account_unsensitive(self, id):
+    def admin_account_unsensitive(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
         Unmark an account as force-sensitive.
 
-        Returns the updated :ref:`admin account dict <admin account dict>`.
+        The returned object reflects the updates to the account.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsensitive')
 
     @api_version("2.9.1", "2.9.1", "2.9.1")
-    def admin_account_moderate(self, id, action=None, report_id=None, warning_preset_id=None, text=None, send_email_notification=True):
+    def admin_account_moderate(self, id: Union[Account, AdminAccount, IdType], action: Optional[str] = None, report_id: Optional[Union[AdminReport, PrimitiveIdType]] = None, 
+                               warning_preset_id: Optional[PrimitiveIdType] = None, text: Optional[str] = None, send_email_notification: Optional[bool] = True):
         """
         Perform a moderation action on an account.
 
@@ -252,7 +268,9 @@ class Mastodon(Internals):
         self.__api_request('POST', f'/api/v1/admin/accounts/{id}/action', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_reports(self, resolved=False, account_id=None, target_account_id=None, max_id=None, min_id=None, since_id=None, limit=None):
+    def admin_reports(self, resolved: Optional[bool] = False, account_id = Optional[Union[Account, AdminAccount, IdType]], 
+                      target_account_id: Optional[Union[Account, AdminAccount, IdType]] = None, max_id: Optional[IdType] = None, 
+                      min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminReport]:
         """
         Fetches the list of reports.
 
@@ -262,13 +280,13 @@ class Mastodon(Internals):
         Returns a list of :ref:`report dicts <report dicts>`.
         """
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         if account_id is not None:
             account_id = self.__unpack_id(account_id)
@@ -283,90 +301,86 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/admin/reports', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_report(self, id):
+    def admin_report(self, id: Union[AdminReport, IdType]) -> AdminReport:
         """
         Fetches the report with the given id.
-
-        Returns a :ref:`report dict <report dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/admin/reports/{id}')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_report_assign(self, id):
+    def admin_report_assign(self, id: Union[AdminReport, IdType]) -> AdminReport:
         """
         Assigns the given report to the logged-in user.
 
-        Returns the updated :ref:`report dict <report dict>`.
+        The returned object reflects the updates to the report.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/reports/{id}/assign_to_self')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_report_unassign(self, id):
+    def admin_report_unassign(self, id: Union[AdminReport, IdType]) -> AdminReport:
         """
         Unassigns the given report from the logged-in user.
 
-        Returns the updated :ref:`report dict <report dict>`.
+        The returned object reflects the updates to the report.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/reports/{id}/unassign')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_report_reopen(self, id):
+    def admin_report_reopen(self, id: Union[AdminReport, IdType]) -> AdminReport:
         """
         Reopens a closed report.
 
-        Returns the updated :ref:`report dict <report dict>`.
+        The returned object reflects the updates to the report.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/reports/{id}/reopen')
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_report_resolve(self, id):
+    def admin_report_resolve(self, id: Union[AdminReport, IdType]) -> AdminReport:
         """
         Marks a report as resolved (without taking any action).
 
-        Returns the updated :ref:`report dict <report dict>`.
+        The returned object reflects the updates to the report.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/reports/{id}/resolve')
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
-    def admin_trending_tags(self, limit=None):
+    def admin_trending_tags(self, limit: Optional[int] = None) -> NonPaginatableList[Tag]:
         """
         Admin version of :ref:`trending_tags() <trending_tags()>`. Includes unapproved tags.
 
-        Returns a list of :ref:`hashtag dicts <hashtag dicts>`, sorted by the instance's trending algorithm,
-        descending.
+        The returned list is sorted, descending, by the instance's trending algorithm.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/tags', params)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
-    def admin_trending_statuses(self):
+    def admin_trending_statuses(self) -> NonPaginatableList[Status]:
         """
         Admin version of :ref:`trending_statuses() <trending_statuses()>`. Includes unapproved tags.
 
-        Returns a list of :ref:`status dicts <status dicts>`, sorted by the instance's trending algorithm,
-        descending.
+        The returned list is sorted, descending, by the instance's trending algorithm.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/statuses', params)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_CARD)
-    def admin_trending_links(self):
+    def admin_trending_links(self) -> NonPaginatableList[PreviewCard]:
         """
         Admin version of :ref:`trending_links() <trending_links()>`. Includes unapproved tags.
 
-        Returns a list of :ref:`card dicts <card dicts>`, sorted by the instance's trending algorithm,
-        descending.
+        The returned list is sorted, descending, by the instance's trending algorithm.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/links', params)
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
-    def admin_domain_blocks(self, id=None, max_id=None, min_id=None, since_id=None, limit=None):
+    def admin_domain_blocks(self, id: Optional[IdType] = None, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
+                            since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminDomainBlock]:
         """
         Fetches a list of blocked domains. Requires scope `admin:read:domain_blocks`.
 
@@ -391,7 +405,9 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
-    def admin_create_domain_block(self, domain:str, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
+    def admin_create_domain_block(self, domain: str, severity: Optional[str] = None, reject_media: Optional[bool] = None, 
+                                  reject_reports: Optional[bool] = None, private_comment: Optional[str] = None, 
+                                  public_comment: Optional[str] = None, obfuscate: Optional[bool] = None) -> AdminDomainBlock:
         """
         Perform a moderation action on a domain. Requires scope `admin:write:domain_blocks`.
 
@@ -416,7 +432,8 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
-    def admin_update_domain_block(self, id, severity:str=None, reject_media:bool=None, reject_reports:bool=None, private_comment:str=None, public_comment:str=None, obfuscate:bool=None):
+    def admin_update_domain_block(self, id, severity: Optional[str] = None, reject_media: Optional[bool] = None, reject_reports: Optional[bool] = None, 
+                                  private_comment: Optional[str] = None, public_comment: Optional[str] = None, obfuscate: Optional[bool] = None) -> AdminDomainBlock:
         """
         Modify existing moderation action on a domain. Requires scope `admin:write:domain_blocks`.
 
@@ -442,7 +459,7 @@ class Mastodon(Internals):
         return self.__api_request('PUT', f'/api/v1/admin/domain_blocks/{id}', params)
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
-    def admin_delete_domain_block(self, id=None):
+    def admin_delete_domain_block(self, id = Union[AdminDomainBlock, IdType]):
         """
         Removes moderation action against a given domain. Requires scope `admin:write:domain_blocks`.
 
@@ -457,9 +474,10 @@ class Mastodon(Internals):
             raise AttributeError("You must provide an id of an existing domain block to remove it.")
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_MEASURE)
-    def admin_measures(self, start_at, end_at, active_users=False, new_users=False, interactions=False, opened_reports = False, resolved_reports=False,
-                        tag_accounts=None, tag_uses=None, tag_servers=None, instance_accounts=None, instance_media_attachments=None, instance_reports=None,
-                        instance_statuses=None, instance_follows=None, instance_followers=None):
+    def admin_measures(self, start_at, end_at, active_users: bool = False, new_users: bool = False, interactions: bool = False, opened_reports: bool = False, resolved_reports: bool = False, 
+                       tag_accounts: Optional[Union[Tag, IdType]] = None, tag_uses: Optional[Union[Tag, IdType]] = None, tag_servers: Optional[Union[Tag, IdType]] = None, 
+                       instance_accounts: Optional[str] = None, instance_media_attachments: Optional[str] = None, instance_reports: Optional[str] = None,
+                        instance_statuses: Optional[str] = None, instance_follows: Optional[str] = None, instance_followers: Optional[str] = None) -> NonPaginatableList[AdminMeasure]:
         """
         Retrieves numerical instance information for the time period (at day granularity) between `start_at` and `end_at`.
 
@@ -512,8 +530,9 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/measures', params, use_json=True)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_DIMENSION)
-    def admin_dimensions(self, start_at, end_at, limit=None, languages=False, sources=False, servers=False, space_usage=False, software_versions=False,
-                            tag_servers=None, tag_languages=None, instance_accounts=None, instance_languages=None):
+    def admin_dimensions(self, start_at: datetime, end_at: datetime, limit: Optional[int] = None, languages: bool = False, sources: bool = False, 
+                         servers: bool = False, space_usag: bool = False, software_versions: bool = False, tag_servers: Optional[Union[Tag, IdType]] = None, 
+                         tag_languages: Optional[Union[Tag, IdType]] = None, instance_accounts: Optional[str] = None, instance_languages: Optional[str] = None) -> NonPaginatableList[AdminDimension]:
         """
         Retrieves primarily categorical instance information for the time period (at day granularity) between `start_at` and `end_at`.
 
@@ -564,7 +583,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/dimensions', params, use_json=True)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_RETENTION)
-    def admin_retention(self, start_at, end_at, frequency="day"):
+    def admin_retention(self, start_at: datetime, end_at: datetime, frequency: str = "day") -> AdminRetention:
         """
         Gets user retention statistics (at `frequency` - "day" or "month" - granularity) between `start_at` and `end_at`.
 

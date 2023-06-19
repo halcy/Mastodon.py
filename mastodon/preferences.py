@@ -2,19 +2,20 @@
 
 import collections
 
-from .versions import _DICT_VERSION_PREFERENCES, _DICT_VERSION_MARKER
-from .errors import MastodonIllegalArgumentError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_PREFERENCES, _DICT_VERSION_MARKER
+from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
-
+from mastodon.internals import Mastodon as Internals
+from mastodon.types import Preferences, Marker, Status, IdType
+from typing import Union, List, Dict
 
 class Mastodon(Internals):
     ###
     # Reading data: Preferences
     ###
     @api_version("2.8.0", "2.8.0", _DICT_VERSION_PREFERENCES)
-    def preferences(self):
+    def preferences(self) -> Preferences:
         """
         Fetch the user's preferences, which can be used to set some default options.
         As of 2.8.0, apps can only fetch, not update preferences.
@@ -27,7 +28,7 @@ class Mastodon(Internals):
     # Reading data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_get(self, timeline=["home"]):
+    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> List[Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
         are the same as in :ref:`timeline() <timeline()>`
@@ -46,13 +47,13 @@ class Mastodon(Internals):
     # Writing data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_set(self, timelines, last_read_ids):
+    def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> Dict[str, Marker]:
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
 
         Note that if you give an invalid timeline name, this will silently do nothing.
 
-        Returns a dict with the updated :ref:`read marker dicts <read marker dicts>`, keyed by timeline name.
+        Returns a dict with the updated markers, keyed by timeline name.
         """
         if not isinstance(timelines, (list, tuple)):
             timelines = [timelines]

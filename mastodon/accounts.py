@@ -2,17 +2,22 @@
 
 import collections
 
-from .versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_STATUS, _DICT_VERSION_RELATIONSHIP, _DICT_VERSION_LIST, _DICT_VERSION_FAMILIAR_FOLLOWERS, _DICT_VERSION_HASHTAG
-from .defaults import _DEFAULT_SCOPES, _SCOPE_SETS
-from .errors import MastodonIllegalArgumentError, MastodonAPIError, MastodonNotFoundError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_STATUS, _DICT_VERSION_RELATIONSHIP, _DICT_VERSION_LIST, _DICT_VERSION_FAMILIAR_FOLLOWERS, _DICT_VERSION_HASHTAG
+from mastodon.defaults import _DEFAULT_SCOPES, _SCOPE_SETS
+from mastodon.errors import MastodonIllegalArgumentError, MastodonAPIError, MastodonNotFoundError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
+from mastodon.internals import Mastodon as Internals
 
+from typing import Union, Optional, Tuple, List
+from mastodon.types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile
+from datetime import datetime
 
 class Mastodon(Internals):
     @api_version("2.7.0", "2.7.0", "3.4.0")
-    def create_account(self, username, password, email, agreement=False, reason=None, locale="en", scopes=_DEFAULT_SCOPES, to_file=None, return_detailed_error=False):
+    def create_account(self, username: str, password: str, email: str, agreement: bool = False, reason: Optional[str] = None, 
+                        locale: str = "en", scopes: List[str] = _DEFAULT_SCOPES, to_file: Optional[str] = None, 
+                        return_detailed_error: bool = False) -> Union[Optional[str], Tuple[Optional[str], AccountCreationError]]:
         """
         Creates a new user account with the given username, password and email. "agreement"
         must be set to true (after showing the user the instance's user agreement and having
@@ -75,7 +80,7 @@ class Mastodon(Internals):
             if "error" in response:
                 if return_detailed_error:
                     return None, response
-                raise MastodonIllegalArgumentError(f'Invalid request: {e}')
+                raise MastodonIllegalArgumentError(f'Invalid request: {response["error"]}')
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
@@ -119,28 +124,24 @@ class Mastodon(Internals):
     # Reading data: Accounts
     ###
     @api_version("1.0.0", "1.0.0", _DICT_VERSION_ACCOUNT)
-    def account(self, id):
+    def account(self, id: Union[Account, IdType]) -> Account:
         """
         Fetch account information by user `id`.
 
         Does not require authentication for publicly visible accounts.
-
-        Returns a :ref:`account dict <account dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/accounts/{id}')
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
-    def account_verify_credentials(self):
+    def account_verify_credentials(self) -> Account:
         """
-        Fetch logged-in user's account information.
-
-        Returns a :ref:`account dict <account dict>` (Starting from 2.1.0, with an additional "source" field).
+        Fetch logged-in user's account information. Returns the version of the Account object with `source` field.
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
-    def me(self):
+    def me(self) -> Account:
         """
         Get this user's account. Synonym for `account_verify_credentials()`, does exactly
         the same thing, just exists because `account_verify_credentials()` has a confusing
@@ -149,7 +150,10 @@ class Mastodon(Internals):
         return self.account_verify_credentials()
 
     @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
-    def account_statuses(self, id, only_media=False, pinned=False, exclude_replies=False, exclude_reblogs=False, tagged=None, max_id=None, min_id=None, since_id=None, limit=None):
+    def account_statuses(self, id: Union[Account, IdType], only_media: bool = False, pinned: bool = False, exclude_replies: bool = False, 
+                         exclude_reblogs: bool = False, tagged: Optional[str] = None, max_id: Optional[Union[Status, IdType, datetime]] = None, 
+                         min_id: Optional[Union[Status, IdType, datetime]] = None, since_id: Optional[Union[Status, IdType, datetime]] = None, 
+                         limit: Optional[int] = None) -> PaginatableList[Status]:
         """
         Fetch statuses by user `id`. Same options as :ref:`timeline() <timeline()>` are permitted.
         Returned toots are from the perspective of the logged-in user, i.e.
@@ -165,8 +169,6 @@ class Mastodon(Internals):
 
         Does not require authentication for Mastodon versions after 2.7.0 (returns
         publicly visible statuses in that case), for publicly visible accounts.
-
-        Returns a list of :ref:`status dicts <status dicts>`.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
@@ -191,66 +193,65 @@ class Mastodon(Internals):
         return self.__api_request('GET', f'/api/v1/accounts/{id}/statuses', params)
 
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
-    def account_following(self, id, max_id=None, min_id=None, since_id=None, limit=None):
+    def account_following(self, id: Union[Account, IdType], max_id: Optional[Union[Account, IdType]] = None, 
+                          min_id: Optional[Union[Account, IdType]] = None, since_id: Optional[Union[Account, IdType]] = None, 
+                          limit: Optional[int] = None) -> PaginatableList[Account]:
         """
         Fetch users the given user is following.
-
-        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', f'/api/v1/accounts/{id}/following', params)
 
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
-    def account_followers(self, id, max_id=None, min_id=None, since_id=None, limit=None):
+    def account_followers(self, id: Union[Account, IdType], max_id: Optional[Union[Account, IdType]] = None, 
+                          min_id: Optional[Union[Account, IdType]] = None, since_id: Optional[Union[Account, IdType]] = None, 
+                          limit: Optional[int] = None) -> PaginatableList[Account]:
         """
         Fetch users the given user is followed by.
-
-        Returns a list of :ref:`account dicts <account dicts>`.
         """
         id = self.__unpack_id(id)
         if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
+            max_id = self.__unpack_id(max_id)
 
         if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
+            min_id = self.__unpack_id(min_id)
 
         if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
+            since_id = self.__unpack_id(since_id)
 
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', f'/api/v1/accounts/{id}/followers', params)
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
-    def account_relationships(self, id):
+    def account_relationships(self, id: Union[List[Union[Account, IdType]], Union[Account, IdType]]) -> NonPaginatableList[Relationship]:
         """
         Fetch relationship (following, followed_by, blocking, follow requested) of
         the logged in user to a given account. `id` can be a list.
-
-        Returns a list of :ref:`relationship dicts <relationship dicts>`.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
 
-    @api_version("1.0.0", "2.3.0", _DICT_VERSION_ACCOUNT)
-    def account_search(self, q, limit=None, following=False, resolve=False):
+    @api_version("1.0.0", "2.8.0", _DICT_VERSION_ACCOUNT)
+    def account_search(self, q: str, limit: Optional[int] = None, following: bool = False, resolve: bool = False, offset: Optional[int] = None) -> NonPaginatableList[Account]:
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
         in the username@domain format and not yet in the database. Set `following` to
         True to limit the search to users the logged-in user follows.
 
-        Returns a list of :ref:`account dicts <account dicts>`.
+        Paginated in a weird way ("limit" / "offset"), if you want to fetch all results
+        here please do it yourself for now.
         """
         params = self.__generate_params(locals())
 
@@ -260,55 +261,46 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
     @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
-    def account_lists(self, id):
+    def account_lists(self, id: Union[Account, IdType]) -> NonPaginatableList[UserList]:
         """
         Get all of the logged-in user's lists which the specified user is
         a member of.
-
-        Returns a list of :ref:`list dicts <list dicts>`.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', f'/api/v1/accounts/{id}/lists', params)
 
     @api_version("3.4.0", "3.4.0", _DICT_VERSION_ACCOUNT)
-    def account_lookup(self, acct):
+    def account_lookup(self, acct: str) -> Account:
         """
         Look up an account from user@instance form (@instance allowed but not required for
         local accounts). Will only return accounts that the instance already knows about,
         and not do any webfinger requests. Use `account_search` if you need to resolve users
         through webfinger from remote.
-
-        Returns an :ref:`account dict <account dict>`.
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_FAMILIAR_FOLLOWERS)
-    def account_familiar_followers(self, id):
+    def account_familiar_followers(self, id: Union[List[Union[Account, IdType]], Union[Account, IdType]]) -> NonPaginatableList[FamiliarFollowers]:
         """
         Find followers for the account given by id (can be a list) that also follow the
         logged in account.
-
-        Returns a list of :ref:`familiar follower dicts <familiar follower dicts>`
         """
-        if not isinstance(id, list):
-            id = [id]
-        for i in range(len(id)):
-            id[i] = self.__unpack_id(id[i])
+        id = self.__unpack_id(id, listify = True)
         return self.__api_request('GET', '/api/v1/accounts/familiar_followers', {'id': id}, use_json=True)
 
     ###
     # Writing data: Accounts
     ###
     @api_version("1.0.0", "3.3.0", _DICT_VERSION_RELATIONSHIP)
-    def account_follow(self, id, reblogs=True, notify=False):
+    def account_follow(self, id: Union[Account, IdType], reblogs: bool =True, notify: bool = False) -> Relationship:
         """
         Follow a user.
 
         Set `reblogs` to False to hide boosts by the followed user.
         Set `notify` to True to get a notification every time the followed user posts.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
@@ -319,7 +311,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', f'/api/v1/accounts/{id}/follow', params)
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
-    def follows(self, uri):
+    def follows(self, uri: str) -> Relationship:
         """
         Follow a remote user with username given in username@domain form.
 
@@ -334,48 +326,48 @@ class Mastodon(Internals):
         return self.account_follow(acct)
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
-    def account_unfollow(self, id):
+    def account_unfollow(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unfollow a user.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unfollow')
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_RELATIONSHIP)
-    def account_remove_from_followers(self, id):
+    def account_remove_from_followers(self, id: Union[Account, IdType]) -> Relationship:
         """
         Remove a user from the logged in users followers (i.e. make them unfollow the logged in
         user / "softblock" them).
 
-        Returns a :ref:`relationship dict <relationship dict>` reflecting the updated following status.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/remove_from_followers')
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
-    def account_block(self, id):
+    def account_block(self, id: Union[Account, IdType]) -> Relationship:
         """
         Block a user.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/block')
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
-    def account_unblock(self, id):
+    def account_unblock(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unblock a user.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unblock')
 
     @api_version("1.1.0", "2.4.3", _DICT_VERSION_RELATIONSHIP)
-    def account_mute(self, id, notifications=True, duration=None):
+    def account_mute(self, id: Union[Account, IdType], notifications: bool = True, duration: Optional[int] = None) -> Relationship:
         """
         Mute a user.
 
@@ -383,28 +375,28 @@ class Mastodon(Internals):
         muted from timelines. Pass a `duration` in seconds to have Mastodon automatically
         lift the mute after that many seconds.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('POST', f'/api/v1/accounts/{id}/mute', params)
 
     @api_version("1.1.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
-    def account_unmute(self, id):
+    def account_unmute(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unmute a user.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute')
 
     @api_version("1.1.1", "3.1.0", _DICT_VERSION_ACCOUNT)
-    def account_update_credentials(self, display_name=None, note=None,
-                                   avatar=None, avatar_mime_type=None,
-                                   header=None, header_mime_type=None,
-                                   locked=None, bot=None,
-                                   discoverable=None, fields=None):
+    def account_update_credentials(self, display_name: Optional[str] = None, note: Optional[str] = None,
+                                   avatar: Optional[PathOrFile] = None, avatar_mime_type: Optional[str] = None,
+                                   header: Optional[PathOrFile] = None, header_mime_type: Optional[str] = None,
+                                   locked: Optional[bool] = None, bot: Optional[bool] = None,
+                                   discoverable: Optional[bool] = None, fields: Optional[List[Tuple[str, str]]] = None) -> Account:
         """
         Update the profile for the currently logged-in user.
 
@@ -422,7 +414,7 @@ class Mastodon(Internals):
         `fields` can be a list of up to four name-value pairs (specified as tuples) to
         appear as semi-structured information in the user's profile.
 
-        Returns the updated `account dict` of the logged-in user.
+        The returned object reflects the updated account.
         """
         params_initial = collections.OrderedDict(locals())
 
@@ -453,42 +445,40 @@ class Mastodon(Internals):
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
 
     @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
-    def account_pin(self, id):
+    def account_pin(self, id: Union[Account, IdType]) -> Relationship:
         """
         Pin / endorse a user.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/pin')
 
     @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
-    def account_unpin(self, id):
+    def account_unpin(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unpin / un-endorse a user.
 
-        Returns a :ref:`relationship dict <relationship dict>` containing the updated relationship to the user.
+        The returned object reflects the updated relationship with the user.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unpin')
 
     @api_version("3.2.0", "3.2.0", _DICT_VERSION_RELATIONSHIP)
-    def account_note_set(self, id, comment):
+    def account_note_set(self, id: Union[Account, IdType], comment: str) -> Account:
         """
         Set a note (visible to the logged in user only) for the given account.
 
-        Returns a :ref:`status dict <status dict>` with the `note` updated.
+        The returned object contains the updated note.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('POST', f'/api/v1/accounts/{id}/note', params)
 
     @api_version("3.3.0", "3.3.0", _DICT_VERSION_HASHTAG)
-    def account_featured_tags(self, id):
+    def account_featured_tags(self, id: Union[Account, IdType]) -> NonPaginatableList[Tag]:
         """
         Get an account's featured hashtags.
-
-        Returns a list of :ref:`hashtag dicts <hashtag dicts>` (NOT `featured tag dicts`_).
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/featured_tags')

@@ -7,13 +7,23 @@ import os
 import pickle
 
 @pytest.mark.vcr()
-def test_instance(api):
-    instance = api.instance()
+def test_instance_v1(api):
+    instance = api.instance_v1()
 
-    assert isinstance(instance, dict)  # hehe, instance is instance
+    assert isinstance(instance, dict)
 
     expected_keys = set(('description', 'email', 'title', 'uri', 'version', 'urls'))
     assert set(instance.keys()) >= expected_keys
+
+@pytest.mark.vcr()
+def test_instance(api):
+    instance = api.instance()
+
+    assert isinstance(instance, dict)
+
+    expected_keys = set(('description')) # TODO add some more maybe
+    assert set(instance.keys()) >= expected_keys
+
 
 @pytest.mark.vcr()
 def test_instance_activity(api):
