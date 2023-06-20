@@ -137,72 +137,28 @@ class MaybeSnowflakeIdType(str):
         """
         return str(self.__val)
     
-"""
-IDs returned from Mastodon.py ar either primitive (int or str) or snowflake
-(still int or str, but potentially convertible to datetime).
-"""
-IdType = Union[PrimitiveIdType, MaybeSnowflakeIdType]
-
-T = TypeVar('T')
-class PaginatableList(List[T]):
-    """
-    This is a list with pagination information attached.
-
-    It is returned by the API when a list of items is requested, and the response contains
-    a Link header with pagination information.
-    """
-    def __getattr__(self, attr):
-        if attr in self:
-            return self[attr]
-        else:
-            raise AttributeError(f"Attribute not found: {attr}")
-
-    def __setattr__(self, attr, val):
-        if attr in self:
-            raise AttributeError("Attribute-style access is read only")
-        super(NonPaginatableList, self).__setattr__(attr, val)
-    # TODO add the pagination housekeeping stuff
-
-class NonPaginatableList(List[T]):
-    """
-    This is just a list. I am subclassing the regular list out of pure paranoia about
-    potential oversights that might require me to add things to it later.
-    """
-    pass
-
-# Lists in Mastodon.py are either regular or paginatable
-EntityList = Union[NonPaginatableList[T], PaginatableList[T]]
-
-# Backwards compat alias
-AttribAccessList = EntityList
-
 # Helper functions for typecasting attempts
 def try_cast(t, value, retry = True):
     """
     Base case casting function. Handles:
     * Casting to any AttribAccessDict subclass (directly, no special handling)
-    * Casting to MaybeSnowflakeIdType (directly, no special handling)
     * Casting to bool (with possible conversion from json bool strings)
     * Casting to datetime (with possible conversion from all kinds of funny date formats because unfortunately this is the world we live in)
+    * Casting to whatever t is
+    * Trying once again to AttribAccessDict as a fallback
     Gives up and returns as-is if none of the above work.
     """
     try:
-        if issubclass(t, AttribAccessDict) or t is MaybeSnowflakeIdType:
-            try:
-                value = t(**value)
-            except:
-                try:
-                    value = AttribAccessDict(**value)
-                except:
-                    pass
-        elif isinstance(t, bool):
+        if issubclass(t, AttribAccessDict):
+            value = t(**value)
+        elif issubclass(t, bool):
             if isinstance(value, str):
                 if value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
                     value = False
             value = bool(value)
-        elif isinstance(t, datetime):
+        elif issubclass(t, datetime):
             if isinstance(value, int):
                 value = datetime.fromtimestamp(value, timezone.utc)
             elif isinstance(value, str):
@@ -211,8 +167,11 @@ def try_cast(t, value, retry = True):
                     value = datetime.fromtimestamp(value_int, timezone.utc)
                 except:
                     value = dateutil.parser.parse(value)
-    except:
-        value = try_cast(AttribAccessDict, value, False)
+        else:
+            value = t(**value)
+    except Exception as e:
+        if retry:
+            value = try_cast(AttribAccessDict, value, False)
     return value
 
 def try_cast_recurse(t, value):
@@ -241,6 +200,38 @@ def try_cast_recurse(t, value):
         pass
     return try_cast(t, value)
 
+"""
+IDs returned from Mastodon.py ar either primitive (int or str) or snowflake
+(still int or str, but potentially convertible to datetime).
+"""
+IdType = Union[PrimitiveIdType, MaybeSnowflakeIdType]
+
+T = TypeVar('T')
+class PaginatableList(List[T]):
+    """
+    This is a list with pagination information attached.
+
+    It is returned by the API when a list of items is requested, and the response contains
+    a Link header with pagination information.
+    """
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes basic list and adds empty pagination information.
+        """
+        super(PaginatableList, self).__init__(*args, **kwargs)
+        self._pagination_next = None
+        self._pagination_prev = None 
+
+class NonPaginatableList(List[T]):
+    """
+    This is just a list. I am subclassing the regular list out of pure paranoia about
+    potential oversights that might require me to add things to it later.
+    """
+    pass
+
+"""Lists in Mastodon.py are either regular or paginatable"""
+EntityList = Union[NonPaginatableList[T], PaginatableList[T]]
+
 class AttribAccessDict(OrderedDict[str, Any]):
     """
     Base return object class for Mastodon.py.
@@ -256,12 +247,12 @@ class AttribAccessDict(OrderedDict[str, Any]):
         Constructor that calls through to dict constructor and then sets attributes for all keys.
         """
         super(AttribAccessDict, self).__init__()
-        if __annotations__ in self.__class__.__dict__:
+        if "__annotations__" in self.__class__.__dict__:
             for attr, _ in self.__class__.__annotations__.items():
                 attr_name = attr
                 if hasattr(self.__class__, "_rename_map"):
                     attr_name = getattr(self.__class__, "_rename_map").get(attr, attr)
-                    if attr_name in kwargs:           
+                    if attr_name in kwargs:
                         self[attr] = kwargs[attr_name]
                         assert not attr in kwargs, f"Duplicate attribute {attr}"
                 elif attr in kwargs:
@@ -337,6 +328,23 @@ class AttribAccessDict(OrderedDict[str, Any]):
         super(AttribAccessDict, self).__setattr__(key, val)
         super(AttribAccessDict, self).__setitem__(key, val)
 
+    def __eq__(self, other):
+        """
+        Equality checker with casting
+        """
+        if isinstance(other, self.__class__):
+            return super(AttribAccessDict, self).__eq__(other)
+        else:
+            try:
+                casted = try_cast_recurse(self.__class__, other)
+                if isinstance(casted, self.__class__):
+                    return super(AttribAccessDict, self).__eq__(casted)
+                else:
+                    return False
+            except Exception as e:
+                pass
+        return False
+    
 """An entity returned by the Mastodon API is either a dict or a list"""
 Entity = Union[AttribAccessDict, EntityList]
 
@@ -345,3 +353,6 @@ WebpushCryptoParamsPubkey = Dict[str, str]
 
 """A type containing the parameters for a derypting webpush data. Considered opaque / implementation detail."""
 WebpushCryptoParamsPrivkey = Dict[str, str]
+
+"""Backwards compatibility alias"""
+AttribAccessList = PaginatableList

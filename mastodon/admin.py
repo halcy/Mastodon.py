@@ -380,7 +380,7 @@ class Mastodon(Internals):
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_ADMIN_DOMAIN_BLOCK)
     def admin_domain_blocks(self, id: Optional[IdType] = None, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
-                            since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminDomainBlock]:
+                            since_id: Optional[IdType] = None, limit: Optional[int] = None) -> Union[AdminDomainBlock, PaginatableList[AdminDomainBlock]]:
         """
         Fetches a list of blocked domains. Requires scope `admin:read:domain_blocks`.
 

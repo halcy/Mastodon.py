@@ -22,7 +22,7 @@ from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, 
                     MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError
 from mastodon.compat import urlparse, magic, PurePath, Path
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
-from mastodon.types import AttribAccessDict, try_cast_recurse
+from mastodon.types import AttribAccessDict, PaginatableList, try_cast_recurse
 from mastodon.types import *
 
 ###
@@ -271,10 +271,9 @@ class Mastodon():
                 response = response_object.content
 
             # Parse link headers
-            if isinstance(response, list) and \
-                    'Link' in response_object.headers and \
-                    response_object.headers['Link'] != "":
-                response = AttribAccessList(response)
+            if isinstance(response, list) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
+                if not isinstance(response, PaginatableList):
+                    response = PaginatableList(response)
                 tmp_urls = requests.utils.parse_header_links(
                     response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
                 for url in tmp_urls:
@@ -301,18 +300,12 @@ class Mastodon():
                                 del next_params['min_id']
                             response._pagination_next = next_params
 
-                            # Maybe other API users rely on the pagination info in the last item
-                            # Will be removed in future
-                            if isinstance(response[-1], AttribAccessDict):
-                                response[-1]._pagination_next = next_params
-
                     if url['rel'] == 'prev':
                         # Be paranoid and extract since_id or min_id specifically
                         prev_url = url['url']
 
                         # Old and busted (pre-2.6.0): since_id pagination
-                        matchgroups = re.search(
-                            r"[?&]since_id=([^&]+)", prev_url)
+                        matchgroups = re.search(r"[?&]since_id=([^&]+)", prev_url)
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
@@ -326,14 +319,8 @@ class Mastodon():
                                 del prev_params['max_id']
                             response._pagination_prev = prev_params
 
-                            # Maybe other API users rely on the pagination info in the first item
-                            # Will be removed in future
-                            if isinstance(response[0], AttribAccessDict):
-                                response[0]._pagination_prev = prev_params
-
                         # New and fantastico (post-2.6.0): min_id pagination
-                        matchgroups = re.search(
-                            r"[?&]min_id=([^&]+)", prev_url)
+                        matchgroups = re.search(r"[?&]min_id=([^&]+)", prev_url)
                         if matchgroups:
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
@@ -346,11 +333,6 @@ class Mastodon():
                             if "max_id" in prev_params:
                                 del prev_params['max_id']
                             response._pagination_prev = prev_params
-
-                            # Maybe other API users rely on the pagination info in the first item
-                            # Will be removed in future
-                            if isinstance(response[0], AttribAccessDict):
-                                response[0]._pagination_prev = prev_params
         
         return response
 
