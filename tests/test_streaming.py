@@ -316,7 +316,9 @@ def test_multiline_payload():
     assert listener.updates == [{"foo": "bar"}]
 
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_user_direct(api, api2, api3):    
+def test_stream_user_direct(api, api2, api3, vcr):
+    vcr.match_on = ["path"]
+    
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
     api.account_unfollow(user)
@@ -344,6 +346,7 @@ def test_stream_user_direct(api, api2, api3):
     
     posted = []
     def do_activities():
+        vcr.match_on = ["path"]
         time.sleep(5)
         posted.append(api.status_post("only real cars respond."))
         posted.append(api2.status_post("@mastodonpy_test beep beep I'm a jeep"))
@@ -381,7 +384,8 @@ def test_stream_user_direct(api, api2, api3):
     t.join()
     
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_user_local(api, api2):
+def test_stream_user_local(api, api2, vcr):
+    vcr.match_on = ["path"]
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
     api.account_unfollow(user)
@@ -412,13 +416,15 @@ def test_stream_user_local(api, api2):
     t.join()
 
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_direct(api, api2):    
+def test_stream_direct(api, api2, vcr):
+    vcr.match_on = ["path"]
     conversations = []
     listener = CallbackStreamListener(
         conversation_handler=conversations.append,
     )
     
     def do_activities():
+        vcr.match_on = ["path"]
         time.sleep(5)
         api2.status_post("@mastodonpy_test todo funny text here", visibility = "direct")
         time.sleep(10)
