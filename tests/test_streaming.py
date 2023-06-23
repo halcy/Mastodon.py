@@ -382,7 +382,7 @@ def test_stream_user_direct(api, api2, api3):
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_local(api, api2, vcr):
     vcr.match_on = ["path"]
-    patch_streaming()
+    #patch_streaming()
 
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
