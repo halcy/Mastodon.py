@@ -12,6 +12,7 @@ import vcr
 import time
 import pickle
 import os
+import sys
 
 @pytest.mark.vcr()
 def test_status(status, api):
@@ -55,18 +56,20 @@ def test_status_card(api):
 
 # Old-version card api
 def test_status_card_pre_2_9_2(api):
-    with vcr.use_cassette('test_status_card.yaml', cassette_library_dir='tests/cassettes_pre_2_9_2', record_mode='none'):    
-        import time
-        status = api.status_post("http://example.org/")
-        time.sleep(5) # Card generation may take time
-        api.verify_minimum_version("2.9.2", cached=False)
-        card = api.status_card(status['id'])
-        try:
-            assert card
-            assert card.url == "http://example.org/"
-        finally:
-            api.status_delete(status['id'])
-
+    if sys.version_info > (3, 9): # 3.10 and up will not load the json data and regenerating it would require a 2.9.2 instance
+        pytest.skip("Test skipped for 3.10 and up")
+    else:
+        with vcr.use_cassette('test_status_card.yaml', cassette_library_dir='tests/cassettes_pre_2_9_2', record_mode='none'):    
+            import time
+            status = api.status_post("http://example.org/")
+            time.sleep(5) # Card generation may take time
+            api.verify_minimum_version("2.9.2", cached=False)
+            card = api.status_card(status['id'])
+            try:
+                assert card
+                assert card.url == "http://example.org/"
+            finally:
+                api.status_delete(status['id'])
 
 @pytest.mark.vcr()
 def test_status_context(status, api):
