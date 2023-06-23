@@ -1,3 +1,4 @@
+from __future__ import annotations # pythong < 3.9 compat
 from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic
 from datetime import datetime, timezone
 import dateutil
