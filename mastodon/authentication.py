@@ -336,7 +336,7 @@ class Mastodon(Internals):
         params['scope'] = " ".join(scopes)
 
         try:
-            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting=False)
+            response = self.__api_request('POST', '/oauth/token', params, do_ratelimiting = False, override_type = dict)
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
@@ -360,7 +360,7 @@ class Mastodon(Internals):
             assert self.api_base_url is not None
             assert self.client_id is not None and isinstance(self.client_id, str)
             assert self.client_secret is not None
-            with open(to_file, 'w') as token_file:
+            with open(str(to_file), 'w') as token_file:
                 token_file.write(response['access_token'] + "\n")
                 token_file.write(self.api_base_url + "\n")
                 token_file.write(self.client_id + "\n")

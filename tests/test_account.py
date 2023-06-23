@@ -134,7 +134,7 @@ def test_account_update_credentials(api):
 
 @pytest.mark.vcr()
 def test_account_update_credentials_too_many_fields(api):
-    with pytest.raises(MastodonIllegalArgumentError):
+    with pytest.raises(MastodonAPIError):
         api.account_update_credentials(fields = [
             ('a', 'b'),
             ('c', 'd'), 

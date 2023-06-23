@@ -9,7 +9,6 @@ import pickle
 @pytest.mark.vcr()
 def test_instance_v1(api):
     instance = api.instance_v1()
-
     assert isinstance(instance, dict)
 
     expected_keys = set(('description', 'email', 'title', 'uri', 'version', 'urls'))
@@ -21,7 +20,7 @@ def test_instance(api):
 
     assert isinstance(instance, dict)
 
-    expected_keys = set(('description')) # TODO add some more maybe
+    expected_keys = set(('description', )) # TODO add some more maybe
     assert set(instance.keys()) >= expected_keys
 
 

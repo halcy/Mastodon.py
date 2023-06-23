@@ -50,10 +50,10 @@ class Mastodon(Internals):
         number will be used for this to avoid uneccesary requests.
         """
         if self.verify_minimum_version("2.4.1", cached=True):
-            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed, override_type=SearchV2)
+            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed)
         else:
             self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
-            return self.search_v1(q, resolve=resolve, override_type=Search)
+            return self.search_v1(q, resolve=resolve)
 
     @api_version("1.1.0", "2.1.0", "2.1.0")
     def search_v1(self, q: str, resolve: bool = False) -> Search:

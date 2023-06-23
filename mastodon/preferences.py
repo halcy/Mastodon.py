@@ -19,8 +19,6 @@ class Mastodon(Internals):
         """
         Fetch the user's preferences, which can be used to set some default options.
         As of 2.8.0, apps can only fetch, not update preferences.
-
-        Returns a :ref:`preference dict <preference dict>`.
         """
         return self.__api_request('GET', '/api/v1/preferences')
 
@@ -28,19 +26,18 @@ class Mastodon(Internals):
     # Reading data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> List[Marker]:
+    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> Dict[str, Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
         are the same as in :ref:`timeline() <timeline()>`
 
         Note that despite the singular name, `timeline` can be a list.
 
-        Returns a dict of :ref:`read marker dicts <read marker dicts>`, keyed by timeline name.
+        Returns a dict with the markers, keyed by timeline name.
         """
         if not isinstance(timeline, (list, tuple)):
             timeline = [timeline]
         params = self.__generate_params(locals())
-
         return self.__api_request('GET', '/api/v1/markers', params)
 
     ##
@@ -68,5 +65,4 @@ class Mastodon(Internals):
         for timeline, last_read_id in zip(timelines, last_read_ids):
             params[timeline] = collections.OrderedDict()
             params[timeline]["last_read_id"] = self.__unpack_id(last_read_id)
-
         return self.__api_request('POST', '/api/v1/markers', params, use_json=True)

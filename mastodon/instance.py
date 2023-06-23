@@ -28,11 +28,11 @@ class Mastodon(Internals):
         """
         return self.__instance()
 
-    def __instance(self):
+    def __instance(self) -> Instance:
         """
         Internal, non-version-checking helper that does the same as instance_v1()
         """
-        instance = self.__api_request('GET', '/api/v1/instance/')
+        instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
         return instance
 
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_INSTANCE)
@@ -55,7 +55,7 @@ class Mastodon(Internals):
 
         Returns an :ref:`instance dict <instance dict>`.
         """
-        return self.__api_request('GET', '/api/v2/instance/')
+        return self.__api_request('GET', '/api/v2/instance/') # TODO FIXME VERSIONING 
 
     @api_version("2.1.2", "2.1.2", _DICT_VERSION_ACTIVITY)
     def instance_activity(self) -> NonPaginatableList[Activity]:
@@ -99,7 +99,7 @@ class Mastodon(Internals):
         To override the schema, specify the desired schema with the `schema`
         parameter.
         """
-        links = self.__api_request('GET', '/.well-known/nodeinfo')["links"]
+        links = self.__api_request('GET', '/.well-known/nodeinfo', override_type = AttribAccessDict)["links"]
 
         schema_url = None
         for available_schema in links:
@@ -107,8 +107,7 @@ class Mastodon(Internals):
                 schema_url = available_schema.href
 
         if schema_url is None:
-            raise MastodonIllegalArgumentError(
-                "Requested nodeinfo schema is not available.")
+            raise MastodonIllegalArgumentError("Requested nodeinfo schema is not available.")
 
         try:
             return self.__api_request('GET', schema_url, base_url_override="")

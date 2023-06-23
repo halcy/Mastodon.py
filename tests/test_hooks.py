@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 from mastodon.types import IdType
 import typing
+import copy
 
 def get_type_class(typ):
     try:
@@ -57,5 +58,5 @@ def test_date_hook(status):
 @pytest.mark.vcr()
 def test_attribute_access(status):
     assert status.id is not None
-    status.id = 420
-    
+    status2 = copy.deepcopy(status)
+    status2.id = 420

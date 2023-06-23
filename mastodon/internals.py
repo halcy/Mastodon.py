@@ -1,10 +1,9 @@
 # internals.py - many internal helpers
 
-from datetime import timezone, datetime
+from datetime import timezone, datetime, timedelta
 from contextlib import closing
 import mimetypes
 import threading
-import six
 import uuid
 import dateutil.parser
 import time
@@ -342,7 +341,7 @@ class Mastodon():
 
         Returns the correct URL for the streaming API.
         """
-        instance = self.instance()
+        instance = self.__instance()
         if "streaming_api" in instance["urls"] and instance["urls"]["streaming_api"] != self.api_base_url:
             # This is probably a websockets URL, which is really for the browser, but requests can't handle it
             # So we do this below to turn it into an HTTPS or HTTP URL
@@ -548,11 +547,11 @@ class Mastodon():
 
     def __get_token_expired(self):
         """Internal helper for oauth code"""
-        return self._token_expired < datetime.datetime.now()
+        return self._token_expired < datetime.now()
 
     def __set_token_expired(self, value):
         """Internal helper for oauth code"""
-        self._token_expired = datetime.datetime.now() + datetime.timedelta(seconds=value)
+        self._token_expired = datetime.now() + timedelta(seconds=value)
         return
 
     def __get_refresh_token(self):

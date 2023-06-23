@@ -2,7 +2,7 @@ import pytest
 import vcr
 from mastodon.Mastodon import MastodonAPIError
 import json
-
+from mastodon.types import Status, try_cast_recurse
 try:
     from mock import MagicMock
 except ImportError:
@@ -34,9 +34,6 @@ def test_lang_for_errors(api):
     assert e1 != e2
 
 def test_broken_date(api):
-    dict1 = json.loads('{"uri":"icosahedron.website", "created_at": "", "edited_at": "2012-09-27"}', object_hook=api._Mastodon__json_hooks)
-    dict2 = json.loads('{"uri":"icosahedron.website", "created_at": "2012-09-27", "subfield": {"edited_at": "null"}}', object_hook=api._Mastodon__json_hooks)
+    dict1 = try_cast_recurse(Status, json.loads('{"uri":"icosahedron.website", "created_at": "", "edited_at": "2012-09-27"}'))
     assert "edited_at" in dict1
-    assert not "created_at" in dict1
-    assert "created_at" in dict2
-    assert not "edited_at" in dict2.subfield
+    assert dict1.created_at is None

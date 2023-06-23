@@ -1,4 +1,4 @@
-from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO
+from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic
 from datetime import datetime, timezone
 import dateutil
 import dateutil.parser
@@ -136,7 +136,31 @@ class MaybeSnowflakeIdType(str):
         Overriden so that the integer representation doesn't take precedence
         """
         return str(self.__val)
-    
+
+# Function that gets a type class but doesn't break in lower python versions as much
+def get_type_class(typ):
+    try:
+        return typ.__extra__
+    except AttributeError:
+        try:
+            return typ.__origin__
+        except AttributeError:
+            pass
+    return typ
+
+# Restore behaviour that was removed from python for mysterious reasons
+def real_issubclass(type1, type2):
+    type1 = get_type_class(type1)
+    type2 = get_type_class(type2)
+    valid_types = []
+    if type2 is Union:
+        valid_types = type2.__args__
+    elif type2 is Generic:
+        valid_types = [type2.__args__[0]]
+    else:
+        valid_types = [type2]
+    return issubclass(type1, tuple(valid_types))
+
 # Helper functions for typecasting attempts
 def try_cast(t, value, retry = True):
     """
@@ -148,17 +172,29 @@ def try_cast(t, value, retry = True):
     * Trying once again to AttribAccessDict as a fallback
     Gives up and returns as-is if none of the above work.
     """
+    if value is None: # None early out
+        return value
+    if type(t) == TypeVar: # TypeVar early out with an attempt at coercing dicts
+        if isinstance(value, dict):
+            return try_cast(AttribAccessDict, value, False)
+        else:
+            return value
     try:
-        if issubclass(t, AttribAccessDict):
+        if real_issubclass(t, AttribAccessDict):
             value = t(**value)
-        elif issubclass(t, bool):
+        elif real_issubclass(t, bool):
             if isinstance(value, str):
                 if value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
                     value = False
+                else:
+                    # Invalid values are None'd
+                    value = None
+            # We assume that if it's not a string, it validly converts to bool
+            # this is a potentially foolish assumption, but :shrug:
             value = bool(value)
-        elif issubclass(t, datetime):
+        elif real_issubclass(t, datetime):
             if isinstance(value, int):
                 value = datetime.fromtimestamp(value, timezone.utc)
             elif isinstance(value, str):
@@ -166,11 +202,32 @@ def try_cast(t, value, retry = True):
                     value_int = int(value)
                     value = datetime.fromtimestamp(value_int, timezone.utc)
                 except:
-                    value = dateutil.parser.parse(value)
+                    try:
+                        value = dateutil.parser.parse(value)
+                    except:
+                        # Invalid values are, once again, None'd
+                        value = None
+        elif real_issubclass(t, int):
+            try:
+                value = int(value)
+            except:
+                # You know the drill
+                value = None
+        elif real_issubclass(t, float):
+            try:
+                value = float(value)
+            except:
+                # One last time
+                value = None   
+        elif real_issubclass(t, list):
+            value = t(value)
         else:
-            value = t(**value)
+            if real_issubclass(value.__class__, dict):
+                value = t(**value)
+            else:
+                value = t(value)
     except Exception as e:
-        if retry:
+        if retry and isinstance(value, dict):
             value = try_cast(AttribAccessDict, value, False)
     return value
 
@@ -181,24 +238,31 @@ def try_cast_recurse(t, value):
     * Casting to Union, trying all types in the union until one works
     Gives up and returns as-is if none of the above work.
     """
+    if value is None:
+        return value
     try:
-        orig_type = getattr(t, '__origin__')
-        if orig_type in (list, tuple, EntityList, NonPaginatableList, PaginatableList):
-            value_cast = []
-            type_args = t.__args__
-            if len(type_args) == 1:
-                type_args = type_args * len(value)
-            for element_type, v in zip(type_args, value):
-                value_cast.append(try_cast_recurse(element_type, v))
-            value = orig_type(value_cast)
-        elif orig_type is Union:
-            for t in t.__args__:
-                value = try_cast_recurse(t, value)
-                if isinstance(value, t):
-                    break
+        if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
+            orig_type = get_type_class(t)
+            if orig_type in (list, tuple, EntityList, NonPaginatableList, PaginatableList):
+                value_cast = []
+                type_args = t.__args__
+                if len(type_args) == 1:
+                    type_args = type_args * len(value)
+                for element_type, v in zip(type_args, value):
+                    value_cast.append(try_cast_recurse(element_type, v))
+                value = orig_type(value_cast)
+            elif orig_type is Union:
+                for sub_t in t.__args__:
+                    value = try_cast_recurse(sub_t, value)
+                    testing_t = sub_t
+                    if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
+                        testing_t = get_type_class(sub_t)
+                    if isinstance(value, testing_t):
+                        break
     except Exception as e:
         pass
-    return try_cast(t, value)
+    value = try_cast(t, value)
+    return value
 
 """
 IDs returned from Mastodon.py ar either primitive (int or str) or snowflake
@@ -282,7 +346,7 @@ class AttribAccessDict(OrderedDict[str, Any]):
             if attr in self:
                 return self[attr]
             else:
-                raise AttributeError(f"Attribute not found: {attr}")
+                return super(AttribAccessDict, self).__getattribute__(attr)
         else:
             if attr in self and self[attr] is not None:
                 return self[attr]
@@ -296,7 +360,7 @@ class AttribAccessDict(OrderedDict[str, Any]):
                 except:
                     raise AttributeError(f"Attribute not found: {attr}")
             else:
-                raise AttributeError(f"Attribute not found: {attr}")
+                return super(AttribAccessDict, self).__getattribute__(attr)
             
     def __setattr__(self, attr, val):
         """
@@ -323,7 +387,12 @@ class AttribAccessDict(OrderedDict[str, Any]):
         if key in type_hints:
             type_hint = type_hints[key]
             val = try_cast_recurse(type_hint, val)
-
+        else:
+            if isinstance(val, dict):
+                val = try_cast_recurse(AttribAccessDict, val)
+            elif isinstance(val, list):
+                val = try_cast_recurse(EntityList, val)
+                
         # Finally, call out to setattr and setitem proper
         super(AttribAccessDict, self).__setattr__(key, val)
         super(AttribAccessDict, self).__setitem__(key, val)

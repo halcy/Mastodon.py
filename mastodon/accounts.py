@@ -10,7 +10,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 
 from typing import Union, Optional, Tuple, List
-from mastodon.types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile
+from mastodon.types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile, AttribAccessDict, try_cast
 from datetime import datetime
 
 class Mastodon(Internals):
@@ -69,17 +69,18 @@ class Mastodon(Internals):
             oauth_params['client_secret'] = self.client_secret
             oauth_params['grant_type'] = 'client_credentials'
 
-            response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False)
+            response = self.__api_request('POST', '/oauth/token', oauth_params, do_ratelimiting=False, override_type=AttribAccessDict)
             temp_access_token = response['access_token']
         except Exception as e:
             raise MastodonIllegalArgumentError(f'Invalid request during oauth phase: {e}')
 
         # Step 2: Use that to create a user
         try:
-            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True)
+            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True, override_type=dict)
+            print(response)
             if "error" in response:
                 if return_detailed_error:
-                    return None, response
+                    return None, try_cast(AccountCreationError, response)
                 raise MastodonIllegalArgumentError(f'Invalid request: {response["error"]}')
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
@@ -107,7 +108,7 @@ class Mastodon(Internals):
         self.__logged_in_id = None
 
         if return_detailed_error:
-            return response['access_token'], {}
+            return response['access_token'], AccountCreationError()
         else:
             return response['access_token']
 
@@ -420,10 +421,6 @@ class Mastodon(Internals):
 
         # Convert fields
         if fields is not None:
-            if len(fields) > 4:
-                raise MastodonIllegalArgumentError(
-                    'A maximum of four fields are allowed.')
-
             fields_attributes = []
             for idx, (field_name, field_value) in enumerate(fields):
                 params_initial[f'fields_attributes[{idx}][name]'] = field_name

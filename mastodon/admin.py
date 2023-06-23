@@ -268,7 +268,7 @@ class Mastodon(Internals):
         self.__api_request('POST', f'/api/v1/admin/accounts/{id}/action', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_REPORT)
-    def admin_reports(self, resolved: Optional[bool] = False, account_id = Optional[Union[Account, AdminAccount, IdType]], 
+    def admin_reports(self, resolved: Optional[bool] = False, account_id: Optional[Union[Account, AdminAccount, IdType]] = None, 
                       target_account_id: Optional[Union[Account, AdminAccount, IdType]] = None, max_id: Optional[IdType] = None, 
                       min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminReport]:
         """
@@ -531,7 +531,7 @@ class Mastodon(Internals):
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_DIMENSION)
     def admin_dimensions(self, start_at: datetime, end_at: datetime, limit: Optional[int] = None, languages: bool = False, sources: bool = False, 
-                         servers: bool = False, space_usag: bool = False, software_versions: bool = False, tag_servers: Optional[Union[Tag, IdType]] = None, 
+                         servers: bool = False, space_usage: bool = False, software_versions: bool = False, tag_servers: Optional[Union[Tag, IdType]] = None, 
                          tag_languages: Optional[Union[Tag, IdType]] = None, instance_accounts: Optional[str] = None, instance_languages: Optional[str] = None) -> NonPaginatableList[AdminDimension]:
         """
         Retrieves primarily categorical instance information for the time period (at day granularity) between `start_at` and `end_at`.

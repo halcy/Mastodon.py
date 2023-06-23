@@ -27,7 +27,7 @@ def test_notifications_exclude_types(api, mention):
     time.sleep(3)
     notifications = api.notifications(exclude_types=["mention"])
     if len(notifications) > 0:
-        assert notifications[0].status.id == mention.id
+        assert notifications[0].status is None
 
 @pytest.mark.vcr()
 def test_notifications_types(api, mention):

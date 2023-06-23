@@ -66,16 +66,16 @@ def test_conversations(api, api2):
 @pytest.mark.vcr()
 def test_min_max_id(api, status):
     time.sleep(3)
-    tl = api.timeline_home(min_id = status.id - 1000, max_id = status.id + 1000)
+    tl = api.timeline_home(min_id = int(status.id) - 1000, max_id = int(status.id) + 1000)
     assert any(st["id"] == status["id"] for st in tl)
 
-    tl = api.timeline_home(min_id = status.id - 2000, max_id = status.id - 1000)
+    tl = api.timeline_home(min_id = int(status.id) - 2000, max_id = int(status.id) - 1000)
     assert not any(st["id"] == status["id"] for st in tl)
 
-    tl = api.timeline_home(min_id = status.id + 1000, max_id = status.id + 2000)
+    tl = api.timeline_home(min_id = int(status.id) + 1000, max_id = int(status.id)+ 2000)
     assert not any(st["id"] == status["id"] for st in tl)
 
-    tl = api.timeline_home(since_id = status.id - 1000)
+    tl = api.timeline_home(since_id = int(status.id) - 1000)
     assert any(st["id"] == status["id"] for st in tl)
 
 @pytest.mark.vcr()

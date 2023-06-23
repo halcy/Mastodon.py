@@ -3,10 +3,12 @@ import pytest
 @pytest.mark.vcr()
 def test_markers(api, status):
     marker_a = api.markers_set("home", status)
+    print("---------------- MARKER A", marker_a)
     assert marker_a
     assert marker_a["home"]
     
     marker_b = api.markers_get("home")
+    print("---------------- MARKER B", marker_b)
     assert marker_b
     assert marker_b["home"]
     
