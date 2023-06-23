@@ -204,9 +204,7 @@ def try_cast(t, value, retry = True):
     """
     if value is None: # None early out
         return value
-    print("Preresolve: ", t)
     t = resolve_type(t)    
-    print(f"trying to cast to {t}")
     if type(t) == TypeVar: # TypeVar early out with an attempt at coercing dicts
         if isinstance(value, dict):
             return try_cast(AttribAccessDict, value, False)
@@ -228,7 +226,6 @@ def try_cast(t, value, retry = True):
             # this is a potentially foolish assumption, but :shrug:
             value = bool(value)
         elif real_issubclass(t, datetime):
-            print("trying to parse as datetime")
             if isinstance(value, int):
                 value = datetime.fromtimestamp(value, timezone.utc)
             elif isinstance(value, str):
@@ -261,7 +258,6 @@ def try_cast(t, value, retry = True):
             else:
                 value = t(value)
     except Exception as e:
-        print("Exception: ", e)
         if retry and isinstance(value, dict):
             value = try_cast(AttribAccessDict, value, False)
     return value
@@ -275,13 +271,10 @@ def try_cast_recurse(t, value):
     """
     if value is None:
         return value
-    print("-----> Preresolve RC: ", t)
     t = resolve_type(t)
-    print("--------------> Postresolve RC: ", t)
     try:
         if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
             orig_type = get_type_class(t)
-            print("ORITYPE", orig_type)
             if orig_type in (list, tuple, EntityList, NonPaginatableList, PaginatableList):
                 value_cast = []
                 type_args = t.__args__
@@ -299,7 +292,6 @@ def try_cast_recurse(t, value):
                     if isinstance(value, testing_t):
                         break
     except Exception as e:
-        print("ERROR ERROR", e)
         pass
     value = try_cast(t, value)
     return value
@@ -430,7 +422,6 @@ class AttribAccessDict(OrderedStrDict):
         # Do typecasting, possibly iterating over a list or tuple
         if key in type_hints:
             type_hint = type_hints[key]
-            print("Cast attempt with type hint", type_hint, "for", key)
             val = try_cast_recurse(type_hint, val)
         else:
             if isinstance(val, dict):
