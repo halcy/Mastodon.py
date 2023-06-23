@@ -19,6 +19,8 @@ def vcr(vcr):
     vcr.match_on = ['path']
     return vcr
 
+"""
+# Needed for old vcrpy versions, but not amy more!
 def patch_streaming():
     # For monkeypatching so we can make vcrpy better
     import vcr.stubs
@@ -52,6 +54,7 @@ def patch_streaming():
             args[0].real_connection.getresponse = fakeRealConnectionGetresponse
         return real_get_response(*args, **kwargs)
     vcr.stubs.VCRConnection.getresponse = fake_get_response
+"""
 
 def streaming_close():
     global real_connections
@@ -313,9 +316,7 @@ def test_multiline_payload():
     assert listener.updates == [{"foo": "bar"}]
 
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_user_direct(api, api2, api3):
-    patch_streaming()
-    
+def test_stream_user_direct(api, api2, api3):    
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
     api.account_unfollow(user)
@@ -380,10 +381,7 @@ def test_stream_user_direct(api, api2, api3):
     t.join()
     
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_user_local(api, api2, vcr):
-    vcr.match_on = ["path"]
-    #patch_streaming()
-
+def test_stream_user_local(api, api2):
     # Make sure we are in the right state to not receive updates from api2
     user = api2.account_verify_credentials()
     api.account_unfollow(user)
@@ -414,9 +412,7 @@ def test_stream_user_local(api, api2, vcr):
     t.join()
 
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_direct(api, api2):
-    patch_streaming()
-    
+def test_stream_direct(api, api2):    
     conversations = []
     listener = CallbackStreamListener(
         conversation_handler=conversations.append,
