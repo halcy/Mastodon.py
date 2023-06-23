@@ -1,4 +1,4 @@
-from __future__ import annotations # pythong < 3.9 compat
+from __future__ import annotations # python < 3.9 compat
 from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic
 from datetime import datetime, timezone
 import dateutil
@@ -297,7 +297,12 @@ class NonPaginatableList(List[T]):
 """Lists in Mastodon.py are either regular or paginatable"""
 EntityList = Union[NonPaginatableList[T], PaginatableList[T]]
 
-class AttribAccessDict(OrderedDict[str, Any]):
+try:
+    OrderedStrDict = OrderedDict[str, Any]
+except:
+    OrderedStrDict = OrderedDict
+
+class AttribAccessDict(OrderedStrDict):
     """
     Base return object class for Mastodon.py.
 
