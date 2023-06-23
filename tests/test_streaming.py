@@ -380,7 +380,8 @@ def test_stream_user_direct(api, api2, api3):
     t.join()
     
 @pytest.mark.vcr(match_on=['path'])
-def test_stream_user_local(api, api2):
+def test_stream_user_local(api, api2, vcr):
+    vcr.match_on = ["path"]
     patch_streaming()
 
     # Make sure we are in the right state to not receive updates from api2
@@ -394,6 +395,7 @@ def test_stream_user_local(api, api2):
     
     posted = []
     def do_activities():
+        vcr.match_on = ["path"]
         time.sleep(5)
         posted.append(api.status_post("it's cool guy"))
         time.sleep(10)
