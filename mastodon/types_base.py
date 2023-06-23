@@ -1,5 +1,5 @@
 from __future__ import annotations # python < 3.9 compat
-from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic
+from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic, ForwardRef
 from datetime import datetime, timezone
 import dateutil
 import dateutil.parser
@@ -7,6 +7,7 @@ from collections import OrderedDict
 import inspect
 import json
 from mastodon.compat import PurePath
+import sys
 
 # A type representing a file name as a PurePath or string, or a file-like object, for convenience
 PathOrFile = Union[str, PurePath, IO[bytes]]
@@ -138,6 +139,34 @@ class MaybeSnowflakeIdType(str):
         """
         return str(self.__val)
 
+# Forward reference resolution for < 3.9
+if sys.version_info < (3, 9):
+    def resolve_type(t):
+        # I'm sorry about this, but I cannot think of another way to make this work properly in versions below 3.9 that
+        # cannot resolve forward references in a sane way
+        from mastodon.types import Account, AccountField, Role, CredentialAccountSource, Status, StatusEdit, FilterResult,\
+            StatusMention, ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, Tag, TagHistory, CustomEmoji,\
+            Application, Relationship, Filter, FilterV2, Notification, Context, UserList, MediaAttachment, MediaAttachmentMetadataContainer,\
+            MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, MediaAttachmentFocusPoint, MediaAttachmentColors, \
+            PreviewCard, Search, SearchV2, Instance, InstanceConfiguration, InstanceURLs, InstanceV2, InstanceConfigurationV2, InstanceURLsV2,\
+            InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, InstanceUsageUsers, Rule, InstanceRegistrations,\
+            InstanceContact, InstanceAccountConfiguration, InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration,\
+            InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, NodeinfoMetadata, Activity,\
+            Report, AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, PushNotification, Preferences, FeaturedTag, Marker, Announcement,\
+            Reaction, StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, AdminMeasure, AdminMeasureData, AdminDimension, AdminDimensionData,\
+            AdminRetention, AdminCohort, AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory,\
+            AdminIpBlock, DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, Suggestion, Translation, AccountCreationError,\
+            AccountCreationErrorDetails, AccountCreationErrorDetailsField
+        if isinstance(t, ForwardRef):
+            try:
+                t = t._evaluate(globals(), locals(), frozenset())
+            except:
+                t = t._evaluate(globals(), locals())
+        return t
+else:
+    def resolve_type(t):
+        return t
+
 # Function that gets a type class but doesn't break in lower python versions as much
 def get_type_class(typ):
     try:
@@ -175,6 +204,9 @@ def try_cast(t, value, retry = True):
     """
     if value is None: # None early out
         return value
+    print("Preresolve: ", t)
+    t = resolve_type(t)    
+    print(f"trying to cast to {t}")
     if type(t) == TypeVar: # TypeVar early out with an attempt at coercing dicts
         if isinstance(value, dict):
             return try_cast(AttribAccessDict, value, False)
@@ -196,6 +228,7 @@ def try_cast(t, value, retry = True):
             # this is a potentially foolish assumption, but :shrug:
             value = bool(value)
         elif real_issubclass(t, datetime):
+            print("trying to parse as datetime")
             if isinstance(value, int):
                 value = datetime.fromtimestamp(value, timezone.utc)
             elif isinstance(value, str):
@@ -228,6 +261,7 @@ def try_cast(t, value, retry = True):
             else:
                 value = t(value)
     except Exception as e:
+        print("Exception: ", e)
         if retry and isinstance(value, dict):
             value = try_cast(AttribAccessDict, value, False)
     return value
@@ -241,9 +275,13 @@ def try_cast_recurse(t, value):
     """
     if value is None:
         return value
+    print("-----> Preresolve RC: ", t)
+    t = resolve_type(t)
+    print("--------------> Postresolve RC: ", t)
     try:
         if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
             orig_type = get_type_class(t)
+            print("ORITYPE", orig_type)
             if orig_type in (list, tuple, EntityList, NonPaginatableList, PaginatableList):
                 value_cast = []
                 type_args = t.__args__
@@ -261,6 +299,7 @@ def try_cast_recurse(t, value):
                     if isinstance(value, testing_t):
                         break
     except Exception as e:
+        print("ERROR ERROR", e)
         pass
     value = try_cast(t, value)
     return value
@@ -388,10 +427,10 @@ class AttribAccessDict(OrderedStrDict):
         type_hints = get_type_hints(self.__class__)
         init_hints = get_type_hints(self.__class__.__init__)
         type_hints.update(init_hints)
-
         # Do typecasting, possibly iterating over a list or tuple
         if key in type_hints:
             type_hint = type_hints[key]
+            print("Cast attempt with type hint", type_hint, "for", key)
             val = try_cast_recurse(type_hint, val)
         else:
             if isinstance(val, dict):

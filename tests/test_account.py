@@ -123,6 +123,7 @@ def test_account_update_credentials(api):
         ]
     )
     
+    print(type(account.fields))
     assert account
     assert account.id
     assert account["display_name"] == 'John Lennon'
