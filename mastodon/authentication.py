@@ -315,7 +315,7 @@ class Mastodon(Internals):
         For OAuth 2, obtain a code via having your user go to the URL returned by
         :ref:`auth_request_url() <auth_request_url()>` and pass it as the code parameter. In this case,
         make sure to also pass the same redirect_uri parameter as you used when
-        generating the auth request URL.
+        generating the auth request URL. If passing `code`you should not pass `username` or `password`.
 
         Returns the access token as a string.
         """
