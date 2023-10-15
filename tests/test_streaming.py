@@ -94,6 +94,9 @@ class Listener(StreamListener):
 
     def handle_stream_(self, lines):
         """Test helper to avoid littering all tests with six.b()."""
+        def six_b(s):
+            return s.encode("latin-1")
+
         class MockResponse():
             def __init__(self, data):
                 self.data = data
@@ -105,7 +108,7 @@ class Listener(StreamListener):
                         bytearr.append(byte)
                         yield(bytearr)
                     yield(b'\n')
-        return self.handle_stream(MockResponse(map(bytes, lines)))
+        return self.handle_stream(MockResponse(map(six_b, lines)))
 
 
 def test_heartbeat():
