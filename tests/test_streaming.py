@@ -1,4 +1,3 @@
-import six
 import pytest
 import itertools
 from mastodon.streaming import StreamListener, CallbackStreamListener
@@ -98,7 +97,7 @@ class Listener(StreamListener):
         class MockResponse():
             def __init__(self, data):
                 self.data = data
-                
+
             def iter_content(self, chunk_size):
                 for line in self.data:
                     for byte in line:
@@ -106,7 +105,7 @@ class Listener(StreamListener):
                         bytearr.append(byte)
                         yield(bytearr)
                     yield(b'\n')
-        return self.handle_stream(MockResponse(map(six.b, lines)))
+        return self.handle_stream(MockResponse(map(bytes, lines)))
 
 
 def test_heartbeat():
