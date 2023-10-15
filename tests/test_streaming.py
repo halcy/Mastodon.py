@@ -92,39 +92,57 @@ class Listener(StreamListener):
     def handle_heartbeat(self):
         self.heartbeats += 1
 
+    def handle_stream_(self, lines):
+        """Test helper to avoid littering all tests with six.b()."""
+        def six_b(s):
+            return s.encode("latin-1")
+
+        class MockResponse():
+            def __init__(self, data):
+                self.data = data
+
+            def iter_content(self, chunk_size):
+                for line in self.data:
+                    for byte in line:
+                        bytearr = bytearray()
+                        bytearr.append(byte)
+                        yield(bytearr)
+                    yield(b'\n')
+        return self.handle_stream(MockResponse(map(six_b, lines)))
+
 
 def test_heartbeat():
     listener = Listener()
-    listener.handle_stream([b':one', b':two'])
+    listener.handle_stream_([':one', ':two'])
     assert listener.heartbeats == 2
 
 
 def test_status():
     listener = Listener()
-    listener.handle_stream([
-        b'event: update',
-        b'data: {"foo": "bar"}',
-        b'',
+    listener.handle_stream_([
+        'event: update',
+        'data: {"foo": "bar"}',
+        '',
     ])
     assert listener.updates == [{"foo": "bar"}]
 
 
 def test_notification():
     listener = Listener()
-    listener.handle_stream([
-        b'event: notification',
-        b'data: {"foo": "bar"}',
-        b'',
+    listener.handle_stream_([
+        'event: notification',
+        'data: {"foo": "bar"}',
+        '',
     ])
     assert listener.notifications == [{"foo": "bar"}]
 
 
 def test_delete():
     listener = Listener()
-    listener.handle_stream([
-        b'event: delete',
-        b'data: 123',
-        b'',
+    listener.handle_stream_([
+        'event: delete',
+        'data: 123',
+        '',
     ])
     assert listener.deletes == ["123"]
 
@@ -139,11 +157,11 @@ def test_delete():
 def test_many(events):
     listener = Listener()
     stream = [
-        line.encode('latin1')
+        line
         for event in events
         for line in event
     ]
-    listener.handle_stream(stream)
+    listener.handle_stream_(stream)
     assert listener.updates == [{"foo": "bar"}]
     assert listener.notifications == [{"foo": "bar"}]
     assert listener.deletes == ["123"]
@@ -153,10 +171,10 @@ def test_many(events):
 def test_unknown_event():
     """Be tolerant of new event types"""
     listener = Listener()
-    listener.handle_stream([
-        b'event: blahblah',
-        b'data: {}',
-        b'',
+    listener.handle_stream_([
+        'event: blahblah',
+        'data: {}',
+        '',
     ])
     assert listener.bla_called is True
     assert listener.updates == []
@@ -169,10 +187,10 @@ def test_unknown_handled_event():
     listener = Listener()
     listener.on_unknown_event = lambda name, payload: None
 
-    listener.handle_stream([
-        b'event: complete.new.event',
-        b'data: {"k": "v"}',
-        b'',
+    listener.handle_stream_([
+        'event: complete.new.event',
+        'data: {"k": "v"}',
+        '',
     ])
 
     assert listener.updates == []
@@ -183,10 +201,10 @@ def test_unknown_handled_event():
 def test_dotted_unknown_event():
     """Be tolerant of new event types with dots in the event-name"""
     listener = Listener()
-    listener.handle_stream([
-        b'event: do.something',
-        b'data: {}',
-        b'',
+    listener.handle_stream_([
+        'event: do.something',
+        'data: {}',
+        '',
     ])
     assert listener.do_something_called is True
     assert listener.updates == []
@@ -198,18 +216,18 @@ def test_invalid_json():
     """But not too tolerant"""
     listener = Listener()
     with pytest.raises(MastodonMalformedEventError):
-        listener.handle_stream([
-            b'event: blahblah',
-            b'data: {kjaslkdjalskdjasd asdkjhak ajdasldasd}',
-            b'',
+        listener.handle_stream_([
+            'event: blahblah',
+            'data: {kjaslkdjalskdjasd asdkjhak ajdasldasd}',
+            '',
         ])
 
 def test_missing_event_name():
     listener = Listener()
     with pytest.raises(MastodonMalformedEventError):
-        listener.handle_stream([
-            b'data: {}',
-            b'',
+        listener.handle_stream_([
+            'data: {}',
+            '',
         ])
 
     assert listener.updates == []
@@ -221,9 +239,9 @@ def test_missing_event_name():
 def test_missing_data():
     listener = Listener()
     with pytest.raises(MastodonMalformedEventError):
-        listener.handle_stream([
-            b'event: update',
-            b'',
+        listener.handle_stream_([
+            'event: update',
+            '',
         ])
 
     assert listener.updates == []
@@ -234,10 +252,10 @@ def test_missing_data():
 
 def test_sse_order_doesnt_matter():
     listener = Listener()
-    listener.handle_stream([
-        b'data: {"foo": "bar"}',
-        b'event: update',
-        b'',
+    listener.handle_stream_([
+        'data: {"foo": "bar"}',
+        'event: update',
+        '',
     ])
     assert listener.updates == [{"foo": "bar"}]
 
@@ -249,13 +267,13 @@ def test_extra_keys_ignored():
     and alleges that "All other field names are ignored".
     """
     listener = Listener()
-    listener.handle_stream([
-        b'event: update',
-        b'data: {"foo": "bar"}',
-        b'id: 123',
-        b'retry: 456',
-        b'ignoreme: blah blah blah',
-        b'',
+    listener.handle_stream_([
+        'event: update',
+        'data: {"foo": "bar"}',
+        'id: 123',
+        'retry: 456',
+        'ignoreme: blah blah blah',
+        '',
     ])
     assert listener.updates == [{"foo": "bar"}]
 
@@ -263,10 +281,10 @@ def test_extra_keys_ignored():
 def test_valid_utf8():
     """Snowman Cat Face With Tears Of Joy"""
     listener = Listener()
-    listener.handle_stream([
-        b'event: update',
-        b'data: {"foo": "\xE2\x98\x83\xF0\x9F\x98\xB9"}',
-        b'',
+    listener.handle_stream_([
+        'event: update',
+        'data: {"foo": "\xE2\x98\x83\xF0\x9F\x98\xB9"}',
+        '',
     ])
     assert listener.updates == [{"foo": u"\u2603\U0001F639"}]
 
@@ -275,10 +293,10 @@ def test_invalid_utf8():
     """Cat Face With Tears O"""
     listener = Listener()
     with pytest.raises(MastodonMalformedEventError):
-        listener.handle_stream([
-            b'event: update',
-            b'data: {"foo": "\xF0\x9F\x98"}',
-            b'',
+        listener.handle_stream_([
+            'event: update',
+            'data: {"foo": "\xF0\x9F\x98"}',
+            '',
         ])
 
 
@@ -291,12 +309,12 @@ def test_multiline_payload():
     so let's handle this case.
     """
     listener = Listener()
-    listener.handle_stream([
-        b'event: update',
-        b'data: {"foo":',
-        b'data: "bar"',
-        b'data: }',
-        b'',
+    listener.handle_stream_([
+        'event: update',
+        'data: {"foo":',
+        'data: "bar"',
+        'data: }',
+        '',
     ])
     assert listener.updates == [{"foo": "bar"}]
 
