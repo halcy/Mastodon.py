@@ -201,11 +201,12 @@ class Mastodon(Internals):
 
         The `visibility` parameter is a string value and accepts any of:
         
-        * ``'direct'`` - post will be visible only to **mentioned users**
-        * ``'private'`` - post will be visible only to **followers**
-        * ``'unlisted'`` - post will be **public but not appear on the public timeline**
-        * ``'public'`` - post will be **public**
+        * ``'direct'`` - post will be visible only to **mentioned users**, known in Mastodon's UI as "Mentioned users only"
+        * ``'private'`` - post will be visible only to **followers**, known in Mastodon's UI as "Followers only"
+        * ``'unlisted'`` - post will be public but **will not appear** on the public timelines
+        * ``'public'`` - post will be public and **will appear** on public timelines
 
+\
         If not passed in, `visibility` defaults to match the current account's
         default-privacy setting (starting with Mastodon version 1.6) or its
         locked setting - ``'private'`` if the account is locked, ``'public'`` otherwise
