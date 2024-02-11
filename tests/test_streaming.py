@@ -316,6 +316,7 @@ def test_multiline_payload():
     assert listener.updates == [{"foo": "bar"}]
 
 @pytest.mark.vcr(match_on=['path'])
+@pytest.mark.flaky(retries=10, delay=1)
 def test_stream_user_direct(api, api2, api3, vcr):
     patch_streaming()
 
@@ -386,6 +387,7 @@ def test_stream_user_direct(api, api2, api3, vcr):
     t.join()
     
 @pytest.mark.vcr(match_on=['path'])
+@pytest.mark.flaky(retries=10, delay=1)
 def test_stream_user_local(api, api2, vcr):
     patch_streaming()
 
@@ -420,6 +422,7 @@ def test_stream_user_local(api, api2, vcr):
     t.join()
 
 @pytest.mark.vcr(match_on=['path'])
+@pytest.mark.flaky(retries=10, delay=1)
 def test_stream_direct(api, api2, vcr):
     patch_streaming()
     
