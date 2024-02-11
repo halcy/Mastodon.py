@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]"
+          command: "pip install .[test_old,webpush,blurhash]"
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]"
+          command: "pip install .[test_old,webpush,blurhash]"
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]"
+          command: "pip install .[test_old,webpush,blurhash]"
       - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"

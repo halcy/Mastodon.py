@@ -19,6 +19,12 @@ def vcr(vcr):
     vcr.match_on = ['path']
     return vcr
 
+@pytest.fixture(scope='module')
+def vcr_config():
+    return {
+        "match_on": ["path"],
+    }
+
 def patch_streaming():
     # For monkeypatching so we can make vcrpy better
     import vcr.stubs
