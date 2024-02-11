@@ -2,6 +2,17 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.0.0 (IN PROGRESS)
+--------------------
+* Absolutely massive rework of entities and typing. There are now proper classes for all entities, and typing is now used throughout the library. There is an attempt here to be backwards compatible, and none of my *tests* break.
+* Documentation fixes based on the new entities and typing.
+* Added information that streaming API access is now auth mandatory (Thanks @leahoswald)
+* Removed six dependency, since we don't care about 2.x anymore (Thanks @a-detiste)
+* Clarify the use of `code`  (Thanks @lasseedfast)
+* Improved docstring for visibility (Thanks @ashwinvis)
+* Added `offset` parameter to `trending_statuses` (Thanks @Teqed)
+* We're now using space age technology (pyproject.toml - thanks @codl)
+
 v1.8.1
 ------
 * Replace some lambdas with list comprenehsions (thanks eumiro)

@@ -179,14 +179,14 @@ def get_type_class(typ):
     return typ
 
 # Restore behaviour that was removed from python for mysterious reasons
-def real_issubclass(type1, type2):
+def real_issubclass(type1, type2orig):
     type1 = get_type_class(type1)
-    type2 = get_type_class(type2)
+    type2 = get_type_class(type2orig)
     valid_types = []
     if type2 is Union:
-        valid_types = type2.__args__
+        valid_types = type2orig.__args__
     elif type2 is Generic:
-        valid_types = [type2.__args__[0]]
+        valid_types = [type2orig.__args__[0]]
     else:
         valid_types = [type2]
     return issubclass(type1, tuple(valid_types))
@@ -204,7 +204,7 @@ def try_cast(t, value, retry = True):
     """
     if value is None: # None early out
         return value
-    t = resolve_type(t)    
+    t = resolve_type(t)
     if type(t) == TypeVar: # TypeVar early out with an attempt at coercing dicts
         if isinstance(value, dict):
             return try_cast(AttribAccessDict, value, False)
@@ -297,6 +297,15 @@ def try_cast_recurse(t, value):
     return value
 
 """
+Pagination info
+
+Not likely to change, but very much implementation (Mastodon.py) and implementation (Mastodon server) defined. It would be best
+if you treated this as opaque.
+"""
+class PaginationInfo(OrderedDict):
+    pass
+
+"""
 IDs returned from Mastodon.py ar either primitive (int or str) or snowflake
 (still int or str, but potentially convertible to datetime).
 """
@@ -310,6 +319,9 @@ class PaginatableList(List[T]):
     It is returned by the API when a list of items is requested, and the response contains
     a Link header with pagination information.
     """
+    _pagination_next: Optional[PaginationInfo]
+    _pagination_prev: Optional[PaginationInfo]
+
     def __init__(self, *args, **kwargs):
         """
         Initializes basic list and adds empty pagination information.
@@ -419,6 +431,7 @@ class AttribAccessDict(OrderedStrDict):
         type_hints = get_type_hints(self.__class__)
         init_hints = get_type_hints(self.__class__.__init__)
         type_hints.update(init_hints)
+
         # Do typecasting, possibly iterating over a list or tuple
         if key in type_hints:
             type_hint = type_hints[key]

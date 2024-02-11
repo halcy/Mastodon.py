@@ -5,11 +5,14 @@ import dateutil
 import datetime
 import copy
 
-from mastodon.errors import MastodonAPIError
+from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError
 from mastodon.compat import IMPL_HAS_BLURHASH, blurhash
 from mastodon.internals import Mastodon as Internals
 
 from mastodon.versions import parse_version_string, max_version, api_version
+
+from typing import Optional
+from mastodon.types import PaginatableList, PaginationInfo
 
 # Class level:
 class Mastodon(Internals):
@@ -114,7 +117,7 @@ class Mastodon(Internals):
     ###
     # Pagination
     ###
-    def fetch_next(self, previous_page):
+    def fetch_next(self, previous_page: PaginatableList) -> Optional[PaginatableList]:
         """
         Fetches the next page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -122,13 +125,16 @@ class Mastodon(Internals):
 
         Returns the next page or None if no further data is available.
         """
-        if isinstance(previous_page, list) and len(previous_page) != 0:
-            if hasattr(previous_page, '_pagination_next'):
-                params = copy.deepcopy(previous_page._pagination_next)
-            else:
-                return None
+        # Duck typing to keep compat with potentially persisted pagination info
+        if hasattr(previous_page, "_pagination_next"):
+            params = copy.deepcopy(previous_page._pagination_next)
+        elif isinstance(previous_page, dict) and '_pagination_next' in previous_page:
+            params = copy.deepcopy(previous_page['_pagination_next'])
         else:
             params = copy.deepcopy(previous_page)
+
+        if not "_pagination_method" in params and not "_pagination_endpoint" in params:
+            raise MastodonIllegalArgumentError("The passed object is not paginatable")
 
         method = params['_pagination_method']
         del params['_pagination_method']
@@ -138,7 +144,7 @@ class Mastodon(Internals):
 
         return self.__api_request(method, endpoint, params)
 
-    def fetch_previous(self, next_page):
+    def fetch_previous(self, next_page: PaginatableList) -> Optional[PaginatableList]:
         """
         Fetches the previous page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -146,14 +152,17 @@ class Mastodon(Internals):
 
         Returns the previous page or None if no further data is available.
         """
-        if isinstance(next_page, list) and len(next_page) != 0:
-            if hasattr(next_page, '_pagination_prev'):
-                params = copy.deepcopy(next_page._pagination_prev)
-            else:
-                return None
+        # Duck typing to keep compat with potentially persisted pagination info
+        if hasattr(next_page, "_pagination_prev"):
+            params = copy.deepcopy(next_page._pagination_prev)
+        elif isinstance(next_page, dict) and '_pagination_prev' in next_page:
+            params = copy.deepcopy(next_page['_pagination_prev'])
         else:
             params = copy.deepcopy(next_page)
 
+        if not "_pagination_method" in params and not "_pagination_endpoint" in params:
+            raise MastodonIllegalArgumentError("The passed object is not paginatable")
+        
         method = params['_pagination_method']
         del params['_pagination_method']
 

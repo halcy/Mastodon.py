@@ -583,11 +583,9 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/dimensions', params, use_json=True)
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_RETENTION)
-    def admin_retention(self, start_at: datetime, end_at: datetime, frequency: str = "day") -> AdminRetention:
+    def admin_retention(self, start_at: datetime, end_at: datetime, frequency: str = "day") -> NonPaginatableList[AdminRetention]:
         """
         Gets user retention statistics (at `frequency` - "day" or "month" - granularity) between `start_at` and `end_at`.
-
-        Returns a list of :ref:`admin retention dicts <admin retention dicts>`
         """
         if not frequency in ["day", "month"]:
             raise MastodonIllegalArgumentError("Frequency must be day or month")

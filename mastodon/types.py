@@ -1,7 +1,7 @@
 from __future__ import annotations # python< 3.9 compat
 from datetime import datetime
 from typing import Union, Optional, Tuple, List, IO, Dict
-from mastodon.types_base import AttribAccessDict, IdType, MaybeSnowflakeIdType, PrimitiveIdType, EntityList, PaginatableList, NonPaginatableList, PathOrFile, WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, try_cast_recurse, try_cast
+from mastodon.types_base import AttribAccessDict, IdType, MaybeSnowflakeIdType, PaginationInfo, PrimitiveIdType, EntityList, PaginatableList, NonPaginatableList, PathOrFile, WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, try_cast_recurse, try_cast, real_issubclass
 
 class Account(AttribAccessDict):
     """

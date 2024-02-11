@@ -35,7 +35,9 @@ def test_instance_activity(api):
 
 @pytest.mark.vcr()
 def test_instance_peers(api):
-    assert len(api.instance_peers()) == 0
+    assert len(api.instance_peers()) <= 1
+    if len(api.instance_peers()) == 1:
+        assert "chitter" in api.instance_peers()[0]
 
 @pytest.mark.vcr()
 def test_low_version(api_low_version):

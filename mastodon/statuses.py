@@ -10,7 +10,7 @@ from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
-                MediaAttachment, Poll, StatusSource
+                MediaAttachment, Poll, StatusSource, PaginatableList
 
 from typing import Union, Optional, List
 
@@ -81,10 +81,14 @@ class Mastodon(Internals):
     # Reading data: Scheduled statuses
     ###
     @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
-    def scheduled_statuses(self) -> NonPaginatableList[ScheduledStatus]:
+    def scheduled_statuses(self, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
+                 since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None) -> PaginatableList[ScheduledStatus]:
         """
         Fetch a list of scheduled statuses
         """
+        max_id = self.__unpack_id(max_id)
+        min_id = self.__unpack_id(min_id)
+        since_id = self.__unpack_id(since_id)
         return self.__api_request('GET', '/api/v1/scheduled_statuses')
 
     @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)

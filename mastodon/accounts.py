@@ -77,7 +77,6 @@ class Mastodon(Internals):
         # Step 2: Use that to create a user
         try:
             response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True, override_type=dict)
-            print(response)
             if "error" in response:
                 if return_detailed_error:
                     return None, try_cast(AccountCreationError, response)

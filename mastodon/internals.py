@@ -273,8 +273,7 @@ class Mastodon():
             if isinstance(response, list) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
                 if not isinstance(response, PaginatableList):
                     response = PaginatableList(response)
-                tmp_urls = requests.utils.parse_header_links(
-                    response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
+                tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
                 for url in tmp_urls:
                     if 'rel' not in url:
                         continue
@@ -524,6 +523,8 @@ class Mastodon():
 
         TODO: Rework this to use the new type system.
         """
+        if id is None:
+            return None
         if not isinstance(id, list) and listify:
             id = [id]
         if isinstance(id, list):

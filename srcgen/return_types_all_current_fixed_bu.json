@@ -5336,12 +5336,12 @@
     {
         "name": "Report",
         "python_name": "Report",
-        "func_call": "mastodon.report()[0]",
+        "func_call": "mastodon.report(<account id>)",
         "func_alternate_acc": true,
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Report/",
-        "manual_update": false,
+        "manual_update": true,
         "description": "Information about a report that has been filed against a user. Currently largely pointless, as updated reports cannot be fetched.",
         "fields": {
             "id": {
@@ -8347,7 +8347,7 @@
     {
         "name": "Account creation error",
         "python_name": "AccountCreationError",
-        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True)",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True, return_detailed_error=True)",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -8390,7 +8390,7 @@
     {
         "name": "Account creation error details",
         "python_name": "AccountCreationErrorDetails",
-        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', False).details",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', False, return_detailed_error=True)[1].details",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,

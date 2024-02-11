@@ -19,8 +19,6 @@ def vcr(vcr):
     vcr.match_on = ['path']
     return vcr
 
-"""
-# Needed for old vcrpy versions, but not amy more!
 def patch_streaming():
     # For monkeypatching so we can make vcrpy better
     import vcr.stubs
@@ -54,7 +52,6 @@ def patch_streaming():
             args[0].real_connection.getresponse = fakeRealConnectionGetresponse
         return real_get_response(*args, **kwargs)
     vcr.stubs.VCRConnection.getresponse = fake_get_response
-"""
 
 def streaming_close():
     global real_connections
@@ -320,6 +317,8 @@ def test_multiline_payload():
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_direct(api, api2, api3, vcr):
+    patch_streaming()
+
     if sys.version_info >= (3, 10):
         pytest.skip("Streaming tests flake on 3.10 on CI for some unclear reason")
     vcr.match_on = ["path"]
@@ -390,6 +389,8 @@ def test_stream_user_direct(api, api2, api3, vcr):
     
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_local(api, api2, vcr):
+    patch_streaming()
+    
     if sys.version_info >= (3, 10):
         pytest.skip("Streaming tests flake on 3.10 on CI for some unclear reason")
 
@@ -425,6 +426,8 @@ def test_stream_user_local(api, api2, vcr):
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_direct(api, api2, vcr):
+    patch_streaming()
+    
     if sys.version_info >= (3, 10):
         pytest.skip("Streaming tests flake on 3.10 on CI for some unclear reason")
     vcr.match_on = ["path"]
