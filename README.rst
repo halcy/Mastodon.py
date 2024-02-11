@@ -27,6 +27,15 @@ Feature complete for public API as of Mastodon version 3.5.5 and easy to get sta
         to_file = 'pytooter_usercred.secret'
     )
 
+    # If you are logging in for the first time you need to give permissions to the app
+    # via OAuth, at the URL given by auth_request_url() and then pass code instead of
+    # username and password.
+    mastodon.log_in(
+            to_file = 'pytooter_usercred.secret', 
+            code='code_from_oauth,
+            scopes=['read', 'write'],
+        )
+
     # Note that this won't work when using 2FA - you'll have to use OAuth, in that case. 
     # To post, create an actual API instance:
     mastodon = Mastodon(access_token = 'pytooter_usercred.secret')
