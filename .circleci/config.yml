@@ -26,7 +26,7 @@ jobs:
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
       - store_test_results:
           path: tests
-  run-tests-38-cov:
+  run-tests-38:
     docker:
       - image: cimg/python:3.8
     steps:
@@ -35,16 +35,10 @@ jobs:
           name: "Install test deps"
           command: "pip install .[test,webpush,blurhash]"
       - run:
-          name: "Install codecov"
-          command: "pip install codecov"   
-      - run:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
       - store_test_results:
           path: tests
-      - run:
-          name: "Notify codecov"
-          command: "codecov"
   run-tests-39:
     docker:
       - image: cimg/python:3.9
@@ -70,12 +64,46 @@ jobs:
           name: "Run tests"
           command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
       - store_test_results:
-          path: tests          
+          path: tests   
+  run-tests-311:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test,webpush,blurhash]" 
+      - run:
+          name: "Run tests"
+          command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
+      - store_test_results:
+          path: tests    
+  run-tests-312-cov:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test,webpush,blurhash]" 
+      - run:
+          name: "Install codecov"
+          command: "pip install codecov"             
+      - run:
+          name: "Run tests"
+          command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
+      - store_test_results:
+          path: tests       
+      - run:
+          name: "Notify codecov"
+          command: "codecov"          
 workflows:
   run-tests-workflow:
     jobs:
       #- run-tests-36 # 3.6 commented out - SHOULD still work, if you can build cryptography, or don't use it
       - run-tests-37
-      - run-tests-38-cov
+      - run-tests-38
       - run-tests-39
       - run-tests-310
+      - run-tests-311
+      - run-tests-312-cov
