@@ -54,10 +54,9 @@ def status3(api2):
     yield _status
     api2.status_delete(_status['id'])
 
-# Match very generously, so as to not upset any tests
 @pytest.fixture(scope="module")
 def vcr_config():
     return dict(
-        match_on = ['path'],
+        match_on = ['method', 'path', 'query', 'body'],
         decode_compressed_response = True
     )

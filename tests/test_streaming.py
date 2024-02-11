@@ -329,7 +329,9 @@ def test_stream_user_direct(api, api2, api3, vcr):
     vcr.match_on = ["path"]
 
     # Make sure we are in the right state to not receive updates from api2
+    time.sleep(1)
     user = api2.account_verify_credentials()
+    time.sleep(1)
     api.account_unfollow(user)
     time.sleep(2)
 
@@ -358,8 +360,11 @@ def test_stream_user_direct(api, api2, api3, vcr):
         vcr.match_on = ["path"]
         time.sleep(5)
         posted.append(api.status_post("only real cars respond."))
+        time.sleep(1)
         posted.append(api2.status_post("@mastodonpy_test beep beep I'm a jeep"))
+        time.sleep(1)
         posted.append(api2.status_post("on the internet, nobody knows you're a plane"))
+        time.sleep(1)
         posted.append(api.status_post("@mastodonpy_test_2 pssssst", visibility="direct"))
         time.sleep(1)
         posted.append(api3.status_post("@mastodonpy_test pssssst!", visibility="direct", in_reply_to_id=posted[-1]))
@@ -374,6 +379,7 @@ def test_stream_user_direct(api, api2, api3, vcr):
     t.start()
     
     stream = api.stream_user(listener, run_async=True)
+    time.sleep(1)
     stream2 = api.stream_direct(listener, run_async=True)
     time.sleep(25)
     stream.close()
@@ -399,9 +405,12 @@ def test_stream_user_local(api, api2, vcr):
 
     vcr.match_on = ["path"]
     # Make sure we are in the right state to not receive updates from api2
+    time.sleep(1)
     user = api2.account_verify_credentials()
+    time.sleep(1)
     api.account_unfollow(user)
-    
+    time.sleep(1)
+
     updates = []
     listener = CallbackStreamListener(
         local_update_handler=updates.append,
@@ -430,6 +439,7 @@ def test_stream_user_local(api, api2, vcr):
 @pytest.mark.vcr(match_on=['path'])
 @pytest.mark.flaky(retries=10, delay=1)
 def test_stream_direct(api, api2, vcr):
+    time.sleep(1)
     patch_streaming()
     
     vcr.match_on = ["path"]
