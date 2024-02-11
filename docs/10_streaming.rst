@@ -3,8 +3,8 @@ Streaming
 .. py:module:: mastodon
 .. py:class: Mastodon
 
-These functions allow access to the streaming API. For the public, local and hashtag streams,
-access is generally possible without authenticating.
+These functions allow access to the streaming API. Since Mastodon v4.2.0 the support for anonymous streaming api access was dropped.
+You need to generate an access token now.
 
 If `run_async` is False, these  methods block forever (or until an error is encountered).
 
