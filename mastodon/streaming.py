@@ -4,7 +4,6 @@ https://github.com/mastodon/documentation/blob/master/content/en/methods/timelin
 """
 
 import json
-import six
 try:
     from inspect import signature
 except:
@@ -131,10 +130,7 @@ class StreamListener(object):
                                 exception = MastodonMalformedEventError(
                                     "Malformed UTF-8")
                                 self.on_abort(exception)
-                                six.raise_from(
-                                    exception,
-                                    err
-                                )
+                                raise exception from err
                             if line == '':
                                 self._dispatch(event)
                                 event = {}
@@ -146,26 +142,17 @@ class StreamListener(object):
         except ChunkedEncodingError as err:
             exception = MastodonNetworkError("Server ceased communication.")
             self.on_abort(exception)
-            six.raise_from(
-                exception,
-                err
-            )
+            raise exception from err
         except ReadTimeout as err:
             exception = MastodonReadTimeout(
                 "Timed out while reading from server."),
             self.on_abort(exception)
-            six.raise_from(
-                exception,
-                err
-            )
+            raise exception from err
         except ConnectionError as err:
             exception = MastodonNetworkError(
                 "Requests reports connection error."),
             self.on_abort(exception)
-            six.raise_from(
-                exception,
-                err
-            )
+            raise exception from err
 
     def _parse_line(self, line, event):
         if line.startswith(':'):
@@ -200,19 +187,13 @@ class StreamListener(object):
             exception = MastodonMalformedEventError(
                 'Missing field', err.args[0], event)
             self.on_abort(exception)
-            six.raise_from(
-                exception,
-                err
-            )
+            raise exception from err
         except ValueError as err:
             # py2: plain ValueError
             # py3: json.JSONDecodeError, a subclass of ValueError
             exception = MastodonMalformedEventError('Bad JSON', data)
             self.on_abort(exception)
-            six.raise_from(
-                exception,
-                err
-            )
+            raise exception from err
 
         # New mastodon API also supports event names with dots,
         # specifically, status_update.
@@ -287,10 +268,7 @@ class CallbackStreamListener(StreamListener):
             if self.local_update_handler is not None and not "@" in status["account"]["acct"]:
                 self.local_update_handler(status)
         except Exception as err:
-            six.raise_from(
-                MastodonMalformedEventError('received bad update', status),
-                err
-            )
+            raise MastodonMalformedEventError('received bad update', status) from err
 
     def on_delete(self, deleted_id):
         if self.delete_handler is not None:
