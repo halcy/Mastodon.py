@@ -70,6 +70,16 @@ about who helped with which particular feature or fix in the changelog.
 .. _The mastodon project as such: https://joinmastodon.org/
 .. _Official Mastodon API docs: https://docs.joinmastodon.org/api/guidelines/
 
+Research use and citing
+-----------------------
+If you use Mastodon.py in your research, please cite it according to the latest CITATION.cff from the repository:
+
+https://github.com/halcy/Mastodon.py/blob/master/CITATION.cff
+
+As a personal request, It is important to me to ask you to make sure that the subjects of 
+your research - fediverse users - are alright with the research you are doing on them
+and/or that you have secured the approval of your institutions ethics board.
+
 .. toctree::
     :caption: Introduction
 
