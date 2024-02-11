@@ -12,6 +12,7 @@ v2.0.0 (IN PROGRESS)
 * Improved docstring for visibility (Thanks @ashwinvis)
 * Added `offset` parameter to `trending_statuses` (Thanks @Teqed)
 * We're now using space age technology (pyproject.toml - thanks @codl)
+* Add py.typed marker (Thanks @ZeeD for the suggestion)
 
 v1.8.1
 ------
