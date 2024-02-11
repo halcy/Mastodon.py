@@ -326,6 +326,7 @@ def test_multiline_payload():
 def test_stream_user_direct(api, api2, api3, vcr):
     patch_streaming()
 
+    # Be extra super paranoid
     vcr.match_on = ["path"]
 
     # Make sure we are in the right state to not receive updates from api2
