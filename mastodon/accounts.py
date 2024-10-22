@@ -141,7 +141,7 @@ class Mastodon(Internals):
         Does not require authentication for publicly visible accounts.
         """
         ids = [self.__unpack_id(id) for id in ids]
-        return self.__api_request('GET', '/api/v1/accounts', {"id": ids})
+        return self.__api_request('GET', '/api/v1/accounts', {"id[]": ids})
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def account_verify_credentials(self) -> Account:
