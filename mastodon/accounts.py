@@ -84,7 +84,7 @@ class Mastodon(Internals):
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
-        except Exception as e:
+        except Exception:
             raise MastodonIllegalArgumentError('Invalid request')
 
         # Step 3: Check scopes, persist, et cetera
@@ -132,6 +132,16 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/accounts/{id}')
+
+    @api_version("4.3.0", "4.3.0", _DICT_VERSION_ACCOUNT)
+    def accounts(self, ids: List[Union[Account, IdType]]) -> List[Account]:
+        """
+        Fetch information from multiple accounts by a list of user `id`.
+
+        Does not require authentication for publicly visible accounts.
+        """
+        ids = [self.__unpack_id(id) for id in ids]
+        return self.__api_request('GET', '/api/v1/accounts', {"id": ids})
 
     @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
     def account_verify_credentials(self) -> Account:
@@ -255,7 +265,7 @@ class Mastodon(Internals):
         """
         params = self.__generate_params(locals())
 
-        if params["following"] == False:
+        if params["following"] is False:
             del params["following"]
 
         return self.__api_request('GET', '/api/v1/accounts/search', params)

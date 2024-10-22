@@ -15,6 +15,7 @@ Reading
 .. automethod:: Mastodon.account
 .. automethod:: Mastodon.account_search
 .. automethod:: Mastodon.account_lookup
+.. automethod:: Mastodon.accounts
 
 .. automethod:: Mastodon.featured_tags
 .. automethod:: Mastodon.featured_tag_suggestions
