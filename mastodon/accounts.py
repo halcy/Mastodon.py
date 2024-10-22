@@ -84,7 +84,7 @@ class Mastodon(Internals):
             self.access_token = response['access_token']
             self.__set_refresh_token(response.get('refresh_token'))
             self.__set_token_expired(int(response.get('expires_in', 0)))
-        except Exception:
+        except Exception as e:
             raise MastodonIllegalArgumentError('Invalid request')
 
         # Step 3: Check scopes, persist, et cetera
@@ -265,7 +265,7 @@ class Mastodon(Internals):
         """
         params = self.__generate_params(locals())
 
-        if params["following"] is False:
+        if params["following"] == False:
             del params["following"]
 
         return self.__api_request('GET', '/api/v1/accounts/search', params)
