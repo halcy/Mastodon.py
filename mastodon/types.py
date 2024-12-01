@@ -117,6 +117,15 @@ class Account(AttribAccessDict):
       * 0.1.0: added
     """
 
+    uri: "str"
+    """
+    Webfinger-resolvable URI for this account.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.2.0: added
+    """
+
     avatar: "str"
     """
     URL for this users avatar, can be animated.
@@ -218,11 +227,11 @@ class Account(AttribAccessDict):
       * 4.0.0: added
     """
 
-    roles: "EntityList"
+    roles: "Optional[EntityList]"
     """
     THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
 
-    Deprecated. Was a list of strings with the users roles. Now just an empty list. Mastodon.py makes no attempt to fill it, and the field may be removed if Mastodon removes it. Use the `role` field instead.
+    Deprecated. Was a list of strings with the users roles. Now just an empty list. Mastodon.py makes no attempt to fill it, and the field may be removed if Mastodon removes it. Use the `role` field instead. (optional, nullable)
 
     Version history:
       * 0.1.0: added
@@ -253,7 +262,23 @@ class Account(AttribAccessDict):
       * 3.3.0: added
     """
 
-    _version = "4.0.0"
+    indexable: "bool"
+    """
+    Boolean indicating whether public posts by this account should be searchable by anyone.
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    hide_collections: "bool"
+    """
+    Boolean indicating whether a user has chosen to hide their network (followers/followed accounts).
+
+    Version history:
+      * 4.1.0: added
+    """
+
+    _version = "4.2.0"
 
 class AccountField(AttribAccessDict):
     """
@@ -368,9 +393,9 @@ class CredentialAccountSource(AttribAccessDict):
       * 1.5.0: added
     """
 
-    language: "str"
+    language: "Optional[str]"
     """
-    The default posting language for new statuses.
+    The default posting language for new statuses. (nullable)
     Should contain (as text): TwoLetterLanguageCodeEnum
 
     Version history:
@@ -393,7 +418,31 @@ class CredentialAccountSource(AttribAccessDict):
       * 3.0.0: added
     """
 
-    _version = "3.0.0"
+    indexable: "bool"
+    """
+    Boolean indicating whether public posts by this user should be searchable by anyone.
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    hide_collections: "bool"
+    """
+    Boolean indicating whether the user has chosen to hide their network (followers/followed accounts).
+
+    Version history:
+      * 4.1.0: added
+    """
+
+    discoverable: "Optional[bool]"
+    """
+    Indicates whether or not the user is visible on the discovery page. (nullable)
+
+    Version history:
+      * 3.1.0: added
+    """
+
+    _version = "4.2.0"
 
 class Status(AttribAccessDict):
     """
@@ -412,7 +461,7 @@ class Status(AttribAccessDict):
 
     uri: "str"
     """
-    Descriptor for the status. Mastodon, for example, may use something like: 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'.
+    Descriptor for the status EG 'tag:mastodon.social,2016-11-25:objectId=<id>:objectType=Status'.
 
     Version history:
       * 0.1.0: added
@@ -533,9 +582,9 @@ class Status(AttribAccessDict):
       * 0.9.9: added
     """
 
-    mentions: "EntityList[Account]"
+    mentions: "EntityList[StatusMention]"
     """
-    A list Mentions this status includes.
+    A list of StatusMention this status includes.
 
     Version history:
       * 0.6.0: added
@@ -711,9 +760,9 @@ class StatusEdit(AttribAccessDict):
       * 3.5.0: added
     """
 
-    poll: "Poll"
+    poll: "Optional[Poll]"
     """
-    The current state of the poll options at this revision. Note that edits changing the poll options will be collapsed together into one edit, since this action resets the poll.
+    The current state of the poll options at this revision. Note that edits changing the poll options will be collapsed together into one edit, since this action resets the poll. (optional)
 
     Version history:
       * 3.5.0: added
@@ -876,9 +925,9 @@ class ScheduledStatusParams(AttribAccessDict):
       * 2.7.0: added
     """
 
-    visibility: "str"
+    visibility: "Optional[str]"
     """
-    Visibility of the status.
+    Visibility of the status. (nullable)
 
     Version history:
       * 2.7.0: added
@@ -1223,9 +1272,9 @@ class CustomEmoji(AttribAccessDict):
       * 2.0.0: added
     """
 
-    category: "str"
+    category: "Optional[str]"
     """
-    The category to display the emoji under (not present if none is set).
+    The category to display the emoji under (not present if none is set). (nullable)
 
     Version history:
       * 3.0.0: added
@@ -1238,6 +1287,14 @@ class Application(AttribAccessDict):
     Information about an app (in terms of the API).
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Application/
+    """
+
+    id: "IdType"
+    """
+    ID of the application.
+
+    Version history:
+      * 2.7.0: added
     """
 
     name: "str"
@@ -1259,13 +1316,45 @@ class Application(AttribAccessDict):
 
     vapid_key: "str"
     """
+    THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
+
     A vapid key that can be used in web applications.
 
     Version history:
       * 2.8.0: added
+      * 4.3.0: deprecated
     """
 
-    _version = "3.5.1"
+    redirect_uri: "str"
+    """
+    THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
+
+    The applications redirect URI or urn:ietf:wg:oauth:2.0:oob. Deprecated, it is recommended to use redirect_uris instead.
+
+    Version history:
+      * 0.0.0: added
+      * 4.3.0: deprecated
+    """
+
+    redirect_uris: "EntityList[str]"
+    """
+    The applications redirect URI or urn:ietf:wg:oauth:2.0:oob. Deprecated, it is recommended to use redirect_uris instead.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    scopes: "EntityList[str]"
+    """
+    The applications available scopes.
+    Should contain (as text): Scopes
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class Relationship(AttribAccessDict):
     """
@@ -1568,15 +1657,24 @@ class Notification(AttribAccessDict):
       * 0.9.9: added
     """
 
-    status: "Status"
+    status: "Optional[Status]"
     """
-    In case of "mention", the mentioning status In case of reblog / favourite, the reblogged / favourited status.
+    In case of "mention", the mentioning status In case of reblog / favourite, the reblogged / favourited status. (optional)
 
     Version history:
       * 0.9.9: added
+      * 4.0.0: is now optional
     """
 
-    _version = "4.0.0"
+    group_key: "str"
+    """
+    A key to group notifications by. Structure is unspecified and subject to change, so please do not make assumptions about it.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class Context(AttribAccessDict):
     """
@@ -1635,7 +1733,15 @@ class UserList(AttribAccessDict):
       * 3.3.0: added
     """
 
-    _version = "3.3.0"
+    exclusive: "Optional[bool]"
+    """
+    Boolean indicating whether users on this list are removed from the home feed (appearing exclusively as part of the list). nb: This setting applies to posts at the time they are put into a feed. (optional)
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    _version = "4.2.0"
 
 class MediaAttachment(AttribAccessDict):
     """
@@ -1679,20 +1785,20 @@ class MediaAttachment(AttribAccessDict):
       * 0.6.0: added
     """
 
-    preview_url: "str"
+    preview_url: "Optional[str]"
     """
-    The URL for the media preview.
+    The URL for the media preview. (nullable)
     Should contain (as text): URL
 
     Version history:
       * 0.6.0: added
     """
 
-    text_url: "str"
+    text_url: "Optional[str]"
     """
     THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
 
-    Deprecated. The display text for the media (what shows up in text). May not be present in mastodon versions after 3.5.0.
+    Deprecated. The display text for the media (what shows up in text). May not be present in mastodon versions after 3.5.0. (optional)
     Should contain (as text): URL
 
     Version history:
@@ -1740,7 +1846,7 @@ class MediaAttachment(AttribAccessDict):
 
 class MediaAttachmentMetadataContainer(AttribAccessDict):
     """
-    An object holding metadata about a media attachment and its thumbnail.
+    An object holding metadata about a media attachment and its thumbnail. In addition to the documented fields, there may be additional fields. These are not documented, not guaranteed to be present (they are a Mastodon implementation detail), and may change without notice, so relying on them is not recommended.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
@@ -1761,17 +1867,17 @@ class MediaAttachmentMetadataContainer(AttribAccessDict):
       * 0.6.0: added
     """
 
-    colors: "MediaAttachmentColors"
+    colors: "Optional[MediaAttachmentColors]"
     """
-    Information about accent colors for the media.
+    Information about accent colors for the media. (optional)
 
     Version history:
       * 4.0.0: added
     """
 
-    focus: "MediaAttachmentFocusPoint"
+    focus: "Optional[MediaAttachmentFocusPoint]"
     """
-    Information about the focus point for the media.
+    Information about the focus point for the media. (optional)
 
     Version history:
       * 3.3.0: added
@@ -1822,7 +1928,7 @@ class MediaAttachmentImageMetadata(AttribAccessDict):
 
 class MediaAttachmentVideoMetadata(AttribAccessDict):
     """
-    Metadata for a video or gifv media attachment.
+    Metadata for a video attachment. This can be a proper video, or a gifv (a looping, soundless animation). Both use the same data model currently, though there is a possibility that they could be split in the future.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
@@ -2003,19 +2109,23 @@ class PreviewCard(AttribAccessDict):
 
     author_name: "str"
     """
-    Name of the embedded contents author.
+    THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
+
+    Name of the embedded contents author. Deprecated in favour of the `authors` field.
 
     Version history:
       * 1.3.0: added
+      * 4.3.0: deprecated
     """
 
     author_url: "str"
     """
-    URL pointing to the embedded contents author.
+    URL pointing to the embedded contents author. Deprecated in favour of the `authors` field.
     Should contain (as text): URL
 
     Version history:
       * 1.3.0: added
+      * 4.3.0: deprecated
     """
 
     width: "int"
@@ -2087,7 +2197,67 @@ class PreviewCard(AttribAccessDict):
       * 2.1.0: added
     """
 
-    _version = "3.2.0"
+    authors: "EntityList[PreviewCardAuthor]"
+    """
+    List of fediverse accounts of the authors of this post, as `PreviewCardAuthor`.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    image_description: "str"
+    """
+    Alt text / image description for the image preview for the card.
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    published_at: "Optional[datetime]"
+    """
+    Publication time of the embedded content, if available, as a `datetime` object. (nullable)
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    _version = "4.3.0"
+
+class PreviewCardAuthor(AttribAccessDict):
+    """
+    A preview card attached to a status, e.g. for an embedded video or link.
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/PreviewCardAuthor/
+    """
+
+    name: "str"
+    """
+    THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
+
+    Name of the embedded contents author.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    url: "str"
+    """
+    URL pointing to the embedded contents author.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    account: "Account"
+    """
+    Account of the author of this post, as `Account`.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class Search(AttribAccessDict):
     """
@@ -2451,12 +2621,12 @@ class InstanceV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    configuration: "InstanceConfiguration"
+    configuration: "InstanceConfigurationV2"
     """
     Various instance configuration settings - especially various limits (character counts, media upload sizes, ...).
 
     Version history:
-      * 3.1.4: added
+      * 4.0.0: added
     """
 
     registrations: "InstanceRegistrations"
@@ -2483,7 +2653,50 @@ class InstanceV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    icon: "EntityList[InstanceIcon]"
+    """
+    The instance icon, as a list of `InstanceIcon`s, with entries representing different available size variants.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    api_versions: "AttribAccessDict"
+    """
+    A list of API versions supported by this instance, each as an entry in a dict with the name of the implementation as the key (such as 'mastodon'). The exact format is unspecified, any fork or implementation can put what if feels like there. Mastodon currently puts just '2'.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class InstanceIcon(AttribAccessDict):
+    """
+    Icon for the instance, in a specific size.
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/#InstanceIcon
+    """
+
+    src: "str"
+    """
+    URL for this icon size.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    size: "str"
+    """
+    Textual representation of the icon size in pixels as (width)x(height) string, e.g. '64x64'.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class InstanceConfigurationV2(AttribAccessDict):
     """
@@ -2540,7 +2753,32 @@ class InstanceConfigurationV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    vapid: "InstanceVapidKey"
+    """
+    VAPID key used by this instance to sign webpush requests. Only present for the v2 API variant of the instance API.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class InstanceVapidKey(AttribAccessDict):
+    """
+    The VAPID key used by this instance to sign webpush requests.
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
+    """
+
+    public_key: "str"
+    """
+    The public key in VAPID format.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class InstanceURLsV2(AttribAccessDict):
     """
@@ -2719,13 +2957,21 @@ class Rule(AttribAccessDict):
 
     text: "str"
     """
-    The rule to be followed.
+    The rule to be followed, in few words.
 
     Version history:
       * 3.4.0: added
     """
 
-    _version = "3.4.0"
+    hint: "str"
+    """
+    Potentially, the rule to be followed, in more words.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class InstanceRegistrations(AttribAccessDict):
     """
@@ -2811,7 +3057,15 @@ class InstanceAccountConfiguration(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    max_pinned_statuses: "int"
+    """
+    The maximum number of pinned statuses for an account.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class InstanceStatusConfiguration(AttribAccessDict):
     """
@@ -3136,7 +3390,7 @@ class NodeinfoUsageUsers(AttribAccessDict):
 
 class NodeinfoMetadata(AttribAccessDict):
     """
-    Nodeinfo extra metadata.
+    Nodeinfo extra metadata. Entirely freeform, be careful about consuming it programatically. Survey of real world usage: https://codeberg.org/thefederationinfo/nodeinfo_metadata_survey.
 
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
@@ -3378,9 +3632,9 @@ class AdminReport(AttribAccessDict):
       * 3.5.0: added
     """
 
-    forwarded: "bool"
+    forwarded: "Optional[bool]"
     """
-    Whether a report was forwarded to a remote instance.
+    Whether a report was forwarded to a remote instance. Can be None. (nullable)
 
     Version history:
       * 4.0.0: added
@@ -3458,81 +3712,81 @@ class WebPushSubscriptionAlerts(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/WebPushSubscription/
     """
 
-    follow: "bool"
+    follow: "Optional[bool]"
     """
-    True if push subscriptions for follow events have been requested, false or not present otherwise.
+    True if push subscriptions for follow events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 2.4.0: added
     """
 
-    favourite: "bool"
+    favourite: "Optional[bool]"
     """
-    True if push subscriptions for favourite events have been requested, false or not present otherwise.
+    True if push subscriptions for favourite events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 2.4.0: added
     """
 
-    reblog: "bool"
+    reblog: "Optional[bool]"
     """
-    True if push subscriptions for reblog events have been requested, false or not present otherwise.
+    True if push subscriptions for reblog events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 2.4.0: added
     """
 
-    mention: "bool"
+    mention: "Optional[bool]"
     """
-    True if push subscriptions for mention events have been requested, false or not present otherwise.
+    True if push subscriptions for mention events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 2.4.0: added
     """
 
-    poll: "bool"
+    poll: "Optional[bool]"
     """
-    True if push subscriptions for poll events have been requested, false or not present otherwise.
+    True if push subscriptions for poll events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 2.8.0: added
     """
 
-    follow_request: "bool"
+    follow_request: "Optional[bool]"
     """
-    True if push subscriptions for follow request events have been requested, false or not present otherwise.
+    True if push subscriptions for follow request events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 2.4.0: added
     """
 
-    status: "bool"
+    status: "Optional[bool]"
     """
-    True if push subscriptions for status creation (watched users only) events have been requested, false or not present otherwise.
+    True if push subscriptions for status creation (watched users only) events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 3.1.0: added
     """
 
-    update: "bool"
+    update: "Optional[bool]"
     """
-    True if push subscriptions for status update (edit) events have been requested, false or not present otherwise.
+    True if push subscriptions for status update (edit) events have been requested, false or not present otherwise. (nullable)
 
     Version history:
       * 3.3.0: added
     """
 
-    admin_sign_up: "bool"
+    admin_sign_up: "Optional[bool]"
     """
-    True if push subscriptions for sign up events have been requested, false or not present otherwise. Admins only.
+    True if push subscriptions for sign up events have been requested, false or not present otherwise. Admins only. (nullable)
 
     Version history:
       * 3.5.0: added
     """
 
-    admin_report: "bool"
+    admin_report: "Optional[bool]"
     """
-    True if push subscriptions for report creation events have been requested, false or not present otherwise. Admins only.
+    True if push subscriptions for report creation events have been requested, false or not present otherwise. Admins only. (nullable)
 
     Version history:
       * 4.0.0: added
@@ -3704,9 +3958,9 @@ class FeaturedTag(AttribAccessDict):
       * 3.0.0: added
     """
 
-    last_status_at: "datetime"
+    last_status_at: "Optional[datetime]"
     """
-    The last time a public status containing this hashtag was added to this instance's database (can be None if there are none).
+    The last time a public status containing this hashtag was added to this instance's database (can be None if there are none). (nullable)
 
     Version history:
       * 3.0.0: added
@@ -4135,7 +4389,7 @@ class AdminAccount(AttribAccessDict):
       * 2.9.1: added
     """
 
-    invited_by_account_id : "Optional[IdType]"
+    invited_by_account_id: "Optional[IdType]"
     """
     Present if the user was created via invite and set to the inviting users id. (optional)
 
@@ -4202,9 +4456,9 @@ class AdminMeasure(AttribAccessDict):
       * 3.5.0: added
     """
 
-    human_value: "str"
+    human_value: "Optional[str]"
     """
-    Human readable variant of the measure returned.
+    Human readable variant of the measure returned. (nullable)
 
     Version history:
       * 3.5.0: added
@@ -4457,7 +4711,15 @@ class AdminDomainBlock(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    digest: "Optional[str]"
+    """
+    SHA256 hex digest of the blocked domain. (nullable)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
 
 class AdminCanonicalEmailBlock(AttribAccessDict):
     """
@@ -4929,7 +5191,7 @@ class AccountCreationError(AttribAccessDict):
       * 2.7.0: added
     """
 
-    details: "AccountCreationErrorDetails"
+    details: "AccountCreationErrorDetails[null]"
     """
     A dictionary giving more details about what fields caused errors and in which ways.
 
@@ -4946,7 +5208,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/accounts/#create
     """
 
-    username: "Optional[AccountCreationErrorDetailsField]"
+    username: "Optional[EntityList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the username. (optional)
 
@@ -4954,7 +5216,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    password: "Optional[AccountCreationErrorDetailsField]"
+    password: "Optional[EntityList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the password. (optional)
 
@@ -4962,7 +5224,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    email: "Optional[AccountCreationErrorDetailsField]"
+    email: "Optional[EntityList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the e-mail. (optional)
 
@@ -4970,7 +5232,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    agreement: "Optional[AccountCreationErrorDetailsField]"
+    agreement: "Optional[EntityList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the usage policy agreement. (optional)
 
@@ -4978,7 +5240,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    locale: "Optional[AccountCreationErrorDetailsField]"
+    locale: "Optional[EntityList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the locale. (optional)
 
@@ -4986,7 +5248,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    reason: "Optional[AccountCreationErrorDetailsField]"
+    reason: "Optional[EntityList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the registration reason. (optional)
 
@@ -5020,3 +5282,5 @@ class AccountCreationErrorDetailsField(AttribAccessDict):
     """
 
     _version = "3.4.0"
+
+

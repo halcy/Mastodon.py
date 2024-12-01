@@ -10,7 +10,7 @@ from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
-                MediaAttachment, Poll, StatusSource, PaginatableList
+                MediaAttachment, Poll, StatusSource, StatusEdit, PaginatableList
 
 from typing import Union, Optional, List
 
@@ -295,9 +295,9 @@ class Mastodon(Internals):
         )
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS_EDIT)
-    def status_history(self, id: Union[Status, IdType]) -> NonPaginatableList[Status]:
+    def status_history(self, id: Union[StatusEdit, IdType]) -> NonPaginatableList[StatusEdit]:
         """
-        Returns the edit history of a status as a list of Status objects, starting
+        Returns the edit history of a status as a list of StatusEdit objects, starting
         from the original form. Note that this means that a status that has been edited
         once will have *two* entries in this list, a status that has been edited twice
         will have three, and so on.

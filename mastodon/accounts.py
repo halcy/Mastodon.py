@@ -75,17 +75,14 @@ class Mastodon(Internals):
             raise MastodonIllegalArgumentError(f'Invalid request during oauth phase: {e}')
 
         # Step 2: Use that to create a user
-        try:
-            response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True, override_type=dict)
-            if "error" in response:
-                if return_detailed_error:
-                    return None, try_cast(AccountCreationError, response)
-                raise MastodonIllegalArgumentError(f'Invalid request: {response["error"]}')
-            self.access_token = response['access_token']
-            self.__set_refresh_token(response.get('refresh_token'))
-            self.__set_token_expired(int(response.get('expires_in', 0)))
-        except Exception as e:
-            raise MastodonIllegalArgumentError('Invalid request')
+        response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True, override_type=dict)
+        if "error" in response:
+            if return_detailed_error:
+                return None, try_cast(AccountCreationError, response)
+            raise MastodonIllegalArgumentError(f'Invalid request: {response["error"]}')
+        self.access_token = response['access_token']
+        self.__set_refresh_token(response.get('refresh_token'))
+        self.__set_token_expired(int(response.get('expires_in', 0)))
 
         # Step 3: Check scopes, persist, et cetera
         received_scopes = response["scope"].split(" ")

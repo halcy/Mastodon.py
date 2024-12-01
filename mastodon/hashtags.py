@@ -13,7 +13,7 @@ class Mastodon(Internals):
     # Reading data: Featured hashtags
     ###
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
-    def featured_tags(self) -> NonPaginatableList[Tag]:
+    def featured_tags(self) -> NonPaginatableList[FeaturedTag]:
         """
         Return the hashtags the logged-in user has set to be featured on
         their profile as a list of :ref:`featured tag dicts <featured tag dicts>`.
@@ -21,7 +21,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/featured_tags')
 
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_HASHTAG)
-    def featured_tag_suggestions(self) -> NonPaginatableList[Tag]:
+    def featured_tag_suggestions(self) -> NonPaginatableList[FeaturedTag]:
         """
         Returns the logged-in user's 10 most commonly-used hashtags.
         """

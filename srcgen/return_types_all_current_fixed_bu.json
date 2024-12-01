@@ -201,6 +201,21 @@
                 ],
                 "enum": null
             },
+            "uri": {
+                "description": "Webfinger-resolvable URI for this account",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
             "avatar": {
                 "description": "URL for this users avatar, can be animated",
                 "field_type": "str",
@@ -381,8 +396,8 @@
                 "is_deprecated": true,
                 "field_type": "EntityList",
                 "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
+                "is_optional": true,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "0.1.0",
@@ -429,6 +444,34 @@
                 "version_history": [
                     [
                         "3.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "indexable": {
+                "description": "Boolean indicating whether public posts by this account should be searchable by anyone.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "hide_collections": {
+                "description": "Boolean indicating whether a user has chosen to hide their network (followers/followed accounts).",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.1.0",
                         "added"
                     ]
                 ],
@@ -638,7 +681,7 @@
                 "field_subtype": null,
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.4.2",
@@ -670,6 +713,48 @@
                 "version_history": [
                     [
                         "3.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "indexable": {
+                "description": "Boolean indicating whether public posts by this user should be searchable by anyone.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "hide_collections": {
+                "description": "Boolean indicating whether the user has chosen to hide their network (followers/followed accounts).",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "discoverable": {
+                "description": "Indicates whether or not the user is visible on the discovery page",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "3.1.0",
                         "added"
                     ]
                 ],
@@ -915,9 +1000,9 @@
                 }
             },
             "mentions": {
-                "description": "A list Mentions this status includes",
+                "description": "A list of StatusMention this status includes",
                 "field_type": "EntityList",
-                "field_subtype": "Account",
+                "field_subtype": "StatusMention",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -1212,7 +1297,7 @@
                 "description": "The current state of the poll options at this revision. Note that edits changing the poll options will be collapsed together into one edit, since this action resets the poll.",
                 "field_type": "Poll",
                 "field_subtype": null,
-                "is_optional": false,
+                "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
                     [
@@ -1489,7 +1574,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.7.0",
@@ -2077,7 +2162,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "3.0.0",
@@ -2099,6 +2184,20 @@
         "manual_update": false,
         "description": "Information about an app (in terms of the API)",
         "fields": {
+            "id": {
+                "description": "ID of the application",
+                "field_type": "IdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "2.7.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
             "name": {
                 "description": "The applications name",
                 "field_type": "str",
@@ -2137,9 +2236,63 @@
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
+                "is_deprecated": true,
                 "version_history": [
                     [
                         "2.8.0",
+                        "added"
+                    ],
+                    [
+                        "4.3.0",
+                        "deprecated"
+                    ]
+                ],
+                "enum": null
+            },
+            "redirect_uri": {
+                "description": "The applications redirect URI or urn:ietf:wg:oauth:2.0:oob. Deprecated, it is recommended to use redirect_uris instead.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "is_deprecated": true,
+                "version_history": [
+                    [
+                        "0.0.0",
+                        "added"
+                    ],
+                    [
+                        "4.3.0",
+                        "deprecated"
+                    ]
+                ],
+                "enum": null
+            },
+            "redirect_uris": {
+                "description": "The applications redirect URI or urn:ietf:wg:oauth:2.0:oob. Deprecated, it is recommended to use redirect_uris instead.",
+                "field_type": "EntityList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "scopes": {
+                "description": "The applications available scopes.",
+                "field_type": "EntityList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "Scopes",
+                "version_history": [
+                    [
+                        "4.3.0",
                         "added"
                     ]
                 ],
@@ -2708,11 +2861,29 @@
                 "description": "In case of \"mention\", the mentioning status In case of reblog / favourite, the reblogged / favourited status",
                 "field_type": "Status",
                 "field_subtype": null,
-                "is_optional": false,
+                "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
                     [
                         "0.9.9",
+                        "added"
+                    ],
+                    [
+                        "4.0.0",
+                        "is now optional"
+                    ]
+                ],
+                "enum": null
+            },
+            "group_key": {
+                "description": "A key to group notifications by. Structure is unspecified and subject to change, so please do not make assumptions about it.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
                         "added"
                     ]
                 ],
@@ -2814,6 +2985,20 @@
                     ]
                 ],
                 "enum": null
+            },
+            "exclusive": {
+                "description": "Boolean indicating whether users on this list are removed from the home feed (appearing exclusively as part of the list). nb: This setting applies to posts at the time they are put into a feed.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -2901,7 +3086,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "field_structuretype": "URL",
                 "version_history": [
                     [
@@ -2917,7 +3102,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
-                "is_optional": false,
+                "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
                     [
@@ -3006,7 +3191,7 @@
         "masto_doc_link": "https://docs.joinmastodon.org/entities/MediaAttachment/",
         "func_alternate_acc": false,
         "manual_update": false,
-        "description": "An object holding metadata about a media attachment and its thumbnail.",
+        "description": "An object holding metadata about a media attachment and its thumbnail. In addition to the documented fields, there may be additional fields. These are not documented, not guaranteed to be present (they are a Mastodon implementation detail), and may change without notice, so relying on them is not recommended.",
         "fields": {
             "original": {
                 "description": "Metadata for the original media attachment",
@@ -3038,7 +3223,7 @@
                 "description": "Information about accent colors for the media.",
                 "field_type": "MediaAttachmentColors",
                 "field_subtype": null,
-                "is_optional": false,
+                "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
                     [
@@ -3051,7 +3236,7 @@
                 "description": "Information about the focus point for the media.",
                 "field_type": "MediaAttachmentFocusPoint",
                 "field_subtype": null,
-                "is_optional": false,
+                "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
                     [
@@ -3132,11 +3317,11 @@
         "python_name": "MediaAttachmentVideoMetadata",
         "func_call": "mastodon.media_post(\"video.mp4\").meta.original",
         "func_call_real": "mastodon.status(110447001287656894).media_attachments[0].meta.original",
-        "func_call_additional": "mastodon.status(110447018236380496).media_attachments[0].meta.original",
+        "func_call_additional": "mastodon.status(113358687695262945).media_attachments[0].meta.original",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/MediaAttachment/",
         "func_alternate_acc": false,
         "manual_update": false,
-        "description": "Metadata for a video or gifv media attachment.",
+        "description": "Metadata for a video attachment. This can be a proper video, or a gifv (a looping, soundless animation). Both use the same data model currently, though there is a possibility that they could be split in the future.",
         "fields": {
             "width": {
                 "description": "Width of the video in pixels",
@@ -3424,21 +3609,26 @@
                 "enum": null
             },
             "author_name": {
-                "description": "Name of the embedded contents author",
+                "description": "Name of the embedded contents author. Deprecated in favour of the `authors` field.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
+                "is_deprecated": true,
                 "version_history": [
                     [
                         "1.3.0",
                         "added"
+                    ],
+                    [
+                        "4.3.0",
+                        "deprecated"
                     ]
                 ],
                 "enum": null
             },
             "author_url": {
-                "description": "URL pointing to the embedded contents author",
+                "description": "URL pointing to the embedded contents author. Deprecated in favour of the `authors` field.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -3448,6 +3638,10 @@
                     [
                         "1.3.0",
                         "added"
+                    ],
+                    [
+                        "4.3.0",
+                        "deprecated"
                     ]
                 ],
                 "enum": null
@@ -3563,6 +3757,105 @@
                 "version_history": [
                     [
                         "2.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "authors": {
+                "description": "List of fediverse accounts of the authors of this post, as `PreviewCardAuthor`.",
+                "field_type": "EntityList",
+                "field_subtype": "PreviewCardAuthor",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "image_description": {
+                "description": "Alt text / image description for the image preview for the card.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "published_at": {
+                "description": "Publication time of the embedded content, if available, as a `datetime` object.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Preview Card Author",
+        "func_call": "mastodon.status_card(<status id>).authors[0]",
+        "func_call_real": "mastodon.status_card(113481707975926080).authors[0]",
+        "python_name": "PreviewCardAuthor",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/PreviewCardAuthor/",
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A preview card attached to a status, e.g. for an embedded video or link.",
+        "fields": {
+            "name": {
+                "description": "Name of the embedded contents author.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "is_deprecated": true,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "url": {
+                "description": "URL pointing to the embedded contents author.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "account": {
+                "description": "Account of the author of this post, as `Account`.",
+                "field_type": "Account",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
                         "added"
                     ]
                 ],
@@ -3742,7 +4035,7 @@
                     ]
                 ],
                 "enum": null
-            },   
+            },
             "short_description": {
                 "description": "An very brief text only instance description. Moved to 'description' for the v2 API.",
                 "moved_path": "description",
@@ -3934,7 +4227,7 @@
                         "added"
                     ]
                 ]
-            },        
+            },
             "rules": {
                 "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
                 "field_type": "EntityList",
@@ -4119,7 +4412,7 @@
                         "added"
                     ]
                 ]
-            },        
+            },
             "description": {
                 "description": "A brief instance description set by the admin. Contains what in the v1 version was the short description.",
                 "field_type": "str",
@@ -4176,13 +4469,13 @@
             },
             "configuration": {
                 "description": "Various instance configuration settings - especially various limits (character counts, media upload sizes, ...)",
-                "field_type": "InstanceConfiguration",
+                "field_type": "InstanceConfigurationV2",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
                     [
-                        "3.1.4",
+                        "4.0.0",
                         "added"
                     ]
                 ]
@@ -4223,6 +4516,73 @@
                 "version_history": [
                     [
                         "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "icon": {
+                "description": "The instance icon, as a list of `InstanceIcon`s, with entries representing different available size variants.",
+                "field_type": "EntityList",
+                "field_subtype": "InstanceIcon",
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ]
+            },
+            "api_versions": {
+                "description": "A list of API versions supported by this instance, each as an entry in a dict with the name of the implementation as the key (such as 'mastodon'). The exact format is unspecified, any fork or implementation can put what if feels like there. Mastodon currently puts just '2'",
+                "field_type": "AttribAccessDict",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance icon",
+        "python_name": "InstanceIcon",
+        "func_call": "mastodon.instance_v2().icon[0]",
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/#InstanceIcon",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Icon for the instance, in a specific size.",
+        "fields": {
+            "src": {
+                "description": "URL for this icon size",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ]
+            },
+            "size": {
+                "description": "Textual representation of the icon size in pixels as (width)x(height) string, e.g. '64x64'",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
                         "added"
                     ]
                 ]
@@ -4323,6 +4683,46 @@
                         "added"
                     ]
                 ]
+            },
+            "vapid": {
+                "description": "VAPID key used by this instance to sign webpush requests. Only present for the v2 API variant of the instance API.",
+                "field_type": "InstanceVapidKey",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance vapid key",
+        "python_name": "InstanceVapidKey",
+        "func_call": "mastodon.instance_v2().configuration.vapid",
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "The VAPID key used by this instance to sign webpush requests.",
+        "fields": {
+            "public_key": {
+                "description": "The public key in VAPID format.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -4330,7 +4730,7 @@
         "name": "Instance urls (v2)",
         "python_name": "InstanceURLsV2",
         "func_call": "mastodon.instance_v2().configuration.urls",
-        "func_call_additional": "mastodon.instance_v1().urls",
+        "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
         "func_call_real": null,
         "func_alternate_acc": false,
@@ -4604,7 +5004,7 @@
                 "enum": null
             },
             "text": {
-                "description": "The rule to be followed.",
+                "description": "The rule to be followed, in few words.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4616,13 +5016,27 @@
                     ]
                 ],
                 "enum": null
+            },
+            "hint": {
+                "description": "Potentially, the rule to be followed, in more words.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
     {
         "name": "Instance registration information",
         "python_name": "InstanceRegistrations",
-        "func_call": "mastodon.instance().registrations",
+        "func_call": "mastodon.instance_v2().registrations",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
         "func_call_real": null,
         "func_call_additional": null,
@@ -4750,6 +5164,19 @@
                         "added"
                     ]
                 ]
+            },
+            "max_pinned_statuses": {
+                "description": "The maximum number of pinned statuses for an account.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -4808,7 +5235,7 @@
     {
         "name": "Instance translation configuration",
         "python_name": "InstanceTranslationConfiguration",
-        "func_call": "mastodon.instance().configuration.translation",
+        "func_call": "mastodon.instance_v2().configuration.translation",
         "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/",
         "func_call_real": null,
         "func_call_additional": null,
@@ -5265,7 +5692,7 @@
         "python_name": "NodeinfoMetadata",
         "masto_doc_link": "https://github.com/jhass/nodeinfo",
         "func_call": "mastodon.instance_nodeinfo().metadata",
-        "description": "Nodeinfo extra metadata.",
+        "description": "Nodeinfo extra metadata. Entirely freeform, be careful about consuming it programatically. Survey of real world usage: https://codeberg.org/thefederationinfo/nodeinfo_metadata_survey",
         "fields": {}
     },
     {
@@ -5669,11 +6096,11 @@
                 "enum": null
             },
             "forwarded": {
-                "description": "Whether a report was forwarded to a remote instance.",
+                "description": "Whether a report was forwarded to a remote instance. Can be None.",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "4.0.0",
@@ -5823,7 +6250,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.4.0",
@@ -5837,7 +6264,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.4.0",
@@ -5851,7 +6278,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.4.0",
@@ -5865,7 +6292,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.4.0",
@@ -5879,7 +6306,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.8.0",
@@ -5893,7 +6320,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "2.4.0",
@@ -5907,7 +6334,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "3.1.0",
@@ -5921,7 +6348,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "3.3.0",
@@ -5935,7 +6362,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "3.5.0",
@@ -5949,7 +6376,7 @@
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "4.0.0",
@@ -6248,7 +6675,7 @@
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "3.0.0",
@@ -6613,7 +7040,7 @@
     {
         "name": "Announcement reaction (streaming edition)",
         "python_name": "StreamReaction",
-        "func_call": "mastodon.announcements()[0].reactions[0]",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
         "func_alternate_acc": true,
         "masto_doc_link": "https://docs.joinmastodon.org/methods/streaming/",
         "func_call_real": null,
@@ -6983,7 +7410,7 @@
                 ],
                 "enum": null
             },
-            "invited_by_account_id ": {
+            "invited_by_account_id": {
                 "description": "Present if the user was created via invite and set to the inviting users id.",
                 "field_type": "IdType",
                 "field_subtype": null,
@@ -7114,7 +7541,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "3.5.0",
@@ -7531,6 +7958,20 @@
                 "version_history": [
                     [
                         "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "digest": {
+                "description": "SHA256 hex digest of the blocked domain",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.3.0",
                         "added"
                     ]
                 ],
@@ -8347,7 +8788,7 @@
     {
         "name": "Account creation error",
         "python_name": "AccountCreationError",
-        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True, return_detailed_error=True)",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True, return_detailed_error=True)[1]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -8380,7 +8821,7 @@
                     ]
                 ],
                 "field_type": "AccountCreationErrorDetails",
-                "field_subtype": null,
+                "field_subtype": "null",
                 "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false
@@ -8407,8 +8848,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "AccountCreationErrorDetailsField",
-                "field_subtype": null,
+                "field_type": "EntityList",
+                "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
@@ -8422,8 +8863,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "AccountCreationErrorDetailsField",
-                "field_subtype": null,
+                "field_type": "EntityList",
+                "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
@@ -8437,8 +8878,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "AccountCreationErrorDetailsField",
-                "field_subtype": null,
+                "field_type": "EntityList",
+                "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
@@ -8452,8 +8893,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "AccountCreationErrorDetailsField",
-                "field_subtype": null,
+                "field_type": "EntityList",
+                "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
@@ -8467,8 +8908,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "AccountCreationErrorDetailsField",
-                "field_subtype": null,
+                "field_type": "EntityList",
+                "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
@@ -8482,8 +8923,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "AccountCreationErrorDetailsField",
-                "field_subtype": null,
+                "field_type": "EntityList",
+                "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
@@ -8493,7 +8934,7 @@
     {
         "name": "Account creation error details field",
         "python_name": "AccountCreationErrorDetailsField",
-        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True).details.email",
+        "func_call": "mastodon.create_account('halcy', 'secret', 'invalid email lol', True, return_detailed_error=True)[1].details.email[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,

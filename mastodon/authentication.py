@@ -361,10 +361,7 @@ class Mastodon(Internals):
             assert self.client_id is not None and isinstance(self.client_id, str)
             assert self.client_secret is not None
             with open(str(to_file), 'w') as token_file:
-                token_file.write(response['access_token'] + "\n")
-                token_file.write(self.api_base_url + "\n")
-                token_file.write(self.client_id + "\n")
-                token_file.write(self.client_secret + "\n")
+                token_file.write(self.persistable_login_credentials())
         self.__logged_in_id = None
 
         # Retry version check if needed (might be required in limited federation mode)
@@ -372,6 +369,18 @@ class Mastodon(Internals):
             self.retrieve_mastodon_version()
 
         return response['access_token']
+    
+    def persistable_login_credentials(self):
+        """
+        Return a string (which  you should treat as opaque) that can be passed to :ref:`log_in()` to get an authenticated API object with the same access as this one.
+
+        This is the same thing that would be written to a file by :ref:`log_in() <log_in()>` with the `to_file` parameter.
+        """
+        if self.access_token is None:
+            raise MastodonIllegalArgumentError("Not logged in, do not have a token to persist.")
+        if self.client_id is None or self.client_secret is None or not isinstance(self.client_id, str):
+            raise MastodonIllegalArgumentError("Client authentication (id + secret) is required to persist tokens.")
+        return self.access_token + "\n" + self.api_base_url + "\n" + self.client_id + "\n" + self.client_secret + "\n"
 
     def revoke_access_token(self):
         """

@@ -4,8 +4,6 @@ from datetime import datetime, timezone
 import dateutil
 import dateutil.parser
 from collections import OrderedDict
-import inspect
-import json
 from mastodon.compat import PurePath
 import sys
 
@@ -192,7 +190,7 @@ def real_issubclass(type1, type2orig):
     return issubclass(type1, tuple(valid_types))
 
 # Helper functions for typecasting attempts
-def try_cast(t, value, retry = True):
+def try_cast(t, value, retry = True, union_specializer = None):
     """
     Base case casting function. Handles:
     * Casting to any AttribAccessDict subclass (directly, no special handling)
@@ -207,11 +205,13 @@ def try_cast(t, value, retry = True):
     t = resolve_type(t)
     if type(t) == TypeVar: # TypeVar early out with an attempt at coercing dicts
         if isinstance(value, dict):
-            return try_cast(AttribAccessDict, value, False)
+            return try_cast(AttribAccessDict, value, False, union_specializer)
         else:
             return value
     try:
         if real_issubclass(t, AttribAccessDict):
+            if union_specializer is not None:
+                value["__union_specializer"] = union_specializer
             value = t(**value)
         elif real_issubclass(t, bool):
             if isinstance(value, str):
@@ -251,6 +251,9 @@ def try_cast(t, value, retry = True):
                 # One last time
                 value = None   
         elif real_issubclass(t, list):
+            if not t in [PaginatableList, NonPaginatableList]:
+                # we never want base case lists
+                t = NonPaginatableList
             value = t(value)
         else:
             if real_issubclass(value.__class__, dict):
@@ -259,13 +262,14 @@ def try_cast(t, value, retry = True):
                 value = t(value)
     except Exception as e:
         if retry and isinstance(value, dict):
-            value = try_cast(AttribAccessDict, value, False)
+            value = try_cast(AttribAccessDict, value, False, union_specializer)
     return value
 
-def try_cast_recurse(t, value):
+def try_cast_recurse(t, value, union_specializer=None):
     """
     Non-dict compound type casting function. Handles:
     * Casting to list, tuple, EntityList or (Non)PaginatableList, converting all elements to the correct type recursively
+    + Casting to Union, use union_specializer to special case the union type to the correct one
     * Casting to Union, trying all types in the union until one works
     Gives up and returns as-is if none of the above work.
     """
@@ -276,24 +280,45 @@ def try_cast_recurse(t, value):
         if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
             orig_type = get_type_class(t)
             if orig_type in (list, tuple, EntityList, NonPaginatableList, PaginatableList):
+                if orig_type == list:
+                    orig_type = NonPaginatableList
                 value_cast = []
                 type_args = t.__args__
                 if len(type_args) == 1:
                     type_args = type_args * len(value)
                 for element_type, v in zip(type_args, value):
-                    value_cast.append(try_cast_recurse(element_type, v))
+                    value_cast.append(try_cast_recurse(element_type, v, union_specializer))
                 value = orig_type(value_cast)
             elif orig_type is Union:
-                for sub_t in t.__args__:
-                    value = try_cast_recurse(sub_t, value)
-                    testing_t = sub_t
+                real_type = None
+                if union_specializer is not None:
+                    from mastodon.types import MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata
+                    real_type = {
+                        "image": MediaAttachmentImageMetadata,
+                        "video": MediaAttachmentVideoMetadata,
+                        "audio": MediaAttachmentAudioMetadata,
+                        "gifv": MediaAttachmentVideoMetadata,
+                    }.get(union_specializer, None)
+                if real_type in t.__args__:
+                    value = try_cast_recurse(real_type, value, union_specializer)
+                    testing_t = real_type
                     if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
-                        testing_t = get_type_class(sub_t)
-                    if isinstance(value, testing_t):
-                        break
+                        testing_t = get_type_class(real_type)
+                else:
+                    for sub_t in t.__args__:
+                        value = try_cast_recurse(sub_t, value, union_specializer)
+                        testing_t = sub_t
+                        if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
+                            testing_t = get_type_class(sub_t)
+                        if isinstance(value, testing_t):
+                            break
+            else:
+                # uhhh I don't know how we got here but try to cast to the type anyways
+                value = try_cast(t, value, True, union_specializer)
+        else:
+            value = try_cast(t, value, True, union_specializer)
     except Exception as e:
         pass
-    value = try_cast(t, value)
     return value
 
 """
@@ -360,6 +385,9 @@ class AttribAccessDict(OrderedStrDict):
         Constructor that calls through to dict constructor and then sets attributes for all keys.
         """
         super(AttribAccessDict, self).__init__()
+        if "__union_specializer" in kwargs:
+            self.__union_specializer = kwargs["__union_specializer"]
+            del kwargs["__union_specializer"]
         if "__annotations__" in self.__class__.__dict__:
             for attr, _ in self.__class__.__annotations__.items():
                 attr_name = attr
@@ -380,6 +408,8 @@ class AttribAccessDict(OrderedStrDict):
         """
         Override to force access of normal attributes to go through __getattr__
         """
+        if attr == "_AttribAccessDict__union_specializer":
+            return super(AttribAccessDict, self).__getattribute__(attr)
         if attr == '__class__':
             return super(AttribAccessDict, self).__getattribute__(attr)
         if attr in self.__class__.__annotations__:
@@ -389,7 +419,7 @@ class AttribAccessDict(OrderedStrDict):
     def __getattr__(self, attr):
         """
         Basic attribute getter that throws if attribute is not in dict and supports redirecting access.
-        """
+        """        
         if not hasattr(self.__class__, "_access_map"):
             # Base case: no redirecting
             if attr in self:
@@ -415,7 +445,7 @@ class AttribAccessDict(OrderedStrDict):
         """
         Attribute setter that calls through to dict setter but will throw if attribute is not in dict
         """
-        if attr in self:
+        if attr in self or attr == "_AttribAccessDict__union_specializer":
             self[attr] = val
         else:
             raise AttributeError(f"Attribute not found: {attr}")
@@ -425,26 +455,43 @@ class AttribAccessDict(OrderedStrDict):
         Dict setter that also sets attributes and tries to typecast if we have an 
         AttribAccessDict or MaybeSnowflakeIdType type hint.
 
-        For Unions, it will try the types in order.
+        For Unions, we special case explicitly to specialize
         """
         # Collate type hints that we may have
         type_hints = get_type_hints(self.__class__)
         init_hints = get_type_hints(self.__class__.__init__)
         type_hints.update(init_hints)
 
+        # Ugly hack: We have to specialize unions by hand because you can't just guess by content generally
+        # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
+        # the type hints (assuming that the order of annotations is not changed, which python does not guarantee,
+        # if it ever does: we'll have to add another hack to the constructor)
+        from mastodon.types import MediaAttachment
+        if type(self) == MediaAttachment and key == "type":
+            self.__union_specializer = val
+
+        # Do we have a union specializer attribute?
+        union_specializer = None
+        if hasattr(self, "_AttribAccessDict__union_specializer"):
+            union_specializer = self.__union_specializer
+
         # Do typecasting, possibly iterating over a list or tuple
         if key in type_hints:
             type_hint = type_hints[key]
-            val = try_cast_recurse(type_hint, val)
+            val = try_cast_recurse(type_hint, val, union_specializer)
         else:
             if isinstance(val, dict):
-                val = try_cast_recurse(AttribAccessDict, val)
+                val = try_cast_recurse(AttribAccessDict, val, union_specializer)
             elif isinstance(val, list):
-                val = try_cast_recurse(EntityList, val)
-                
+                val = try_cast_recurse(EntityList, val, union_specializer)
+
         # Finally, call out to setattr and setitem proper
         super(AttribAccessDict, self).__setattr__(key, val)
         super(AttribAccessDict, self).__setitem__(key, val)
+
+        # Remove union specializer if we have one
+        if "_AttribAccessDict__union_specializer" in self:
+            del self["_AttribAccessDict__union_specializer"]
 
     def __eq__(self, other):
         """
