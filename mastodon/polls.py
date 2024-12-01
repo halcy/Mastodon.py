@@ -56,6 +56,6 @@ class Mastodon(Internals):
         Set multiple to True to allow people to choose more than one answer. Set
         hide_totals to True to hide the results of the poll until it has expired.
         """
-        poll_params = locals()
+        poll_params = locals().copy()
         del poll_params["self"]
         return poll_params
