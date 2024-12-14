@@ -616,7 +616,10 @@ class Mastodon():
         version_string = version_string.split(" ")[0]
         try:
             # Attempt to split at + and check if the part after parses as a version string, to account for hometown
-            parse_version_string(version_string.split("+")[1])
+            ver_parts = parse_version_string(version_string.split("+")[1])
+            # If the parsed version is less than 1.0, assume it's GoToSocial and return the *first* part
+            if ver_parts[0] < 1:
+                return version_string.split("+")[0]
             return version_string.split("+")[1]
         except:
             # If this fails, assume that if there is a +, what is before that is the masto version (or that there is no +)
