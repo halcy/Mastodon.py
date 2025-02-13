@@ -3,7 +3,7 @@ import pytest
 # Set this to True to debug issues with tests
 DEBUG_REQUESTS = True
 
-def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN', version="4.0.0", version_check_mode="created"):
+def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN', version="4.3.0", version_check_mode="created"):
     import mastodon
     return mastodon.Mastodon(
             api_base_url='http://localhost:3000',

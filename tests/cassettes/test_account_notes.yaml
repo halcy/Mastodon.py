@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -16,25 +16,25 @@ interactions:
     uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
     body:
-      string: '{"id":"113997362523400286","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-02-13T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2025-02-13","hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"1048575","color":"","highlighted":true}}'
+      string: '{"id":"113998800956287197","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-02-13T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":null,"hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"1048575","color":"","highlighted":true}}'
     headers:
       Cache-Control:
       - private, no-store
       Content-Length:
-      - '1010'
+      - '1002'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"9b71559283e84dc50fbd571ab23cb52a"
+      - W/"6521289dad4f8e47d25b9253ee8b0e90"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.04, sql.active_record;dur=0.96, cache_generate.active_support;dur=1.49,
-        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.30,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.07,
-        process_action.action_controller;dur=21.86
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.00, cache_generate.active_support;dur=1.49,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.27,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.05,
+        process_action.action_controller;dur=21.80
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -46,11 +46,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-13T16:10:00.123254Z'
+      - '2025-02-13T22:00:00.986071Z'
       X-Request-Id:
-      - a9b5d5f0-b62a-49ef-84ce-8ea142469799
+      - b61c1c2c-899a-411e-b067-b35a9b2e35d7
       X-Runtime:
-      - '0.040496'
+      - '0.035824'
       X-XSS-Protection:
       - '0'
       vary:
@@ -64,7 +64,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -76,10 +76,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/113997362523400286/note
+    uri: http://localhost:3000/api/v1/accounts/113998800956287197/note
   response:
     body:
-      string: '{"id":"113997362523400286","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+      string: '{"id":"113998800956287197","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
         ebayer gerne wieder"}'
     headers:
       Cache-Control:
@@ -91,16 +91,16 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"37c61d9bdf93af006dc18fdf487c550b"
+      - W/"980c7f806d79f9d809d65077d0616e26"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.11, cache_generate.active_support;dur=0.97,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.33,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=4.15,
-        cache_delete.active_support;dur=0.03, cache_read_multi.active_support;dur=0.05,
-        cache_write_multi.active_support;dur=0.06, render.active_model_serializers;dur=0.15,
-        process_action.action_controller;dur=34.10
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.57, cache_generate.active_support;dur=0.89,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.33,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=4.00,
+        cache_delete.active_support;dur=0.03, cache_read_multi.active_support;dur=0.03,
+        cache_write_multi.active_support;dur=0.06, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=32.70
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -112,11 +112,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-13T16:10:00.185731Z'
+      - '2025-02-13T22:00:00.045026Z'
       X-Request-Id:
-      - 70a7e980-cfc8-407a-8a6a-96e7f9c45171
+      - 37188950-4c1e-44f6-9138-229682c8f1dc
       X-Runtime:
-      - '0.051906'
+      - '0.050775'
       X-XSS-Protection:
       - '0'
       vary:

@@ -96,7 +96,33 @@ jobs:
           path: tests       
       - run:
           name: "Notify codecov"
-          command: "codecov"          
+          command: "codecov"
+  run-tests-313:
+    docker:
+      - image: cimg/python:3.13
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test,webpush,blurhash]" 
+      - run:
+          name: "Run tests"
+          command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
+      - store_test_results:
+          path: tests    
+  run-tests-314:
+    docker:
+      - image: cimg/python:3.14
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test,webpush,blurhash]" 
+      - run:
+          name: "Run tests"
+          command: "python setup.py pytest --addopts '--junitxml=tests/result.xml'"
+      - store_test_results:
+          path: tests                         
 workflows:
   run-tests-workflow:
     jobs:
@@ -107,3 +133,5 @@ workflows:
       - run-tests-310
       - run-tests-311
       - run-tests-312-cov
+      - run-tests-313
+      - run-tests-314

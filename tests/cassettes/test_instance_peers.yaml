@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -16,27 +16,27 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/peers
   response:
     body:
-      string: '[]'
+      string: '["chitter.xyz"]'
     headers:
       Cache-Control:
       - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '2'
+      - '15'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 13 Feb 2025 16:10:28 GMT
+      - Thu, 13 Feb 2025 21:55:48 GMT
       ETag:
-      - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
+      - W/"3a9f4de31c077c49f763801bdd324235"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.04, sql.active_record;dur=0.51, cache_generate.active_support;dur=1.52,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.09,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=17.87
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.63, cache_generate.active_support;dur=1.73,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.11,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=19.73
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -48,11 +48,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-13T16:15:00.306728Z'
+      - '2025-02-13T22:00:00.372549Z'
       X-Request-Id:
-      - 6e9f851e-6e5f-4872-b952-dbc12585586b
+      - b50068f4-49ba-4c82-b33d-0c14d871c797
       X-Runtime:
-      - '0.034433'
+      - '0.037760'
       X-XSS-Protection:
       - '0'
       vary:
@@ -66,7 +66,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -77,27 +77,27 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/peers
   response:
     body:
-      string: '[]'
+      string: '["chitter.xyz"]'
     headers:
       Cache-Control:
       - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '2'
+      - '15'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 13 Feb 2025 16:10:28 GMT
+      - Thu, 13 Feb 2025 21:55:48 GMT
       ETag:
-      - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
+      - W/"3a9f4de31c077c49f763801bdd324235"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.04, sql.active_record;dur=0.56, cache_generate.active_support;dur=1.56,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.09,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=18.08
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.61, cache_generate.active_support;dur=1.69,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.10,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=18.42
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -109,11 +109,72 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-13T16:15:00.347149Z'
+      - '2025-02-13T22:00:00.409719Z'
       X-Request-Id:
-      - 6c85acb5-e3f7-4e3e-a9d9-b79d918419f6
+      - 7a9e3f5b-2b8a-42ba-b817-94f79cfb8a46
       X-Runtime:
-      - '0.031940'
+      - '0.032602'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Accept, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/peers
+  response:
+    body:
+      string: '["chitter.xyz"]'
+    headers:
+      Cache-Control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '15'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 13 Feb 2025 21:55:48 GMT
+      ETag:
+      - W/"3a9f4de31c077c49f763801bdd324235"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.64, cache_generate.active_support;dur=2.34,
+        cache_write.active_support;dur=0.14, instantiation.active_record;dur=0.10,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=18.79
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T22:00:00.446894Z'
+      X-Request-Id:
+      - 6b01f460-8e3a-47da-96ec-e6b354c8dc90
+      X-Runtime:
+      - '0.033758'
       X-XSS-Protection:
       - '0'
       vary:

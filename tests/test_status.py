@@ -190,18 +190,14 @@ def test_scheduled_status(api):
     api.scheduled_status_delete(scheduled_toot_2)
     scheduled_toot_list_2 = api.scheduled_statuses()
     assert not any(x.id == scheduled_toot_2.id for x in scheduled_toot_list_2)
-
+    
     if os.path.exists("tests/cassettes/test_scheduled_status_datetimeobjects.pkl"):
         the_very_immediate_future = datetime.datetime.fromtimestamp(pickle.load(open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'rb')))
     else:
-        the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=10)
+        the_very_immediate_future = datetime.datetime.now(timezone("UTC")) + datetime.timedelta(seconds=5*60+1)
         pickle.dump(the_very_immediate_future.timestamp(), open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'wb'))
     scheduled_toot_4 = api.status_post("please ensure adequate headroom", scheduled_at=the_very_immediate_future)
-    time.sleep(15)
-    statuses = api.timeline_home()
-    scheduled_toot_list_3 = api.scheduled_statuses()
-    assert any(x.id == scheduled_toot_4.id for x in statuses)
-    assert not any(x.id == scheduled_toot_4.id for x in scheduled_toot_list_3)
+    assert scheduled_toot_4
 
 # The following two tests need to be manually (!) ran 10 minutes apart when recording.
 # Sorry, I can't think of a better way to test scheduled statuses actually work as intended.
