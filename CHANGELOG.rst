@@ -17,6 +17,7 @@ v2.0.0 (IN PROGRESS)
 * Fixed a potential issue with modification to locals (Thanks Konano)
 * Added support for 4.3.0 `accounts` endpoint (Thanks AlexKalopsia)
 * Fix version parsing for GoToSocial (Thanks gmemstr)
+* Updated docs to reflect the fact that startign with 4.4.0, the password grant type is no longer supported.
 
 v1.8.1
 ------
