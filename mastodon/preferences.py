@@ -7,7 +7,7 @@ from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Preferences, Marker, Status, IdType
+from mastodon.return_types import Preferences, Marker, Status, IdType
 from typing import Union, List, Dict
 
 class Mastodon(Internals):

@@ -4,7 +4,7 @@ from mastodon.versions import _DICT_VERSION_STATUS
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Status, IdType, PaginatableList
+from mastodon.return_types import Status, IdType, PaginatableList
 
 from typing import Optional, Union
 

@@ -25,7 +25,7 @@ from mastodon.compat import urlparse
 from mastodon.utility import parse_version_string, max_version, api_version
 from mastodon.utility import Mastodon as MastoUtility
 
-from mastodon.types import *
+from mastodon.return_types import *
 from mastodon.errors import *
 
 from mastodon.versions import _DICT_VERSION_APPLICATION, _DICT_VERSION_MENTION, _DICT_VERSION_MEDIA, _DICT_VERSION_ACCOUNT, _DICT_VERSION_POLL, \

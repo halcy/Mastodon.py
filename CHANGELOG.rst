@@ -16,6 +16,7 @@ v2.0.0 (IN PROGRESS)
 * Added CITATION.cff (Thanks @hauschke for the suggestion)
 * Fixed a potential issue with modification to locals (Thanks Konano)
 * Added support for 4.3.0 `accounts` endpoint (Thanks AlexKalopsia)
+* Fix version parsing for GoToSocial (Thanks gmemstr)
 
 v1.8.1
 ------

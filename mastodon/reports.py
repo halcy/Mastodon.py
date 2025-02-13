@@ -6,7 +6,7 @@ from mastodon.errors import MastodonVersionError, MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import NonPaginatableList, Report, Account, IdType, Status, Rule
+from mastodon.return_types import NonPaginatableList, Report, Account, IdType, Status, Rule
 from typing import Union, Optional, List
 
 class Mastodon(Internals):

@@ -4,7 +4,7 @@ from mastodon.versions import _DICT_VERSION_HASHTAG, _DICT_VERSION_STATUS, _DICT
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Tag, Status, PreviewCard, NonPaginatableList
+from mastodon.return_types import Tag, Status, PreviewCard, NonPaginatableList
 from typing import Optional, Union
 
 class Mastodon(Internals):

@@ -6,7 +6,7 @@ from mastodon.utility import api_version
 from mastodon.compat import urlparse
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType
+from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType
 
 from typing import Union, Optional
 

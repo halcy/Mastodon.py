@@ -15,7 +15,7 @@ from mastodon.utility import parse_version_string, api_version
 from mastodon.internals import Mastodon as Internals
 from mastodon.utility import Mastodon as Utility
 from typing import List, Optional, Union, Tuple
-from mastodon.types import Application
+from mastodon.return_types import Application
 from mastodon.compat import PurePath
 
 class Mastodon(Internals):
@@ -312,9 +312,9 @@ class Mastodon(Internals):
         generating the auth request URL. If passing `code`you should not pass `username` or `password`.
 
         When using the password flow, the username is the email address used to log in into Mastodon.
-        Note that Mastodon has expressed that they intend to remove this login method - if you are currently
-        using it, please consider migrating to OAuth2 (or, for single-user bots, generating a token manually
-        via the web interface).
+        Note that Mastodon has removed this flow starting with 4.4.0, so it is unfortunately not
+        possible to log in in this way anymore. Please use either the code flow, or generate
+        a token from the web UI.
 
         Can persist access token to file `to_file`, to be used in the constructor.
         

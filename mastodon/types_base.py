@@ -142,7 +142,7 @@ if sys.version_info < (3, 9):
     def resolve_type(t):
         # I'm sorry about this, but I cannot think of another way to make this work properly in versions below 3.9 that
         # cannot resolve forward references in a sane way
-        from mastodon.types import Account, AccountField, Role, CredentialAccountSource, Status, StatusEdit, FilterResult,\
+        from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, Status, StatusEdit, FilterResult,\
             StatusMention, ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, Tag, TagHistory, CustomEmoji,\
             Application, Relationship, Filter, FilterV2, Notification, Context, UserList, MediaAttachment, MediaAttachmentMetadataContainer,\
             MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, MediaAttachmentFocusPoint, MediaAttachmentColors, \
@@ -292,7 +292,7 @@ def try_cast_recurse(t, value, union_specializer=None):
             elif orig_type is Union:
                 real_type = None
                 if union_specializer is not None:
-                    from mastodon.types import MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata
+                    from mastodon.return_types import MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata
                     real_type = {
                         "image": MediaAttachmentImageMetadata,
                         "video": MediaAttachmentVideoMetadata,
@@ -466,7 +466,7 @@ class AttribAccessDict(OrderedStrDict):
         # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
         # the type hints (assuming that the order of annotations is not changed, which python does not guarantee,
         # if it ever does: we'll have to add another hack to the constructor)
-        from mastodon.types import MediaAttachment
+        from return_types import MediaAttachment
         if type(self) == MediaAttachment and key == "type":
             self.__union_specializer = val
 

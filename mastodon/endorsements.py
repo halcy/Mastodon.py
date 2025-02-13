@@ -4,7 +4,7 @@ from mastodon.versions import _DICT_VERSION_ACCOUNT
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Account, NonPaginatableList
+from mastodon.return_types import Account, NonPaginatableList
 
 class Mastodon(Internals):
     ###

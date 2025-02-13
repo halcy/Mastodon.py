@@ -19,20 +19,29 @@ Register your app! This only needs to be done once (per server, or when distribu
     )
     '''
 
-Then, log in. This can be done every time your application starts (e.g. when writing a simple bot), or you can use the persisted information:
+Then, log in. This can be done every time your application starts, or you can use the persisted information:
 
 .. code-block:: python
 
     from mastodon import Mastodon
 
     mastodon = Mastodon(client_id = 'pytooter_clientcred.secret',)
+    print(mastodon.auth_request_url())
+
+    # open the URL in the browser and paste the code you get
     mastodon.log_in(
-        'my_login_email@example.com', 
-        'incrediblygoodpassword', 
-        to_file = 'pytooter_usercred.secret'
+        code=input("Enter the OAuth authorization code: "),
+        to_file="pytooter_usercred.secret"
     )
 
-Note that this won't work when using 2FA - you'll have to use OAuth, in that case. To post, create an actual API instance:
+
+Note that previous versions of Mastodon allowed logging in with username and 
+password - unfortunately, due to security concerns, Mastodon has started 
+requiring OAuth starting with version 4.4.0. If you're building a bot, you
+may with to instead just generate a token in the UI (On Mastodon: 
+your-server.com/settings/applications) and use it directly
+
+To post, create an actual API instance:
 
 .. code-block:: python
 

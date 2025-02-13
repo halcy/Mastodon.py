@@ -5,7 +5,7 @@ from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Status, IdType, PaginatableList, UserList
+from mastodon.return_types import Status, IdType, PaginatableList, UserList
 from typing import Union, Optional
 from datetime import datetime
 

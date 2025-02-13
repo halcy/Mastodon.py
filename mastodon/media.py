@@ -7,7 +7,7 @@ from mastodon.errors import MastodonVersionError, MastodonAPIError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import MediaAttachment, PathOrFile, IdType
+from mastodon.return_types import MediaAttachment, PathOrFile, IdType
 
 from typing import Optional, Union, Tuple, List, Dict, Any
 

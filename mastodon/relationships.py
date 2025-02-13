@@ -4,7 +4,7 @@ from mastodon.versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_RELATIONSHIP
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Account, Relationship, PaginatableList, IdType
+from mastodon.return_types import Account, Relationship, PaginatableList, IdType
 from typing import Optional, Union
 
 class Mastodon(Internals):

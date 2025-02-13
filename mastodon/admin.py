@@ -7,7 +7,7 @@ from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from typing import Optional, List, Union
-from mastodon.types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
+from mastodon.return_types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
                 PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention
 from datetime import datetime
 

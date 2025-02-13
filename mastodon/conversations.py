@@ -5,7 +5,7 @@ from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from typing import Union, Optional
-from mastodon.types import IdType, PaginatableList, Conversation
+from mastodon.return_types import IdType, PaginatableList, Conversation
 
 class Mastodon(Internals):
     ###

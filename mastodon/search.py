@@ -5,7 +5,7 @@ from mastodon.errors import MastodonVersionError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Search, SearchV2, Account, IdType
+from mastodon.return_types import Search, SearchV2, Account, IdType
 from typing import Union, Optional
 
 class Mastodon(Internals):

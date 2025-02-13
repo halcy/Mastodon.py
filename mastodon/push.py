@@ -11,7 +11,7 @@ from mastodon.compat import IMPL_HAS_CRYPTO, ec, serialization, default_backend
 from mastodon.compat import IMPL_HAS_ECE, http_ece
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, WebPushSubscription, PushNotification, try_cast_recurse
+from mastodon.return_types import WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, WebPushSubscription, PushNotification, try_cast_recurse
 from typing import Optional, Tuple
 
 class Mastodon(Internals):

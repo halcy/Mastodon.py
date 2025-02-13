@@ -9,7 +9,7 @@ from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
+from mastodon.return_types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
                 MediaAttachment, Poll, StatusSource, StatusEdit, PaginatableList
 
 from typing import Union, Optional, List

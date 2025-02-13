@@ -4,7 +4,7 @@ from mastodon.versions import _DICT_VERSION_POLL
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Poll, IdType
+from mastodon.return_types import Poll, IdType
 from typing import Union, List
 
 class Mastodon(Internals):

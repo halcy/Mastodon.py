@@ -10,7 +10,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 
 from typing import Union, Optional, Tuple, List
-from mastodon.types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile, AttribAccessDict, try_cast
+from mastodon.return_types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile, AttribAccessDict, try_cast
 from datetime import datetime
 
 class Mastodon(Internals):

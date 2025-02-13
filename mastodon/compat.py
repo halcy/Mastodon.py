@@ -15,7 +15,7 @@ except:
 
 IMPL_HAS_ECE = True
 try:
-    import http_ece
+    import http_ece # type: ignore
 except:
     IMPL_HAS_ECE = False
     http_ece = None
@@ -30,7 +30,7 @@ except:
 try:
     from urllib.parse import urlparse
 except ImportError:
-    from urlparse import urlparse
+    from urlparse import urlparse # type: ignore
 
 try:
     import magic

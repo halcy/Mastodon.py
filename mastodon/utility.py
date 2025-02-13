@@ -12,7 +12,7 @@ from mastodon.internals import Mastodon as Internals
 from mastodon.versions import parse_version_string, max_version, api_version
 
 from typing import Optional
-from mastodon.types import PaginatableList, PaginationInfo
+from mastodon.return_types import PaginatableList, PaginationInfo
 
 # Class level:
 class Mastodon(Internals):
