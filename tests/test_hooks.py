@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from mastodon.types import IdType
+from mastodon.return_types import IdType
 import typing
 import copy
 

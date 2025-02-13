@@ -113,3 +113,18 @@ Writing
 .. automethod:: Mastodon.list_delete
 .. automethod:: Mastodon.list_accounts_add
 .. automethod:: Mastodon.list_accounts_delete
+
+
+Following tags
+--------------
+These functions allow you to get information about tags that the logged in user is following and to follow 
+and unfollow tags.
+
+Reading
+~~~~~~~
+.. automethod:: Mastodon.followed_tags
+
+Writing
+~~~~~~~
+.. automethod:: Mastodon.tag_follow
+.. automethod:: Mastodon.tag_unfollow

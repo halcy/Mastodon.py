@@ -78,7 +78,7 @@ class Mastodon(Internals):
     # Writing data: Followed tags
     ###
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
-    def follow_tag(self, hashtag: Union[Tag, str]) -> Tag:
+    def tag_follow(self, hashtag: Union[Tag, str]) -> Tag:
         """
         Follow a tag.
 
@@ -90,7 +90,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', f'/api/v1/tags/{hashtag}/follow')
     
     @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
-    def unfollow_tag(self, hashtag: Union[Tag, str]) -> Tag:
+    def tag_unfollow(self, hashtag: Union[Tag, str]) -> Tag:
         """
         Unfollow a tag.
 

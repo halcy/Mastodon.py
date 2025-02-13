@@ -301,14 +301,14 @@ def test_featured_tags(api):
 
 @pytest.mark.vcr()
 def test_followed_hashtags(api):
-    api.unfollow_tag("heeho")
+    api.tag_unfollow("heeho")
     followed_1 = api.followed_tags()
-    tag_1 = api.follow_tag("heeho")
+    tag_1 = api.tag_follow("heeho")
     assert tag_1.name == "heeho"
     assert tag_1.following == True
     followed_2 = api.followed_tags()
     assert len(followed_1) < len(followed_2)
-    tag_2 = api.unfollow_tag(tag_1)
+    tag_2 = api.tag_unfollow(tag_1)
     assert tag_2.following == False    
     tag_3 = api.tag("heeho")
     assert tag_3.following == False

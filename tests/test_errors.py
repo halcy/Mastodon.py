@@ -2,7 +2,7 @@ import pytest
 import vcr
 from mastodon.Mastodon import MastodonAPIError
 import json
-from mastodon.types import Status, try_cast_recurse
+from mastodon.return_types import Status, try_cast_recurse
 try:
     from mock import MagicMock
 except ImportError:
