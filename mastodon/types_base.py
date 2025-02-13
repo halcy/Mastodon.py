@@ -466,7 +466,7 @@ class AttribAccessDict(OrderedStrDict):
         # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
         # the type hints (assuming that the order of annotations is not changed, which python does not guarantee,
         # if it ever does: we'll have to add another hack to the constructor)
-        from return_types import MediaAttachment
+        from mastodon.return_types import MediaAttachment
         if type(self) == MediaAttachment and key == "type":
             self.__union_specializer = val
 
