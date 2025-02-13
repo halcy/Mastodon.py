@@ -18,23 +18,15 @@ Feature complete for public API as of Mastodon version 3.5.5 and easy to get sta
     )
     '''
 
-    # Then, log in. This can be done every time your application starts (e.g. when writing a 
-    # simple bot), or you can use the persisted information:
+    # Then, log in. This can be done every time your application starts, or you can use the persisted information:
     mastodon = Mastodon(client_id = 'pytooter_clientcred.secret',)
-    mastodon.log_in(
-        'my_login_email@example.com', 
-        'incrediblygoodpassword', 
-        to_file = 'pytooter_usercred.secret'
-    )
+    print(mastodon.auth_request_url())
 
-    # If you are logging in for the first time you need to give permissions to the app
-    # via OAuth, at the URL given by auth_request_url() and then pass code instead of
-    # username and password.
+    # open the URL in the browser and paste the code you get
     mastodon.log_in(
-            to_file = 'pytooter_usercred.secret', 
-            code='code_from_oauth,
-            scopes=['read', 'write'],
-        )
+        code=input("Enter the OAuth authorization code: "),
+        to_file="pytooter_usercred.secret"
+    )
 
     # Note that this won't work when using 2FA - you'll have to use OAuth, in that case. 
     # To post, create an actual API instance:
@@ -45,8 +37,7 @@ You can install Mastodon.py via pypi:
 
 .. code-block:: Bash
 
-   # Python 3
-   pip3 install Mastodon.py
+   pip install Mastodon.py
 
 We currently try to support Python 3.7 and above, and try to at least not break Python 3 versions
 below that. Python 2 support is no longer a goal.
