@@ -322,7 +322,8 @@ class Mastodon(Internals):
         """
         # Is the version > 4.4.0? Throw on trying to log in with password with a more informative message than the API error
         if self.mastodon_major >= 4 and self.mastodon_minor >= 4 or self.mastodon_major > 4:
-            raise MastodonIllegalArgumentError('Password flow is no longer supported in Mastodon 4.4.0 and later.')
+            if password is not None:
+                raise MastodonIllegalArgumentError('Password flow is no longer supported in Mastodon 4.4.0 and later.')
         
         if username is not None and password is not None:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])

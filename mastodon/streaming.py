@@ -103,6 +103,14 @@ class StreamListener(object):
         useful to carry out periodic housekeeping tasks, or just to confirm
         that the connection is still open."""
         pass
+    
+    def on_any_event(self, name, data):
+        """A generic event handler that is called for every event received.
+        The name contains the event-name and data contains the content of the event.
+
+        Called before the more specific on_xxx handlers.
+        """
+        pass
 
     def handle_stream(self, response):
         """
@@ -209,12 +217,14 @@ class StreamListener(object):
         # The "for_stream" is right now only theoretical - it's only supported on websocket,
         # and we do not support websocket based multiplexed streams (yet).
         if "for_stream" in handler_args:
+            self.on_any_event(name, payload, for_stream)            
             if handler != self.on_unknown_event:
                 handler(payload, for_stream)
             else:
                 handler(name, payload, for_stream)
         else:
             if handler != self.on_unknown_event:
+                self.on_any_event(name, payload)
                 if handler == self.on_filters_changed:
                     handler()
                 else:
@@ -261,7 +271,6 @@ class CallbackStreamListener(StreamListener):
         self.encryted_message_handler = encryted_message_handler
 
     def on_update(self, status):
-        print("ONUPDATE", status)
         if self.update_handler is not None:
             self.update_handler(status)
 

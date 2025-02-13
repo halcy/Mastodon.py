@@ -21,6 +21,7 @@ from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, 
                     MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError
 from mastodon.compat import urlparse, magic, PurePath, Path
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
+from mastodon.return_types import AttribAccessDict, PaginatableList, try_cast_recurse
 from mastodon.return_types import *
 
 ###
