@@ -14,6 +14,8 @@ v2.0.0 (IN PROGRESS)
 * We're now using space age technology (pyproject.toml - thanks @codl)
 * Add py.typed marker (Thanks @ZeeD for the suggestion)
 * Added CITATION.cff (Thanks @hauschke for the suggestion)
+* Fixed a potential issue with modification to locals (Thanks Konano)
+* Added support for 4.3.0 `accounts` endpoint (Thanks AlexKalopsia)
 
 v1.8.1
 ------

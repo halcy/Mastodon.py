@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -19,33 +19,44 @@ interactions:
       string: '[]'
     headers:
       Cache-Control:
-      - private, no-store
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
+      Date:
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
       - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.47, cache_generate.active_support;dur=0.89,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.08,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=22.19
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.967885Z'
       X-Request-Id:
-      - 39fee58b-b75f-4872-9e83-0e675c087de7
+      - 1e3fcf0e-7605-4017-8183-753e743946d6
       X-Runtime:
-      - '0.014242'
+      - '0.038502'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK

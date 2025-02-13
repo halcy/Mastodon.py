@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -20,40 +20,42 @@ interactions:
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-uYmhDsL+SRO79UVkBBAI3g=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-Y2kGAkFjKyMXBQ21VUVkzA=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - text/plain; charset=utf-8
       ETag:
       - W/"565339bc4d33d72817b583024112eb7f"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.10, cache_generate.active_support;dur=0.84,
+        cache_write.active_support;dur=0.05, start_processing.action_controller;dur=0.00,
+        render_template.action_view;dur=0.01, process_action.action_controller;dur=17.60
       Vary:
       - Accept
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - d67d8f48-f745-4cde-8ef8-a6abf95a096b
+      - edc3d61c-bf05-474b-9a56-1e6b82a1e4ab
       X-Runtime:
-      - '0.012006'
+      - '0.033598'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 200
       message: OK

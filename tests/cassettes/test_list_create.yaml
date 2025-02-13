@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -20,36 +20,45 @@ interactions:
     uri: http://localhost:3000/api/v1/lists
   response:
     body:
-      string: '{"id":"1","title":"ham burglars","replies_policy":"list"}'
+      string: '{"id":"1","title":"ham burglars","replies_policy":"list","exclusive":false}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '75'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"1429907b6900186b934b037f409112f1"
+      - W/"cdf617c2791a55f66b3ec2ae3e58a444"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.69, cache_generate.active_support;dur=0.95,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.27,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.09,
+        render.active_model_serializers;dur=0.11, process_action.action_controller;dur=36.61
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.016735Z'
       X-Request-Id:
-      - a15992af-090a-46b0-9a8e-8ae0dd7a812e
+      - 31afc112-9039-4858-aacb-26cea61268d4
       X-Runtime:
-      - '0.025414'
+      - '0.053551'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -59,7 +68,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -70,36 +79,45 @@ interactions:
     uri: http://localhost:3000/api/v1/lists
   response:
     body:
-      string: '[{"id":"1","title":"ham burglars","replies_policy":"list"}]'
+      string: '[{"id":"1","title":"ham burglars","replies_policy":"list","exclusive":false}]'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '77'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"472a179790f6eb124e087ea973a3174b"
+      - W/"48c8c98ccb5228fc9d03815a6e95f41d"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.57, cache_generate.active_support;dur=0.83,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.23,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.15,
+        process_action.action_controller;dur=19.24
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.077450Z'
       X-Request-Id:
-      - ea9ea1cf-e7f3-4210-9e70-7bbb1b1d4c28
+      - e852e58f-e25e-4c00-a4f4-09b10d7f319e
       X-Runtime:
-      - '0.012573'
+      - '0.033558'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -109,7 +127,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -126,6 +144,8 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
@@ -134,24 +154,31 @@ interactions:
       - W/"44136fa355b3678a1146ad16f7e8649e"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=4.65, cache_generate.active_support;dur=0.88,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=3.01,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=4.16,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=32.99
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.122356Z'
       X-Request-Id:
-      - 2aeacb2b-979b-4018-92aa-0ba60b7710c3
+      - a36d59e2-79a3-49bd-969b-fe4bc84e800c
       X-Runtime:
-      - '0.020804'
+      - '0.048776'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK

@@ -6,7 +6,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -21,28 +21,29 @@ interactions:
     uri: http://localhost:3000/api/v1/statuses
   response:
     body:
-      string: '{"id":"111912699576131465","created_at":"2024-02-11T11:51:16.249Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/111912699576131465","url":"http://localhost:3000/@admin/111912699576131465","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003enice\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"111912686719071190","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"group":false,"created_at":"2024-02-11T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":2,"last_status_at":"2024-02-11","noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"2","expires_at":"2024-02-11T11:56:16.247Z","expired":false,"multiple":false,"votes_count":0,"voters_count":0,"voted":true,"own_votes":[],"options":[{"title":"four
+      string: '{"id":"113997452934346807","created_at":"2025-02-13T16:11:27.987Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/113997452934346807","url":"http://localhost:3000/@admin/113997452934346807","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003enice\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"113997362523400286","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-02-13T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":4,"last_status_at":"2025-02-13","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":{"id":"2","expires_at":"2025-02-13T16:16:27.984Z","expired":false,"multiple":false,"votes_count":0,"voters_count":0,"voted":true,"own_votes":[],"options":[{"title":"four
         twenty","votes_count":0},{"title":"sixty-nine","votes_count":0}],"emojis":[]}}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '1699'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"efe77fc3d20387f1c7f43b9b0ee3b6af"
+      - W/"36be5112f8647ab755bd05d12a3bedc3"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.06, sql.active_record;dur=11.31, cache_generate.active_support;dur=3.12,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.60,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.15,
+        render.active_model_serializers;dur=18.22, process_action.action_controller;dur=56.53
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
@@ -50,15 +51,17 @@ interactions:
       X-RateLimit-Limit:
       - '300'
       X-RateLimit-Remaining:
-      - '290'
+      - '288'
       X-RateLimit-Reset:
-      - '2024-02-11T12:00:00.287501Z'
+      - '2025-02-13T18:00:00.020104Z'
       X-Request-Id:
-      - 5a78ccdc-fb26-49fd-9a39-33dcfab94697
+      - 4cc39890-8636-4d08-a2f5-d6b08ed723d9
       X-Runtime:
-      - '0.056028'
+      - '0.072477'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -68,7 +71,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -83,37 +86,47 @@ interactions:
     uri: http://localhost:3000/api/v1/polls/2/votes
   response:
     body:
-      string: '{"id":"2","expires_at":"2024-02-11T11:56:16.247Z","expired":false,"multiple":false,"votes_count":1,"voters_count":1,"voted":true,"own_votes":[1],"options":[{"title":"four
+      string: '{"id":"2","expires_at":"2025-02-13T16:16:27.984Z","expired":false,"multiple":false,"votes_count":1,"voters_count":1,"voted":true,"own_votes":[1],"options":[{"title":"four
         twenty","votes_count":0},{"title":"sixty-nine","votes_count":1}],"emojis":[]}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '248'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"055bc8af6e702d68863a06d56f7388c9"
+      - W/"57630f83d8c2f9a81585e822a2186d2a"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=10.60, cache_generate.active_support;dur=1.03,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.72,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=9.04,
+        cache_delete.active_support;dur=0.04, render.active_model_serializers;dur=2.08,
+        process_action.action_controller;dur=45.88
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.109917Z'
       X-Request-Id:
-      - b21c146a-be9e-4e70-8b98-ffb8bf3e5964
+      - f62e9b08-60b8-438a-9cb2-1d03ce19f87c
       X-Runtime:
-      - '0.035903'
+      - '0.068697'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -123,7 +136,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -143,31 +156,40 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '101'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=1.83, cache_generate.active_support;dur=1.26,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.75,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
+        process_action.action_controller;dur=36.04
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.183593Z'
       X-Request-Id:
-      - 295b1f62-dd88-4251-9b64-5d4843d6ffbb
+      - 9f2df5b1-a4a1-4982-b36d-60fdc4d00c03
       X-Runtime:
-      - '0.018015'
+      - '0.051566'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 422
-      message: Unprocessable Entity
+      message: Unprocessable Content
 version: 1

@@ -18,36 +18,45 @@ interactions:
     uri: http://localhost:3000/api/v1/apps
   response:
     body:
-      string: '{"id":"2","name":"mastodon.py generated test app","website":null,"redirect_uri":"urn:ietf:wg:oauth:2.0:oob","client_id":"ZZcnP1U05e7QM3wlAsOcyoDJkO4muokIlf2sIKNLyPM","client_secret":"cSNCB-ONfTTaT5vTR_rnoaCWVbkQKlLKqbQ2dcFDzNM","vapid_key":"BL-2en1hK4a_0v7FUkjYpaossigfCfsvzpFEHRKPIq-ikoE0--80fVSrZdGMmXvrPJQcVTDgNN2cU0D7epxI6Ik="}'
+      string: '{"id":"2","name":"mastodon.py generated test app","website":null,"scopes":["read","write","follow","push"],"redirect_uris":["urn:ietf:wg:oauth:2.0:oob"],"vapid_key":"BI4DwUhRFeYQgdCqaDyjhBHCmDruqmekmJZKVD6w-QkZKNhssPBrD1ziCUQEa3fZlTUsgXGT-aHRiRJmocfTPU8=","redirect_uri":"urn:ietf:wg:oauth:2.0:oob","client_id":"zZzUcU4aFaFeqX-cZ8eEurAtmFP9f_TzCU1hSFld-r4","client_secret":"in1aHVKcg3o75Je5MOOFx2Ug0HYA5DoZC_u9D2UORUQ"}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '419'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"7ba9cfea1d1ff4896a43857b7f166ca9"
+      - W/"d8cba3bbbda9d6c490eb6c70a4c71ab6"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.30, cache_generate.active_support;dur=1.07,
+        cache_write.active_support;dur=0.09, start_processing.action_controller;dur=0.00,
+        transaction.active_record;dur=5.95, render.active_model_serializers;dur=0.37,
+        process_action.action_controller;dur=47.60
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '5'
+      X-RateLimit-Remaining:
+      - '4'
+      X-RateLimit-Reset:
+      - '2025-02-13T20:30:00.552366Z'
       X-Request-Id:
-      - a2e2e496-f13d-4ba4-b7ab-13d3c40dc40b
+      - b0f5bc31-77dd-44b9-8f5e-b04638c39cd1
       X-Runtime:
-      - '0.016650'
+      - '0.088404'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -66,43 +75,52 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.1.2","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":1},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":10485760,"image_matrix_limit":16777216,"video_size_limit":41943040,"video_frame_rate_limit":60,"video_matrix_limit":2304000},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":0,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
       Cache-Control:
-      - max-age=180, public
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '1259'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:00 GMT
+      - Thu, 13 Feb 2025 20:29:22 GMT
       ETag:
-      - W/"98744cb6ec16cf70ab38874279e95e6c"
+      - W/"32a76711c89057c2e4cf176fc0a878c6"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.20, sql.active_record;dur=12.09, cache_generate.active_support;dur=72.60,
+        cache_write.active_support;dur=0.46, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=6.69, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=126.75, process_action.action_controller;dur=150.13
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T20:30:00.614124Z'
       X-Request-Id:
-      - a681705a-f56a-461a-b3cb-40d1e26ba34e
+      - 22935b06-ab9e-4099-8676-7047153b0f5f
       X-Runtime:
-      - '0.016392'
+      - '0.167214'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
 - request:
-    body: scope=read+write+follow+push&client_id=ZZcnP1U05e7QM3wlAsOcyoDJkO4muokIlf2sIKNLyPM&client_secret=cSNCB-ONfTTaT5vTR_rnoaCWVbkQKlLKqbQ2dcFDzNM&grant_type=client_credentials
+    body: scope=read+write+follow+push&client_id=zZzUcU4aFaFeqX-cZ8eEurAtmFP9f_TzCU1hSFld-r4&client_secret=in1aHVKcg3o75Je5MOOFx2Ug0HYA5DoZC_u9D2UORUQ&grant_type=client_credentials
     headers:
       Accept:
       - '*/*'
@@ -120,59 +138,60 @@ interactions:
     uri: http://localhost:3000/oauth/token
   response:
     body:
-      string: '{"access_token":"8MGcnPCL_gVeV765wFYtVQOcoZwvmq3taPoZpUXIjfM","token_type":"Bearer","scope":"read
-        write follow push","created_at":1707652200}'
+      string: '{"access_token":"dCegy5w2aLBK6fC8Wm3Ngf7j_oXj0lyykGxsoHhRSSs","token_type":"Bearer","scope":"read
+        write follow push","created_at":1739478562}'
     headers:
       Cache-Control:
       - no-store
+      Content-Length:
+      - '141'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-4noyL1fUcwqdOYYGCZmCvQ=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-ym8+Lfo1azjryOxInOUJQw=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"b57159cfbd078cc0a5927680e9c87e7a"
-      Pragma:
-      - no-cache
+      - W/"990856b960410545f38f81224fc79dae"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.80, cache_generate.active_support;dur=0.98,
+        cache_write.active_support;dur=0.04, start_processing.action_controller;dur=0.01,
+        instantiation.active_record;dur=0.08, transaction.active_record;dur=4.34,
+        render.active_model_serializers;dur=0.04, process_action.action_controller;dur=46.22
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - f9e3a6c2-4bd4-4796-8880-9c92e1cedfd7
+      - bc059a9c-9a27-437d-baf7-7b6894570a87
       X-Runtime:
-      - '0.014784'
+      - '0.067487'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
 - request:
-    body: username=coolguy47896&password=swordfish&email=email%40localhost47896&agreement=1&locale=en&return_detailed_error=0&client_id=ZZcnP1U05e7QM3wlAsOcyoDJkO4muokIlf2sIKNLyPM&client_secret=cSNCB-ONfTTaT5vTR_rnoaCWVbkQKlLKqbQ2dcFDzNM
+    body: username=coolguy29087&password=swordfish&email=email%40localhost29087&agreement=1&locale=en&return_detailed_error=0&client_id=zZzUcU4aFaFeqX-cZ8eEurAtmFP9f_TzCU1hSFld-r4&client_secret=in1aHVKcg3o75Je5MOOFx2Ug0HYA5DoZC_u9D2UORUQ
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Bearer 8MGcnPCL_gVeV765wFYtVQOcoZwvmq3taPoZpUXIjfM
+      - Bearer dCegy5w2aLBK6fC8Wm3Ngf7j_oXj0lyykGxsoHhRSSs
       Connection:
       - keep-alive
       Content-Length:
@@ -185,39 +204,47 @@ interactions:
     uri: http://localhost:3000/api/v1/accounts
   response:
     body:
-      string: '{"access_token":"6FYkOFhRES3CB41CBockmAgy8lbKx-dyC2B9HT2HEco","token_type":"Bearer","scope":"read
-        write follow push","created_at":1707652201}'
+      string: '{"access_token":"kQPTxcH-WuIgBoEAmgjZz3enZlE-k-2HJbP8UcqA85k","token_type":"Bearer","scope":"read
+        write follow push","created_at":1739478563}'
     headers:
       Cache-Control:
-      - no-store
+      - private, no-store
+      Content-Length:
+      - '141'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"4af0657a31e33ac54a0a143966c0ffe4"
-      Pragma:
-      - no-cache
+      - W/"14ef383d1e982cf4279a2de22ed97316"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Origin
+      Server-Timing:
+      - cache_read.active_support;dur=1.57, sql.active_record;dur=15.77, cache_generate.active_support;dur=2.84,
+        cache_write.active_support;dur=0.16, instantiation.active_record;dur=0.38,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=244.92,
+        unpermitted_parameters.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.01,
+        enqueue.active_job;dur=1.24, process_action.action_controller;dur=341.29
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '5'
+      X-RateLimit-Remaining:
+      - '4'
+      X-RateLimit-Reset:
+      - '2025-02-13T20:30:00.861903Z'
       X-Request-Id:
-      - 4a48c6c2-5579-4ebe-aab3-23584501ad5f
+      - 6f2c296f-844b-4ab8-9b5d-df13027f0f7c
       X-Runtime:
-      - '0.139704'
+      - '0.358418'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -229,7 +256,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Bearer 6FYkOFhRES3CB41CBockmAgy8lbKx-dyC2B9HT2HEco
+      - Bearer kQPTxcH-WuIgBoEAmgjZz3enZlE-k-2HJbP8UcqA85k
       Connection:
       - keep-alive
       Content-Length:
@@ -244,6 +271,8 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
@@ -252,24 +281,31 @@ interactions:
       - W/"44136fa355b3678a1146ad16f7e8649e"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.01, cache_generate.active_support;dur=1.10,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.29,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.80,
+        enqueue.active_job;dur=0.43, render.active_model_serializers;dur=0.02, process_action.action_controller;dur=35.38
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '5'
+      X-RateLimit-Remaining:
+      - '4'
+      X-RateLimit-Reset:
+      - '2025-02-13T20:30:00.247876Z'
       X-Request-Id:
-      - e027fe3e-d2d6-41cf-9f85-a458bfd39f67
+      - cc4d99da-e455-4a54-82c2-58bda27581a8
       X-Runtime:
-      - '0.025069'
+      - '0.068783'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK

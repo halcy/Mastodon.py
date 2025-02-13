@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
       User-Agent:
@@ -17,36 +17,43 @@ interactions:
       string: '{"error":"The access token is invalid"}'
     headers:
       Cache-Control:
-      - no-store
+      - private, no-store
+      Content-Length:
+      - '39'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
-      Pragma:
-      - no-cache
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.10, cache_generate.active_support;dur=0.88,
+        cache_write.active_support;dur=0.06, start_processing.action_controller;dur=0.00,
+        render.active_model_serializers;dur=0.03, halted_callback.action_controller;dur=0.00,
+        process_action.action_controller;dur=17.44
       WWW-Authenticate:
       - Bearer realm="Doorkeeper", error="invalid_token", error_description="The access
         token is invalid"
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:30:00.114598Z'
       X-Request-Id:
-      - ad926422-81e0-4e72-9255-6362f51662f3
+      - 592c5aed-3d6a-4517-bd75-e14db25be9d9
       X-Runtime:
-      - '0.010170'
+      - '0.031025'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 401
       message: Unauthorized

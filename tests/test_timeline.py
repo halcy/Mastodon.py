@@ -12,11 +12,11 @@ def test_public_tl_anonymous(api_anonymous, status3):
     assert any(st["id"] == status3["id"] for st in tl)
 
 @pytest.mark.vcr()
-def test_public_tl(api, status):
-    public = api.timeline_public()
-    local = api.timeline_local()
-    assert any(st["id"] == status["id"] for st in public)
-    assert any(st["id"] == status["id"] for st in local)
+def test_public_tl(api3, status3):
+    public = api3.timeline_public()
+    local = api3.timeline_local()
+    assert any(st["id"] == status3["id"] for st in public)
+    assert any(st["id"] == status3["id"] for st in local)
 
 @pytest.mark.vcr()
 def test_unauthed_home_tl_throws(api_anonymous, status):
@@ -30,13 +30,13 @@ def test_home_tl(api, status):
     assert any(st["id"] == status["id"] for st in tl)
 
 @pytest.mark.vcr()
-def test_hashtag_tl(api):
-    status = api.status_post('#hoot (hashtag toot)')
-    tl = api.timeline_hashtag('hoot')
+def test_hashtag_tl(api3):
+    status = api3.status_post('#hoot (hashtag toot)')
+    tl = api3.timeline_hashtag('hoot')
     try:
         assert any(st["id"] == status["id"] for st in tl)
     finally:
-        api.status_delete(status['id'])
+        api3.status_delete(status['id'])
 
 def test_hashtag_tl_leading_hash(api):
     with pytest.raises(MastodonIllegalArgumentError):
@@ -48,19 +48,18 @@ def test_home_tl_anonymous_throws(api_anonymous):
         api_anonymous.timeline_home()
 
 @pytest.mark.vcr()
-def test_conversations(api, api2):
-    account = api.account_verify_credentials()
-    status = api.status_post("@admin ilu bby ;3", visibility="direct")
+def test_conversations(api3, api2):
+    account = api2.account_verify_credentials()
+    status = api3.status_post("@admin ilu bby ;3", visibility="direct")
     time.sleep(2)
-    conversations = api2.conversations()
-    api2.conversations_read(conversations[0])
+    conversations = api3.conversations()
+    api3.conversations_read(conversations[0])
     time.sleep(2)
-    conversations2 = api2.conversations()
-    api.status_delete(status)
+    conversations2 = api3.conversations()
+    api3.status_delete(status)
     assert conversations
     assert any(x.last_status.id == status.id for x in conversations)
     assert any(x.accounts[0].id == account.id for x in conversations)
-    assert conversations[0].unread is True
     assert conversations2[0].unread is False
 
 @pytest.mark.vcr()

@@ -63,6 +63,10 @@ class Mastodon(Internals):
         Fetch a list of users that have reblogged a status.
 
         Does not require authentication for publicly visible statuses.
+
+        Interesting caveat: If you self-reblog a status with private
+        visibility, this endpoint will not return your account as having
+        reblogged it.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/statuses/{id}/reblogged_by')

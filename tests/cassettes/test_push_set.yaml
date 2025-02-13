@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BPdUlaTRCDosWYZDQNi9Tgacre77rmoIbiXSr2Sacf0m%2FJX8k%2FTHp8Ct7qAQdMCrkxhnVCy4VIGuFE447Zo4kC4%3D&subscription%5Bkeys%5D%5Bauth%5D=zvUJTf4j6tZei7eX1yBI0g%3D%3D&policy=none&data%5Balerts%5D%5Bfollow%5D=1&data%5Balerts%5D%5Bfavourite%5D=1&data%5Balerts%5D%5Breblog%5D=1&data%5Balerts%5D%5Bmention%5D=1&data%5Balerts%5D%5Bpoll%5D=1&data%5Balerts%5D%5Bfollow_request%5D=1&data%5Balerts%5D%5Bstatus%5D=1
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BA%2F8zzPw3%2B1ejZxGX1Z2UFeoOHR%2FBBpo7xpOHyeq0ANFatzfZpRSIdgLSUnKi4Q%2Bq6T%2FF%2F1fmoYg21KWBD%2F%2F4t8%3D&subscription%5Bkeys%5D%5Bauth%5D=SsjUxFOjZtLwxZ0D4VCWrA%3D%3D&policy=none&data%5Balerts%5D%5Bfollow%5D=1&data%5Balerts%5D%5Bfavourite%5D=1&data%5Balerts%5D%5Breblog%5D=1&data%5Balerts%5D%5Bmention%5D=1&data%5Balerts%5D%5Bpoll%5D=1&data%5Balerts%5D%5Bfollow_request%5D=1&data%5Balerts%5D%5Bstatus%5D=1
     headers:
       Accept:
       - '*/*'
@@ -11,7 +11,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '483'
+      - '495'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -20,36 +20,45 @@ interactions:
     uri: http://localhost:3000/api/v1/push/subscription
   response:
     body:
-      string: '{"id":1,"endpoint":"https://example.com","alerts":{"mention":true,"status":true,"reblog":true,"follow":true,"follow_request":true,"favourite":true,"poll":true},"server_key":"BL-2en1hK4a_0v7FUkjYpaossigfCfsvzpFEHRKPIq-ikoE0--80fVSrZdGMmXvrPJQcVTDgNN2cU0D7epxI6Ik=","policy":"all"}'
+      string: '{"id":1,"endpoint":"https://example.com","alerts":{"mention":true,"status":true,"reblog":true,"follow":true,"follow_request":true,"favourite":true,"poll":true},"server_key":"BBRMM0Qzbh2f-2JQURi_QveCRWXGjyLh5DqyoOpDDWvjMpioDlEH_PTbkQaCjl6pFEDhUIXlBJe_UN8KVrH5hm0=","policy":"all"}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '279'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"e7f29a91f66da80b43fe60901a274efe"
+      - W/"a8e056270ee37313748cb5110f95b362"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.85, cache_generate.active_support;dur=1.10,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.36,
+        start_processing.action_controller;dur=0.01, transaction.active_record;dur=7.21,
+        render.active_model_serializers;dur=0.21, process_action.action_controller;dur=49.99
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T18:25:00.153301Z'
       X-Request-Id:
-      - 9068d916-5c36-4a4c-9aeb-0fdfa56111d0
+      - d84a2884-5d42-4bd8-bbdc-85b34acaccd1
       X-Runtime:
-      - '0.030278'
+      - '0.079926'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -70,36 +79,45 @@ interactions:
     uri: http://localhost:3000/api/v1/push/subscription
   response:
     body:
-      string: '{"id":1,"endpoint":"https://example.com","alerts":{"mention":true,"status":true,"reblog":true,"follow":true,"follow_request":true,"favourite":true,"poll":true},"server_key":"BL-2en1hK4a_0v7FUkjYpaossigfCfsvzpFEHRKPIq-ikoE0--80fVSrZdGMmXvrPJQcVTDgNN2cU0D7epxI6Ik=","policy":"all"}'
+      string: '{"id":1,"endpoint":"https://example.com","alerts":{"mention":true,"status":true,"reblog":true,"follow":true,"follow_request":true,"favourite":true,"poll":true},"server_key":"BBRMM0Qzbh2f-2JQURi_QveCRWXGjyLh5DqyoOpDDWvjMpioDlEH_PTbkQaCjl6pFEDhUIXlBJe_UN8KVrH5hm0=","policy":"all"}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '279'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"e7f29a91f66da80b43fe60901a274efe"
+      - W/"a8e056270ee37313748cb5110f95b362"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.66, cache_generate.active_support;dur=0.95,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.74,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.19,
+        process_action.action_controller;dur=20.12
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T18:25:00.223323Z'
       X-Request-Id:
-      - 2dccc4e1-1e97-4050-bde3-740cf448ae5c
+      - 7dc9a4fe-8599-46ab-afb5-1a5fea5720ac
       X-Runtime:
-      - '0.010570'
+      - '0.035978'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK

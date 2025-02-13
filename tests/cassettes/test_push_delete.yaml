@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BJ4wm%2BAyfrKXfNLXGwpEkhSatjPZRwtfuvhegSM3kdGp7ZfSdHPPW5khPaRY%2BAkRrSzMKSyzUv1Z8848nvvHCMI%3D&subscription%5Bkeys%5D%5Bauth%5D=SF3wOU6YzZzLmk9TNVZeXA%3D%3D&policy=all
+    body: subscription%5Bendpoint%5D=https%3A%2F%2Fexample.com&subscription%5Bkeys%5D%5Bp256dh%5D=BGcT5wfAfbQJkM3aI6qsabYnbJiEWCh9ciSYHB3ctdHCeA%2Bw%2BD1xGQYgNldUvBXGMKDep6Ult5ugAcJVA4wMSG8%3D&subscription%5Bkeys%5D%5Bauth%5D=OM7f8gx7rUDaH9ikTdVbVQ%3D%3D&policy=all
     headers:
       Accept:
       - '*/*'
@@ -20,36 +20,45 @@ interactions:
     uri: http://localhost:3000/api/v1/push/subscription
   response:
     body:
-      string: '{"id":3,"endpoint":"https://example.com","alerts":{},"server_key":"BL-2en1hK4a_0v7FUkjYpaossigfCfsvzpFEHRKPIq-ikoE0--80fVSrZdGMmXvrPJQcVTDgNN2cU0D7epxI6Ik=","policy":"all"}'
+      string: '{"id":3,"endpoint":"https://example.com","alerts":{},"server_key":"BBRMM0Qzbh2f-2JQURi_QveCRWXGjyLh5DqyoOpDDWvjMpioDlEH_PTbkQaCjl6pFEDhUIXlBJe_UN8KVrH5hm0=","policy":"all"}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '172'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"65b8e392e9ede6f19bdffb1564b55e35"
+      - W/"21f15725bac14c21baf9c5893bf675b1"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.56, cache_generate.active_support;dur=0.88,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.33,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.45,
+        render.active_model_serializers;dur=0.16, process_action.action_controller;dur=29.04
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T18:25:00.559931Z'
       X-Request-Id:
-      - fd0155f9-329a-4db2-bb13-e94d7eab18cc
+      - 9268f6a5-fe35-4ba9-a421-5007aa0006f0
       X-Runtime:
-      - '0.030060'
+      - '0.043882'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -76,6 +85,8 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
@@ -84,24 +95,31 @@ interactions:
       - W/"44136fa355b3678a1146ad16f7e8649e"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.16, cache_generate.active_support;dur=0.86,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.28,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=2.88,
+        render.active_model_serializers;dur=0.03, process_action.action_controller;dur=29.43
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T18:25:00.624285Z'
       X-Request-Id:
-      - ac9b00aa-5eaf-4971-96a8-6b469ab8c3ad
+      - 86a6e104-dd9d-48ab-8989-5606d2e743bb
       X-Runtime:
-      - '0.017841'
+      - '0.044466'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -126,30 +144,39 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '21'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.63, cache_generate.active_support;dur=0.78,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.21,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        halted_callback.action_controller;dur=0.00, process_action.action_controller;dur=18.62
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T18:25:00.672014Z'
       X-Request-Id:
-      - 1641ebdb-78f3-46f3-9f10-51810bc26e87
+      - c105e321-64dc-4905-875b-90953c3d438e
       X-Runtime:
-      - '0.012438'
+      - '0.033505'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 404
       message: Not Found

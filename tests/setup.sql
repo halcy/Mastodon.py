@@ -15,17 +15,19 @@ WHERE username = 'mastodonpy_test';
 
 UPDATE users SET 
     locale = 'ja'  -- japanese locale for unicode testing :p
-WHERE email = 'mastodonpy_test@localhost:3000';
+WHERE email = 'mastodonpy_test@localhost';
 
 UPDATE accounts SET
-    locked = 'f',
-    discoverable = 't'
+    discoverable = 't',
+    indexable = 't',
+    trendable = 't',
+    locked = 'f'
 WHERE username = 'mastodonpy_test_2';
 
 UPDATE users SET
     locale = 'ja',  -- japanese locale for unicode testing :p
     encrypted_password = '$2a$10$8eAdhF69RiZiV0puZ.8iOOgMqBACmwJu8Z9X4CiN91iwRXbeC2jvi'
-WHERE email = 'mastodonpy_test_2@localhost:3000';
+WHERE email = 'mastodonpy_test_2@localhost';
 
 UPDATE users SET
     locale = 'de',
@@ -51,7 +53,7 @@ INSERT INTO oauth_applications (
     'urn:ietf:wg:oauth:2.0:oob',
     'read write follow push admin:read admin:write',
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
     now(),
     now()
 );
@@ -68,7 +70,7 @@ INSERT INTO oauth_access_tokens (
     '__MASTODON_PY_TEST_ACCESS_TOKEN',
     'read write follow push',
     1234567890123456,
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
     now()
 ),
 (
@@ -76,7 +78,7 @@ INSERT INTO oauth_access_tokens (
     '__MASTODON_PY_TEST_ACCESS_TOKEN_3',
     'read write follow push',
     1234567890123456,
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
     now()
 ),
 (
@@ -85,6 +87,25 @@ INSERT INTO oauth_access_tokens (
     'read write follow push admin:read admin:write',
     1234567890123456,
     1,
+    now()
+);
+
+-- set some global settings:
+INSERT INTO settings (
+    id,
+    var,
+    value,
+    thing_type,
+    thing_id,
+    created_at,
+    updated_at
+) VALUES (
+    123456,
+    'open_registrations',
+    E'--- true\n...\n',
+    NULL,
+    NULL,
+    now(),
     now()
 );
 
@@ -101,7 +122,7 @@ INSERT INTO settings (
     'notification_emails',
     E'---\nfollow_request: false',
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
     now(),
     now()
 );
@@ -118,7 +139,7 @@ INSERT INTO settings (
     'default_privacy', 
     E'--- public\n...\n', 
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
     now(),
     now()
 );
@@ -135,7 +156,7 @@ INSERT INTO settings (
     'default_sensitive',
     E'--- false\n...\n',
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
     now(),
     now()
 );
@@ -154,7 +175,7 @@ INSERT INTO settings (
     'notification_emails',
     E'---\nfollow_request: false',
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
     now(),
     now()
 );
@@ -171,7 +192,7 @@ INSERT INTO settings (
     'default_privacy', 
     E'--- public\n...\n', 
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
     now(),
     now()
 );
@@ -188,7 +209,7 @@ INSERT INTO settings (
     'default_sensitive',
     E'--- false\n...\n',
     'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost:3000'),
+    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
     now(),
     now()
 );

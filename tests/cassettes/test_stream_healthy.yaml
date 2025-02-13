@@ -14,38 +14,47 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.1.2","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":3,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":10485760,"image_matrix_limit":16777216,"video_size_limit":41943040,"video_frame_rate_limit":60,"video_matrix_limit":2304000},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":39,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":false,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
       Cache-Control:
-      - max-age=180, public
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '1261'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 14:23:20 GMT
+      - Thu, 13 Feb 2025 18:17:08 GMT
       ETag:
-      - W/"8ff550f009b0b2277f612709ef8b85e8"
+      - W/"bb4687f3436fb288da92ab6a6bbfa7d7"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.17, sql.active_record;dur=1.73, cache_generate.active_support;dur=7.96,
+        cache_write.active_support;dur=0.35, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=0.06, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=11.47, process_action.action_controller;dur=29.69
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T18:20:00.591932Z'
       X-Request-Id:
-      - 4cef7970-c1d4-460b-818a-7fdf30c23a9d
+      - 1e978623-eeef-4988-b5da-38aa18f5ecd4
       X-Runtime:
-      - '0.058158'
+      - '0.046780'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
@@ -66,10 +75,6 @@ interactions:
     body:
       string: OK
     headers:
-      Access-Control-Allow-Headers:
-      - Authorization, Accept, Cache-Control
-      Access-Control-Allow-Methods:
-      - GET, OPTIONS
       Access-Control-Allow-Origin:
       - '*'
       Connection:
@@ -77,7 +82,7 @@ interactions:
       Content-Type:
       - text/plain
       Date:
-      - Sun, 11 Feb 2024 14:23:20 GMT
+      - Thu, 13 Feb 2025 18:17:08 GMT
       Keep-Alive:
       - timeout=5
       Transfer-Encoding:
@@ -85,7 +90,7 @@ interactions:
       X-Powered-By:
       - Express
       X-Request-Id:
-      - 442bfb62-60e7-4866-bd1b-e253f1678671
+      - 37a3f7f2-58b0-4b93-b213-4c061e237a36
     status:
       code: 200
       message: OK

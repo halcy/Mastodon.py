@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -19,44 +19,51 @@ interactions:
       string: ''
     headers:
       Cache-Control:
-      - max-age=0, public
+      - max-age=15, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '0'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-/WlV2FzE6dzuhtYU+K+XcQ=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-ZzgZUVfL7Zk2gCEMPKsyhQ=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''none''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:19 GMT
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
-      - W/"045dbb41723f9c39fe488c556f3b568e"
+      - W/"559ccaa20e7a225149b7875760f25531"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Set-Cookie:
-      - _mastodon_session=2NR5%2BSSGlHUknXzkZ5J0arkrzy%2Fe%2FIOfDl9roYMKulnl7xtlgmrMlbHoyJE9KtlYOXPHkPGydoIlthQ4mk0LRn71ZaRxRwhI1kvzgzE0EELpiuyXJ4OUqnNFB05OoLO76x1jwGtv%2FQ1s%2FdTGA0Cnn6s8C3I891AQkorjwr20uwkPTf7yt6%2BqL%2BTbY5bjbqHOMFtLTUuR8SIfZl%2FEEtEpwXAN37e3fqc13g0Yg2O9duow9w6wdeg0bvidMNbttxDHLbU1GfaPf0t%2Bq%2FR3PTWG4%2BKNrUsMkK%2BHr1szUW0AvldIC%2BnqKlKVsRjkTkeL62INRH5obg0%3D--HUm9bQh7jAHj1eLU--sy7rdljoN1feyXgDKdpAWA%3D%3D;
-        path=/; HttpOnly; SameSite=Lax
+      Server-Timing:
+      - cache_read.active_support;dur=0.28, sql.active_record;dur=1.99, cache_generate.active_support;dur=11.02,
+        cache_write.active_support;dur=0.42, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=0.05, render_partial.action_view;dur=31.46,
+        cache_fetch_hit.active_support;dur=0.01, render.active_model_serializers;dur=8.10,
+        render_template.action_view;dur=37.29, render_layout.action_view;dur=82.97,
+        process_action.action_controller;dur=103.20
       Vary:
-      - Accept
+      - Accept, Accept-Language, Cookie
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 6fc33c62-a1f0-4c6f-a28a-915a614360c6
+      - 9fbf77bd-6269-49f2-97d3-f9814b97e79d
       X-Runtime:
-      - '0.079164'
+      - '0.118827'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      link:
+      - </packs/js/locale/en-json-63dab8d8967712654129.chunk.js>; rel=preload; as=script;
+        type=text/javascript; integrity=sha256-otBPr91rAWZ2QVUc+cMV/PAh/spify2RilbP2aRHXFU=
     status:
       code: 200
       message: OK
@@ -66,13 +73,11 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
       - keep-alive
-      Cookie:
-      - _mastodon_session=2NR5%2BSSGlHUknXzkZ5J0arkrzy%2Fe%2FIOfDl9roYMKulnl7xtlgmrMlbHoyJE9KtlYOXPHkPGydoIlthQ4mk0LRn71ZaRxRwhI1kvzgzE0EELpiuyXJ4OUqnNFB05OoLO76x1jwGtv%2FQ1s%2FdTGA0Cnn6s8C3I891AQkorjwr20uwkPTf7yt6%2BqL%2BTbY5bjbqHOMFtLTUuR8SIfZl%2FEEtEpwXAN37e3fqc13g0Yg2O9duow9w6wdeg0bvidMNbttxDHLbU1GfaPf0t%2Bq%2FR3PTWG4%2BKNrUsMkK%2BHr1szUW0AvldIC%2BnqKlKVsRjkTkeL62INRH5obg0%3D--HUm9bQh7jAHj1eLU--sy7rdljoN1feyXgDKdpAWA%3D%3D
       User-Agent:
       - tests/v311
     method: HEAD
@@ -82,44 +87,51 @@ interactions:
       string: ''
     headers:
       Cache-Control:
-      - max-age=0, public
+      - max-age=15, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '0'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-2/8I87kyDD87oBzgLNaeHw=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-Rw3BxkQevjsEaE/PSDtTwA=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''none''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:19 GMT
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
-      - W/"f9ee8594cb3f125931c7154bbf0c1010"
+      - W/"dda69ca9f3c150ffee11603645688fe7"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Set-Cookie:
-      - _mastodon_session=d5o2yZe4X0i%2BHBklHFmcvC%2BYrZPcB%2B2ZrnB7leDb79gyKQl8bRNgO1zRv7FlEIOHUB8nL%2F%2B0UMyH6Ov%2FWc6Uvh%2BahifI2lbJBLUjgTXs1CvBa0a8%2FPy%2FhGBzOy9YXjrNGCkeNHgfMsHFBaXJvGtYeiz8tcEC7V8uzoTgqHKyOVMglqqEqwYvZ7mE4eDUhxq9nVGnsJTUOb5VwWCnLXSju5LE3tBEDKBRfJV%2B5UcE1%2BfLLztC0G%2B18vIq7oe6FiNwmpXk7JXoSqtXbQdG7g3K38v5SEE8vJDY1%2FXNXB%2BufJy%2Fxu2oEiZm6vs1iRCUIXJkZu2dKLo%3D--eevaoLCMt%2FOqrQbZ--c1kL9M%2Fv6%2BpojZxYH3fzwQ%3D%3D;
-        path=/; HttpOnly; SameSite=Lax
+      Server-Timing:
+      - cache_read.active_support;dur=0.24, sql.active_record;dur=1.86, cache_generate.active_support;dur=10.27,
+        cache_write.active_support;dur=0.32, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=0.04, render_partial.action_view;dur=27.15,
+        cache_fetch_hit.active_support;dur=0.01, render.active_model_serializers;dur=7.90,
+        render_template.action_view;dur=32.37, render_layout.action_view;dur=78.19,
+        process_action.action_controller;dur=97.32
       Vary:
-      - Accept
+      - Accept, Accept-Language, Cookie
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - ffe71007-952d-4189-8520-5f5e1bbf26fa
+      - 55c42a87-a863-46a5-be1e-986623736c93
       X-Runtime:
-      - '0.038872'
+      - '0.112446'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      link:
+      - </packs/js/locale/en-json-63dab8d8967712654129.chunk.js>; rel=preload; as=script;
+        type=text/javascript; integrity=sha256-otBPr91rAWZ2QVUc+cMV/PAh/spify2RilbP2aRHXFU=
     status:
       code: 200
       message: OK
@@ -129,13 +141,11 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
       - keep-alive
-      Cookie:
-      - _mastodon_session=d5o2yZe4X0i%2BHBklHFmcvC%2BYrZPcB%2B2ZrnB7leDb79gyKQl8bRNgO1zRv7FlEIOHUB8nL%2F%2B0UMyH6Ov%2FWc6Uvh%2BahifI2lbJBLUjgTXs1CvBa0a8%2FPy%2FhGBzOy9YXjrNGCkeNHgfMsHFBaXJvGtYeiz8tcEC7V8uzoTgqHKyOVMglqqEqwYvZ7mE4eDUhxq9nVGnsJTUOb5VwWCnLXSju5LE3tBEDKBRfJV%2B5UcE1%2BfLLztC0G%2B18vIq7oe6FiNwmpXk7JXoSqtXbQdG7g3K38v5SEE8vJDY1%2FXNXB%2BufJy%2Fxu2oEiZm6vs1iRCUIXJkZu2dKLo%3D--eevaoLCMt%2FOqrQbZ--c1kL9M%2Fv6%2BpojZxYH3fzwQ%3D%3D
       User-Agent:
       - tests/v311
     method: HEAD
@@ -145,44 +155,51 @@ interactions:
       string: ''
     headers:
       Cache-Control:
-      - max-age=0, public
+      - max-age=15, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '0'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-cJjZNiGXlVThDgfAd0eYMQ=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-MIRmt4XuD2dL62ohk2Av3w=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''none''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:20 GMT
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
-      - W/"cae3c10bf7c20ac988fc1e5dbe7545c5"
+      - W/"b8388b4e29f8f3826aba287e6a744894"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Set-Cookie:
-      - _mastodon_session=i8NG%2FGbshWwDYemA3nT448z2ii1DieKI5zFH4g3lrNypzR2mlRXXddUpgr4POaoz%2FioWtWWrKyhGeMqPi8lG6y5r0zDJSfSEvGaORASuQrz8c33jqSuEih%2FWR11bCJA3L0ZVkS1SMPiEvcFIEix3AHy6GpEZb1E0unLvmKL4PwV%2FQGvGDIiGJm83d7WFosThwH1xMb8pkxdv8Ry1W3ZRt0neX2pBT6F3dMhKOsuctpbuX1x5324d6c5eOz5C%2Bp1gYSi9aqFQ2EAlGLUvu7fB2VCI0tZoqEwCf4%2FxZ8VGpQlmwG7asywZDipV6nDDFV1sy5qTsfY%3D--nxXUo%2B%2BkJsNcliTq--DI0mRgBPifuEEBxW%2BAjM%2Bw%3D%3D;
-        path=/; HttpOnly; SameSite=Lax
+      Server-Timing:
+      - cache_read.active_support;dur=0.26, sql.active_record;dur=1.71, cache_generate.active_support;dur=10.04,
+        cache_write.active_support;dur=0.33, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=0.04, render_partial.action_view;dur=15.58,
+        cache_fetch_hit.active_support;dur=0.01, render.active_model_serializers;dur=7.05,
+        render_template.action_view;dur=15.76, render_layout.action_view;dur=44.38,
+        process_action.action_controller;dur=60.74
       Vary:
-      - Accept
+      - Accept, Accept-Language, Cookie
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 43fce9c9-1bd4-4932-ad76-ec4463f98991
+      - 6a875870-39f7-4ef0-bfc3-b0f0b673b079
       X-Runtime:
-      - '0.034699'
+      - '0.077063'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      link:
+      - </packs/js/locale/en-json-63dab8d8967712654129.chunk.js>; rel=preload; as=script;
+        type=text/javascript; integrity=sha256-otBPr91rAWZ2QVUc+cMV/PAh/spify2RilbP2aRHXFU=
     status:
       code: 200
       message: OK

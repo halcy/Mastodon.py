@@ -511,7 +511,7 @@ class Mastodon():
 
         return params
 
-    def __unpack_id(self, id, dateconv = False, listify = False):
+    def __unpack_id(self, id, dateconv = False, listify = False, field = "id"):
         """
         Internal object-to-id converter
 
@@ -531,8 +531,8 @@ class Mastodon():
             for i in range(len(id)):
                 id[i] = self.__unpack_id(id[i], dateconv = dateconv, listify = False)
             return id
-        if isinstance(id, dict) and "id" in id:
-            id = id["id"]
+        if isinstance(id, dict) and field in id:
+            id = id[field]
         if dateconv and isinstance(id, datetime):
             id = (int(id.timestamp()) << 16) * 1000
         return id

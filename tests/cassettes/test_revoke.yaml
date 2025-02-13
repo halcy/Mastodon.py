@@ -1,15 +1,15 @@
 interactions:
 - request:
-    body: username=mastodonpy_test_2%40localhost%3A3000&password=5fc638e0e53eafd9c4145b6bb852667d&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&grant_type=password&client_id=__MASTODON_PY_TEST_CLIENT_ID&client_secret=__MASTODON_PY_TEST_CLIENT_SECRET&scope=read+write+follow+push
+    body: username=mastodonpy_test_2%40localhost&password=5fc638e0e53eafd9c4145b6bb852667d&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&grant_type=password&client_id=__MASTODON_PY_TEST_CLIENT_ID&client_secret=__MASTODON_PY_TEST_CLIENT_SECRET&scope=read+write+follow+push
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
       Content-Length:
-      - '271'
+      - '264'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -19,46 +19,47 @@ interactions:
   response:
     body:
       string: '{"access_token":"__MASTODON_PY_TEST_ACCESS_TOKEN_3","token_type":"Bearer","scope":"read
-        write follow push","created_at":1707659286}'
+        write follow push","created_at":1739468914}'
     headers:
       Cache-Control:
       - no-store
+      Content-Length:
+      - '131'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-E1zyG5uNddlrA98HmZig6g=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-z6n0QCWNBmIkAVsa6yBTSQ=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"426a45e381c2192c441af9b9f4b41ebf"
-      Pragma:
-      - no-cache
+      - W/"2746e91b2177083d6f4f40e13696aafd"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.74, cache_generate.active_support;dur=0.85,
+        cache_write.active_support;dur=0.04, start_processing.action_controller;dur=0.01,
+        instantiation.active_record;dur=0.12, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=46.49
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 1a83b97a-e319-4a4a-a6d1-2f2f75abaddf
+      - 16f2d811-e325-4660-9fee-5292a0b832a6
       X-Runtime:
-      - '0.044710'
+      - '0.064968'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
@@ -68,7 +69,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
       Connection:
@@ -79,38 +80,47 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.1.2","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":1},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":10485760,"image_matrix_limit":16777216,"video_size_limit":41943040,"video_frame_rate_limit":60,"video_matrix_limit":2304000},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":2,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":false,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
       Cache-Control:
-      - max-age=180, public
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '1260'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:49:57 GMT
+      - Thu, 13 Feb 2025 16:09:54 GMT
       ETag:
-      - W/"98744cb6ec16cf70ab38874279e95e6c"
+      - W/"a95eb8dbec5e14935f8ae1ba62b767cf"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.13, sql.active_record;dur=2.13, cache_generate.active_support;dur=6.71,
+        cache_write.active_support;dur=0.31, instantiation.active_record;dur=0.15,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=9.99, process_action.action_controller;dur=26.80
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:10:00.746705Z'
       X-Request-Id:
-      - 9761afe3-381b-4970-966f-dc92f55fdb5d
+      - d7694fee-de71-4101-98fc-da5084245903
       X-Runtime:
-      - '0.017912'
+      - '0.040660'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
@@ -120,7 +130,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
       Connection:
@@ -139,40 +149,43 @@ interactions:
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-UpGj5DpK5sPXEiJHULVyZA=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-JosAPydFHh7a/Ig9Iv69Ug=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
       - W/"44136fa355b3678a1146ad16f7e8649e"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.20, cache_generate.active_support;dur=0.96,
+        cache_write.active_support;dur=0.04, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=0.15, transaction.active_record;dur=3.44,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=12.61
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 65c841e6-3a87-4006-ac29-c0ca78a6904f
+      - f7980d0e-7463-42d8-a0b2-65cc37bb38af
       X-Runtime:
-      - '0.017995'
+      - '0.026461'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
@@ -182,7 +195,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
       Content-Length:
@@ -198,36 +211,43 @@ interactions:
       string: '{"error":"The access token is invalid"}'
     headers:
       Cache-Control:
-      - no-store
+      - private, no-store
+      Content-Length:
+      - '39'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
-      Pragma:
-      - no-cache
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.10, cache_generate.active_support;dur=0.87,
+        cache_write.active_support;dur=0.06, start_processing.action_controller;dur=0.00,
+        render.active_model_serializers;dur=0.04, halted_callback.action_controller;dur=0.00,
+        process_action.action_controller;dur=22.77
       WWW-Authenticate:
       - Bearer realm="Doorkeeper", error="invalid_token", error_description="The access
         token is invalid"
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:10:00.842132Z'
       X-Request-Id:
-      - 85889562-1f69-442a-ac2f-e0529d0fbdf5
+      - a12eabdc-3e1f-4a2a-8485-37c553e8d028
       X-Runtime:
-      - '0.007792'
+      - '0.036446'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 401
       message: Unauthorized
@@ -237,7 +257,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
       Connection:
@@ -248,38 +268,47 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.1.2","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":1},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":10485760,"image_matrix_limit":16777216,"video_size_limit":41943040,"video_frame_rate_limit":60,"video_matrix_limit":2304000},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":2,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":false,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
       Cache-Control:
-      - max-age=180, public
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '1260'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:49:57 GMT
+      - Thu, 13 Feb 2025 16:09:54 GMT
       ETag:
-      - W/"98744cb6ec16cf70ab38874279e95e6c"
+      - W/"a95eb8dbec5e14935f8ae1ba62b767cf"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.12, sql.active_record;dur=1.69, cache_generate.active_support;dur=6.16,
+        cache_write.active_support;dur=0.32, instantiation.active_record;dur=0.14,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=8.96, process_action.action_controller;dur=25.60
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:10:00.897164Z'
       X-Request-Id:
-      - 615ced47-1c32-442b-963c-0f0779f6d576
+      - d5623266-b999-4f68-949f-e96b4601631b
       X-Runtime:
-      - '0.025994'
+      - '0.039989'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK
@@ -289,7 +318,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
       Connection:
@@ -307,35 +336,42 @@ interactions:
       string: "{\"error\":\"\u30A2\u30AF\u30BB\u30B9\u30C8\u30FC\u30AF\u30F3\u306F\u53D6\u308A\u6D88\u3055\u308C\u3066\u3044\u307E\u3059\"}"
     headers:
       Cache-Control:
-      - no-store
+      - private, no-store
+      Content-Length:
+      - '66'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
-      Pragma:
-      - no-cache
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.48, cache_generate.active_support;dur=0.90,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.27,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        halted_callback.action_controller;dur=0.00, process_action.action_controller;dur=26.57
       WWW-Authenticate:
       - "Bearer realm=\"Doorkeeper\", error=\"invalid_token\", error_description=\"\xE3\x82\xA2\xE3\x82\xAF\xE3\x82\xBB\xE3\x82\xB9\xE3\x83\x88\xE3\x83\xBC\xE3\x82\xAF\xE3\x83\xB3\xE3\x81\xAF\xE5\x8F\x96\xE3\x82\x8A\xE6\xB6\x88\xE3\x81\x95\xE3\x82\x8C\xE3\x81\xA6\xE3\x81\x84\xE3\x81\xBE\xE3\x81\x99\""
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:10:00.953225Z'
       X-Request-Id:
-      - 479a81cd-ea40-4eff-98a9-06f426831c13
+      - 339f00cb-73bb-47cd-94b2-b248aa7601fa
       X-Runtime:
-      - '0.011526'
+      - '0.041238'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 401
       message: Unauthorized

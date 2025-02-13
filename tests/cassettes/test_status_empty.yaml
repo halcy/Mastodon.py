@@ -25,20 +25,21 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '87'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=1.31, cache_generate.active_support;dur=1.24,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.45,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.05,
+        process_action.action_controller;dur=25.04
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
@@ -46,16 +47,18 @@ interactions:
       X-RateLimit-Limit:
       - '300'
       X-RateLimit-Remaining:
-      - '229'
+      - '299'
       X-RateLimit-Reset:
-      - '2024-02-11T12:00:00.697113Z'
+      - '2025-02-13T21:00:00.028106Z'
       X-Request-Id:
-      - f196cfc4-edac-44f1-b5c0-ad226f9d1476
+      - 3a73f642-a4a9-4634-ba49-e56e5d7fa711
       X-Runtime:
-      - '0.016185'
+      - '0.040984'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 422
-      message: Unprocessable Entity
+      message: Unprocessable Content
 version: 1

@@ -427,7 +427,9 @@ class Mastodon(Internals):
         Returns the new domain block as an :ref:`admin domain block dict <admin domain block dict>`.
         """
         if domain is None:
-            raise AttributeError("Must provide a domain to block a domain")
+            raise MastodonIllegalArgumentError("Must provide a domain to block a domain")
+        if domain.startswith("http://") or domain.startswith("https://"):
+            raise MastodonIllegalArgumentError("Domain should not contain a protocol identifier.")
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
 
@@ -453,7 +455,7 @@ class Mastodon(Internals):
         Returns the modified domain block as an :ref:`admin domain block dict <admin domain block dict>`, raises a `MastodonAPIError` if the specified block does not exist.
         """
         if id is None:
-            raise AttributeError("Must provide an id to modify the existing moderation actions on a given domain.")
+            raise MastodonIllegalArgumentError("Must provide an id to modify the existing moderation actions on a given domain.")
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('PUT', f'/api/v1/admin/domain_blocks/{id}', params)
@@ -471,7 +473,7 @@ class Mastodon(Internals):
             id = self.__unpack_id(id)
             self.__api_request('DELETE', f'/api/v1/admin/domain_blocks/{id}')
         else:
-            raise AttributeError("You must provide an id of an existing domain block to remove it.")
+            raise MastodonIllegalArgumentError("You must provide an id of an existing domain block to remove it.")
 
     @api_version("3.5.0", "3.5.0", _DICT_VERSION_ADMIN_MEASURE)
     def admin_measures(self, start_at, end_at, active_users: bool = False, new_users: bool = False, interactions: bool = False, opened_reports: bool = False, resolved_reports: bool = False, 

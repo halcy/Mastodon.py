@@ -115,7 +115,7 @@ def test_app_account_create_invalid():
         api_base_url="http://localhost:3000/"
     )
     test_token, error = test_app_api.create_account("coolguy" + suffix, "", "email@localhost" + suffix, agreement=False, return_detailed_error=True)
-    print("xxxxxxxxxxxxxxxxxxxxx,", error)
+    print(error)
     assert test_token is None
     assert "details" in error
     assert "password" in error.details

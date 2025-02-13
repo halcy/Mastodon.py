@@ -20,11 +20,11 @@ def test_status(status, api):
     assert status2
 
 @pytest.mark.vcr()
-def test_status_reply(status, api2):
-    status2 = api2.status_reply(status, "same!")
+def test_status_reply(status3, api2):
+    status2 = api2.status_reply(status3, "same!")
     try:
         assert status2
-        assert status2.mentions[0].id == status.account.id
+        assert status2.mentions[0].id == status3.account.id
     finally:
         api2.status_delete(status2['id'])
         
@@ -45,7 +45,7 @@ def test_status_missing(api):
 def test_status_card(api):
     import time
     status = api.status_post("http://example.org/")
-    time.sleep(5) # Card generation may take time
+    time.sleep(20) # Card generation may take time
     card = api.status_card(status['id'])
     
     try:
@@ -77,14 +77,21 @@ def test_status_context(status, api):
     assert context
 
 @pytest.mark.vcr()
-def test_status_reblogged_by(status, api):
-    api.status_reblog(status['id'])
+def test_status_reblogged_by(api, status, status3, api3):
+    api3.status_reblog(status3['id'])
+    reblogs = api3.status_reblogged_by(status3['id'])
+    assert isinstance(reblogs, list)
+    assert len(reblogs) == 1
+    api.status_reblog(status)
     reblogs = api.status_reblogged_by(status['id'])
-    assert reblogs
+    assert isinstance(reblogs, list)
+    assert len(reblogs) == 0
 
 @pytest.mark.vcr()
-def test_status_reblog_visibility(status, api):
+def test_status_reblog_visibility(status, api, status3, api3):
     reblog_result = api.status_reblog(status['id'], visibility = 'unlisted')
+    assert reblog_result.visibility == 'private'
+    reblog_result = api3.status_reblog(status3, visibility = 'unlisted')
     assert reblog_result.visibility == 'unlisted'
 
 @pytest.mark.vcr()
@@ -187,7 +194,7 @@ def test_scheduled_status(api):
     if os.path.exists("tests/cassettes/test_scheduled_status_datetimeobjects.pkl"):
         the_very_immediate_future = datetime.datetime.fromtimestamp(pickle.load(open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'rb')))
     else:
-        the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=5)
+        the_very_immediate_future = datetime.datetime.now() + datetime.timedelta(seconds=10)
         pickle.dump(the_very_immediate_future.timestamp(), open("tests/cassettes/test_scheduled_status_datetimeobjects.pkl", 'wb'))
     scheduled_toot_4 = api.status_post("please ensure adequate headroom", scheduled_at=the_very_immediate_future)
     time.sleep(15)
@@ -224,14 +231,14 @@ def test_scheduled_status_long_part2(api):
             assert found_status
 
 @pytest.mark.vcr()
-def test_status_edit(api, api2):
-    status = api.status_post("the best editor? why, of course it is VS Code")
+def test_status_edit(api3, api2):
+    status = api3.status_post("the best editor? why, of course it is VS Code")
     edit_list_1 = api2.status_history(status)
-    status_edited = api.status_update(status, "the best editor? why, of course it is the KDE Advanced Text Editor, Kate")
+    status_edited = api3.status_update(status, "the best editor? why, of course it is the KDE Advanced Text Editor, Kate")
     status_result = api2.status(status)
     edit_list_2 = api2.status_history(status)
 
-    assert len(edit_list_1) == 0
+    assert len(edit_list_1) == 1
     assert len(edit_list_2) == 2
     assert "the best editor? why, of course it is the KDE Advanced Text Editor, Kate" in status_result.content
 

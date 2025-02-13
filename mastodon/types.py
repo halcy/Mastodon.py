@@ -5191,7 +5191,7 @@ class AccountCreationError(AttribAccessDict):
       * 2.7.0: added
     """
 
-    details: "AccountCreationErrorDetails[null]"
+    details: "AccountCreationErrorDetails"
     """
     A dictionary giving more details about what fields caused errors and in which ways.
 

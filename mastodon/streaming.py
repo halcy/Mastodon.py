@@ -261,6 +261,7 @@ class CallbackStreamListener(StreamListener):
         self.encryted_message_handler = encryted_message_handler
 
     def on_update(self, status):
+        print("ONUPDATE", status)
         if self.update_handler is not None:
             self.update_handler(status)
 

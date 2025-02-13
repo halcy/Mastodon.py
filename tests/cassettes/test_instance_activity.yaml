@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -16,38 +16,47 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/activity
   response:
     body:
-      string: '[{"week":"1707652219","statuses":"18","logins":"4","registrations":"3"},{"week":"1707047419","statuses":"0","logins":"0","registrations":"0"},{"week":"1706442619","statuses":"0","logins":"0","registrations":"0"},{"week":"1705837819","statuses":"0","logins":"0","registrations":"0"},{"week":"1705233019","statuses":"0","logins":"0","registrations":"0"},{"week":"1704628219","statuses":"0","logins":"0","registrations":"0"},{"week":"1704023419","statuses":"0","logins":"0","registrations":"0"},{"week":"1703418619","statuses":"0","logins":"0","registrations":"0"},{"week":"1702813819","statuses":"0","logins":"0","registrations":"0"},{"week":"1702209019","statuses":"0","logins":"0","registrations":"0"},{"week":"1701604219","statuses":"0","logins":"0","registrations":"0"},{"week":"1700999419","statuses":"0","logins":"0","registrations":"0"}]'
+      string: '[{"week":"1739463028","statuses":"5","logins":"4","registrations":"4"},{"week":"1738858228","statuses":"0","logins":"0","registrations":"0"},{"week":"1738253428","statuses":"0","logins":"0","registrations":"0"},{"week":"1737648628","statuses":"0","logins":"0","registrations":"0"},{"week":"1737043828","statuses":"0","logins":"0","registrations":"0"},{"week":"1736439028","statuses":"0","logins":"0","registrations":"0"},{"week":"1735834228","statuses":"0","logins":"0","registrations":"0"},{"week":"1735229428","statuses":"0","logins":"0","registrations":"0"},{"week":"1734624628","statuses":"0","logins":"0","registrations":"0"},{"week":"1734019828","statuses":"0","logins":"0","registrations":"0"},{"week":"1733415028","statuses":"0","logins":"0","registrations":"0"},{"week":"1732810228","statuses":"0","logins":"0","registrations":"0"}]'
     headers:
       Cache-Control:
-      - max-age=86400, public
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '841'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:19 GMT
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
-      - W/"10ab4d17be14028c00ddfb23f9b6e4a7"
+      - W/"4a0fad9e36c35101bc5462e377b4f082"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.71, cache_generate.active_support;dur=2.44,
+        cache_write.active_support;dur=0.14, instantiation.active_record;dur=0.22,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.06,
+        process_action.action_controller;dur=23.96
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:15:00.251428Z'
       X-Request-Id:
-      - 4b70a9e5-77b2-47ff-bcc1-cc87b04ac2ac
+      - 5e1d2706-6cfa-4416-b66b-089a6e7837d3
       X-Runtime:
-      - '0.024575'
+      - '0.042817'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK

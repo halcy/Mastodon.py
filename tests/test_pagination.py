@@ -45,10 +45,10 @@ def test_fetch_next_previous_from_pagination_info(api):
         assert previous_statuses
 
 @pytest.mark.vcr()
-def test_fetch_remaining(api):
-    with many_statuses(api, n=30, suffix=' #'+UNLIKELY_HASHTAG):
-        hashtag = api.timeline_hashtag(UNLIKELY_HASHTAG, limit=10)
-        hashtag_remaining = api.fetch_remaining(hashtag)
+def test_fetch_remaining(api3):
+    with many_statuses(api3, n=30, suffix=' #'+UNLIKELY_HASHTAG):
+        hashtag = api3.timeline_hashtag(UNLIKELY_HASHTAG, limit=10)
+        hashtag_remaining = api3.fetch_remaining(hashtag)
         assert hashtag_remaining
         assert len(hashtag_remaining) >= 30
 

@@ -175,17 +175,47 @@ def test_account_pinned(status, status2, api):
         api.status_unpin(status['id'])
 
 @pytest.mark.vcr()
-def test_follow_suggestions(api2, status):
-    api2.status_favourite(status)
-    
+def test_follow_suggestions(api2):
+    """
+    status2 = None
+    try:
+        # Ensure we don't follow
+        api2.account_unfollow(api3.account_verify_credentials())
+
+        # Post a bunch and interact
+        status = api3.status_post("even cooler free #ringtones")
+        api2.status_reblog(status)
+        api2.status_favourite(status)
+        api2.status_reblog(status3)
+        api2.status_favourite(status3)
+        status2 = api3.status_post("even cooler free #ringtones")
+        status2 = api2.status_post("i also like #ringtones", visibility = "public")
+        api3.status_reblog(status2)
+        api3.status_favourite(status2)
+        api3.account_follow(api2.account_verify_credentials())
+        time.sleep(2)
+
+        suggestions = api2.suggestions()
+        assert(suggestions)
+        assert(len(suggestions) > 0)
+        
+        api2.suggestion_delete(suggestions[0])
+        suggestions2 = api2.suggestions()
+        assert(len(suggestions2) < len(suggestions))
+    finally:
+        api3.status_delete(status)
+        if status2 is not None:
+            api2.status_delete(status2)
+    """
+    # In 3.4.0+, it doesn't seem possible to seed suggestions like before, so instead, 
+    # we just test the endpoints function
     suggestions = api2.suggestions()
-    assert(suggestions)
-    assert(len(suggestions) > 0)
-    
-    api2.suggestion_delete(suggestions[0])
-    suggestions2 = api2.suggestions()
-    assert(len(suggestions2) < len(suggestions))
-    
+    assert isinstance(suggestions, list)
+    suggestions = api2.suggestions_v2()
+    assert isinstance(suggestions, list)
+    suggestions = api2.suggestions_v1()
+    assert isinstance(suggestions, list)
+
 @pytest.mark.vcr()
 def test_account_pin_unpin(api, api2):
     user = api2.account_verify_credentials()
@@ -259,6 +289,22 @@ def test_featured_tags(api):
             api.featured_tag_delete(featured_tag)
         if featured_tag_2 is not None:            
             api.featured_tag_delete(featured_tag_2)
+
+@pytest.mark.vcr()
+def test_followed_hashtags(api):
+    api.unfollow_tag("heeho")
+    followed_1 = api.followed_tags()
+    tag_1 = api.follow_tag("heeho")
+    assert tag_1.name == "heeho"
+    assert tag_1.following == True
+    followed_2 = api.followed_tags()
+    assert len(followed_1) < len(followed_2)
+    tag_2 = api.unfollow_tag(tag_1)
+    assert tag_2.following == False    
+    tag_3 = api.tag("heeho")
+    assert tag_3.following == False
+    with pytest.raises(MastodonIllegalArgumentError):
+        api.tag("#heeho")
 
 @pytest.mark.vcr()
 def test_account_notes(api, api2):

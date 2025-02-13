@@ -55,8 +55,8 @@ def test_admin_accounts_v2(api2):
         accounts = api2.admin_accounts_v2(status="sick")
 
 @pytest.mark.vcr(match_on=['path'])
-def test_admin_moderation(api, api2):
-    account_initial = api.account_verify_credentials()
+def test_admin_moderation(api3, api2):
+    account_initial = api3.account_verify_credentials()
     account = account_initial
     
     try: 
@@ -76,22 +76,22 @@ def test_admin_moderation(api, api2):
         
         api2.admin_account_moderate(account, "sensitive")
         account = api2.admin_account(account_initial)
-        image = api.media_post('tests/image.jpg')
+        image = api3.media_post('tests/image.jpg')
         assert image
-        status = api.status_post("oh no!", media_ids=image, sensitive=False)
+        status = api3.status_post("oh no!", media_ids=image, sensitive=False)
         assert status
         status = api2.status(status)
         assert status.sensitive
-        api.status_delete(status)
+        api3.status_delete(status)
 
         account = api2.admin_account_unsensitive(account)
-        image = api.media_post('tests/image.jpg')
+        image = api3.media_post('tests/image.jpg')
         assert image
-        status = api.status_post("oh no!", media_ids=image, sensitive=False)
+        status = api3.status_post("oh no!", media_ids=image, sensitive=False)
         assert status
         status = api2.status(status)
         assert not status.sensitive
-        api.status_delete(status)
+        api3.status_delete(status)
 
         api2.admin_account_moderate(account, "suspend")
         account = api2.admin_account(account_initial)
@@ -118,10 +118,10 @@ def test_admin_moderation(api, api2):
             pass
 
 @pytest.mark.vcr()
-def test_admin_reports(api, api2, status):
-    account = api.account_verify_credentials()
+def test_admin_reports(api3, api2, status3):
+    account = api3.account_verify_credentials()
     account2 = api2.account_verify_credentials()
-    report = api2.report(account, status, "api crimes")
+    report = api2.report(account, status3, "api crimes")
     assert(report)
     assert(not report.action_taken)
     
@@ -162,7 +162,7 @@ def test_admin_accountrequests(api2):
 
 @pytest.mark.vcr()
 def test_admin_domain_blocks(api2):
-    block = api2.admin_create_domain_block(domain = "https://chitter.xyz/", public_comment="sicko behaviour", severity="suspend")
+    block = api2.admin_create_domain_block(domain = "chitter.xyz", public_comment="sicko behaviour", severity="suspend")
     assert isinstance(api2.admin_domain_blocks(), list)
     block2 = api2.admin_domain_blocks(block)
     assert block.severity == "suspend"
@@ -174,6 +174,12 @@ def test_admin_domain_blocks(api2):
     assert block3.private_comment == "jk ilu <3"
     api2.admin_delete_domain_block(block2)
     assert not any(x.id == block3.id for x in api2.admin_domain_blocks())
+
+# Xfail test for domain block that starts with https://
+@pytest.mark.xfail
+@pytest.mark.vcr()
+def test_admin_domain_blocks_protocol(api2):
+    api2.admin_create_domain_block(domain = "https://chitter.xyz", public_comment="sicko behaviour", severity="silence")
 
 @pytest.mark.vcr(match_on=['path'])
 def test_admin_stats(api2):

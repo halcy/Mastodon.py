@@ -4,9 +4,11 @@ from mastodon.versions import _DICT_VERSION_FEATURED_TAG, _DICT_VERSION_HASHTAG
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import Tag, NonPaginatableList, FeaturedTag, IdType
+from mastodon.types import Tag, NonPaginatableList, PaginatableList, FeaturedTag, IdType
+from mastodon.errors import MastodonIllegalArgumentError
 
-from typing import Union
+from typing import Union, Optional
+from datetime import datetime
 
 class Mastodon(Internals):
     ###
@@ -47,3 +49,55 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', f'/api/v1/featured_tags/{id}')
+
+    ###
+    # Reading data: Followed tags
+    ###
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    def followed_tags(self, max_id: Optional[Union[Tag, IdType, datetime]] = None, 
+                      min_id: Optional[Union[Tag, IdType, datetime]] = None, since_id: Optional[Union[Tag, IdType, datetime]] = None, 
+                      limit: Optional[int] = None) -> PaginatableList[Tag]:
+        """
+        Returns the logged-in user's followed tags.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/followed_tags', params)
+    
+    
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    def tag(self, hashtag: Union[Tag, str]) -> Tag:
+        """
+        Get information about a single tag.
+        """
+        hashtag = self.__unpack_id(hashtag, field="name")
+        if hashtag.startswith("#"):
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")        
+        return self.__api_request('GET', f'/api/v1/tags/{hashtag}')
+    
+    ###
+    # Writing data: Followed tags
+    ###
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    def follow_tag(self, hashtag: Union[Tag, str]) -> Tag:
+        """
+        Follow a tag.
+
+        Returns the newly followed tag.
+        """
+        hashtag = self.__unpack_id(hashtag, field="name")
+        if hashtag.startswith("#"):
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")        
+        return self.__api_request('POST', f'/api/v1/tags/{hashtag}/follow')
+    
+    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    def unfollow_tag(self, hashtag: Union[Tag, str]) -> Tag:
+        """
+        Unfollow a tag.
+
+        Returns the previously followed tag.
+        """
+        hashtag = self.__unpack_id(hashtag, field="name")
+        if hashtag.startswith("#"):
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")        
+        return self.__api_request('POST', f'/api/v1/tags/{hashtag}/unfollow')
+    

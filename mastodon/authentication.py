@@ -300,23 +300,24 @@ class Mastodon(Internals):
                redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES, 
                to_file = Union[str, PurePath]) -> str:
         """
-        Get the access token for a user.
-
-        The username is the email address used to log in into Mastodon.
-
-        Can persist access token to file `to_file`, to be used in the constructor.
-
-        Handles password and OAuth-based authorization.
+        Get the access token for a user, either via OAuth code flow, or (deprecated) password flow.
 
         Will throw a `MastodonIllegalArgumentError` if the OAuth flow data or the
         username / password credentials given are incorrect, and
         `MastodonAPIError` if all of the requested scopes were not granted.
 
-        For OAuth 2, obtain a code via having your user go to the URL returned by
+        For OAuth2, obtain a code via having your user go to the URL returned by
         :ref:`auth_request_url() <auth_request_url()>` and pass it as the code parameter. In this case,
         make sure to also pass the same redirect_uri parameter as you used when
         generating the auth request URL. If passing `code`you should not pass `username` or `password`.
 
+        When using the password flow, the username is the email address used to log in into Mastodon.
+        Note that Mastodon has expressed that they intend to remove this login method - if you are currently
+        using it, please consider migrating to OAuth2 (or, for single-user bots, generating a token manually
+        via the web interface).
+
+        Can persist access token to file `to_file`, to be used in the constructor.
+        
         Returns the access token as a string.
         """
         if username is not None and password is not None:

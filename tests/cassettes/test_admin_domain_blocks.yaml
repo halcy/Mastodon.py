@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: domain=https%3A%2F%2Fchitter.xyz%2F&severity=suspend&public_comment=sicko+behaviour
+    body: domain=chitter.xyz&severity=suspend&public_comment=sicko+behaviour
     headers:
       Accept:
       - '*/*'
@@ -11,7 +11,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '83'
+      - '66'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -20,37 +20,46 @@ interactions:
     uri: http://localhost:3000/api/v1/admin/domain_blocks/
   response:
     body:
-      string: '{"id":"1","domain":"https:chitter.xyz","created_at":"2024-02-11T11:49:57.021Z","severity":"suspend","reject_media":false,"reject_reports":false,"private_comment":null,"public_comment":"sicko
+      string: '{"id":"3","domain":"chitter.xyz","digest":"06f1118b8a3b4cb0b92683b284f4c0c4a03e43b151247acda54c054fcb0d5174","created_at":"2025-02-13T21:30:10.657Z","severity":"suspend","reject_media":false,"reject_reports":false,"private_comment":null,"public_comment":"sicko
         behaviour","obfuscate":false}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '290'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"bca8c18562771e59e5ebde94bba9cc68"
+      - W/"632dfd798397d6d419e9aebdea2ccd11"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.96, cache_generate.active_support;dur=0.84,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.35,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.76,
+        render.active_model_serializers;dur=0.21, process_action.action_controller;dur=30.33
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T21:35:00.652342Z'
       X-Request-Id:
-      - 7f58df72-55b5-40b1-9b6e-ab7bfb4ee0d8
+      - 0344a641-efcb-4a6e-b012-8a89f1419cb6
       X-Runtime:
-      - '0.060750'
+      - '0.045180'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -71,39 +80,48 @@ interactions:
     uri: http://localhost:3000/api/v1/admin/domain_blocks/
   response:
     body:
-      string: '[{"id":"1","domain":"https:chitter.xyz","created_at":"2024-02-11T11:49:57.021Z","severity":"suspend","reject_media":false,"reject_reports":false,"private_comment":null,"public_comment":"sicko
+      string: '[{"id":"3","domain":"chitter.xyz","digest":"06f1118b8a3b4cb0b92683b284f4c0c4a03e43b151247acda54c054fcb0d5174","created_at":"2025-02-13T21:30:10.657Z","severity":"suspend","reject_media":false,"reject_reports":false,"private_comment":null,"public_comment":"sicko
         behaviour","obfuscate":false}]'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '292'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"83a7227930c497bd4e2f7e913f0e080b"
+      - W/"efb8def79ceb66056dd9fc6c293efcd9"
       Link:
-      - <http://localhost:3000/api/v1/admin/domain_blocks?min_id=1>; rel="prev"
+      - <http://localhost:3000/api/v1/admin/domain_blocks?min_id=3>; rel="prev"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.79, cache_generate.active_support;dur=0.81,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.32,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.25,
+        process_action.action_controller;dur=21.45
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T21:35:00.703438Z'
       X-Request-Id:
-      - 81f8aa41-e595-4877-9b33-78ef1f1b4ad0
+      - ab4a9229-344d-49b6-8dbf-5855e5dfd44c
       X-Runtime:
-      - '0.013133'
+      - '0.036071'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -121,40 +139,49 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v1/admin/domain_blocks/1
+    uri: http://localhost:3000/api/v1/admin/domain_blocks/3
   response:
     body:
-      string: '{"id":"1","domain":"https:chitter.xyz","created_at":"2024-02-11T11:49:57.021Z","severity":"suspend","reject_media":false,"reject_reports":false,"private_comment":null,"public_comment":"sicko
+      string: '{"id":"3","domain":"chitter.xyz","digest":"06f1118b8a3b4cb0b92683b284f4c0c4a03e43b151247acda54c054fcb0d5174","created_at":"2025-02-13T21:30:10.657Z","severity":"suspend","reject_media":false,"reject_reports":false,"private_comment":null,"public_comment":"sicko
         behaviour","obfuscate":false}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '290'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"bca8c18562771e59e5ebde94bba9cc68"
+      - W/"632dfd798397d6d419e9aebdea2ccd11"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.73, cache_generate.active_support;dur=0.76,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.30,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.24,
+        process_action.action_controller;dur=20.85
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T21:35:00.744604Z'
       X-Request-Id:
-      - ae04725c-416e-4c3a-8f69-0d541d23476e
+      - fdca9c01-670d-49c5-bbb4-f175661acc7e
       X-Runtime:
-      - '0.012606'
+      - '0.035663'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -176,40 +203,50 @@ interactions:
       User-Agent:
       - tests/v311
     method: PUT
-    uri: http://localhost:3000/api/v1/admin/domain_blocks/1
+    uri: http://localhost:3000/api/v1/admin/domain_blocks/3
   response:
     body:
-      string: '{"id":"1","domain":"https:chitter.xyz","created_at":"2024-02-11T11:49:57.021Z","severity":"silence","reject_media":false,"reject_reports":false,"private_comment":"jk
+      string: '{"id":"3","domain":"chitter.xyz","digest":"06f1118b8a3b4cb0b92683b284f4c0c4a03e43b151247acda54c054fcb0d5174","created_at":"2025-02-13T21:30:10.657Z","severity":"silence","reject_media":false,"reject_reports":false,"private_comment":"jk
         ilu \u003c3","public_comment":"sicko behaviour","obfuscate":false}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '302'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"0eb032a808e68f53c7183224d218a0c5"
+      - W/"e43d92e82f1410aa02077a0848ac15d2"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.82, cache_generate.active_support;dur=0.78,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.38,
+        start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
+        transaction.active_record;dur=6.08, render.active_model_serializers;dur=0.21,
+        process_action.action_controller;dur=29.10
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T21:35:00.784325Z'
       X-Request-Id:
-      - ca478dcb-98c0-4f18-a80f-6d0c65f9728e
+      - 0fe9626c-2928-44ff-a772-cd9371b1dfa8
       X-Runtime:
-      - '0.022140'
+      - '0.043484'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -229,13 +266,15 @@ interactions:
       User-Agent:
       - tests/v311
     method: DELETE
-    uri: http://localhost:3000/api/v1/admin/domain_blocks/1
+    uri: http://localhost:3000/api/v1/admin/domain_blocks/3
   response:
     body:
       string: '{}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
@@ -244,24 +283,31 @@ interactions:
       - W/"44136fa355b3678a1146ad16f7e8649e"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.72, cache_generate.active_support;dur=0.98,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.45,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.54,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=32.52
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T21:35:00.833520Z'
       X-Request-Id:
-      - 5bb27d9e-4bfe-40ab-b28d-dcfeb7f78ddc
+      - ba0f65d0-2135-4f63-a05f-08094aea9163
       X-Runtime:
-      - '0.021423'
+      - '0.047704'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK
@@ -286,6 +332,8 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '2'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
@@ -294,24 +342,31 @@ interactions:
       - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=1.06, cache_generate.active_support;dur=1.08,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.35,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
+        process_action.action_controller;dur=21.10
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T21:35:00.885630Z'
       X-Request-Id:
-      - ebb1def5-8100-4646-920e-8700d85fb200
+      - 3f09afe6-3fd7-4164-ab1d-51bdc48fcb73
       X-Runtime:
-      - '0.010894'
+      - '0.036639'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK

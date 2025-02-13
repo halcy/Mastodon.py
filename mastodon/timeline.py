@@ -90,8 +90,8 @@ class Mastodon(Internals):
         should not contain the leading #. Params as in `timeline()`.
         """
         if hashtag.startswith("#"):
-            raise MastodonIllegalArgumentError(
-                "Hashtag parameter should omit leading #")
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
+        hashtag = self.__unpack_id(hashtag, field="name")        
         return self.timeline(f'tag/{hashtag}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
     @api_version("2.1.0", "3.1.4", _DICT_VERSION_STATUS)

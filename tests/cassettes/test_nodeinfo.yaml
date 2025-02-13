@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -20,42 +20,44 @@ interactions:
     headers:
       Cache-Control:
       - max-age=259200, public
+      Content-Length:
+      - '113'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-GCYSF+YgS+ezWggu7b82Yw=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-xsyh1cOuTjfGROApbzF8OQ=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:20 GMT
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
       - W/"30113ea20db19da6a25dac6491c2351e"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.11, cache_generate.active_support;dur=1.07,
+        cache_write.active_support;dur=0.08, start_processing.action_controller;dur=0.01,
+        render.active_model_serializers;dur=0.23, process_action.action_controller;dur=17.64
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 94b4da2b-fea6-499f-9750-db240fa93912
+      - 2a2d86b6-0845-4843-952e-4922265e5af6
       X-Runtime:
-      - '0.013678'
+      - '0.037799'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Origin
     status:
       code: 200
       message: OK
@@ -65,7 +67,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -76,46 +78,48 @@ interactions:
     uri: http://localhost:3000/nodeinfo/2.0
   response:
     body:
-      string: '{"version":"2.0","software":{"name":"mastodon","version":"4.1.2"},"protocols":["activitypub"],"services":{"outbound":[],"inbound":[]},"usage":{"users":{"total":4,"activeMonth":0,"activeHalfyear":0},"localPosts":1},"openRegistrations":true,"metadata":{}}'
+      string: '{"version":"2.0","software":{"name":"mastodon","version":"4.3.0"},"protocols":["activitypub"],"services":{"outbound":[],"inbound":[]},"usage":{"users":{"total":4,"activeMonth":0,"activeHalfyear":0},"localPosts":6},"openRegistrations":false,"metadata":{"nodeName":"Mastodon","nodeDescription":""}}'
     headers:
       Cache-Control:
       - max-age=1800, public
+      Content-Length:
+      - '296'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
-        ''self'' http://localhost:3000; img-src ''self'' https: data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-BmlZ3n2ofd+31XwUdRuHIQ=='';
-        media-src ''self'' https: data: http://localhost:3000; frame-src ''self''
-        https:; manifest-src ''self'' http://localhost:3000; form-action ''self'';
-        connect-src ''self'' data: blob: http://localhost:3000 http://localhost:3000
+        ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
+        style-src ''self'' http://localhost:3000 ''nonce-KOqlNcstrJd3WbCw1D7cIA=='';
+        media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
+        form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
+        ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
         ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
-        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; child-src
-        ''self'' blob: http://localhost:3000; worker-src ''self'' blob: http://localhost:3000'
+        ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
+        ''self'' https: http:'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 11 Feb 2024 11:50:20 GMT
+      - Thu, 13 Feb 2025 16:10:28 GMT
       ETag:
-      - W/"c106242aa86349de53769ebca974f978"
+      - W/"8555060723b1752d8f216d2a9841e9f2"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept
+      Server-Timing:
+      - cache_read.active_support;dur=0.08, sql.active_record;dur=0.91, cache_generate.active_support;dur=4.77,
+        cache_write.active_support;dur=0.16, start_processing.action_controller;dur=0.00,
+        render.active_model_serializers;dur=4.82, process_action.action_controller;dur=21.67
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 233c8dbf-1820-46f9-b722-d8a3eb425e9f
+      - 73a5d97e-45d0-4984-8e6c-4b5ac4c3cc20
       X-Runtime:
-      - '0.011999'
+      - '0.038026'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Accept, Origin
     status:
       code: 200
       message: OK

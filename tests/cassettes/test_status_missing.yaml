@@ -20,30 +20,39 @@ interactions:
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '28'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.99, cache_generate.active_support;dur=1.06,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.25,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=24.86
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-13T20:40:00.082168Z'
       X-Request-Id:
-      - d7830e26-02d6-4aeb-8613-d089b7066f6e
+      - c61dfa5d-8bbf-40ae-ae5d-53c4bf066d2f
       X-Runtime:
-      - '0.009806'
+      - '0.040436'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 404
       message: Not Found

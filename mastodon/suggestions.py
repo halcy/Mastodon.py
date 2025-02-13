@@ -4,7 +4,7 @@ from mastodon.versions import _DICT_VERSION_ACCOUNT
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.types import NonPaginatableList, Account, IdType
+from mastodon.types import NonPaginatableList, Account, IdType, Suggestion
 from typing import Union
 
 class Mastodon(Internals):
@@ -12,11 +12,31 @@ class Mastodon(Internals):
     # Reading data: Follow suggestions
     ###
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_ACCOUNT)
-    def suggestions(self) -> NonPaginatableList[Account]:
+    def suggestions_v1(self) -> NonPaginatableList[Account]:
         """
         Fetch follow suggestions for the logged-in user.
         """
         return self.__api_request('GET', '/api/v1/suggestions')
+
+    @api_version("3.4.0", "3.4.0", _DICT_VERSION_ACCOUNT)
+    def suggestions_v2(self) -> NonPaginatableList[Suggestion]:
+        """
+        Fetch follow suggestions for the logged-in user.
+        """
+        return self.__api_request('GET', '/api/v2/suggestions')
+
+    def suggestions(self) -> NonPaginatableList[Account]:
+        """
+        Fetch follow suggestions for the logged-in user.
+
+        Will use the v1 endpoint if the server is below 3.4.0, otherwise will use the v2 endpoint
+        and unpack the account dicts.
+        """
+        if self.verify_minimum_version("3.4.0", cached=True):
+            suggestions = self.suggestions_v2()
+            return [s.account for s in suggestions]
+        else:
+            return self.suggestions_v1()
 
     ###
     # Writing data: Follow suggestions

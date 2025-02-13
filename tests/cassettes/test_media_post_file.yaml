@@ -1,9 +1,9 @@
 interactions:
 - request:
     body: !!binary |
-      LS1hNjQ0NmI1MzVkZmI1ODBlYTQwOWVmN2E3M2Y4MDViYw0KQ29udGVudC1EaXNwb3NpdGlvbjog
-      Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTcwNzY1
-      MjI0Ni4wNzE0ODU4X2QyZDNkMjkyZjhhNTQyMzZiNTliNTU3MDdmNTY0MTE0LmpwZyINCkNvbnRl
+      LS1jNmIwMGUxNjQ1ODU3YzUxZjI0NDY2ZjM4NGVkM2JmZg0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTczOTQ2
+      MzA1Ny4xOTQyODg3X2E4ODc4MDVjZWJjNTRmMzdhNGExMDhkZWViYzIyZmE2LmpwZyINCkNvbnRl
       bnQtVHlwZTogaW1hZ2UvanBlZw0KDQr/2P/gABBKRklGAAEBAQBIAEgAAP/iAhxJQ0NfUFJPRklM
       RQABAQAAAgxsY21zAhAAAG1udHJSR0IgWFlaIAfcAAEAGQADACkAOWFjc3BBUFBMAAAAAAAAAAAA
       AAAAAAAAAAAAAAAAAAAAAAD21gABAAAAANMtbGNtcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -939,13 +939,13 @@ interactions:
       yLUFixVEw4+9KlURKWI3D24r93pUoX5EQbZIDAphpUqKI6mINwj9YYOV2oMLkmWXo9TfelSoHhyk
       WUoovQTO33qdoivLumOvT8UqVFWbbHaEokDtzf5qMy4XCMTEjfPbPilSoFOFzByxzhRey1WUSaxV
       dtqVKgaCiiCrnK5pkwMTGX4pUqBTtsYnLjJ4xUrWDGZB1d1z+KVKguWW3ctzMCb7u1NAIwEky3zs
-      vWlSoIzwuWI/YpgkyI8qxk4wZ/WlSoGNPcbo46Oebs70qVKg/9kNCi0tYTY0NDZiNTM1ZGZiNTgw
-      ZWE0MDllZjdhNzNmODA1YmMtLQ0K
+      vWlSoIzwuWI/YpgkyI8qxk4wZ/WlSoGNPcbo46Oebs70qVKg/9kNCi0tYzZiMDBlMTY0NTg1N2M1
+      MWYyNDQ2NmYzODRlZDNiZmYtLQ0K
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -953,43 +953,52 @@ interactions:
       Content-Length:
       - '53544'
       Content-Type:
-      - multipart/form-data; boundary=a6446b535dfb580ea409ef7a73f805bc
+      - multipart/form-data; boundary=c6b00e1645857c51f24466f384ed3bff
       User-Agent:
       - tests/v311
     method: POST
     uri: http://localhost:3000/api/v2/media
   response:
     body:
-      string: '{"id":"111912697612155118","type":"image","url":"http://localhost:3000/system/media_attachments/files/111/912/697/612/155/118/original/545084396c78cc9a.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/111/912/697/612/155/118/small/545084396c78cc9a.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0}},"description":null,"blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
+      string: '{"id":"113997450933934106","type":"image","url":"http://localhost:3000/system/media_attachments/files/113/997/450/933/934/106/original/e0e138ccc4300803.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/113/997/450/933/934/106/small/e0e138ccc4300803.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0}},"description":null,"blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
     headers:
       Cache-Control:
       - private, no-store
+      Content-Length:
+      - '548'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"ea83a7a71be9fc4648bdce190175bad2"
+      - W/"4f10981bec639e890423f661fa1be1fb"
       Referrer-Policy:
       - strict-origin-when-cross-origin
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept, Origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.65, cache_generate.active_support;dur=1.83,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=1.38,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=18.96,
+        render.active_model_serializers;dur=0.56, process_action.action_controller;dur=237.65
       X-Content-Type-Options:
       - nosniff
-      X-Download-Options:
-      - noopen
       X-Frame-Options:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
+      X-RateLimit-Limit:
+      - '30'
+      X-RateLimit-Remaining:
+      - '29'
+      X-RateLimit-Reset:
+      - '2025-02-13T16:30:00.269642Z'
       X-Request-Id:
-      - cf593b7d-be61-4f28-97fa-d9a7350b94b3
+      - 32f3ec40-ed79-4d23-b5ac-6165e4005530
       X-Runtime:
-      - '0.224168'
+      - '0.286247'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
+      vary:
+      - Authorization, Origin
     status:
       code: 200
       message: OK

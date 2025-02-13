@@ -52,7 +52,6 @@ def patch_streaming():
                             real_body += chunk
                 except AttributeError: 
                     pass # Connection closed
-                print(real_body)
                 response.read = (lambda: real_body)
                 return response
             args[0].real_connection.getresponse = fakeRealConnectionGetresponse
@@ -61,6 +60,7 @@ def patch_streaming():
 
 def streaming_close():
     global real_connections
+    global close_connections
     for connection in real_connections:
         connection.close()
     real_connections = []
@@ -322,8 +322,8 @@ def test_multiline_payload():
     assert listener.updates == [{"foo": "bar"}]
 
 @pytest.mark.vcr(match_on=['path'])
-@pytest.mark.flaky(retries=10, delay=1)
 def test_stream_user_direct(api, api2, api3, vcr):
+    # NB: Streaming tests *run only on 3.9* until someone figures out why the patch for vcrpy isn't working on versions > 1.0.2
     patch_streaming()
 
     # Be extra super paranoid
@@ -385,7 +385,7 @@ def test_stream_user_direct(api, api2, api3, vcr):
     time.sleep(25)
     stream.close()
     stream2.close()
-        
+
     assert len(updates) == 2
     assert len(local_updates) == 2
     assert len(notifications) == 2
@@ -400,17 +400,18 @@ def test_stream_user_direct(api, api2, api3, vcr):
     t.join()
     
 @pytest.mark.vcr(match_on=['path'])
-@pytest.mark.flaky(retries=10, delay=1)
 def test_stream_user_local(api, api2, vcr):
+    # NB: Streaming tests *run only on 3.9* until someone figures out why the patch for vcrpy isn't working on versions > 1.0.2
     patch_streaming()
-
     vcr.match_on = ["path"]
+    time.sleep(1)
+
     # Make sure we are in the right state to not receive updates from api2
     time.sleep(1)
     user = api2.account_verify_credentials()
     time.sleep(1)
     api.account_unfollow(user)
-    time.sleep(1)
+    time.sleep(2)
 
     updates = []
     listener = CallbackStreamListener(
@@ -422,6 +423,8 @@ def test_stream_user_local(api, api2, vcr):
         vcr.match_on = ["path"]
         time.sleep(5)
         posted.append(api.status_post("it's cool guy"))
+        # Have to do some other network event after the first one for vcrpy reasons
+        api2.status_post("it's cool guy too")
         time.sleep(10)
         streaming_close()
         
@@ -438,11 +441,18 @@ def test_stream_user_local(api, api2, vcr):
     t.join()
 
 @pytest.mark.vcr(match_on=['path'])
-@pytest.mark.flaky(retries=10, delay=1)
 def test_stream_direct(api, api2, vcr):
+    # NB: Streaming test *run only on 3.9* until someone figures out why the patch for vcrpy isn't working on versions > 1.0.2
     time.sleep(1)
     patch_streaming()
     
+    # Make sure we are in the right state to receive updates from api2
+    time.sleep(1)
+    user = api2.account_verify_credentials()
+    time.sleep(1)
+    api.account_follow(user)
+    time.sleep(2)
+
     vcr.match_on = ["path"]
     conversations = []
     listener = CallbackStreamListener(
@@ -453,6 +463,7 @@ def test_stream_direct(api, api2, vcr):
         vcr.match_on = ["path"]
         time.sleep(5)
         api2.status_post("@mastodonpy_test todo funny text here", visibility = "direct")
+        api2.status_post("you can't say that on television")
         time.sleep(10)
         streaming_close()
         
@@ -462,7 +473,7 @@ def test_stream_direct(api, api2, vcr):
     stream = api.stream_direct(listener, run_async=True)
     time.sleep(20)
     stream.close()
-        
+
     assert len(conversations) == 1
 
 @pytest.mark.vcr()
