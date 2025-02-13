@@ -9,6 +9,15 @@ def test_account(api):
     assert account
 
 @pytest.mark.vcr()
+def test_accounts(api):
+    account_ids = [
+        api.account_lookup("mastodonpy_test").id, 
+        api.account_lookup("mastodonpy_test_2").id
+    ]
+    accounts = api.accounts(account_ids)
+    assert len(accounts) == 2
+
+@pytest.mark.vcr()
 def test_verify_credentials(api):
     account_a = api.account_verify_credentials()
     account_b = api.me()

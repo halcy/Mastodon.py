@@ -336,7 +336,7 @@ class Mastodon(Internals):
         are replying to, removing every other mentioned user from the
         conversation.
         """
-        keyword_args = locals()
+        keyword_args = locals().copy()
         del keyword_args["self"]
         del keyword_args["to_status"]
         del keyword_args["untag"]
