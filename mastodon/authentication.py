@@ -302,7 +302,7 @@ class Mastodon(Internals):
 
     def log_in(self, username: Optional[str] = None, password: Optional[str] = None, code: Optional[str] = None, 
                redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES, 
-               to_file = Union[str, PurePath]) -> str:
+               to_file: Optional[Union[str, PurePath]] = None) -> str:
         """
         Get the access token for a user, either via OAuth code flow, or (deprecated) password flow.
 
