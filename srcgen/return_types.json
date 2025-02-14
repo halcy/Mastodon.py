@@ -476,6 +476,20 @@
                     ]
                 ],
                 "enum": null
+            },
+            "memorial": {
+                "description": "Boolean indicating whether the account is an in-memoriam account.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -5098,7 +5112,21 @@
                         "added"
                     ]
                 ]
-            }
+            },
+            "sign_up_url": {
+                "description": "URL to the sign-up form for this instance. Only present for the v2 API variant of the instance API.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "api_version": "v2",
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ]
+            }   
         }
     },
     {
@@ -7369,12 +7397,11 @@
                 "enum": null
             },
             "sensitized": {
-                "description": "Undocumented. If you know what this means, please let me know.",
+                "description": "Boolean indicating whether the account has been marked as force-sensitive.",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "help_wanted": true,
                 "version_history": [
                     [
                         "2.9.1",
@@ -8541,7 +8568,7 @@
     {
         "name": "Identity proof",
         "python_name": "IdentityProof",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "# Deprecated since 3.5.0 and eventually removed, there is no way to get this on current versions of Mastodon.",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,

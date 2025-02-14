@@ -17,7 +17,8 @@ Reading
 .. automethod:: Mastodon.status_card
 .. automethod:: Mastodon.status_history
 .. automethod:: Mastodon.status_source
-
+.. automethod:: Mastodon.statuses
+    
 .. automethod:: Mastodon.favourites
 
 .. automethod:: Mastodon.bookmarks

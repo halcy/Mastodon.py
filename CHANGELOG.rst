@@ -31,6 +31,7 @@ v2.0.0 (IN PROGRESS)
 * Add with_suspended parameter to account_relationships
 * Add forward_to_domains parameter to reports
 * Add `account_delete_avatar` and `account_delete_header`
+* Add `statuses` method to retrieve multiple statuses at once
 
 v1.8.1
 ------

@@ -28,6 +28,16 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/statuses/{id}')
 
+    @api_version("4.3.0", "4.3.0", _DICT_VERSION_ACCOUNT)
+    def statuses(self, ids: List[Union[Status, IdType]]) -> List[Status]:
+        """
+        Fetch information from multiple statuses by a list of status `id`.
+
+        Does not require authentication for publicly visible accounts.
+        """
+        ids = [self.__unpack_id(id) for id in ids]
+        return self.__api_request('GET', '/api/v1/statuses', {"id[]": ids})
+
     @api_version("1.0.0", "3.0.0", _DICT_VERSION_CARD)
     def status_card(self, id: Union[Status, IdType]) -> PreviewCard:
         """
