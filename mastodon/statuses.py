@@ -110,7 +110,8 @@ class Mastodon(Internals):
     def __status_internal(self, status: Optional[str], in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: Optional[bool] = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
-                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, edit: Optional[bool] = False) -> Union[Status, ScheduledStatus]:
+                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, edit: bool = False,
+                    strict_content_type: bool = False) -> Union[Status, ScheduledStatus]:
         """
         Internal statuses poster helper
         """
@@ -121,10 +122,13 @@ class Mastodon(Internals):
 
         if content_type is not None:
             if self.feature_set != "pleroma":
-                raise MastodonIllegalArgumentError('content_type is only available with feature set pleroma')
+                if strict_content_type:
+                    raise MastodonIllegalArgumentError('content_type is only available with feature set pleroma')
+                
             # It would be better to read this from nodeinfo and cache, but this is easier
             if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
-                raise MastodonIllegalArgumentError('Invalid content type specified')
+                if strict_content_type:
+                    raise MastodonIllegalArgumentError('Invalid content type specified')
 
         if in_reply_to_id is not None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
@@ -178,7 +182,7 @@ class Mastodon(Internals):
         if poll is not None:
             use_json = True
 
-        params = self.__generate_params(params_initial, ['idempotency_key', 'edit'])
+        params = self.__generate_params(params_initial, ['idempotency_key', 'edit', 'strict_content_type'])
         cast_type = Status
         if scheduled_at is not None:
             cast_type = ScheduledStatus
