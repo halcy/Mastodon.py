@@ -70,6 +70,7 @@ The returned media IDs (Up to 4 at the same time on a default configuration Mast
 .. _media_post():
 .. automethod:: Mastodon.media_post
 .. automethod:: Mastodon.media_update
+.. automethod:: Mastodon.media
 
 Polls
 -----
