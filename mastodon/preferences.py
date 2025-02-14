@@ -27,7 +27,7 @@ class Mastodon(Internals):
     # Reading data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> dict[str, Marker]:
+    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> Dict[str, Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
         are the same as in :ref:`timeline() <timeline()>`
