@@ -30,6 +30,9 @@ the AttribAccessDict - this means that you can still access all returned values 
 attributes, `even if a type does not define them.`. Lists have been split into lists
 that can be paginated (i.e. that have pagination attributes) and those that cannot.
 
+All return values can be converted from and to JSON using the `to_json()` and `from_json()`
+methods defined on the ::class::`mastodon.types_base.Entity` class.
+
 Base types
 ==========
 .. autoclass:: mastodon.types_base.AttribAccessDict

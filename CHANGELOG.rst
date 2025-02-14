@@ -22,6 +22,7 @@ v2.0.0 (IN PROGRESS)
 * Fix library not working with -O2 (Thanks mirabilos for the report)
 * Version check mode now defaults to "none", since it keeps causing more problems than it solves.
 * Document `media` (Thanks LunarLambda for the report)
+* Added json serialization and deserialization for returned entities
 
 v1.8.1
 ------

@@ -25,7 +25,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v2/suggestions')
 
-    def suggestions(self) -> NonPaginatableList[Account]:
+    def suggestions(self) -> Union[NonPaginatableList[Suggestion], NonPaginatableList[Account]]:
         """
         Fetch follow suggestions for the logged-in user.
 
