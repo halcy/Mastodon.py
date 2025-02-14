@@ -21,6 +21,7 @@ v2.0.0 (IN PROGRESS)
 * Added support for following tags (`followed_tags`, `tag_follow`, `tag_unfollow`, `tag`)
 * Fix library not working with -O2 (Thanks mirabilos for the report)
 * Version check mode now defaults to "none", since it keeps causing more problems than it solves.
+* Document `media` (Thanks LunarLambda for the report)
 
 v1.8.1
 ------
