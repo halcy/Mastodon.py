@@ -55,109 +55,73 @@ Base types
 
 Return types
 ============
-.. autoclass:: mastodon.return_types.WebPushSubscriptionAlerts
+.. autoclass:: mastodon.return_types.Account
    :members:
 
-.. autoclass:: mastodon.return_types.WebPushSubscription
-   :members:
-
-.. autoclass:: mastodon.return_types.UserList
-   :members:
-
-.. autoclass:: mastodon.return_types.Translation
-   :members:
-
-.. autoclass:: mastodon.return_types.TagHistory
-   :members:
-
-.. autoclass:: mastodon.return_types.Tag
-   :members:
-
-.. autoclass:: mastodon.return_types.Suggestion
-   :members:
-
-.. autoclass:: mastodon.return_types.StreamReaction
-   :members:
-
-.. autoclass:: mastodon.return_types.StatusSource
-   :members:
-
-.. autoclass:: mastodon.return_types.StatusMention
-   :members:
-
-.. autoclass:: mastodon.return_types.StatusEdit
-   :members:
-
-.. autoclass:: mastodon.return_types.Status
-   :members:
-
-.. autoclass:: mastodon.return_types.SearchV2
-   :members:
-
-.. autoclass:: mastodon.return_types.Search
-   :members:
-
-.. autoclass:: mastodon.return_types.ScheduledStatusParams
-   :members:
-
-.. autoclass:: mastodon.return_types.ScheduledStatus
-   :members:
-
-.. autoclass:: mastodon.return_types.Rule
+.. autoclass:: mastodon.return_types.AccountField
    :members:
 
 .. autoclass:: mastodon.return_types.Role
    :members:
 
-.. autoclass:: mastodon.return_types.Report
+.. autoclass:: mastodon.return_types.CredentialAccountSource
    :members:
 
-.. autoclass:: mastodon.return_types.Relationship
+.. autoclass:: mastodon.return_types.Status
    :members:
 
-.. autoclass:: mastodon.return_types.Reaction
+.. autoclass:: mastodon.return_types.StatusEdit
    :members:
 
-.. autoclass:: mastodon.return_types.PushNotification
+.. autoclass:: mastodon.return_types.FilterResult
    :members:
 
-.. autoclass:: mastodon.return_types.PreviewCardAuthor
+.. autoclass:: mastodon.return_types.StatusMention
    :members:
 
-.. autoclass:: mastodon.return_types.PreviewCard
+.. autoclass:: mastodon.return_types.ScheduledStatus
    :members:
 
-.. autoclass:: mastodon.return_types.Preferences
-   :members:
-
-.. autoclass:: mastodon.return_types.PollOption
+.. autoclass:: mastodon.return_types.ScheduledStatusParams
    :members:
 
 .. autoclass:: mastodon.return_types.Poll
    :members:
 
+.. autoclass:: mastodon.return_types.PollOption
+   :members:
+
+.. autoclass:: mastodon.return_types.Conversation
+   :members:
+
+.. autoclass:: mastodon.return_types.Tag
+   :members:
+
+.. autoclass:: mastodon.return_types.TagHistory
+   :members:
+
+.. autoclass:: mastodon.return_types.CustomEmoji
+   :members:
+
+.. autoclass:: mastodon.return_types.Application
+   :members:
+
+.. autoclass:: mastodon.return_types.Relationship
+   :members:
+
+.. autoclass:: mastodon.return_types.FilterV2
+   :members:
+
 .. autoclass:: mastodon.return_types.Notification
    :members:
 
-.. autoclass:: mastodon.return_types.NodeinfoUsageUsers
+.. autoclass:: mastodon.return_types.Context
    :members:
 
-.. autoclass:: mastodon.return_types.NodeinfoUsage
+.. autoclass:: mastodon.return_types.UserList
    :members:
 
-.. autoclass:: mastodon.return_types.NodeinfoSoftware
-   :members:
-
-.. autoclass:: mastodon.return_types.NodeinfoServices
-   :members:
-
-.. autoclass:: mastodon.return_types.NodeinfoMetadata
-   :members:
-
-.. autoclass:: mastodon.return_types.Nodeinfo
-   :members:
-
-.. autoclass:: mastodon.return_types.MediaAttachmentVideoMetadata
+.. autoclass:: mastodon.return_types.MediaAttachment
    :members:
 
 .. autoclass:: mastodon.return_types.MediaAttachmentMetadataContainer
@@ -166,188 +130,227 @@ Return types
 .. autoclass:: mastodon.return_types.MediaAttachmentImageMetadata
    :members:
 
+.. autoclass:: mastodon.return_types.MediaAttachmentVideoMetadata
+   :members:
+
+.. autoclass:: mastodon.return_types.MediaAttachmentAudioMetadata
+   :members:
+
 .. autoclass:: mastodon.return_types.MediaAttachmentFocusPoint
    :members:
 
 .. autoclass:: mastodon.return_types.MediaAttachmentColors
    :members:
 
-.. autoclass:: mastodon.return_types.MediaAttachmentAudioMetadata
+.. autoclass:: mastodon.return_types.PreviewCard
    :members:
 
-.. autoclass:: mastodon.return_types.MediaAttachment
+.. autoclass:: mastodon.return_types.PreviewCardAuthor
    :members:
 
-.. autoclass:: mastodon.return_types.Marker
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceVapidKey
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceV2
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceUsageUsers
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceUsage
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceURLsV2
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceURLs
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceTranslationConfiguration
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceThumbnailVersions
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceThumbnail
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceStatusConfiguration
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceStatistics
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceRegistrations
-   :members:
-
-.. autoclass:: mastodon.return_types.InstancePollConfiguration
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceMediaConfiguration
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceIcon
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceContact
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceConfigurationV2
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceConfiguration
-   :members:
-
-.. autoclass:: mastodon.return_types.InstanceAccountConfiguration
+.. autoclass:: mastodon.return_types.SearchV2
    :members:
 
 .. autoclass:: mastodon.return_types.Instance
    :members:
 
-.. autoclass:: mastodon.return_types.IdentityProof
+.. autoclass:: mastodon.return_types.InstanceConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.FilterV2
+.. autoclass:: mastodon.return_types.InstanceURLs
    :members:
 
-.. autoclass:: mastodon.return_types.FilterStatus
+.. autoclass:: mastodon.return_types.InstanceV2
    :members:
 
-.. autoclass:: mastodon.return_types.FilterResult
+.. autoclass:: mastodon.return_types.InstanceIcon
    :members:
 
-.. autoclass:: mastodon.return_types.FilterKeyword
+.. autoclass:: mastodon.return_types.InstanceConfigurationV2
    :members:
 
-.. autoclass:: mastodon.return_types.Filter
+.. autoclass:: mastodon.return_types.InstanceVapidKey
    :members:
 
-.. autoclass:: mastodon.return_types.FeaturedTag
+.. autoclass:: mastodon.return_types.InstanceURLsV2
    :members:
 
-.. autoclass:: mastodon.return_types.FamiliarFollowers
+.. autoclass:: mastodon.return_types.InstanceThumbnail
    :members:
 
-.. autoclass:: mastodon.return_types.ExtendedDescription
+.. autoclass:: mastodon.return_types.InstanceThumbnailVersions
    :members:
 
-.. autoclass:: mastodon.return_types.DomainBlock
+.. autoclass:: mastodon.return_types.InstanceStatistics
    :members:
 
-.. autoclass:: mastodon.return_types.CustomEmoji
+.. autoclass:: mastodon.return_types.InstanceUsage
    :members:
 
-.. autoclass:: mastodon.return_types.CredentialAccountSource
+.. autoclass:: mastodon.return_types.InstanceUsageUsers
    :members:
 
-.. autoclass:: mastodon.return_types.Conversation
+.. autoclass:: mastodon.return_types.Rule
    :members:
 
-.. autoclass:: mastodon.return_types.Context
+.. autoclass:: mastodon.return_types.InstanceRegistrations
    :members:
 
-.. autoclass:: mastodon.return_types.Application
+.. autoclass:: mastodon.return_types.InstanceContact
    :members:
 
-.. autoclass:: mastodon.return_types.Announcement
+.. autoclass:: mastodon.return_types.InstanceAccountConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.AdminRetention
+.. autoclass:: mastodon.return_types.InstanceStatusConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.AdminReport
+.. autoclass:: mastodon.return_types.InstanceTranslationConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.AdminMeasureData
+.. autoclass:: mastodon.return_types.InstanceMediaConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.AdminMeasure
+.. autoclass:: mastodon.return_types.InstancePollConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.AdminIpBlock
+.. autoclass:: mastodon.return_types.Nodeinfo
    :members:
 
-.. autoclass:: mastodon.return_types.AdminIp
+.. autoclass:: mastodon.return_types.NodeinfoSoftware
    :members:
 
-.. autoclass:: mastodon.return_types.AdminEmailDomainBlockHistory
+.. autoclass:: mastodon.return_types.NodeinfoServices
    :members:
 
-.. autoclass:: mastodon.return_types.AdminEmailDomainBlock
+.. autoclass:: mastodon.return_types.NodeinfoUsage
    :members:
 
-.. autoclass:: mastodon.return_types.AdminDomainBlock
+.. autoclass:: mastodon.return_types.NodeinfoUsageUsers
    :members:
 
-.. autoclass:: mastodon.return_types.AdminDomainAllow
-   :members:
-
-.. autoclass:: mastodon.return_types.AdminDimensionData
-   :members:
-
-.. autoclass:: mastodon.return_types.AdminDimension
-   :members:
-
-.. autoclass:: mastodon.return_types.AdminCohort
-   :members:
-
-.. autoclass:: mastodon.return_types.AdminCanonicalEmailBlock
-   :members:
-
-.. autoclass:: mastodon.return_types.AdminAccount
+.. autoclass:: mastodon.return_types.NodeinfoMetadata
    :members:
 
 .. autoclass:: mastodon.return_types.Activity
    :members:
 
-.. autoclass:: mastodon.return_types.AccountField
+.. autoclass:: mastodon.return_types.Report
    :members:
 
-.. autoclass:: mastodon.return_types.AccountCreationErrorDetailsField
+.. autoclass:: mastodon.return_types.AdminReport
    :members:
 
-.. autoclass:: mastodon.return_types.AccountCreationErrorDetails
+.. autoclass:: mastodon.return_types.WebPushSubscription
+   :members:
+
+.. autoclass:: mastodon.return_types.WebPushSubscriptionAlerts
+   :members:
+
+.. autoclass:: mastodon.return_types.PushNotification
+   :members:
+
+.. autoclass:: mastodon.return_types.Preferences
+   :members:
+
+.. autoclass:: mastodon.return_types.FeaturedTag
+   :members:
+
+.. autoclass:: mastodon.return_types.Marker
+   :members:
+
+.. autoclass:: mastodon.return_types.Announcement
+   :members:
+
+.. autoclass:: mastodon.return_types.Reaction
+   :members:
+
+.. autoclass:: mastodon.return_types.StreamReaction
+   :members:
+
+.. autoclass:: mastodon.return_types.FamiliarFollowers
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminAccount
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminIp
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminMeasure
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminMeasureData
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminDimension
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminDimensionData
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminRetention
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminCohort
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminDomainBlock
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminCanonicalEmailBlock
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminDomainAllow
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminEmailDomainBlock
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminEmailDomainBlockHistory
+   :members:
+
+.. autoclass:: mastodon.return_types.AdminIpBlock
+   :members:
+
+.. autoclass:: mastodon.return_types.DomainBlock
+   :members:
+
+.. autoclass:: mastodon.return_types.ExtendedDescription
+   :members:
+
+.. autoclass:: mastodon.return_types.FilterKeyword
+   :members:
+
+.. autoclass:: mastodon.return_types.FilterStatus
+   :members:
+
+.. autoclass:: mastodon.return_types.StatusSource
+   :members:
+
+.. autoclass:: mastodon.return_types.Suggestion
+   :members:
+
+.. autoclass:: mastodon.return_types.Translation
    :members:
 
 .. autoclass:: mastodon.return_types.AccountCreationError
    :members:
 
-.. autoclass:: mastodon.return_types.Account
+.. autoclass:: mastodon.return_types.AccountCreationErrorDetails
    :members:
+
+.. autoclass:: mastodon.return_types.AccountCreationErrorDetailsField
+   :members:
+
+Deprecated types
+================
+.. autoclass:: mastodon.return_types.Filter
+   :members:
+
+.. autoclass:: mastodon.return_types.Search
+   :members:
+
+.. autoclass:: mastodon.return_types.IdentityProof
+   :members:
+
