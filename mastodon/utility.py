@@ -38,6 +38,7 @@ class Mastodon(Internals):
             version_str = "1.0.0"
             self.version_check_worked = False
         self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
+        self.version_check_tried = True
         return version_str
 
     def verify_minimum_version(self, version_str, cached=False):
@@ -48,7 +49,7 @@ class Mastodon(Internals):
 
         Returns True if version requirement is satisfied, False if not.
         """
-        if not cached:
+        if not cached or not self.version_check_tried:
             self.retrieve_mastodon_version()
         major, minor, patch = parse_version_string(version_str)
         if major > self.mastodon_major:

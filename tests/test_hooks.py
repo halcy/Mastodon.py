@@ -60,3 +60,4 @@ def test_attribute_access(status):
     assert status.id is not None
     status2 = copy.deepcopy(status)
     status2.id = 420
+    

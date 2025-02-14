@@ -7,6 +7,12 @@ class Account(AttribAccessDict):
     """
     A user acccount, local or remote.
 
+    Example:
+    ```python
+    # Returns a Account object
+    mastodon.account(<account id>)
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Account/
     """
 
@@ -194,7 +200,7 @@ class Account(AttribAccessDict):
       * 2.4.0: added
     """
 
-    fields: "EntityList[AccountField]"
+    fields: "NonPaginatableList[AccountField]"
     """
     List of up to four (by default) AccountFields.
 
@@ -202,7 +208,7 @@ class Account(AttribAccessDict):
       * 2.4.0: added
     """
 
-    emojis: "EntityList[CustomEmoji]"
+    emojis: "NonPaginatableList[CustomEmoji]"
     """
     List of custom emoji used in name, bio or fields.
 
@@ -227,7 +233,7 @@ class Account(AttribAccessDict):
       * 4.0.0: added
     """
 
-    roles: "Optional[EntityList]"
+    roles: "Optional[NonPaginatableList]"
     """
     THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
 
@@ -284,6 +290,12 @@ class AccountField(AttribAccessDict):
     """
     A field, displayed on a users profile (e.g. "Pronouns", "Favorite color").
 
+    Example:
+    ```python
+    # Returns a AccountField object
+    mastodon.account(<account id>).fields[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Account/
     """
 
@@ -316,6 +328,12 @@ class AccountField(AttribAccessDict):
 class Role(AttribAccessDict):
     """
     A role granting a user a set of permissions.
+
+    Example:
+    ```python
+    # Returns a Role object
+    mastodon.account_verify_credentials().role
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Role/
     """
@@ -366,6 +384,12 @@ class CredentialAccountSource(AttribAccessDict):
     """
     Source values useful for editing a user's profile.
 
+    Example:
+    ```python
+    # Returns a CredentialAccountSource object
+    mastodon.account_verify_credentials()["source"]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Account/
     """
 
@@ -402,7 +426,7 @@ class CredentialAccountSource(AttribAccessDict):
       * 2.4.2: added
     """
 
-    fields: "EntityList[AccountField]"
+    fields: "NonPaginatableList[AccountField]"
     """
     Metadata about the account.
 
@@ -447,6 +471,12 @@ class CredentialAccountSource(AttribAccessDict):
 class Status(AttribAccessDict):
     """
     A single status / toot / post.
+
+    Example:
+    ```python
+    # Returns a Status object
+    mastodon.toot("Hello from Python")
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Status/
     """
@@ -582,7 +612,7 @@ class Status(AttribAccessDict):
       * 0.9.9: added
     """
 
-    mentions: "EntityList[StatusMention]"
+    mentions: "NonPaginatableList[StatusMention]"
     """
     A list of StatusMention this status includes.
 
@@ -590,7 +620,7 @@ class Status(AttribAccessDict):
       * 0.6.0: added
     """
 
-    media_attachments: "EntityList[MediaAttachment]"
+    media_attachments: "NonPaginatableList[MediaAttachment]"
     """
     List files attached to this status.
 
@@ -598,7 +628,7 @@ class Status(AttribAccessDict):
       * 0.6.0: added
     """
 
-    emojis: "EntityList[CustomEmoji]"
+    emojis: "NonPaginatableList[CustomEmoji]"
     """
     A list of CustomEmoji used in the status.
 
@@ -606,7 +636,7 @@ class Status(AttribAccessDict):
       * 2.0.0: added
     """
 
-    tags: "EntityList[Tag]"
+    tags: "NonPaginatableList[Tag]"
     """
     A list of Tags used in the status.
 
@@ -687,7 +717,7 @@ class Status(AttribAccessDict):
       * 3.5.0: added
     """
 
-    filtered: "Optional[EntityList[FilterResult]]"
+    filtered: "Optional[NonPaginatableList[FilterResult]]"
     """
     If present, a list of filter application results that indicate which of the users filters matched and what actions should be taken. (optional)
 
@@ -700,6 +730,12 @@ class Status(AttribAccessDict):
 class StatusEdit(AttribAccessDict):
     """
     An object representing a past version of an edited status.
+
+    Example:
+    ```python
+    # Returns a StatusEdit object
+    mastodon.status_history(<status id>)[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/StatusEdit/
     """
@@ -744,7 +780,7 @@ class StatusEdit(AttribAccessDict):
       * 3.5.0: added
     """
 
-    media_attachments: "EntityList[MediaAttachment]"
+    media_attachments: "NonPaginatableList[MediaAttachment]"
     """
     List of MediaAttachment objects with the attached media for this version of the status.
 
@@ -752,7 +788,7 @@ class StatusEdit(AttribAccessDict):
       * 3.5.0: added
     """
 
-    emojis: "EntityList[CustomEmoji]"
+    emojis: "NonPaginatableList[CustomEmoji]"
     """
     List of custom emoji used in this version of the status.
 
@@ -774,6 +810,12 @@ class FilterResult(AttribAccessDict):
     """
     A filter action that should be taken on a status.
 
+    Example:
+    ```python
+    # Returns a FilterResult object
+    mastodon.status(<status id>).filtered[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FilterResult/
     """
 
@@ -785,7 +827,7 @@ class FilterResult(AttribAccessDict):
       * 4.0.0: added
     """
 
-    keyword_matches: "Optional[EntityList[str]]"
+    keyword_matches: "Optional[NonPaginatableList[str]]"
     """
     The keyword within the filter that was matched. (nullable)
 
@@ -793,7 +835,7 @@ class FilterResult(AttribAccessDict):
       * 4.0.0: added
     """
 
-    status_matches: "Optional[EntityList]"
+    status_matches: "Optional[NonPaginatableList]"
     """
     The status ID within the filter that was matched. (nullable)
 
@@ -806,6 +848,12 @@ class FilterResult(AttribAccessDict):
 class StatusMention(AttribAccessDict):
     """
     A mention of a user within a status.
+
+    Example:
+    ```python
+    # Returns a StatusMention object
+    mastodon.toot("@admin he doing it sideways").mentions[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Mention/
     """
@@ -849,6 +897,12 @@ class ScheduledStatus(AttribAccessDict):
     """
     A scheduled status / toot to be eventually posted.
 
+    Example:
+    ```python
+    # Returns a ScheduledStatus object
+    mastodon.status_post("futureposting", scheduled_at=the_future)
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/ScheduledStatus/
     """
 
@@ -876,7 +930,7 @@ class ScheduledStatus(AttribAccessDict):
       * 2.7.0: added
     """
 
-    media_attachments: "EntityList"
+    media_attachments: "NonPaginatableList"
     """
     Array of MediaAttachment objects for the attachments to the scheduled status.
 
@@ -889,6 +943,12 @@ class ScheduledStatus(AttribAccessDict):
 class ScheduledStatusParams(AttribAccessDict):
     """
     Parameters for a status / toot to be posted in the future.
+
+    Example:
+    ```python
+    # Returns a ScheduledStatusParams object
+    mastodon.status_post("futureposting... 2", scheduled_at=the_future).params
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/ScheduledStatus/
     """
@@ -909,7 +969,7 @@ class ScheduledStatusParams(AttribAccessDict):
       * 2.7.0: added
     """
 
-    media_ids: "Optional[EntityList[str]]"
+    media_ids: "Optional[NonPaginatableList[str]]"
     """
     IDs of media attached to this status. (nullable)
 
@@ -982,7 +1042,7 @@ class ScheduledStatusParams(AttribAccessDict):
       * 2.7.0: added
     """
 
-    allowed_mentions: "Optional[EntityList[str]]"
+    allowed_mentions: "Optional[NonPaginatableList[str]]"
     """
     Undocumented. If you know what this does, please let me know. (nullable)
 
@@ -1003,6 +1063,12 @@ class ScheduledStatusParams(AttribAccessDict):
 class Poll(AttribAccessDict):
     """
     A poll attached to a status.
+
+    Example:
+    ```python
+    # Returns a Poll object
+    mastodon.poll(<poll id>)
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Poll/
     """
@@ -1055,7 +1121,7 @@ class Poll(AttribAccessDict):
       * 2.8.0: added
     """
 
-    options: "EntityList[PollOption]"
+    options: "NonPaginatableList[PollOption]"
     """
     The poll options.
 
@@ -1063,7 +1129,7 @@ class Poll(AttribAccessDict):
       * 2.8.0: added
     """
 
-    emojis: "EntityList[CustomEmoji]"
+    emojis: "NonPaginatableList[CustomEmoji]"
     """
     List of CustomEmoji used in answer strings,.
 
@@ -1071,7 +1137,7 @@ class Poll(AttribAccessDict):
       * 2.8.0: added
     """
 
-    own_votes: "EntityList[int]"
+    own_votes: "NonPaginatableList[int]"
     """
     The logged-in users votes, as a list of indices to the options.
 
@@ -1092,6 +1158,12 @@ class Poll(AttribAccessDict):
 class PollOption(AttribAccessDict):
     """
     A poll option within a poll.
+
+    Example:
+    ```python
+    # Returns a PollOption object
+    mastodon.poll(<poll id>).options[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Poll/
     """
@@ -1118,6 +1190,12 @@ class Conversation(AttribAccessDict):
     """
     A conversation (using direct / mentions-only visibility) between two or more users.
 
+    Example:
+    ```python
+    # Returns a Conversation object
+    mastodon.conversations()[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Conversation/
     """
 
@@ -1137,7 +1215,7 @@ class Conversation(AttribAccessDict):
       * 2.6.0: added
     """
 
-    accounts: "EntityList[Account]"
+    accounts: "NonPaginatableList[Account]"
     """
     List of accounts (other than the logged-in account) that are part of this conversation.
 
@@ -1159,6 +1237,12 @@ class Tag(AttribAccessDict):
     """
     A hashtag, as part of a status or on its own (e.g. trending).
 
+    Example:
+    ```python
+    # Returns a Tag object
+    mastodon.trending_tags()[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Tag/
     """
 
@@ -1179,7 +1263,7 @@ class Tag(AttribAccessDict):
       * 0.9.0: added
     """
 
-    history: "Optional[EntityList[TagHistory]]"
+    history: "Optional[NonPaginatableList[TagHistory]]"
     """
     List of TagHistory for up to 7 days. Not present in statuses. (optional)
 
@@ -1200,6 +1284,12 @@ class Tag(AttribAccessDict):
 class TagHistory(AttribAccessDict):
     """
     Usage history for a hashtag.
+
+    Example:
+    ```python
+    # Returns a TagHistory object
+    mastodon.trending_tags()[0].history[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Tag/
     """
@@ -1234,6 +1324,12 @@ class TagHistory(AttribAccessDict):
 class CustomEmoji(AttribAccessDict):
     """
     A custom emoji.
+
+    Example:
+    ```python
+    # Returns a CustomEmoji object
+    mastodon.toot(":sidekiqin:").emojis[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/CustomEmoji/
     """
@@ -1286,6 +1382,12 @@ class Application(AttribAccessDict):
     """
     Information about an app (in terms of the API).
 
+    Example:
+    ```python
+    # Returns a Application object
+    mastodon.app_verify_credentials()
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Application/
     """
 
@@ -1336,7 +1438,7 @@ class Application(AttribAccessDict):
       * 4.3.0: deprecated
     """
 
-    redirect_uris: "EntityList[str]"
+    redirect_uris: "NonPaginatableList[str]"
     """
     The applications redirect URI or urn:ietf:wg:oauth:2.0:oob. Deprecated, it is recommended to use redirect_uris instead.
     Should contain (as text): URL
@@ -1345,7 +1447,7 @@ class Application(AttribAccessDict):
       * 4.3.0: added
     """
 
-    scopes: "EntityList[str]"
+    scopes: "NonPaginatableList[str]"
     """
     The applications available scopes.
     Should contain (as text): Scopes
@@ -1359,6 +1461,12 @@ class Application(AttribAccessDict):
 class Relationship(AttribAccessDict):
     """
     Information about the relationship between two users.
+
+    Example:
+    ```python
+    # Returns a Relationship object
+    mastodon.account_relationships(<account id>)[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Relationship/
     """
@@ -1467,7 +1575,7 @@ class Relationship(AttribAccessDict):
       * 3.3.0: added
     """
 
-    languages: "Optional[EntityList[str]]"
+    languages: "Optional[NonPaginatableList[str]]"
     """
     List of languages that the logged in user is following this user for (if any). (nullable)
     Should contain (as text): TwoLetterLanguageCodeEnum
@@ -1490,6 +1598,12 @@ class Filter(AttribAccessDict):
     """
     Information about a keyword / status filter.
 
+    Example:
+    ```python
+    # Returns a Filter object
+    mastodon.filters()[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/V1_Filter/
     """
 
@@ -1509,7 +1623,7 @@ class Filter(AttribAccessDict):
       * 2.4.3: added
     """
 
-    context: "EntityList[str]"
+    context: "NonPaginatableList[str]"
     """
     List of places where the filters are applied.
     Should contain (as text): FilterContextEnum
@@ -1549,6 +1663,12 @@ class FilterV2(AttribAccessDict):
     """
     Information about a keyword / status filter.
 
+    Example:
+    ```python
+    # Returns a FilterV2 object
+    mastodon.filters()[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Filter/
     """
 
@@ -1560,7 +1680,7 @@ class FilterV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    context: "EntityList[str]"
+    context: "NonPaginatableList[str]"
     """
     List of places where the filters are applied.
     Should contain (as text): FilterContextEnum
@@ -1594,7 +1714,7 @@ class FilterV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    keywords: "EntityList[FilterKeyword]"
+    keywords: "NonPaginatableList[FilterKeyword]"
     """
     A list of keywords that will trigger this filter.
 
@@ -1602,7 +1722,7 @@ class FilterV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    statuses: "EntityList[FilterStatus]"
+    statuses: "NonPaginatableList[FilterStatus]"
     """
     A list of statuses that will trigger this filter.
 
@@ -1615,6 +1735,12 @@ class FilterV2(AttribAccessDict):
 class Notification(AttribAccessDict):
     """
     A notification about some event, like a new reply or follower.
+
+    Example:
+    ```python
+    # Returns a Notification object
+    mastodon.notifications()[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Notification/
     """
@@ -1680,10 +1806,16 @@ class Context(AttribAccessDict):
     """
     The conversation context for a given status, i.e. its predecessors (that it replies to) and successors (that reply to it).
 
+    Example:
+    ```python
+    # Returns a Context object
+    mastodon.status_context(<status id>)
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Context/
     """
 
-    ancestors: "EntityList[Status]"
+    ancestors: "NonPaginatableList[Status]"
     """
     A list of Statuses that the Status with this Context is a reply to.
 
@@ -1691,7 +1823,7 @@ class Context(AttribAccessDict):
       * 0.6.0: added
     """
 
-    descendants: "EntityList[Status]"
+    descendants: "NonPaginatableList[Status]"
     """
     A list of Statuses that are replies to the Status with this Context.
 
@@ -1704,6 +1836,12 @@ class Context(AttribAccessDict):
 class UserList(AttribAccessDict):
     """
     A list of users.
+
+    Example:
+    ```python
+    # Returns a UserList object
+    mastodon.lists()[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/List/
     """
@@ -1746,6 +1884,12 @@ class UserList(AttribAccessDict):
 class MediaAttachment(AttribAccessDict):
     """
     A piece of media (like an image, video, or audio file) that can be or has been attached to a status.
+
+    Example:
+    ```python
+    # Returns a MediaAttachment object
+    mastodon.media_post("image.jpg", "image/jpeg")["meta"]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
@@ -1848,6 +1992,12 @@ class MediaAttachmentMetadataContainer(AttribAccessDict):
     """
     An object holding metadata about a media attachment and its thumbnail. In addition to the documented fields, there may be additional fields. These are not documented, not guaranteed to be present (they are a Mastodon implementation detail), and may change without notice, so relying on them is not recommended.
 
+    Example:
+    ```python
+    # Returns a MediaAttachmentMetadataContainer object
+    mastodon.media_post("audio.mp3").meta
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
 
@@ -1889,6 +2039,12 @@ class MediaAttachmentImageMetadata(AttribAccessDict):
     """
     Metadata for an image media attachment.
 
+    Example:
+    ```python
+    # Returns a MediaAttachmentImageMetadata object
+    mastodon.media_post("image.jpg").meta.original
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
 
@@ -1929,6 +2085,12 @@ class MediaAttachmentImageMetadata(AttribAccessDict):
 class MediaAttachmentVideoMetadata(AttribAccessDict):
     """
     Metadata for a video attachment. This can be a proper video, or a gifv (a looping, soundless animation). Both use the same data model currently, though there is a possibility that they could be split in the future.
+
+    Example:
+    ```python
+    # Returns a MediaAttachmentVideoMetadata object
+    mastodon.media_post("video.mp4").meta.original
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
@@ -1979,6 +2141,12 @@ class MediaAttachmentAudioMetadata(AttribAccessDict):
     """
     Metadata for an audio media attachment.
 
+    Example:
+    ```python
+    # Returns a MediaAttachmentAudioMetadata object
+    mastodon.media_post("audio.mp3").meta.original
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
 
@@ -2004,6 +2172,12 @@ class MediaAttachmentFocusPoint(AttribAccessDict):
     """
     The focus point for a media attachment, for cropping purposes.
 
+    Example:
+    ```python
+    # Returns a MediaAttachmentFocusPoint object
+    mastodon.media_post("image.jpg").meta.focus
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
 
@@ -2028,6 +2202,12 @@ class MediaAttachmentFocusPoint(AttribAccessDict):
 class MediaAttachmentColors(AttribAccessDict):
     """
     Object describing the accent colors for a media attachment.
+
+    Example:
+    ```python
+    # Returns a MediaAttachmentColors object
+    mastodon.media_post("image.jpg").meta.colors
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/MediaAttachment/
     """
@@ -2061,6 +2241,12 @@ class MediaAttachmentColors(AttribAccessDict):
 class PreviewCard(AttribAccessDict):
     """
     A preview card attached to a status, e.g. for an embedded video or link.
+
+    Example:
+    ```python
+    # Returns a PreviewCard object
+    mastodon.status_card(<status id>)
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/PreviewCard/
     """
@@ -2197,7 +2383,7 @@ class PreviewCard(AttribAccessDict):
       * 2.1.0: added
     """
 
-    authors: "EntityList[PreviewCardAuthor]"
+    authors: "NonPaginatableList[PreviewCardAuthor]"
     """
     List of fediverse accounts of the authors of this post, as `PreviewCardAuthor`.
 
@@ -2226,6 +2412,12 @@ class PreviewCard(AttribAccessDict):
 class PreviewCardAuthor(AttribAccessDict):
     """
     A preview card attached to a status, e.g. for an embedded video or link.
+
+    Example:
+    ```python
+    # Returns a PreviewCardAuthor object
+    mastodon.status_card(<status id>).authors[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/PreviewCardAuthor/
     """
@@ -2263,10 +2455,16 @@ class Search(AttribAccessDict):
     """
     A search result, with accounts, hashtags and statuses.
 
+    Example:
+    ```python
+    # Returns a Search object
+    mastodon.search("<search query>")
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Search/
     """
 
-    accounts: "EntityList[Account]"
+    accounts: "NonPaginatableList[Account]"
     """
     List of Accounts resulting from the query.
 
@@ -2274,7 +2472,7 @@ class Search(AttribAccessDict):
       * 1.1.0: added
     """
 
-    hashtags: "EntityList[str]"
+    hashtags: "NonPaginatableList[str]"
     """
     THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
 
@@ -2286,7 +2484,7 @@ class Search(AttribAccessDict):
       * 3.0.0: v1 removed
     """
 
-    statuses: "EntityList[Status]"
+    statuses: "NonPaginatableList[Status]"
     """
     List of Statuses resulting from the query.
 
@@ -2300,10 +2498,16 @@ class SearchV2(AttribAccessDict):
     """
     A search result, with accounts, hashtags and statuses.
 
+    Example:
+    ```python
+    # Returns a SearchV2 object
+    mastodon.search("<search query>")
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Search/
     """
 
-    accounts: "EntityList[Account]"
+    accounts: "NonPaginatableList[Account]"
     """
     List of Accounts resulting from the query.
 
@@ -2311,7 +2515,7 @@ class SearchV2(AttribAccessDict):
       * 1.1.0: added
     """
 
-    hashtags: "EntityList[Tag]"
+    hashtags: "NonPaginatableList[Tag]"
     """
     List of Tags resulting from the query.
 
@@ -2319,7 +2523,7 @@ class SearchV2(AttribAccessDict):
       * 2.4.1: added
     """
 
-    statuses: "EntityList[Status]"
+    statuses: "NonPaginatableList[Status]"
     """
     List of Statuses resulting from the query.
 
@@ -2332,6 +2536,12 @@ class SearchV2(AttribAccessDict):
 class Instance(AttribAccessDict):
     """
     Information about an instance. V1 API version.
+
+    Example:
+    ```python
+    # Returns a Instance object
+    mastodon.instance_v1()
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/V1_Instance/
     """
@@ -2415,7 +2625,7 @@ class Instance(AttribAccessDict):
       * 1.6.1: added
     """
 
-    languages: "EntityList[str]"
+    languages: "NonPaginatableList[str]"
     """
     Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.
     Should contain (as text): TwoLetterLanguageCodeEnum
@@ -2467,7 +2677,7 @@ class Instance(AttribAccessDict):
       * 1.1.0: added
     """
 
-    rules: "EntityList[Rule]"
+    rules: "NonPaginatableList[Rule]"
     """
     List of Rules with `id` and `text` fields, one for each server rule set by the admin.
 
@@ -2487,6 +2697,12 @@ class Instance(AttribAccessDict):
 class InstanceConfiguration(AttribAccessDict):
     """
     Configuration values for this instance, especially limits and enabled features.
+
+    Example:
+    ```python
+    # Returns a InstanceConfiguration object
+    mastodon.instance_v1().configuration
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
@@ -2529,6 +2745,12 @@ class InstanceURLs(AttribAccessDict):
     """
     A list of URLs related to an instance.
 
+    Example:
+    ```python
+    # Returns a InstanceURLs object
+    mastodon.instance_v1().urls
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/V1_Instance/
     """
 
@@ -2549,6 +2771,12 @@ class InstanceURLs(AttribAccessDict):
 class InstanceV2(AttribAccessDict):
     """
     Information about an instance.
+
+    Example:
+    ```python
+    # Returns a InstanceV2 object
+    mastodon.instance_v2()
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
@@ -2612,7 +2840,7 @@ class InstanceV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    languages: "EntityList[str]"
+    languages: "NonPaginatableList[str]"
     """
     Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.
     Should contain (as text): TwoLetterLanguageCodeEnum
@@ -2645,7 +2873,7 @@ class InstanceV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    rules: "EntityList[Rule]"
+    rules: "NonPaginatableList[Rule]"
     """
     List of Rules with `id` and `text` fields, one for each server rule set by the admin.
 
@@ -2653,7 +2881,7 @@ class InstanceV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    icon: "EntityList[InstanceIcon]"
+    icon: "NonPaginatableList[InstanceIcon]"
     """
     The instance icon, as a list of `InstanceIcon` , with entries representing different available size variants.
     Should contain (as text): URL
@@ -2675,6 +2903,12 @@ class InstanceV2(AttribAccessDict):
 class InstanceIcon(AttribAccessDict):
     """
     Icon for the instance, in a specific size.
+
+    Example:
+    ```python
+    # Returns a InstanceIcon object
+    mastodon.instance_v2().icon[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/#InstanceIcon
     """
@@ -2701,6 +2935,12 @@ class InstanceIcon(AttribAccessDict):
 class InstanceConfigurationV2(AttribAccessDict):
     """
     Configuration values for this instance, especially limits and enabled features.
+
+    Example:
+    ```python
+    # Returns a InstanceConfigurationV2 object
+    mastodon.instance_v2().configuration
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
@@ -2767,6 +3007,12 @@ class InstanceVapidKey(AttribAccessDict):
     """
     The VAPID key used by this instance to sign webpush requests.
 
+    Example:
+    ```python
+    # Returns a InstanceVapidKey object
+    mastodon.instance_v2().configuration.vapid
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
 
@@ -2783,6 +3029,12 @@ class InstanceVapidKey(AttribAccessDict):
 class InstanceURLsV2(AttribAccessDict):
     """
     A list of URLs related to an instance.
+
+    Example:
+    ```python
+    # Returns a InstanceURLsV2 object
+    mastodon.instance_v2().configuration.urls
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
@@ -2810,6 +3062,12 @@ class InstanceURLsV2(AttribAccessDict):
 class InstanceThumbnail(AttribAccessDict):
     """
     Extended information about an instances thumbnail.
+
+    Example:
+    ```python
+    # Returns a InstanceThumbnail object
+    mastodon.instance().thumbnail
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/V1_Instance/
     """
@@ -2846,6 +3104,12 @@ class InstanceThumbnailVersions(AttribAccessDict):
     """
     Different resolution versions of the image representing the instance.
 
+    Example:
+    ```python
+    # Returns a InstanceThumbnailVersions object
+    mastodon.instance().thumbnail.versions
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
 
@@ -2876,6 +3140,12 @@ class InstanceThumbnailVersions(AttribAccessDict):
 class InstanceStatistics(AttribAccessDict):
     """
     Usage statistics for an instance.
+
+    Example:
+    ```python
+    # Returns a InstanceStatistics object
+    mastodon.instance_v1().stats
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
@@ -2910,6 +3180,12 @@ class InstanceUsage(AttribAccessDict):
     """
     Usage / recent activity information for this instance.
 
+    Example:
+    ```python
+    # Returns a InstanceUsage object
+    mastodon.instance().usage
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
 
@@ -2927,6 +3203,12 @@ class InstanceUsageUsers(AttribAccessDict):
     """
     Recent active user information about this instance.
 
+    Example:
+    ```python
+    # Returns a InstanceUsageUsers object
+    mastodon.instance().usage.users
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
 
@@ -2943,6 +3225,12 @@ class InstanceUsageUsers(AttribAccessDict):
 class Rule(AttribAccessDict):
     """
     A rule that instance staff has specified users must follow on this instance.
+
+    Example:
+    ```python
+    # Returns a Rule object
+    mastodon.instance().rules[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Rule/
     """
@@ -2976,6 +3264,12 @@ class Rule(AttribAccessDict):
 class InstanceRegistrations(AttribAccessDict):
     """
     Registration information for this instance, like whether registrations are open and whether they require approval.
+
+    Example:
+    ```python
+    # Returns a InstanceRegistrations object
+    mastodon.instance_v2().registrations
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
@@ -3020,6 +3314,12 @@ class InstanceContact(AttribAccessDict):
     """
     Contact information for this instances' staff.
 
+    Example:
+    ```python
+    # Returns a InstanceContact object
+    mastodon.instance().contact
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
 
@@ -3046,6 +3346,12 @@ class InstanceAccountConfiguration(AttribAccessDict):
     """
     Configuration values relating to accounts.
 
+    Example:
+    ```python
+    # Returns a InstanceAccountConfiguration object
+    mastodon.instance().configuration.accounts
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
 
@@ -3070,6 +3376,12 @@ class InstanceAccountConfiguration(AttribAccessDict):
 class InstanceStatusConfiguration(AttribAccessDict):
     """
     Configuration values relating to statuses.
+
+    Example:
+    ```python
+    # Returns a InstanceStatusConfiguration object
+    mastodon.instance().configuration.statuses
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
@@ -3104,6 +3416,12 @@ class InstanceTranslationConfiguration(AttribAccessDict):
     """
     Configuration values relating to translation.
 
+    Example:
+    ```python
+    # Returns a InstanceTranslationConfiguration object
+    mastodon.instance_v2().configuration.translation
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
 
@@ -3121,10 +3439,16 @@ class InstanceMediaConfiguration(AttribAccessDict):
     """
     Configuration values relating to media attachments.
 
+    Example:
+    ```python
+    # Returns a InstanceMediaConfiguration object
+    mastodon.instance().configuration.media_attachments
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
 
-    supported_mime_types: "EntityList[str]"
+    supported_mime_types: "NonPaginatableList[str]"
     """
     Mime types the instance accepts for media attachment uploads.
 
@@ -3178,6 +3502,12 @@ class InstancePollConfiguration(AttribAccessDict):
     """
     Configuration values relating to polls.
 
+    Example:
+    ```python
+    # Returns a InstancePollConfiguration object
+    mastodon.instance().configuration.polls
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/
     """
 
@@ -3219,6 +3549,12 @@ class Nodeinfo(AttribAccessDict):
     """
     The instances standardized NodeInfo data.
 
+    Example:
+    ```python
+    # Returns a Nodeinfo object
+    mastodon.instance_nodeinfo()
+    ```
+
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
@@ -3238,7 +3574,7 @@ class Nodeinfo(AttribAccessDict):
       * 3.0.0: added
     """
 
-    protocols: "EntityList[str]"
+    protocols: "NonPaginatableList[str]"
     """
     A list of strings specifying the federation protocols this instance supports. Typically, just "activitypub".
 
@@ -3284,6 +3620,12 @@ class NodeinfoSoftware(AttribAccessDict):
     """
     NodeInfo software-related information.
 
+    Example:
+    ```python
+    # Returns a NodeinfoSoftware object
+    mastodon.instance_nodeinfo().software
+    ```
+
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
@@ -3309,10 +3651,16 @@ class NodeinfoServices(AttribAccessDict):
     """
     Nodeinfo services-related information.
 
+    Example:
+    ```python
+    # Returns a NodeinfoServices object
+    mastodon.instance_nodeinfo().services
+    ```
+
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
-    outbound: "EntityList"
+    outbound: "NonPaginatableList"
     """
     List of services that this instance can send messages to. On Mastodon, typically an empty list.
 
@@ -3320,7 +3668,7 @@ class NodeinfoServices(AttribAccessDict):
       * 3.0.0: added
     """
 
-    inbound: "EntityList"
+    inbound: "NonPaginatableList"
     """
     List of services that this instance can retrieve messages from. On Mastodon, typically an empty list.
 
@@ -3333,6 +3681,12 @@ class NodeinfoServices(AttribAccessDict):
 class NodeinfoUsage(AttribAccessDict):
     """
     Nodeinfo usage-related information.
+
+    Example:
+    ```python
+    # Returns a NodeinfoUsage object
+    mastodon.instance_nodeinfo().usage
+    ```
 
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
@@ -3358,6 +3712,12 @@ class NodeinfoUsage(AttribAccessDict):
 class NodeinfoUsageUsers(AttribAccessDict):
     """
     Nodeinfo user count statistics.
+
+    Example:
+    ```python
+    # Returns a NodeinfoUsageUsers object
+    mastodon.instance_nodeinfo().usage.users
+    ```
 
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
@@ -3392,6 +3752,12 @@ class NodeinfoMetadata(AttribAccessDict):
     """
     Nodeinfo extra metadata. Entirely freeform, be careful about consuming it programatically. Survey of real world usage: https://codeberg.org/thefederationinfo/nodeinfo_metadata_survey.
 
+    Example:
+    ```python
+    # Returns a NodeinfoMetadata object
+    mastodon.instance_nodeinfo().metadata
+    ```
+
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
@@ -3400,6 +3766,12 @@ class NodeinfoMetadata(AttribAccessDict):
 class Activity(AttribAccessDict):
     """
     Information about recent activity on an instance.
+
+    Example:
+    ```python
+    # Returns a Activity object
+    mastodon.instance_activity()[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/#activity
     """
@@ -3441,6 +3813,12 @@ class Activity(AttribAccessDict):
 class Report(AttribAccessDict):
     """
     Information about a report that has been filed against a user. Currently largely pointless, as updated reports cannot be fetched.
+
+    Example:
+    ```python
+    # Returns a Report object
+    mastodon.report(<account id>)
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Report/
     """
@@ -3485,7 +3863,7 @@ class Report(AttribAccessDict):
       * 2.9.1: added
     """
 
-    status_ids: "EntityList[IdType]"
+    status_ids: "NonPaginatableList[IdType]"
     """
     List of status IDs attached to the report.
 
@@ -3518,7 +3896,7 @@ class Report(AttribAccessDict):
       * 4.0.0: added
     """
 
-    rules_ids: "EntityList[IdType]"
+    rules_ids: "NonPaginatableList[IdType]"
     """
     IDs of the rules selected for this report.
 
@@ -3531,6 +3909,12 @@ class Report(AttribAccessDict):
 class AdminReport(AttribAccessDict):
     """
     Information about a report that has been filed against a user.
+
+    Example:
+    ```python
+    # Returns a AdminReport object
+    mastodon.admin_reports()[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Report/
     """
@@ -3607,7 +3991,7 @@ class AdminReport(AttribAccessDict):
       * 2.9.1: added
     """
 
-    statuses: "EntityList[Status]"
+    statuses: "NonPaginatableList[Status]"
     """
     List of Statuses attached to the report.
 
@@ -3640,7 +4024,7 @@ class AdminReport(AttribAccessDict):
       * 4.0.0: added
     """
 
-    rules: "EntityList[Rule]"
+    rules: "NonPaginatableList[Rule]"
     """
     Rules attached to the report, for context.
 
@@ -3653,6 +4037,12 @@ class AdminReport(AttribAccessDict):
 class WebPushSubscription(AttribAccessDict):
     """
     Information about the logged-in users web push subscription for the authenticated application.
+
+    Example:
+    ```python
+    # Returns a WebPushSubscription object
+    mastodon.push_subscription()
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/WebPushSubscription/
     """
@@ -3708,6 +4098,12 @@ class WebPushSubscription(AttribAccessDict):
 class WebPushSubscriptionAlerts(AttribAccessDict):
     """
     Information about alerts as part of a push subscription.
+
+    Example:
+    ```python
+    # Returns a WebPushSubscriptionAlerts object
+    mastodon.push_subscription().alerts
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/WebPushSubscription/
     """
@@ -3798,6 +4194,12 @@ class PushNotification(AttribAccessDict):
     """
     A single Mastodon push notification received via WebPush, after decryption.
 
+    Example:
+    ```python
+    # Returns a PushNotification object
+    mastodon.push_subscription_decrypt_push(...)
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/WebPushSubscription/
     """
 
@@ -3865,6 +4267,12 @@ class Preferences(AttribAccessDict):
     """
     The logged in users preferences.
 
+    Example:
+    ```python
+    # Returns a Preferences object
+    mastodon.preferences()
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Preferences/
     """
 
@@ -3931,6 +4339,12 @@ class FeaturedTag(AttribAccessDict):
     """
     A tag featured on a users profile.
 
+    Example:
+    ```python
+    # Returns a FeaturedTag object
+    mastodon.featured_tags()[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FeaturedTag/
     """
 
@@ -3981,6 +4395,12 @@ class Marker(AttribAccessDict):
     """
     A read marker indicating where the logged in user has left off reading a given timeline.
 
+    Example:
+    ```python
+    # Returns a Marker object
+    mastodon.markers_get()["home"]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Marker/
     """
 
@@ -4013,6 +4433,12 @@ class Marker(AttribAccessDict):
 class Announcement(AttribAccessDict):
     """
     An announcement sent by the instances staff.
+
+    Example:
+    ```python
+    # Returns a Announcement object
+    mastodon.announcements()[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Announcement/
     """
@@ -4082,7 +4508,7 @@ class Announcement(AttribAccessDict):
       * 3.1.0: added
     """
 
-    mentions: "EntityList[StatusMention]"
+    mentions: "NonPaginatableList[StatusMention]"
     """
     Users mentioned in the annoucement.
 
@@ -4090,7 +4516,7 @@ class Announcement(AttribAccessDict):
       * 3.1.0: added
     """
 
-    tags: "EntityList"
+    tags: "NonPaginatableList"
     """
     Hashtags mentioned in the announcement.
 
@@ -4098,7 +4524,7 @@ class Announcement(AttribAccessDict):
       * 3.1.0: added
     """
 
-    emojis: "EntityList"
+    emojis: "NonPaginatableList"
     """
     Custom emoji used in the annoucement.
 
@@ -4106,7 +4532,7 @@ class Announcement(AttribAccessDict):
       * 3.1.0: added
     """
 
-    reactions: "EntityList[Reaction]"
+    reactions: "NonPaginatableList[Reaction]"
     """
     Reactions to the annoucement.
 
@@ -4114,7 +4540,7 @@ class Announcement(AttribAccessDict):
       * 3.1.0: added
     """
 
-    statuses: "EntityList"
+    statuses: "NonPaginatableList"
     """
     Statuses linked in the announcement text.
 
@@ -4127,6 +4553,12 @@ class Announcement(AttribAccessDict):
 class Reaction(AttribAccessDict):
     """
     A reaction to an announcement.
+
+    Example:
+    ```python
+    # Returns a Reaction object
+    mastodon.announcements()[0].reactions[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Reaction/
     """
@@ -4179,6 +4611,12 @@ class StreamReaction(AttribAccessDict):
     """
     A reaction to an announcement.
 
+    Example:
+    ```python
+    # Returns a StreamReaction object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/streaming/
     """
 
@@ -4212,6 +4650,12 @@ class FamiliarFollowers(AttribAccessDict):
     """
     A follower of a given account that is also followed by the logged-in user.
 
+    Example:
+    ```python
+    # Returns a FamiliarFollowers object
+    mastodon.account_familiar_followers(<account id>)[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FamiliarFollowers/
     """
 
@@ -4223,7 +4667,7 @@ class FamiliarFollowers(AttribAccessDict):
       * 3.5.0: added
     """
 
-    accounts: "EntityList[Account]"
+    accounts: "NonPaginatableList[Account]"
     """
     List of Accounts of the familiar followers.
 
@@ -4236,6 +4680,12 @@ class FamiliarFollowers(AttribAccessDict):
 class AdminAccount(AttribAccessDict):
     """
     Admin variant of the Account entity, with some additional information.
+
+    Example:
+    ```python
+    # Returns a AdminAccount object
+    mastodon.admin_account(<account id>)
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Account/
     """
@@ -4373,7 +4823,7 @@ class AdminAccount(AttribAccessDict):
       * 2.9.1: added
     """
 
-    ips: "EntityList[AdminIp]"
+    ips: "NonPaginatableList[AdminIp]"
     """
     All known IP addresses associated with this account.
 
@@ -4403,6 +4853,12 @@ class AdminIp(AttribAccessDict):
     """
     An IP address used by some user or other instance, visible as part of some admin APIs.
 
+    Example:
+    ```python
+    # Returns a AdminIp object
+    mastodon.admin_account(<account id>).ips[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Ip/
     """
 
@@ -4427,6 +4883,12 @@ class AdminIp(AttribAccessDict):
 class AdminMeasure(AttribAccessDict):
     """
     A measurement, such as the number of active users, as returned by the admin reporting API.
+
+    Example:
+    ```python
+    # Returns a AdminMeasure object
+    mastodon.admin_measures(datetime.now() - timedelta(hours=24*5), datetime.now(), interactions=True)[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Measure/
     """
@@ -4472,7 +4934,7 @@ class AdminMeasure(AttribAccessDict):
       * 3.5.0: added
     """
 
-    data: "EntityList[AdminMeasureData]"
+    data: "NonPaginatableList[AdminMeasureData]"
     """
     A list of AdminMeasureData with the measure broken down by date.
 
@@ -4485,6 +4947,12 @@ class AdminMeasure(AttribAccessDict):
 class AdminMeasureData(AttribAccessDict):
     """
     A single row of data for an admin reporting api measurement.
+
+    Example:
+    ```python
+    # Returns a AdminMeasureData object
+    mastodon.admin_measures(datetime.now() - timedelta(hours=24*5), datetime.now(), active_users=True)[0].data[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Measure/
     """
@@ -4511,6 +4979,12 @@ class AdminDimension(AttribAccessDict):
     """
     A qualitative measurement about the server, as returned by the admin reporting api.
 
+    Example:
+    ```python
+    # Returns a AdminDimension object
+    mastodon.admin_dimensions(datetime.now() - timedelta(hours=24*5), datetime.now(), languages=True)[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Dimension/
     """
 
@@ -4522,7 +4996,7 @@ class AdminDimension(AttribAccessDict):
       * 3.5.0: added
     """
 
-    data: "EntityList[AdminDimensionData]"
+    data: "NonPaginatableList[AdminDimensionData]"
     """
     A list of data AdminDimensionData objects.
 
@@ -4535,6 +5009,12 @@ class AdminDimension(AttribAccessDict):
 class AdminDimensionData(AttribAccessDict):
     """
     A single row of data for qualitative measurements about the server, as returned by the admin reporting api.
+
+    Example:
+    ```python
+    # Returns a AdminDimensionData object
+    mastodon.admin_dimensions(datetime.now() - timedelta(hours=24*5), datetime.now(), languages=True)[0].data[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Dimension/
     """
@@ -4569,6 +5049,12 @@ class AdminRetention(AttribAccessDict):
     """
     User retention data for a given cohort, as returned by the admin reporting api.
 
+    Example:
+    ```python
+    # Returns a AdminRetention object
+    mastodon.admin_retention(datetime.now() - timedelta(hours=24*5), datetime.now())[0]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Cohort/
     """
 
@@ -4588,7 +5074,7 @@ class AdminRetention(AttribAccessDict):
       * 3.5.0: added
     """
 
-    data: "EntityList[AdminCohort]"
+    data: "NonPaginatableList[AdminCohort]"
     """
     List of AdminCohort objects.
 
@@ -4601,6 +5087,12 @@ class AdminRetention(AttribAccessDict):
 class AdminCohort(AttribAccessDict):
     """
     A single data point regarding user retention for a given cohort, as returned by the admin reporting api.
+
+    Example:
+    ```python
+    # Returns a AdminCohort object
+    mastodon.admin_retention(datetime.now() - timedelta(hours=24*5), datetime.now())[0].data[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Cohort/
     """
@@ -4634,6 +5126,12 @@ class AdminCohort(AttribAccessDict):
 class AdminDomainBlock(AttribAccessDict):
     """
     A domain block, as returned by the admin API.
+
+    Example:
+    ```python
+    # Returns a AdminDomainBlock object
+    mastodon.admin_domain_blocks()[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_DomainBlock/
     """
@@ -4725,6 +5223,12 @@ class AdminCanonicalEmailBlock(AttribAccessDict):
     """
     An e-mail block that has been set up to prevent certain e-mails to be used when signing up, via hash matching.
 
+    Example:
+    ```python
+    # Returns a AdminCanonicalEmailBlock object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_CanonicalEmailBlock
     """
 
@@ -4749,6 +5253,12 @@ class AdminCanonicalEmailBlock(AttribAccessDict):
 class AdminDomainAllow(AttribAccessDict):
     """
     The opposite of a domain block, specifically allowing a domain to federate when the instance is in allowlist mode.
+
+    Example:
+    ```python
+    # Returns a AdminDomainAllow object
+    TODO_TO_BE_IMPLEMENTED
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_DomainAllow
     """
@@ -4783,6 +5293,12 @@ class AdminEmailDomainBlock(AttribAccessDict):
     """
     A block that has been set up to prevent e-mails from certain domains to be used when signing up.
 
+    Example:
+    ```python
+    # Returns a AdminEmailDomainBlock object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_EmailDomainBlock
     """
 
@@ -4810,7 +5326,7 @@ class AdminEmailDomainBlock(AttribAccessDict):
       * 4.0.0: added
     """
 
-    history: "EntityList[AdminEmailDomainBlockHistory]"
+    history: "NonPaginatableList[AdminEmailDomainBlockHistory]"
     """
     Usage statistics for given days (typically the past week).
 
@@ -4823,6 +5339,12 @@ class AdminEmailDomainBlock(AttribAccessDict):
 class AdminEmailDomainBlockHistory(AttribAccessDict):
     """
     Historic data about attempted signups using e-mails from a given domain.
+
+    Example:
+    ```python
+    # Returns a AdminEmailDomainBlockHistory object
+    TODO_TO_BE_IMPLEMENTED
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_EmailDomainBlock
     """
@@ -4856,6 +5378,12 @@ class AdminEmailDomainBlockHistory(AttribAccessDict):
 class AdminIpBlock(AttribAccessDict):
     """
     An admin IP block, to prevent certain IP addresses or address ranges from accessing the instance.
+
+    Example:
+    ```python
+    # Returns a AdminIpBlock object
+    TODO_TO_BE_IMPLEMENTED
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_IpBlock
     """
@@ -4914,6 +5442,12 @@ class DomainBlock(AttribAccessDict):
     """
     A domain block that has been implemented by instance staff, limiting the way posts from the blocked instance are handled.
 
+    Example:
+    ```python
+    # Returns a DomainBlock object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/DomainBlock
     """
 
@@ -4956,6 +5490,12 @@ class ExtendedDescription(AttribAccessDict):
     """
     An extended instance description that can contain HTML.
 
+    Example:
+    ```python
+    # Returns a ExtendedDescription object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/ExtendedDescription
     """
 
@@ -4981,6 +5521,12 @@ class ExtendedDescription(AttribAccessDict):
 class FilterKeyword(AttribAccessDict):
     """
     A keyword that is being matched as part of a filter.
+
+    Example:
+    ```python
+    # Returns a FilterKeyword object
+    TODO_TO_BE_IMPLEMENTED
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FilterKeyword
     """
@@ -5015,6 +5561,12 @@ class FilterStatus(AttribAccessDict):
     """
     A single status that is being matched as part of a filter.
 
+    Example:
+    ```python
+    # Returns a FilterStatus object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FilterStatus
     """
 
@@ -5039,6 +5591,12 @@ class FilterStatus(AttribAccessDict):
 class IdentityProof(AttribAccessDict):
     """
     A cryptographic proof-of-identity.
+
+    Example:
+    ```python
+    # Returns a IdentityProof object
+    TODO_TO_BE_IMPLEMENTED
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/IdentityProof
     """
@@ -5089,6 +5647,12 @@ class StatusSource(AttribAccessDict):
     """
     The source data of a status, useful when editing a status.
 
+    Example:
+    ```python
+    # Returns a StatusSource object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/StatusSource
     """
 
@@ -5122,6 +5686,12 @@ class Suggestion(AttribAccessDict):
     """
     A follow suggestion.
 
+    Example:
+    ```python
+    # Returns a Suggestion object
+    TODO_TO_BE_IMPLEMENTED
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Suggestion
     """
 
@@ -5146,6 +5716,12 @@ class Suggestion(AttribAccessDict):
 class Translation(AttribAccessDict):
     """
     A translation of a status.
+
+    Example:
+    ```python
+    # Returns a Translation object
+    TODO_TO_BE_IMPLEMENTED
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Translation
     """
@@ -5180,6 +5756,12 @@ class AccountCreationError(AttribAccessDict):
     """
     An error response returned when creating an account fails.
 
+    Example:
+    ```python
+    # Returns a AccountCreationError object
+    mastodon.create_account('halcy', 'secret', 'invalid email lol', True, return_detailed_error=True)[1]
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/accounts/#create
     """
 
@@ -5205,10 +5787,16 @@ class AccountCreationErrorDetails(AttribAccessDict):
     """
     An object containing detailed errors for different fields in the account creation attempt.
 
+    Example:
+    ```python
+    # Returns a AccountCreationErrorDetails object
+    mastodon.create_account('halcy', 'secret', 'invalid email lol', False, return_detailed_error=True)[1].details
+    ```
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/accounts/#create
     """
 
-    username: "Optional[EntityList[AccountCreationErrorDetailsField]]"
+    username: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the username. (optional)
 
@@ -5216,7 +5804,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    password: "Optional[EntityList[AccountCreationErrorDetailsField]]"
+    password: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the password. (optional)
 
@@ -5224,7 +5812,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    email: "Optional[EntityList[AccountCreationErrorDetailsField]]"
+    email: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the e-mail. (optional)
 
@@ -5232,7 +5820,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    agreement: "Optional[EntityList[AccountCreationErrorDetailsField]]"
+    agreement: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the usage policy agreement. (optional)
 
@@ -5240,7 +5828,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    locale: "Optional[EntityList[AccountCreationErrorDetailsField]]"
+    locale: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the locale. (optional)
 
@@ -5248,7 +5836,7 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    reason: "Optional[EntityList[AccountCreationErrorDetailsField]]"
+    reason: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
     """
     An object giving more details about an error caused by the registration reason. (optional)
 
@@ -5261,6 +5849,12 @@ class AccountCreationErrorDetails(AttribAccessDict):
 class AccountCreationErrorDetailsField(AttribAccessDict):
     """
     An object giving details about what specifically is wrong with a given field in an account registration attempt.
+
+    Example:
+    ```python
+    # Returns a AccountCreationErrorDetailsField object
+    mastodon.create_account('halcy', 'secret', 'invalid email lol', True, return_detailed_error=True)[1].details.email[0]
+    ```
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/accounts/#create
     """
@@ -5283,4 +5877,206 @@ class AccountCreationErrorDetailsField(AttribAccessDict):
 
     _version = "3.4.0"
 
+ENTITY_NAME_MAP = {
+    "Account": Account,
+    "AccountField": AccountField,
+    "Role": Role,
+    "CredentialAccountSource": CredentialAccountSource,
+    "Status": Status,
+    "StatusEdit": StatusEdit,
+    "FilterResult": FilterResult,
+    "StatusMention": StatusMention,
+    "ScheduledStatus": ScheduledStatus,
+    "ScheduledStatusParams": ScheduledStatusParams,
+    "Poll": Poll,
+    "PollOption": PollOption,
+    "Conversation": Conversation,
+    "Tag": Tag,
+    "TagHistory": TagHistory,
+    "CustomEmoji": CustomEmoji,
+    "Application": Application,
+    "Relationship": Relationship,
+    "Filter": Filter,
+    "FilterV2": FilterV2,
+    "Notification": Notification,
+    "Context": Context,
+    "UserList": UserList,
+    "MediaAttachment": MediaAttachment,
+    "MediaAttachmentMetadataContainer": MediaAttachmentMetadataContainer,
+    "MediaAttachmentImageMetadata": MediaAttachmentImageMetadata,
+    "MediaAttachmentVideoMetadata": MediaAttachmentVideoMetadata,
+    "MediaAttachmentAudioMetadata": MediaAttachmentAudioMetadata,
+    "MediaAttachmentFocusPoint": MediaAttachmentFocusPoint,
+    "MediaAttachmentColors": MediaAttachmentColors,
+    "PreviewCard": PreviewCard,
+    "PreviewCardAuthor": PreviewCardAuthor,
+    "Search": Search,
+    "SearchV2": SearchV2,
+    "Instance": Instance,
+    "InstanceConfiguration": InstanceConfiguration,
+    "InstanceURLs": InstanceURLs,
+    "InstanceV2": InstanceV2,
+    "InstanceIcon": InstanceIcon,
+    "InstanceConfigurationV2": InstanceConfigurationV2,
+    "InstanceVapidKey": InstanceVapidKey,
+    "InstanceURLsV2": InstanceURLsV2,
+    "InstanceThumbnail": InstanceThumbnail,
+    "InstanceThumbnailVersions": InstanceThumbnailVersions,
+    "InstanceStatistics": InstanceStatistics,
+    "InstanceUsage": InstanceUsage,
+    "InstanceUsageUsers": InstanceUsageUsers,
+    "Rule": Rule,
+    "InstanceRegistrations": InstanceRegistrations,
+    "InstanceContact": InstanceContact,
+    "InstanceAccountConfiguration": InstanceAccountConfiguration,
+    "InstanceStatusConfiguration": InstanceStatusConfiguration,
+    "InstanceTranslationConfiguration": InstanceTranslationConfiguration,
+    "InstanceMediaConfiguration": InstanceMediaConfiguration,
+    "InstancePollConfiguration": InstancePollConfiguration,
+    "Nodeinfo": Nodeinfo,
+    "NodeinfoSoftware": NodeinfoSoftware,
+    "NodeinfoServices": NodeinfoServices,
+    "NodeinfoUsage": NodeinfoUsage,
+    "NodeinfoUsageUsers": NodeinfoUsageUsers,
+    "NodeinfoMetadata": NodeinfoMetadata,
+    "Activity": Activity,
+    "Report": Report,
+    "AdminReport": AdminReport,
+    "WebPushSubscription": WebPushSubscription,
+    "WebPushSubscriptionAlerts": WebPushSubscriptionAlerts,
+    "PushNotification": PushNotification,
+    "Preferences": Preferences,
+    "FeaturedTag": FeaturedTag,
+    "Marker": Marker,
+    "Announcement": Announcement,
+    "Reaction": Reaction,
+    "StreamReaction": StreamReaction,
+    "FamiliarFollowers": FamiliarFollowers,
+    "AdminAccount": AdminAccount,
+    "AdminIp": AdminIp,
+    "AdminMeasure": AdminMeasure,
+    "AdminMeasureData": AdminMeasureData,
+    "AdminDimension": AdminDimension,
+    "AdminDimensionData": AdminDimensionData,
+    "AdminRetention": AdminRetention,
+    "AdminCohort": AdminCohort,
+    "AdminDomainBlock": AdminDomainBlock,
+    "AdminCanonicalEmailBlock": AdminCanonicalEmailBlock,
+    "AdminDomainAllow": AdminDomainAllow,
+    "AdminEmailDomainBlock": AdminEmailDomainBlock,
+    "AdminEmailDomainBlockHistory": AdminEmailDomainBlockHistory,
+    "AdminIpBlock": AdminIpBlock,
+    "DomainBlock": DomainBlock,
+    "ExtendedDescription": ExtendedDescription,
+    "FilterKeyword": FilterKeyword,
+    "FilterStatus": FilterStatus,
+    "IdentityProof": IdentityProof,
+    "StatusSource": StatusSource,
+    "Suggestion": Suggestion,
+    "Translation": Translation,
+    "AccountCreationError": AccountCreationError,
+    "AccountCreationErrorDetails": AccountCreationErrorDetails,
+    "AccountCreationErrorDetailsField": AccountCreationErrorDetailsField,
+}
+__all__ = [
+    "Account",
+    "AccountField",
+    "Role",
+    "CredentialAccountSource",
+    "Status",
+    "StatusEdit",
+    "FilterResult",
+    "StatusMention",
+    "ScheduledStatus",
+    "ScheduledStatusParams",
+    "Poll",
+    "PollOption",
+    "Conversation",
+    "Tag",
+    "TagHistory",
+    "CustomEmoji",
+    "Application",
+    "Relationship",
+    "Filter",
+    "FilterV2",
+    "Notification",
+    "Context",
+    "UserList",
+    "MediaAttachment",
+    "MediaAttachmentMetadataContainer",
+    "MediaAttachmentImageMetadata",
+    "MediaAttachmentVideoMetadata",
+    "MediaAttachmentAudioMetadata",
+    "MediaAttachmentFocusPoint",
+    "MediaAttachmentColors",
+    "PreviewCard",
+    "PreviewCardAuthor",
+    "Search",
+    "SearchV2",
+    "Instance",
+    "InstanceConfiguration",
+    "InstanceURLs",
+    "InstanceV2",
+    "InstanceIcon",
+    "InstanceConfigurationV2",
+    "InstanceVapidKey",
+    "InstanceURLsV2",
+    "InstanceThumbnail",
+    "InstanceThumbnailVersions",
+    "InstanceStatistics",
+    "InstanceUsage",
+    "InstanceUsageUsers",
+    "Rule",
+    "InstanceRegistrations",
+    "InstanceContact",
+    "InstanceAccountConfiguration",
+    "InstanceStatusConfiguration",
+    "InstanceTranslationConfiguration",
+    "InstanceMediaConfiguration",
+    "InstancePollConfiguration",
+    "Nodeinfo",
+    "NodeinfoSoftware",
+    "NodeinfoServices",
+    "NodeinfoUsage",
+    "NodeinfoUsageUsers",
+    "NodeinfoMetadata",
+    "Activity",
+    "Report",
+    "AdminReport",
+    "WebPushSubscription",
+    "WebPushSubscriptionAlerts",
+    "PushNotification",
+    "Preferences",
+    "FeaturedTag",
+    "Marker",
+    "Announcement",
+    "Reaction",
+    "StreamReaction",
+    "FamiliarFollowers",
+    "AdminAccount",
+    "AdminIp",
+    "AdminMeasure",
+    "AdminMeasureData",
+    "AdminDimension",
+    "AdminDimensionData",
+    "AdminRetention",
+    "AdminCohort",
+    "AdminDomainBlock",
+    "AdminCanonicalEmailBlock",
+    "AdminDomainAllow",
+    "AdminEmailDomainBlock",
+    "AdminEmailDomainBlockHistory",
+    "AdminIpBlock",
+    "DomainBlock",
+    "ExtendedDescription",
+    "FilterKeyword",
+    "FilterStatus",
+    "IdentityProof",
+    "StatusSource",
+    "Suggestion",
+    "Translation",
+    "AccountCreationError",
+    "AccountCreationErrorDetails",
+    "AccountCreationErrorDetailsField",
+]
 

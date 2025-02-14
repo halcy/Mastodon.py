@@ -333,7 +333,7 @@
             },
             "fields": {
                 "description": "List of up to four (by default) AccountFields",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountField",
                 "is_optional": false,
                 "is_nullable": false,
@@ -347,7 +347,7 @@
             },
             "emojis": {
                 "description": "List of custom emoji used in name, bio or fields",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false,
@@ -394,7 +394,7 @@
             "roles": {
                 "description": "Deprecated. Was a list of strings with the users roles. Now just an empty list. Mastodon.py makes no attempt to fill it, and the field may be removed if Mastodon removes it. Use the `role` field instead.",
                 "is_deprecated": true,
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": true,
                 "is_nullable": true,
@@ -692,7 +692,7 @@
             },
             "fields": {
                 "description": "Metadata about the account.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountField",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1001,7 +1001,7 @@
             },
             "mentions": {
                 "description": "A list of StatusMention this status includes",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "StatusMention",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1014,7 +1014,7 @@
             },
             "media_attachments": {
                 "description": "List files attached to this status",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "MediaAttachment",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1028,7 +1028,7 @@
             },
             "emojis": {
                 "description": "A list of CustomEmoji used in the status",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1041,7 +1041,7 @@
             },
             "tags": {
                 "description": "A list of Tags used in the status",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Tag",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1173,7 +1173,7 @@
             },
             "filtered": {
                 "description": "If present, a list of filter application results that indicate which of the users filters matched and what actions should be taken.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "FilterResult",
                 "is_optional": true,
                 "is_nullable": false,
@@ -1269,7 +1269,7 @@
             },
             "media_attachments": {
                 "description": "List of MediaAttachment objects with the attached media for this version of the status",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "MediaAttachment",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1282,7 +1282,7 @@
             },
             "emojis": {
                 "description": "List of custom emoji used in this version of the status.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1336,7 +1336,7 @@
             },
             "keyword_matches": {
                 "description": "The keyword within the filter that was matched.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": true,
@@ -1350,7 +1350,7 @@
             },
             "status_matches": {
                 "description": "The status ID within the filter that was matched.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
@@ -1489,7 +1489,7 @@
             },
             "media_attachments": {
                 "description": "Array of MediaAttachment objects for the attachments to the scheduled status",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -1543,7 +1543,7 @@
             },
             "media_ids": {
                 "description": "IDs of media attached to this status",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": true,
@@ -1672,7 +1672,7 @@
             "allowed_mentions": {
                 "description": "Undocumented. If you know what this does, please let me know.",
                 "help_wanted": true,
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": true,
@@ -1797,7 +1797,7 @@
             },
             "options": {
                 "description": "The poll options",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "PollOption",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1811,7 +1811,7 @@
             },
             "emojis": {
                 "description": "List of CustomEmoji used in answer strings,",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1825,7 +1825,7 @@
             },
             "own_votes": {
                 "description": "The logged-in users votes, as a list of indices to the options.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "int",
                 "is_optional": false,
                 "is_nullable": false,
@@ -1935,7 +1935,7 @@
             },
             "accounts": {
                 "description": "List of accounts (other than the logged-in account) that are part of this conversation",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Account",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2005,7 +2005,7 @@
             },
             "history": {
                 "description": "List of TagHistory for up to 7 days. Not present in statuses.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "TagHistory",
                 "is_optional": true,
                 "is_nullable": false,
@@ -2270,7 +2270,7 @@
             },
             "redirect_uris": {
                 "description": "The applications redirect URI or urn:ietf:wg:oauth:2.0:oob. Deprecated, it is recommended to use redirect_uris instead.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2285,7 +2285,7 @@
             },
             "scopes": {
                 "description": "The applications available scopes.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2495,7 +2495,7 @@
             },
             "languages": {
                 "description": "List of languages that the logged in user is following this user for (if any)",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
@@ -2570,7 +2570,7 @@
             },
             "context": {
                 "description": "List of places where the filters are applied.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2670,7 +2670,7 @@
             },
             "context": {
                 "description": "List of places where the filters are applied.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2739,7 +2739,7 @@
             },
             "keywords": {
                 "description": "A list of keywords that will trigger this filter.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "FilterKeyword",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2754,7 +2754,7 @@
             },
             "statuses": {
                 "description": "A list of statuses that will trigger this filter.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "FilterStatus",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2904,7 +2904,7 @@
         "fields": {
             "ancestors": {
                 "description": "A list of Statuses that the Status with this Context is a reply to",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "is_optional": false,
                 "is_nullable": false,
@@ -2918,7 +2918,7 @@
             },
             "descendants": {
                 "description": "A list of Statuses that are replies to the Status with this Context",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3764,7 +3764,7 @@
             },
             "authors": {
                 "description": "List of fediverse accounts of the authors of this post, as `PreviewCardAuthor`.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "PreviewCardAuthor",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3866,12 +3866,12 @@
     {
         "name": "Search result (v1)",
         "python_name": "Search",
-        "func_call": "mastodon.search(\"<search query>\")",
-        "func_call_real": "mastodon.search(\"halcy\")",
+        "func_call": "mastodon.search_v1(\"<search query>\")",
+        "func_call_real": "mastodon.search_v1(\"halcy\")",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Search/",
         "func_call_additional": null,
-        "func_alternate_acc": false,
-        "manual_update": false,
+        "func_alternate_acc": true,
+        "manual_update": true,
         "description": "A search result, with accounts, hashtags and statuses.",
         "has_versions": [
             "v1",
@@ -3881,7 +3881,7 @@
         "fields": {
             "accounts": {
                 "description": "List of Accounts resulting from the query",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Account",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3895,7 +3895,7 @@
             },
             "hashtags": {
                 "description": "List of Tags resulting from the query",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3918,7 +3918,7 @@
             },
             "statuses": {
                 "description": "List of Statuses resulting from the query",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3949,7 +3949,7 @@
         "fields": {
             "accounts": {
                 "description": "List of Accounts resulting from the query",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Account",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3963,7 +3963,7 @@
             },
             "hashtags": {
                 "description": "List of Tags resulting from the query",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Tag",
                 "is_optional": false,
                 "is_nullable": false,
@@ -3977,7 +3977,7 @@
             },
             "statuses": {
                 "description": "List of Statuses resulting from the query",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "is_optional": false,
                 "is_nullable": false,
@@ -4145,7 +4145,7 @@
             },
             "languages": {
                 "description": "Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
@@ -4230,7 +4230,7 @@
             },
             "rules": {
                 "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Rule",
                 "is_optional": false,
                 "is_nullable": false,
@@ -4455,7 +4455,7 @@
             },
             "languages": {
                 "description": "Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
@@ -4509,7 +4509,7 @@
             },
             "rules": {
                 "description": "List of Rules with `id` and `text` fields, one for each server rule set by the admin",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Rule",
                 "is_optional": false,
                 "is_nullable": false,
@@ -4521,8 +4521,8 @@
                 ]
             },
             "icon": {
-                "description": "The instance icon, as a list of `InstanceIcon`s, with entries representing different available size variants.",
-                "field_type": "EntityList",
+                "description": "The instance icon, as a list of `InstanceIcon` , with entries representing different available size variants.",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "InstanceIcon",
                 "is_optional": false,
                 "is_nullable": false,
@@ -5271,7 +5271,7 @@
         "fields": {
             "supported_mime_types": {
                 "description": "Mime types the instance accepts for media attachment uploads.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -5453,7 +5453,7 @@
             },
             "protocols": {
                 "description": "A list of strings specifying the federation protocols this instance supports. Typically, just \"activitypub\".",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "is_optional": false,
                 "is_nullable": false,
@@ -5570,7 +5570,7 @@
         "fields": {
             "outbound": {
                 "description": "List of services that this instance can send messages to. On Mastodon, typically an empty list.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -5583,7 +5583,7 @@
             },
             "inbound": {
                 "description": "List of services that this instance can retrieve messages from. On Mastodon, typically an empty list.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -5843,7 +5843,7 @@
             },
             "status_ids": {
                 "description": "List of status IDs attached to the report",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "IdType",
                 "is_optional": false,
                 "is_nullable": false,
@@ -5900,7 +5900,7 @@
             },
             "rules_ids": {
                 "description": "IDs of the rules selected for this report.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "IdType",
                 "is_optional": false,
                 "is_nullable": false,
@@ -6054,7 +6054,7 @@
             },
             "statuses": {
                 "description": "List of Statuses attached to the report",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "is_optional": false,
                 "is_nullable": false,
@@ -6111,7 +6111,7 @@
             },
             "rules": {
                 "description": "Rules attached to the report, for context.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Rule",
                 "is_optional": false,
                 "is_nullable": false,
@@ -6238,7 +6238,7 @@
         "name": "Push subscription alert",
         "python_name": "WebPushSubscriptionAlerts",
         "func_call": "mastodon.push_subscription().alerts",
-        "func_call_real": "mastodon_soc.push_subscription_set(\"http://halcy.de/\",mastodon_soc.push_subscription_generate_keys()[1],follow_events=True).alerts",
+        "func_call_real": "mastodon.push_subscription_set(\"http://halcy.de/\",mastodon.push_subscription_generate_keys()[1],follow_events=True).alerts",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/WebPushSubscription/",
         "func_call_additional": null,
         "func_alternate_acc": false,
@@ -6882,7 +6882,7 @@
             },
             "mentions": {
                 "description": "Users mentioned in the annoucement",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "StatusMention",
                 "is_optional": false,
                 "is_nullable": false,
@@ -6896,7 +6896,7 @@
             },
             "tags": {
                 "description": "Hashtags mentioned in the announcement",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -6910,7 +6910,7 @@
             },
             "emojis": {
                 "description": "Custom emoji used in the annoucement",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -6924,7 +6924,7 @@
             },
             "reactions": {
                 "description": "Reactions to the annoucement",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Reaction",
                 "is_optional": false,
                 "is_nullable": false,
@@ -6938,7 +6938,7 @@
             },
             "statuses": {
                 "description": "Statuses linked in the announcement text.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -7119,7 +7119,7 @@
             },
             "accounts": {
                 "description": "List of Accounts of the familiar followers",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "Account",
                 "is_optional": false,
                 "is_nullable": false,
@@ -7384,7 +7384,7 @@
             },
             "ips": {
                 "description": "All known IP addresses associated with this account.",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AdminIp",
                 "is_optional": false,
                 "is_nullable": false,
@@ -7566,7 +7566,7 @@
             },
             "data": {
                 "description": "A list of AdminMeasureData with the measure broken down by date",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AdminMeasureData",
                 "is_optional": false,
                 "is_nullable": false,
@@ -7648,7 +7648,7 @@
             },
             "data": {
                 "description": "A list of data AdminDimensionData objects",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AdminDimensionData",
                 "is_optional": false,
                 "is_nullable": false,
@@ -7756,7 +7756,7 @@
             },
             "data": {
                 "description": "List of AdminCohort objects",
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AdminCohort",
                 "is_optional": false,
                 "is_nullable": false,
@@ -7824,7 +7824,7 @@
     {
         "name": "Admin domain block",
         "python_name": "AdminDomainBlock",
-        "func_call": "mastodon_ico_admin.admin_domain_blocks()[0]",
+        "func_call": "mastodon.admin_domain_blocks()[0]",
         "func_alternate_acc": true,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Admin_DomainBlock/",
         "func_call_real": null,
@@ -8145,7 +8145,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AdminEmailDomainBlockHistory",
                 "field_structuretype": null,
                 "is_optional": false,
@@ -8848,7 +8848,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
@@ -8863,7 +8863,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
@@ -8878,7 +8878,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
@@ -8893,7 +8893,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
@@ -8908,7 +8908,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,
@@ -8923,7 +8923,7 @@
                         "added"
                     ]
                 ],
-                "field_type": "EntityList",
+                "field_type": "NonPaginatableList",
                 "field_subtype": "AccountCreationErrorDetailsField",
                 "field_structuretype": null,
                 "is_optional": true,

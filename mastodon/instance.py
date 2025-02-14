@@ -47,7 +47,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v2/instance/')
 
     @api_version("1.1.0", "4.0.0", _DICT_VERSION_INSTANCE)
-    def instance(self) -> Union[Instance, InstanceV2]:
+    def instance(self) -> Union[InstanceV2, Instance]:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
@@ -86,7 +86,7 @@ class Mastodon(Internals):
         return status in ["OK", "success"]
 
     @api_version("3.0.0", "3.0.0", "3.0.0")
-    def instance_nodeinfo(self, schema: str = "http://nodeinfo.diaspora.software/ns/schema/2.0") -> Union[Nodeinfo, AttribAccessDict]:
+    def instance_nodeinfo(self, schema: str = "http://nodeinfo.diaspora.software/ns/schema/2.0") -> Nodeinfo:
         """
         Retrieves the instance's nodeinfo information.
 

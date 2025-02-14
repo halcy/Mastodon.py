@@ -24,6 +24,12 @@ you can also just write
 and everything will work as intended. The class used for this is exposed as
 `AttribAccessDict`.
 
+Since version 2.0.0, Mastodon.py is fully typed - there are now classes for all
+return types, and all functions have type hints. Note that the base class is still
+the AttribAccessDict - this means that you can still access all returned values as 
+attributes, `even if a type does not define them.`. Lists have been split into lists
+that can be paginated (i.e. that have pagination attributes) and those that cannot.
+
 Base types
 ==========
 .. autoclass:: mastodon.types_base.AttribAccessDict

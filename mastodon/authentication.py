@@ -239,6 +239,9 @@ class Mastodon(Internals):
         self.mastodon_minor = 0
         self.mastodon_patch = 0
         self.version_check_worked = None
+        self.version_check_tried = False
+        if not mastodon_version is None:
+            self.version_check_tried = True
 
         # Versioning
         if mastodon_version is None and self.version_check_mode != 'none':

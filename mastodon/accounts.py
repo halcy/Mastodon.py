@@ -10,7 +10,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 
 from typing import Union, Optional, Tuple, List
-from mastodon.return_types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile, AttribAccessDict, try_cast
+from mastodon.return_types import AccountCreationError, Account, IdType, Status, PaginatableList, NonPaginatableList, UserList, Relationship, FamiliarFollowers, Tag, IdType, PathOrFile, AttribAccessDict, try_cast_recurse
 from datetime import datetime
 
 class Mastodon(Internals):
@@ -78,7 +78,7 @@ class Mastodon(Internals):
         response = self.__api_request('POST', '/api/v1/accounts', params, do_ratelimiting=False, access_token_override=temp_access_token, skip_error_check=True, override_type=dict)
         if "error" in response:
             if return_detailed_error:
-                return None, try_cast(AccountCreationError, response)
+                return None, try_cast_recurse(AccountCreationError, response)
             raise MastodonIllegalArgumentError(f'Invalid request: {response["error"]}')
         self.access_token = response['access_token']
         self.__set_refresh_token(response.get('refresh_token'))

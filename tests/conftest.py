@@ -1,4 +1,6 @@
 import pytest
+import os
+import vcr
 
 # Set this to True to debug issues with tests
 DEBUG_REQUESTS = True
@@ -60,3 +62,36 @@ def vcr_config():
         match_on = ['method', 'path', 'query', 'body'],
         decode_compressed_response = True
     )
+
+# Fixtures for testing against actual, real servers
+# Please be extremely careful with these
+@pytest.fixture
+def mastodon_base():
+    import mastodon
+    secret_file = os.path.join(os.path.dirname(__file__), '..', 'srcgen', 'base_credentials.secret')
+    if os.path.exists(secret_file):
+        api =  mastodon.Mastodon(
+            access_token=secret_file
+        )
+    else:
+        api = mastodon.Mastodon(
+            access_token='DUMMY',
+            api_base_url='https://mastodon.social'
+        )
+    return api
+
+# Same, but admin. Be even more careful with these.
+@pytest.fixture
+def mastodon_admin():
+    import mastodon    
+    secret_file = os.path.join(os.path.dirname(__file__), '..', 'srcgen', 'admin_credentials.secret')
+    if os.path.exists(secret_file):
+        api =  mastodon.Mastodon(
+            access_token=secret_file
+        )
+    else:
+        api = mastodon.Mastodon(
+            access_token='DUMMY',
+            api_base_url='https://icosahedron.website'
+        )
+    return api

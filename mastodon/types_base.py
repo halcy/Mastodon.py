@@ -6,6 +6,8 @@ import dateutil.parser
 from collections import OrderedDict
 from mastodon.compat import PurePath
 import sys
+import json
+import copy
 
 # A type representing a file name as a PurePath or string, or a file-like object, for convenience
 PathOrFile = Union[str, PurePath, IO[bytes]]
@@ -40,6 +42,8 @@ def int_to_base62(val: int) -> str:
         base62.append(BASE62_ALPHABET[digit])
     return ''.join(reversed(base62))
 
+
+PrimitiveIdType = Union[str, int]
 """
 The base type for all non-snowflake IDs. This is a union of int and str 
 because while Mastodon mostly uses IDs that are ints, it doesn't guarantee
@@ -49,7 +53,6 @@ In a change from previous versions, string IDs now take precedence over ints.
 This is a breaking change, and I'm sorry about it, but this will make every piece
 of software using Mastodon.py more robust in the long run.
 """
-PrimitiveIdType = Union[str, int]
 
 class MaybeSnowflakeIdType(str):
     """
@@ -58,7 +61,7 @@ class MaybeSnowflakeIdType(str):
     Contains what a regular ID can contain (int or str) and will convert to int if
     containing an int or a str that naturally converts to an int (e.g. "123").
 
-    Can *also* contain a *datetime* which gets converted to 
+    Can *also* contain a *datetime* which gets converted to a  timestamp.
 
     It's also just *maybe* a snowflake ID, because some implementations may not use those.
 
@@ -142,19 +145,23 @@ if sys.version_info < (3, 9):
     def resolve_type(t):
         # I'm sorry about this, but I cannot think of another way to make this work properly in versions below 3.9 that
         # cannot resolve forward references in a sane way
-        from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, Status, StatusEdit, FilterResult,\
-            StatusMention, ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, Tag, TagHistory, CustomEmoji,\
-            Application, Relationship, Filter, FilterV2, Notification, Context, UserList, MediaAttachment, MediaAttachmentMetadataContainer,\
-            MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, MediaAttachmentFocusPoint, MediaAttachmentColors, \
-            PreviewCard, Search, SearchV2, Instance, InstanceConfiguration, InstanceURLs, InstanceV2, InstanceConfigurationV2, InstanceURLsV2,\
-            InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, InstanceUsageUsers, Rule, InstanceRegistrations,\
-            InstanceContact, InstanceAccountConfiguration, InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration,\
-            InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, NodeinfoMetadata, Activity,\
-            Report, AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, PushNotification, Preferences, FeaturedTag, Marker, Announcement,\
-            Reaction, StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, AdminMeasure, AdminMeasureData, AdminDimension, AdminDimensionData,\
-            AdminRetention, AdminCohort, AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory,\
-            AdminIpBlock, DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, Suggestion, Translation, AccountCreationError,\
-            AccountCreationErrorDetails, AccountCreationErrorDetailsField
+        from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, \
+            Status, StatusEdit, FilterResult, StatusMention, ScheduledStatus, ScheduledStatusParams, \
+            Poll, PollOption, Conversation, Tag, TagHistory, CustomEmoji, \
+            Application, Relationship, Filter, FilterV2, Notification, Context, \
+            UserList, MediaAttachment, MediaAttachmentMetadataContainer, MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, \
+            MediaAttachmentFocusPoint, MediaAttachmentColors, PreviewCard, PreviewCardAuthor, Search, SearchV2, \
+            Instance, InstanceConfiguration, InstanceURLs, InstanceV2, InstanceIcon, InstanceConfigurationV2, \
+            InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, \
+            InstanceUsageUsers, Rule, InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, InstanceStatusConfiguration, \
+            InstanceTranslationConfiguration, InstanceMediaConfiguration, InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, NodeinfoServices, \
+            NodeinfoUsage, NodeinfoUsageUsers, NodeinfoMetadata, Activity, Report, AdminReport, \
+            WebPushSubscription, WebPushSubscriptionAlerts, PushNotification, Preferences, FeaturedTag, Marker, \
+            Announcement, Reaction, StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, \
+            AdminMeasure, AdminMeasureData, AdminDimension, AdminDimensionData, AdminRetention, AdminCohort, \
+            AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory, AdminIpBlock, \
+            DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, \
+            Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())
@@ -200,6 +207,7 @@ def try_cast(t, value, retry = True, union_specializer = None):
     * Trying once again to AttribAccessDict as a fallback
     Gives up and returns as-is if none of the above work.
     """
+    #print("Cast attempt: ", value, "to", t)
     if value is None: # None early out
         return value
     t = resolve_type(t)
@@ -261,6 +269,7 @@ def try_cast(t, value, retry = True, union_specializer = None):
             else:
                 value = t(value)
     except Exception as e:
+        #print("Failed to cast", value, "to", t, ":", e)
         if retry and isinstance(value, dict):
             value = try_cast(AttribAccessDict, value, False, union_specializer)
     return value
@@ -269,13 +278,15 @@ def try_cast_recurse(t, value, union_specializer=None):
     """
     Non-dict compound type casting function. Handles:
     * Casting to list, tuple, EntityList or (Non)PaginatableList, converting all elements to the correct type recursively
-    + Casting to Union, use union_specializer to special case the union type to the correct one
+    * Casting to Union, use union_specializer to special case the union type to the correct one
     * Casting to Union, trying all types in the union until one works
     Gives up and returns as-is if none of the above work.
     """
     if value is None:
         return value
     t = resolve_type(t)
+    real_type = None
+    use_real_type = False
     try:
         if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
             orig_type = get_type_class(t)
@@ -290,7 +301,6 @@ def try_cast_recurse(t, value, union_specializer=None):
                     value_cast.append(try_cast_recurse(element_type, v, union_specializer))
                 value = orig_type(value_cast)
             elif orig_type is Union:
-                real_type = None
                 if union_specializer is not None:
                     from mastodon.return_types import MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata
                     real_type = {
@@ -301,6 +311,7 @@ def try_cast_recurse(t, value, union_specializer=None):
                     }.get(union_specializer, None)
                 if real_type in t.__args__:
                     value = try_cast_recurse(real_type, value, union_specializer)
+                    use_real_type = True
                     testing_t = real_type
                     if hasattr(t, '__origin__') or hasattr(t, '__extra__'):
                         testing_t = get_type_class(real_type)
@@ -318,26 +329,147 @@ def try_cast_recurse(t, value, union_specializer=None):
         else:
             value = try_cast(t, value, True, union_specializer)
     except Exception as e:
+        # Failures are silently ignored. We care about maximum not breaking here.
         pass
+    
+    #print("Type casted", value, "to", t)
+    if real_issubclass(value.__class__, AttribAccessDict) or real_issubclass(value.__class__, PaginatableList) or real_issubclass(value.__class__, NonPaginatableList) or real_issubclass(value.__class__, MaybeSnowflakeIdType):
+        save_type = t
+        if real_type is not None and use_real_type:
+            save_type = real_type
+        #print("And trying to add _mastopy_type as ", save_type)
+        try:
+            # Unsure how robust this is - to be evaluated
+            value._mastopy_type = repr(save_type).replace("mastodon.return_types.", "").replace("mastodon.types_base.", "")
+            if value._mastopy_type.startswith("<class '") and value._mastopy_type.endswith("'>"):
+                value._mastopy_type = value._mastopy_type[8:-2]
+        except Exception as e:
+            #print("Failed to set _mastopy_type:", e)
+            # Failures are silently ignored. We care about maximum not breaking here.
+            pass
     return value
 
-"""
-Pagination info
+class Entity():
+    """
+    Base class for everything returned by the API. This is a union of :class:`AttribAccessDict` and :class:`EntityList`.
 
-Not likely to change, but very much implementation (Mastodon.py) and implementation (Mastodon server) defined. It would be best
-if you treated this as opaque.
-"""
+    Defines two methods: to_json(), and (static) from_json(), for serializing and deserializing to/from JSON.
+    """
+    def __init__(self):
+        self._mastopy_type = None
+
+    def to_json(self, pretty=True) -> str:
+        """
+        Serialize to JSON.
+
+        The returned JSON data includes type information and a version field.
+        """
+        mastopy_data = copy.deepcopy(self)
+
+        # Recursively walk through the object, find every object with a class that has a _rename_map, and remove the renamed fields
+        def remove_renamed_fields(obj):
+            if isinstance(obj, dict):
+                if hasattr(obj.__class__, "_rename_map"):
+                    for field in getattr(obj.__class__, "_rename_map").values():
+                        if field in obj:
+                            del obj[field]
+                for key in obj:
+                    remove_renamed_fields(obj[key])
+            elif isinstance(obj, list):
+                for item in obj:
+                    remove_renamed_fields(item)
+        remove_renamed_fields(mastopy_data)
+
+        serialize_data = {
+            "_mastopy_version": "2.0.0",
+            "_mastopy_type": self._mastopy_type,
+            "_mastopy_data": mastopy_data
+        }
+
+        def json_serial(obj):
+            if isinstance(obj, datetime):
+                return obj.isoformat()
+
+
+        if pretty:
+            return json.dumps(serialize_data, default=json_serial, indent=4)
+        else:
+            return json.dumps(serialize_data, default=json_serial)
+
+    @staticmethod
+    def from_json(json_str: str) -> Entity:
+        """
+        Deserialize from JSON.
+
+        Parse a JSON string and cast to the to the appropriate type
+        by using a special field that is added by serialization.
+
+        This `should` be safe to call on any JSON string (no less safe than json.loads), 
+        but I would still recommend to be very careful when using this on untrusted data 
+        and to check that the returned value matches your expectations.
+        """
+        # First, parse json normally. Can end up as a dict or a list.
+        json_result = json.loads(json_str)
+
+        # Read _mastopy_version field, throw error if not present
+        # Not currently used, but we make sure it is there
+        if "_mastopy_version" not in json_result:
+            raise ValueError("JSON does not contain _mastopy_version field, refusing to parse.")
+        
+        # Read _mastopy_type field, throw error if not present
+        if "_mastopy_type" not in json_result:
+            raise ValueError("JSON does not contain _mastopy_type field, refusing to parse.")
+        mastopy_type = json_result["_mastopy_type"]
+
+        # See if we need to parse a sub-type (i.e. [<something>] in the type name
+        sub_type = None
+        if "[" in mastopy_type and "]" in mastopy_type:
+            mastopy_type, sub_type = mastopy_type.split("[")
+            sub_type = sub_type[:-1]
+            if mastopy_type not in ["PaginatableList", "NonPaginatableList", "typing.Optional", "typing.Union"]:
+                raise ValueError(f"Subtype not allowed for type {mastopy_type} and subtype {sub_type}")
+        if "[" in mastopy_type or "]" in mastopy_type:
+            raise ValueError(f"Invalid type {mastopy_type}")
+        if sub_type is not None and ("[" in sub_type or "]" in sub_type):
+            raise ValueError(f"Invalid subtype {sub_type}")
+        
+        # Build the actual type object. 
+        from mastodon.return_types import ENTITY_NAME_MAP
+        full_type = None
+        if sub_type is not None:
+            sub_type = ENTITY_NAME_MAP.get(sub_type, None)
+            full_type = {
+                "PaginatableList": PaginatableList[sub_type], 
+                "NonPaginatableList": NonPaginatableList[sub_type],
+                "typing.Optional": Optional[sub_type],
+                "typing.Union": Union[sub_type],
+            }[mastopy_type]
+        else:
+            full_type = ENTITY_NAME_MAP.get(mastopy_type, None)
+        if full_type is None:
+            raise ValueError(f"Unknown type {mastopy_type}")
+
+        # Finally, try to cast to the generated type
+        return try_cast_recurse(full_type, json_result["_mastopy_data"])
+
+
 class PaginationInfo(OrderedDict):
+    """
+    Pagination info
+
+    Not likely to change, but very much implementation (Mastodon.py) and implementation (Mastodon server) defined. It would be best
+    if you treated this as opaque.
+    """
     pass
 
+IdType = Union[PrimitiveIdType, MaybeSnowflakeIdType]
 """
 IDs returned from Mastodon.py ar either primitive (int or str) or snowflake
 (still int or str, but potentially convertible to datetime).
 """
-IdType = Union[PrimitiveIdType, MaybeSnowflakeIdType]
 
 T = TypeVar('T')
-class PaginatableList(List[T]):
+class PaginatableList(List[T], Entity):
     """
     This is a list with pagination information attached.
 
@@ -355,12 +487,13 @@ class PaginatableList(List[T]):
         self._pagination_next = None
         self._pagination_prev = None 
 
-class NonPaginatableList(List[T]):
+class NonPaginatableList(List[T], Entity):
     """
-    This is just a list. I am subclassing the regular list out of pure paranoia about
-    potential oversights that might require me to add things to it later.
+    This is just a list, without pagination information but
+    annotated for serialization and deserialization.
     """
-    pass
+    def __init__(self, *args, **kwargs):
+        super(NonPaginatableList, self).__init__(*args, **kwargs)
 
 EntityList = Union[NonPaginatableList[T], PaginatableList[T]]
 """Lists in Mastodon.py are either regular or paginatable, so this is a union of
@@ -371,7 +504,7 @@ try:
 except:
     OrderedStrDict = OrderedDict
 
-class AttribAccessDict(OrderedStrDict):
+class AttribAccessDict(OrderedStrDict, Entity):
     """
     Base return object class for Mastodon.py.
 
@@ -409,9 +542,7 @@ class AttribAccessDict(OrderedStrDict):
         """
         Override to force access of normal attributes to go through __getattr__
         """
-        if attr == "_AttribAccessDict__union_specializer":
-            return super(AttribAccessDict, self).__getattribute__(attr)
-        if attr == '__class__':
+        if attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "__class__"]:
             return super(AttribAccessDict, self).__getattribute__(attr)
         if attr in self.__class__.__annotations__:
             return self.__getattr__(attr)
@@ -446,45 +577,50 @@ class AttribAccessDict(OrderedStrDict):
         """
         Attribute setter that calls through to dict setter but will throw if attribute is not in dict
         """
-        if attr in self or attr == "_AttribAccessDict__union_specializer":
-            self[attr] = val
+        if attr in self or attr in ["_AttribAccessDict__union_specializer", "_mastopy_type"]:
+            if attr == "_mastopy_type":
+                super(AttribAccessDict, self).__setattr__(attr, val)
+            else:
+                self[attr] = val
         else:
             raise AttributeError(f"Attribute not found: {attr}")
 
     def __setitem__(self, key, val):
         """
         Dict setter that also sets attributes and tries to typecast if we have an 
-        AttribAccessDict or MaybeSnowflakeIdType type hint.
+        AttribAccessDict, EntityList or MaybeSnowflakeIdType type hint.
 
-        For Unions, we special case explicitly to specialize
+        For Unions, we special case explicitly to specialize.
         """
-        # Collate type hints that we may have
-        type_hints = get_type_hints(self.__class__)
-        init_hints = get_type_hints(self.__class__.__init__)
-        type_hints.update(init_hints)
+        # If we're already an AttribAccessDict subclass, skip all the casting
+        if not isinstance(val, AttribAccessDict):
+            # Collate type hints that we may have
+            type_hints = get_type_hints(self.__class__)
+            init_hints = get_type_hints(self.__class__.__init__)
+            type_hints.update(init_hints)
 
-        # Ugly hack: We have to specialize unions by hand because you can't just guess by content generally
-        # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
-        # the type hints (assuming that the order of annotations is not changed, which python does not guarantee,
-        # if it ever does: we'll have to add another hack to the constructor)
-        from mastodon.return_types import MediaAttachment
-        if type(self) == MediaAttachment and key == "type":
-            self.__union_specializer = val
+            # Ugly hack: We have to specialize unions by hand because you can't just guess by content generally
+            # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
+            # the type hints (assuming that the order of annotations is not changed, which python does not guarantee,
+            # if it ever does: we'll have to add another hack to the constructor)
+            from mastodon.return_types import MediaAttachment
+            if type(self) == MediaAttachment and key == "type":
+                self.__union_specializer = val
 
-        # Do we have a union specializer attribute?
-        union_specializer = None
-        if hasattr(self, "_AttribAccessDict__union_specializer"):
-            union_specializer = self.__union_specializer
+            # Do we have a union specializer attribute?
+            union_specializer = None
+            if hasattr(self, "_AttribAccessDict__union_specializer"):
+                union_specializer = self.__union_specializer
 
-        # Do typecasting, possibly iterating over a list or tuple
-        if key in type_hints:
-            type_hint = type_hints[key]
-            val = try_cast_recurse(type_hint, val, union_specializer)
-        else:
-            if isinstance(val, dict):
-                val = try_cast_recurse(AttribAccessDict, val, union_specializer)
-            elif isinstance(val, list):
-                val = try_cast_recurse(EntityList, val, union_specializer)
+            # Do typecasting, possibly iterating over a list or tuple
+            if key in type_hints:
+                type_hint = type_hints[key]
+                val = try_cast_recurse(type_hint, val, union_specializer)
+            else:
+                if isinstance(val, dict):
+                    val = try_cast_recurse(AttribAccessDict, val, union_specializer)
+                elif isinstance(val, list):
+                    val = try_cast_recurse(EntityList, val, union_specializer)
 
         # Finally, call out to setattr and setitem proper
         super(AttribAccessDict, self).__setattr__(key, val)
@@ -510,10 +646,6 @@ class AttribAccessDict(OrderedStrDict):
             except Exception as e:
                 pass
         return False
-    
-
-Entity = Union[AttribAccessDict, EntityList]
-"""Base class for everything returned by the API. This is a union of :class:`AttribAccessDict` and :class:`EntityList`."""
 
 WebpushCryptoParamsPubkey = Dict[str, str]
 """A type containing the parameters for a encrypting webpush data. Considered opaque / implementation detail."""

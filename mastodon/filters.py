@@ -2,11 +2,15 @@
 
 import re
 
-from .versions import _DICT_VERSION_FILTER
-from .errors import MastodonIllegalArgumentError
-from .utility import api_version
+from mastodon.versions import _DICT_VERSION_FILTER
+from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.utility import api_version
 
-from .internals import Mastodon as Internals
+from mastodon.internals import Mastodon as Internals
+from mastodon.return_types import Filter, FilterV2, Status, Notification
+from mastodon.types_base import PaginatableList, NonPaginatableList, IdType
+
+from typing import Union, Optional
 
 
 class Mastodon(Internals):
@@ -14,26 +18,24 @@ class Mastodon(Internals):
     # Reading data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
-    def filters(self):
+    def filters(self) -> Union[NonPaginatableList[Filter], NonPaginatableList[FilterV2]]:
         """
         Fetch all of the logged-in user's filters.
-
-        Returns a list of :ref:`filter dicts <filter dicts>`. Not paginated.
         """
         return self.__api_request('GET', '/api/v1/filters')
 
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
-    def filter(self, id):
+    def filter(self, id: Union[Filter, FilterV2, IdType]) -> Union[Filter, FilterV2]:
         """
         Fetches information about the filter with the specified `id`.
-
-        Returns a :ref:`filter dict <filter dict>`.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/filters/{id}')
 
+    # TODO: Add v2 filter support
+    # TODO: test this properly
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
-    def filters_apply(self, objects, filters, context):
+    def filters_apply(self, objects: Union[PaginatableList[Status], PaginatableList[Notification]], filters: Union[NonPaginatableList[Filter], NonPaginatableList[FilterV2]], context: str) -> Union[PaginatableList[Status], PaginatableList[Notification]]:
         """
         Helper function: Applies a list of filters to a list of either statuses
         or notifications and returns only those matched by none. This function will
@@ -41,7 +43,6 @@ class Mastodon(Internals):
         if you want to apply only notification-relevant filters, specify
         'notifications'. Valid contexts are 'home', 'notifications', 'public' and 'thread'.
         """
-
         # Build filter regex
         filter_strings = []
         for keyword_filter in filters:
@@ -71,7 +72,7 @@ class Mastodon(Internals):
     # Writing data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
-    def filter_create(self, phrase, context, irreversible=False, whole_word=True, expires_in=None):
+    def filter_create(self, phrase: str, context: str, irreversible: bool = False, whole_word: bool = True, expires_in: Optional[int] = None) -> Union[Filter, FilterV2]:
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
         filtered out, `context` specifies from where to filter the keywords.
@@ -86,7 +87,7 @@ class Mastodon(Internals):
         Set `expires_in` to specify for how many seconds the filter should be
         kept around.
 
-        Returns the :ref:`filter dict <filter dict>` of the newly created filter.
+        Returns the newly created filter.
         """
         params = self.__generate_params(locals())
 
@@ -97,19 +98,19 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/filters', params)
 
     @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
-    def filter_update(self, id, phrase=None, context=None, irreversible=None, whole_word=None, expires_in=None):
+    def filter_update(self, id: Union[Filter, FilterV2, IdType], phrase: Optional[str] = None, context: Optional[str] = None, irreversible: Optional[bool] = None, whole_word: Optional[bool] = None, expires_in: Optional[int] = None) -> Union[Filter, FilterV2]:
         """
         Updates the filter with the given `id`. Parameters are the same
         as in `filter_create()`.
 
-        Returns the :ref:`filter dict <filter dict>` of the updated filter.
+        Returns the updated filter.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('PUT', f'/api/v1/filters/{id}', params)
 
     @api_version("2.4.3", "2.4.3", "2.4.3")
-    def filter_delete(self, id):
+    def filter_delete(self, id: Union[Filter, FilterV2, IdType]):
         """
         Deletes the filter with the given `id`.
         """

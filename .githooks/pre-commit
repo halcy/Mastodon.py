@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+import sys
+import subprocess
+import re
+import os
+
+# Get the list of staged files
+def get_staged_files():
+    result = subprocess.run(["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"], capture_output=True, text=True)
+    return result.stdout.splitlines()
+
+# Check if a file contains forbidden patterns
+def contains_forbidden_string(file_path, FORBIDDEN_PATTERNS):
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+            for pattern in FORBIDDEN_PATTERNS:
+                if re.search(pattern, content, re.IGNORECASE):
+                    print(f"ERROR: Credential '{pattern}' found in {file_path}")
+                    return True
+    except Exception as e:
+        print(f"Skipping {file_path} due to error: {e}")
+    return False
+
+def main():
+    FORBIDDEN_PATTERNS = []
+    if os.path.exists("srcgen/base_credentials.secret"):
+        with open("srcgen/base_credentials.secret", "r") as f:
+            new_patterns = f.read().splitlines()
+            new_patterns.pop(1)
+            FORBIDDEN_PATTERNS.extend(new_patterns)
+    if os.path.exists("srcgen/admin_credentials.secret"):
+        with open("srcgen/admin_credentials.secret", "r") as f:
+            new_patterns = f.read().splitlines()
+            new_patterns.pop(1)
+            FORBIDDEN_PATTERNS.extend(new_patterns)
+    FORBIDDEN_PATTERNS = list(filter(None, FORBIDDEN_PATTERNS))
+    staged_files = get_staged_files()
+    flagged_files = [f for f in staged_files if contains_forbidden_string(f, FORBIDDEN_PATTERNS)]
+
+    if flagged_files:
+        print("\nCommit aborted! Remove sensitive data before committing.\n")
+        sys.exit(1)
+    
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()

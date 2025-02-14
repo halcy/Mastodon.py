@@ -8,7 +8,8 @@ from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Preferences, Marker, Status, IdType
-from typing import Union, List, Dict
+from mastodon.types_base import AttribAccessDict, try_cast_recurse
+from typing import Union, List
 
 class Mastodon(Internals):
     ###
@@ -26,7 +27,7 @@ class Mastodon(Internals):
     # Reading data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> Dict[str, Marker]:
+    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> dict[str, Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
         are the same as in :ref:`timeline() <timeline()>`
@@ -38,13 +39,17 @@ class Mastodon(Internals):
         if not isinstance(timeline, (list, tuple)):
             timeline = [timeline]
         params = self.__generate_params(locals())
-        return self.__api_request('GET', '/api/v1/markers', params)
+        result = self.__api_request('GET', '/api/v1/markers', params)
+        result_real = AttribAccessDict()
+        for key, value in result.items():
+            result_real[key] = try_cast_recurse(Marker, value)
+        return result_real
 
     ##
     # Writing data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> Dict[str, Marker]:
+    def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> dict[str, Marker]:
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
 
@@ -65,4 +70,8 @@ class Mastodon(Internals):
         for timeline, last_read_id in zip(timelines, last_read_ids):
             params[timeline] = collections.OrderedDict()
             params[timeline]["last_read_id"] = self.__unpack_id(last_read_id)
-        return self.__api_request('POST', '/api/v1/markers', params, use_json=True)
+        result = self.__api_request('POST', '/api/v1/markers', params, use_json=True)
+        result_real = AttribAccessDict()
+        for key, value in result.items():
+            result_real[key] = try_cast_recurse(Marker, value)
+        return result_real

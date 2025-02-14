@@ -18,3 +18,4 @@ access is allowed even when not authenticated if the instance admin has enabled 
 .. automethod:: Mastodon.timeline_hashtag
 .. automethod:: Mastodon.timeline_list
 .. automethod:: Mastodon.conversations
+    

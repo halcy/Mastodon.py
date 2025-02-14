@@ -13,5 +13,8 @@ Here's some general stuff to keep in mind, and some work that needs to be done:
     * Write tests specific to these features
     * We now have a "feature set" parameter to support these better.
     
+There is a .githooks directory that you can start using by running
 
+$ git config --local core.hooksPath .githooks/
 
+right now, there is only a hook that checks whether you're trying to commit a credential.

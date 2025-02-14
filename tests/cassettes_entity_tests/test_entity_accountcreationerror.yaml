@@ -1,0 +1,167 @@
+interactions:
+- request:
+    body: scope=read+write+follow+push&client_id=DUMMY&client_secret=DUMMY&grant_type=client_credentials
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - DUMMY
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '170'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - mastodonpy
+    method: POST
+    uri: https://mastodon.social/oauth/token
+  response:
+    body:
+      string: '{"access_token": "DUMMY", "token_type": "Bearer", "scope": "read write
+        follow push", "created_at": 1687629761}'
+    headers:
+      Connection:
+      - keep-alive
+      Date:
+      - Fri, 14 Feb 2025 15:38:24 GMT
+      Strict-Transport-Security:
+      - max-age=31557600
+      Vary:
+      - Accept, Origin, Accept-Encoding
+      X-Cache:
+      - MISS, MISS, MISS
+      X-Cache-Hits:
+      - 0, 0, 0
+      X-Served-By:
+      - cache-fra-etou8220171-FRA, cache-fra-etou8220169-FRA, cache-hel1410024-HEL
+      X-Timer:
+      - S1739547505.534341,VS0,VE286
+      accept-ranges:
+      - none
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      cache-control:
+      - no-store
+      content-length:
+      - '141'
+      content-security-policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' https://mastodon.social; img-src ''self'' data: blob: https://mastodon.social
+        https://files.mastodon.social; style-src ''self'' https://mastodon.social
+        ''nonce-vssTxXYJDLOKQBP8/FTqLg==''; media-src ''self'' data: https://mastodon.social
+        https://files.mastodon.social; manifest-src ''self'' https://mastodon.social;
+        form-action ''self''; child-src ''self'' blob: https://mastodon.social; worker-src
+        ''self'' blob: https://mastodon.social; connect-src ''self'' data: blob: https://mastodon.social
+        https://files.mastodon.social wss://streaming.mastodon.social; script-src
+        ''self'' https://mastodon.social ''wasm-unsafe-eval''; frame-src ''self''
+        https:'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"e45198d725ce26b757f4f73374cc0514"
+      pragma:
+      - no-cache
+      referrer-policy:
+      - same-origin
+      transfer-encoding:
+      - chunked
+      via:
+      - 1.1 varnish, 1.1 varnish, 1.1 varnish
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-request-id:
+      - 160ebaf1fb8af0c60d953c89329f5a99
+      x-runtime:
+      - '0.219838'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: username=halcy&password=secret&email=invalid+email+lol&agreement=1&locale=en&return_detailed_error=1&client_id=DUMMY&client_secret=DUMMY
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - DUMMY
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '212'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - mastodonpy
+    method: POST
+    uri: https://mastodon.social/api/v1/accounts
+  response:
+    body:
+      string: '{"error": "Validation failed: E-mail address is invalid, Password is
+        too short (minimum is 8 characters), Username has already been taken, E-mail
+        address is invalid, E-mail address uses a disallowed e-mail provider", "details":
+        {"email": [{"error": "ERR_INVALID", "description": "is invalid"}, {"error":
+        "ERR_INVALID", "description": "is invalid"}, {"error": "ERR_BLOCKED", "description":
+        "uses a disallowed e-mail provider"}], "password": [{"error": "ERR_TOO_SHORT",
+        "description": "is too short (minimum is 8 characters)"}], "username": [{"error":
+        "ERR_TAKEN", "description": "has already been taken"}]}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '581'
+      Date:
+      - Fri, 14 Feb 2025 15:38:25 GMT
+      Strict-Transport-Security:
+      - max-age=31557600
+      Vary:
+      - Authorization, Origin
+      X-Cache:
+      - MISS, MISS, MISS
+      X-Cache-Hits:
+      - 0, 0, 0
+      X-Served-By:
+      - cache-fra-eddf8230051-FRA, cache-fra-eddf8230096-FRA, cache-hel1410024-HEL
+      X-Timer:
+      - S1739547505.832592,VS0,VE210
+      accept-ranges:
+      - bytes
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      cache-control:
+      - private, no-store
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      referrer-policy:
+      - same-origin
+      via:
+      - 1.1 varnish, 1.1 varnish, 1.1 varnish
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-ratelimit-limit:
+      - '5'
+      x-ratelimit-remaining:
+      - '4'
+      x-ratelimit-reset:
+      - '2025-02-14T16:00:00.907145Z'
+      x-request-id:
+      - 1dd421a35c1765c64b3cf0ac4a6ee0ab
+      x-runtime:
+      - '0.143248'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 422
+      message: Unknown Error
+version: 1
