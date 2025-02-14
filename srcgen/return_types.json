@@ -2841,7 +2841,20 @@
                         "added `admin.report`"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "mention": "Someone mentioned you in their status",
+                    "status": "Someone you enabled notifications for has posted a status",
+                    "reblog": "Someone boosted one of your statuses",
+                    "follow": "Someone followed you",
+                    "follow_request": "Someone requested to follow you",
+                    "favourite": "Someone favourited one of your statuses",
+                    "poll": "A poll you created or voted in has ended",
+                    "update": "A status you interacted with has been edited",
+                    "admin.sign_up": "Someone signed up (optionally sent to admins)",
+                    "admin.report": "A new report has been filed",
+                    "severed_relationships": "Follow relationships severed by moderation or block event",
+                    "moderation_warning": "A moderator has taken action or sent you a warning"
+                }
             },
             "created_at": {
                 "description": "The time the notification was created",
@@ -9032,6 +9045,612 @@
                     ]
                 ],
                 "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Notification Policy",
+        "python_name": "NotificationPolicy",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/NotificationPolicy",
+        "description": "Represents the notification filtering policy of the user.",
+        "fields": {
+            "for_not_following": {
+                "description": "Whether to accept, filter or drop notifications from accounts the user is not following.",
+                "enum": {
+                    "accept": "Accept notifications.",
+                    "filter": "Mark notifications as filtered.",
+                    "drop": "Prevent creation of the notification object altogether."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "for_not_followers": {
+                "description": "Whether to accept, filter or drop notifications from accounts that are not following the user.",
+                "enum": {
+                    "accept": "Accept notifications.",
+                    "filter": "Mark notifications as filtered.",
+                    "drop": "Prevent creation of the notification object altogether."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "for_new_accounts": {
+                "description": "Whether to accept, filter or drop notifications from accounts created in the past 30 days.",
+                "enum": {
+                    "accept": "Accept notifications.",
+                    "filter": "Mark notifications as filtered.",
+                    "drop": "Prevent creation of the notification object altogether."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "for_private_mentions": {
+                "description": "Whether to accept, filter or drop notifications from private mentions.",
+                "enum": {
+                    "accept": "Accept notifications.",
+                    "filter": "Mark notifications as filtered.",
+                    "drop": "Prevent creation of the notification object altogether."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "for_limited_accounts": {
+                "description": "Whether to accept, filter or drop notifications from accounts that were limited by a moderator.",
+                "enum": {
+                    "accept": "Accept notifications.",
+                    "filter": "Mark notifications as filtered.",
+                    "drop": "Prevent creation of the notification object altogether."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "summary": {
+                "description": "A summary of the filtered notifications.",
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NotificationPolicySummary",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Notification Policy Summary",
+        "python_name": "NotificationPolicySummary",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/NotificationPolicy",
+        "description": "A summary of the filtered notifications.",
+        "fields": {
+            "pending_requests_count": {
+                "description": "Number of different accounts from which the user has non-dismissed filtered notifications. Capped at 100.",
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "int",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "pending_notifications_count": {
+                "description": "Number of total non-dismissed filtered notifications. May be inaccurate.",
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "int",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Relationship Severance Event",
+        "python_name": "RelationshipSeveranceEvent",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/RelationshipSeveranceEvent",
+        "description": "Summary of a moderation or block event that caused follow relationships to be severed.",
+        "fields": {
+            "id": {
+                "description": "The ID of the relationship severance event in the database.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "type": {
+                "description": "Type of event.",
+                "enum": {
+                    "domain_block": "A moderator suspended a whole domain.",
+                    "user_domain_block": "The user blocked a whole domain.",
+                    "account_suspension": "A moderator suspended a specific account."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "purged": {
+                "description": "Whether the list of severed relationships is unavailable because the data has been purged.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "bool",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "target_name": {
+                "description": "Name of the target of the moderation/block event. This is either a domain name or a user handle, depending on the event type.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "followers_count": {
+                "description": "Number of followers that were removed as result of the event.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "int",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "following_count": {
+                "description": "Number of accounts the user stopped following as result of the event.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "int",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "created_at": {
+                "description": "When the event took place.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Grouped Notifications Results",
+        "python_name": "GroupedNotificationsResults",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/GroupedNotificationsResults",
+        "description": "Container for grouped notifications plus referenced accounts and statuses.",
+        "fields": {
+            "accounts": {
+                "description": "Accounts referenced by grouped notifications.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Account",
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "partial_accounts": {
+                "description": "Partial accounts referenced by grouped notifications. Only returned with expand_accounts=partial_avatars.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "PartialAccountWithAvatar",
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "statuses": {
+                "description": "Statuses referenced by grouped notifications.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Status",
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "notification_groups": {
+                "description": "The grouped notifications themselves.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "NotificationGroup",
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Partial Account With Avatar",
+        "python_name": "PartialAccountWithAvatar",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/GroupedNotificationsResults",
+        "description": "A stripped-down version of Account, containing only what is necessary to display avatars and a few other fields.",
+        "fields": {
+            "id": {
+                "description": "The account ID.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "acct": {
+                "description": "The Webfinger account URI.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "url": {
+                "description": "The location of the user’s profile page.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "avatar": {
+                "description": "An image icon (avatar) shown in the profile.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "avatar_static": {
+                "description": "A static version of the avatar. May differ if the main avatar is animated.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "locked": {
+                "description": "Whether the account manually approves follow requests.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "bool",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "bot": {
+                "description": "Indicates that the account may perform automated actions.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "bool",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Notification Group",
+        "python_name": "NotificationGroup",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/GroupedNotificationsResults",
+        "description": "A group of related notifications, plus metadata for pagination.",
+        "fields": {
+            "group_key": {
+                "description": "Group key identifying the grouped notifications. Treated as opaque.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "notifications_count": {
+                "description": "Total number of individual notifications in this group.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "int",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "type": {
+                "description": "The type of event that resulted in the notifications.",
+                "enum": {
+                    "mention": "Someone mentioned you in their status",
+                    "status": "Someone you enabled notifications for has posted a status",
+                    "reblog": "Someone boosted one of your statuses",
+                    "follow": "Someone followed you",
+                    "follow_request": "Someone requested to follow you",
+                    "favourite": "Someone favourited one of your statuses",
+                    "poll": "A poll you created or voted in has ended",
+                    "update": "A status you interacted with has been edited",
+                    "admin.sign_up": "Someone signed up (optionally sent to admins)",
+                    "admin.report": "A new report has been filed",
+                    "severed_relationships": "Follow relationships severed by moderation or block event",
+                    "moderation_warning": "A moderator has taken action or sent you a warning"
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "NotificationTypeEnum",
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "most_recent_notification_id": {
+                "description": "ID of the most recent notification in the group.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "page_min_id": {
+                "description": "ID of the oldest notification in this group within the current page.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "page_max_id": {
+                "description": "ID of the newest notification in this group within the current page.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "latest_page_notification_at": {
+                "description": "Date at which the most recent notification within this group (in the current page) was created.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "sample_account_ids": {
+                "description": "IDs of some of the accounts who most recently triggered notifications in this group.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "status_id": {
+                "description": "ID of the Status that was the object of the notification.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "report": {
+                "description": "Report that was the object of the notification.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "Report",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "event": {
+                "description": "Summary of the event that caused follow relationships to be severed.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "RelationshipSeveranceEvent",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "moderation_warning": {
+                "description": "Moderation warning that caused the notification.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "AccountWarning",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Account Warning",
+        "python_name": "AccountWarning",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AccountWarning",
+        "description": "Moderation warning against a particular account.",
+        "fields": {
+            "id": {
+                "description": "The ID of the account warning in the database.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "action": {
+                "description": "Action taken against the account.",
+                "enum": {
+                    "none": "No action was taken, this is a simple warning.",
+                    "disable": "The account has been disabled.",
+                    "mark_statuses_as_sensitive": "Specific posts from the target account have been marked as sensitive.",
+                    "delete_statuses": "Specific statuses from the target account have been deleted.",
+                    "sensitive": "All posts from the target account are marked as sensitive.",
+                    "silence": "The target account has been limited.",
+                    "suspend": "The target account has been suspended."
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "text": {
+                "description": "Message from the moderator to the target account.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "status_ids": {
+                "description": "List of status IDs relevant to the warning. May be null.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": true
+            },
+            "target_account": {
+                "description": "Account against which a moderation decision has been taken.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "Account",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "appeal": {
+                "description": "Appeal submitted by the target account, if any.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "Appeal",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": true
+            },
+            "created_at": {
+                "description": "When the event took place.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Unread Notifications Count",
+        "python_name": "UnreadNotificationsCount",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/notifications/#unread_count",
+        "description": "Get the (capped) number of unread notifications for the current user.",
+        "fields": {
+            "count": {
+                "description": "The capped number of unread notifications. The cap is not documented.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
                 "is_optional": false,
