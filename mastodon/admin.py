@@ -38,15 +38,6 @@ class Mastodon(Internals):
 
         Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
         if role_ids is not None:
             if not isinstance(role_ids, list):
                 role_ids = [role_ids]
@@ -67,7 +58,7 @@ class Mastodon(Internals):
         if not by_domain is None:
             by_domain = self.__deprotocolize(by_domain)
 
-        params = self.__generate_params(locals())
+        params = self.__generate_params(locals(), dateconv=True)
         return self.__api_request('GET', '/api/v2/admin/accounts', params)
 
     @api_version("2.9.1", "2.9.1", _DICT_VERSION_ADMIN_ACCOUNT)
@@ -122,16 +113,7 @@ class Mastodon(Internals):
 
         Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
-        params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'])
+        params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'], dateconv=True)
 
         if remote:
             params["remote"] = True
@@ -279,15 +261,6 @@ class Mastodon(Internals):
 
         Returns a list of :ref:`report dicts <report dicts>`.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
         if account_id is not None:
             account_id = self.__unpack_id(account_id)
 
@@ -388,15 +361,6 @@ class Mastodon(Internals):
 
         Returns a list of :ref:`admin domain block dicts <admin domain block dicts>`, raises a `MastodonAPIError` if the specified block does not exist.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
         if id is not None:
             id = self.__unpack_id(id)
             return self.__api_request('GET', f'/api/v1/admin/domain_blocks/{id}')
@@ -607,13 +571,6 @@ class Mastodon(Internals):
 
         The returned list may be paginated using max_id, min_id, and since_id.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-        
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/canonical_email_blocks', params)
 

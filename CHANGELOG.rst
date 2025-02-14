@@ -32,6 +32,7 @@ v2.0.0 (IN PROGRESS)
 * Add forward_to_domains parameter to reports
 * Add `account_delete_avatar` and `account_delete_header`
 * Add `statuses` method to retrieve multiple statuses at once
+* Add automatic conversion of datetime objects to flake IDs for min/max/since_id fields where appropriate
 
 v1.8.1
 ------

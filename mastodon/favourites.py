@@ -20,18 +20,7 @@ class Mastodon(Internals):
 
         This endpoint uses internal ids for pagination, passing status ids to
         `max_id`, `min_id`, or `since_id` will not work.
-
-        Returns a list of :ref:`status dicts <status dicts>`.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/favourites', params)
 
@@ -47,14 +36,5 @@ class Mastodon(Internals):
         This endpoint uses internal ids for pagination, passing status ids to
         `max_id`, `min_id`, or `since_id` will not work.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/bookmarks', params)

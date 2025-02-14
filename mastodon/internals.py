@@ -480,7 +480,7 @@ class Mastodon():
             with closing(connection) as r:
                 listener.handle_stream(r)
 
-    def __generate_params(self, params, exclude=[]):
+    def __generate_params(self, params, exclude=[], dateconv=False):
         """
         Internal named-parameters-to-dict helper.
 
@@ -509,6 +509,13 @@ class Mastodon():
                 params[key + "[]"] = params[key]
                 del params[key]
 
+        # Unpack min/max/since_id fields, since that is a very common operation
+        # and we basically always want it
+        for key in param_keys:
+            if key in ['min_id', 'max_id', 'since_id']:
+                print("Unpacking", key)
+                params[key] = self.__unpack_id(params[key], dateconv = dateconv, listify = False)
+
         return params
 
     def __unpack_id(self, id, dateconv = False, listify = False, field = "id"):
@@ -520,8 +527,6 @@ class Mastodon():
         the id straight.
 
         Also unpacks datetimes to snowflake IDs if requested.
-
-        TODO: Rework this to use the new type system.
         """
         if id is None:
             return None

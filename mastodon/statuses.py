@@ -100,10 +100,8 @@ class Mastodon(Internals):
         """
         Fetch a list of scheduled statuses
         """
-        max_id = self.__unpack_id(max_id)
-        min_id = self.__unpack_id(min_id)
-        since_id = self.__unpack_id(since_id)
-        return self.__api_request('GET', '/api/v1/scheduled_statuses')
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/scheduled_statuses', params)
 
     @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
     def scheduled_status(self, id: Union[ScheduledStatus, IdType]) -> ScheduledStatus:

@@ -82,7 +82,7 @@ class Mastodon(Internals):
         Returns a :ref:`search result dict <search result dict>`.
         """
         self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
-        params = self.__generate_params(locals())
+        params = self.__generate_params(locals(), dateconv=True)
 
         if not resolve:
             del params["resolve"]

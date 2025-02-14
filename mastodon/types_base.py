@@ -464,10 +464,11 @@ class PaginationInfo(OrderedDict):
     """
     pass
 
-IdType = Union[PrimitiveIdType, MaybeSnowflakeIdType]
+IdType = Union[PrimitiveIdType, MaybeSnowflakeIdType, datetime]
 """
 IDs returned from Mastodon.py ar either primitive (int or str) or snowflake
-(still int or str, but potentially convertible to datetime).
+(still int or str, but potentially convertible to datetime), but also
+a datetime (which will get converted to a snowflake id).
 """
 
 T = TypeVar('T')

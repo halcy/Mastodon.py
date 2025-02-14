@@ -28,15 +28,6 @@ class Mastodon(Internals):
 
         May or may not require authentication depending on server settings and what is specifically requested.
         """
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id, dateconv=True)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id, dateconv=True)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id, dateconv=True)
-
         params_initial = locals()
 
         if not local:
@@ -52,7 +43,7 @@ class Mastodon(Internals):
             timeline = "public"
             params_initial['local'] = True
 
-        params = self.__generate_params(params_initial, ['timeline'])
+        params = self.__generate_params(params_initial, ['timeline'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/timelines/{timeline}', params)
 
     @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)

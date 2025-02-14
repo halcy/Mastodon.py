@@ -35,17 +35,7 @@ class Mastodon(Internals):
         Get the accounts that are on the given list.
         """
         id = self.__unpack_id(id)
-
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
-        params = self.__generate_params(locals(), ['id'])
+        params = self.__generate_params(locals(), ['id'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/lists/{id}/accounts', params)
 
     ###

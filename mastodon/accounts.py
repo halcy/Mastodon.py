@@ -207,16 +207,7 @@ class Mastodon(Internals):
         Fetch users the given user is following.
         """
         id = self.__unpack_id(id)
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
-        params = self.__generate_params(locals(), ['id'])
+        params = self.__generate_params(locals(), ['id'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/following', params)
 
     @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
@@ -227,16 +218,7 @@ class Mastodon(Internals):
         Fetch users the given user is followed by.
         """
         id = self.__unpack_id(id)
-        if max_id is not None:
-            max_id = self.__unpack_id(max_id)
-
-        if min_id is not None:
-            min_id = self.__unpack_id(min_id)
-
-        if since_id is not None:
-            since_id = self.__unpack_id(since_id)
-
-        params = self.__generate_params(locals(), ['id'])
+        params = self.__generate_params(locals(), ['id'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/followers', params)
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
