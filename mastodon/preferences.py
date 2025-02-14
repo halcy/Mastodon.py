@@ -9,7 +9,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Preferences, Marker, Status, IdType
 from mastodon.types_base import AttribAccessDict, try_cast_recurse
-from typing import Union, List
+from typing import Union, List, Dict
 
 class Mastodon(Internals):
     ###
@@ -49,7 +49,7 @@ class Mastodon(Internals):
     # Writing data: Read markers
     ##
     @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
-    def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> dict[str, Marker]:
+    def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> Dict[str, Marker]:
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
 
