@@ -2655,7 +2655,7 @@ class InstanceV2(AttribAccessDict):
 
     icon: "EntityList[InstanceIcon]"
     """
-    The instance icon, as a list of `InstanceIcon`s, with entries representing different available size variants.
+    The instance icon, as a list of `InstanceIcon` , with entries representing different available size variants.
     Should contain (as text): URL
 
     Version history:

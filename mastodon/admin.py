@@ -19,7 +19,7 @@ class Mastodon(Internals):
     def admin_accounts_v2(self, origin: Optional[str] = None, by_domain: Optional[str] = None, status: Optional[str] = None, username: Optional[str] = None, 
                           display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, permissions: Optional[str] = None, 
                           invited_by: Union[Account, IdType] = None, role_ids: Optional[List[IdType]] = None, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
-                          since_id: Optional[IdType] = None, limit: Optional[int] = None) -> AdminAccount:
+                          since_id: Optional[IdType] = None, limit: Optional[int] = None) -> List[AdminAccount]:
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
 

@@ -362,8 +362,9 @@ class NonPaginatableList(List[T]):
     """
     pass
 
-"""Lists in Mastodon.py are either regular or paginatable"""
 EntityList = Union[NonPaginatableList[T], PaginatableList[T]]
+"""Lists in Mastodon.py are either regular or paginatable, so this is a union of
+   :class:`NonPaginatableList` and :class:`PaginatableList`."""
 
 try:
     OrderedStrDict = OrderedDict[str, Any]
@@ -510,14 +511,15 @@ class AttribAccessDict(OrderedStrDict):
                 pass
         return False
     
-"""An entity returned by the Mastodon API is either a dict or a list"""
+
 Entity = Union[AttribAccessDict, EntityList]
+"""Base class for everything returned by the API. This is a union of :class:`AttribAccessDict` and :class:`EntityList`."""
 
-"""A type containing the parameters for a encrypting webpush data. Considered opaque / implementation detail."""
 WebpushCryptoParamsPubkey = Dict[str, str]
+"""A type containing the parameters for a encrypting webpush data. Considered opaque / implementation detail."""
 
-"""A type containing the parameters for a derypting webpush data. Considered opaque / implementation detail."""
 WebpushCryptoParamsPrivkey = Dict[str, str]
+"""A type containing the parameters for a derypting webpush data. Considered opaque / implementation detail."""
 
-"""Backwards compatibility alias"""
 AttribAccessList = PaginatableList
+"""Backwards compatibility alias"""
