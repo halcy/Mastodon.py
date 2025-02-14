@@ -23,8 +23,6 @@ class Mastodon(Internals):
 
         This is the explicit v1 version of this function. The v2 version is available through instance_v2().
         It contains a bit more information than this one, but does not include whether invites are enabled.
-
-        Returns an :ref:`instance dict <instance dict>`.
         """
         return self.__instance()
 
@@ -41,8 +39,6 @@ class Mastodon(Internals):
         Retrieve basic information about the instance, including the URI and administrative contact email.
 
         Does not require authentication unless locked down by the administrator. This is the explicit v2 variant.
-
-        Returns an :ref:`instance dict <instance dict>`.
         """
         return self.__api_request('GET', '/api/v2/instance/')
 
@@ -53,9 +49,13 @@ class Mastodon(Internals):
 
         Does not require authentication unless locked down by the administrator.
 
-        Returns an :ref:`instance dict <instance dict>`.
+        Will return the latest available version of the instance information. If you want a specific one,
+        call the _v1 or _v2 variants
         """
-        return self.__api_request('GET', '/api/v2/instance/') # TODO FIXME VERSIONING 
+        if self.verify_minimum_version("4.0.0", cached=True):
+            return self.instance_v2()
+        else:
+            return self.instance_v1()
 
     @api_version("2.1.2", "2.1.2", _DICT_VERSION_ACTIVITY)
     def instance_activity(self) -> NonPaginatableList[Activity]:

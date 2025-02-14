@@ -63,8 +63,8 @@ class StreamListener(object):
         `announcement dict` describing the newly posted announcement."""
         pass
 
-    def on_announcement_reaction(self, TODO):
-        """Someone has reacted to an announcement. TODO: what is payload lol"""
+    def on_announcement_reaction(self, reaction):
+        """Someone has reacted to an announcement."""
         pass
 
     def on_announcement_delete(self, annoucement_id):

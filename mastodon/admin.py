@@ -8,7 +8,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from typing import Optional, List, Union
 from mastodon.return_types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
-                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention
+                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock
 from datetime import datetime
 
 class Mastodon(Internals):
@@ -598,3 +598,71 @@ class Mastodon(Internals):
             "frequency": frequency
         }
         return self.__api_request('POST', '/api/v1/admin/retention', params)
+
+    @api_version("4.0.0", "4.0.0", "4.0.0")
+    def admin_canonical_email_blocks(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
+                                     since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminCanonicalEmailBlock]:
+        """
+        Fetches a list of canonical email blocks. Requires scope `admin:read:canonical_email_blocks`.
+
+        The returned list may be paginated using max_id, min_id, and since_id.
+        """
+        if max_id is not None:
+            max_id = self.__unpack_id(max_id)
+        if min_id is not None:
+            min_id = self.__unpack_id(min_id)
+        if since_id is not None:
+            since_id = self.__unpack_id(since_id)
+        
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/canonical_email_blocks', params)
+
+    @api_version("4.0.0", "4.0.0", "4.0.0")
+    def admin_canonical_email_block(self, id: IdType) -> AdminCanonicalEmailBlock:
+        """
+        Fetch a single canonical email block by ID. Requires scope `admin:read:canonical_email_blocks`.
+        
+        Raises `MastodonAPIError` if the email block does not exist.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', f'/api/v1/admin/canonical_email_blocks/{id}')
+
+    @api_version("4.0.0", "4.0.0", "4.0.0")
+    def admin_test_canonical_email_block(self, email: str) -> NonPaginatableList[AdminCanonicalEmailBlock]:
+        """
+        Canonicalize and hash an email address, returning all matching canonical email blocks. Requires scope `admin:read:canonical_email_blocks`.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/admin/canonical_email_blocks/test', params)
+
+    @api_version("4.0.0", "4.0.0", "4.0.0")
+    def admin_create_canonical_email_block(self, email: Optional[str] = None, canonical_email_hash: Optional[str] = None) -> AdminCanonicalEmailBlock:
+        """
+        Block a canonical email. Requires scope `admin:write:canonical_email_blocks`.
+
+        Either `email` (which will be canonicalized and hashed) or `canonical_email_hash` must be provided.
+
+        Up do date details about the canonicalization and hashing process can be found here:
+        
+            https://github.com/mastodon/mastodon/blob/main/app/helpers/email_helper.rb
+
+        As of Mastodon v4.4.0:
+            * Everything lowercased
+            * Dots are removed from the part before the @
+            * Anything after a + is removed
+            * The hash in use is SHA256
+        """
+        if email is None and canonical_email_hash is None:
+            raise MastodonIllegalArgumentError("Either 'email' or 'canonical_email_hash' must be provided.")
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/admin/canonical_email_blocks', params)
+
+    @api_version("4.0.0", "4.0.0", "4.0.0")
+    def admin_delete_canonical_email_block(self, id: IdType) -> AdminCanonicalEmailBlock:
+        """
+        Delete a canonical email block by ID. Requires scope `admin:write:canonical_email_blocks`.
+        
+        Raises `MastodonAPIError` if the email block does not exist.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('DELETE', f'/api/v1/admin/canonical_email_blocks/{id}')

@@ -10,6 +10,8 @@ current instance as well as data from the instance-wide profile directory.
 
 .. _instance():
 .. automethod:: Mastodon.instance
+.. automethod:: Mastodon.instance_v1    
+.. automethod:: Mastodon.instance_v2
 .. automethod:: Mastodon.instance_activity
 .. automethod:: Mastodon.instance_peers
 .. automethod:: Mastodon.instance_health

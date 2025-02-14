@@ -23,6 +23,7 @@ v2.0.0 (IN PROGRESS)
 * Version check mode now defaults to "none", since it keeps causing more problems than it solves.
 * Document `media` (Thanks LunarLambda for the report)
 * Added json serialization and deserialization for returned entities
+* Added missing event types and a catch-all event for streaming API
 
 v1.8.1
 ------

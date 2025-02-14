@@ -1,0 +1,870 @@
+interactions:
+- request:
+    body: email=test%40example.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks
+  response:
+    body:
+      string: '{"id":"6","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '100'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0d46a81545add481c9d66fe9f9d16882"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.34, sql.active_record;dur=13.93, cache_generate.active_support;dur=27.19,
+        cache_write.active_support;dur=0.95, instantiation.active_record;dur=4.03,
+        start_processing.action_controller;dur=0.01, transaction.active_record;dur=12.39,
+        render.active_model_serializers;dur=1.43, process_action.action_controller;dur=71.20
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.466865Z'
+      X-Request-Id:
+      - faf45eb4-356b-4322-85f7-3f0314a59285
+      X-Runtime:
+      - '0.209096'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=test%40example.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"6","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0169178a96c87e20abde86b2ad751e7f"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=1.19, cache_generate.active_support;dur=1.27,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.74,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.20,
+        process_action.action_controller;dur=114.74
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.561581Z'
+      X-Request-Id:
+      - 482fd952-0756-484d-a5f0-3d5a323d2957
+      X-Runtime:
+      - '0.138734'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=Test%40example.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"6","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0169178a96c87e20abde86b2ad751e7f"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.92, cache_generate.active_support;dur=3.49,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.30,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.17,
+        process_action.action_controller;dur=21.22
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.703316Z'
+      X-Request-Id:
+      - 893394cb-58dd-4c1c-bc14-fd47806816f4
+      X-Runtime:
+      - '0.045988'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=te.st%40example.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '25'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"6","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0169178a96c87e20abde86b2ad751e7f"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.95, cache_generate.active_support;dur=0.83,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.35,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=23.38
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.751572Z'
+      X-Request-Id:
+      - 2cdc282b-1f99-4323-968c-b85b9c06dc7b
+      X-Runtime:
+      - '0.044807'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=test%2Bother%40EXAMPLE.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '32'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"6","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0169178a96c87e20abde86b2ad751e7f"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=1.08, cache_generate.active_support;dur=1.04,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.38,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=25.25
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.804520Z'
+      X-Request-Id:
+      - a2936c17-c2bc-418d-8b92-acaac66c4ebb
+      X-Runtime:
+      - '0.052291'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks
+  response:
+    body:
+      string: '[{"id":"6","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0169178a96c87e20abde86b2ad751e7f"
+      Link:
+      - <http://localhost:3000/api/v1/admin/canonical_email_blocks?min_id=6>; rel="prev"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.99, cache_generate.active_support;dur=0.91,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.24,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.15,
+        process_action.action_controller;dur=21.70
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.865406Z'
+      X-Request-Id:
+      - 3718b982-745e-4602-8c72-32ae87f4d3f2
+      X-Runtime:
+      - '0.051593'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: DELETE
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/6
+  response:
+    body:
+      string: '{}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.89, cache_generate.active_support;dur=0.91,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.31,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.55,
+        render.active_model_serializers;dur=0.04, process_action.action_controller;dur=29.71
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.906109Z'
+      X-Request-Id:
+      - af042cc3-eb62-46eb-a2e9-89bdec7e983f
+      X-Runtime:
+      - '0.045033'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks
+  response:
+    body:
+      string: '[]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.77, cache_generate.active_support;dur=0.83,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.23,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
+        process_action.action_controller;dur=20.34
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.954643Z'
+      X-Request-Id:
+      - e0e41dfa-f563-4003-9b53-6ba9d4428eb9
+      X-Runtime:
+      - '0.035310'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: canonical_email_hash=973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '85'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks
+  response:
+    body:
+      string: '{"id":"7","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '100'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0fb4bdcdc01d6e01043a5e3e75faa43d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.62, cache_generate.active_support;dur=0.84,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.29,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.69,
+        render.active_model_serializers;dur=0.16, process_action.action_controller;dur=33.05
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.997727Z'
+      X-Request-Id:
+      - 98777f48-e0e0-4c00-9150-93037940fbd7
+      X-Runtime:
+      - '0.048131'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/7
+  response:
+    body:
+      string: '{"id":"7","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '100'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"0fb4bdcdc01d6e01043a5e3e75faa43d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.64, cache_generate.active_support;dur=0.75,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.22,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=19.11
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.052810Z'
+      X-Request-Id:
+      - b6c2284f-6330-4519-b65b-077a4d359dc5
+      X-Runtime:
+      - '0.041760'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=Test%40example.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"7","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"3751cf934fdd87520843cb595486e47e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.01, sql.active_record;dur=0.84, cache_generate.active_support;dur=0.56,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.34,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.15,
+        process_action.action_controller;dur=23.64
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.092385Z'
+      X-Request-Id:
+      - 8e5589f5-7b0d-40f4-931c-03be228899ce
+      X-Runtime:
+      - '0.037427'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=te.st%40example.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '25'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"7","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"3751cf934fdd87520843cb595486e47e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.89, cache_generate.active_support;dur=0.94,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.35,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=21.59
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.130547Z'
+      X-Request-Id:
+      - 2af6df82-8b70-4a91-ad22-fff4c7254851
+      X-Runtime:
+      - '0.036052'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: email=test%2Bother%40EXAMPLE.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '32'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/test
+  response:
+    body:
+      string: '[{"id":"7","canonical_email_hash":"973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b"}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '102'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"3751cf934fdd87520843cb595486e47e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.66, cache_generate.active_support;dur=0.76,
+        cache_write.active_support;dur=0.26, instantiation.active_record;dur=0.27,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=19.91
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.169167Z'
+      X-Request-Id:
+      - a933c874-5f67-44df-8d5b-5adfc6c53734
+      X-Runtime:
+      - '0.033851'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: DELETE
+    uri: http://localhost:3000/api/v1/admin/canonical_email_blocks/7
+  response:
+    body:
+      string: '{}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.28, cache_generate.active_support;dur=0.89,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.33,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.69,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=26.96
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T20:45:00.207418Z'
+      X-Request-Id:
+      - d17f441a-ce84-4160-a152-bedf0d371bf4
+      X-Runtime:
+      - '0.041095'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+version: 1

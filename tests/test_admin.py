@@ -2,6 +2,7 @@ import pytest
 import time
 from datetime import datetime, timedelta
 from mastodon import MastodonIllegalArgumentError
+import hashlib
 
 @pytest.mark.vcr()
 def test_admin_accounts(api2):
@@ -226,3 +227,50 @@ def test_admin_stats(api2):
             datetime(2020, 10, 10),
             frequency="dayz"
         )
+
+@pytest.mark.vcr()
+def test_admin_canonical_email_block(api2):
+    blocked_email = "test@example.com"
+    try:
+        response = api2.admin_create_canonical_email_block(email=blocked_email)
+        assert response is not None
+        assert hasattr(response, 'id')
+        block_id = response.id
+        
+        test_response = api2.admin_test_canonical_email_block(blocked_email)
+        assert any(b.id == block_id for b in test_response)
+        
+        variations = [
+            "Test@example.com",
+            "te.st@example.com",
+            "test+other@EXAMPLE.com"
+        ]
+        for variation in variations:
+            test_response = api2.admin_test_canonical_email_block(variation)
+            assert any(b.id == block_id for b in test_response)
+        
+        all_blocks = api2.admin_canonical_email_blocks()
+        assert any(b.id == block_id for b in all_blocks)
+        
+        api2.admin_delete_canonical_email_block(block_id)
+        
+        all_blocks_after_delete = api2.admin_canonical_email_blocks()
+        assert not any(b.id == block_id for b in all_blocks_after_delete)
+        
+        email_hash = hashlib.sha256(blocked_email.encode("utf-8")).hexdigest()
+        response = api2.admin_create_canonical_email_block(canonical_email_hash=email_hash)
+        assert response is not None
+        assert hasattr(response, 'id')
+        block_id = response.id
+        
+        test_response = api2.admin_canonical_email_block(block_id)
+        assert test_response.id == block_id
+        for variation in variations:
+            test_response = api2.admin_test_canonical_email_block(variation)
+            assert any(b.id == block_id for b in test_response)
+        
+    finally:
+        try:
+            api2.admin_delete_canonical_email_block(block_id)
+        except Exception:
+            pass

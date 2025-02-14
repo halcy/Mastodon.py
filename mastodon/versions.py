@@ -37,7 +37,7 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                 if major > self.mastodon_major:
                     raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version} to call this endpoint)")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
-                    raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version}) to call this endpoint)")
+                    raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version} to call this endpoint)")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
                     raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version} to call this endpoint). Patch is {self.mastodon_patch}.")
             return function(self, *args, **kwargs)

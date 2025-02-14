@@ -58,3 +58,11 @@ Moderation actions
 .. automethod:: Mastodon.admin_measures
 .. automethod:: Mastodon.admin_dimensions
 .. automethod:: Mastodon.admin_retention
+
+Canonical email blocks
+----------------------
+.. automethod:: Mastodon.admin_canonical_email_blocks
+.. automethod:: Mastodon.admin_canonical_email_block
+.. automethod:: Mastodon.admin_create_canonical_email_block
+.. automethod:: Mastodon.admin_delete_canonical_email_block
+
