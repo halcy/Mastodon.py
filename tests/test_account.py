@@ -142,6 +142,9 @@ def test_account_update_credentials(api):
     assert account["fields"][1].name == "lasagna"
     assert account["fields"][1].value == "no!!!"
 
+    api.account_delete_avatar()
+    api.account_delete_header()
+
 @pytest.mark.vcr()
 def test_account_update_credentials_too_many_fields(api):
     with pytest.raises(MastodonAPIError):

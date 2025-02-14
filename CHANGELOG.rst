@@ -28,6 +28,9 @@ v2.0.0 (IN PROGRESS)
 * Add canonical domain block support (`admin_canonical_email_blocks`, `admin_canonical_email_block`, `admin_canonical_email_block_create`, `admin_canonical_email_block_delete`)
 * Add trending link timeline (`timeline_link`)
 * Update suggestions endpoint and return value
+* Add with_suspended parameter to account_relationships
+* Add forward_to_domains parameter to reports
+* Add `account_delete_avatar` and `account_delete_header`
 
 v1.8.1
 ------

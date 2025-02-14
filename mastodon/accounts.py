@@ -240,10 +240,12 @@ class Mastodon(Internals):
         return self.__api_request('GET', f'/api/v1/accounts/{id}/followers', params)
 
     @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
-    def account_relationships(self, id: Union[List[Union[Account, IdType]], Union[Account, IdType]]) -> NonPaginatableList[Relationship]:
+    def account_relationships(self, id: Union[List[Union[Account, IdType]], Union[Account, IdType]], with_suspended: Optional[bool] = None) -> NonPaginatableList[Relationship]:
         """
         Fetch relationship (following, followed_by, blocking, follow requested) of
         the logged in user to a given account. `id` can be a list.
+
+        Pass `with_suspended = True` to include relationships with suspended accounts.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals())
@@ -485,3 +487,17 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/featured_tags')
+
+    @api_version("4.2.0", "4.2.0", _DICT_VERSION_ACCOUNT)
+    def account_delete_avatar(self):
+        """
+        Delete the logged-in user's avatar.
+        """
+        self.__api_request('DELETE', '/api/v1/profile/avatar')
+    
+    @api_version("4.2.0", "4.2.0", _DICT_VERSION_ACCOUNT)
+    def account_delete_header(self):
+        """
+        Delete the logged-in user's header.
+        """
+        self.__api_request('DELETE', '/api/v1/profile/header')

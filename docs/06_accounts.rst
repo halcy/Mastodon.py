@@ -45,6 +45,9 @@ Writing
 .. _status_unpin():    
 .. automethod:: Mastodon.status_unpin
 
+.. automethod:: Mastodon.account_delete_avatar
+.. automethod:: Mastodon.account_delete_header
+
 Following and followers
 -----------------------
 These functions allow you to get information about the logged in users followers and users that the logged in users follows as well as follow requests and follow suggestions, and to

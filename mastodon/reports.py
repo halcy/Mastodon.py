@@ -30,7 +30,7 @@ class Mastodon(Internals):
     ###
     @api_version("1.1.0", "3.5.0", _DICT_VERSION_REPORT)
     def report(self, account_id: Union[Account, IdType], status_ids: Optional[Union[Status, IdType]] = None, comment: Optional[str] = None, 
-               forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None) -> Report:
+               forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None, forward_to_domains: Optional[List[str]] = None) -> Report:
         """
         Report statuses to the instances administrators.
 
@@ -41,7 +41,9 @@ class Mastodon(Internals):
         to the rules returned by the :ref:`instance() <instance()>` API).
 
         Set `forward` to True to forward a report of a remote user to that users
-        instance as well as sending it to the instance local administrators.
+        instance as well as sending it to the instance local administrators. Set
+        forward_to_domains to a list of domains to forward the report to (only domains of
+        people mentioned in the status), or omitto forward to the domain of the reported status.
         """
         if category is not None and not category in ["spam", "violation", "other"]:
             raise MastodonIllegalArgumentError("Invalid report category (must be spam, violation or other)")
