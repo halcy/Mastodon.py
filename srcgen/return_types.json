@@ -8688,7 +8688,7 @@
     {
         "name": "Suggestion",
         "python_name": "Suggestion",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "mastodon.suggestions()[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -8703,13 +8703,39 @@
                     [
                         "3.4.0",
                         "added"
+                    ],
+                    [
+                        "4.3.0",
+                        "deprecated"
                     ]
                 ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "is_deprecated": true
+            },
+            "sources": {
+                "description": "The reasons this account is being suggested.",
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "field_structuretype": "SuggestionSourceEnum",
+                "is_optional": false,
+                "is_nullable": false,
+                "enum": {
+                    "featured": "Manually recommended by the instance staff",
+                    "most_followed": "Account has many active local followers",
+                    "most_interactions": "Account had many reblogs and favourites within the last 30 days",
+                    "similar_to_recently_followed": "Acounts profile is similar in some way to the logged in users most recent follows",
+                    "friends_of_friends": "Account is followed by people the logged in user follows."
+                }
             },
             "account": {
                 "description": "The account being recommended to follow.",

@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/timelines/link?url=http://example.com/
+  response:
+    body:
+      string: '{"error":"Record not found"}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '28'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.26, sql.active_record;dur=12.37, cache_generate.active_support;dur=25.97,
+        cache_write.active_support;dur=0.67, instantiation.active_record;dur=2.23,
+        start_processing.action_controller;dur=0.01, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=49.28
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-14T21:25:00.035924Z'
+      X-Request-Id:
+      - e70e0187-3493-44c4-b6ee-4454d962875d
+      X-Runtime:
+      - '0.238071'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 404
+      message: Not Found
+version: 1

@@ -19,7 +19,7 @@ class Mastodon(Internals):
                  remote: bool = False) -> PaginatableList[Status]:
         """ 
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
-        'tag/hashtag' or 'list/id'. See the following functions documentation for what those do.
+        'tag/<hashtag<', 'list/<id>' or 'link/<url>'. See the following functions documentation for what those do.
 
         The default timeline is the "home" timeline.
 
@@ -103,3 +103,15 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.timeline(f'list/{id}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
+
+    def timeline_link(self, url: str, local: bool = False, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
+                 since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False,
+                 remote: bool = False) -> PaginatableList[Status]:
+        """
+        Convenience method: Fetch a timeline of toots linking to a given trending URL. Params as in `timeline()`.
+
+        Note: The URL must be *exactly* the same as one fron `trending_links()`, including the protocol and potentially trailing slash.
+
+        Raises a MastodonNotFoundError if the URL is not currently trending.
+        """
+        return self.timeline(f'link?url={url}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)

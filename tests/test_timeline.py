@@ -1,6 +1,6 @@
 import pytest
 import time
-from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError, MastodonUnauthorizedError
+from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError, MastodonUnauthorizedError, MastodonNotFoundError
 import datetime
 import pickle
 import os
@@ -102,3 +102,9 @@ def test_min_max_id_datetimes(api, status):
 
     tl = api.timeline_home(min_id = the_future, max_id = the_far_future)
     assert not any(st["id"] == status["id"] for st in tl)
+
+@pytest.mark.vcr()
+def test_timeline_link_fails(api):
+    with pytest.raises(MastodonNotFoundError):
+        api.timeline_link("http://example.com/")
+        

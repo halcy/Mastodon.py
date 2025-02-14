@@ -24,6 +24,10 @@ v2.0.0 (IN PROGRESS)
 * Document `media` (Thanks LunarLambda for the report)
 * Added json serialization and deserialization for returned entities
 * Added missing event types and a catch-all event for streaming API
+* Add v1 and v2 variants for `instance`
+* Add canonical domain block support (`admin_canonical_email_blocks`, `admin_canonical_email_block`, `admin_canonical_email_block_create`, `admin_canonical_email_block_delete`)
+* Add trending link timeline (`timeline_link`)
+* Update suggestions endpoint and return value
 
 v1.8.1
 ------
