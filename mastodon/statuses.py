@@ -197,7 +197,7 @@ class Mastodon(Internals):
     def status_post(self, status: str, in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
-                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None) -> Union[Status, ScheduledStatus]:
+                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, strict_content_type: bool = False) -> Union[Status, ScheduledStatus]:
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -250,6 +250,8 @@ class Mastodon(Internals):
         the content type of your post on Pleroma. It accepts 'text/plain' (default),
         'text/markdown', 'text/html' and 'text/bbcode'. This parameter is not
         supported on Mastodon servers, but will be safely ignored if set.
+        If you want to throw an error if the content type is not known
+        to work on the server, set `strict_content_type` to True.
 
         **Specific to "fedibird" feature set:**: The `quote_id` parameter is
         a non-standard extension that specifies the id of a quoted status.
@@ -269,7 +271,8 @@ class Mastodon(Internals):
             scheduled_at,
             poll,
             quote_id,
-            edit=None
+            edit=None,
+            strict_content_type=strict_content_type
         )
 
     @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
@@ -328,7 +331,8 @@ class Mastodon(Internals):
     def status_reply(self, to_status: Union[Status, IdType], status: str, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
-                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, untag: bool = False) -> Status:
+                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, untag: bool = False, 
+                    strict_content_type: bool = False) -> Status:
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to the status text and retains
