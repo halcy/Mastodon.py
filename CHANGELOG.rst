@@ -19,6 +19,8 @@ v2.0.0 (IN PROGRESS)
 * Fix version parsing for GoToSocial (Thanks gmemstr)
 * Updated docs to reflect the fact that startign with 4.4.0, the password grant type is no longer supported.
 * Added support for following tags (`followed_tags`, `tag_follow`, `tag_unfollow`, `tag`)
+* Fix library not working with -O2 (Thanks mirabilos for the report)
+* Version check mode now defaults to "none", since it keeps causing more problems than it solves.
 
 v1.8.1
 ------

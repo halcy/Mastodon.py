@@ -35,13 +35,14 @@ def api_version(created_ver, last_changed_ver, return_value_ver):
                     version = max_version(last_changed_ver, return_value_ver)
                 major, minor, patch = parse_version_string(version)
                 if major > self.mastodon_major:
-                    raise MastodonVersionError(f"Version check failed (Need version {version})")
+                    raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version} to call this endpoint)")
                 elif major == self.mastodon_major and minor > self.mastodon_minor:
-                    raise MastodonVersionError(f"Version check failed (Need version {version})")
+                    raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version}) to call this endpoint)")
                 elif major == self.mastodon_major and minor == self.mastodon_minor and patch > self.mastodon_patch:
-                    raise MastodonVersionError(f"Version check failed (Need version {version}, patch is {self.mastodon_patch})")
+                    raise MastodonVersionError(f"Version check failed (Need Mastodon instance version {version} to call this endpoint). Patch is {self.mastodon_patch}.")
             return function(self, *args, **kwargs)
-        function.__doc__ += f"\n\n        *Added: Mastodon v{created_ver}, last changed: Mastodon v{last_changed_ver}*"
+        if function.__doc__:
+            function.__doc__ += f"\n\n        *Added: Mastodon v{created_ver}, last changed: Mastodon v{last_changed_ver}*"
         return decorate(function, wrapper)
     return api_min_version_decorator
 

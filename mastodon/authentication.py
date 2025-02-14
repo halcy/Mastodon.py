@@ -93,7 +93,7 @@ class Mastodon(Internals):
     def __init__(self, client_id: Optional[Union[str, PurePath]] = None, client_secret: Optional[str] = None, 
                  access_token: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, debug_requests: bool = False,
                  ratelimit_method: str = "wait", ratelimit_pacefactor: float = 1.1, request_timeout: float = _DEFAULT_TIMEOUT, 
-                 mastodon_version: Optional[str] =None, version_check_mode: str = "created", session: Optional[requests.Session] = None, 
+                 mastodon_version: Optional[str] = None, version_check_mode: str = "none", session: Optional[requests.Session] = None, 
                  feature_set: str = "mainline", user_agent: str = _DEFAULT_USER_AGENT, lang: Optional[str] = None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
@@ -126,12 +126,6 @@ class Mastodon(Internals):
         Version is specified. If no version is specified, Mastodon.py will set `mastodon_version` to the
         detected version.
 
-        The version check mode can be set to "created" (the default behaviour), "changed" or "none". If set to
-        "created", Mastodon.py will throw an error if the version of Mastodon it is connected to is too old
-        to have an endpoint. If it is set to "changed", it will throw an error if the endpoint's behaviour has
-        changed after the version of Mastodon that is connected has been released. If it is set to "none",
-        version checking is disabled.
-
         `feature_set` can be used to enable behaviour specific to non-mainline Mastodon API implementations.
         Details are documented in the functions that provide such functionality. Currently supported feature
         sets are `mainline`, `fedibird` and `pleroma`.
@@ -144,6 +138,13 @@ class Mastodon(Internals):
         `lang` can be used to change the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter)
         or for a language that has none, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and 
         trends. You can change the language using :ref:`set_language()`.
+
+        The version check mode can be set to "none" (now the default behaviour), "changed" or "created". If set to
+        "created", Mastodon.py will throw an error if the version of Mastodon it is connected to is too old
+        to have an endpoint. If it is set to "changed", it will throw an error if the endpoint's behaviour has
+        changed after the version of Mastodon that is connected has been released. If it is set to "none",
+        version checking is disabled. When encountering problems, I would recommend setting this to "created"
+        and/or setting `debug_requests` to True to get a better idea of what is going on.
 
         If no other `User-Agent` is specified, "mastodonpy" will be used.
         """
