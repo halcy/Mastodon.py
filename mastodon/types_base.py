@@ -161,7 +161,9 @@ if sys.version_info < (3, 9):
             AdminMeasure, AdminMeasureData, AdminDimension, AdminDimensionData, AdminRetention, AdminCohort, \
             AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory, AdminIpBlock, \
             DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, \
-            Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField
+            Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, \
+            NotificationPolicySummary, RelationshipSeveranceEvent, GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, \
+            UnreadNotificationsCount
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())

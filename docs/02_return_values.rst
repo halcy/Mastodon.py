@@ -346,6 +346,30 @@ Return types
 .. autoclass:: mastodon.return_types.AccountCreationErrorDetailsField
    :members:
 
+.. autoclass:: mastodon.return_types.NotificationPolicy
+   :members:
+
+.. autoclass:: mastodon.return_types.NotificationPolicySummary
+   :members:
+
+.. autoclass:: mastodon.return_types.RelationshipSeveranceEvent
+   :members:
+
+.. autoclass:: mastodon.return_types.GroupedNotificationsResults
+   :members:
+
+.. autoclass:: mastodon.return_types.PartialAccountWithAvatar
+   :members:
+
+.. autoclass:: mastodon.return_types.NotificationGroup
+   :members:
+
+.. autoclass:: mastodon.return_types.AccountWarning
+   :members:
+
+.. autoclass:: mastodon.return_types.UnreadNotificationsCount
+   :members:
+
 Deprecated types
 ================
 .. autoclass:: mastodon.return_types.Filter
@@ -356,4 +380,3 @@ Deprecated types
 
 .. autoclass:: mastodon.return_types.IdentityProof
    :members:
-

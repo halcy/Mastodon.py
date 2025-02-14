@@ -285,6 +285,14 @@ class Account(AttribAccessDict):
       * 4.1.0: added
     """
 
+    memorial: "bool"
+    """
+    Boolean indicating whether the account is an in-memoriam account.
+
+    Version history:
+      * 4.2.0: added
+    """
+
     _version = "4.2.0"
 
 class AccountField(AttribAccessDict):
@@ -3361,7 +3369,15 @@ class InstanceRegistrations(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    sign_up_url: "Optional[str]"
+    """
+    URL to the sign-up form for this instance. Only present for the v2 API variant of the instance API. (optional)
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    _version = "4.2.0"
 
 class InstanceContact(AttribAccessDict):
     """
@@ -4692,7 +4708,7 @@ class StreamReaction(AttribAccessDict):
     .. code-block:: python
 
         # Returns a StreamReaction object
-        TODO_TO_BE_IMPLEMENTED
+        # Only available via the streaming API
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/streaming/
     """
@@ -4896,7 +4912,7 @@ class AdminAccount(AttribAccessDict):
 
     sensitized: "bool"
     """
-    Undocumented. If you know what this means, please let me know.
+    Boolean indicating whether the account has been marked as force-sensitive.
 
     Version history:
       * 2.9.1: added
@@ -5315,7 +5331,7 @@ class AdminCanonicalEmailBlock(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AdminCanonicalEmailBlock object
-        TODO_TO_BE_IMPLEMENTED
+        api2.admin_create_canonical_email_block(email=<some email>)
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_CanonicalEmailBlock
     """
@@ -5695,7 +5711,7 @@ class IdentityProof(AttribAccessDict):
     .. code-block:: python
 
         # Returns a IdentityProof object
-        TODO_TO_BE_IMPLEMENTED
+        # Deprecated since 3.5.0 and eventually removed, there is no way to get this on current versions of Mastodon.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/IdentityProof
     """
@@ -5791,17 +5807,29 @@ class Suggestion(AttribAccessDict):
     .. code-block:: python
 
         # Returns a Suggestion object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.suggestions()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Suggestion
     """
 
     source: "str"
     """
+    THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
+
     The reason this account is being suggested.
 
     Version history:
       * 3.4.0: added
+      * 4.3.0: deprecated
+    """
+
+    sources: "NonPaginatableList[str]"
+    """
+    The reasons this account is being suggested.
+    Should contain (as text): SuggestionSourceEnum
+
+    Version history:
+      * 4.3.0: added
     """
 
     account: "Account"
@@ -5812,7 +5840,7 @@ class Suggestion(AttribAccessDict):
       * 3.4.0: added
     """
 
-    _version = "3.4.0"
+    _version = "4.3.0"
 
 class Translation(AttribAccessDict):
     """
@@ -5982,6 +6010,503 @@ class AccountCreationErrorDetailsField(AttribAccessDict):
 
     _version = "3.4.0"
 
+class NotificationPolicy(AttribAccessDict):
+    """
+    Represents the notification filtering policy of the user.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a NotificationPolicy object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
+    """
+
+    for_not_following: "str"
+    """
+    Whether to accept, filter or drop notifications from accounts the user is not following.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    for_not_followers: "str"
+    """
+    Whether to accept, filter or drop notifications from accounts that are not following the user.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    for_new_accounts: "str"
+    """
+    Whether to accept, filter or drop notifications from accounts created in the past 30 days.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    for_private_mentions: "str"
+    """
+    Whether to accept, filter or drop notifications from private mentions.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    for_limited_accounts: "str"
+    """
+    Whether to accept, filter or drop notifications from accounts that were limited by a moderator.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    summary: "NotificationPolicySummary"
+    """
+    A summary of the filtered notifications.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class NotificationPolicySummary(AttribAccessDict):
+    """
+    A summary of the filtered notifications.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a NotificationPolicySummary object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
+    """
+
+    pending_requests_count: "int"
+    """
+    Number of different accounts from which the user has non-dismissed filtered notifications. Capped at 100.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    pending_notifications_count: "int"
+    """
+    Number of total non-dismissed filtered notifications. May be inaccurate.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class RelationshipSeveranceEvent(AttribAccessDict):
+    """
+    Summary of a moderation or block event that caused follow relationships to be severed.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a RelationshipSeveranceEvent object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/RelationshipSeveranceEvent
+    """
+
+    id: "str"
+    """
+    The ID of the relationship severance event in the database.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    type: "str"
+    """
+    Type of event.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    purged: "bool"
+    """
+    Whether the list of severed relationships is unavailable because the data has been purged.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    target_name: "str"
+    """
+    Name of the target of the moderation/block event. This is either a domain name or a user handle, depending on the event type.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    followers_count: "int"
+    """
+    Number of followers that were removed as result of the event.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    following_count: "int"
+    """
+    Number of accounts the user stopped following as result of the event.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    created_at: "datetime"
+    """
+    When the event took place.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class GroupedNotificationsResults(AttribAccessDict):
+    """
+    Container for grouped notifications plus referenced accounts and statuses.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a GroupedNotificationsResults object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/GroupedNotificationsResults
+    """
+
+    accounts: "NonPaginatableList[Account]"
+    """
+    Accounts referenced by grouped notifications.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    partial_accounts: "Optional[NonPaginatableList[PartialAccountWithAvatar]]"
+    """
+    Partial accounts referenced by grouped notifications. Only returned with expand_accounts=partial_avatars. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    statuses: "NonPaginatableList[Status]"
+    """
+    Statuses referenced by grouped notifications.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    notification_groups: "NonPaginatableList[NotificationGroup]"
+    """
+    The grouped notifications themselves.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class PartialAccountWithAvatar(AttribAccessDict):
+    """
+    A stripped-down version of Account, containing only what is necessary to display avatars and a few other fields.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a PartialAccountWithAvatar object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/GroupedNotificationsResults
+    """
+
+    id: "str"
+    """
+    The account ID.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    acct: "str"
+    """
+    The Webfinger account URI.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    url: "str"
+    """
+    The location of the user’s profile page.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    avatar: "str"
+    """
+    An image icon (avatar) shown in the profile.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    avatar_static: "str"
+    """
+    A static version of the avatar. May differ if the main avatar is animated.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    locked: "bool"
+    """
+    Whether the account manually approves follow requests.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    bot: "bool"
+    """
+    Indicates that the account may perform automated actions.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class NotificationGroup(AttribAccessDict):
+    """
+    A group of related notifications, plus metadata for pagination.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a NotificationGroup object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/GroupedNotificationsResults
+    """
+
+    group_key: "str"
+    """
+    Group key identifying the grouped notifications. Treated as opaque.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    notifications_count: "int"
+    """
+    Total number of individual notifications in this group.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    type: "str"
+    """
+    The type of event that resulted in the notifications.
+    Should contain (as text): NotificationTypeEnum
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    most_recent_notification_id: "str"
+    """
+    ID of the most recent notification in the group.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    page_min_id: "Optional[str]"
+    """
+    ID of the oldest notification in this group within the current page. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    page_max_id: "Optional[str]"
+    """
+    ID of the newest notification in this group within the current page. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    latest_page_notification_at: "Optional[datetime]"
+    """
+    Date at which the most recent notification within this group (in the current page) was created. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    sample_account_ids: "NonPaginatableList[str]"
+    """
+    IDs of some of the accounts who most recently triggered notifications in this group.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    status_id: "Optional[str]"
+    """
+    ID of the Status that was the object of the notification. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    report: "Optional[Report]"
+    """
+    Report that was the object of the notification. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    event: "Optional[RelationshipSeveranceEvent]"
+    """
+    Summary of the event that caused follow relationships to be severed. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    moderation_warning: "Optional[AccountWarning]"
+    """
+    Moderation warning that caused the notification. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AccountWarning(AttribAccessDict):
+    """
+    Moderation warning against a particular account.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AccountWarning object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AccountWarning
+    """
+
+    id: "str"
+    """
+    The ID of the account warning in the database.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    action: "str"
+    """
+    Action taken against the account.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    text: "str"
+    """
+    Message from the moderator to the target account.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    status_ids: "Optional[NonPaginatableList[str]]"
+    """
+    List of status IDs relevant to the warning. May be null. (nullable)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    target_account: "Account"
+    """
+    Account against which a moderation decision has been taken.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    appeal: "Optional[Appeal]"
+    """
+    Appeal submitted by the target account, if any. (nullable)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    created_at: "datetime"
+    """
+    When the event took place.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class UnreadNotificationsCount(AttribAccessDict):
+    """
+    Get the (capped) number of unread notifications for the current user.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a UnreadNotificationsCount object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/notifications/#unread_count
+    """
+
+    count: "int"
+    """
+    The capped number of unread notifications. The cap is not documented.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -6082,6 +6607,14 @@ ENTITY_NAME_MAP = {
     "AccountCreationError": AccountCreationError,
     "AccountCreationErrorDetails": AccountCreationErrorDetails,
     "AccountCreationErrorDetailsField": AccountCreationErrorDetailsField,
+    "NotificationPolicy": NotificationPolicy,
+    "NotificationPolicySummary": NotificationPolicySummary,
+    "RelationshipSeveranceEvent": RelationshipSeveranceEvent,
+    "GroupedNotificationsResults": GroupedNotificationsResults,
+    "PartialAccountWithAvatar": PartialAccountWithAvatar,
+    "NotificationGroup": NotificationGroup,
+    "AccountWarning": AccountWarning,
+    "UnreadNotificationsCount": UnreadNotificationsCount,
 }
 __all__ = [
     "Account",
@@ -6183,5 +6716,13 @@ __all__ = [
     "AccountCreationError",
     "AccountCreationErrorDetails",
     "AccountCreationErrorDetailsField",
+    "NotificationPolicy",
+    "NotificationPolicySummary",
+    "RelationshipSeveranceEvent",
+    "GroupedNotificationsResults",
+    "PartialAccountWithAvatar",
+    "NotificationGroup",
+    "AccountWarning",
+    "UnreadNotificationsCount",
 ]
 
