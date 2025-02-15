@@ -11,12 +11,28 @@ Reading
 ~~~~~~~
 .. automethod:: Mastodon.notifications
 .. automethod:: Mastodon.notifications_unread_count
-    
+
 Writing
 ~~~~~~~
 .. automethod:: Mastodon.notifications_clear
 .. automethod:: Mastodon.notifications_dismiss
 .. automethod:: Mastodon.conversations_read
+
+
+Source filtering for notifications
+----------------------------------
+These functions allow you to get information about source filters as well as to create and update filters, and
+to accept or reject notification requests for filtered notifications.
+
+.. authomedod:: Mastodon.notifications_policy
+.. automethod:: Mastodon.update_notifications_policy
+.. automethod:: Mastodon.notification_requests
+.. automethod:: Mastodon.notification_request
+.. automethod:: Mastodon.accept_notification_request
+.. automethod:: Mastodon.dismiss_notification_request
+.. automethod:: Mastodon.accept_multiple_notification_requests
+.. automethod:: Mastodon.dismiss_multiple_notification_requests
+.. automethod:: Mastodon.notifications_merged        
 
 
 Keyword filters
@@ -25,6 +41,8 @@ These functions allow you to get information about keyword filters as well as to
 
 **Very Important Note: The filtering system was revised in 4.0.0. This means that these functions will now not work anymore if an instance is on Mastodon 4.0.0 or above.
 When updating Mastodon.py for 4.0.0, we'll make an effort to emulate old behaviour, but this will not always be possible. Consider these methods deprecated, for now.**
+
+The filters are applied to everything - notifications, timeline, ....
 
 Reading
 ~~~~~~~
@@ -37,6 +55,7 @@ Writing
 .. automethod:: Mastodon.filter_create
 .. automethod:: Mastodon.filter_update
 .. automethod:: Mastodon.filter_delete
+
 
 Push notifications
 ------------------

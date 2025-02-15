@@ -163,7 +163,7 @@ if sys.version_info < (3, 9):
             DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, \
             Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, \
             NotificationPolicySummary, RelationshipSeveranceEvent, GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, \
-            UnreadNotificationsCount, Appeal, TrendingLinkHistory
+            UnreadNotificationsCount, Appeal, TrendingLinkHistory, NotificationRequest
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())
@@ -520,6 +520,10 @@ class AttribAccessDict(OrderedStrDict, Entity):
     While the subclasses implement specific fields with proper typing, parsing and documentation,
     they all inherit from this class, and parsing is extremely permissive to allow for forward and
     backward compatibility as well as compatibility with other implementations of the Mastodon API.
+
+    This class can ALSO have pagination information attached, for paginating lists *inside* the object,
+    because that's what Mastodon 4.3.0 does for groupee notifications. This is special cased in the class
+    definition, though.
     """
     def __init__(self, **kwargs):
         """

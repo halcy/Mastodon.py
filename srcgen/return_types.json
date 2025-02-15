@@ -2895,6 +2895,10 @@
                     [
                         "4.0.0",
                         "added `admin.report`"
+                    ],
+                    [
+                        "4.3.0",
+                        "added `severed_relationships` and `moderation_warning`"
                     ]
                 ],
                 "enum": {
@@ -2971,6 +2975,36 @@
                     ]
                 ],
                 "enum": null
+            },
+            "report": {
+                "description": "Report that was the object of the notification.",
+                "enum": null,
+                "version_history": [["4.0.0", "added"]],
+                "field_type": "Report",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "event": {
+                "description": "Summary of the event that caused follow relationships to be severed.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "RelationshipSeveranceEvent",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "moderation_warning": {
+                "description": "Moderation warning that caused the notification.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "AccountWarning",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
             }
         }
     },
@@ -9179,7 +9213,7 @@
     {
         "name": "Notification Policy",
         "python_name": "NotificationPolicy",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "mastodon.notification_policy()",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -9271,7 +9305,7 @@
     {
         "name": "Notification Policy Summary",
         "python_name": "NotificationPolicySummary",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "mastodon.notification_policy().summary",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -9818,5 +9852,79 @@
                 "is_nullable": false
             }
         }
+    },
+    {
+        "name": "Notification Request",
+        "python_name": "NotificationRequest",
+        "func_call": "mastodon.notification_requests()[0]",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": true,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/NotificationRequest",
+        "description": "Represents a group of filtered notifications from a specific user.",
+        "fields": {
+            "id": {
+                "description": "The ID of the notification request in the database.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "created_at": {
+                "description": "When the first filtered notification from that user was created.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "updated_at": {
+                "description": "When the notification request was last updated.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "account": {
+                "description": "The account that performed the action that generated the filtered notifications.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "Account",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "notifications_count": {
+                "description": "How many of this account’s notifications were filtered.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "last_status": {
+                "description": "Most recent status associated with a filtered notification from that account.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "Status",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            }
+        }
     }
+    
 ]

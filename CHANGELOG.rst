@@ -41,6 +41,7 @@ v2.0.0 (IN PROGRESS)
 * Add trend admin functions (`admin_trending_tags`, `admin_trending_statuses`, `admin_trending_links`, `admin_approve_trending_link`, `admin_reject_trending_link`, `admin_approve_trending_status`, `admin_reject_trending_status`, `admin_approve_trending_tag`, `admin_reject_trending_tag`)
 * Add admin IP block functions (`admin_ip_blocks`, `admin_ip_block`, `admin_ip_block_create`, `admin_ip_block_delete`)
 * Add `instance_domain_blocks`
+* Add notification policy and requests (`notifications_policy`, `update_notifications_policy`, `notifications_requests`, `notification_request`, `accept_notification_request`, `reject_notification_request`, `notifications_merged`, `accept_multiple_notification_requests`, `dismiss_multiple_notification_requests`)
 
 v1.8.1
 ------

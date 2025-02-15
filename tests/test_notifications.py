@@ -80,3 +80,66 @@ def test_notifications_dismiss_pre_2_9_2(api, api2):
 def test_notifications_clear(api):
     api.notifications_clear()
 
+
+@pytest.mark.vcr(match_on=['path'])
+def test_notifications_policy(api2):
+    """Test fetching and updating the notifications policy."""
+    # Fetch current policy
+    policy = api2.notifications_policy()
+    assert policy is not None
+    
+    # Update policy
+    updated_policy = api2.update_notifications_policy(for_not_following="filter", for_not_followers="accept")
+    assert updated_policy.for_not_following == "filter"
+    assert updated_policy.for_not_followers == "accept"
+
+    # Finally, change it to everything being accepted
+    updated_policy = api2.update_notifications_policy(for_not_following="accept", for_not_followers="accept", for_new_accounts="accept", for_limited_accounts="accept", for_private_mentions="accept")
+
+@pytest.mark.vcr()
+def test_notification_requests_accept(api, api2):
+    """Test fetching, accepting, and dismissing notification requests."""
+    temp = api
+    api = api2
+    api2 = temp
+
+    # Generate some request
+    posted = []
+    api2.update_notifications_policy(for_not_following="filter", for_not_followers="filter", for_new_accounts="filter", for_limited_accounts="filter", for_private_mentions="filter")
+    time.sleep(1)
+
+    while not api2.notifications_merged():
+        time.sleep(1)
+        print("Waiting for notifications to merge...")
+    time.sleep(1)
+    
+    try:
+        reply_name = api2.account_verify_credentials().username
+        for i in range(5):
+            posted.append(api.status_post(f"@{reply_name} please follow me - {i+200}!", visibility="public"))
+
+        time.sleep(3)
+
+        # Fetch notification requests
+        requests = api2.notification_requests()
+        assert requests is not None
+        assert len(requests) > 0
+
+        request_id = requests[0].id
+        
+        # Fetch a single request
+        single_request = api2.notification_request(request_id)
+        assert single_request.id == request_id
+        
+        # Accept the request
+        api2.accept_notification_request(request_id)
+        time.sleep(5)
+
+        # Check if notifications have been merged
+        merged_status = api2.notifications_merged()
+        assert isinstance(merged_status, bool)
+        assert merged_status == True
+    finally:
+        for status in posted:
+            api.status_delete(status)
+        api2.update_notifications_policy(for_not_following="accept", for_not_followers="accept", for_new_accounts="accept", for_limited_accounts="accept", for_private_mentions="accept")

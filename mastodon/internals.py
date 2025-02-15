@@ -343,9 +343,10 @@ class Mastodon():
         Internal streaming API helper.
 
         Returns the correct URL for the streaming API.
-
-        Caches the URL.
         """
+        if self.__streaming_base is not None:
+            return self.__streaming_base
+        
         # Try to support implementations that have no v1 endpoint (Sharkey does this)
         streaming_api_url = None
         try:

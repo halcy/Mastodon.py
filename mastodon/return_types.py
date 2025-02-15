@@ -1301,6 +1301,38 @@ class Tag(AttribAccessDict):
       * 4.0.0: added
     """
 
+    id: "Optional[str]"
+    """
+    The ID of the Tag in the database. Only present for data returned from admin endpoints. (optional)
+
+    Version history:
+      * 3.5.0: added
+    """
+
+    trendable: "Optional[bool]"
+    """
+    Whether the hashtag has been approved to trend. Only present for data returned from admin endpoints. (optional)
+
+    Version history:
+      * 3.5.0: added
+    """
+
+    usable: "Optional[bool]"
+    """
+    Whether the hashtag has not been disabled from auto-linking. Only present for data returned from admin endpoints. (optional)
+
+    Version history:
+      * 3.5.0: added
+    """
+
+    requires_review: "Optional[bool]"
+    """
+    Whether the hashtag has not been reviewed yet to approve or deny its trending. Only present for data returned from admin endpoints. (optional)
+
+    Version history:
+      * 3.5.0: added
+    """
+
     _version = "4.0.0"
 
 class TagHistory(AttribAccessDict):
@@ -1796,6 +1828,7 @@ class Notification(AttribAccessDict):
       * 3.3.0: added `status`
       * 3.5.0: added `update` and `admin.sign_up`
       * 4.0.0: added `admin.report`
+      * 4.3.0: added `severed_relationships` and `moderation_warning`
     """
 
     created_at: "datetime"
@@ -1826,6 +1859,30 @@ class Notification(AttribAccessDict):
     group_key: "str"
     """
     A key to group notifications by. Structure is unspecified and subject to change, so please do not make assumptions about it.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    report: "Optional[Report]"
+    """
+    Report that was the object of the notification. (optional)
+
+    Version history:
+      * 4.0.0: added
+    """
+
+    event: "Optional[RelationshipSeveranceEvent]"
+    """
+    Summary of the event that caused follow relationships to be severed. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    moderation_warning: "Optional[AccountWarning]"
+    """
+    Moderation warning that caused the notification. (optional)
 
     Version history:
       * 4.3.0: added
@@ -5539,7 +5596,7 @@ class AdminIpBlock(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AdminIpBlock object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.admin_ip_blocks()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_IpBlock
     """
@@ -5603,7 +5660,7 @@ class DomainBlock(AttribAccessDict):
     .. code-block:: python
 
         # Returns a DomainBlock object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.instance_domain_blocks()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/DomainBlock
     """
@@ -6589,6 +6646,70 @@ class Appeal(AttribAccessDict):
 
     _version = "4.3.0"
 
+class NotificationRequest(AttribAccessDict):
+    """
+    Represents a group of filtered notifications from a specific user.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a NotificationRequest object
+        mastodon.notification_requests()[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationRequest
+    """
+
+    id: "str"
+    """
+    The ID of the notification request in the database.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    created_at: "datetime"
+    """
+    When the first filtered notification from that user was created.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    updated_at: "datetime"
+    """
+    When the notification request was last updated.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    account: "Account"
+    """
+    The account that performed the action that generated the filtered notifications.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    notifications_count: "str"
+    """
+    How many of this account’s notifications were filtered.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    last_status: "Optional[Status]"
+    """
+    Most recent status associated with a filtered notification from that account. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -6699,6 +6820,7 @@ ENTITY_NAME_MAP = {
     "AccountWarning": AccountWarning,
     "UnreadNotificationsCount": UnreadNotificationsCount,
     "Appeal": Appeal,
+    "NotificationRequest": NotificationRequest,
 }
 __all__ = [
     "Account",
@@ -6810,5 +6932,6 @@ __all__ = [
     "AccountWarning",
     "UnreadNotificationsCount",
     "Appeal",
+    "NotificationRequest",
 ]
 

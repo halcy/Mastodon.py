@@ -3,7 +3,7 @@ from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import Notification, IdType, PaginatableList, Account, UnreadNotificationsCount
+from mastodon.return_types import Notification, IdType, PaginatableList, Account, UnreadNotificationsCount, NotificationPolicy, NotificationRequest
 from typing import Union, Optional, List
 
 class Mastodon(Internals):
@@ -89,3 +89,97 @@ class Mastodon(Internals):
         else:
             params = self.__generate_params(locals())
             self.__api_request('POST', '/api/v1/notifications/dismiss', params)
+
+    
+    ##
+    # Notification policies
+    ##
+
+    @api_version("4.3.0", "4.3.0")
+    def notifications_policy(self) -> NotificationPolicy:
+        """
+        Fetch the user's notification filtering policy. Requires scope `read:notifications`.
+        """
+        return self.__api_request('GET', '/api/v2/notifications/policy')
+
+    @api_version("4.3.0", "4.3.0")
+    def update_notifications_policy(self, for_not_following: Optional[str] = None, for_not_followers: Optional[str] = None,
+                                    for_new_accounts: Optional[str] = None, for_private_mentions: Optional[str] = None,
+                                    for_limited_accounts: Optional[str] = None) -> NotificationPolicy:
+        """
+        Update the user's notification filtering policy. Requires scope `write:notifications`.
+        
+        - `for_not_following`: "accept", "filter", or "drop" notifications from non-followed accounts.
+        - `for_not_followers`: "accept", "filter", or "drop" notifications from non-followers.
+        - `for_new_accounts`: "accept", "filter", or "drop" notifications from accounts created in the past 30 days.
+        - `for_private_mentions`: "accept", "filter", or "drop" notifications from private mentions.
+        - `for_limited_accounts`: "accept", "filter", or "drop" notifications from accounts limited by moderators.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('PATCH', '/api/v2/notifications/policy', params)
+
+    ##
+    # Notification requests
+    ##
+    @api_version("4.3.0", "4.3.0")
+    def notification_requests(self, max_id: Optional[IdType] = None, since_id: Optional[IdType] = None,
+                              min_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[NotificationRequest]:
+        """
+        Fetch notification requests filtered by the user's policy. Requires scope `read:notifications`.
+
+        NB: Notification requests are what happens when the user has set their policy to filter notifications from some source.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/notifications/requests', params)
+
+    @api_version("4.3.0", "4.3.0")
+    def notification_request(self, id: Union[NotificationRequest, IdType]) -> NotificationRequest:
+        """
+        Fetch a single notification request by ID. Requires scope `read:notifications`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', f'/api/v1/notifications/requests/{id}')
+
+    @api_version("4.3.0", "4.3.0")
+    def accept_notification_request(self, id: Union[NotificationRequest, IdType]) -> None:
+        """
+        Accept a notification request. This moves filtered notifications from a user back into the main notifications feed
+        and allows future notifications from them. Requires scope `write:notifications`.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('POST', f'/api/v1/notifications/requests/{id}/accept')
+
+    @api_version("4.3.0", "4.3.0")
+    def dismiss_notification_request(self, id: Union[NotificationRequest, IdType]) -> None:
+        """
+        Dismiss a notification request, removing it from pending requests. Requires scope `write:notifications`.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('POST', f'/api/v1/notifications/requests/{id}/dismiss')
+
+    @api_version("4.3.0", "4.3.0")
+    def accept_multiple_notification_requests(self, ids: List[Union[NotificationRequest, IdType]]) -> None:
+        """
+        Accept multiple notification requests at once. This moves filtered notifications from those users back into
+        the main notifications feed and allows future notifications from them. Requires scope `write:notifications`.
+        """
+        params = self.__generate_params({"id[]": [self.__unpack_id(i) for i in ids]})
+        self.__api_request('POST', '/api/v1/notifications/requests/accept', params)
+
+    @api_version("4.3.0", "4.3.0")
+    def dismiss_multiple_notification_requests(self, ids: List[Union[NotificationRequest, IdType]]) -> None:
+        """
+        Dismiss multiple notification requests, removing them from pending requests. Requires scope `write:notifications`.
+        """
+        params = self.__generate_params({"id[]": [self.__unpack_id(i) for i in ids]})
+        self.__api_request('POST', '/api/v1/notifications/requests/dismiss', params)
+
+    @api_version("4.3.0", "4.3.0")
+    def notifications_merged(self) -> bool:
+        """
+        Check whether accepted notification requests have been merged into the main notification feed.
+        Accepting a notification request schedules a background job that merges the filtered notifications.
+        Clients can poll this endpoint to check if the merge has completed. Requires scope `read:notifications`.
+        """
+        result = self.__api_request('GET', '/api/v1/notifications/requests/merged', override_type = dict)
+        return result["merged"]
