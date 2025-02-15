@@ -319,6 +319,8 @@ class Mastodon(Internals):
         Admin version of :ref:`trending_tags() <trending_tags()>`. Includes unapproved tags.
 
         The returned list is sorted, descending, by the instance's trending algorithm.
+
+        Returns a regular Tag without admin attributes between Mastodon.py v4.0.0 and v4.1.0 due to a bug.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/admin/trends/tags', params)
@@ -699,29 +701,6 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', f'/api/v1/admin/email_domain_blocks/{id}')
-
-    @api_version("3.5.0", "3.5.0")
-    def admin_trending_links(self) -> NonPaginatableList[PreviewCard]:
-        """
-        Fetch trending links, including unapproved and unreviewed ones. Requires scope `admin:read`.
-        """
-        return self.__api_request('GET', '/api/v1/admin/trends/links')
-
-    @api_version("3.5.0", "3.5.0")
-    def admin_trending_statuses(self) -> NonPaginatableList[Status]:
-        """
-        Fetch trending statuses, including unapproved and unreviewed ones. Requires scope `admin:read`.
-        """
-        return self.__api_request('GET', '/api/v1/admin/trends/statuses')
-
-    @api_version("3.5.0", "4.1.0")
-    def admin_trending_tags(self) -> NonPaginatableList[Tag]:
-        """
-        Fetch trending tags, including unapproved and unreviewed ones. Requires scope `admin:read`.
-        
-        Returns a regular Tag without admin attributes between Mastodon.py v4.0.0 and v4.1.0 due to a bug.
-        """
-        return self.__api_request('GET', '/api/v1/admin/trends/tags')
 
     @api_version("4.2.0", "4.2.0")
     def admin_approve_trending_link(self, id: Union[PreviewCard, IdType]) -> PreviewCard:

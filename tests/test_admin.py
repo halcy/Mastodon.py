@@ -156,7 +156,8 @@ def test_admin_trends(api2):
     assert isinstance(api2.admin_trending_statuses(), list)
     assert isinstance(api2.admin_trending_links(), list)
     assert isinstance(api2.admin_trending_tags(limit=5), list)
-
+    # The management functions are unfortunately not really testable easily.
+    
 @pytest.mark.skip(reason="reject / accept of account requests isn't really testable without modifying instance settings. anyone want to fumble those into the DB setup and write this test, please do.")
 def test_admin_accountrequests(api2):
     pass
@@ -295,9 +296,3 @@ def test_admin_email_domain_blocks(api2):
     
     all_blocks_after_delete = api2.admin_email_domain_blocks()
     assert not any(block.id == created_block.id for block in all_blocks_after_delete)
-
-@pytest.mark.vcr()
-def test_admin_trends(api2):
-    assert isinstance(api2.admin_trending_tags(), list)
-    assert isinstance(api2.admin_trending_statuses(), list)
-    assert isinstance(api2.admin_trending_links(), list)
