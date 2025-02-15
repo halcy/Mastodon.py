@@ -1,0 +1,556 @@
+interactions:
+- request:
+    body: '{"title": "Test Filter", "context": ["home", "public"], "filter_action":
+      "warn", "keywords_attributes": [{"keyword": "spam", "whole_word": true}, {"keyword":
+      "eggs", "whole_word": false}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '188'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v2/filters
+  response:
+    body:
+      string: '{"id":"3","title":"Test Filter","context":["home","public"],"expires_at":null,"filter_action":"warn","keywords":[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}],"statuses":[]}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '221'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"ef312da2a51d3dd730869912d62e8291"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=8.10, cache_generate.active_support;dur=1.75,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.71,
+        start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
+        transaction.active_record;dur=6.02, cache_delete.active_support;dur=0.02,
+        render.active_model_serializers;dur=2.59, process_action.action_controller;dur=31.66
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.740703Z'
+      X-Request-Id:
+      - 310e16c6-d402-405c-b0d2-a9d1237f59a6
+      X-Runtime:
+      - '0.056475'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/filters/3
+  response:
+    body:
+      string: '{"id":"3","title":"Test Filter","context":["home","public"],"expires_at":null,"filter_action":"warn","keywords":[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}],"statuses":[]}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '221'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"ef312da2a51d3dd730869912d62e8291"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.78, cache_generate.active_support;dur=0.86,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.34,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=2.11,
+        process_action.action_controller;dur=34.30
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.791946Z'
+      X-Request-Id:
+      - 51c60902-1535-42da-a13e-171a92121aa5
+      X-Runtime:
+      - '0.048975'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filter_id": "3", "title": "Updated Title", "filter_action": "hide"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '69'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - tests/v311
+    method: PUT
+    uri: http://localhost:3000/api/v2/filters/3
+  response:
+    body:
+      string: '{"id":"3","title":"Updated Title","context":["home","public"],"expires_at":null,"filter_action":"hide","keywords":[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}],"statuses":[]}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '223'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"ef90ce7160a9385a7e513d9523756dd2"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=4.16, cache_generate.active_support;dur=0.79,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.38,
+        start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
+        transaction.active_record;dur=3.96, cache_delete.active_support;dur=0.02,
+        render.active_model_serializers;dur=2.02, process_action.action_controller;dur=37.48
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.856526Z'
+      X-Request-Id:
+      - 923a6488-e0da-442e-a610-d1ad4e20248a
+      X-Runtime:
+      - '0.052710'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/filters/3/keywords
+  response:
+    body:
+      string: '[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '94'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"fd65742072146847502a0a2c6a04f472"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.64, cache_generate.active_support;dur=0.68,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.31,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.21,
+        process_action.action_controller;dur=19.97
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.902788Z'
+      X-Request-Id:
+      - 0feb5320-7184-4733-a299-751865258133
+      X-Runtime:
+      - '0.034602'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: filter_id=3&keyword=foo&whole_word=1
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '36'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v2/filters/3/keywords
+  response:
+    body:
+      string: '{"id":"5","keyword":"foo","whole_word":true}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '44'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"1b64a2f9390c9282d3922ce7fa6a55a4"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=3.38, cache_generate.active_support;dur=0.67,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.29,
+        start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
+        transaction.active_record;dur=2.88, cache_delete.active_support;dur=0.01,
+        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=24.91
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.942786Z'
+      X-Request-Id:
+      - ab80df2e-e971-4de5-80e3-a8de25d2563a
+      X-Runtime:
+      - '0.039518'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/filters/3/keywords
+  response:
+    body:
+      string: '[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false},{"id":"5","keyword":"foo","whole_word":true}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '139'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"a3c7206fea8e0a68cdbb63e7454aadd2"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.57, cache_generate.active_support;dur=0.67,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.27,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.24,
+        process_action.action_controller;dur=18.91
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.983496Z'
+      X-Request-Id:
+      - 9c69600a-f430-4d93-afdb-c541f94bc4af
+      X-Runtime:
+      - '0.032516'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: DELETE
+    uri: http://localhost:3000/api/v2/filters/keywords/3
+  response:
+    body:
+      string: '{}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.01, sql.active_record;dur=3.93, cache_generate.active_support;dur=0.54,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.62,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=3.35,
+        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=28.96
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.019360Z'
+      X-Request-Id:
+      - deefa0be-2b24-4fd6-93dc-4e2f43b3bd5c
+      X-Runtime:
+      - '0.042246'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/filters/3/keywords
+  response:
+    body:
+      string: '[{"id":"4","keyword":"eggs","whole_word":false},{"id":"5","keyword":"foo","whole_word":true}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '93'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"ae9198d796f6174ca3033d3f89b908cc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.59, cache_generate.active_support;dur=0.90,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.28,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.20,
+        process_action.action_controller;dur=30.29
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.076833Z'
+      X-Request-Id:
+      - 34eb8d75-a112-421a-80af-8dc34c2a9197
+      X-Runtime:
+      - '0.044549'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: DELETE
+    uri: http://localhost:3000/api/v2/filters/3
+  response:
+    body:
+      string: '{}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=3.85, cache_generate.active_support;dur=0.59,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.36,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.77,
+        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=25.98
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T19:45:00.114148Z'
+      X-Request-Id:
+      - b71d21d2-2e27-478c-8b5f-eb053ddac138
+      X-Runtime:
+      - '0.039812'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+version: 1

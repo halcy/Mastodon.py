@@ -45,26 +45,26 @@ to accept or reject notification requests for filtered notifications.
 .. automethod:: Mastodon.notifications_merged        
 
 
-Keyword filters
----------------
+Keyword Filters (v2)
+--------------------
 These functions allow you to get information about keyword filters as well as to create and update filters.
 
-**Very Important Note: The filtering system was revised in 4.0.0. This means that these functions will now not work anymore if an instance is on Mastodon 4.0.0 or above.
-When updating Mastodon.py for 4.0.0, we'll make an effort to emulate old behaviour, but this will not always be possible. Consider these methods deprecated, for now.**
+NB: The filters are checked server side, but the server still returns all statuses to the client, just with 
+a `filtered` attribute. Filtered notifications most likely end up as notification requests, but I have not
+validated this.
 
-The filters are applied to everything - notifications, timeline, ....
-
-Reading
-~~~~~~~
-.. automethod:: Mastodon.filters
-.. automethod:: Mastodon.filter
-.. automethod:: Mastodon.filters_apply
-
-Writing
-~~~~~~~
-.. automethod:: Mastodon.filter_create
-.. automethod:: Mastodon.filter_update
-.. automethod:: Mastodon.filter_delete
+.. automethod:: Mastodon.filters_v2
+.. automethod:: Mastodon.filter_v2
+.. automethod:: Mastodon.create_filter_v2
+.. automethod:: Mastodon.update_filter_v2
+.. automethod:: Mastodon.delete_filter_v2
+.. automethod:: Mastodon.filter_keywords_v2
+.. automethod:: Mastodon.add_filter_keyword_v2
+.. automethod:: Mastodon.delete_filter_keyword_v2
+.. automethod:: Mastodon.filter_statuses_v2
+.. automethod:: Mastodon.add_filter_status_v2
+.. automethod:: Mastodon.filter_status_v2
+.. automethod:: Mastodon.delete_filter_status_v2
 
 
 Push notifications
@@ -120,3 +120,21 @@ This is a minimal usage example for the push API, including a small http server 
     finally:
         httpd.server_close()
         api.push_subscription_delete()
+
+Keyword filters (v1, deprecated)
+--------------------------------
+These functions allow you to get information about keyword filters as well as to create and update filters.
+
+These APIs are deprecated in favor of the v2 APIs - I would recommend using those instead.
+
+Reading
+~~~~~~~
+.. automethod:: Mastodon.filters
+.. automethod:: Mastodon.filter
+.. automethod:: Mastodon.filters_apply
+
+Writing
+~~~~~~~
+.. automethod:: Mastodon.filter_create
+.. automethod:: Mastodon.filter_update
+.. automethod:: Mastodon.filter_delete        

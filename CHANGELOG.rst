@@ -44,7 +44,7 @@ v2.0.0 (IN PROGRESS)
 * Add notification policy and requests (`notifications_policy`, `update_notifications_policy`, `notifications_requests`, `notification_request`, `accept_notification_request`, `reject_notification_request`, `notifications_merged`, `accept_multiple_notification_requests`, `dismiss_multiple_notification_requests`)
 * Add `instance_languages`
 * Add notification grouping (`grouped_notifications`, `grouped_notification`, `dismiss_grouped_notification`, `grouped_notification_accounts`, `unread_grouped_notifications_count`)
-
+* Add v2 filer API (`filters_v2`, `filter_v2`, `create_filter_v2`, `update_filter_v2`, `delete_filter_v2`, `filter_keywords_v2`, `add_filter_keyword_v2`, `delete_filter_keyword_v2`, `filter_statuses_v2`, `add_filter_status_v2`, `filter_status_v2`, `delete_filter_status_v2`)
 
 v1.8.1
 ------

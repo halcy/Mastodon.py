@@ -275,7 +275,7 @@ class Mastodon():
                 response = response_object.content
 
             # Parse link headers
-            if isinstance(response, list) or force_pagination and 'Link' in response_object.headers and response_object.headers['Link'] != "":
+            if (isinstance(response, list) or force_pagination) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
                 if not isinstance(response, PaginatableList) and not force_pagination:
                     response = PaginatableList(response)
                 tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))

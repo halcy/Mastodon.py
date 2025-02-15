@@ -6,10 +6,6 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 -----------
 * [ ] to be collected here
 
-4.3.0 TODOs
------------
-* ?????
-
 General improvements that would be good to do before doing another release
 --------------------------------------------------------------------------
 * [ ] Get test coverage like, real high
