@@ -8022,7 +8022,7 @@
     {
         "name": "Admin email block",
         "python_name": "AdminCanonicalEmailBlock",
-        "func_call": "api2.admin_create_canonical_email_block(email=<some email>)",
+        "func_call": "mastodon.admin_create_canonical_email_block(email=<some email>)",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -8065,11 +8065,11 @@
     {
         "name": "Admin domain allow",
         "python_name": "AdminDomainAllow",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "mastodon.admin_domain_allows()[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
-        "manual_update": false,
+        "manual_update": true,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Admin_DomainAllow",
         "description": "The opposite of a domain block, specifically allowing a domain to federate when the instance is in allowlist mode.",
         "fields": {
@@ -9178,11 +9178,11 @@
     {
         "name": "Relationship Severance Event",
         "python_name": "RelationshipSeveranceEvent",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "# There isn't really a good way to get this manually - you get it if a moderation takes action.",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
-        "manual_update": false,
+        "manual_update": true,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/RelationshipSeveranceEvent",
         "description": "Summary of a moderation or block event that caused follow relationships to be severed.",
         "fields": {
@@ -9206,7 +9206,7 @@
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": null,
+                "field_structuretype": "RelationshipSeveranceEventType",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -9547,7 +9547,7 @@
     {
         "name": "Account Warning",
         "python_name": "AccountWarning",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "# There isn't really a good way to get this manually - you get it if a moderation takes action.",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -9643,7 +9643,7 @@
         "func_call_additional": null,
         "func_alternate_acc": null,
         "manual_update": false,
-        "masto_doc_link": "https://docs.joinmastodon.org/methods/notifications/#unread_count",
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/notifications/#unread-count",
         "description": "Get the (capped) number of unread notifications for the current user.",
         "fields": {
             "count": {

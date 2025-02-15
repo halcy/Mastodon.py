@@ -6,7 +6,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from typing import Optional, List, Union
 from mastodon.return_types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
-                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock
+                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock, AdminDomainAllow
 from datetime import datetime
 
 class Mastodon(Internals):
@@ -609,3 +609,52 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.__api_request('DELETE', f'/api/v1/admin/canonical_email_blocks/{id}')
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_domain_allows(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None,
+                            since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminDomainAllow]:
+        """
+        Fetches a list of allowed domains. Requires scope `admin:read:domain_allows`.
+        
+        The returned list may be paginated using max_id, min_id, and since_id.
+
+        NB: Untested, since I don't have a Mastodon instance in allowlist mode to test this with.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/domain_allows', params)
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_domain_allow(self, id: Union[AdminDomainAllow, IdType]) -> AdminDomainAllow:
+        """
+        Fetch a single allowed domain by ID. Requires scope `admin:read:domain_allows`.
+        
+        Raises `MastodonAPIError` if the domain allow does not exist.
+
+        NB: Untested, since I don't have a Mastodon instance in allowlist mode to test this with.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', f'/api/v1/admin/domain_allows/{id}')
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_create_domain_allow(self, domain: str) -> AdminDomainAllow:
+        """
+        Allow a domain for federation. Requires scope `admin:write:domain_allows`.
+        
+        If the domain is already allowed, returns the existing record.
+
+        NB: Untested, since I don't have a Mastodon instance in allowlist mode to test this with.
+        """
+        params = {"domain": domain}
+        return self.__api_request('POST', '/api/v1/admin/domain_allows', params)
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_delete_domain_allow(self, id: Union[AdminDomainAllow, IdType]):
+        """
+        Remove a domain from the allowlist. Requires scope `admin:write:domain_allows`.
+        
+        Raises `MastodonAPIError` if the domain allow does not exist.
+
+        NB: Untested, since I don't have a Mastodon instance in allowlist mode to test this with.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('DELETE', f'/api/v1/admin/domain_allows/{id}')

@@ -100,6 +100,10 @@ class Mastodon(Internals):
         `focus` and `thumbnail` are as in :ref:`media_post() <media_post()>` .
         
         The returned dict reflects the updates to the media attachment.
+
+        Note: This is for updating the metadata of an *unattached* media attachment (i.e. one that has 
+        not been used in a status yet). For editing media attachment metadata after posting, see `status_update` and
+        `generate_media_edit_attributes`.
         """
         id = self.__unpack_id(id)
 

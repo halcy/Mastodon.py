@@ -44,8 +44,9 @@ class StreamListener(object):
         pass
 
     def on_notification(self, notification):
-        """A new notification. `notification` is the parsed `notification dict`
-        describing the notification."""
+        """A new notification. `notification` is the object
+        describing the notification. For more information, see the documentation
+        for the notifications() method."""
         pass
 
     def on_filters_changed(self):
@@ -106,7 +107,7 @@ class StreamListener(object):
     
     def on_any_event(self, name, data):
         """A generic event handler that is called for every event received.
-        The name contains the event-name and data contains the content of the event.
+        The name contains the event name and data contains the content of the event.
 
         Called before the more specific on_xxx handlers.
         """

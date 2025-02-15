@@ -158,6 +158,10 @@ class Mastodon():
                     kwargs['data'] = params
 
                 response_object = self.session.request(method, base_url + endpoint, **kwargs)
+                if self.debug_requests:
+                    print(f'Mastodon: Request URL: {response_object.request.url}')
+                    print(f'Mastodon: Request body: {response_object.request.body}')
+                    print(f'Mastodon: Response body: {response_object.text}')
             except Exception as e:
                 raise MastodonNetworkError(f"Could not complete request: {e}")
 
@@ -480,7 +484,7 @@ class Mastodon():
             with closing(connection) as r:
                 listener.handle_stream(r)
 
-    def __generate_params(self, params, exclude=[], dateconv=False):
+    def __generate_params(self, params, exclude=[], dateconv=False, for_json=False):
         """
         Internal named-parameters-to-dict helper.
 
@@ -503,11 +507,12 @@ class Mastodon():
             if params[key] is None or key in exclude:
                 del params[key]
 
-        param_keys = list(params.keys())
-        for key in param_keys:
-            if isinstance(params[key], list):
-                params[key + "[]"] = params[key]
-                del params[key]
+        if not for_json:
+            param_keys = list(params.keys())
+            for key in param_keys:
+                if isinstance(params[key], list):
+                    params[key + "[]"] = params[key]
+                    del params[key]
 
         # Unpack min/max/since_id fields, since that is a very common operation
         # and we basically always want it

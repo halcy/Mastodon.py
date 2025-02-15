@@ -29,7 +29,8 @@ class Mastodon(Internals):
             * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see :ref:`account_follow() <account_follow()>`)
             * `admin.sign_up` - For accounts with appropriate permissions: A new user has signed up
             * `admin.report` - For accounts with appropriate permissions: A new report has been received
-            * TODO: document the rest
+            * `severed_relationships` - Some of the logged in users relationships have been severed due to a moderation action on this server
+            * `moderation_warning` - The logged in user has been warned by a moderator
         Parameters `exclude_types` and `types` are array of these types, specifying them will in- or exclude the
         types of notifications given. It is legal to give both parameters at the same tine, the result will then
         be the intersection of the results of both filters. Specifying `mentions_only` is a deprecated way to set

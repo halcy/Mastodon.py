@@ -2,15 +2,16 @@
 
 import collections
 from datetime import datetime
+import base64
 
-from mastodon.errors import MastodonIllegalArgumentError
+from mastodon.errors import MastodonIllegalArgumentError, MastodonVersionError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
-                MediaAttachment, Poll, StatusSource, StatusEdit, PaginatableList
+                MediaAttachment, Poll, StatusSource, StatusEdit, PaginatableList, PathOrFile
 
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Dict, Any, Tuple
 
 class Mastodon(Internals):
     ###
@@ -112,12 +113,11 @@ class Mastodon(Internals):
     ###
     # Writing data: Statuses
     ###
-    
     def __status_internal(self, status: Optional[str], in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: Optional[bool] = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
                     poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, edit: bool = False,
-                    strict_content_type: bool = False) -> Union[Status, ScheduledStatus]:
+                    strict_content_type: bool = False, media_attributes: Optional[List[Dict[str, Any]]] = None) -> Union[Status, ScheduledStatus]:
         """
         Internal statuses poster helper
         """
@@ -185,10 +185,17 @@ class Mastodon(Internals):
             del params_initial['content_type']
 
         use_json = False
-        if poll is not None:
+        if poll is not None or media_attributes is not None:
             use_json = True
 
-        params = self.__generate_params(params_initial, ['idempotency_key', 'edit', 'strict_content_type'])
+        # If media_attributes is set, make sure that media_ids contains at least all the IDs of the media from media_attributes
+        if media_attributes is not None:
+            if "media_ids" in params_initial and params_initial["media_ids"] is not None:
+                params_initial["media_ids"] = list(set(params_initial["media_ids"]) + set([x["id"] for x in media_attributes]))
+            else:
+                params_initial["media_ids"] = [x["id"] for x in media_attributes]
+
+        params = self.__generate_params(params_initial, ['idempotency_key', 'edit', 'strict_content_type'], for_json = use_json)
         cast_type = Status
         if scheduled_at is not None:
             cast_type = ScheduledStatus
@@ -290,17 +297,49 @@ class Mastodon(Internals):
         """
         return self.status_post(status)
 
-    @api_version("3.5.0", "3.5.0")
-    def status_update(self, id: Union[Status, IdType], status: Optional[str] = None, spoiler_text: Optional[str] = None, 
+
+    def generate_media_edit_attributes(self, id: Union[MediaAttachment, IdType], description: Optional[str] = None, 
+                                      focus: Optional[Tuple[float, float]] = None, 
+                                      thumbnail: Optional[PathOrFile] = None, thumb_mimetype: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Helper function to generate a single media edit attribute dictionary.
+        
+        Parameters:
+        - `id` (str): The ID of the media attachment (mandatory).
+        - `description` (Optional[str]): A new description for the media.
+        - `focus` (Optional[Tuple[float, float]]): The focal point of the media.
+        - `thumbnail` (Optional[PathOrFile]): The thumbnail to be used.
+        """
+        media_edit = {"id": self.__unpack_id(id)}
+        
+        if description is not None:
+            media_edit["description"] = description
+        
+        if focus is not None:
+            if isinstance(focus, tuple) and len(focus) == 2:
+                media_edit["focus"] = f"{focus[0]},{focus[1]}"
+            else:
+                raise MastodonIllegalArgumentError("Focus must be a tuple of two floats between -1 and 1")
+        
+        if thumbnail is not None:
+            if not self.verify_minimum_version("3.2.0", cached=True):
+                raise MastodonVersionError('Thumbnail requires version > 3.2.0')
+            _, thumb_file, thumb_mimetype = self.__load_media_file(thumbnail, thumb_mimetype)
+            media_edit["thumbnail"] =  f"data:{thumb_mimetype};base64,{base64.b64encode(thumb_file.read()).decode()}"
+        
+        return media_edit
+
+    @api_version("3.5.0", "4.1.0")
+    def status_update(self, id: Union[Status, IdType], status: str, spoiler_text: Optional[str] = None, 
                       sensitive: Optional[bool] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None, 
-                      poll: Optional[Union[Poll, IdType]] = None) -> Status:
+                      poll: Optional[Union[Poll, IdType]] = None, media_attributes: Optional[List[Dict[str, Any]]] = None) -> Status:
         """
         Edit a status. The meanings of the fields are largely the same as in :ref:`status_post() <status_post()>`,
-        though not every field can be edited.
+        though not every field can be edited. The `status` parameter is mandatory.
 
         Note that editing a poll will reset the votes.
 
-        TODO: Currently doesn't support editing media descriptions, implement that.
+        To edit media metadata, generate a list of dictionaries with the following keys:
         """
         return self.__status_internal(
             status=status,
@@ -308,7 +347,8 @@ class Mastodon(Internals):
             sensitive=sensitive,
             spoiler_text=spoiler_text,
             poll=poll,
-            edit=id
+            edit=id,
+            media_attributes=media_attributes
         )
 
     @api_version("3.5.0", "3.5.0")

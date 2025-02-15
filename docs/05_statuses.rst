@@ -18,7 +18,7 @@ Reading
 .. automethod:: Mastodon.status_history
 .. automethod:: Mastodon.status_source
 .. automethod:: Mastodon.statuses
-    
+
 .. automethod:: Mastodon.favourites
 
 .. automethod:: Mastodon.bookmarks
@@ -47,6 +47,7 @@ Writing
 .. automethod:: Mastodon.status_delete
 .. _status_update():    
 .. automethod:: Mastodon.status_update
+.. automethod:: Mastodon.generate_media_edit_attributes
 
 Scheduled statuses
 ------------------

@@ -10,7 +10,8 @@ This function allows you to get information about a user's notifications as well
 Reading
 ~~~~~~~
 .. automethod:: Mastodon.notifications
-
+.. automethod:: Mastodon.notifications_unread_count
+    
 Writing
 ~~~~~~~
 .. automethod:: Mastodon.notifications_clear

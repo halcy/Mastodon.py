@@ -241,3 +241,51 @@ def test_status_edit(api3, api2):
     source = api2.status_source(status)
     assert source.text == "the best editor? why, of course it is the KDE Advanced Text Editor, Kate"
     
+@pytest.mark.vcr(match_on=['path'])
+def test_status_update_with_media_edit(api2):
+    media = api2.media_post(
+        'tests/video.mp4',
+        description="Original description",
+        focus=(-0.5, 0.3),
+        thumbnail='tests/amewatson.jpg'
+    )
+    
+    assert media
+    assert media.url is None
+    
+    time.sleep(5)
+    media2 = api2.media(media)
+    assert media2.id == media.id
+    assert media2.url is not None
+
+    status = api2.status_post(
+        'Initial post with media',
+        media_ids=media2
+    )
+    
+    assert status
+    assert status['media_attachments'][0]['description'] == "Original description"
+    assert status['media_attachments'][0]['meta']['focus']['x'] == -0.5
+    assert status['media_attachments'][0]['meta']['focus']['y'] == 0.3
+
+    try:
+        updated_media_attributes = api2.generate_media_edit_attributes(
+            id=media2.id,
+            description="Updated description",
+            focus=(0.2, -0.1),
+            thumbnail='tests/image.jpg'
+        )
+        
+        updated_status = api2.status_update(
+            status['id'],
+            "I have altered the media attachment. Pray I do not alter it further.",
+            media_attributes=[updated_media_attributes]
+        )
+        
+        assert updated_status
+        assert updated_status['media_attachments'][0]['description'] == "Updated description"
+        assert updated_status['media_attachments'][0]['meta']['focus']['x'] == 0.2
+        assert updated_status['media_attachments'][0]['meta']['focus']['y'] == -0.1
+        assert updated_status['media_attachments'][0]['preview_url'] != status['media_attachments'][0]['preview_url']
+    finally:
+        api2.status_delete(status['id'])
