@@ -20,3 +20,12 @@ This function allows for easy basic decoding of blurhash strings to images.
 This requires Mastodon.pys optional "blurhash" feature dependencies.
 
 .. automethod:: Mastodon.decode_blurhash
+
+Cache control
+-------------
+.. automethod:: Mastodon.clear_caches
+
+Other utilities
+---------------
+.. automethod:: Mastodon.get_approx_server_time
+.. automethod:: Mastodon.set_language

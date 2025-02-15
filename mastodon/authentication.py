@@ -242,6 +242,9 @@ class Mastodon(Internals):
         if not mastodon_version is None:
             self.version_check_tried = True
 
+        # Cached version check
+        self.__streaming_base = None
+
         # Versioning
         if mastodon_version is None and self.version_check_mode != 'none':
             self.retrieve_mastodon_version()
@@ -254,6 +257,16 @@ class Mastodon(Internals):
         # Ratelimiting parameter check
         if ratelimit_method not in ["throw", "wait", "pace"]:
             raise MastodonIllegalArgumentError("Invalid ratelimit method.")
+
+    def clear_caches(self):
+        """
+        Clear cached data:
+        * Mastodon version
+        * Streaming base URL
+        """
+        self.version_check_worked = None
+        self.version_check_tried = False
+        self.__streaming_base = None
 
     def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", 
                          scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None, 

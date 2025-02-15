@@ -343,9 +343,22 @@ class Mastodon():
         Internal streaming API helper.
 
         Returns the correct URL for the streaming API.
+
+        Caches the URL.
         """
-        instance = self.__instance()
-        if "streaming_api" in instance["urls"] and instance["urls"]["streaming_api"] != self.api_base_url:
+        # Try to support implementations that have no v1 endpoint (Sharkey does this)
+        streaming_api_url = None
+        try:
+            instance = self.__instance()
+            if  "streaming_api" in instance["urls"]:
+                streaming_api_url = instance["urls"]["streaming_api"]
+        except:
+            try:
+                streaming_api_url = self.instance_v2().configuration.urls.streaming
+            except:
+                pass
+
+        if not streaming_api_url is None and streaming_api_url != self.api_base_url:
             # This is probably a websockets URL, which is really for the browser, but requests can't handle it
             # So we do this below to turn it into an HTTPS or HTTP URL
             parse = urlparse(instance["urls"]["streaming_api"])
