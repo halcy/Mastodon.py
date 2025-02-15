@@ -2,7 +2,6 @@
 
 import time
 
-from mastodon.versions import _DICT_VERSION_MEDIA
 from mastodon.errors import MastodonVersionError, MastodonAPIError
 from mastodon.utility import api_version
 

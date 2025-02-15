@@ -1,6 +1,5 @@
 # suggestions.py - follow suggestion endpoints
 
-from mastodon.versions import _DICT_VERSION_ACCOUNT
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals

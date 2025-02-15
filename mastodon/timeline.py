@@ -1,6 +1,5 @@
 # timeline.py - endpoints for reading various different timelines
 
-from mastodon.versions import _DICT_VERSION_STATUS, _DICT_VERSION_CONVERSATION
 from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError
 from mastodon.utility import api_version
 

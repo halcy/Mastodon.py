@@ -8,7 +8,6 @@ import time
 import collections
 
 from mastodon.errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
-from mastodon.versions import _DICT_VERSION_APPLICATION
 from mastodon.defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT, _DEFAULT_USER_AGENT
 from mastodon.utility import parse_version_string, api_version
 

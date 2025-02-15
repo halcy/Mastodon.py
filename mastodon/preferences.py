@@ -2,7 +2,6 @@
 
 import collections
 
-from mastodon.versions import _DICT_VERSION_PREFERENCES, _DICT_VERSION_MARKER
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 

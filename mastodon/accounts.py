@@ -2,7 +2,6 @@
 
 import collections
 
-from mastodon.versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_STATUS, _DICT_VERSION_RELATIONSHIP, _DICT_VERSION_LIST, _DICT_VERSION_FAMILIAR_FOLLOWERS, _DICT_VERSION_HASHTAG
 from mastodon.defaults import _DEFAULT_SCOPES, _SCOPE_SETS
 from mastodon.errors import MastodonIllegalArgumentError, MastodonAPIError, MastodonNotFoundError
 from mastodon.utility import api_version

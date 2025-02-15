@@ -2,7 +2,6 @@
 
 import re
 
-from mastodon.versions import _DICT_VERSION_FILTER
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 

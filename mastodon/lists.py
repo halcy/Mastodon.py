@@ -1,6 +1,4 @@
 # list.py - list endpoints
-
-from mastodon.versions import _DICT_VERSION_LIST, _DICT_VERSION_ACCOUNT
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals

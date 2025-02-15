@@ -1,6 +1,5 @@
 # search.py - search endpoints
 
-from mastodon.versions import _DICT_VERSION_SEARCHRESULT
 from mastodon.errors import MastodonVersionError
 from mastodon.utility import api_version
 

@@ -1,6 +1,5 @@
 # relationships.py - endpoints for user and domain blocks and mutes as well as follow requests
 
-from mastodon.versions import _DICT_VERSION_ACCOUNT, _DICT_VERSION_RELATIONSHIP
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals

@@ -1,6 +1,5 @@
     # relationships.py - endpoints for user and domain blocks and mutes as well as follow requests
 
-from mastodon.versions import _DICT_VERSION_STATUS
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from mastodon.utility import api_version

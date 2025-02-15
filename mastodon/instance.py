@@ -1,6 +1,4 @@
 # instance.py - instance-level endpoints, directory, emoji, announcements
-
-from mastodon.versions import _DICT_VERSION_INSTANCE, _DICT_VERSION_ACTIVITY, _DICT_VERSION_ACCOUNT, _DICT_VERSION_EMOJI, _DICT_VERSION_ANNOUNCEMENT
 from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError
 from mastodon.utility import api_version
 from mastodon.compat import urlparse

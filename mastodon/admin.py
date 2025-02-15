@@ -1,7 +1,5 @@
 # admin.py - admin / moderation endpoints
 
-from mastodon.versions import _DICT_VERSION_ADMIN_ACCOUNT, _DICT_VERSION_REPORT, _DICT_VERSION_HASHTAG, _DICT_VERSION_STATUS, _DICT_VERSION_CARD, \
-                        _DICT_VERSION_ADMIN_DOMAIN_BLOCK, _DICT_VERSION_ADMIN_MEASURE, _DICT_VERSION_ADMIN_DIMENSION, _DICT_VERSION_ADMIN_RETENTION
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 

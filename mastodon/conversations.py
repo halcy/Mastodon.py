@@ -1,6 +1,5 @@
 # conversations.py - conversation endpoints
 
-from mastodon.versions import _DICT_VERSION_CONVERSATION
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals

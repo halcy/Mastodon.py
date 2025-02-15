@@ -3,8 +3,6 @@
 import collections
 from datetime import datetime
 
-from mastodon.versions import _DICT_VERSION_STATUS, _DICT_VERSION_CARD, _DICT_VERSION_CONTEXT, _DICT_VERSION_ACCOUNT, _DICT_VERSION_SCHEDULED_STATUS, \
-                        _DICT_VERSION_STATUS_EDIT
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 

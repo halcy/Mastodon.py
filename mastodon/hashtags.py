@@ -1,6 +1,4 @@
 # hashtags.py - hashtag and featured-hashtag endpoints
-
-from mastodon.versions import _DICT_VERSION_FEATURED_TAG, _DICT_VERSION_HASHTAG
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals

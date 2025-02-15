@@ -1,7 +1,6 @@
 
 # reports.py - report endpoints
 
-from mastodon.versions import _DICT_VERSION_REPORT
 from mastodon.errors import MastodonVersionError, MastodonIllegalArgumentError
 from mastodon.utility import api_version
 

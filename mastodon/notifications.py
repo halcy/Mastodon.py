@@ -1,6 +1,4 @@
 # notifications.py - notification endpoints
-
-from mastodon.versions import _DICT_VERSION_NOTIFICATION
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 

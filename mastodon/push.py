@@ -4,7 +4,6 @@ import base64
 import os
 import json
 
-from mastodon.versions import _DICT_VERSION_PUSH, _DICT_VERSION_PUSH_NOTIF
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 from mastodon.compat import IMPL_HAS_CRYPTO, ec, serialization, default_backend
