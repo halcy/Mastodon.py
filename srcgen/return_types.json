@@ -8828,8 +8828,8 @@
     {
         "name": "Status source",
         "python_name": "StatusSource",
-        "func_call": "mastodon.status_source()",
-        "func_call_real": null,
+        "func_call": "mastodon.status_source(<status id>)",
+        "func_call_real": "mastodon.status_source(110446223051565765)",
         "func_call_additional": null,
         "func_alternate_acc": null,
         "manual_update": false,
@@ -9213,7 +9213,7 @@
     {
         "name": "Notification Policy",
         "python_name": "NotificationPolicy",
-        "func_call": "mastodon.notification_policy()",
+        "func_call": "mastodon.notifications_policy()",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -9305,7 +9305,7 @@
     {
         "name": "Notification Policy Summary",
         "python_name": "NotificationPolicySummary",
-        "func_call": "mastodon.notification_policy().summary",
+        "func_call": "mastodon.notifications_policy().summary",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
@@ -9499,7 +9499,7 @@
         "func_call": "mastodon.grouped_notifications().partial_accounts[0]",
         "func_call_real": null,
         "func_call_additional": null,
-        "func_alternate_acc": null,
+        "func_alternate_acc": true,
         "manual_update": false,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/GroupedNotificationsResults",
         "description": "A stripped-down version of Account, containing only what is necessary to display avatars and a few other fields.",
@@ -9729,7 +9729,7 @@
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
-        "manual_update": false,
+        "manual_update": true,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AccountWarning",
         "description": "Moderation warning against a particular account.",
         "fields": {
@@ -9949,7 +9949,7 @@
     {
         "name": "Supported Locale",
         "python_name": "SupportedLocale",
-        "func_call": "mastodon.languages()",
+        "func_call": "mastodon.instance_languages()[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,

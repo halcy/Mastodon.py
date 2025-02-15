@@ -148,6 +148,9 @@ Return types
 .. autoclass:: mastodon.return_types.PreviewCard
    :members:
 
+.. autoclass:: mastodon.return_types.TrendingLinkHistory
+   :members:
+
 .. autoclass:: mastodon.return_types.PreviewCardAuthor
    :members:
 
@@ -371,6 +374,12 @@ Return types
    :members:
 
 .. autoclass:: mastodon.return_types.Appeal
+   :members:
+
+.. autoclass:: mastodon.return_types.NotificationRequest
+   :members:
+
+.. autoclass:: mastodon.return_types.SupportedLocale
    :members:
 
 Deprecated types

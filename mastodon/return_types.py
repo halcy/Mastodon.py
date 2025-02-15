@@ -1729,7 +1729,7 @@ class FilterV2(AttribAccessDict):
     .. code-block:: python
 
         # Returns a FilterV2 object
-        mastodon.filters()[0]
+        mastodon.filters_v2()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Filter/
     """
@@ -5742,7 +5742,7 @@ class FilterKeyword(AttribAccessDict):
     .. code-block:: python
 
         # Returns a FilterKeyword object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.filters_v2()[0].keywords[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FilterKeyword
     """
@@ -5782,7 +5782,7 @@ class FilterStatus(AttribAccessDict):
     .. code-block:: python
 
         # Returns a FilterStatus object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.filter_statuses_v2(mastodon.filters_v2()[0])[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FilterStatus
     """
@@ -5872,7 +5872,7 @@ class StatusSource(AttribAccessDict):
     .. code-block:: python
 
         # Returns a StatusSource object
-        mastodon.status_source()
+        mastodon.status_source(<status id>)
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/StatusSource
     """
@@ -6124,7 +6124,7 @@ class NotificationPolicy(AttribAccessDict):
     .. code-block:: python
 
         # Returns a NotificationPolicy object
-        mastodon.notification_policy()
+        mastodon.notifications_policy()
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
     """
@@ -6188,7 +6188,7 @@ class NotificationPolicySummary(AttribAccessDict):
     .. code-block:: python
 
         # Returns a NotificationPolicySummary object
-        mastodon.notification_policy().summary
+        mastodon.notifications_policy().summary
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
     """
@@ -6293,7 +6293,7 @@ class GroupedNotificationsResults(AttribAccessDict):
     .. code-block:: python
 
         # Returns a GroupedNotificationsResults object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.grouped_notifications()
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/GroupedNotificationsResults
     """
@@ -6324,7 +6324,7 @@ class GroupedNotificationsResults(AttribAccessDict):
 
     notification_groups: "NonPaginatableList[NotificationGroup]"
     """
-    The grouped notifications themselves.
+    The grouped notifications themselves. Is actually in fact paginatable, but via the parent object.
 
     Version history:
       * 4.3.0: added
@@ -6357,7 +6357,7 @@ class PartialAccountWithAvatar(AttribAccessDict):
     .. code-block:: python
 
         # Returns a PartialAccountWithAvatar object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.grouped_notifications().partial_accounts[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/GroupedNotificationsResults
     """
@@ -6429,7 +6429,7 @@ class NotificationGroup(AttribAccessDict):
     .. code-block:: python
 
         # Returns a NotificationGroup object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.grouped_notifications().notification_groups[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/GroupedNotificationsResults
     """
@@ -6735,7 +6735,7 @@ class SupportedLocale(AttribAccessDict):
     .. code-block:: python
 
         # Returns a SupportedLocale object
-        mastodon.languages()
+        mastodon.instance_languages()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance
     """

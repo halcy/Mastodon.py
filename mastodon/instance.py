@@ -205,7 +205,7 @@ class Mastodon(Internals):
         """
         Retrieve the instance's extended description.
         """
-        return self.__api_request('GET', '/api/v1/instance/extended_description', parse=False).decode("utf-8")
+        return self.__api_request('GET', '/api/v1/instance/extended_description')
 
     def instance_translation_languages(self) -> Dict[str, List[str]]:
         """
