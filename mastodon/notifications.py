@@ -3,7 +3,7 @@ from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import Notification, IdType, PaginatableList, Account
+from mastodon.return_types import Notification, IdType, PaginatableList, Account, UnreadNotificationsCount
 from typing import Union, Optional, List
 
 class Mastodon(Internals):
@@ -36,8 +36,6 @@ class Mastodon(Internals):
         `exclude_types` to all but mentions.
 
         Can be passed an `id` to fetch a single notification.
-
-        Returns a list of :ref:`notification dicts <notification dicts>`.
         """
         if mentions_only is not None:
             if exclude_types is None and types is None:
@@ -59,6 +57,14 @@ class Mastodon(Internals):
         else:
             id = self.__unpack_id(id)
             return self.__api_request('GET', f"/api/v1/notifications/{id}")
+
+    # Implement GET /api/v1/notifications/unread_count HTTP/1.1
+    @api_version("4.3.0", "4.3.0")
+    def notifications_unread_count(self) -> UnreadNotificationsCount:
+        """
+        Fetch the number of unread notifications for the logged-in user.
+        """
+        return self.__api_request('GET', '/api/v1/notifications/unread_count')
 
     ###
     # Writing data: Notifications

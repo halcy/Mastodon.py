@@ -45,7 +45,7 @@ class Mastodon(Internals):
         Does not require authentication for publicly visible statuses.
 
         This function is deprecated as of 3.0.0 and the endpoint does not
-        exist anymore - you should just use the "card" field of the status dicts
+        exist anymore - you should just use the "card" field of the status
         instead. Mastodon.py will try to mimic the old behaviour, but this
         is somewhat inefficient and not guaranteed to be the case forever.
         """
@@ -210,7 +210,7 @@ class Mastodon(Internals):
 
         `media_ids` should be a list. (If it's not, the function will turn it
         into one.) It can contain up to four pieces of media (uploaded via
-        :ref:`media_post() <media_post()>`). `media_ids` can also be the `media dicts`_ returned
+        :ref:`media_post() <media_post()>`). `media_ids` can also be the objects returned
         by :ref:`media_post() <media_post()>` - they are unpacked automatically.
 
         The `sensitive` boolean decides whether or not media attached to the post
@@ -245,7 +245,7 @@ class Mastodon(Internals):
 
         Pass a datetime as `scheduled_at` to schedule the toot for a specific time
         (the time must be at least 5 minutes into the future). If this is passed,
-        status_post returns a :ref:`scheduled status dict <scheduled status dict>` instead.
+        status_post returns a `ScheduledStatus` instead.
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
         constructed using :ref:`make_poll() <make_poll()>` . Note that as of Mastodon version
@@ -262,7 +262,7 @@ class Mastodon(Internals):
         **Specific to "fedibird" feature set:**: The `quote_id` parameter is
         a non-standard extension that specifies the id of a quoted status.
 
-        Returns a :ref:`status dict <status dict>` with the new status.
+        Returns the new status.
         """
         return self.__status_internal(
             status,
@@ -344,7 +344,7 @@ class Mastodon(Internals):
         the users that are being replied to the status text and retains
         CW and visibility if not explicitly overridden.
 
-        Note that `to_status` should be a :ref:`status dict <status dict>` and not an ID. 
+        Note that `to_status` must be a `Status` and not just an ID. 
 
         Set `untag` to True if you want the reply to only go to the user you
         are replying to, removing every other mentioned user from the

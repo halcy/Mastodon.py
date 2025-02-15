@@ -163,8 +163,6 @@ class Mastodon(Internals):
     def announcements(self) -> NonPaginatableList[Announcement]:
         """
         Fetch currently active announcements.
-
-        Returns a list of :ref:`announcement dicts <announcement dicts>`.
         """
         return self.__api_request('GET', '/api/v1/announcements')
 

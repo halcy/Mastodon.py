@@ -305,8 +305,6 @@ class Mastodon(Internals):
         """
         Follow a remote user with username given in username@domain form.
 
-        Returns a :ref:`account dict <account dict>`.
-
         Deprecated - avoid using this. Currently uses a backwards compat implementation that may or may not work properly.
         """
         try:

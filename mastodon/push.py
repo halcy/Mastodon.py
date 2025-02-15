@@ -61,8 +61,6 @@ class Mastodon(Internals):
         * `update_events` controls whether you receive events when a status that the logged in user has boosted has been edited.
         * `admin_sign_up_events` controls whether you receive events when a new user signs up.
         * `admin_report_events` controls whether you receive events when a new report is received.
-
-        Returns a :ref:`push subscription dict <push subscription dict>`.
         """
         if not policy in ['all', 'none', 'follower', 'followed']:
             raise MastodonIllegalArgumentError("Valid values for policy are 'all', 'none', 'follower' or 'followed'.")

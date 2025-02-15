@@ -32,8 +32,6 @@ class Mastodon(Internals):
         * Set `invited_by` to an account id to get only accounts invited by this user.
         * Set `role_ids` to a list of role IDs to get only accounts with those roles.
 
-        Returns a list of :ref:`admin account dicts <admin account dicts>`.
-
         Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
         if role_ids is not None:
@@ -107,8 +105,6 @@ class Mastodon(Internals):
 
         Deprecated in Mastodon version 3.5.0.
 
-        Returns a list of :ref:`admin account dicts <admin account dicts>`.
-
         Pagination on this is a bit weird, so I would recommend not doing that and instead manually fetching.
         """
         params = self.__generate_params(locals(), ['remote', 'status', 'staff_only'], dateconv=True)
@@ -135,7 +131,7 @@ class Mastodon(Internals):
     @api_version("2.9.1", "2.9.1")
     def admin_account(self, id: Union[Account, AdminAccount, IdType]) -> AdminAccount:
         """
-        Fetches a single :ref:`admin account dict <admin account dict>` for the user with the given id.
+        Fetches a single admin account for the user with the given id.
         """
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/admin/accounts/{id}')
@@ -256,8 +252,6 @@ class Mastodon(Internals):
 
         Set `resolved` to True to search for resolved reports. `account_id` and `target_account_id`
         can be used to get reports filed by or about a specific user.
-
-        Returns a list of :ref:`report dicts <report dicts>`.
         """
         if account_id is not None:
             account_id = self.__unpack_id(account_id)
@@ -357,7 +351,7 @@ class Mastodon(Internals):
 
         Provide an `id` to fetch a specific domain block based on its database id.
 
-        Returns a list of :ref:`admin domain block dicts <admin domain block dicts>`, raises a `MastodonAPIError` if the specified block does not exist.
+        Raises a `MastodonAPIError` if the specified block does not exist.
         """
         if id is not None:
             id = self.__unpack_id(id)
@@ -385,8 +379,6 @@ class Mastodon(Internals):
         `private_comment` sets a private admin comment for the domain.
         `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
         `obfuscate` censors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
-
-        Returns the new domain block as an :ref:`admin domain block dict <admin domain block dict>`.
         """
         if domain is None:
             raise MastodonIllegalArgumentError("Must provide a domain to block a domain")
@@ -414,7 +406,7 @@ class Mastodon(Internals):
         `public_comment` sets a publicly available comment for this domain, which will be available to local users and may be available to everyone depending on your settings.
         `obfuscate` censors some part of the domain name. Useful if the domain name contains unwanted words like slurs.
 
-        Returns the modified domain block as an :ref:`admin domain block dict <admin domain block dict>`, raises a `MastodonAPIError` if the specified block does not exist.
+        Raises a `MastodonAPIError` if the specified block does not exist.
         """
         if id is None:
             raise MastodonIllegalArgumentError("Must provide an id to modify the existing moderation actions on a given domain.")
@@ -465,8 +457,6 @@ class Mastodon(Internals):
 
         There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
         release.
-
-        Returns a list of :ref:`admin measure dicts <admin measure dicts>`.
         """
         params_init = locals()
         keys = []
@@ -516,8 +506,6 @@ class Mastodon(Internals):
 
         There is currently no way to get tag IDs implemented in Mastodon.py, because the Mastodon public API does not implement one. This will be fixed in a future
         release.
-
-        Returns a list of :ref:`admin dimension dicts <admin dimension dicts>`.
         """
         params_init = locals()
         keys = []

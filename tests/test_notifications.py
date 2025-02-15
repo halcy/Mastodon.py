@@ -15,6 +15,7 @@ def test_notifications(api, mention):
     notifications = api.notifications()
     assert api.notifications(notifications[0])
     assert notifications[0].status.id == mention.id
+    assert api.notifications_unread_count().count > 0
 
 @pytest.mark.vcr()
 def test_notifications_mentions_only(api, mention):

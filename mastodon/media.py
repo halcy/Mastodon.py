@@ -49,14 +49,13 @@ class Mastodon(Internals):
         Starting with Mastodon 3.2.0, `thumbnail` can be specified in the same way as `media_file`
         to upload a custom thumbnail image for audio and video files.
 
-        Returns a :ref:`media dict <media dict>`. This contains the id that can be used in
-        status_post to attach the media file to a toot.
-
         When using the v2 API (post Mastodon version 3.1.4), the `url` in the
         returned dict will be `null`, since attachments are processed
         asynchronously. You can fetch an updated dict using `media`. Pass
         "synchronous" to emulate the old behaviour. Not recommended, inefficient
         and deprecated, will eat your API quota, you know the deal.
+
+        The returned value (or its id) can be used in a status post as the `media_ids` parameter.
         """
         files = {'file': self.__load_media_file(
             media_file, mime_type, file_name)}

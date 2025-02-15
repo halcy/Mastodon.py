@@ -16,7 +16,7 @@ class Mastodon(Internals):
     def featured_tags(self) -> NonPaginatableList[FeaturedTag]:
         """
         Return the hashtags the logged-in user has set to be featured on
-        their profile as a list of :ref:`featured tag dicts <featured tag dicts>`.
+        their profile.
         """
         return self.__api_request('GET', '/api/v1/featured_tags')
 
