@@ -17,14 +17,14 @@ class Mastodon(Internals):
     ###
     # Reading data: Keyword filters
     ###
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3")
     def filters(self) -> Union[NonPaginatableList[Filter], NonPaginatableList[FilterV2]]:
         """
         Fetch all of the logged-in user's filters.
         """
         return self.__api_request('GET', '/api/v1/filters')
 
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3")
     def filter(self, id: Union[Filter, FilterV2, IdType]) -> Union[Filter, FilterV2]:
         """
         Fetches information about the filter with the specified `id`.
@@ -34,7 +34,7 @@ class Mastodon(Internals):
 
     # TODO: Add v2 filter support
     # TODO: test this properly
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3")
     def filters_apply(self, objects: Union[PaginatableList[Status], PaginatableList[Notification]], filters: Union[NonPaginatableList[Filter], NonPaginatableList[FilterV2]], context: str) -> Union[PaginatableList[Status], PaginatableList[Notification]]:
         """
         Helper function: Applies a list of filters to a list of either statuses
@@ -71,7 +71,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Keyword filters
     ###
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3")
     def filter_create(self, phrase: str, context: str, irreversible: bool = False, whole_word: bool = True, expires_in: Optional[int] = None) -> Union[Filter, FilterV2]:
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
@@ -97,7 +97,7 @@ class Mastodon(Internals):
 
         return self.__api_request('POST', '/api/v1/filters', params)
 
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_FILTER)
+    @api_version("2.4.3", "2.4.3")
     def filter_update(self, id: Union[Filter, FilterV2, IdType], phrase: Optional[str] = None, context: Optional[str] = None, irreversible: Optional[bool] = None, whole_word: Optional[bool] = None, expires_in: Optional[int] = None) -> Union[Filter, FilterV2]:
         """
         Updates the filter with the given `id`. Parameters are the same
@@ -109,7 +109,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('PUT', f'/api/v1/filters/{id}', params)
 
-    @api_version("2.4.3", "2.4.3", "2.4.3")
+    @api_version("2.4.3", "2.4.3")
     def filter_delete(self, id: Union[Filter, FilterV2, IdType]):
         """
         Deletes the filter with the given `id`.

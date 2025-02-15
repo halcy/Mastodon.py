@@ -14,7 +14,7 @@ from mastodon.return_types import AccountCreationError, Account, IdType, Status,
 from datetime import datetime
 
 class Mastodon(Internals):
-    @api_version("2.7.0", "2.7.0", "3.4.0")
+    @api_version("2.7.0", "2.7.0")
     def create_account(self, username: str, password: str, email: str, agreement: bool = False, reason: Optional[str] = None, 
                         locale: str = "en", scopes: List[str] = _DEFAULT_SCOPES, to_file: Optional[str] = None, 
                         return_detailed_error: bool = False) -> Union[Optional[str], Tuple[Optional[str], AccountCreationError]]:
@@ -108,7 +108,7 @@ class Mastodon(Internals):
         else:
             return response['access_token']
 
-    @api_version("3.4.0", "3.4.0", "3.4.0")
+    @api_version("3.4.0", "3.4.0")
     def email_resend_confirmation(self):
         """
         Requests a re-send of the users confirmation mail for an unconfirmed logged in user.
@@ -120,7 +120,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Accounts
     ###
-    @api_version("1.0.0", "1.0.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "1.0.0")
     def account(self, id: Union[Account, IdType]) -> Account:
         """
         Fetch account information by user `id`.
@@ -130,24 +130,24 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/accounts/{id}')
 
-    @api_version("4.3.0", "4.3.0", _DICT_VERSION_ACCOUNT)
+    @api_version("4.3.0", "4.3.0")
     def accounts(self, ids: List[Union[Account, IdType]]) -> List[Account]:
         """
         Fetch information from multiple accounts by a list of user `id`.
 
         Does not require authentication for publicly visible accounts.
         """
-        ids = [self.__unpack_id(id) for id in ids]
+        ids = [self.__unpack_id(id, dateconv=True) for id in ids]
         return self.__api_request('GET', '/api/v1/accounts', {"id[]": ids})
 
-    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0")
     def account_verify_credentials(self) -> Account:
         """
         Fetch logged-in user's account information. Returns the version of the Account object with `source` field.
         """
         return self.__api_request('GET', '/api/v1/accounts/verify_credentials')
 
-    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0")
     def me(self) -> Account:
         """
         Get this user's account. Synonym for `account_verify_credentials()`, does exactly
@@ -156,7 +156,7 @@ class Mastodon(Internals):
         """
         return self.account_verify_credentials()
 
-    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0")
     def account_statuses(self, id: Union[Account, IdType], only_media: bool = False, pinned: bool = False, exclude_replies: bool = False, 
                          exclude_reblogs: bool = False, tagged: Optional[str] = None, max_id: Optional[Union[Status, IdType, datetime]] = None, 
                          min_id: Optional[Union[Status, IdType, datetime]] = None, since_id: Optional[Union[Status, IdType, datetime]] = None, 
@@ -199,7 +199,7 @@ class Mastodon(Internals):
 
         return self.__api_request('GET', f'/api/v1/accounts/{id}/statuses', params)
 
-    @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.6.0")
     def account_following(self, id: Union[Account, IdType], max_id: Optional[Union[Account, IdType]] = None, 
                           min_id: Optional[Union[Account, IdType]] = None, since_id: Optional[Union[Account, IdType]] = None, 
                           limit: Optional[int] = None) -> PaginatableList[Account]:
@@ -210,7 +210,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/following', params)
 
-    @api_version("1.0.0", "2.6.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.6.0")
     def account_followers(self, id: Union[Account, IdType], max_id: Optional[Union[Account, IdType]] = None, 
                           min_id: Optional[Union[Account, IdType]] = None, since_id: Optional[Union[Account, IdType]] = None, 
                           limit: Optional[int] = None) -> PaginatableList[Account]:
@@ -221,7 +221,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/followers', params)
 
-    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0")
     def account_relationships(self, id: Union[List[Union[Account, IdType]], Union[Account, IdType]], with_suspended: Optional[bool] = None) -> NonPaginatableList[Relationship]:
         """
         Fetch relationship (following, followed_by, blocking, follow requested) of
@@ -234,7 +234,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/accounts/relationships',
                                   params)
 
-    @api_version("1.0.0", "2.8.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.8.0")
     def account_search(self, q: str, limit: Optional[int] = None, following: bool = False, resolve: bool = False, offset: Optional[int] = None) -> NonPaginatableList[Account]:
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
@@ -251,7 +251,7 @@ class Mastodon(Internals):
 
         return self.__api_request('GET', '/api/v1/accounts/search', params)
 
-    @api_version("2.1.0", "2.1.0", _DICT_VERSION_LIST)
+    @api_version("2.1.0", "2.1.0")
     def account_lists(self, id: Union[Account, IdType]) -> NonPaginatableList[UserList]:
         """
         Get all of the logged-in user's lists which the specified user is
@@ -261,7 +261,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('GET', f'/api/v1/accounts/{id}/lists', params)
 
-    @api_version("3.4.0", "3.4.0", _DICT_VERSION_ACCOUNT)
+    @api_version("3.4.0", "3.4.0")
     def account_lookup(self, acct: str) -> Account:
         """
         Look up an account from user@instance form (@instance allowed but not required for
@@ -271,7 +271,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/accounts/lookup', self.__generate_params(locals()))
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_FAMILIAR_FOLLOWERS)
+    @api_version("3.5.0", "3.5.0")
     def account_familiar_followers(self, id: Union[List[Union[Account, IdType]], Union[Account, IdType]]) -> NonPaginatableList[FamiliarFollowers]:
         """
         Find followers for the account given by id (can be a list) that also follow the
@@ -283,7 +283,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Accounts
     ###
-    @api_version("1.0.0", "3.3.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "3.3.0")
     def account_follow(self, id: Union[Account, IdType], reblogs: bool =True, notify: bool = False) -> Relationship:
         """
         Follow a user.
@@ -301,7 +301,7 @@ class Mastodon(Internals):
 
         return self.__api_request('POST', f'/api/v1/accounts/{id}/follow', params)
 
-    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0")
     def follows(self, uri: str) -> Relationship:
         """
         Follow a remote user with username given in username@domain form.
@@ -316,7 +316,7 @@ class Mastodon(Internals):
             raise MastodonNotFoundError("User not found")
         return self.account_follow(acct)
 
-    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0")
     def account_unfollow(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unfollow a user.
@@ -326,7 +326,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unfollow')
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("3.5.0", "3.5.0")
     def account_remove_from_followers(self, id: Union[Account, IdType]) -> Relationship:
         """
         Remove a user from the logged in users followers (i.e. make them unfollow the logged in
@@ -337,7 +337,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/remove_from_followers')
 
-    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0")
     def account_block(self, id: Union[Account, IdType]) -> Relationship:
         """
         Block a user.
@@ -347,7 +347,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/block')
 
-    @api_version("1.0.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.0.0", "1.4.0")
     def account_unblock(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unblock a user.
@@ -357,7 +357,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unblock')
 
-    @api_version("1.1.0", "2.4.3", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.1.0", "2.4.3")
     def account_mute(self, id: Union[Account, IdType], notifications: bool = True, duration: Optional[int] = None) -> Relationship:
         """
         Mute a user.
@@ -372,7 +372,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('POST', f'/api/v1/accounts/{id}/mute', params)
 
-    @api_version("1.1.0", "1.4.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("1.1.0", "1.4.0")
     def account_unmute(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unmute a user.
@@ -382,7 +382,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute')
 
-    @api_version("1.1.1", "3.1.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.1.1", "3.1.0")
     def account_update_credentials(self, display_name: Optional[str] = None, note: Optional[str] = None,
                                    avatar: Optional[PathOrFile] = None, avatar_mime_type: Optional[str] = None,
                                    header: Optional[PathOrFile] = None, header_mime_type: Optional[str] = None,
@@ -431,7 +431,7 @@ class Mastodon(Internals):
         params = self.__generate_params(params_initial)
         return self.__api_request('PATCH', '/api/v1/accounts/update_credentials', params, files=files)
 
-    @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("2.5.0", "2.5.0")
     def account_pin(self, id: Union[Account, IdType]) -> Relationship:
         """
         Pin / endorse a user.
@@ -441,7 +441,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/pin')
 
-    @api_version("2.5.0", "2.5.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("2.5.0", "2.5.0")
     def account_unpin(self, id: Union[Account, IdType]) -> Relationship:
         """
         Unpin / un-endorse a user.
@@ -451,7 +451,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unpin')
 
-    @api_version("3.2.0", "3.2.0", _DICT_VERSION_RELATIONSHIP)
+    @api_version("3.2.0", "3.2.0")
     def account_note_set(self, id: Union[Account, IdType], comment: str) -> Account:
         """
         Set a note (visible to the logged in user only) for the given account.
@@ -462,7 +462,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ["id"])
         return self.__api_request('POST', f'/api/v1/accounts/{id}/note', params)
 
-    @api_version("3.3.0", "3.3.0", _DICT_VERSION_HASHTAG)
+    @api_version("3.3.0", "3.3.0")
     def account_featured_tags(self, id: Union[Account, IdType]) -> NonPaginatableList[Tag]:
         """
         Get an account's featured hashtags.
@@ -470,14 +470,14 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/accounts/{id}/featured_tags')
 
-    @api_version("4.2.0", "4.2.0", _DICT_VERSION_ACCOUNT)
+    @api_version("4.2.0", "4.2.0")
     def account_delete_avatar(self):
         """
         Delete the logged-in user's avatar.
         """
         self.__api_request('DELETE', '/api/v1/profile/avatar')
     
-    @api_version("4.2.0", "4.2.0", _DICT_VERSION_ACCOUNT)
+    @api_version("4.2.0", "4.2.0")
     def account_delete_header(self):
         """
         Delete the logged-in user's header.

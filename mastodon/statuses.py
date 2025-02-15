@@ -18,7 +18,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Statuses
     ###
-    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0")
     def status(self, id: Union[Status, IdType]) -> Status:
         """
         Fetch information about a single toot.
@@ -28,17 +28,17 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/statuses/{id}')
 
-    @api_version("4.3.0", "4.3.0", _DICT_VERSION_ACCOUNT)
+    @api_version("4.3.0", "4.3.0")
     def statuses(self, ids: List[Union[Status, IdType]]) -> List[Status]:
         """
         Fetch information from multiple statuses by a list of status `id`.
 
         Does not require authentication for publicly visible accounts.
         """
-        ids = [self.__unpack_id(id) for id in ids]
+        ids = [self.__unpack_id(id, dateconv=True) for id in ids]
         return self.__api_request('GET', '/api/v1/statuses', {"id[]": ids})
 
-    @api_version("1.0.0", "3.0.0", _DICT_VERSION_CARD)
+    @api_version("1.0.0", "3.0.0")
     def status_card(self, id: Union[Status, IdType]) -> PreviewCard:
         """
         Fetch a card associated with a status. A card describes an object (such as an
@@ -57,7 +57,7 @@ class Mastodon(Internals):
             id = self.__unpack_id(id)
             return self.__api_request('GET', f'/api/v1/statuses/{id}/card')
 
-    @api_version("1.0.0", "1.0.0", _DICT_VERSION_CONTEXT)
+    @api_version("1.0.0", "1.0.0")
     def status_context(self, id: Union[Status, IdType]) -> Context:
         """
         Fetch information about ancestors and descendants of a toot.
@@ -67,7 +67,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/statuses/{id}/context')
 
-    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0")
     def status_reblogged_by(self, id: Union[Status, IdType]) -> NonPaginatableList[Account]:
         """
         Fetch a list of users that have reblogged a status.
@@ -81,7 +81,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f'/api/v1/statuses/{id}/reblogged_by')
 
-    @api_version("1.0.0", "2.1.0", _DICT_VERSION_ACCOUNT)
+    @api_version("1.0.0", "2.1.0")
     def status_favourited_by(self, id: Union[Status, IdType]) -> NonPaginatableList[Account]:
         """
         Fetch a list of users that have favourited a status.
@@ -94,7 +94,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Scheduled statuses
     ###
-    @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
+    @api_version("2.7.0", "2.7.0")
     def scheduled_statuses(self, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None) -> PaginatableList[ScheduledStatus]:
         """
@@ -103,7 +103,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v1/scheduled_statuses', params)
 
-    @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
+    @api_version("2.7.0", "2.7.0")
     def scheduled_status(self, id: Union[ScheduledStatus, IdType]) -> ScheduledStatus:
         """
         Fetch information about the scheduled status with the given id.
@@ -201,7 +201,7 @@ class Mastodon(Internals):
             # Edit
             return self.__api_request('PUT', f'/api/v1/statuses/{self.__unpack_id(edit)}', params, headers=headers, use_json=use_json, override_type=cast_type)
 
-    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0")
     def status_post(self, status: str, in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
@@ -283,7 +283,7 @@ class Mastodon(Internals):
             strict_content_type=strict_content_type
         )
 
-    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0")
     def toot(self, status: str) -> Status:
         """
         Synonym for :ref:`status_post() <status_post()>` that only takes the status text as input.
@@ -292,7 +292,7 @@ class Mastodon(Internals):
         """
         return self.status_post(status)
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
+    @api_version("3.5.0", "3.5.0")
     def status_update(self, id: Union[Status, IdType], status: Optional[str] = None, spoiler_text: Optional[str] = None, 
                       sensitive: Optional[bool] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None, 
                       poll: Optional[Union[Poll, IdType]] = None) -> Status:
@@ -313,7 +313,7 @@ class Mastodon(Internals):
             edit=id
         )
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS_EDIT)
+    @api_version("3.5.0", "3.5.0")
     def status_history(self, id: Union[StatusEdit, IdType]) -> NonPaginatableList[StatusEdit]:
         """
         Returns the edit history of a status as a list of StatusEdit objects, starting
@@ -335,7 +335,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f"/api/v1/statuses/{id}/source")
 
-    @api_version("1.0.0", "2.8.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.8.0")
     def status_reply(self, to_status: Union[Status, IdType], status: str, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
@@ -386,7 +386,7 @@ class Mastodon(Internals):
         keyword_args["in_reply_to_id"] = to_status.id
         return self.status_post(**keyword_args)
 
-    @api_version("1.0.0", "1.0.0", "1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def status_delete(self, id: Union[Status, IdType]) -> Status:
         """
         Delete a status
@@ -398,7 +398,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('DELETE', f'/api/v1/statuses/{id}')
 
-    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0")
     def status_reblog(self, id: Union[Status, IdType], visibility: Optional[str] = None) -> Status:
         """
         Reblog / boost a status.
@@ -418,7 +418,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/reblog', params)
 
-    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0")
     def status_unreblog(self, id: Union[Status, IdType]) -> Status:
         """
         Un-reblog a status.
@@ -428,7 +428,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/unreblog')
 
-    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0")
     def status_favourite(self, id: Union[Status, IdType]) -> Status:
         """
         Favourite a status.
@@ -438,7 +438,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/favourite')
 
-    @api_version("1.0.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.0.0")
     def status_unfavourite(self, id: Union[Status, IdType]) -> Status: 
         """
         Un-favourite a status.
@@ -448,7 +448,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/unfavourite')
 
-    @api_version("1.4.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.4.0", "2.0.0")
     def status_mute(self, id: Union[Status, IdType]) -> Status:
         """
         Mute notifications for a status.
@@ -458,7 +458,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/mute')
 
-    @api_version("1.4.0", "2.0.0", _DICT_VERSION_STATUS)
+    @api_version("1.4.0", "2.0.0")
     def status_unmute(self, id: Union[Status, IdType]) -> Status:
         """
         Unmute notifications for a status.
@@ -468,7 +468,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/unmute')
 
-    @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
+    @api_version("2.1.0", "2.1.0")
     def status_pin(self, id: Union[Status, IdType]) -> Status:
         """
         Pin a status for the logged-in user.
@@ -478,7 +478,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/pin')
 
-    @api_version("2.1.0", "2.1.0", _DICT_VERSION_STATUS)
+    @api_version("2.1.0", "2.1.0")
     def status_unpin(self, id: Union[Status, IdType]) -> Status:
         """
         Unpin a pinned status for the logged-in user.
@@ -488,7 +488,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/unpin')
 
-    @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
+    @api_version("3.1.0", "3.1.0")
     def status_bookmark(self, id: Union[Status, IdType]) -> Status:
         """
         Bookmark a status as the logged-in user.
@@ -498,7 +498,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/bookmark')
 
-    @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
+    @api_version("3.1.0", "3.1.0")
     def status_unbookmark(self, id: Union[Status, IdType]) -> Status:
         """
         Unbookmark a bookmarked status for the logged-in user.
@@ -511,7 +511,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Scheduled statuses
     ###
-    @api_version("2.7.0", "2.7.0", _DICT_VERSION_SCHEDULED_STATUS)
+    @api_version("2.7.0", "2.7.0")
     def scheduled_status_update(self, id: Union[Status, IdType], scheduled_at: datetime) -> ScheduledStatus:
         """
         Update the scheduled time of a scheduled status.
@@ -525,7 +525,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'])
         return self.__api_request('PUT', f'/api/v1/scheduled_statuses/{id}', params)
 
-    @api_version("2.7.0", "2.7.0", "2.7.0")
+    @api_version("2.7.0", "2.7.0")
     def scheduled_status_delete(self, id: Union[Status, IdType]):
         """
         Deletes a scheduled status.

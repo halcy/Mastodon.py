@@ -11,7 +11,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Trends
     ###
-    @api_version("2.4.3", "3.5.0", _DICT_VERSION_HASHTAG)
+    @api_version("2.4.3", "3.5.0")
     def trends(self, limit: Optional[int] = None):
         """
         Old alias for :ref:`trending_tags() <trending_tags()>`
@@ -20,7 +20,7 @@ class Mastodon(Internals):
         """
         return self.trending_tags(limit=limit)
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_HASHTAG)
+    @api_version("3.5.0", "3.5.0")
     def trending_tags(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[Tag]:
         """
         Fetch trending-hashtag information, if the instance provides such information.
@@ -46,7 +46,7 @@ class Mastodon(Internals):
         else:
             return self.__api_request('GET', '/api/v1/trends', params, lang_override=lang)
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_STATUS)
+    @api_version("3.5.0", "3.5.0")
     def trending_statuses(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[Status]:
         """
         Fetch trending-status information, if the instance provides such information.
@@ -65,7 +65,7 @@ class Mastodon(Internals):
             del params["lang"]
         return self.__api_request('GET', '/api/v1/trends/statuses', params, lang_override=lang)
 
-    @api_version("3.5.0", "3.5.0", _DICT_VERSION_CARD)
+    @api_version("3.5.0", "3.5.0")
     def trending_links(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[PreviewCard]:
         """
         Fetch trending-link information, if the instance provides such information.

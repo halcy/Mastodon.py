@@ -13,7 +13,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Timelines
     ##
-    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4")
     def timeline(self, timeline: str = "home", max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False, local: bool = False, 
                  remote: bool = False) -> PaginatableList[Status]:
@@ -46,7 +46,7 @@ class Mastodon(Internals):
         params = self.__generate_params(params_initial, ['timeline'], dateconv=True)
         return self.__api_request('GET', f'/api/v1/timelines/{timeline}', params)
 
-    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4")
     def timeline_home(self, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False, local: bool = False, 
                  remote: bool = False) -> PaginatableList[Status]:
@@ -55,7 +55,7 @@ class Mastodon(Internals):
         """
         return self.timeline('home', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4")
     def timeline_local(self, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False) -> PaginatableList[Status]:
         """
@@ -63,7 +63,7 @@ class Mastodon(Internals):
         """
         return self.timeline('local', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media)
 
-    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4")
     def timeline_public(self, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False, local: bool = False, 
                  remote: bool = False) -> PaginatableList[Status]:
@@ -72,7 +72,7 @@ class Mastodon(Internals):
         """
         return self.timeline('public', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("1.0.0", "3.1.4", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "3.1.4")
     def timeline_hashtag(self, hashtag: str, local: bool = False, max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False,
                  remote: bool = False) -> PaginatableList[Status]:
@@ -85,7 +85,7 @@ class Mastodon(Internals):
         hashtag = self.__unpack_id(hashtag, field="name")        
         return self.timeline(f'tag/{hashtag}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
 
-    @api_version("2.1.0", "3.1.4", _DICT_VERSION_STATUS)
+    @api_version("2.1.0", "3.1.4")
     def timeline_list(self, id: Union[UserList, IdType], max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False, local: bool = False, 
                  remote: bool = False) -> PaginatableList[Status]:

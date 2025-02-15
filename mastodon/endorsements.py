@@ -10,7 +10,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Endorsements
     ###
-    @api_version("2.5.0", "2.5.0", _DICT_VERSION_ACCOUNT)
+    @api_version("2.5.0", "2.5.0")
     def endorsements(self) -> NonPaginatableList[Account]:
         """
         Fetch list of users endorsed by the logged-in user.

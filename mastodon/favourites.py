@@ -12,7 +12,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Favourites
     ###
-    @api_version("1.0.0", "2.6.0", _DICT_VERSION_STATUS)
+    @api_version("1.0.0", "2.6.0")
     def favourites(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
                    since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[Status]:
         """
@@ -27,7 +27,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Bookmarks
     ###
-    @api_version("3.1.0", "3.1.0", _DICT_VERSION_STATUS)
+    @api_version("3.1.0", "3.1.0")
     def bookmarks(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
                    since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[Status]:
         """

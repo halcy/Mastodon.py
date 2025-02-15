@@ -15,7 +15,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Media
     ###
-    @api_version("3.1.4", "3.1.4", _DICT_VERSION_MEDIA)
+    @api_version("3.1.4", "3.1.4")
     def media(self, id: Union[MediaAttachment, IdType]) -> MediaAttachment:
         """
         Get the updated JSON for one non-attached / in progress media upload belonging
@@ -27,7 +27,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Media
     ###
-    @api_version("1.0.0", "3.2.0", _DICT_VERSION_MEDIA)
+    @api_version("1.0.0", "3.2.0")
     def media_post(self, media_file: PathOrFile, mime_type: Optional[str] = None, description: Optional[str] = None, 
                    focus: Optional[Tuple[float, float]] = None, file_name: Optional[str] = None, 
                    thumbnail: Optional[PathOrFile] = None, thumbnail_mime_type: Optional[str] = None, 
@@ -93,7 +93,7 @@ class Mastodon(Internals):
 
         return ret_dict
 
-    @api_version("2.3.0", "3.2.0", _DICT_VERSION_MEDIA)
+    @api_version("2.3.0", "3.2.0")
     def media_update(self, id: Union[MediaAttachment, IdType], description: Optional[str] = None, 
                      focus: Optional[Tuple[float, float]] = None, thumbnail: Optional[PathOrFile] = None, 
                      thumbnail_mime_type=None) -> MediaAttachment:

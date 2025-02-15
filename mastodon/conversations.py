@@ -11,7 +11,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Conversations
     ###
-    @api_version("2.6.0", "2.6.0", _DICT_VERSION_CONVERSATION)
+    @api_version("2.6.0", "2.6.0")
     def conversations(self, max_id: Optional[Union[Conversation, IdType]] = None, min_id: Optional[Union[Conversation, IdType]] = None, since_id: 
                       Optional[Union[Conversation, IdType]] = None, limit: Optional[int] = None) -> PaginatableList[Conversation]:
         """
@@ -23,7 +23,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Conversations
     ###
-    @api_version("2.6.0", "2.6.0", _DICT_VERSION_CONVERSATION)
+    @api_version("2.6.0", "2.6.0")
     def conversations_read(self, id: Union[Conversation, IdType]):
         """
         Marks a single conversation as read.

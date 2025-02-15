@@ -14,7 +14,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Instances
     ###
-    @api_version("1.1.0", "2.3.0", _DICT_VERSION_INSTANCE)
+    @api_version("1.1.0", "2.3.0")
     def instance_v1(self) -> Instance:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
@@ -33,7 +33,7 @@ class Mastodon(Internals):
         instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
         return instance
 
-    @api_version("4.0.0", "4.0.0", _DICT_VERSION_INSTANCE)
+    @api_version("4.0.0", "4.0.0")
     def instance_v2(self) -> InstanceV2:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
@@ -42,7 +42,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v2/instance/')
 
-    @api_version("1.1.0", "4.0.0", _DICT_VERSION_INSTANCE)
+    @api_version("1.1.0", "4.0.0")
     def instance(self) -> Union[InstanceV2, Instance]:
         """
         Retrieve basic information about the instance, including the URI and administrative contact email.
@@ -57,7 +57,7 @@ class Mastodon(Internals):
         else:
             return self.instance_v1()
 
-    @api_version("2.1.2", "2.1.2", _DICT_VERSION_ACTIVITY)
+    @api_version("2.1.2", "2.1.2")
     def instance_activity(self) -> NonPaginatableList[Activity]:
         """
         Retrieve activity stats about the instance. May be disabled by the instance administrator - throws
@@ -67,7 +67,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/instance/activity')
 
-    @api_version("2.1.2", "2.1.2", "2.1.2")
+    @api_version("2.1.2", "2.1.2")
     def instance_peers(self) -> NonPaginatableList[str]:
         """
         Retrieve the instances that this instance knows about. May be disabled by the instance administrator - throws
@@ -77,7 +77,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/instance/peers')
 
-    @api_version("3.0.0", "3.0.0", "3.0.0")
+    @api_version("3.0.0", "3.0.0")
     def instance_health(self) -> bool:
         """
         Basic health check. Returns True if healthy, False if not.
@@ -85,7 +85,7 @@ class Mastodon(Internals):
         status = self.__api_request('GET', '/health', parse=False).decode("utf-8")
         return status in ["OK", "success"]
 
-    @api_version("3.0.0", "3.0.0", "3.0.0")
+    @api_version("3.0.0", "3.0.0")
     def instance_nodeinfo(self, schema: str = "http://nodeinfo.diaspora.software/ns/schema/2.0") -> Nodeinfo:
         """
         Retrieves the instance's nodeinfo information.
@@ -115,7 +115,7 @@ class Mastodon(Internals):
             parse = urlparse(schema_url)
             return self.__api_request('GET', parse.path + parse.params + parse.query + parse.fragment)
 
-    @api_version("3.4.0", "3.4.0", _DICT_VERSION_INSTANCE)
+    @api_version("3.4.0", "3.4.0")
     def instance_rules(self) -> NonPaginatableList[Rule]:
         """
         Retrieve instance rules.
@@ -125,7 +125,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Directory
     ###
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_ACCOUNT)
+    @api_version("3.0.0", "3.0.0")
     def directory(self, offset: Optional[int] = None, limit: Optional[int] = None, 
                   order: Optional[str] = None, local: Optional[bool] = None) -> NonPaginatableList[Account]:
         """
@@ -149,7 +149,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Emoji
     ###
-    @api_version("2.1.0", "2.1.0", _DICT_VERSION_EMOJI)
+    @api_version("2.1.0", "2.1.0")
     def custom_emojis(self) -> NonPaginatableList[CustomEmoji]:
         """
         Fetch the list of custom emoji the instance has installed.
@@ -161,7 +161,7 @@ class Mastodon(Internals):
     ##
     # Reading data: Announcements
     ##
-    @api_version("3.1.0", "3.1.0", _DICT_VERSION_ANNOUNCEMENT)
+    @api_version("3.1.0", "3.1.0")
     def announcements(self) -> NonPaginatableList[Announcement]:
         """
         Fetch currently active announcements.
@@ -173,7 +173,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Annoucements
     ###
-    @api_version("3.1.0", "3.1.0", "3.1.0")
+    @api_version("3.1.0", "3.1.0")
     def announcement_dismiss(self, id: Union[Announcement, IdType]):
         """
         Set the given annoucement to read.
@@ -181,7 +181,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         self.__api_request('POST', f'/api/v1/announcements/{id}/dismiss')
 
-    @api_version("3.1.0", "3.1.0", "3.1.0")
+    @api_version("3.1.0", "3.1.0")
     def announcement_reaction_create(self, id: Union[Announcement, IdType], reaction: str):
         """
         Add a reaction to an announcement. `reaction` can either be a unicode emoji
@@ -194,7 +194,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         self.__api_request('PUT', f'/api/v1/announcements/{id}/reactions/{reaction}')
 
-    @api_version("3.1.0", "3.1.0", "3.1.0")
+    @api_version("3.1.0", "3.1.0")
     def announcement_reaction_delete(self, id: Union[Announcement, IdType], reaction: str):
         """
         Remove a reaction to an announcement.

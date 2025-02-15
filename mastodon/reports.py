@@ -13,7 +13,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Reports
     ###
-    @api_version("1.1.0", "1.1.0", _DICT_VERSION_REPORT)
+    @api_version("1.1.0", "1.1.0")
     def reports(self) -> NonPaginatableList[Report]:
         """
         Fetch a list of reports made by the logged-in user.
@@ -28,7 +28,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Reports
     ###
-    @api_version("1.1.0", "3.5.0", _DICT_VERSION_REPORT)
+    @api_version("1.1.0", "3.5.0")
     def report(self, account_id: Union[Account, IdType], status_ids: Optional[Union[Status, IdType]] = None, comment: Optional[str] = None, 
                forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None, forward_to_domains: Optional[List[str]] = None) -> Report:
         """

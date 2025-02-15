@@ -11,7 +11,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Polls
     ###
-    @api_version("2.8.0", "2.8.0", _DICT_VERSION_POLL)
+    @api_version("2.8.0", "2.8.0")
     def poll(self, id: Union[Poll, IdType]) -> Poll:
         """
         Fetch information about the poll with the given id
@@ -22,7 +22,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Polls
     ###
-    @api_version("2.8.0", "2.8.0", _DICT_VERSION_POLL)
+    @api_version("2.8.0", "2.8.0")
     def poll_vote(self, id: Union[Poll, IdType], choices: Union[int, List[int]]) -> Poll:
         """
         Vote in the given poll.
@@ -45,7 +45,7 @@ class Mastodon(Internals):
 
         return self.__api_request('POST', f'/api/v1/polls/{id}/votes', params)
 
-    @api_version("2.8.0", "2.8.0", _DICT_VERSION_POLL)
+    @api_version("2.8.0", "2.8.0")
     def make_poll(self, options: List[str], expires_in: int, multiple: bool = False, hide_totals: bool = False) -> Poll:
         """
         Generate a poll object that can be passed as the `poll` option when posting a status.

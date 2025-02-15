@@ -18,7 +18,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Webpush subscriptions
     ###
-    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
+    @api_version("2.4.0", "2.4.0")
     def push_subscription(self) -> WebPushSubscription:
         """
         Fetch the current push subscription the logged-in user has for this app.
@@ -30,7 +30,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Push subscriptions
     ###
-    @api_version("2.4.0", "4..0", _DICT_VERSION_PUSH)
+    @api_version("2.4.0", "4..0")
     def push_subscription_set(self, endpoint: str, encrypt_params: WebpushCryptoParamsPubkey, follow_events: Optional[bool] = None,
                               favourite_events: Optional[bool] = None, reblog_events: Optional[bool] = None,
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
@@ -115,7 +115,7 @@ class Mastodon(Internals):
 
         return self.__api_request('POST', '/api/v1/push/subscription', params)
 
-    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH)
+    @api_version("2.4.0", "2.4.0")
     def push_subscription_update(self, follow_events: Optional[bool] = None,
                               favourite_events: Optional[bool] = None, reblog_events: Optional[bool] = None,
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
@@ -168,7 +168,7 @@ class Mastodon(Internals):
 
         return self.__api_request('PUT', '/api/v1/push/subscription', params)
 
-    @api_version("2.4.0", "2.4.0", "2.4.0")
+    @api_version("2.4.0", "2.4.0")
     def push_subscription_delete(self):
         """
         Remove the current push subscription the logged-in user has for this app.
@@ -212,7 +212,7 @@ class Mastodon(Internals):
 
         return priv_dict, pub_dict
 
-    @api_version("2.4.0", "2.4.0", _DICT_VERSION_PUSH_NOTIF)
+    @api_version("2.4.0", "2.4.0")
     def push_subscription_decrypt_push(self, data: bytes, decrypt_params: WebpushCryptoParamsPrivkey, encryption_header: str, crypto_key_header: str) -> PushNotification:
         """
         Decrypts `data` received in a webpush request. Requires the private key dict

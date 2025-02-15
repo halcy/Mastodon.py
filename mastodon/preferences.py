@@ -15,7 +15,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Preferences
     ###
-    @api_version("2.8.0", "2.8.0", _DICT_VERSION_PREFERENCES)
+    @api_version("2.8.0", "2.8.0")
     def preferences(self) -> Preferences:
         """
         Fetch the user's preferences, which can be used to set some default options.
@@ -26,7 +26,7 @@ class Mastodon(Internals):
     ##
     # Reading data: Read markers
     ##
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
+    @api_version("3.0.0", "3.0.0")
     def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> Dict[str, Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
@@ -48,7 +48,7 @@ class Mastodon(Internals):
     ##
     # Writing data: Read markers
     ##
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_MARKER)
+    @api_version("3.0.0", "3.0.0")
     def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> Dict[str, Marker]:
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)

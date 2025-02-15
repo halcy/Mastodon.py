@@ -14,7 +14,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Featured hashtags
     ###
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0")
     def featured_tags(self) -> NonPaginatableList[FeaturedTag]:
         """
         Return the hashtags the logged-in user has set to be featured on
@@ -22,7 +22,7 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v1/featured_tags')
 
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_HASHTAG)
+    @api_version("3.0.0", "3.0.0")
     def featured_tag_suggestions(self) -> NonPaginatableList[FeaturedTag]:
         """
         Returns the logged-in user's 10 most commonly-used hashtags.
@@ -32,7 +32,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Featured hashtags
     ###
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0")
     def featured_tag_create(self, name: str) -> FeaturedTag:
         """
         Creates a new featured hashtag displayed on the logged-in user's profile.
@@ -42,7 +42,7 @@ class Mastodon(Internals):
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/featured_tags', params)
 
-    @api_version("3.0.0", "3.0.0", _DICT_VERSION_FEATURED_TAG)
+    @api_version("3.0.0", "3.0.0")
     def featured_tag_delete(self, id: Union[FeaturedTag, IdType]):
         """
         Deletes one of the logged-in user's featured hashtags.
@@ -53,7 +53,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Followed tags
     ###
-    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    @api_version("4.0.0", "4.0.0")
     def followed_tags(self, max_id: Optional[Union[Tag, IdType, datetime]] = None, 
                       min_id: Optional[Union[Tag, IdType, datetime]] = None, since_id: Optional[Union[Tag, IdType, datetime]] = None, 
                       limit: Optional[int] = None) -> PaginatableList[Tag]:
@@ -64,7 +64,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/followed_tags', params)
     
     
-    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    @api_version("4.0.0", "4.0.0")
     def tag(self, hashtag: Union[Tag, str]) -> Tag:
         """
         Get information about a single tag.
@@ -77,7 +77,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Followed tags
     ###
-    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    @api_version("4.0.0", "4.0.0")
     def tag_follow(self, hashtag: Union[Tag, str]) -> Tag:
         """
         Follow a tag.
@@ -89,7 +89,7 @@ class Mastodon(Internals):
             raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")        
         return self.__api_request('POST', f'/api/v1/tags/{hashtag}/follow')
     
-    @api_version("4.0.0", "4.0.0", _DICT_VERSION_HASHTAG)
+    @api_version("4.0.0", "4.0.0")
     def tag_unfollow(self, hashtag: Union[Tag, str]) -> Tag:
         """
         Unfollow a tag.

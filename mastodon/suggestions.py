@@ -11,14 +11,14 @@ class Mastodon(Internals):
     ###
     # Reading data: Follow suggestions
     ###
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_ACCOUNT)
+    @api_version("2.4.3", "2.4.3")
     def suggestions_v1(self) -> NonPaginatableList[Account]:
         """
         Fetch follow suggestions for the logged-in user.
         """
         return self.__api_request('GET', '/api/v1/suggestions')
 
-    @api_version("3.4.0", "3.4.0", _DICT_VERSION_ACCOUNT)
+    @api_version("3.4.0", "3.4.0")
     def suggestions_v2(self) -> NonPaginatableList[Suggestion]:
         """
         Fetch follow suggestions for the logged-in user.
@@ -41,7 +41,7 @@ class Mastodon(Internals):
     ###
     # Writing data: Follow suggestions
     ###
-    @api_version("2.4.3", "2.4.3", _DICT_VERSION_ACCOUNT)
+    @api_version("2.4.3", "2.4.3")
     def suggestion_delete(self, account_id: Union[Account, IdType]):
         """
         Remove the user with the given `account_id` from the follow suggestions.

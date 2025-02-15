@@ -409,6 +409,10 @@ class Entity():
         This `should` be safe to call on any JSON string (no less safe than json.loads), 
         but I would still recommend to be very careful when using this on untrusted data 
         and to check that the returned value matches your expectations.
+
+        There is currently a bug on specifically python 3.7 and 3.8 where the return value
+        is not guaranteed to be of the right type. I will probably not fix this, since the versions
+        are out of support, anyways. However, the data will still be loaded correctly.
         """
         # First, parse json normally. Can end up as a dict or a list.
         json_result = json.loads(json_str)

@@ -414,7 +414,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Apps
     ###
-    @api_version("2.0.0", "2.7.2", _DICT_VERSION_APPLICATION)
+    @api_version("2.0.0", "2.7.2")
     def app_verify_credentials(self) -> Application:
         """
         Fetch information about the current application.

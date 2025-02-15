@@ -12,7 +12,7 @@ class Mastodon(Internals):
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0", "3.5.0", _DICT_VERSION_NOTIFICATION)
+    @api_version("1.0.0", "3.5.0")
     def notifications(self, id: Optional[Union[Notification, IdType]] = None, account_id: Optional[Union[Account, IdType]] = None, max_id:  Optional[Union[Notification, IdType]] = None, 
                       min_id:  Optional[Union[Notification, IdType]] = None, since_id:  Optional[Union[Notification, IdType]] = None, limit: Optional[int] = None, 
                       exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None) -> PaginatableList[Notification]:
@@ -65,14 +65,14 @@ class Mastodon(Internals):
     ###
     # Writing data: Notifications
     ###
-    @api_version("1.0.0", "1.0.0", "1.0.0")
+    @api_version("1.0.0", "1.0.0")
     def notifications_clear(self):
         """
         Clear out a user's notifications
         """
         self.__api_request('POST', '/api/v1/notifications/clear')
 
-    @api_version("1.3.0", "2.9.2", "2.9.2")
+    @api_version("1.3.0", "2.9.2")
     def notifications_dismiss(self, id: Union[Notification, IdType]):
         """
         Deletes a single notification

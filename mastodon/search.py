@@ -21,7 +21,7 @@ class Mastodon(Internals):
             if not self.verify_minimum_version("2.8.0", cached=True):
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
-    @api_version("1.1.0", "2.8.0", _DICT_VERSION_SEARCHRESULT)
+    @api_version("1.1.0", "2.8.0")
     def search(self, q: str, resolve: bool = True, result_type: Optional[str] = None, 
                account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None, 
                min_id: Optional[IdType] = None, max_id: Optional[IdType] = None, 
@@ -55,7 +55,7 @@ class Mastodon(Internals):
             self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
             return self.search_v1(q, resolve=resolve)
 
-    @api_version("1.1.0", "2.1.0", "2.1.0")
+    @api_version("1.1.0", "2.1.0")
     def search_v1(self, q: str, resolve: bool = False) -> Search:
         """
         Identical to `search_v2()`, except in that it does not return
@@ -68,7 +68,7 @@ class Mastodon(Internals):
             del params['resolve']
         return self.__api_request('GET', '/api/v1/search', params)
 
-    @api_version("2.4.1", "2.8.0", _DICT_VERSION_SEARCHRESULT)
+    @api_version("2.4.1", "2.8.0")
     def search_v2(self, q, resolve: bool = True, result_type: Optional[str] = None, 
                account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None, 
                min_id: Optional[IdType] = None, max_id: Optional[IdType] = None, 
