@@ -2043,6 +2043,62 @@
                         "added"
                     ]
                 ]
+            },
+            "id": {
+                "description": "The ID of the Tag in the database. Only present for data returned from admin endpoints.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "trendable": {
+                "description": "Whether the hashtag has been approved to trend. Only present for data returned from admin endpoints.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "usable": {
+                "description": "Whether the hashtag has not been disabled from auto-linking. Only present for data returned from admin endpoints.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "requires_review": {
+                "description": "Whether the hashtag has not been reviewed yet to approve or deny its trending. Only present for data returned from admin endpoints.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -3826,6 +3882,74 @@
                 "version_history": [
                     [
                         "4.2.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "history": {
+                "description": "Only present for trending links. A list of TrendingLinkHistory objects.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "TrendingLinkHistory",
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Trending link history",
+        "python_name": "TrendingLinkHistory",
+        "func_call": "mastodon.trending_links()[0].history[0]",
+        "func_call_real": "mastodon.trending_links()[0].history[0]",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/PreviewCard/#trends-link",
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A history entry for a trending link.",
+        "fields": {
+            "day": {
+                "description": "The day this history entry is for, as a `datetime` object.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "uses": {
+                "description": "The number of times this link was used on this day.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "accounts": {
+                "description": "The number of accounts that used this link on this day.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "3.5.0",
                         "added"
                     ]
                 ],
@@ -7269,7 +7393,7 @@
                     ],
                     [
                         "3.5.0",
-                        "return type changed from String to [AdminIp]({{< relref \"entities/Admin_Ip\" >}}) due to a bug"
+                        "return type changed from String to AdminIP"
                     ],
                     [
                         "4.0.0",

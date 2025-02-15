@@ -2448,7 +2448,55 @@ class PreviewCard(AttribAccessDict):
       * 4.2.0: added
     """
 
+    history: "Optional[NonPaginatableList[TrendingLinkHistory]]"
+    """
+    Only present for trending links. A list of TrendingLinkHistory objects. (optional)
+
+    Version history:
+      * 3.5.0: added
+    """
+
     _version = "4.3.0"
+
+class TrendingLinkHistory(AttribAccessDict):
+    """
+    A history entry for a trending link.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a TrendingLinkHistory object
+        mastodon.trending_links()[0].history[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/PreviewCard/#trends-link
+    """
+
+    day: "datetime"
+    """
+    The day this history entry is for, as a `datetime` object.
+
+    Version history:
+      * 3.5.0: added
+    """
+
+    uses: "int"
+    """
+    The number of times this link was used on this day.
+
+    Version history:
+      * 3.5.0: added
+    """
+
+    accounts: "int"
+    """
+    The number of accounts that used this link on this day.
+
+    Version history:
+      * 3.5.0: added
+    """
+
+    _version = "3.5.0"
 
 class PreviewCardAuthor(AttribAccessDict):
     """
@@ -4832,7 +4880,7 @@ class AdminAccount(AttribAccessDict):
 
     Version history:
       * 2.9.1: added
-      * 3.5.0: return type changed from String to [AdminIp]({{< relref "entities/Admin_Ip" >}}) due to a bug
+      * 3.5.0: return type changed from String to AdminIP
       * 4.0.0: bug fixed, return type is now a String again
     """
 
@@ -5604,7 +5652,7 @@ class ExtendedDescription(AttribAccessDict):
     .. code-block:: python
 
         # Returns a ExtendedDescription object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.instance_extended_description()
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/ExtendedDescription
     """
@@ -5767,7 +5815,7 @@ class StatusSource(AttribAccessDict):
     .. code-block:: python
 
         # Returns a StatusSource object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.status_source()
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/StatusSource
     """
@@ -5851,7 +5899,7 @@ class Translation(AttribAccessDict):
     .. code-block:: python
 
         # Returns a Translation object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.status_translate(<status_id>, 'de')
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Translation
     """
@@ -6421,7 +6469,7 @@ class AccountWarning(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AccountWarning object
-        # There isn't really a good way to get this manually - you get it if a moderation takes action.
+        # There isn't really a good way to get this manually - you get it if a moderator takes action.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AccountWarning
     """
@@ -6517,7 +6565,7 @@ class Appeal(AttribAccessDict):
     .. code-block:: python
 
         # Returns a Appeal object
-        TODO_TO_BE_IMPLEMENTED
+        # There isn't really a good way to get this manually - you get it if a moderator takes action.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Appeal/
     """
@@ -6573,6 +6621,7 @@ ENTITY_NAME_MAP = {
     "MediaAttachmentFocusPoint": MediaAttachmentFocusPoint,
     "MediaAttachmentColors": MediaAttachmentColors,
     "PreviewCard": PreviewCard,
+    "TrendingLinkHistory": TrendingLinkHistory,
     "PreviewCardAuthor": PreviewCardAuthor,
     "Search": Search,
     "SearchV2": SearchV2,
@@ -6683,6 +6732,7 @@ __all__ = [
     "MediaAttachmentFocusPoint",
     "MediaAttachmentColors",
     "PreviewCard",
+    "TrendingLinkHistory",
     "PreviewCardAuthor",
     "Search",
     "SearchV2",

@@ -295,3 +295,9 @@ def test_admin_email_domain_blocks(api2):
     
     all_blocks_after_delete = api2.admin_email_domain_blocks()
     assert not any(block.id == created_block.id for block in all_blocks_after_delete)
+
+@pytest.mark.vcr()
+def test_admin_trends(api2):
+    assert isinstance(api2.admin_trending_tags(), list)
+    assert isinstance(api2.admin_trending_statuses(), list)
+    assert isinstance(api2.admin_trending_links(), list)

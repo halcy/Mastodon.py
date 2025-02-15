@@ -699,3 +699,74 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', f'/api/v1/admin/email_domain_blocks/{id}')
+
+    @api_version("3.5.0", "3.5.0")
+    def admin_trending_links(self) -> NonPaginatableList[PreviewCard]:
+        """
+        Fetch trending links, including unapproved and unreviewed ones. Requires scope `admin:read`.
+        """
+        return self.__api_request('GET', '/api/v1/admin/trends/links')
+
+    @api_version("3.5.0", "3.5.0")
+    def admin_trending_statuses(self) -> NonPaginatableList[Status]:
+        """
+        Fetch trending statuses, including unapproved and unreviewed ones. Requires scope `admin:read`.
+        """
+        return self.__api_request('GET', '/api/v1/admin/trends/statuses')
+
+    @api_version("3.5.0", "4.1.0")
+    def admin_trending_tags(self) -> NonPaginatableList[Tag]:
+        """
+        Fetch trending tags, including unapproved and unreviewed ones. Requires scope `admin:read`.
+        
+        Returns a regular Tag without admin attributes between Mastodon.py v4.0.0 and v4.1.0 due to a bug.
+        """
+        return self.__api_request('GET', '/api/v1/admin/trends/tags')
+
+    @api_version("4.2.0", "4.2.0")
+    def admin_approve_trending_link(self, id: Union[PreviewCard, IdType]) -> PreviewCard:
+        """
+        Approve a trending link. Requires scope `admin:write`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/admin/trends/links/{id}/approve')
+
+    @api_version("4.2.0", "4.2.0")
+    def admin_reject_trending_link(self, id: Union[PreviewCard, IdType]) -> PreviewCard:
+        """
+        Reject a trending link. Requires scope `admin:write`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/admin/trends/links/{id}/reject')
+
+    @api_version("4.2.0", "4.2.0")
+    def admin_approve_trending_status(self, id: Union[Status, IdType]) -> Status:
+        """
+        Approve a trending status. Requires scope `admin:write`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/admin/trends/statuses/{id}/approve')
+
+    @api_version("4.2.0", "4.2.0")
+    def admin_reject_trending_status(self, id: Union[Status, IdType]) -> Status:
+        """
+        Reject a trending status. Requires scope `admin:write`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/admin/trends/statuses/{id}/reject')
+
+    @api_version("4.2.0", "4.2.0")
+    def admin_approve_trending_tag(self, id: Union[Tag, IdType]) -> Tag:
+        """
+        Approve a trending tag. Requires scope `admin:write`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/admin/trends/tags/{id}/approve')
+
+    @api_version("4.2.0", "4.2.0")
+    def admin_reject_trending_tag(self, id: Union[Tag, IdType]) -> Tag:
+        """
+        Reject a trending tag. Requires scope `admin:write`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/admin/trends/tags/{id}/reject')

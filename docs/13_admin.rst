@@ -73,4 +73,14 @@ Email domain blocks
 .. automethod:: Mastodon.admin_create_email_domain_block
 .. automethod:: Mastodon.admin_delete_email_domain_block
 
-
+Trend management
+----------------
+.. automethod:: Mastodon.admin_trending_tags
+.. automethod:: Mastodon.admin_trending_statuses
+.. automethod:: Mastodon.admin_trending_links
+.. automethod:: Mastodon.admin_approve_trending_link
+.. automethod:: Mastodon.admin_reject_trending_link
+.. automethod:: Mastodon.admin_approve_trending_status
+.. automethod:: Mastodon.admin_reject_trending_status
+.. automethod:: Mastodon.admin_approve_trending_tag
+.. automethod:: Mastodon.admin_reject_trending_tag
