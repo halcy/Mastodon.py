@@ -1,7 +1,7 @@
 Mastodon.py
 ===========
 Python wrapper for the Mastodon ( https://github.com/mastodon/mastodon/ ) API.
-Feature complete for public API as of Mastodon version 3.5.5 and easy to get started with:
+Feature complete for public API as of Mastodon version 4.3.0 and easy to get started with:
 
 .. code-block:: python
 
@@ -28,7 +28,6 @@ Feature complete for public API as of Mastodon version 3.5.5 and easy to get sta
         to_file="pytooter_usercred.secret"
     )
 
-    # Note that this won't work when using 2FA - you'll have to use OAuth, in that case. 
     # To post, create an actual API instance:
     mastodon = Mastodon(access_token = 'pytooter_usercred.secret')
     mastodon.toot('Tooting from Python using #mastodonpy !')
