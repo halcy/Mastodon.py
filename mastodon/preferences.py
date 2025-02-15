@@ -29,7 +29,8 @@ class Mastodon(Internals):
     def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> Dict[str, Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
-        are the same as in :ref:`timeline() <timeline()>`
+        are `home` (the home timeline) and `notifications` (the notifications timeline,
+        affects which notifications are considered read).
 
         Note that despite the singular name, `timeline` can be a list.
 
@@ -52,6 +53,9 @@ class Mastodon(Internals):
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
 
+        Valid timelines are `home` (the home timeline) and `notifications` (the notifications timeline,
+        affects which notifications are considered read).
+        
         Note that if you give an invalid timeline name, this will silently do nothing.
 
         Returns a dict with the updated markers, keyed by timeline name.

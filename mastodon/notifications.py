@@ -3,7 +3,7 @@ from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import Notification, IdType, PaginatableList, Account, UnreadNotificationsCount, NotificationPolicy, NotificationRequest
+from mastodon.return_types import Notification, IdType, PaginatableList, Account, UnreadNotificationsCount, NotificationPolicy, NotificationRequest, GroupedNotificationsResults, NonPaginatableList
 from typing import Union, Optional, List
 
 class Mastodon(Internals):
@@ -183,3 +183,66 @@ class Mastodon(Internals):
         """
         result = self.__api_request('GET', '/api/v1/notifications/requests/merged', override_type = dict)
         return result["merged"]
+
+    ##
+    # Grouped notifications
+    ##
+    @api_version("4.3.0", "4.3.0")
+    def grouped_notifications(self, max_id: Optional[IdType] = None, since_id: Optional[IdType] = None,
+                              min_id: Optional[IdType] = None, limit: Optional[int] = None,
+                              types: Optional[List[str]] = None, exclude_types: Optional[List[str]] = None,
+                              account_id: Optional[Union[Account, IdType]] = None,
+                              expand_accounts: Optional[str] = "partial_avatars", grouped_types: Optional[List[str]] = None,
+                              include_filtered: Optional[bool] = None) -> GroupedNotificationsResults:
+        """
+        Fetch grouped notifications for the user. Requires scope `read:notifications`.
+
+        For base parameters, see `notifications()`.
+
+        `grouped_types` controls which notication types can be grouped together - all, if not specified.
+        NB: "all" here means favourite, follow and reblog - other types are not groupable and are returned
+        individually (with a unique group key) always.
+
+        Pass `include_filtered=True` to include filtered notifications in the response.
+
+        Pass `expand_accounts="full"` to include full account details in the response, or "partial_avatars" to
+        include a smaller set of account details (in the `partial_accounts` field) for some (but not all - the most
+        recent account triggering a notification is always returned in full) of the included accounts. 
+        The default is partial_avatars.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v2/notifications', params, force_pagination=True)
+
+    @api_version("4.3.0", "4.3.0")
+    def grouped_notification(self, group_key: str) -> GroupedNotificationsResults:
+        """
+        Fetch details of a single grouped notification by its group key. Requires scope `read:notifications`.
+        """
+        return self.__api_request('GET', f'/api/v2/notifications/{group_key}')
+
+    @api_version("4.3.0", "4.3.0")
+    def dismiss_grouped_notification(self, group_key: str) -> None:
+        """
+        Dismiss a single grouped notification. Requires scope `write:notifications`.
+        """
+        self.__api_request('POST', f'/api/v2/notifications/{group_key}/dismiss')
+
+    @api_version("4.3.0", "4.3.0")
+    def grouped_notification_accounts(self, group_key: str) -> NonPaginatableList[Account]:
+        """
+        Fetch accounts associated with a grouped notification. Requires scope `write:notifications`.
+        """
+        return self.__api_request('GET', f'/api/v2/notifications/{group_key}/accounts')
+
+    @api_version("4.3.0", "4.3.0")
+    def unread_grouped_notifications_count(self, limit: Optional[int] = None,
+                                           types: Optional[List[str]] = None, exclude_types: Optional[List[str]] = None,
+                                           account_id: Optional[Union[Account, IdType]] = None,
+                                           grouped_types: Optional[List[str]] = None) -> int:
+        """
+        Fetch the count of unread grouped notifications. Requires scope `read:notifications`.
+
+        For parameters, see `notifications()` and `grouped_notifications()`.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v2/notifications/unread_count', params, override_type=dict)["count"]

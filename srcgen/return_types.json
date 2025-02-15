@@ -9462,13 +9462,33 @@
                 "is_nullable": false
             },
             "notification_groups": {
-                "description": "The grouped notifications themselves.",
+                "description": "The grouped notifications themselves. Is actually in fact paginatable, but via the parent object.",
                 "enum": null,
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "NotificationGroup",
                 "field_structuretype": null,
                 "is_optional": false,
+                "is_nullable": false
+            },
+            "_pagination_next": {
+                "description": "Information about the next page of results. Added here as a special case to allow for pagination of the lists inside of this object.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "PaginationInfo",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "_pagination_prev": {
+                "description": "Information about the previous page of results. Added here as a special case to allow for pagination of the lists inside of this object.",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "PaginationInfo",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
                 "is_nullable": false
             }
         }

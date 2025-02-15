@@ -85,7 +85,8 @@ class Mastodon():
         return try_cast_recurse(return_type, value)
 
     def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None,
-                        do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None, override_type=None):
+                        do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None, override_type=None,
+                        force_pagination=False):
         """
         Internal API request helper.
 
@@ -274,8 +275,8 @@ class Mastodon():
                 response = response_object.content
 
             # Parse link headers
-            if isinstance(response, list) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
-                if not isinstance(response, PaginatableList):
+            if isinstance(response, list) or force_pagination and 'Link' in response_object.headers and response_object.headers['Link'] != "":
+                if not isinstance(response, PaginatableList) and not force_pagination:
                     response = PaginatableList(response)
                 tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
                 for url in tmp_urls:

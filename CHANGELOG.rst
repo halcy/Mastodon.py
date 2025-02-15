@@ -43,6 +43,8 @@ v2.0.0 (IN PROGRESS)
 * Add `instance_domain_blocks`
 * Add notification policy and requests (`notifications_policy`, `update_notifications_policy`, `notifications_requests`, `notification_request`, `accept_notification_request`, `reject_notification_request`, `notifications_merged`, `accept_multiple_notification_requests`, `dismiss_multiple_notification_requests`)
 * Add `instance_languages`
+* Add notification grouping (`grouped_notifications`, `grouped_notification`, `dismiss_grouped_notification`, `grouped_notification_accounts`, `unread_grouped_notifications_count`)
+
 
 v1.8.1
 ------

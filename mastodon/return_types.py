@@ -6330,6 +6330,22 @@ class GroupedNotificationsResults(AttribAccessDict):
       * 4.3.0: added
     """
 
+    _pagination_next: "Optional[PaginationInfo]"
+    """
+    Information about the next page of results. Added here as a special case to allow for pagination of the lists inside of this object. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _pagination_prev: "Optional[PaginationInfo]"
+    """
+    Information about the previous page of results. Added here as a special case to allow for pagination of the lists inside of this object. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
     _version = "4.3.0"
 
 class PartialAccountWithAvatar(AttribAccessDict):

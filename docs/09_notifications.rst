@@ -5,7 +5,7 @@ Notifications and filtering
 
 Notifications
 -------------
-This function allows you to get information about a user's notifications as well as to clear all or some notifications and to mark conversations as read.
+These functions allow you to get information about a user's notifications as well as to clear all or some notifications and to mark conversations as read.
 
 Reading
 ~~~~~~~
@@ -18,6 +18,16 @@ Writing
 .. automethod:: Mastodon.notifications_dismiss
 .. automethod:: Mastodon.conversations_read
 
+
+Grouped notifications
+---------------------
+This is the more modern notification API, which delivers notifications grouped.
+
+.. automethod:: Mastodon.grouped_notifications
+.. automethod:: Mastodon.grouped_notification
+.. automethod:: Mastodon.dismiss_grouped_notification
+.. automethod:: Mastodon.grouped_notification_accounts
+.. automethod:: Mastodon.unread_grouped_notifications_count
 
 Source filtering for notifications
 ----------------------------------

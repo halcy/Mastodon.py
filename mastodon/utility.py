@@ -11,8 +11,9 @@ from mastodon.internals import Mastodon as Internals
 
 from mastodon.versions import parse_version_string, max_version, api_version
 
-from typing import Optional
-from mastodon.return_types import PaginatableList, PaginationInfo
+from typing import Optional, Union, Dict
+from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList
+from mastodon.types_base import Entity
 
 # Class level:
 class Mastodon(Internals):
@@ -118,7 +119,7 @@ class Mastodon(Internals):
     ###
     # Pagination
     ###
-    def fetch_next(self, previous_page: PaginatableList) -> Optional[PaginatableList]:
+    def fetch_next(self, previous_page: Union[PaginatableList[Entity], Entity, Dict]) -> Optional[Union[PaginatableList[Entity], Entity]]:
         """
         Fetches the next page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -143,9 +144,12 @@ class Mastodon(Internals):
         endpoint = params['_pagination_endpoint']
         del params['_pagination_endpoint']
 
-        return self.__api_request(method, endpoint, params)
+        force_pagination = False
+        if not isinstance(previous_page, list):
+            force_pagination = True
+        return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(previous_page))
 
-    def fetch_previous(self, next_page: PaginatableList) -> Optional[PaginatableList]:
+    def fetch_previous(self, next_page: Union[PaginatableList[Entity], Entity, Dict]) -> Optional[Union[PaginatableList[Entity], Entity]]:
         """
         Fetches the previous page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -170,9 +174,12 @@ class Mastodon(Internals):
         endpoint = params['_pagination_endpoint']
         del params['_pagination_endpoint']
 
-        return self.__api_request(method, endpoint, params)
+        force_pagination = False
+        if not isinstance(next_page, list):
+            force_pagination = True
+        return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(next_page))
 
-    def fetch_remaining(self, first_page):
+    def fetch_remaining(self, first_page: PaginatableList[Entity]) -> PaginatableList[Entity]:
         """
         Fetches all the remaining pages of a paginated request starting from a
         first page and returns the entire set of results (including the first page
@@ -180,6 +187,9 @@ class Mastodon(Internals):
 
         Be careful, as this might generate a lot of requests, depending on what you are
         fetching, and might cause you to run into rate limits very quickly.
+
+        Does not currently work with grouped notifications, please deal with those
+        yourself, for now.
         """
         first_page = copy.deepcopy(first_page)
 
