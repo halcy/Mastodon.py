@@ -1,6 +1,6 @@
 import pytest
 
-from mastodon.Mastodon import MastodonVersionError
+from mastodon.Mastodon import MastodonVersionError, MastodonAPIError
 from mastodon.Mastodon import parse_version_string
 import datetime
 import os
@@ -104,3 +104,9 @@ def test_version_parsing(api):
 @pytest.mark.vcr()
 def test_translation_languages(api):
     assert api.instance_translation_languages() is not None
+
+@pytest.mark.vcr()
+def test_instance_domain_blocks(api):
+    # Unforatuntely, default is to show no one, so this raises an error
+    with pytest.raises(MastodonAPIError):
+        assert api.instance_domain_blocks() is not None

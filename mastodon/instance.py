@@ -4,7 +4,7 @@ from mastodon.utility import api_version
 from mastodon.compat import urlparse
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription
+from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription, DomainBlock
 
 from typing import Union, Optional, Dict, List
 
@@ -219,3 +219,11 @@ class Mastodon(Internals):
             result_real[key] = NonPaginatableList(value)
         return result_real
         
+    @api_version("4.0.0", "4.0.0")
+    def instance_domain_blocks(self) -> NonPaginatableList[DomainBlock]:
+        """
+        Fetch a list of domains that have been blocked by the instance. Public endpoint, requires authentication if limited to users.
+
+        Returns a MastodonAPIError if the admin has chosen to not make the list public, or to now show it at all.
+        """
+        return self.__api_request('GET', '/api/v1/instance/domain_blocks')

@@ -60,6 +60,10 @@ These functions allow you to search for users, tags and, when enabled, full text
 .. automethod:: Mastodon.search
 .. automethod:: Mastodon.search_v2
 
+Domain blocks
+-------------
+.. automethod:: Mastodon.instance_domain_blocks
+
 Translation support
 -------------------
 .. automethod:: Mastodon.instance_translation_languages
