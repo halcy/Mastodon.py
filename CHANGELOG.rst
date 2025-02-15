@@ -34,6 +34,7 @@ v2.0.0 (IN PROGRESS)
 * Add `statuses` method to retrieve multiple statuses at once
 * Add automatic conversion of datetime objects to flake IDs for min/max/since_id fields where appropriate
 * Add `notifications_unread_count`
+* Add media attachment editing
 
 v1.8.1
 ------

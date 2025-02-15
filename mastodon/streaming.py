@@ -12,6 +12,7 @@ except:
 from mastodon import Mastodon
 from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from mastodon.return_types import AttribAccessDict, Status, Notification, IdType, Conversation, Announcement, StreamReaction, try_cast_recurse
+from typing import Optional, Any
 
 from requests.exceptions import ChunkedEncodingError, ReadTimeout, ConnectionError
 
@@ -34,16 +35,16 @@ class StreamListener(object):
         "encrypted_message": AttribAccessDict,
     }
 
-    def on_update(self, status):
+    def on_update(self, status: Status):
         """A new status has appeared. `status` is the parsed `status dict`
         describing the status."""
         pass
 
-    def on_delete(self, status_id):
+    def on_delete(self, status_id: IdType):
         """A status has been deleted. `status_id` is the status' integer ID."""
         pass
 
-    def on_notification(self, notification):
+    def on_notification(self, notification: Notification):
         """A new notification. `notification` is the object
         describing the notification. For more information, see the documentation
         for the notifications() method."""
@@ -54,26 +55,26 @@ class StreamListener(object):
            refetch filters yourself."""
         pass
 
-    def on_conversation(self, conversation):
+    def on_conversation(self, conversation: Conversation):
         """A direct message (in the direct stream) has been received. `conversation`
         is the parsed `conversation dict` dictionary describing the conversation"""
         pass
 
-    def on_announcement(self, annoucement):
+    def on_announcement(self, annoucement: Announcement):
         """A new announcement has been published. `announcement` is the parsed
         `announcement dict` describing the newly posted announcement."""
         pass
 
-    def on_announcement_reaction(self, reaction):
+    def on_announcement_reaction(self, reaction: StreamReaction):
         """Someone has reacted to an announcement."""
         pass
 
-    def on_announcement_delete(self, annoucement_id):
+    def on_announcement_delete(self, annoucement_id: IdType):
         """An announcement has been deleted. `annoucement_id` is the id of the
         deleted announcement."""
         pass
 
-    def on_status_update(self, status):
+    def on_status_update(self, status: Status):
         """A status has been edited. 'status' is the parsed JSON dictionary
         describing the updated status."""
         pass
@@ -105,9 +106,11 @@ class StreamListener(object):
         that the connection is still open."""
         pass
     
-    def on_any_event(self, name, data):
+    def on_any_event(self, name: str, data: Optional[Any] = None, for_stream: Optional[str] = None):
         """A generic event handler that is called for every event received.
         The name contains the event name and data contains the content of the event.
+
+        for_stream is currently unused, but might be added in the future if we ever add websocket support.
 
         Called before the more specific on_xxx handlers.
         """
@@ -281,11 +284,11 @@ class CallbackStreamListener(StreamListener):
         except Exception as err:
             raise MastodonMalformedEventError('received bad update', status) from err
 
-    def on_delete(self, deleted_id):
+    def on_delete(self, deleted_id: IdType):
         if self.delete_handler is not None:
             self.delete_handler(deleted_id)
 
-    def on_notification(self, notification):
+    def on_notification(self, notification: Notification):
         if self.notification_handler is not None:
             self.notification_handler(notification)
 
@@ -293,23 +296,23 @@ class CallbackStreamListener(StreamListener):
         if self.filters_changed_handler is not None:
             self.filters_changed_handler()
 
-    def on_conversation(self, conversation):
+    def on_conversation(self, conversation: Conversation):
         if self.conversation_handler is not None:
             self.conversation_handler(conversation)
 
-    def on_announcement(self, annoucement):
+    def on_announcement(self, annoucement: Announcement):
         if self.announcement_handler is not None:
             self.announcement_handler(annoucement)
 
-    def on_announcement_reaction(self, TODO):
+    def on_announcement_reaction(self, reaction: StreamReaction):
         if self.announcement_reaction_handler is not None:
-            self.announcement_reaction_handler(TODO)
+            self.announcement_reaction_handler(reaction)
 
-    def on_announcement_delete(self, annoucement_id):
+    def on_announcement_delete(self, annoucement_id: IdType):
         if self.announcement_delete_handler is not None:
             self.announcement_delete_handler(annoucement_id)
 
-    def on_status_update(self, status):
+    def on_status_update(self, status: Status):
         if self.status_update_handler is not None:
             self.status_update_handler(status)
 
@@ -317,6 +320,6 @@ class CallbackStreamListener(StreamListener):
         if self.encryted_message_handler is not None:
             self.encryted_message_handler(unclear)
 
-    def on_unknown_event(self, name, unknown_event=None):
+    def on_unknown_event(self, name: str, unknown_event: Optional[Any] = None):
         if self.unknown_event_handler is not None:
             self.unknown_event_handler(name, unknown_event)
