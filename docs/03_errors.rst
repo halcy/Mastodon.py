@@ -1,6 +1,7 @@
 Error handling
 ==============
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 When Mastodon.py encounters an error, it will raise an exception, generally with

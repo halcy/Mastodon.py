@@ -1,6 +1,7 @@
 Administration and moderation
 =============================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 These functions allow you to perform moderation actions on users and generally
@@ -40,15 +41,9 @@ Reports
 .. automethod:: Mastodon.admin_report_reopen
 .. automethod:: Mastodon.admin_report_resolve
 
-Trends
-------
-.. automethod:: Mastodon.admin_trending_tags
-.. automethod:: Mastodon.admin_trending_statuses
-.. automethod:: Mastodon.admin_trending_links
-.. automethod:: Mastodon.admin_domain_blocks
-
 Federation
 ----------
+.. automethod:: Mastodon.admin_domain_blocks
 .. automethod:: Mastodon.admin_create_domain_block
 .. automethod:: Mastodon.admin_update_domain_block
 .. automethod:: Mastodon.admin_delete_domain_block

@@ -159,6 +159,7 @@ class Mastodon(Internals):
         `filter_action` gives the policy to be applied when the filter is matched. Valid values are:
             - "warn": The user is warned if the content matches the filter.
             - "hide": The content is completely hidden if it matches the filter.
+
         NB: Even if you specify "hide", the status will still be returned - it will just have the "filtered" attribute set.
         
         pass a number of seconds as `expires_in` to make the filter expire in that many seconds. Use None for no expiration.
@@ -166,6 +167,7 @@ class Mastodon(Internals):
         pass a list of keyword dicts to initially as `keywords_attributes`, each with the following values:
             - "keyword": The term to filter on.
             - "whole_word": Whether word boundaries should be considered.
+            
         """
         params = self.__generate_params(locals(), for_json=True)
         return self.__api_request('POST', '/api/v2/filters', params, use_json=True)

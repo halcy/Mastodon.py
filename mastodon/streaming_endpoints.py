@@ -41,7 +41,7 @@ class Mastodon(Internals):
         """
         Streams local public events.
 
-        This function is deprecated. Please use :ref:`stream_public() <stream_public()>` with parameter `local` set to True instead.
+        This function is deprecated. Please use stream_public() with parameter `local` set to True instead.
         """
         #return self.__stream('/api/v1/streaming/public/local', listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec)
         return self.stream_public(listener, run_async=run_async, timeout=timeout, reconnect_async=reconnect_async, reconnect_async_wait_sec=reconnect_async_wait_sec, local=True)

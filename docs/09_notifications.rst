@@ -1,6 +1,7 @@
 Notifications and filtering
 ===========================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Notifications
@@ -34,7 +35,7 @@ Source filtering for notifications
 These functions allow you to get information about source filters as well as to create and update filters, and
 to accept or reject notification requests for filtered notifications.
 
-.. authomedod:: Mastodon.notifications_policy
+.. automethod:: Mastodon.notifications_policy
 .. automethod:: Mastodon.update_notifications_policy
 .. automethod:: Mastodon.notification_requests
 .. automethod:: Mastodon.notification_request
@@ -138,3 +139,4 @@ Writing
 .. automethod:: Mastodon.filter_create
 .. automethod:: Mastodon.filter_update
 .. automethod:: Mastodon.filter_delete        
+    

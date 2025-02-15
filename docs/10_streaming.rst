@@ -1,6 +1,7 @@
 Streaming
 =========
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 These functions allow access to the streaming API. Since Mastodon v4.2.0 the support for anonymous streaming api access was dropped.
@@ -73,3 +74,4 @@ CallbackStreamListener
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: CallbackStreamListener
+

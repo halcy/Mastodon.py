@@ -1,6 +1,7 @@
 Return values
 =============
 .. py:module:: mastodon
+   :no-index:
 .. py:class: Mastodon
 
 Unless otherwise specified, all data is returned as Python dictionaries, matching

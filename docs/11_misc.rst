@@ -1,6 +1,7 @@
 Misc: Markers, reports
 ======================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Markers
@@ -34,3 +35,4 @@ This function allows you to report a user to the instance moderators as well as 
 the users home instance.
 
 .. automethod:: Mastodon.report
+    

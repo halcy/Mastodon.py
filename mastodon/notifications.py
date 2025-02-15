@@ -19,18 +19,19 @@ class Mastodon(Internals):
         user. Pass `account_id` to get only notifications originating from the given account.
 
         There are different types of notifications:
-            * `follow` - A user followed the logged in user
-            * `follow_request` - A user has requested to follow the logged in user (for locked accounts)
-            * `favourite` - A user favourited a post by the logged in user
-            * `reblog` - A user reblogged a post by the logged in user
-            * `mention` - A user mentioned the logged in user
-            * `poll` - A poll the logged in user created or voted in has ended
-            * `update` - A status the logged in user has reblogged (and only those, as of 4.0.0) has been edited
-            * `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see :ref:`account_follow() <account_follow()>`)
-            * `admin.sign_up` - For accounts with appropriate permissions: A new user has signed up
-            * `admin.report` - For accounts with appropriate permissions: A new report has been received
-            * `severed_relationships` - Some of the logged in users relationships have been severed due to a moderation action on this server
-            * `moderation_warning` - The logged in user has been warned by a moderator
+            - `follow` - A user followed the logged in user
+            - `follow_request` - A user has requested to follow the logged in user (for locked accounts)
+            - `favourite` - A user favourited a post by the logged in user
+            - `reblog` - A user reblogged a post by the logged in user
+            - `mention` - A user mentioned the logged in user
+            - `poll` - A poll the logged in user created or voted in has ended
+            - `update` - A status the logged in user has reblogged (and only those, as of 4.0.0) has been edited
+            - `status` - A user that the logged in user has enabned notifications for has enabled `notify` (see :ref:`account_follow() <account_follow()>`)
+            - `admin.sign_up` - For accounts with appropriate permissions: A new user has signed up
+            - `admin.report` - For accounts with appropriate permissions: A new report has been received
+            - `severed_relationships` - Some of the logged in users relationships have been severed due to a moderation action on this server
+            - `moderation_warning` - The logged in user has been warned by a moderator
+            
         Parameters `exclude_types` and `types` are array of these types, specifying them will in- or exclude the
         types of notifications given. It is legal to give both parameters at the same tine, the result will then
         be the intersection of the results of both filters. Specifying `mentions_only` is a deprecated way to set

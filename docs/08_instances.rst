@@ -1,6 +1,7 @@
 Instance-wide data and search
 =============================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Instance information
@@ -66,5 +67,6 @@ Domain blocks
 
 Translation support
 -------------------
-.. authomedod:: Mastodon.instance_languages
+.. automethod:: Mastodon.instance_languages
 .. automethod:: Mastodon.instance_translation_languages
+    

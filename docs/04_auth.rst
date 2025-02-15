@@ -1,6 +1,7 @@
 App registration, authentication and preferences
 ================================================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Before you can use the Mastodon API, you have to register your
@@ -41,3 +42,4 @@ Authentication
 User preferences
 ----------------
 .. automethod:: Mastodon.preferences
+    

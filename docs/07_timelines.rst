@@ -1,6 +1,7 @@
 Reading data: Timelines
 =======================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 These functions allow you to access the timelines a logged in

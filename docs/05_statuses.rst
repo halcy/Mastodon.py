@@ -1,6 +1,7 @@
 Statuses, media and polls
 =========================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Statuses
@@ -90,3 +91,4 @@ Translation
 -----------
 These functions allow you to get machine translations for statuses, if the instance supports it.
 .. automethod:: Mastodon.status_translate
+    

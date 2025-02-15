@@ -1,6 +1,7 @@
 Mastodon.py
 ===========
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Usage

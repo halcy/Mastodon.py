@@ -1,6 +1,7 @@
 Accounts, relationships and lists
 =================================
 .. py:module:: mastodon
+    :no-index:
 .. py:class: Mastodon
 
 Accounts
@@ -131,3 +132,4 @@ Writing
 ~~~~~~~
 .. automethod:: Mastodon.tag_follow
 .. automethod:: Mastodon.tag_unfollow
+    

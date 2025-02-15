@@ -122,7 +122,7 @@ class Mastodon(Internals):
         """
         Modifies what kind of events the app wishes to subscribe to.
 
-        Parameters are as in :ref:`push_subscription_create() <push_subscription_create()>`.
+        Parameters are as in push_subscription_set().
 
         Returned object reflects the updated push subscription.
         """
