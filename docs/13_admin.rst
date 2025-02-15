@@ -63,6 +63,7 @@ Canonical email blocks
 ----------------------
 .. automethod:: Mastodon.admin_canonical_email_blocks
 .. automethod:: Mastodon.admin_canonical_email_block
+.. automethod:: Mastodon.admin_test_canonical_email_block
 .. automethod:: Mastodon.admin_create_canonical_email_block
 .. automethod:: Mastodon.admin_delete_canonical_email_block
 
@@ -72,6 +73,14 @@ Email domain blocks
 .. automethod:: Mastodon.admin_email_domain_block
 .. automethod:: Mastodon.admin_create_email_domain_block
 .. automethod:: Mastodon.admin_delete_email_domain_block
+
+IP blocks
+---------
+.. automethod:: Mastodon.admin_ip_blocks
+.. automethod:: Mastodon.admin_ip_block
+.. automethod:: Mastodon.admin_create_ip_block
+.. automethod:: Mastodon.admin_update_ip_block
+.. automethod:: Mastodon.admin_delete_ip_block
 
 Trend management
 ----------------

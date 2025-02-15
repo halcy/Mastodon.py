@@ -6,7 +6,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from typing import Optional, List, Union
 from mastodon.return_types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
-                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock
+                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminIpBlock
 from datetime import datetime
 
 class Mastodon(Internals):
@@ -749,3 +749,59 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/admin/trends/tags/{id}/reject')
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_ip_blocks(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None,
+                        since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminIpBlock]:
+        """
+        Fetches a list of blocked IP addresses and ranges. Requires scope `admin:read:ip_blocks`.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/ip_blocks', params)
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_ip_block(self, id: Union[AdminIpBlock, IdType]) -> AdminIpBlock:
+        """
+        Fetch a single blocked IP address or range by ID. Requires scope `admin:read:ip_blocks`.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', f'/api/v1/admin/ip_blocks/{id}')
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_create_ip_block(self, ip: str, severity: str, comment: Optional[str] = None,
+                              expires_in: Optional[int] = None) -> AdminIpBlock:
+        """
+        Block an IP address or range from signups. Requires scope `admin:write:ip_blocks`.
+
+        Provide the IP address as a CIDR range, e.g. "192.168.1.1/32" to block just that IP address, or
+        "8.8.8.8/24" to block all addresses in the 8.8.8.* subnet.
+
+        severity can be one of three values:
+            * "sign_up_requires_approval" - signups from this IP will require manual approval
+            * "sign_up_block" - signups from this IP will be blocked
+            * "no_access" - all access from this IP will be blocked
+
+        expires_in is the number of seconds until the block expires. If not provided, the block will be permanent.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('POST', '/api/v1/admin/ip_blocks', params)
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_update_ip_block(self, id: Union[AdminIpBlock, IdType], ip: Optional[str] = None, severity: Optional[str] = None,
+                              comment: Optional[str] = None, expires_in: Optional[int] = None) -> AdminIpBlock:
+        """
+        Update an existing IP block. Requires scope `admin:write:ip_blocks`.
+
+        expires_in is the number of seconds until the block expires. If not provided, the block will be permanent.
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals())
+        return self.__api_request('PUT', f'/api/v1/admin/ip_blocks/{id}', params)
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_delete_ip_block(self, id: Union[AdminIpBlock, IdType]):
+        """
+        Remove an IP block. Requires scope `admin:write:ip_blocks`.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('DELETE', f'/api/v1/admin/ip_blocks/{id}')

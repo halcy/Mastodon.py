@@ -157,7 +157,7 @@ def test_admin_trends(api2):
     assert isinstance(api2.admin_trending_links(), list)
     assert isinstance(api2.admin_trending_tags(limit=5), list)
     # The management functions are unfortunately not really testable easily.
-    
+
 @pytest.mark.skip(reason="reject / accept of account requests isn't really testable without modifying instance settings. anyone want to fumble those into the DB setup and write this test, please do.")
 def test_admin_accountrequests(api2):
     pass
@@ -296,3 +296,38 @@ def test_admin_email_domain_blocks(api2):
     
     all_blocks_after_delete = api2.admin_email_domain_blocks()
     assert not any(block.id == created_block.id for block in all_blocks_after_delete)
+
+@pytest.mark.vcr()
+def test_admin_ip_blocks(api2):
+    try:
+        test_ip = "8.8.8.0/24"
+        test_severity = "no_access"
+        test_comment = "Google DNS is ULTRA BANNED"
+        
+        created_block = api2.admin_create_ip_block(test_ip, test_severity, comment=test_comment)
+        assert created_block is not None
+        assert created_block.ip == test_ip
+        assert created_block.severity == test_severity
+        assert created_block.comment == test_comment
+        
+        retrieved_block = api2.admin_ip_block(created_block.id)
+        assert retrieved_block.id == created_block.id
+        assert retrieved_block.ip == test_ip
+        assert retrieved_block.severity == test_severity
+        
+        all_blocks = api2.admin_ip_blocks()
+        assert any(block.id == created_block.id for block in all_blocks)
+        
+        updated_comment = "Updated test block"
+        updated_block = api2.admin_update_ip_block(created_block.id, comment=updated_comment)
+        assert updated_block.id == created_block.id
+        assert updated_block.comment == updated_comment
+        
+        api2.admin_delete_ip_block(created_block.id)
+        
+        all_blocks_after_delete = api2.admin_ip_blocks()
+        assert not any(block.id == created_block.id for block in all_blocks_after_delete)
+    finally:
+        all_blocks = api2.admin_ip_blocks()
+        for block in all_blocks:
+            api2.admin_delete_ip_block(block.id)

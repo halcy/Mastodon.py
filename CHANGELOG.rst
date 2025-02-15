@@ -38,6 +38,8 @@ v2.0.0 (IN PROGRESS)
 * Add email domain blocking support (`admin_email_domain_blocks`, `admin_email_domain_block`, `admin_email_domain_block_create`, `admin_email_domain_block_delete`)
 * Add `instance_extended_description`
 * Add `instance_translation_languages`, translation support (`status_translate`)
+* Add trend admin functions (`admin_trending_tags`, `admin_trending_statuses`, `admin_trending_links`, `admin_approve_trending_link`, `admin_reject_trending_link`, `admin_approve_trending_status`, `admin_reject_trending_status`, `admin_approve_trending_tag`, `admin_reject_trending_tag`)
+* Add admin IP block functions (`admin_ip_blocks`, `admin_ip_block`, `admin_ip_block_create`, `admin_ip_block_delete`)
 
 v1.8.1
 ------
