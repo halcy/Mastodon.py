@@ -135,6 +135,11 @@ class Mastodon(Internals):
         else:
             params = copy.deepcopy(previous_page)
 
+        is_pagination_dict = False
+        if isinstance(previous_page, dict):
+            if all(key in ['_pagination_method', '_pagination_endpoint', 'min_id', 'max_id', 'since_id', 'limit'] for key in previous_page):
+                is_pagination_dict = True
+
         if not "_pagination_method" in params and not "_pagination_endpoint" in params:
             raise MastodonIllegalArgumentError("The passed object is not paginatable")
 
@@ -147,7 +152,11 @@ class Mastodon(Internals):
         force_pagination = False
         if not isinstance(previous_page, list):
             force_pagination = True
-        return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(previous_page))
+
+        if not is_pagination_dict:
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(previous_page))
+        else:
+            return self.__api_request(method, endpoint, params)
 
     def fetch_previous(self, next_page: Union[PaginatableList[Entity], Entity, Dict]) -> Optional[Union[PaginatableList[Entity], Entity]]:
         """
@@ -165,6 +174,11 @@ class Mastodon(Internals):
         else:
             params = copy.deepcopy(next_page)
 
+        is_pagination_dict = False
+        if isinstance(next_page, dict):
+            if all(key in ['_pagination_method', '_pagination_endpoint', 'min_id', 'max_id', 'since_id', 'limit'] for key in next_page):
+                is_pagination_dict = True
+
         if not "_pagination_method" in params and not "_pagination_endpoint" in params:
             raise MastodonIllegalArgumentError("The passed object is not paginatable")
         
@@ -177,7 +191,11 @@ class Mastodon(Internals):
         force_pagination = False
         if not isinstance(next_page, list):
             force_pagination = True
-        return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(next_page))
+        
+        if not is_pagination_dict:
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(next_page))
+        else:
+            return self.__api_request(method, endpoint, params)
 
     def fetch_remaining(self, first_page: PaginatableList[Entity]) -> PaginatableList[Entity]:
         """
