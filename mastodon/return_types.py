@@ -5331,7 +5331,7 @@ class AdminCanonicalEmailBlock(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AdminCanonicalEmailBlock object
-        api2.admin_create_canonical_email_block(email=<some email>)
+        mastodon.admin_create_canonical_email_block(email=<some email>)
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_CanonicalEmailBlock
     """
@@ -5363,7 +5363,7 @@ class AdminDomainAllow(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AdminDomainAllow object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.admin_domain_allows()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_DomainAllow
     """
@@ -5403,7 +5403,7 @@ class AdminEmailDomainBlock(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AdminEmailDomainBlock object
-        TODO_TO_BE_IMPLEMENTED
+        mastodo.admin_email_domain_blocks()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_EmailDomainBlock
     """
@@ -5451,7 +5451,7 @@ class AdminEmailDomainBlockHistory(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AdminEmailDomainBlockHistory object
-        TODO_TO_BE_IMPLEMENTED
+        mastodo.admin_email_domain_blocks()[0].history[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_EmailDomainBlock
     """
@@ -5807,7 +5807,7 @@ class Suggestion(AttribAccessDict):
     .. code-block:: python
 
         # Returns a Suggestion object
-        mastodon.suggestions()[0]
+        mastodon.suggestions_v2()[0]
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Suggestion
     """
@@ -6115,7 +6115,7 @@ class RelationshipSeveranceEvent(AttribAccessDict):
     .. code-block:: python
 
         # Returns a RelationshipSeveranceEvent object
-        TODO_TO_BE_IMPLEMENTED
+        # There isn't really a good way to get this manually - you get it if a moderation takes action.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/RelationshipSeveranceEvent
     """
@@ -6131,6 +6131,7 @@ class RelationshipSeveranceEvent(AttribAccessDict):
     type: "str"
     """
     Type of event.
+    Should contain (as text): RelationshipSeveranceEventType
 
     Version history:
       * 4.3.0: added
@@ -6420,7 +6421,7 @@ class AccountWarning(AttribAccessDict):
     .. code-block:: python
 
         # Returns a AccountWarning object
-        TODO_TO_BE_IMPLEMENTED
+        # There isn't really a good way to get this manually - you get it if a moderation takes action.
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AccountWarning
     """
@@ -6485,21 +6486,54 @@ class AccountWarning(AttribAccessDict):
 
 class UnreadNotificationsCount(AttribAccessDict):
     """
-    Get the (capped) number of unread notifications for the current user.
+    Rhe (capped) number of unread notifications for the current user.
 
     Example:
 
     .. code-block:: python
 
         # Returns a UnreadNotificationsCount object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.notifications_unread_count()
 
-    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/notifications/#unread_count
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/notifications/#unread-count
     """
 
     count: "int"
     """
     The capped number of unread notifications. The cap is not documented.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class Appeal(AttribAccessDict):
+    """
+    Appeal against a moderation action.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a Appeal object
+        TODO_TO_BE_IMPLEMENTED
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Appeal/
+    """
+
+    text: "str"
+    """
+    Text of the appeal from the moderated account to the moderators..
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    state: "str"
+    """
+    State of the appeal.
+    Should contain (as text): AppealStateEnum
 
     Version history:
       * 4.3.0: added
@@ -6615,6 +6649,7 @@ ENTITY_NAME_MAP = {
     "NotificationGroup": NotificationGroup,
     "AccountWarning": AccountWarning,
     "UnreadNotificationsCount": UnreadNotificationsCount,
+    "Appeal": Appeal,
 }
 __all__ = [
     "Account",
@@ -6724,5 +6759,6 @@ __all__ = [
     "NotificationGroup",
     "AccountWarning",
     "UnreadNotificationsCount",
+    "Appeal",
 ]
 

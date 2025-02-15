@@ -8123,11 +8123,11 @@
     {
         "name": "Admin email domain block",
         "python_name": "AdminEmailDomainBlock",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "mastodo.admin_email_domain_blocks()[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
-        "manual_update": false,
+        "manual_update": true,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Admin_EmailDomainBlock",
         "description": "A block that has been set up to prevent e-mails from certain domains to be used when signing up.",
         "fields": {
@@ -8196,11 +8196,11 @@
     {
         "name": "Admin email signup attempt history",
         "python_name": "AdminEmailDomainBlockHistory",
-        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call": "mastodo.admin_email_domain_blocks()[0].history[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": null,
-        "manual_update": false,
+        "manual_update": true,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Admin_EmailDomainBlock",
         "description": "Historic data about attempted signups using e-mails from a given domain.",
         "fields": {
@@ -9644,7 +9644,7 @@
         "func_alternate_acc": null,
         "manual_update": false,
         "masto_doc_link": "https://docs.joinmastodon.org/methods/notifications/#unread-count",
-        "description": "Get the (capped) number of unread notifications for the current user.",
+        "description": "Rhe (capped) number of unread notifications for the current user.",
         "fields": {
             "count": {
                 "description": "The capped number of unread notifications. The cap is not documented.",
@@ -9653,6 +9653,43 @@
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
+    },
+    {
+        "name": "Appeal",
+        "python_name": "Appeal",
+        "func_call": "TODO_TO_BE_IMPLEMENTED",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Appeal/",
+        "description": "Appeal against a moderation action.",
+        "fields": {
+            "text": {
+                "description": "Text of the appeal from the moderated account to the moderators..",
+                "enum": null,
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "state": {
+                "description": "State of the appeal.",
+                "enum": {
+                    "approved": "The appeal has been approved by a moderator",
+                    "rejected": "The appeal has been rejected by a moderator",
+                    "pending": "The appeal has been submitted, but neither approved nor rejected yet"
+                },
+                "version_history": [["4.3.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "AppealStateEnum",
                 "is_optional": false,
                 "is_nullable": false
             }

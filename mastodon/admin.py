@@ -6,7 +6,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from typing import Optional, List, Union
 from mastodon.return_types import IdType, PrimitiveIdType, Account, AdminAccount, AdminReport, PaginatableList, NonPaginatableList, Status, Tag,\
-                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock, AdminDomainAllow
+                PreviewCard, AdminDomainBlock, AdminMeasure, AdminDimension, AdminRetention, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock
 from datetime import datetime
 
 class Mastodon(Internals):
@@ -658,3 +658,44 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', f'/api/v1/admin/domain_allows/{id}')
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_email_domain_blocks(self, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None,
+                                  since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminEmailDomainBlock]:
+        """
+        Fetches a list of blocked email domains. Requires scope `admin:read:email_domain_blocks`.
+        
+        The returned list may be paginated using max_id, min_id, and since_id.
+        """
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/admin/email_domain_blocks', params)
+
+    @api_version("4.1.0", "4.1.0")
+    def admin_email_domain_block(self, id: IdType) -> AdminEmailDomainBlock:
+        """
+        Fetch a single blocked email domain by ID. Requires scope `admin:read:email_domain_blocks`.
+        
+        Raises `MastodonAPIError` if the email domain block does not exist.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('GET', f'/api/v1/admin/email_domain_blocks/{id}')
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_create_email_domain_block(self, domain: str) -> AdminEmailDomainBlock:
+        """
+        Block an email domain from signups. Requires scope `admin:write:email_domain_blocks`.
+        
+        If the domain contains invalid characters, a `MastodonAPIError` will be raised.
+        """
+        params = {"domain": domain}
+        return self.__api_request('POST', '/api/v1/admin/email_domain_blocks', params)
+
+    @api_version("4.0.0", "4.0.0")
+    def admin_delete_email_domain_block(self, id: IdType):
+        """
+        Remove an email domain block. Requires scope `admin:write:email_domain_blocks`.
+        
+        Raises `MastodonAPIError` if the email domain block does not exist.
+        """
+        id = self.__unpack_id(id)
+        self.__api_request('DELETE', f'/api/v1/admin/email_domain_blocks/{id}')

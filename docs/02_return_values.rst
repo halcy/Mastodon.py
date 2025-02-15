@@ -31,7 +31,7 @@ attributes, `even if a type does not define them.`. Lists have been split into l
 that can be paginated (i.e. that have pagination attributes) and those that cannot.
 
 All return values can be converted from and to JSON using the `to_json()` and `from_json()`
-methods defined on the ::class::`mastodon.types_base.Entity` class.
+methods defined on the `mastodon.types_base.Entity` class.
 
 Base types
 ==========
@@ -370,6 +370,9 @@ Return types
 .. autoclass:: mastodon.return_types.UnreadNotificationsCount
    :members:
 
+.. autoclass:: mastodon.return_types.Appeal
+   :members:
+
 Deprecated types
 ================
 .. autoclass:: mastodon.return_types.Filter
@@ -380,3 +383,4 @@ Deprecated types
 
 .. autoclass:: mastodon.return_types.IdentityProof
    :members:
+

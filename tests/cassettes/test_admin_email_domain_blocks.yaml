@@ -1,0 +1,305 @@
+interactions:
+- request:
+    body: domain=blockedexample.com
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '25'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/admin/email_domain_blocks
+  response:
+    body:
+      string: '{"id":"1","domain":"blockedexample.com","created_at":"2025-02-15T14:54:05.852Z","history":[{"day":"1739577600","accounts":"0","uses":"0"},{"day":"1739491200","accounts":"0","uses":"0"},{"day":"1739404800","accounts":"0","uses":"0"},{"day":"1739318400","accounts":"0","uses":"0"},{"day":"1739232000","accounts":"0","uses":"0"},{"day":"1739145600","accounts":"0","uses":"0"},{"day":"1739059200","accounts":"0","uses":"0"}],"allow_with_approval":false}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '449'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"1808d2ab259a9df5de95d5c1b66b923a"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=25.96, cache_generate.active_support;dur=14.16,
+        cache_write.active_support;dur=0.14, instantiation.active_record;dur=0.57,
+        start_processing.action_controller;dur=0.01, transaction.active_record;dur=9.82,
+        render.active_model_serializers;dur=1.58, process_action.action_controller;dur=74.00
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T14:55:00.814734Z'
+      X-Request-Id:
+      - 6a80dd2b-8ac4-484f-855d-0a452534c813
+      X-Runtime:
+      - '0.147481'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/email_domain_blocks/1
+  response:
+    body:
+      string: '{"id":"1","domain":"blockedexample.com","created_at":"2025-02-15T14:54:05.852Z","history":[{"day":"1739577600","accounts":"0","uses":"0"},{"day":"1739491200","accounts":"0","uses":"0"},{"day":"1739404800","accounts":"0","uses":"0"},{"day":"1739318400","accounts":"0","uses":"0"},{"day":"1739232000","accounts":"0","uses":"0"},{"day":"1739145600","accounts":"0","uses":"0"},{"day":"1739059200","accounts":"0","uses":"0"}],"allow_with_approval":false}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '449'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"1808d2ab259a9df5de95d5c1b66b923a"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.98, cache_generate.active_support;dur=1.00,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.29,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=1.45,
+        process_action.action_controller;dur=21.91
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T14:55:00.904524Z'
+      X-Request-Id:
+      - fa306560-9b65-48a2-82a0-d0a35aa847ab
+      X-Runtime:
+      - '0.037382'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/email_domain_blocks
+  response:
+    body:
+      string: '[{"id":"1","domain":"blockedexample.com","created_at":"2025-02-15T14:54:05.852Z","history":[{"day":"1739577600","accounts":"0","uses":"0"},{"day":"1739491200","accounts":"0","uses":"0"},{"day":"1739404800","accounts":"0","uses":"0"},{"day":"1739318400","accounts":"0","uses":"0"},{"day":"1739232000","accounts":"0","uses":"0"},{"day":"1739145600","accounts":"0","uses":"0"},{"day":"1739059200","accounts":"0","uses":"0"}],"allow_with_approval":false}]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '451'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"9b0a3ccd05281d166d2b8e8e5eed8b2c"
+      Link:
+      - <http://localhost:3000/api/v1/admin/email_domain_blocks?min_id=1>; rel="prev"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.95, cache_generate.active_support;dur=0.77,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.25,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=1.13,
+        process_action.action_controller;dur=21.94
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T14:55:00.946215Z'
+      X-Request-Id:
+      - 9d9d1aa5-8bfe-4729-a0d3-1921e48ec677
+      X-Runtime:
+      - '0.036179'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: DELETE
+    uri: http://localhost:3000/api/v1/admin/email_domain_blocks/1
+  response:
+    body:
+      string: '{}'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.56, cache_generate.active_support;dur=0.93,
+        cache_write.active_support;dur=0.26, instantiation.active_record;dur=0.35,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.76,
+        render.active_model_serializers;dur=0.05, process_action.action_controller;dur=32.27
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T14:55:00.988934Z'
+      X-Request-Id:
+      - 6e80b620-9464-4c22-a0d1-dd5e7ff6a1d4
+      X-Runtime:
+      - '0.047064'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/admin/email_domain_blocks
+  response:
+    body:
+      string: '[]'
+    headers:
+      Cache-Control:
+      - private, no-store
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=1.14, cache_generate.active_support;dur=1.04,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.24,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
+        process_action.action_controller;dur=20.25
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-02-15T14:55:00.039450Z'
+      X-Request-Id:
+      - a4d9dbce-c753-40e3-b738-92b3dd2a8269
+      X-Runtime:
+      - '0.035120'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Authorization, Origin
+    status:
+      code: 200
+      message: OK
+version: 1

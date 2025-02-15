@@ -66,3 +66,11 @@ Canonical email blocks
 .. automethod:: Mastodon.admin_create_canonical_email_block
 .. automethod:: Mastodon.admin_delete_canonical_email_block
 
+Email domain blocks
+-------------------
+.. automethod:: Mastodon.admin_email_domain_blocks
+.. automethod:: Mastodon.admin_email_domain_block
+.. automethod:: Mastodon.admin_create_email_domain_block
+.. automethod:: Mastodon.admin_delete_email_domain_block
+
+

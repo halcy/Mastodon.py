@@ -274,3 +274,24 @@ def test_admin_canonical_email_block(api2):
             api2.admin_delete_canonical_email_block(block_id)
         except Exception:
             pass
+
+
+@pytest.mark.vcr(match_on=['path'])
+def test_admin_email_domain_blocks(api2):
+    test_domain = "blockedexample.com"
+    
+    created_block = api2.admin_create_email_domain_block(test_domain)
+    assert created_block is not None
+    assert created_block.domain == test_domain
+    
+    retrieved_block = api2.admin_email_domain_block(created_block.id)
+    assert retrieved_block.id == created_block.id
+    assert retrieved_block.domain == test_domain
+    
+    all_blocks = api2.admin_email_domain_blocks()
+    assert any(block.id == created_block.id for block in all_blocks)
+    
+    api2.admin_delete_email_domain_block(created_block.id)
+    
+    all_blocks_after_delete = api2.admin_email_domain_blocks()
+    assert not any(block.id == created_block.id for block in all_blocks_after_delete)

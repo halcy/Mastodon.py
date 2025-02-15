@@ -163,7 +163,7 @@ if sys.version_info < (3, 9):
             DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, \
             Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, \
             NotificationPolicySummary, RelationshipSeveranceEvent, GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, \
-            UnreadNotificationsCount
+            UnreadNotificationsCount, Appeal
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())
