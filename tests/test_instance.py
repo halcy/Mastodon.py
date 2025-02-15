@@ -23,6 +23,10 @@ def test_instance(api):
     expected_keys = set(('description', )) # TODO add some more maybe
     assert set(instance.keys()) >= expected_keys
 
+@pytest.mark.vcr()
+def test_instance_extended_description(api):
+    extended_desc = api.instance_extended_description()
+    assert extended_desc
 
 @pytest.mark.vcr()
 def test_instance_activity(api):

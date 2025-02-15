@@ -35,6 +35,8 @@ v2.0.0 (IN PROGRESS)
 * Add automatic conversion of datetime objects to flake IDs for min/max/since_id fields where appropriate
 * Add `notifications_unread_count`
 * Add media attachment editing
+* Add email domain blocking support (`admin_email_domain_blocks`, `admin_email_domain_block`, `admin_email_domain_block_create`, `admin_email_domain_block_delete`)
+* Add `instance_extended_description`
 
 v1.8.1
 ------
