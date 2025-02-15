@@ -18,7 +18,7 @@ current instance as well as data from the instance-wide profile directory.
 .. automethod:: Mastodon.instance_nodeinfo
 .. automethod:: Mastodon.instance_rules
 .. automethod:: Mastodon.instance_extended_description
-    
+
 Profile directory
 ~~~~~~~~~~~~~~~~~
 .. automethod:: Mastodon.directory
@@ -59,3 +59,7 @@ These functions allow you to search for users, tags and, when enabled, full text
 
 .. automethod:: Mastodon.search
 .. automethod:: Mastodon.search_v2
+
+Translation support
+-------------------
+.. automethod:: Mastodon.instance_translation_languages

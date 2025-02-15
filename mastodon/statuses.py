@@ -9,7 +9,7 @@ from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
-                MediaAttachment, Poll, StatusSource, StatusEdit, PaginatableList, PathOrFile
+                MediaAttachment, Poll, StatusSource, StatusEdit, PaginatableList, PathOrFile, Translation
 
 from typing import Union, Optional, List, Dict, Any, Tuple
 
@@ -570,3 +570,18 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', f'/api/v1/scheduled_statuses/{id}')
+
+    ##
+    # Translation
+    ##
+    @api_version("4.0.0", "4.0.0")
+    def status_translate(self, id: Union[Status, IdType], lang: Optional[str] = None) -> Translation:
+        """
+        Translate the status content into some language.
+
+        Raises a MastodonAPIError if the server can't perform the requested translation, for any
+        reason (doesn't support translation, unsupported language pair, etc.).
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/translate', params)

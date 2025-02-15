@@ -100,3 +100,7 @@ def test_version_parsing(api):
     assert parse_version_string(api._Mastodon__normalize_version_string("3.5.0 (compatible; Pleroma 1.2.3)")) == (3, 5, 0)
     assert parse_version_string(api._Mastodon__normalize_version_string("3.2.1rc3 (compatible; Akkoma 3.2.4+shinychariot)")) == (3, 2, 1)
     assert parse_version_string(api._Mastodon__normalize_version_string("3.5.3+0.17.3+git-6f4cb2f")) == (3, 5, 3)
+
+@pytest.mark.vcr()
+def test_translation_languages(api):
+    assert api.instance_translation_languages() is not None

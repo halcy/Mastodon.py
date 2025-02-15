@@ -289,3 +289,10 @@ def test_status_update_with_media_edit(api2):
         assert updated_status['media_attachments'][0]['preview_url'] != status['media_attachments'][0]['preview_url']
     finally:
         api2.status_delete(status['id'])
+
+@pytest.mark.vcr()
+def test_status_translate(api, status):
+    # our test server does not support translation, so this will raise a MastodonAPIError
+    with pytest.raises(MastodonAPIError):
+        translation = api.status_translate(status['id'], 'de')
+        

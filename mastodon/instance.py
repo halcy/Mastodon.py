@@ -6,7 +6,7 @@ from mastodon.compat import urlparse
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription
 
-from typing import Union, Optional
+from typing import Union, Optional, Dict, List
 
 class Mastodon(Internals):
     ###
@@ -206,3 +206,16 @@ class Mastodon(Internals):
         Retrieve the instance's extended description.
         """
         return self.__api_request('GET', '/api/v1/instance/extended_description', parse=False).decode("utf-8")
+
+    def instance_translation_languages(self) -> Dict[str, List[str]]:
+        """
+        Retrieve the instance's translation languages.
+
+        Returns a dict with language pairs, where the key is the language code and the value is a list of language codes that the instance can translate that language to.
+        """
+        ret_value = self.__api_request('GET', '/api/v1/instance/translation_languages')
+        result_real = AttribAccessDict()
+        for key, value in ret_value.items():
+            result_real[key] = NonPaginatableList(value)
+        return result_real
+        

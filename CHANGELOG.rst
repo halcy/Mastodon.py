@@ -37,6 +37,7 @@ v2.0.0 (IN PROGRESS)
 * Add media attachment editing
 * Add email domain blocking support (`admin_email_domain_blocks`, `admin_email_domain_block`, `admin_email_domain_block_create`, `admin_email_domain_block_delete`)
 * Add `instance_extended_description`
+* Add `instance_translation_languages`, translation support (`status_translate`)
 
 v1.8.1
 ------
