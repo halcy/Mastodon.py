@@ -42,6 +42,7 @@ v2.0.0 (IN PROGRESS)
 * Add admin IP block functions (`admin_ip_blocks`, `admin_ip_block`, `admin_ip_block_create`, `admin_ip_block_delete`)
 * Add `instance_domain_blocks`
 * Add notification policy and requests (`notifications_policy`, `update_notifications_policy`, `notifications_requests`, `notification_request`, `accept_notification_request`, `reject_notification_request`, `notifications_merged`, `accept_multiple_notification_requests`, `dismiss_multiple_notification_requests`)
+* Add `instance_languages`
 
 v1.8.1
 ------

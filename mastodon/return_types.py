@@ -6124,7 +6124,7 @@ class NotificationPolicy(AttribAccessDict):
     .. code-block:: python
 
         # Returns a NotificationPolicy object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.notification_policy()
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
     """
@@ -6188,7 +6188,7 @@ class NotificationPolicySummary(AttribAccessDict):
     .. code-block:: python
 
         # Returns a NotificationPolicySummary object
-        TODO_TO_BE_IMPLEMENTED
+        mastodon.notification_policy().summary
 
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
     """
@@ -6710,6 +6710,38 @@ class NotificationRequest(AttribAccessDict):
 
     _version = "4.3.0"
 
+class SupportedLocale(AttribAccessDict):
+    """
+    A locale supported by the instance.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a SupportedLocale object
+        mastodon.languages()
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance
+    """
+
+    code: "str"
+    """
+    The locale code.
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    name: "str"
+    """
+    The name of the locale.
+
+    Version history:
+      * 4.2.0: added
+    """
+
+    _version = "4.2.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -6821,6 +6853,7 @@ ENTITY_NAME_MAP = {
     "UnreadNotificationsCount": UnreadNotificationsCount,
     "Appeal": Appeal,
     "NotificationRequest": NotificationRequest,
+    "SupportedLocale": SupportedLocale,
 }
 __all__ = [
     "Account",
@@ -6933,5 +6966,6 @@ __all__ = [
     "UnreadNotificationsCount",
     "Appeal",
     "NotificationRequest",
+    "SupportedLocale",
 ]
 
