@@ -209,7 +209,6 @@ def try_cast(t, value, retry = True, union_specializer = None):
     * Trying once again to AttribAccessDict as a fallback
     Gives up and returns as-is if none of the above work.
     """
-    #print("Cast attempt: ", value, "to", t)
     if value is None: # None early out
         return value
     t = resolve_type(t)
@@ -271,7 +270,6 @@ def try_cast(t, value, retry = True, union_specializer = None):
             else:
                 value = t(value)
     except Exception as e:
-        #print("Failed to cast", value, "to", t, ":", e)
         if retry and isinstance(value, dict):
             value = try_cast(AttribAccessDict, value, False, union_specializer)
     return value
@@ -333,20 +331,17 @@ def try_cast_recurse(t, value, union_specializer=None):
     except Exception as e:
         # Failures are silently ignored. We care about maximum not breaking here.
         pass
-    
-    #print("Type casted", value, "to", t)
+
     if real_issubclass(value.__class__, AttribAccessDict) or real_issubclass(value.__class__, PaginatableList) or real_issubclass(value.__class__, NonPaginatableList) or real_issubclass(value.__class__, MaybeSnowflakeIdType):
         save_type = t
         if real_type is not None and use_real_type:
             save_type = real_type
-        #print("And trying to add _mastopy_type as ", save_type)
         try:
             # Unsure how robust this is - to be evaluated
             value._mastopy_type = repr(save_type).replace("mastodon.return_types.", "").replace("mastodon.types_base.", "")
             if value._mastopy_type.startswith("<class '") and value._mastopy_type.endswith("'>"):
                 value._mastopy_type = value._mastopy_type[8:-2]
         except Exception as e:
-            #print("Failed to set _mastopy_type:", e)
             # Failures are silently ignored. We care about maximum not breaking here.
             pass
     return value
