@@ -533,7 +533,6 @@ class Mastodon():
         # and we basically always want it
         for key in param_keys:
             if key in ['min_id', 'max_id', 'since_id']:
-                print("Unpacking", key)
                 params[key] = self.__unpack_id(params[key], dateconv = dateconv, listify = False)
 
         return params

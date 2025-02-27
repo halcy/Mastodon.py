@@ -34,7 +34,6 @@ class Mastodon(Internals):
             version_str = self.__normalize_version_string(self.__instance()["version"])
             self.version_check_worked = True
         except Exception as e:
-            print(e)
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
             self.version_check_worked = False
