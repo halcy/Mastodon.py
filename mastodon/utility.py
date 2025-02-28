@@ -134,6 +134,9 @@ class Mastodon(Internals):
         else:
             params = copy.deepcopy(previous_page)
 
+        if params is None:
+            return None
+
         is_pagination_dict = False
         if isinstance(previous_page, dict):
             if all(key in ['_pagination_method', '_pagination_endpoint', 'min_id', 'max_id', 'since_id', 'limit'] for key in previous_page):
@@ -172,6 +175,9 @@ class Mastodon(Internals):
             params = copy.deepcopy(next_page['_pagination_prev'])
         else:
             params = copy.deepcopy(next_page)
+
+        if params is None:
+            return None
 
         is_pagination_dict = False
         if isinstance(next_page, dict):
