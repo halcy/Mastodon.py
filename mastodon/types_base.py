@@ -54,6 +54,39 @@ This is a breaking change, and I'm sorry about it, but this will make every piec
 of software using Mastodon.py more robust in the long run.
 """
 
+def _str_to_type(mastopy_type):
+    """
+    String name to internal type resolver
+    """
+    # See if we need to parse a sub-type (i.e. [<something>] in the type name
+    sub_type = None
+    if "[" in mastopy_type and "]" in mastopy_type:
+        mastopy_type, sub_type = mastopy_type.split("[")
+        sub_type = sub_type[:-1]
+        if mastopy_type not in ["PaginatableList", "NonPaginatableList", "typing.Optional", "typing.Union"]:
+            raise ValueError(f"Subtype not allowed for type {mastopy_type} and subtype {sub_type}")
+    if "[" in mastopy_type or "]" in mastopy_type:
+        raise ValueError(f"Invalid type {mastopy_type}")
+    if sub_type is not None and ("[" in sub_type or "]" in sub_type):
+        raise ValueError(f"Invalid subtype {sub_type}")
+    
+    # Build the actual type object. 
+    from mastodon.return_types import ENTITY_NAME_MAP
+    full_type = None
+    if sub_type is not None:
+        sub_type = ENTITY_NAME_MAP.get(sub_type, None)
+        full_type = {
+            "PaginatableList": PaginatableList[sub_type], 
+            "NonPaginatableList": NonPaginatableList[sub_type],
+            "typing.Optional": Optional[sub_type],
+            "typing.Union": Union[sub_type],
+        }[mastopy_type]
+    else:
+        full_type = ENTITY_NAME_MAP.get(mastopy_type, None)
+    if full_type is None:
+        raise ValueError(f"Unknown type {mastopy_type}")
+    return full_type
+
 class MaybeSnowflakeIdType(str):
     """
     Represents, maybe, a snowflake ID.
@@ -282,6 +315,8 @@ def try_cast_recurse(t, value, union_specializer=None):
     * Casting to Union, trying all types in the union until one works
     Gives up and returns as-is if none of the above work.
     """
+    if type(t) == str:
+        t = _str_to_type(t)
     if value is None:
         return value
     t = resolve_type(t)
@@ -354,7 +389,7 @@ class Entity():
     """
     def __init__(self):
         self._mastopy_type = None
-
+    
     def to_json(self, pretty=True) -> str:
         """
         Serialize to JSON.
@@ -378,15 +413,20 @@ class Entity():
         remove_renamed_fields(mastopy_data)
 
         serialize_data = {
-            "_mastopy_version": "2.0.0",
+            "_mastopy_version": "2.0.1",
             "_mastopy_type": self._mastopy_type,
-            "_mastopy_data": mastopy_data
+            "_mastopy_data": mastopy_data,
+            "_mastopy_extra_data": {}
         }
+
+        if hasattr(self, "_pagination_next") and self._pagination_next is not None:
+            serialize_data["_mastopy_extra_data"]["_pagination_next"] = self._pagination_next
+        if hasattr(self, "_pagination_prev") and self._pagination_prev is not None:
+            serialize_data["_mastopy_extra_data"]["_pagination_prev"] = self._pagination_prev
 
         def json_serial(obj):
             if isinstance(obj, datetime):
                 return obj.isoformat()
-
 
         if pretty:
             return json.dumps(serialize_data, default=json_serial, indent=4)
@@ -421,37 +461,25 @@ class Entity():
         if "_mastopy_type" not in json_result:
             raise ValueError("JSON does not contain _mastopy_type field, refusing to parse.")
         mastopy_type = json_result["_mastopy_type"]
-
-        # See if we need to parse a sub-type (i.e. [<something>] in the type name
-        sub_type = None
-        if "[" in mastopy_type and "]" in mastopy_type:
-            mastopy_type, sub_type = mastopy_type.split("[")
-            sub_type = sub_type[:-1]
-            if mastopy_type not in ["PaginatableList", "NonPaginatableList", "typing.Optional", "typing.Union"]:
-                raise ValueError(f"Subtype not allowed for type {mastopy_type} and subtype {sub_type}")
-        if "[" in mastopy_type or "]" in mastopy_type:
-            raise ValueError(f"Invalid type {mastopy_type}")
-        if sub_type is not None and ("[" in sub_type or "]" in sub_type):
-            raise ValueError(f"Invalid subtype {sub_type}")
-        
-        # Build the actual type object. 
-        from mastodon.return_types import ENTITY_NAME_MAP
-        full_type = None
-        if sub_type is not None:
-            sub_type = ENTITY_NAME_MAP.get(sub_type, None)
-            full_type = {
-                "PaginatableList": PaginatableList[sub_type], 
-                "NonPaginatableList": NonPaginatableList[sub_type],
-                "typing.Optional": Optional[sub_type],
-                "typing.Union": Union[sub_type],
-            }[mastopy_type]
-        else:
-            full_type = ENTITY_NAME_MAP.get(mastopy_type, None)
-        if full_type is None:
-            raise ValueError(f"Unknown type {mastopy_type}")
+        full_type = _str_to_type(mastopy_type)
 
         # Finally, try to cast to the generated type
-        return try_cast_recurse(full_type, json_result["_mastopy_data"])
+        return_data = try_cast_recurse(full_type, json_result["_mastopy_data"])
+
+        # Fill in pagination information if it is present in the persisted data
+        if "_mastopy_extra_data" in json_result:
+            if "_pagination_next" in json_result["_mastopy_extra_data"]:
+                return_data._pagination_next = try_cast_recurse(PaginationInfo, json_result["_mastopy_extra_data"]["_pagination_next"])
+                response_type = return_data._pagination_next.get("_mastopy_type", None)
+                if response_type is not None:
+                    return_data._pagination_next["_mastopy_type"] = _str_to_type(response_type)
+            if "_pagination_prev" in json_result["_mastopy_extra_data"]:
+                return_data._pagination_prev = try_cast_recurse(PaginationInfo, json_result["_mastopy_extra_data"]["_pagination_prev"])
+                response_type = return_data._pagination_prev.get("_mastopy_type", None)
+                if response_type is not None:
+                    return_data._pagination_prev["_mastopy_type"] = _str_to_type(response_type)
+
+        return return_data
 
 
 class PaginationInfo(OrderedDict):

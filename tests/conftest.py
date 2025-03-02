@@ -3,7 +3,7 @@ import os
 import vcr
 
 # Set this to True to debug issues with tests
-DEBUG_REQUESTS = True
+DEBUG_REQUESTS = False
 
 def _api(access_token='__MASTODON_PY_TEST_ACCESS_TOKEN', version="4.3.0", version_check_mode="created"):
     import mastodon

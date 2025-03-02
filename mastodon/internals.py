@@ -82,7 +82,13 @@ class Mastodon():
                 return_type = override_type
         except:
             return_type = AttribAccessDict
-        return try_cast_recurse(return_type, value)
+        return_val = try_cast_recurse(return_type, value)
+        return_type_repr = None
+        try:
+            return_type_repr = return_val._mastopy_type
+        except:
+            pass
+        return return_val, return_type_repr
 
     def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None,
                         do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None, override_type=None,
@@ -93,6 +99,7 @@ class Mastodon():
         Does a large amount of different things that I should document one day, but not today.
         """
         response = None
+        final_type = None
         remaining_wait = 0
 
         # Add language to params if not None
@@ -208,7 +215,7 @@ class Mastodon():
 
             if not response_object.ok:
                 try:
-                    response = self.__try_cast_to_type(response_object.json(), override_type = override_type) # TODO actually cast to an error type
+                    response, final_type = self.__try_cast_to_type(response_object.json(), override_type = override_type) # TODO actually cast to an error type
                     if isinstance(response, dict) and 'error' in response:
                         error_msg = response['error']
                     elif isinstance(response, str):
@@ -270,7 +277,7 @@ class Mastodon():
                         f"bad json content was {response_object.content!r}.",
                         f"Exception was: {e}"
                     )
-                response = self.__try_cast_to_type(response, override_type = override_type)
+                response, final_type = self.__try_cast_to_type(response, override_type = override_type)
             else:
                 response = response_object.content
 
@@ -278,6 +285,8 @@ class Mastodon():
             if (isinstance(response, list) or force_pagination) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
                 if not isinstance(response, PaginatableList) and not force_pagination:
                     response = PaginatableList(response)
+                if final_type is None:
+                    final_type = str(type(response))
                 tmp_urls = requests.utils.parse_header_links(response_object.headers['Link'].rstrip('>').replace('>,<', ',<'))
                 for url in tmp_urls:
                     if 'rel' not in url:
@@ -292,6 +301,7 @@ class Mastodon():
                             next_params = copy.deepcopy(params)
                             next_params['_pagination_method'] = method
                             next_params['_pagination_endpoint'] = endpoint
+                            next_params['_mastopy_type'] = final_type
                             max_id = matchgroups.group(1)
                             if max_id.isdigit():
                                 next_params['max_id'] = int(max_id)
@@ -313,6 +323,7 @@ class Mastodon():
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
+                            prev_params['_mastopy_type'] = final_type
                             since_id = matchgroups.group(1)
                             if since_id.isdigit():
                                 prev_params['since_id'] = int(since_id)
@@ -328,6 +339,7 @@ class Mastodon():
                             prev_params = copy.deepcopy(params)
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
+                            prev_params['_mastopy_type'] = final_type
                             min_id = matchgroups.group(1)
                             if min_id.isdigit():
                                 prev_params['min_id'] = int(min_id)

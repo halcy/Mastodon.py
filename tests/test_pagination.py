@@ -11,6 +11,7 @@ import requests_mock
 
 UNLIKELY_HASHTAG = "fgiztsshwiaqqiztpmmjbtvmescsculuvmgjgopwoeidbcrixp"
 
+from mastodon.types_base import Entity
 
 @contextmanager
 def many_statuses(api, n=10, suffix=''):
@@ -30,9 +31,44 @@ def test_fetch_next_previous(api):
         statuses = api.account_statuses(account['id'], limit=5)
         next_statuses = api.fetch_next(statuses)
         assert next_statuses
+        assert type(next_statuses) == type(statuses)
+        for status in next_statuses:
+            assert status['id'] < statuses[0]['id']
+            assert type(status) == type(statuses[0])
         previous_statuses = api.fetch_previous(next_statuses)
         assert previous_statuses
+        assert type(previous_statuses) == type(statuses)
+        for status in previous_statuses:
+            assert status['id'] > next_statuses[-1]['id']
+            assert type(status) == type(statuses[0])
 
+@pytest.mark.vcr()
+def test_fetch_next_previous_after_persist(api):
+    account = api.account_verify_credentials()
+    with many_statuses(api):
+        statuses_orig = api.account_statuses(account['id'], limit=5)
+        statuses_persist_json = statuses_orig.to_json()
+        statuses = Entity.from_json(statuses_persist_json)
+        assert type(statuses) == type(statuses_orig)
+        assert type(statuses[0]) == type(statuses_orig[0])
+        next_statuses = api.fetch_next(statuses)
+        assert next_statuses
+        assert type(next_statuses) == type(statuses)
+        for status in next_statuses:
+            assert status['id'] < statuses[0]['id']
+            assert type(status) == type(statuses[0])
+        persisted_next_json = next_statuses.to_json()
+        next_statuses = Entity.from_json(persisted_next_json)
+        assert type(next_statuses) == type(statuses)
+        for status in next_statuses:
+            assert status['id'] < statuses[0]['id']
+            assert type(status) == type(statuses[0])
+        previous_statuses = api.fetch_previous(next_statuses)
+        assert previous_statuses
+        assert type(previous_statuses) == type(statuses)
+        for status in previous_statuses:
+            assert status['id'] > next_statuses[-1]['id']
+            assert type(status) == type(statuses[0])
 
 @pytest.mark.vcr()
 def test_fetch_next_previous_from_pagination_info(api):
@@ -41,8 +77,17 @@ def test_fetch_next_previous_from_pagination_info(api):
         statuses = api.account_statuses(account['id'], limit=5)
         next_statuses = api.fetch_next(statuses._pagination_next)
         assert next_statuses
+        assert type(next_statuses) == type(statuses)
+        for status in next_statuses:
+            assert status['id'] < statuses[0]['id']
+            assert type(status) == type(statuses[0])
         previous_statuses = api.fetch_previous(next_statuses._pagination_prev)
         assert previous_statuses
+        assert type(previous_statuses) == type(statuses)
+        for status in previous_statuses:
+            assert status['id'] > next_statuses[-1]['id']
+            assert type(status) == type(statuses[0])
+
 
 @pytest.mark.vcr()
 def test_fetch_remaining(api3):
@@ -51,6 +96,9 @@ def test_fetch_remaining(api3):
         hashtag_remaining = api3.fetch_remaining(hashtag)
         assert hashtag_remaining
         assert len(hashtag_remaining) >= 30
+        for status in hashtag_remaining:
+            assert UNLIKELY_HASHTAG in status['content']
+            assert type(status) == type(hashtag[0])
 
 def test_link_headers(api):
     rmock = requests_mock.Adapter()

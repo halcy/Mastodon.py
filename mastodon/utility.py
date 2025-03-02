@@ -151,14 +151,19 @@ class Mastodon(Internals):
         endpoint = params['_pagination_endpoint']
         del params['_pagination_endpoint']
 
+        response_type = None
+        if '_mastopy_type' in params:
+            response_type = params['_mastopy_type']
+            del params['_mastopy_type']
+
         force_pagination = False
         if not isinstance(previous_page, list):
             force_pagination = True
 
         if not is_pagination_dict:
-            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(previous_page))
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type)
         else:
-            return self.__api_request(method, endpoint, params)
+            return self.__api_request(method, endpoint, params, override_type=response_type)
 
     def fetch_previous(self, next_page: Union[PaginatableList[Entity], Entity, Dict]) -> Optional[Union[PaginatableList[Entity], Entity]]:
         """
@@ -193,14 +198,19 @@ class Mastodon(Internals):
         endpoint = params['_pagination_endpoint']
         del params['_pagination_endpoint']
 
+        response_type = None
+        if '_mastopy_type' in params:
+            response_type = params['_mastopy_type']
+            del params['_mastopy_type']
+
         force_pagination = False
         if not isinstance(next_page, list):
             force_pagination = True
         
         if not is_pagination_dict:
-            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=type(next_page))
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type)
         else:
-            return self.__api_request(method, endpoint, params)
+            return self.__api_request(method, endpoint, params, override_type=response_type)
 
     def fetch_remaining(self, first_page: PaginatableList[Entity]) -> PaginatableList[Entity]:
         """
