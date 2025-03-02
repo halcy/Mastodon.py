@@ -2,6 +2,14 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.0.1
+------
+Maintenance release. Fixes a few minor, but important, issues
+* Remove spurious debug prints (Thanks aitorres)
+* Fix pagination fetch_remaining being broken due to typing changes (Thanks jikamens)
+* Fix pagination result parsing due to typing changes (Thanks hashier for the report)
+* Fix pagination information not being saved with to/from_json functions
+
 v2.0.0
 ------
 * Absolutely massive rework of entities and typing. There are now proper classes for all entities, and typing is now used throughout the library. There is an attempt here to be backwards compatible, and none of my *tests* break.
