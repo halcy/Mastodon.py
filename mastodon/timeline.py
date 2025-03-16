@@ -26,6 +26,8 @@ class Mastodon(Internals):
         and `remote` to only get remote statuses. Some options are mutually incompatible as dictated by logic.
 
         May or may not require authentication depending on server settings and what is specifically requested.
+
+        See <https://docs.joinmastodon.org/methods/timelines/> for a description of the parameters.
         """
         params_initial = locals()
 
