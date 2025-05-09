@@ -29,5 +29,5 @@ Mastodon.py has an extensive suite of tests. The purpose of these is twofold:
 * Make sure nothing is broken and that there aren't any regressions
 * Where the official docs are unclear, verify assumptions we make about the Mastodon API and document the results
 
-The tests use pytest and pytest-vcr so that they can be ran even without a mastodon server, but new tests require
+The tests use pytest and pytest-recording so that they can be ran even without a mastodon server, but new tests require
 setting up a mastodon dev server. Further documentation can be found in the "tests" directory in the repository.

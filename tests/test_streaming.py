@@ -15,11 +15,6 @@ real_connections = []
 close_connections = False
 
 @pytest.fixture(scope='module')
-def vcr(vcr):
-    vcr.match_on = ['path']
-    return vcr
-
-@pytest.fixture(scope='module')
 def vcr_config():
     return {
         "match_on": ["path"],
