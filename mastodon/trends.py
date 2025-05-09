@@ -20,12 +20,14 @@ class Mastodon(Internals):
         return self.trending_tags(limit=limit)
 
     @api_version("3.5.0", "3.5.0")
-    def trending_tags(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[Tag]:
+    def trending_tags(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[Tag]:
         """
         Fetch trending-hashtag information, if the instance provides such information.
 
-        Specify `limit` to limit how many results are returned (the maximum number
-        of results is 10, the endpoint is not paginated).
+        Specify `limit` to limit how many results are returned (default 10, the maximum
+        number of results is 20).
+
+        Specify `offset` to paginate results. Default 0.
 
         Does not require authentication unless locked down by the administrator.
 
@@ -65,12 +67,14 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/trends/statuses', params, lang_override=lang)
 
     @api_version("3.5.0", "3.5.0")
-    def trending_links(self, limit: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[PreviewCard]:
+    def trending_links(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[str] = None) -> NonPaginatableList[PreviewCard]:
         """
         Fetch trending-link information, if the instance provides such information.
 
-        Specify `limit` to limit how many results are returned (the maximum number
-        of results is 10, the endpoint is not paginated).
+        Specify `limit` to limit how many results are returned (default 10, the maximum
+        number of results is 20).
+
+        Specify `offset` to paginate results. Default 0.
 
         The results are sorted by the instances's trending algorithm, descending.
         """
