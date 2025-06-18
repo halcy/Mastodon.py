@@ -207,6 +207,31 @@ else:
     def resolve_type(t):
         return t
 
+# Type to string that is more robust than repr
+def stringify_type(tp):
+    try:
+        origin = typing.get_origin(tp)
+        args = typing.get_args(tp)
+        if origin is not None:
+            origin_module = origin.__module__
+            origin_name = origin.__qualname__
+            if origin_module in ("mastodon.return_types", "mastodon.types_base"):
+                type_str = origin_name
+            else:
+                type_str = f"{origin_module}.{origin_name}"
+            if args:
+                arg_strs = [stringify_type(arg) for arg in args]
+                type_str += f"[{', '.join(arg_strs)}]"
+            return type_str
+        else:
+            module = getattr(tp, "__module__", "")
+            qualname = getattr(tp, "__qualname__", str(tp))
+            if module in ("mastodon.return_types", "mastodon.types_base"):
+                return qualname
+            return f"{module}.{qualname}"
+    except Exception:
+        return str(tp)
+
 # Function that gets a type class but doesn't break in lower python versions as much
 def get_type_class(typ):
     try:
@@ -372,13 +397,16 @@ def try_cast_recurse(t, value, union_specializer=None):
         if real_type is not None and use_real_type:
             save_type = real_type
         try:
-            # Unsure how robust this is - to be evaluated
-            value._mastopy_type = repr(save_type).replace("mastodon.return_types.", "").replace("mastodon.types_base.", "")
-            if value._mastopy_type.startswith("<class '") and value._mastopy_type.endswith("'>"):
-                value._mastopy_type = value._mastopy_type[8:-2]
+            value._mastopy_type = stringify_type(save_type)
         except Exception as e:
-            # Failures are silently ignored. We care about maximum not breaking here.
-            pass
+            try:
+                # If the new robust method doesn't work, try the old and less robust method
+                value._mastopy_type = repr(save_type).replace("mastodon.return_types.", "").replace("mastodon.types_base.", "")
+                if value._mastopy_type.startswith("<class '") and value._mastopy_type.endswith("'>"):
+                    value._mastopy_type = value._mastopy_type[8:-2]
+            except:
+                # Failures are silently ignored. We care about maximum not breaking here.
+                pass
     return value
 
 class Entity():
