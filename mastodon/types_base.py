@@ -405,10 +405,11 @@ def try_cast_recurse(t, value, union_specializer=None):
         except Exception as e:
             try:
                 # If the new robust method doesn't work, try the old and less robust method
-                value._mastopy_type = repr(save_type).replace("mastodon.return_types.", "").replace("mastodon.types_base.", "")
+                value._mastopy_type = repr(save_type)
             except:
                 # Failures are silently ignored. We care about maximum not breaking here.
                 pass
+        value._mastopy_type = value._mastopy_type.replace("mastodon.return_types.", "").replace("mastodon.types_base.", "")
         if value._mastopy_type.startswith("<class '") and value._mastopy_type.endswith("'>"):
             value._mastopy_type = value._mastopy_type[8:-2]
     return value
