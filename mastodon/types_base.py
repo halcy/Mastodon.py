@@ -1,4 +1,5 @@
 from __future__ import annotations # python < 3.9 compat
+import typing
 from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic, ForwardRef
 from datetime import datetime, timezone
 import dateutil
@@ -215,13 +216,16 @@ def stringify_type(tp):
         if origin is not None:
             origin_module = origin.__module__
             origin_name = origin.__qualname__
-            if origin_module in ("mastodon.return_types", "mastodon.types_base"):
-                type_str = origin_name
-            else:
-                type_str = f"{origin_module}.{origin_name}"
-            if args:
-                arg_strs = [stringify_type(arg) for arg in args]
-                type_str += f"[{', '.join(arg_strs)}]"
+            if origin in [list, EntityList, PaginatableList, NonPaginatableList]:
+                if origin_module in ("mastodon.return_types", "mastodon.types_base"):
+                    type_str = origin_name
+                else:
+                    type_str = f"{origin_module}.{origin_name}"
+                if args:
+                    arg_strs = [stringify_type(arg) for arg in args]
+                    type_str += f"[{', '.join(arg_strs)}]"
+            elif origin in [Union, Optional]:
+                type_str = stringify_type(args[0])
             return type_str
         else:
             module = getattr(tp, "__module__", "")
