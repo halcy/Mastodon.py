@@ -63,6 +63,11 @@ def vcr_config():
         decode_compressed_response = True
     )
 
+@pytest.fixture(scope="module")
+def vcr_cassette_dir(request) -> str:
+    module = request.node.fspath  # current test file
+    return os.path.join(module.dirname, "cassettes")
+
 # Fixtures for testing against actual, real servers
 # Please be extremely careful with these
 @pytest.fixture
