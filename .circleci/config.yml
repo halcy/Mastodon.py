@@ -112,17 +112,25 @@ jobs:
           path: tests    
   run-tests-314:
     docker:
-      - image: cimg/python:3.14
+      - image: python:3.14-rc-bookworm
     steps:
       - checkout
       - run:
-          name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]" 
+          name: Install system dependencies (if needed)
+          command: |
+            apt-get update && apt-get install -y \
+              git curl build-essential libffi-dev
       - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
+          name: Upgrade pip and install test deps
+          command: |
+            python -m pip install --upgrade pip
+            pip install .[test,webpush,blurhash]
+      - run:
+          name: Run tests
+          command: |
+            pytest --junitxml=tests/result.xml
       - store_test_results:
-          path: tests                         
+          path: tests                    
 workflows:
   run-tests-workflow:
     jobs:
