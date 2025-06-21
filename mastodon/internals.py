@@ -165,7 +165,13 @@ class Mastodon():
                 else:
                     kwargs['data'] = params
 
-                response_object = self.session.request(method, base_url + endpoint, **kwargs)
+                # nb: the no-op "auth" parameter is neccesary to ensure requests will never override
+                # the Bearer auth header that we add with a HTTP Basic Auth header, which can otherwise
+                # happen if the user has a .netrc file with a matching host (including a "default" entry).
+                # Passing trust_env = False would also work, but would be worse, since it also disables
+                # systemwide proxy settings, which are probably still good to respect, even if the .netrc
+                # login behaviour is undesirable in every case.
+                response_object = self.session.request(method, base_url + endpoint, **kwargs, auth=lambda x: x)
                 if self.debug_requests:
                     print(f'Mastodon: Request URL: {response_object.request.url}')
                     print(f'Mastodon: Request body: {response_object.request.body}')
