@@ -80,7 +80,7 @@ class Mastodon(Internals):
     @api_version("2.5.0", "2.5.0")
     def stream_healthy(self) -> bool:
         """
-        Returns without True if streaming API is okay, False or raises an error otherwise.
+        Returns True if streaming API is okay, False or raises an error otherwise.
         """
         api_okay = self.__api_request('GET', '/api/v1/streaming/health', base_url_override=self.__get_streaming_base(), parse=False)
         if api_okay in [b'OK', b'success']:
