@@ -389,15 +389,22 @@ class Mastodon(Internals):
                         raise MastodonIllegalArgumentError('Password flow is no longer supported in Mastodon 4.4.0 and later. Please use the code flow instead.')
                     else:
                         raise MastodonIllegalArgumentError('Password flow is not supported by this instance. Please use the code flow instead.')
-                
+
+        # Trying to use code flow?
+        if code is not None:
+            if "grant_types_supported" in oauth_info:
+                if "authorization_code" not in oauth_info["grant_types_supported"]:
+                    # This would be a very weird case, but I guess we can provide a good error here anyways.
+                    raise MastodonIllegalArgumentError('Authorization code flow is not supported by this instance. Please obtain a token in some other way.')
+                 
         if username is not None and password is not None:
-            params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
+            params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token', 'allow_http'])
             params['grant_type'] = 'password'
         elif code is not None:
-            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'refresh_token'])
+            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'refresh_token', 'allow_http'])
             params['grant_type'] = 'authorization_code'
         elif refresh_token is not None:
-            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'code'])
+            params = self.__generate_params(locals(), ['scopes', 'to_file', 'username', 'password', 'code', 'allow_http'])
             params['grant_type'] = 'refresh_token'
         else:
             raise MastodonIllegalArgumentError('Invalid arguments given. username and password or code are required.')
