@@ -10,6 +10,9 @@ v2.1.0 (IN PROGRESS)
 * Improved docs for stream_healthy (thanks @codl)
 * Add offset parameter to trending_tags and trending_links (Thanks @ghost)
 * Added support for retrieving API version and a warning for if it is not present despite the mastodon version suggesting it should be.
+* Added support for retrieving OAuth authorization server info
+* Added check for supported password grant type based on authorization server info (Thanks @thisismissem for the suggestion)
+* Added support for alternate OAuth URLs based on the authorization server info
 
 v2.0.1
 ------

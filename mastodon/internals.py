@@ -645,6 +645,31 @@ class Mastodon():
         return base_url
 
     @staticmethod
+    def __oauth_url_check(oauth_url, allow_http=False):
+        """Internal helper to check and normalize OAuth URLs"""
+        if "?" in oauth_url:
+            # Throw an error, we do not support OAuth URLs with query parameters, even if this is in theory a
+            # valid thing to have for most endpoints.
+            raise MastodonIllegalArgumentError("OAuth URLs with query parameters are not supported by Mastodon.py.")
+        
+        if "#" in oauth_url:
+            # A fragment is just straight up not allowed by the spec.
+            raise MastodonIllegalArgumentError("OAuth URLs with fragments are not permitted.")
+        
+        if "@" in oauth_url:
+            # Username/password is RIGHT OUT.
+            raise MastodonIllegalArgumentError("OAuth URLs with username/password are not permitted.")
+
+        # OAuth URLs *must* include the scheme, and the scheme *must* be https.
+        # We allow http if a flag is set because testing requires it.
+        if not oauth_url.startswith("https://"):
+            if allow_http:
+                if not oauth_url.startswith("http://"):
+                    raise MastodonIllegalArgumentError("OAuth URLs must use with http or https.")
+            else:
+                raise MastodonIllegalArgumentError("OAuth URLs must use with https.")
+
+    @staticmethod
     def __deprotocolize(base_url):
         """Internal helper to strip http and https from a URL"""
         if base_url.startswith("http://"):
