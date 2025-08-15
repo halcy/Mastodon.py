@@ -7,6 +7,9 @@ v2.1.0 (IN PROGRESS)
 * Fixed to_json breaking on python 3.14 (Thanks @limburgher for the report)
 * Replaced pytest-vcr (deprecated) with pytest-recording (Thanks @CyberTailor)
 * Improved timeline documentation (Thanks @adamse)
+* Improved docs for stream_healthy (thanks @codl)
+* Add offset parameter to trending_tags and trending_links (Thanks @ghost)
+* Added support for retrieving API version and a warning for if it is not present despite the mastodon version suggesting it should be.
 
 v2.0.1
 ------
@@ -313,7 +316,7 @@ of things changed, since this release covers two Mastodon versions and
 then some !!!!!
 
 * Several small bug fixes (Thanks goldensuneur, bowlercaptain, joyeusenoelle)
-* Improved stream error handling (Thanks codl)
+* Improved stream error handling (thanks @codl)
 * Improvements to streaming:
     * Added on_abort() handler to streams
     * Added automatic reconnecting
@@ -337,7 +340,7 @@ then some !!!!!
 
 v1.2.2
 ------
-* Several small bugfixes (thanks codl)
+* Several small bugfixes (thanks @codl)
 * Mastodon v2.1.2 compatibility
     * Added instance_activity()
     * Added instance_peers()    
@@ -371,17 +374,17 @@ v1.2.0
 
 v1.1.2
 ------
-* 2.0 id compatibility (thanks codl)
+* 2.0 id compatibility (thanks @codl)
 * Added emoji support
 * Media alt-text support (thanks foozmeat)
 * Python2 fixes (thanks ragingscholar)
-* General code cleanup and small fixes (thanks codl)
+* General code cleanup and small fixes (thanks @codl)
 * Beginnings of better error handling (thanks Elizafox)
 * Various documentation updates
 
 v1.1.1
 ------
-* Emergency fix to allow logging in to work (thanks codl)
+* Emergency fix to allow logging in to work (thanks @codl)
 
 v1.1.0
 ------

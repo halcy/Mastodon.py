@@ -4,6 +4,7 @@ import re
 import dateutil
 import datetime
 import copy
+import warnings
 
 from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError
 from mastodon.compat import IMPL_HAS_BLURHASH, blurhash
@@ -32,13 +33,25 @@ class Mastodon(Internals):
         """
         try:
             version_str = self.__normalize_version_string(self.__instance()["version"])
-            self.version_check_worked = True
+            self.__version_check_worked = True
         except Exception as e:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
-            self.version_check_worked = False
+            self.__version_check_worked = False
         self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
-        self.version_check_tried = True
+
+        # If the instance has an API version, we store that as well.
+        # If we have a version >= 4.3.0 but no API version, we throw a warning that this is a Weird Implementation,
+        # which might help with adoption of the API versioning or at least give us a better picture of how it is going.
+        found_api_version = False
+        if "api_versions" in self.__instance():
+            if "mastodon" in self.__instance()["api_versions"]:
+                self.mastodon_api_version = int(self.__instance()["api_versions"]["mastodon"])
+                found_api_version = True
+        if not found_api_version and self.mastodon_major >= 4 and self.mastodon_minor >= 3:
+            warnings.warn("Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
+
+        self.__version_check_tried = True
         return version_str
 
     def verify_minimum_version(self, version_str, cached=False):
@@ -49,7 +62,7 @@ class Mastodon(Internals):
 
         Returns True if version requirement is satisfied, False if not.
         """
-        if not cached or not self.version_check_tried:
+        if not cached or not self.__version_check_tried:
             self.retrieve_mastodon_version()
         major, minor, patch = parse_version_string(version_str)
         if major > self.mastodon_major:

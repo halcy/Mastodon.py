@@ -237,10 +237,20 @@ class Mastodon(Internals):
         self.mastodon_major = 1
         self.mastodon_minor = 0
         self.mastodon_patch = 0
-        self.version_check_worked = None
-        self.version_check_tried = False
+
+        # new addition from 4.3.0 on: API versioning.
+        # For now, we retrieve and cache this along with the other version information,
+        # though do not use it to do version checks (yet). TBD on whether to go through
+        # the trouble of doing this for all new endpoints, we'll have to see if other
+        # API implementations start using this (fingers crossed).
+        # We also emit a warning if the version is >= 4.3.0 but no API version is found.
+        self.mastodon_api_version = 0
+
+        self.__version_check_worked = None
+        self.__version_check_tried = False
+
         if not mastodon_version is None:
-            self.version_check_tried = True
+            self.__version_check_tried = True
 
         # Cached version check
         self.__streaming_base = None
@@ -264,9 +274,10 @@ class Mastodon(Internals):
         * Mastodon version
         * Streaming base URL
         """
-        self.version_check_worked = None
-        self.version_check_tried = False
+        self.__version_check_worked = None
+        self.__version_check_tried = False
         self.__streaming_base = None
+        self.__oauth_grant_info = None
 
     def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", 
                          scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None, 
@@ -336,11 +347,18 @@ class Mastodon(Internals):
         
         Returns the access token as a string.
         """
+
+
         # Is the version > 4.4.0? Throw on trying to log in with password with a more informative message than the API error
+        # This is left in here even though we check for available grant types above because that way
+        # we can give a more informative error message to the user ("not supported after version 4.4.0") instead of the
+        # generic one.
         if self.mastodon_major >= 4 and self.mastodon_minor >= 4 or self.mastodon_major > 4:
             if password is not None:
                 raise MastodonIllegalArgumentError('Password flow is no longer supported in Mastodon 4.4.0 and later.')
         
+        # 
+
         if username is not None and password is not None:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token'])
             params['grant_type'] = 'password'
@@ -386,8 +404,9 @@ class Mastodon(Internals):
                 token_file.write(self.persistable_login_credentials())
         self.__logged_in_id = None
 
-        # Retry version check if needed (might be required in limited federation mode)
-        if not self.version_check_worked:
+        # Retry version check if needed (might be required in limited federation mode since
+        # if the API is locked down, we need to auth before we can get the version)
+        if not self.__version_check_worked:
             self.retrieve_mastodon_version()
 
         return response['access_token']
