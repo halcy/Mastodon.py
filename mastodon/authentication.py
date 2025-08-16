@@ -28,7 +28,8 @@ class Mastodon(Internals):
         """
         Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
         - more granular scopes are available, please refer to Mastodon documentation for which) on the instance given
-        by `api_base_url`.
+        by `api_base_url`. If you pass scopes, you must pass the same set of scopes to :ref:`log_in() <log_in()>` and
+        :ref:`auth_request_url() <auth_request_url()>`, otherwise, your auth request will fail.
 
         Specify `redirect_uris` if you want users to be redirected to a certain page after authenticating in an OAuth flow.
         You can specify multiple URLs by passing a list. Note that if you wish to use OAuth authentication with redirects,
@@ -291,7 +292,9 @@ class Mastodon(Internals):
         after authentication. Note that `redirect_uris` must be one of the URLs given during
         app registration, and that despite the plural-like name, you only get to use one here.
         When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed, otherwise it is added 
-        to the given URL as the "code" request parameter.
+        to the given URL as the "code" request parameter. Note that if you pass scopes, you MUST
+        pass the same set of scopes to :ref:`log_in() <log_in()>` and `create_app() <create_app()>`,
+        otherwise, your auth request will fail.
 
         Pass force_login if you want the user to always log in even when already logged
         into web Mastodon (i.e. when registering multiple different accounts in an app).
@@ -364,7 +367,8 @@ class Mastodon(Internals):
         For OAuth2, obtain a code via having your user go to the URL returned by
         :ref:`auth_request_url() <auth_request_url()>` and pass it as the code parameter. In this case,
         make sure to also pass the same redirect_uri parameter as you used when
-        generating the auth request URL. If passing `code`you should not pass `username` or `password`.
+        generating the auth request URL, as well as the same set of scopes, or else your auth request will fail. 
+        If passing `code`you should not pass `username` or `password`.
 
         When using the password flow, the username is the email address used to log in into Mastodon.
         **Note that Mastodon has removed this flow starting with 4.4.0, so it is unfortunately not
