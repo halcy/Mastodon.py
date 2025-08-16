@@ -13,7 +13,7 @@ class Mastodon(Internals):
     @api_version("1.0.0", "3.5.0")
     def notifications(self, id: Optional[Union[Notification, IdType]] = None, account_id: Optional[Union[Account, IdType]] = None, max_id:  Optional[Union[Notification, IdType]] = None, 
                       min_id:  Optional[Union[Notification, IdType]] = None, since_id:  Optional[Union[Notification, IdType]] = None, limit: Optional[int] = None, 
-                      exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None) -> PaginatableList[Notification]:
+                      exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None) -> Union[PaginatableList[Notification], Notification]:
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
@@ -58,7 +58,7 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/notifications', params)
         else:
             id = self.__unpack_id(id)
-            return self.__api_request('GET', f"/api/v1/notifications/{id}")
+            return self.__api_request('GET', f"/api/v1/notifications/{id}", override_type=Notification)
 
     # Implement GET /api/v1/notifications/unread_count HTTP/1.1
     @api_version("4.3.0", "4.3.0")

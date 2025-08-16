@@ -17,6 +17,7 @@ v2.1.0 (IN PROGRESS)
 * Added a way to get pagination info out of lists that is slightly less digging-around-in-internals via `get_pagination_info` (Thanks @s427 for the inciting report)
 * Added missing `replies_policy` and `exclusive` parameters to list creation and update methods.
 * Add status length counter `get_status_length` (Thanks @yuletide for the suggestion)
+* Fix `notifications` returning nonsense when passing a single `id` (Thanks @chinchalinchin for the report)
 
 v2.0.1
 ------
