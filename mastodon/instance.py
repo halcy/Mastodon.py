@@ -40,6 +40,13 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v2/instance/')
 
+    def __instance_v2(self) -> InstanceV2:
+        """
+        Internal, non-version-checking helper that does the same as instance_v2()
+        """
+        instance = self.__api_request('GET', '/api/v2/instance/', override_type=InstanceV2)
+        return instance
+
     @api_version("1.1.0", "4.0.0")
     def instance(self) -> Union[InstanceV2, Instance]:
         """

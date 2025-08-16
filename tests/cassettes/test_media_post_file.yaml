@@ -1,9 +1,131 @@
 interactions:
 - request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body:
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":100,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":true,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+    headers:
+      Cache-Control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '1260'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 16 Aug 2025 19:04:14 GMT
+      ETag:
+      - W/"cc91a3c4f150917976d05afebc63268b"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.12, sql.active_record;dur=1.82, cache_generate.active_support;dur=6.87,
+        cache_write.active_support;dur=0.43, instantiation.active_record;dur=0.15,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=10.05, process_action.action_controller;dur=29.75
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-08-16T19:05:00.402808Z'
+      X-Request-Id:
+      - 963e64ef-eef6-4d6a-b5e7-0ea75bc3312e
+      X-Runtime:
+      - '0.049951'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Accept, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/instance/
+  response:
+    body:
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.3.0","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png"},"icon":[{"src":"http://localhost:3000/packs/media/icons/android-chrome-36x36-4c61fdb42936428af85afdbf8c6a45a8.png","size":"36x36"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-48x48-2027aead76dc906c981043d658a8258d.png","size":"48x48"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-72x72-799d90b81f5b28cea7355a0c0b356381.png","size":"72x72"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-96x96-c2dfcfa1268c56e59edddfe20d818b91.png","size":"96x96"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-144x144-ff3110f7772743bdd0c1c47fb7b2d4e0.png","size":"144x144"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-192x192-eddc1ed540e97b926202b7b857989d60.png","size":"192x192"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-256x256-7b2b43926019259f7c9ddee627d80a0f.png","size":"256x256"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-384x384-72068ed50b02828fc505a8d69b321dea.png","size":"384x384"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-512x512-ccb53c9fcbb5f61bf741cc54998318f0.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null},"vapid":{"public_key":"BM0khLcvEe3sNx-QO2PB1hqB-24BqdAh0_kG3nZKAHj348StAFL2EHzK1JJTplzKhmMoz3Z_cNfW6QY8ibUzdF4="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false}},"registrations":{"enabled":true,"approval_required":true,"message":null,"url":null},"api_versions":{"mastodon":2},"contact":{"email":"","account":null},"rules":[]}'
+    headers:
+      Cache-Control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '2641'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 16 Aug 2025 19:04:14 GMT
+      ETag:
+      - W/"2f4f131317c14c268bad00aa2f75ca41"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.13, sql.active_record;dur=1.23, cache_generate.active_support;dur=5.39,
+        cache_write.active_support;dur=0.35, instantiation.active_record;dur=0.15,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=19.66, process_action.action_controller;dur=40.06
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-08-16T19:05:00.462972Z'
+      X-Request-Id:
+      - 94bc6eb0-def6-4d43-8fc9-11560f23749c
+      X-Runtime:
+      - '0.060678'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Accept, Origin
+    status:
+      code: 200
+      message: OK
+- request:
     body: !!binary |
-      LS05OWQ5MzE3Y2YzZWNmNzA2NWNmYzhhM2E3YmExMWVkZQ0KQ29udGVudC1EaXNwb3NpdGlvbjog
-      Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTc1NTI3
-      OTIyMC45MDg4NDRfYTc0MTQwYWYxMTFkNGJiMDhmOTk1YjZhODFhN2E4ZGIuanBnIg0KQ29udGVu
+      LS1hMzZlNWE0YWI0ZWNhNTJmMWMxYTU4ZGY3MjYxOTM4Yw0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1hc3RvZG9ucHl1cGxvYWRfMTc1NTM3
+      MTA1NC4zNjE5MDhfYWYzNzhlOWE4NTRmNGJjZGEyNDU2YTRjNDU0ZGE4OGMuanBnIg0KQ29udGVu
       dC1UeXBlOiBpbWFnZS9qcGVnDQoNCv/Y/+AAEEpGSUYAAQEBAEgASAAA/+ICHElDQ19QUk9GSUxF
       AAEBAAACDGxjbXMCEAAAbW50clJHQiBYWVogB9wAAQAZAAMAKQA5YWNzcEFQUEwAAAAAAAAAAAAA
       AAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1sY21zAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -939,8 +1061,8 @@ interactions:
       tQWLFUTDj70qVREpYjcPbiv3elShfkRBtkgMCmGlSoojqYg3CP1hg5XagwuSZZej1N96VKgeHKRZ
       Sii9BM7fep2iK8u6Y69PxSpUVZtsdoSiQO3N/mozLhcIxMSN89s+KVKgU4XMHLHOFF7LVZRJrFV2
       2pUqBoKKIKucrmmTAxMZfilSoFO2xicuMnjFStYMZkHV3XP4pUqC5Zbdy3MwJvu7U0AjASTLfOy9
-      aVKgjPC5Yj9imCTIjyrGTjBn9aVKgY09xujjo55uzvSpUqD/2Q0KLS05OWQ5MzE3Y2YzZWNmNzA2
-      NWNmYzhhM2E3YmExMWVkZS0tDQo=
+      aVKgjPC5Yj9imCTIjyrGTjBn9aVKgY09xujjo55uzvSpUqD/2Q0KLS1hMzZlNWE0YWI0ZWNhNTJm
+      MWMxYTU4ZGY3MjYxOTM4Yy0tDQo=
     headers:
       Accept:
       - '*/*'
@@ -953,14 +1075,14 @@ interactions:
       Content-Length:
       - '53543'
       Content-Type:
-      - multipart/form-data; boundary=99d9317cf3ecf7065cfc8a3a7ba11ede
+      - multipart/form-data; boundary=a36e5a4ab4eca52f1c1a58df7261938c
       User-Agent:
       - tests/v311
     method: POST
     uri: http://localhost:3000/api/v2/media
   response:
     body:
-      string: '{"id":"115033979034911993","type":"image","url":"http://localhost:3000/system/media_attachments/files/115/033/979/034/911/993/original/b3d1324fadb309f3.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/115/033/979/034/911/993/small/b3d1324fadb309f3.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0}},"description":null,"blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
+      string: '{"id":"115039997441226954","type":"image","url":"http://localhost:3000/system/media_attachments/files/115/039/997/441/226/954/original/6fe6f23fd2bfeb40.jpg","preview_url":"http://localhost:3000/system/media_attachments/files/115/039/997/441/226/954/small/6fe6f23fd2bfeb40.jpg","remote_url":null,"preview_remote_url":null,"text_url":null,"meta":{"original":{"width":600,"height":600,"size":"600x600","aspect":1.0},"small":{"width":480,"height":480,"size":"480x480","aspect":1.0}},"description":null,"blurhash":"UGD9YhIn00j[NFofR%M{IURj%Ms;D%of%MR%"}'
     headers:
       Cache-Control:
       - private, no-store
@@ -971,14 +1093,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"99e6823ee205312ec7c487cd5d5aa1fd"
+      - W/"e80b21fc3e114c5aa7e0b0ac92bac0cc"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.39, cache_generate.active_support;dur=0.89,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.23,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=8.48,
-        render.active_model_serializers;dur=0.65, process_action.action_controller;dur=192.59
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=4.56, cache_generate.active_support;dur=0.95,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.24,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=8.07,
+        render.active_model_serializers;dur=0.49, process_action.action_controller;dur=194.47
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -990,11 +1112,11 @@ interactions:
       X-RateLimit-Remaining:
       - '29'
       X-RateLimit-Reset:
-      - '2025-08-15T18:00:00.949272Z'
+      - '2025-08-16T19:30:00.539787Z'
       X-Request-Id:
-      - 2c25c1cc-25e5-4119-8a22-f409fda819ff
+      - 3f56f16b-d28d-4af8-8789-ce49e1ebc9cc
       X-Runtime:
-      - '0.211871'
+      - '0.214641'
       X-XSS-Protection:
       - '0'
       vary:

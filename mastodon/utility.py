@@ -50,7 +50,7 @@ class Mastodon(Internals):
         # which might help with adoption of the API versioning or at least give us a better picture of how it is going.
         found_api_version = False
         try:
-            instance_v2_info = self.instance_v2()
+            instance_v2_info = self.__instance_v2()
             if "api_versions" in instance_v2_info:
                 if "mastodon" in instance_v2_info["api_versions"]:
                     self.mastodon_api_version = int(

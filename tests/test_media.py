@@ -5,6 +5,8 @@ import pathlib
 
 @pytest.mark.vcr(match_on=['path'])
 def test_media_post_v1(api):
+    api._Mastodon__version_check_worked = True
+    api._Mastodon__version_check_tried = True
     with vcr.use_cassette('test_media_post.yaml', cassette_library_dir='tests/cassettes_pre_4_0_0', record_mode='none'):
         media = api.media_post(
                 'tests/image.jpg',

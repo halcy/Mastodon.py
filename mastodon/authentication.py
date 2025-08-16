@@ -252,6 +252,7 @@ class Mastodon(Internals):
 
         if not mastodon_version is None:
             self.__version_check_tried = True
+            self.__version_check_worked = True
 
         # Cached version check
         self.__streaming_base = None

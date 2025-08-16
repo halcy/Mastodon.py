@@ -13,6 +13,128 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body:
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":100,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":true,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+    headers:
+      Cache-Control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '1260'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 16 Aug 2025 19:07:34 GMT
+      ETag:
+      - W/"cc91a3c4f150917976d05afebc63268b"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.33, sql.active_record;dur=2.15, cache_generate.active_support;dur=13.03,
+        cache_write.active_support;dur=0.72, instantiation.active_record;dur=0.43,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=19.47, process_action.action_controller;dur=46.68
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-08-16T19:10:00.723283Z'
+      X-Request-Id:
+      - 1215d238-1b0b-4405-bff9-f2e2059e1244
+      X-Runtime:
+      - '0.078711'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Accept, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/instance/
+  response:
+    body:
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.3.0","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png"},"icon":[{"src":"http://localhost:3000/packs/media/icons/android-chrome-36x36-4c61fdb42936428af85afdbf8c6a45a8.png","size":"36x36"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-48x48-2027aead76dc906c981043d658a8258d.png","size":"48x48"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-72x72-799d90b81f5b28cea7355a0c0b356381.png","size":"72x72"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-96x96-c2dfcfa1268c56e59edddfe20d818b91.png","size":"96x96"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-144x144-ff3110f7772743bdd0c1c47fb7b2d4e0.png","size":"144x144"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-192x192-eddc1ed540e97b926202b7b857989d60.png","size":"192x192"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-256x256-7b2b43926019259f7c9ddee627d80a0f.png","size":"256x256"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-384x384-72068ed50b02828fc505a8d69b321dea.png","size":"384x384"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-512x512-ccb53c9fcbb5f61bf741cc54998318f0.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null},"vapid":{"public_key":"BM0khLcvEe3sNx-QO2PB1hqB-24BqdAh0_kG3nZKAHj348StAFL2EHzK1JJTplzKhmMoz3Z_cNfW6QY8ibUzdF4="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false}},"registrations":{"enabled":true,"approval_required":true,"message":null,"url":null},"api_versions":{"mastodon":2},"contact":{"email":"","account":null},"rules":[]}'
+    headers:
+      Cache-Control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '2641'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 16 Aug 2025 19:07:34 GMT
+      ETag:
+      - W/"2f4f131317c14c268bad00aa2f75ca41"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.29, sql.active_record;dur=1.42, cache_generate.active_support;dur=8.81,
+        cache_write.active_support;dur=0.48, instantiation.active_record;dur=0.44,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=39.19, process_action.action_controller;dur=60.60
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-08-16T19:10:00.808699Z'
+      X-Request-Id:
+      - 6cdd2759-0d40-4cc0-8e74-f98d0609dea6
+      X-Runtime:
+      - '0.092201'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Accept, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
     uri: http://localhost:3000/api/v1/trends/tags
   response:
     body:
@@ -31,10 +153,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=0.58, cache_generate.active_support;dur=1.45,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.17,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=21.57
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.53, cache_generate.active_support;dur=1.70,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.37,
+        start_processing.action_controller;dur=0.02, render.active_model_serializers;dur=0.05,
+        process_action.action_controller;dur=32.30
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -46,11 +168,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:40:00.781541Z'
+      - '2025-08-16T19:10:00.928940Z'
       X-Request-Id:
-      - 163ff9eb-2816-415f-8597-d1714e98aad0
+      - c4131903-4509-41db-a397-df82bf06cc70
       X-Runtime:
-      - '0.042260'
+      - '0.072767'
       X-XSS-Protection:
       - '0'
       vary:
@@ -90,10 +212,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=0.67, cache_generate.active_support;dur=1.60,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.20,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=22.52
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.29, cache_generate.active_support;dur=1.81,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.51,
+        start_processing.action_controller;dur=0.01, render.active_model_serializers;dur=0.04,
+        process_action.action_controller;dur=30.02
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -105,11 +227,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:40:00.827941Z'
+      - '2025-08-16T19:10:00.025954Z'
       X-Request-Id:
-      - add9b086-d2ea-4d8b-82c0-3f79022c3366
+      - bcc34ee2-4e83-4fb4-b725-22013489003b
       X-Runtime:
-      - '0.042634'
+      - '0.087021'
       X-XSS-Protection:
       - '0'
       vary:
