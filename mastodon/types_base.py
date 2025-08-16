@@ -75,12 +75,21 @@ def _str_to_type(mastopy_type):
     from mastodon.return_types import ENTITY_NAME_MAP
     full_type = None
     if sub_type is not None:
-        sub_type = ENTITY_NAME_MAP.get(sub_type, None)
+        if not mastopy_type == "typing.Union":
+            sub_type = ENTITY_NAME_MAP.get(sub_type, None)
+        else:
+            sub_type_list = []
+            for sub_type_part in sub_type.split(","):
+                sub_type_part = sub_type_part.strip()
+                if sub_type_part:
+                    sub_type_part_type = ENTITY_NAME_MAP.get(sub_type_part, None)
+                    if sub_type_part_type is not None:
+                        sub_type_list.append(sub_type_part_type)
         full_type = {
             "PaginatableList": PaginatableList[sub_type], 
             "NonPaginatableList": NonPaginatableList[sub_type],
             "typing.Optional": Optional[sub_type],
-            "typing.Union": Union[sub_type],
+            "typing.Union": Union.__getitem__(tuple(sub_type_list)),
         }[mastopy_type]
     else:
         full_type = ENTITY_NAME_MAP.get(mastopy_type, None)
