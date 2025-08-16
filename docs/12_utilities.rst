@@ -14,7 +14,11 @@ These functions allow for convenient retrieval of paginated data.
 .. automethod:: Mastodon.fetch_previous
 .. _fetch_remaining():    
 .. automethod:: Mastodon.fetch_remaining
-
+.. _pagination_iterator():
+.. automethod:: Mastodon.pagination_iterator
+.. _get_pagination_info():
+.. automethod:: Mastodon.get_pagination_info
+    
 Blurhash decoding
 -----------------
 This function allows for easy basic decoding of blurhash strings to images.

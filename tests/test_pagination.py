@@ -11,7 +11,7 @@ import requests_mock
 
 UNLIKELY_HASHTAG = "fgiztsshwiaqqiztpmmjbtvmescsculuvmgjgopwoeidbcrixp"
 
-from mastodon.types_base import Entity
+from mastodon.types_base import Entity, PaginationInfo
 
 @contextmanager
 def many_statuses(api, n=10, suffix=''):
@@ -119,3 +119,51 @@ def test_link_headers(api):
     resp = api.timeline_hashtag(UNLIKELY_HASHTAG)
     assert resp._pagination_next['max_id'] == _id
     assert resp._pagination_prev['since_id'] == _id
+
+@pytest.mark.vcr()
+def test_get_pagination_info(api):
+    account = api.account_verify_credentials()
+    with many_statuses(api):
+        statuses = api.account_statuses(account['id'], limit=5)
+        pagination_info = api.get_pagination_info(statuses, "next")
+        assert pagination_info
+        assert pagination_info['max_id'] == statuses._pagination_next['max_id']
+        assert isinstance(pagination_info, PaginationInfo)
+        pagination_info = api.get_pagination_info(statuses, "previous")
+        assert pagination_info
+        assert pagination_info['min_id'] == statuses._pagination_prev['min_id']
+        assert isinstance(pagination_info, PaginationInfo)
+    empty_dict = {}
+    assert api.get_pagination_info(empty_dict, "next") is None
+
+@pytest.mark.vcr()
+def test_pagination_iterator(api3):
+    with many_statuses(api3, n=30, suffix=' #'+UNLIKELY_HASHTAG):
+        hashtag = api3.timeline_hashtag(UNLIKELY_HASHTAG, limit=10)
+        iterator = api3.pagination_iterator(hashtag, "next")
+        assert iterator
+        for status in iterator:
+            print(status)
+            assert UNLIKELY_HASHTAG in status['content']
+            assert type(status) == type(hashtag[0])
+        iterator = api3.pagination_iterator(hashtag._pagination_prev, "previous")
+        assert iterator
+        for status in iterator:
+            print(status)
+            assert UNLIKELY_HASHTAG in status['content']
+            assert type(status) == type(hashtag[0])
+
+        # Test with pagination info    
+        pagination_info = hashtag._pagination_next
+        iterator = api3.pagination_iterator(pagination_info, "next")
+        assert iterator
+        for status in iterator:
+            assert UNLIKELY_HASHTAG in status['content']
+            assert type(status) == type(hashtag[0])
+        pagination_info = hashtag._pagination_prev
+        iterator = api3.pagination_iterator(pagination_info, "previous")
+        assert iterator
+        for status in iterator:
+            assert UNLIKELY_HASHTAG in status['content']
+            assert type(status) == type(hashtag[0])
+        

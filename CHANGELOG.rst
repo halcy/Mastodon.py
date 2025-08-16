@@ -13,6 +13,8 @@ v2.1.0 (IN PROGRESS)
 * Added support for retrieving OAuth authorization server info
 * Added check for supported password grant type based on authorization server info (Thanks @thisismissem for the suggestion)
 * Added support for alternate OAuth URLs based on the authorization server info
+* Added pagination iteraton via `pagination_iterator` (Thanks @FredericoCeratto for the suggestion)
+* Added a way to get pagination info out of lists that is slightly less digging-around-in-internals via `get_pagination_info` (Thanks @s427 for the inciting report)
 
 v2.0.1
 ------

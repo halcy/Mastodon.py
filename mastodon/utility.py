@@ -12,11 +12,13 @@ from mastodon.internals import Mastodon as Internals
 
 from mastodon.versions import parse_version_string, max_version, api_version
 
-from typing import Optional, Union, Dict
+from typing import Optional, Union, Dict, Iterator
 from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList
-from mastodon.types_base import Entity
+from mastodon.types_base import Entity, try_cast
 
 # Class level:
+
+
 class Mastodon(Internals):
     def set_language(self, lang):
         """
@@ -32,23 +34,26 @@ class Mastodon(Internals):
         Returns the version string, possibly including rc info.
         """
         try:
-            version_str = self.__normalize_version_string(self.__instance()["version"])
+            version_str = self.__normalize_version_string(
+                self.__instance()["version"])
             self.__version_check_worked = True
         except Exception as e:
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
             self.__version_check_worked = False
-        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(
+            version_str)
 
         # If the instance has an API version, we store that as well.
         # If we have a version >= 4.3.0 but no API version, we throw a warning that this is a Weird Implementation,
         # which might help with adoption of the API versioning or at least give us a better picture of how it is going.
         found_api_version = False
         try:
-            instance_v2_info = self.instance_v2() 
+            instance_v2_info = self.instance_v2()
             if "api_versions" in instance_v2_info:
                 if "mastodon" in instance_v2_info["api_versions"]:
-                    self.mastodon_api_version = int(instance_v2_info["api_versions"]["mastodon"])
+                    self.mastodon_api_version = int(
+                        instance_v2_info["api_versions"]["mastodon"])
                     found_api_version = True
         except MastodonNotFoundError:
             pass
@@ -56,7 +61,8 @@ class Mastodon(Internals):
             pass
         self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
-            warnings.warn("Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
+            warnings.warn(
+                "Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
         return version_str
 
     def verify_minimum_version(self, version_str, cached=False):
@@ -86,7 +92,8 @@ class Mastodon(Internals):
         """
         response = self.__api_request("HEAD", "/", return_response_object=True)
         if 'Date' in response.headers:
-            server_time_datetime = dateutil.parser.parse(response.headers['Date'])
+            server_time_datetime = dateutil.parser.parse(
+                response.headers['Date'])
 
             # Make sure we're in local time
             epoch_time = self.__datetime_to_epoch(server_time_datetime)
@@ -119,7 +126,8 @@ class Mastodon(Internals):
                 'To use the blurhash functions, please install the blurhash Python module.')
 
         # Figure out what size to decode to
-        decode_components_x, decode_components_y = blurhash.components(media_dict["blurhash"])
+        decode_components_x, decode_components_y = blurhash.components(
+            media_dict["blurhash"])
         if size_per_component:
             decode_size_x = decode_components_x * out_size[0]
             decode_size_y = decode_components_y * out_size[1]
@@ -128,7 +136,8 @@ class Mastodon(Internals):
             decode_size_y = out_size[1]
 
         # Decode
-        decoded_image = blurhash.decode(media_dict["blurhash"], decode_size_x, decode_size_y, linear=return_linear)
+        decoded_image = blurhash.decode(
+            media_dict["blurhash"], decode_size_x, decode_size_y, linear=return_linear)
 
         # And that's pretty much it.
         return decoded_image
@@ -136,7 +145,7 @@ class Mastodon(Internals):
     ###
     # Pagination
     ###
-    def fetch_next(self, previous_page: Union[PaginatableList[Entity], Entity, Dict]) -> Optional[Union[PaginatableList[Entity], Entity]]:
+    def fetch_next(self, previous_page: Union[PaginatableList[Entity], Entity, PaginationInfo]) -> Optional[Union[PaginatableList[Entity], Entity]]:
         """
         Fetches the next page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -161,7 +170,8 @@ class Mastodon(Internals):
                 is_pagination_dict = True
 
         if not "_pagination_method" in params and not "_pagination_endpoint" in params:
-            raise MastodonIllegalArgumentError("The passed object is not paginatable")
+            raise MastodonIllegalArgumentError(
+                "The passed object is not paginatable")
 
         method = params['_pagination_method']
         del params['_pagination_method']
@@ -183,7 +193,7 @@ class Mastodon(Internals):
         else:
             return self.__api_request(method, endpoint, params, override_type=response_type)
 
-    def fetch_previous(self, next_page: Union[PaginatableList[Entity], Entity, Dict]) -> Optional[Union[PaginatableList[Entity], Entity]]:
+    def fetch_previous(self, next_page: Union[PaginatableList[Entity], Entity, PaginationInfo]) -> Optional[Union[PaginatableList[Entity], Entity]]:
         """
         Fetches the previous page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -208,8 +218,9 @@ class Mastodon(Internals):
                 is_pagination_dict = True
 
         if not "_pagination_method" in params and not "_pagination_endpoint" in params:
-            raise MastodonIllegalArgumentError("The passed object is not paginatable")
-        
+            raise MastodonIllegalArgumentError(
+                "The passed object is not paginatable")
+
         method = params['_pagination_method']
         del params['_pagination_method']
 
@@ -224,7 +235,7 @@ class Mastodon(Internals):
         force_pagination = False
         if not isinstance(next_page, list):
             force_pagination = True
-        
+
         if not is_pagination_dict:
             return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type)
         else:
@@ -239,8 +250,9 @@ class Mastodon(Internals):
         Be careful, as this might generate a lot of requests, depending on what you are
         fetching, and might cause you to run into rate limits very quickly.
 
-        Does not currently work with grouped notifications, please deal with those
-        yourself, for now.
+        Does not work with grouped notifications, since they use a somewhat weird, inside-out
+        pagination scheme. If you need to access these in a paginated way, use fetch_next and fetch_previous
+        directly.
         """
         first_page = copy.deepcopy(first_page)
 
@@ -251,3 +263,60 @@ class Mastodon(Internals):
             current_page = self.fetch_next(current_page)
 
         return all_pages
+
+    def get_pagination_info(self, page: PaginatableList[Entity], pagination_direction: str) -> Optional[PaginationInfo]:
+        """
+        Extracts pagination information from a paginated response.
+
+        Returns a PaginationInfo dictionary containing pagination information, or None if not available.
+
+        The resulting PaginationInfo is best treated as opaque, though is unlikely to change.
+        """
+        if hasattr(page, "_pagination_next") and pagination_direction == "next":
+            return try_cast(PaginationInfo, page._pagination_next)
+        elif hasattr(page, "_pagination_prev") and pagination_direction == "previous":
+            return try_cast(PaginationInfo, page._pagination_prev)
+        else:
+            return None
+
+    def pagination_iterator(self, start_page: Union[PaginatableList[Entity], PaginationInfo], direction: str = "next", return_pagination_info: bool = False) -> Iterator[Entity]:
+        """
+        Returns an iterator that will yield all entries in a paginated request,
+        starting from the given start_page (can also be just the PaginationInfo, in which case the
+        first returned thing will be the result of fetch_next or fetch_previous, depending on the direction).
+        and fetching new pages as needed, and breaks when no more pages are available.
+
+        Set direction to "next" to iterate forward, or "previous" to iterate backwards.
+
+        If return_pagination_info is True, the iterator will instead yield tuples of (Entity, PaginationInfo),
+        where PaginationInfo is a dictionary containing pagination information for the current page and direction.
+
+        Does not work with grouped notifications, since they use a somewhat weird, inside-out
+        pagination scheme. If you need to access these in a paginated way, use fetch_next and fetch_previous
+        directly.
+        """
+        if direction not in ["next", "previous"]:
+            raise MastodonIllegalArgumentError(
+                "Invalid pagination direction: {}".format(direction))
+        
+        # Don't rely on python type info here, this is a Danger Zone. Instead, check for
+        # _pagination_endpoint
+        if hasattr(start_page, "_pagination_endpoint") or (isinstance(start_page, dict) and '_pagination_endpoint' in start_page):
+            current_page = self.fetch_next(
+                start_page) if direction == "next" else self.fetch_previous(start_page)
+        else:
+            current_page = start_page
+
+        while current_page is not None and len(current_page) > 0:
+            for entry in current_page:
+                if return_pagination_info:
+                    yield (entry, self.get_pagination_info(current_page, direction))
+                else:
+                    print("CURRENT PAGE IS", current_page)
+                    print("YIELDING ENTRY: ", entry)
+                    yield entry
+
+            if direction == "next":
+                current_page = self.fetch_next(current_page)
+            else:
+                current_page = self.fetch_previous(current_page)
