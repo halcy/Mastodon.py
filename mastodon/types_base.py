@@ -85,12 +85,14 @@ def _str_to_type(mastopy_type):
                     sub_type_part_type = ENTITY_NAME_MAP.get(sub_type_part, None)
                     if sub_type_part_type is not None:
                         sub_type_list.append(sub_type_part_type)
-        full_type = {
-            "PaginatableList": PaginatableList[sub_type], 
-            "NonPaginatableList": NonPaginatableList[sub_type],
-            "typing.Optional": Optional[sub_type],
-            "typing.Union": Union.__getitem__(tuple(sub_type_list)),
-        }[mastopy_type]
+        if mastopy_type == "PaginatableList":
+            full_type = PaginatableList[sub_type]
+        elif mastopy_type == "NonPaginatableList":
+            full_type = NonPaginatableList[sub_type]
+        elif mastopy_type == "typing.Optional":
+            full_type = Optional[sub_type]
+        elif mastopy_type == "typing.Union":
+            full_type = Union.__getitem__(tuple(sub_type_list))
     else:
         full_type = ENTITY_NAME_MAP.get(mastopy_type, None)
     if full_type is None:
