@@ -7,7 +7,7 @@ import copy
 import warnings
 
 from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError, MastodonNotFoundError, MastodonVersionError
-from mastodon.compat import IMPL_HAS_BLURHASH, blurhash
+from mastodon.compat import IMPL_HAS_BLURHASH, blurhash, IMPL_HAS_GRAPHEME, grapheme
 from mastodon.internals import Mastodon as Internals
 
 from mastodon.versions import parse_version_string, max_version, api_version
@@ -16,8 +16,8 @@ from typing import Optional, Union, Dict, Iterator
 from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList
 from mastodon.types_base import Entity, try_cast
 
-# Class level:
-
+from ._url_regex import url_regex
+import unicodedata
 
 class Mastodon(Internals):
     def set_language(self, lang):
@@ -320,3 +320,30 @@ class Mastodon(Internals):
                 current_page = self.fetch_next(current_page)
             else:
                 current_page = self.fetch_previous(current_page)
+
+    @staticmethod
+    def get_status_length(text: str, spoiler_text: str = "") -> int:
+        """
+        For a given status `text` and `spoiler_text`, return how many characters this status counts as
+        when computing the status length and comparing it against the limit.
+
+        Note that there are other limits you may run into, such as the maximum length of a URL, or the
+        maximum length of a usernames domain part. But as long as you do *normal* things, this function
+        will return the correct length for the status text.
+        """
+        if not IMPL_HAS_GRAPHEME:
+            raise NotImplementedError(
+                'To use the get_status_length function, please install the grapheme Python module.')
+        
+        username_regex = re.compile(r'(^|[^/\w])@(([a-z0-9_]+)@[a-z0-9\.\-]+[a-z0-9]+)', re.IGNORECASE)
+
+        def countable_text(input_text: str) -> str:
+            # Transform text such that it has the correct length for counting
+            # post text lengths against the limit
+            def _url_repl(m: re.Match) -> str:
+                return m.group(2) + ("x" * 23)
+            text = url_regex.sub(_url_repl, input_text)
+            text = username_regex.sub(r'\1@\3', text)
+            return text
+
+        return grapheme.length(countable_text(text)) + grapheme.length(spoiler_text)

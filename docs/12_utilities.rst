@@ -33,3 +33,4 @@ Cache control
 Other utilities
 ---------------
 .. automethod:: Mastodon.get_approx_server_time
+.. automethod:: Mastodon.get_status_length

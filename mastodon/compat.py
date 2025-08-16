@@ -45,3 +45,9 @@ except:
     class Path:
         pass
 
+IMPL_HAS_GRAPHEME = True
+try:
+    import grapheme
+except:
+    IMPL_HAS_GRAPHEME = False
+    grapheme = None
