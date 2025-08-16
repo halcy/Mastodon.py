@@ -6,7 +6,7 @@ import datetime
 import copy
 import warnings
 
-from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError, MastodonNotFoundError
+from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError, MastodonNotFoundError, MastodonVersionError
 from mastodon.compat import IMPL_HAS_BLURHASH, blurhash
 from mastodon.internals import Mastodon as Internals
 
@@ -51,6 +51,8 @@ class Mastodon(Internals):
                     self.mastodon_api_version = int(instance_v2_info["api_versions"]["mastodon"])
                     found_api_version = True
         except MastodonNotFoundError:
+            pass
+        except MastodonVersionError:
             pass
         self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
