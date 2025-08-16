@@ -39,18 +39,32 @@ class Mastodon(Internals):
     ###
     # Writing data: Lists
     ###
-    @api_version("2.1.0", "2.1.0")
-    def list_create(self, title: str) -> UserList:
+    @api_version("2.1.0", "4.2.0")
+    def list_create(self, title: str, replies_policy: str = "list", exclusive: bool = False) -> UserList:
         """
         Create a new list with the given `title`.
+
+        `replies_policy` controls which replies are shown in the list. It can be one of "followed", "list" or "none".
+        `followed` means that only replies from accounts you follow will be shown, `list` means that only replies from 
+        accounts on the list will be shown, and `none` means that no replies will be shown.
+
+        Set `exclusive` to True if you want the list to be an `exclusive` list, meaning that
+        accounts on the list will be excluded from the home timeline, appearing exclusively in the list timeline.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/lists', params)
 
-    @api_version("2.1.0", "2.1.0")
-    def list_update(self, id: Union[UserList, IdType], title: str) -> UserList:
+    @api_version("2.1.0", "4.2.0")
+    def list_update(self, id: Union[UserList, IdType], title: str, replies_policy: str = "list", exclusive: bool = False) -> UserList:
         """
         Update info about a list, where "info" is really the lists `title`.
+
+        `replies_policy` controls which replies are shown in the list. It can be one of "followed", "list" or "none".
+        `followed` means that only replies from accounts you follow will be shown, `list` means that only replies from 
+        accounts on the list will be shown, and `none` means that no replies will be shown.
+
+        Set `exclusive` to True if you want the list to be an `exclusive` list, meaning that
+        accounts on the list will be excluded from the home timeline, appearing exclusively in the list timeline.
 
         The returned object reflects the updated list.
         """

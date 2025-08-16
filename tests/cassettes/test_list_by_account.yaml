@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: title=ham+burglars
+    body: title=ham+burglars&replies_policy=list&exclusive=0
     headers:
       Accept:
       - '*/*'
@@ -11,7 +11,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '18'
+      - '50'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -35,10 +35,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.49, cache_generate.active_support;dur=1.00,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.37,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=13.61,
-        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=37.42
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=5.20, cache_generate.active_support;dur=0.97,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.29,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.29,
+        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=28.29
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -50,11 +50,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.741888Z'
+      - '2025-08-16T16:30:00.530263Z'
       X-Request-Id:
-      - 8bf19342-a1fa-456c-be8f-6ae9ec2d17d1
+      - 8f52ac5d-d708-4c88-821f-c0bcbb696bd4
       X-Runtime:
-      - '0.056990'
+      - '0.048358'
       X-XSS-Protection:
       - '0'
       vary:
@@ -79,25 +79,25 @@ interactions:
     uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
     body:
-      string: '{"id":"115033965466813222","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-08-15T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2025-08-15","hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"1048575","color":"","highlighted":true}}'
+      string: '{"id":"115038701349222037","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-08-16T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":null,"hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"1048575","color":"","highlighted":true}}'
     headers:
       Cache-Control:
       - private, no-store
       Content-Length:
-      - '1010'
+      - '1002'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"901229a4c5a66235f03efff55b92086a"
+      - W/"604a36f3141d00fff472ec519a77c301"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.10, cache_generate.active_support;dur=1.63,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=1.19,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.71,
-        process_action.action_controller;dur=27.09
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.24, cache_generate.active_support;dur=1.72,
+        cache_write.active_support;dur=0.14, instantiation.active_record;dur=0.28,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=5.21,
+        process_action.action_controller;dur=26.32
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -109,11 +109,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.804290Z'
+      - '2025-08-16T16:30:00.584707Z'
       X-Request-Id:
-      - 7d7026e3-04fc-4d58-9e68-42905db5a0dd
+      - c045dc41-7a18-4094-84d7-353dd4b481f6
       X-Runtime:
-      - '0.046935'
+      - '0.047954'
       X-XSS-Protection:
       - '0'
       vary:
@@ -139,31 +139,30 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115033965466813222/follow
+    uri: http://localhost:3000/api/v1/accounts/115038701349222037/follow
   response:
     body:
-      string: '{"id":"115033965466813222","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
-        ebayer gerne wieder"}'
+      string: '{"id":"115038701349222037","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
     headers:
       Cache-Control:
       - private, no-store
       Content-Length:
-      - '315'
+      - '292'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"034b43e248e558e623e4c1e518e15209"
+      - W/"020844dc26b5cfe8f739d5554e6bd25c"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.12, cache_generate.active_support;dur=0.95,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.58,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=7.74,
-        cache_delete.active_support;dur=0.05, cache_read_multi.active_support;dur=0.04,
-        cache_write_multi.active_support;dur=0.06, render.active_model_serializers;dur=0.15,
-        process_action.action_controller;dur=47.46
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.39, cache_generate.active_support;dur=0.86,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.44,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=7.61,
+        cache_delete.active_support;dur=0.04, cache_read_multi.active_support;dur=0.07,
+        cache_write_multi.active_support;dur=0.05, render.active_model_serializers;dur=0.15,
+        process_action.action_controller;dur=48.69
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -175,11 +174,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.877791Z'
+      - '2025-08-16T16:30:00.657946Z'
       X-Request-Id:
-      - 828cbff8-6a6d-4ca7-99ec-9ecd8a6691be
+      - f85d06ce-79b9-493d-8767-b0e1d2e82203
       X-Runtime:
-      - '0.067239'
+      - '0.068033'
       X-XSS-Protection:
       - '0'
       vary:
@@ -188,7 +187,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: account_ids%5B%5D=115033965466813222
+    body: account_ids%5B%5D=115038701349222037
     headers:
       Accept:
       - '*/*'
@@ -223,11 +222,11 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.37, cache_generate.active_support;dur=0.93,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.47,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.39, cache_generate.active_support;dur=0.79,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.33,
         start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
-        transaction.active_record;dur=7.49, render.active_model_serializers;dur=0.02,
-        process_action.action_controller;dur=31.74
+        transaction.active_record;dur=7.31, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=30.50
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -239,11 +238,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.957487Z'
+      - '2025-08-16T16:30:00.737166Z'
       X-Request-Id:
-      - fede977a-0918-436a-9141-a78a884c4377
+      - c415f6b6-4868-46d5-a74e-945db6595be0
       X-Runtime:
-      - '0.051027'
+      - '0.049950'
       X-XSS-Protection:
       - '0'
       vary:
@@ -265,7 +264,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v1/accounts/115033965466813222/lists
+    uri: http://localhost:3000/api/v1/accounts/115038701349222037/lists
   response:
     body:
       string: '[{"id":"4","title":"ham burglars","replies_policy":"list","exclusive":false}]'
@@ -283,10 +282,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.87, cache_generate.active_support;dur=1.05,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.33,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.18,
-        process_action.action_controller;dur=24.46
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.74, cache_generate.active_support;dur=0.85,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.25,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=22.85
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -298,11 +297,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.016602Z'
+      - '2025-08-16T16:30:00.797838Z'
       X-Request-Id:
-      - d9b98063-bc43-4484-8816-656291422885
+      - 481721fc-4dc7-4b7d-a872-ac2f38e092e9
       X-Runtime:
-      - '0.047128'
+      - '0.044628'
       X-XSS-Protection:
       - '0'
       vary:
@@ -326,31 +325,30 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115033965466813222/unfollow
+    uri: http://localhost:3000/api/v1/accounts/115038701349222037/unfollow
   response:
     body:
-      string: '{"id":"115033965466813222","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
-        ebayer gerne wieder"}'
+      string: '{"id":"115038701349222037","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
     headers:
       Cache-Control:
       - private, no-store
       Content-Length:
-      - '317'
+      - '294'
       Content-Security-Policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"93a7ec1562e4d70121d96e3171b6fe44"
+      - W/"8a8224624698a3c264f42659e8ef54a1"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.60, cache_generate.active_support;dur=0.91,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.67,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=8.63,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.56, cache_generate.active_support;dur=0.88,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.49,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=13.18,
         cache_delete.active_support;dur=0.03, cache_read_multi.active_support;dur=0.04,
-        cache_write_multi.active_support;dur=0.07, render.active_model_serializers;dur=0.17,
-        process_action.action_controller;dur=38.45
+        cache_write_multi.active_support;dur=0.05, render.active_model_serializers;dur=0.17,
+        process_action.action_controller;dur=42.80
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -362,11 +360,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.069730Z'
+      - '2025-08-16T16:30:00.844886Z'
       X-Request-Id:
-      - c6bd14fb-2004-48e8-ab05-e799bd0ffdf1
+      - 8e22122a-b695-4fac-bf7e-521db289afa7
       X-Runtime:
-      - '0.058222'
+      - '0.062379'
       X-XSS-Protection:
       - '0'
       vary:
@@ -408,10 +406,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.02, cache_generate.active_support;dur=1.00,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.42,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.15,
-        render.active_model_serializers;dur=0.03, process_action.action_controller;dur=30.82
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.34, cache_generate.active_support;dur=0.84,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.31,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.10,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=29.90
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -423,11 +421,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.141218Z'
+      - '2025-08-16T16:30:00.919206Z'
       X-Request-Id:
-      - 2be5e644-78f2-476d-b50e-da45ca6b80f8
+      - 17b29049-886b-45db-869e-d9b243f08267
       X-Runtime:
-      - '0.050808'
+      - '0.049048'
       X-XSS-Protection:
       - '0'
       vary:

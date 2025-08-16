@@ -15,6 +15,7 @@ v2.1.0 (IN PROGRESS)
 * Added support for alternate OAuth URLs based on the authorization server info
 * Added pagination iteraton via `pagination_iterator` (Thanks @FredericoCeratto for the suggestion)
 * Added a way to get pagination info out of lists that is slightly less digging-around-in-internals via `get_pagination_info` (Thanks @s427 for the inciting report)
+* Added missing `replies_policy` and `exclusive` parameters to list creation and update methods.
 
 v2.0.1
 ------
