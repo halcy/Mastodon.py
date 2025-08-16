@@ -19,6 +19,7 @@ from mastodon.types_base import Entity, try_cast
 from ._url_regex import url_regex
 import unicodedata
 
+
 class Mastodon(Internals):
     def set_language(self, lang):
         """
@@ -59,6 +60,7 @@ class Mastodon(Internals):
             pass
         except MastodonVersionError:
             pass
+            
         self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
             warnings.warn(
@@ -73,7 +75,7 @@ class Mastodon(Internals):
 
         Returns True if version requirement is satisfied, False if not.
         """
-        if not cached or not self.__version_check_tried:
+        if not cached or not self.__version_check_tried or not self.__version_check_worked:
             self.retrieve_mastodon_version()
         major, minor, patch = parse_version_string(version_str)
         if major > self.mastodon_major:
@@ -298,7 +300,7 @@ class Mastodon(Internals):
         if direction not in ["next", "previous"]:
             raise MastodonIllegalArgumentError(
                 "Invalid pagination direction: {}".format(direction))
-        
+
         # Don't rely on python type info here, this is a Danger Zone. Instead, check for
         # _pagination_endpoint
         if hasattr(start_page, "_pagination_endpoint") or (isinstance(start_page, dict) and '_pagination_endpoint' in start_page):
@@ -334,8 +336,9 @@ class Mastodon(Internals):
         if not IMPL_HAS_GRAPHEME:
             raise NotImplementedError(
                 'To use the get_status_length function, please install the grapheme Python module.')
-        
-        username_regex = re.compile(r'(^|[^/\w])@(([a-z0-9_]+)@[a-z0-9\.\-]+[a-z0-9]+)', re.IGNORECASE)
+
+        username_regex = re.compile(
+            r'(^|[^/\w])@(([a-z0-9_]+)@[a-z0-9\.\-]+[a-z0-9]+)', re.IGNORECASE)
 
         def countable_text(input_text: str) -> str:
             # Transform text such that it has the correct length for counting
