@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test_old,webpush,blurhash]"
+          command: "pip install .[test_old,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test_old,webpush,blurhash]"
+          command: "pip install .[test_old,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test_old,webpush,blurhash]"
+          command: "pip install .[test_old,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -46,7 +46,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]"
+          command: "pip install .[test,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -59,7 +59,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]" 
+          command: "pip install .[test,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -72,7 +72,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]" 
+          command: "pip install .[test,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -85,7 +85,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]" 
+          command: "pip install .[test,webpush,blurhash,grapheme]"
       - run:
           name: "Install codecov"
           command: "pip install codecov"             
@@ -104,7 +104,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash]" 
+          command: "pip install .[test,webpush,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -124,7 +124,7 @@ jobs:
           name: Upgrade pip and install test deps
           command: |
             python -m pip install --upgrade pip
-            pip install .[test,webpush,blurhash]
+            pip install .[test,webpush,blurhash,grapheme]"
       - run:
           name: Run tests
           command: |
