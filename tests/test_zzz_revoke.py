@@ -9,8 +9,9 @@ def test_zzz_revoke(api_anonymous):
     token = api_anonymous.log_in(
         username='mastodonpy_test_2@localhost',
         password='5fc638e0e53eafd9c4145b6bb852667d',
+        allow_http=True
     )
-    api_anonymous.revoke_access_token()
+    api_anonymous.revoke_access_token(allow_http=True)
 
     try:
         api_anonymous.toot("illegal access detected")

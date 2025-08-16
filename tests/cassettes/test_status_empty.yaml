@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -20,8 +20,9 @@ interactions:
     uri: http://localhost:3000/api/v1/statuses
   response:
     body:
-      string: "{\"error\":\"\u30D0\u30EA\u30C7\u30FC\u30B7\u30E7\u30F3\u306B\u5931\u6557\u3057\u307E\u3057\u305F:
-        Text\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\"}"
+      string: "{\"error\":\"\u30D0\u30EA\u30C7\u30FC\u30B7\u30E7\u30F3\u306B\u5931\
+        \u6557\u3057\u307E\u3057\u305F: Text\u3092\u5165\u529B\u3057\u3066\u304F\u3060\
+        \u3055\u3044\"}"
     headers:
       Cache-Control:
       - private, no-store
@@ -34,10 +35,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=3.96, cache_generate.active_support;dur=1.20,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.57,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.75, cache_generate.active_support;dur=1.07,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.43,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=28.48
+        process_action.action_controller;dur=26.09
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -47,13 +48,13 @@ interactions:
       X-RateLimit-Limit:
       - '300'
       X-RateLimit-Remaining:
-      - '264'
+      - '252'
       X-RateLimit-Reset:
-      - '2025-02-14T00:00:00.172260Z'
+      - '2025-08-15T18:00:00.343691Z'
       X-Request-Id:
-      - 6ca0bb70-8fc2-4ac6-9762-415753e3b522
+      - 341b2b1e-629f-400e-9d81-ba6c024073f5
       X-Runtime:
-      - '0.043665'
+      - '0.048523'
       X-XSS-Protection:
       - '0'
       vary:

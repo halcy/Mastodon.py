@@ -6,9 +6,11 @@ try:
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-
+@pytest.mark.vcr()
 def test_auth_request_url(api):
-    url = api.auth_request_url()
+    url = api.auth_request_url(allow_http=True)
+    url2 = api.auth_request_url(skip_server_info=True, allow_http=True)
+    assert url == url2
     parse = urlparse(url)
     assert parse.path == '/oauth/authorize'
     query = parse_qs(parse.query)
@@ -17,7 +19,10 @@ def test_auth_request_url(api):
     assert query['redirect_uri'][0] == 'urn:ietf:wg:oauth:2.0:oob'
     assert set(query['scope'][0].split()) == set(('read', 'write', 'follow', 'push'))
 
+    with pytest.raises(MastodonIllegalArgumentError):
+        api.auth_request_url(allow_http=False)
 
+@pytest.mark.vcr()
 def test_log_in_none(api_anonymous):
     with pytest.raises(MastodonIllegalArgumentError):
         api_anonymous.log_in()
@@ -26,7 +31,8 @@ def test_log_in_none(api_anonymous):
 def test_log_in_password(api_anonymous):
     token = api_anonymous.log_in(
         username='mastodonpy_test_2@localhost',
-        password='5fc638e0e53eafd9c4145b6bb852667d'
+        password='5fc638e0e53eafd9c4145b6bb852667d',
+        allow_http=True
     )
     assert token
 
@@ -35,7 +41,9 @@ def test_log_in_password_incorrect(api_anonymous):
     with pytest.raises(MastodonIllegalArgumentError):
         api_anonymous.log_in(
             username='admin@localhost',
-            password='hunter2')
+            password='hunter2',
+            allow_http=True
+        )
 
 @pytest.mark.vcr()
 def test_log_in_password_to_file(api_anonymous, tmpdir):
@@ -43,7 +51,9 @@ def test_log_in_password_to_file(api_anonymous, tmpdir):
     api_anonymous.log_in(
         username='mastodonpy_test_2@localhost',
         password='5fc638e0e53eafd9c4145b6bb852667d',
-        to_file=str(filepath))
+        to_file=str(filepath),
+        allow_http=True
+    )
     token = filepath.read_text('UTF-8').rstrip().split("\n")[0]
     assert token
     api = api_anonymous

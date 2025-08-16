@@ -6,6 +6,8 @@ interactions:
       - '*/*'
       Accept-Encoding:
       - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
       - keep-alive
       User-Agent:
@@ -23,7 +25,7 @@ interactions:
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-aZIrZUSn8rwsQQrZPFjRZA=='';
+        style-src ''self'' http://localhost:3000 ''nonce-pP9dN3xIFq3IZSsw+iCFug=='';
         media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
         form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
         ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
@@ -37,9 +39,9 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.04, sql.active_record;dur=0.18, cache_generate.active_support;dur=1.08,
-        cache_write.active_support;dur=0.18, start_processing.action_controller;dur=0.00,
-        render.active_model_serializers;dur=0.34, process_action.action_controller;dur=20.02
+      - sql.active_record;dur=8.58, cache_read.active_support;dur=0.08, cache_generate.active_support;dur=15.46,
+        cache_write.active_support;dur=0.35, start_processing.action_controller;dur=0.01,
+        render.active_model_serializers;dur=21.58, process_action.action_controller;dur=72.23
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -47,9 +49,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 7862e0e0-94e6-4c59-a4b1-b4d34a55ac71
+      - cec35820-eafe-4179-90d9-c4b02040586b
       X-Runtime:
-      - '0.040423'
+      - '0.240675'
       X-XSS-Protection:
       - '0'
       vary:
@@ -58,36 +60,32 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: username=admin%40localhost&password=hunter2&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&oauth_info=issuer&oauth_info=authorization_endpoint&oauth_info=token_endpoint&oauth_info=revocation_endpoint&oauth_info=scopes_supported&oauth_info=response_types_supported&oauth_info=response_modes_supported&oauth_info=grant_types_supported&oauth_info=token_endpoint_auth_methods_supported&oauth_info=code_challenge_methods_supported&oauth_info=service_documentation&oauth_info=app_registration_endpoint&grant_type=password&client_id=__MASTODON_PY_TEST_CLIENT_ID&client_secret=__MASTODON_PY_TEST_CLIENT_SECRET&scope=read+write+follow+push
+    body: null
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
       - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
       - keep-alive
-      Content-Length:
-      - '632'
-      Content-Type:
-      - application/x-www-form-urlencoded
       User-Agent:
       - tests/v311
-    method: POST
-    uri: http://localhost:3000/oauth/token
+    method: GET
+    uri: http://localhost:3000/.well-known/oauth-authorization-server
   response:
     body:
-      string: '{"error":"invalid_grant","error_description":"The provided authorization
-        grant is invalid, expired, revoked, does not match the redirection URI used
-        in the authorization request, or was issued to another client."}'
+      string: '{"issuer":"http://localhost:3000/","authorization_endpoint":"http://localhost:3000/oauth/authorize","token_endpoint":"http://localhost:3000/oauth/token","revocation_endpoint":"http://localhost:3000/oauth/revoke","scopes_supported":["read","profile","write","write:accounts","write:blocks","write:bookmarks","write:conversations","write:favourites","write:filters","write:follows","write:lists","write:media","write:mutes","write:notifications","write:reports","write:statuses","read:accounts","read:blocks","read:bookmarks","read:favourites","read:filters","read:follows","read:lists","read:mutes","read:notifications","read:search","read:statuses","follow","push","admin:read","admin:read:accounts","admin:read:reports","admin:read:domain_allows","admin:read:domain_blocks","admin:read:ip_blocks","admin:read:email_domain_blocks","admin:read:canonical_email_blocks","admin:write","admin:write:accounts","admin:write:reports","admin:write:domain_allows","admin:write:domain_blocks","admin:write:ip_blocks","admin:write:email_domain_blocks","admin:write:canonical_email_blocks"],"response_types_supported":["code"],"response_modes_supported":["query","fragment","form_post"],"grant_types_supported":["authorization_code","password","client_credentials"],"token_endpoint_auth_methods_supported":["client_secret_basic","client_secret_post"],"code_challenge_methods_supported":["S256"],"service_documentation":"https://docs.joinmastodon.org/","app_registration_endpoint":"http://localhost:3000/api/v1/apps"}'
     headers:
       Cache-Control:
-      - no-store
+      - max-age=0, private, must-revalidate
       Content-Length:
-      - '213'
+      - '1503'
       Content-Security-Policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-52SDQ5Z6tgeExJvf5cV6fA=='';
+        style-src ''self'' http://localhost:3000 ''nonce-9j1uHRtysQ33TtphdJNkPQ=='';
         media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
         form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
         ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
@@ -96,17 +94,14 @@ interactions:
         ''self'' https: http:'
       Content-Type:
       - application/json; charset=utf-8
+      ETag:
+      - W/"af6a0b2cfc0c377eff2294e0b2f9c31c"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.52, cache_generate.active_support;dur=1.04,
-        cache_write.active_support;dur=0.04, start_processing.action_controller;dur=0.00,
-        instantiation.active_record;dur=0.09, render.active_model_serializers;dur=0.05,
-        process_action.action_controller;dur=700.76
-      WWW-Authenticate:
-      - Bearer realm="Doorkeeper", error="invalid_grant", error_description="The provided
-        authorization grant is invalid, expired, revoked, does not match the redirection
-        URI used in the authorization request, or was issued to another client."
+      - sql.active_record;dur=8.26, cache_read.active_support;dur=0.08, cache_generate.active_support;dur=14.58,
+        cache_write.active_support;dur=0.40, start_processing.action_controller;dur=0.01,
+        render.active_model_serializers;dur=17.50, process_action.action_controller;dur=63.44
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -114,14 +109,14 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 0529fcde-69e8-4c9a-a23d-09b27ea35fb6
+      - 19e9fff0-29be-45f6-8378-79aff9d309da
       X-Runtime:
-      - '0.721023'
+      - '0.188137'
       X-XSS-Protection:
       - '0'
       vary:
-      - Accept, Origin
+      - Origin
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
 version: 1

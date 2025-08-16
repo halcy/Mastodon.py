@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -20,8 +20,9 @@ interactions:
     uri: http://localhost:3000/api/v1/statuses
   response:
     body:
-      string: "{\"error\":\"\u30D0\u30EA\u30C7\u30FC\u30B7\u30E7\u30F3\u306B\u5931\u6557\u3057\u307E\u3057\u305F:
-        Text\u4E0A\u9650\u306F500\u6587\u5B57\u3067\u3059\"}"
+      string: "{\"error\":\"\u30D0\u30EA\u30C7\u30FC\u30B7\u30E7\u30F3\u306B\u5931\
+        \u6557\u3057\u307E\u3057\u305F: Text\u4E0A\u9650\u306F500\u6587\u5B57\u3067\
+        \u3059\"}"
     headers:
       Cache-Control:
       - private, no-store
@@ -34,10 +35,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.71, cache_generate.active_support;dur=0.99,
-        cache_write.active_support;dur=0.12, instantiation.active_record;dur=0.40,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.80, cache_generate.active_support;dur=0.97,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.37,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=31.92
+        process_action.action_controller;dur=32.62
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -49,11 +50,11 @@ interactions:
       X-RateLimit-Remaining:
       - '296'
       X-RateLimit-Reset:
-      - '2025-02-14T00:00:00.081279Z'
+      - '2025-08-15T18:00:00.657305Z'
       X-Request-Id:
-      - c31cec52-1034-493f-9827-6a9fc051a5c7
+      - db1ace0c-651b-4132-b9ca-3ef49e54ef0f
       X-Runtime:
-      - '0.047564'
+      - '0.053598'
       X-XSS-Protection:
       - '0'
       vary:
@@ -67,7 +68,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -82,8 +83,8 @@ interactions:
     uri: http://localhost:3000/api/v1/statuses
   response:
     body:
-      string: "{\"error\":\"G\xFCltigkeitspr\xFCfung ist fehlgeschlagen: Text Begrenzung
-        von 500 Zeichen \xFCberschritten\"}"
+      string: "{\"error\":\"G\xFCltigkeitspr\xFCfung ist fehlgeschlagen: Text Begrenzung\
+        \ von 500 Zeichen \xFCberschritten\"}"
     headers:
       Cache-Control:
       - private, no-store
@@ -96,10 +97,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.71, cache_generate.active_support;dur=0.92,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.43,
-        start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.02,
-        render.active_model_serializers;dur=0.03, process_action.action_controller;dur=36.20
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.57, cache_generate.active_support;dur=0.87,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.37,
+        start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.03,
+        render.active_model_serializers;dur=0.05, process_action.action_controller;dur=38.65
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -111,11 +112,11 @@ interactions:
       X-RateLimit-Remaining:
       - '296'
       X-RateLimit-Reset:
-      - '2025-02-14T00:00:00.151398Z'
+      - '2025-08-15T18:00:00.736882Z'
       X-Request-Id:
-      - 08a4f3eb-48cc-4f03-b6ed-dc6ae9c9a036
+      - be7e68f2-0074-4233-9b40-e6995773ae7e
       X-Runtime:
-      - '0.051314'
+      - '0.058467'
       X-XSS-Protection:
       - '0'
       vary:

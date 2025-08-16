@@ -6,7 +6,7 @@ import datetime
 import copy
 import warnings
 
-from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError
+from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError, MastodonNotFoundError
 from mastodon.compat import IMPL_HAS_BLURHASH, blurhash
 from mastodon.internals import Mastodon as Internals
 
@@ -44,14 +44,17 @@ class Mastodon(Internals):
         # If we have a version >= 4.3.0 but no API version, we throw a warning that this is a Weird Implementation,
         # which might help with adoption of the API versioning or at least give us a better picture of how it is going.
         found_api_version = False
-        if "api_versions" in self.__instance():
-            if "mastodon" in self.__instance()["api_versions"]:
-                self.mastodon_api_version = int(self.__instance()["api_versions"]["mastodon"])
-                found_api_version = True
+        try:
+            instance_v2_info = self.instance_v2() 
+            if "api_versions" in instance_v2_info:
+                if "mastodon" in instance_v2_info["api_versions"]:
+                    self.mastodon_api_version = int(instance_v2_info["api_versions"]["mastodon"])
+                    found_api_version = True
+        except MastodonNotFoundError:
+            pass
+        self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
             warnings.warn("Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
-
-        self.__version_check_tried = True
         return version_str
 
     def verify_minimum_version(self, version_str, cached=False):

@@ -7,7 +7,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -22,7 +22,7 @@ interactions:
     uri: http://localhost:3000/api/v2/filters
   response:
     body:
-      string: '{"id":"3","title":"Test Filter","context":["home","public"],"expires_at":null,"filter_action":"warn","keywords":[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}],"statuses":[]}'
+      string: '{"id":"1","title":"Test Filter","context":["home","public"],"expires_at":null,"filter_action":"warn","keywords":[{"id":"1","keyword":"spam","whole_word":true},{"id":"2","keyword":"eggs","whole_word":false}],"statuses":[]}'
     headers:
       Cache-Control:
       - private, no-store
@@ -33,15 +33,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"ef312da2a51d3dd730869912d62e8291"
+      - W/"f30e402112caae6e90bd39920326752d"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=8.10, cache_generate.active_support;dur=1.75,
-        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.71,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.77, cache_generate.active_support;dur=0.84,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.48,
         start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
-        transaction.active_record;dur=6.02, cache_delete.active_support;dur=0.02,
-        render.active_model_serializers;dur=2.59, process_action.action_controller;dur=31.66
+        transaction.active_record;dur=7.82, cache_delete.active_support;dur=0.02,
+        render.active_model_serializers;dur=4.54, process_action.action_controller;dur=49.92
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -53,11 +53,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.740703Z'
+      - '2025-08-15T17:35:00.999476Z'
       X-Request-Id:
-      - 310e16c6-d402-405c-b0d2-a9d1237f59a6
+      - aec66f42-b134-4469-adb2-6e4a0597e6bf
       X-Runtime:
-      - '0.056475'
+      - '0.090076'
       X-XSS-Protection:
       - '0'
       vary:
@@ -71,7 +71,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -79,10 +79,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v2/filters/3
+    uri: http://localhost:3000/api/v2/filters/1
   response:
     body:
-      string: '{"id":"3","title":"Test Filter","context":["home","public"],"expires_at":null,"filter_action":"warn","keywords":[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}],"statuses":[]}'
+      string: '{"id":"1","title":"Test Filter","context":["home","public"],"expires_at":null,"filter_action":"warn","keywords":[{"id":"1","keyword":"spam","whole_word":true},{"id":"2","keyword":"eggs","whole_word":false}],"statuses":[]}'
     headers:
       Cache-Control:
       - private, no-store
@@ -93,14 +93,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"ef312da2a51d3dd730869912d62e8291"
+      - W/"f30e402112caae6e90bd39920326752d"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.78, cache_generate.active_support;dur=0.86,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.34,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=2.11,
-        process_action.action_controller;dur=34.30
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=2.36, cache_generate.active_support;dur=0.91,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=7.96,
+        start_processing.action_controller;dur=0.01, render.active_model_serializers;dur=9.76,
+        process_action.action_controller;dur=37.74
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -112,11 +112,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.791946Z'
+      - '2025-08-15T17:35:00.090366Z'
       X-Request-Id:
-      - 51c60902-1535-42da-a13e-171a92121aa5
+      - 4fe6be9b-bdaf-4d2d-9ece-87cfa24bba49
       X-Runtime:
-      - '0.048975'
+      - '0.072425'
       X-XSS-Protection:
       - '0'
       vary:
@@ -125,12 +125,12 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"filter_id": "3", "title": "Updated Title", "filter_action": "hide"}'
+    body: '{"filter_id": "1", "title": "Updated Title", "filter_action": "hide"}'
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -142,10 +142,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: PUT
-    uri: http://localhost:3000/api/v2/filters/3
+    uri: http://localhost:3000/api/v2/filters/1
   response:
     body:
-      string: '{"id":"3","title":"Updated Title","context":["home","public"],"expires_at":null,"filter_action":"hide","keywords":[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}],"statuses":[]}'
+      string: '{"id":"1","title":"Updated Title","context":["home","public"],"expires_at":null,"filter_action":"hide","keywords":[{"id":"1","keyword":"spam","whole_word":true},{"id":"2","keyword":"eggs","whole_word":false}],"statuses":[]}'
     headers:
       Cache-Control:
       - private, no-store
@@ -156,15 +156,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"ef90ce7160a9385a7e513d9523756dd2"
+      - W/"75c322d2307a06e9eabfedcec5db23c9"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=4.16, cache_generate.active_support;dur=0.79,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.38,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.98, cache_generate.active_support;dur=0.91,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.47,
         start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
-        transaction.active_record;dur=3.96, cache_delete.active_support;dur=0.02,
-        render.active_model_serializers;dur=2.02, process_action.action_controller;dur=37.48
+        transaction.active_record;dur=6.08, cache_delete.active_support;dur=0.02,
+        render.active_model_serializers;dur=2.09, process_action.action_controller;dur=33.12
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -176,11 +176,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.856526Z'
+      - '2025-08-15T17:35:00.157895Z'
       X-Request-Id:
-      - 923a6488-e0da-442e-a610-d1ad4e20248a
+      - 419d0a5f-d92d-4a9b-a786-62e8c2eef7d9
       X-Runtime:
-      - '0.052710'
+      - '0.052687'
       X-XSS-Protection:
       - '0'
       vary:
@@ -194,7 +194,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -202,10 +202,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v2/filters/3/keywords
+    uri: http://localhost:3000/api/v2/filters/1/keywords
   response:
     body:
-      string: '[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false}]'
+      string: '[{"id":"1","keyword":"spam","whole_word":true},{"id":"2","keyword":"eggs","whole_word":false}]'
     headers:
       Cache-Control:
       - private, no-store
@@ -216,14 +216,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"fd65742072146847502a0a2c6a04f472"
+      - W/"448160244578114f628d3154ab816d99"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.64, cache_generate.active_support;dur=0.68,
-        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.31,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.78, cache_generate.active_support;dur=0.77,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.32,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.21,
-        process_action.action_controller;dur=19.97
+        process_action.action_controller;dur=24.33
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -235,11 +235,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.902788Z'
+      - '2025-08-15T17:35:00.222436Z'
       X-Request-Id:
-      - 0feb5320-7184-4733-a299-751865258133
+      - 7399ee23-c5f9-46c9-a635-e9f588f80af9
       X-Runtime:
-      - '0.034602'
+      - '0.045403'
       X-XSS-Protection:
       - '0'
       vary:
@@ -248,12 +248,12 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: filter_id=3&keyword=foo&whole_word=1
+    body: filter_id=1&keyword=foo&whole_word=1
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -265,10 +265,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v2/filters/3/keywords
+    uri: http://localhost:3000/api/v2/filters/1/keywords
   response:
     body:
-      string: '{"id":"5","keyword":"foo","whole_word":true}'
+      string: '{"id":"3","keyword":"foo","whole_word":true}'
     headers:
       Cache-Control:
       - private, no-store
@@ -279,15 +279,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"1b64a2f9390c9282d3922ce7fa6a55a4"
+      - W/"a4296bbb33212c2a70e018c51a4432b0"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=3.38, cache_generate.active_support;dur=0.67,
-        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.29,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.11, cache_generate.active_support;dur=0.75,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.29,
         start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
-        transaction.active_record;dur=2.88, cache_delete.active_support;dur=0.01,
-        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=24.91
+        transaction.active_record;dur=4.69, cache_delete.active_support;dur=0.02,
+        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=28.15
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -299,11 +299,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.942786Z'
+      - '2025-08-15T17:35:00.274361Z'
       X-Request-Id:
-      - ab80df2e-e971-4de5-80e3-a8de25d2563a
+      - a5c5c8b2-7f35-4cca-bc2b-aec26e1ead7f
       X-Runtime:
-      - '0.039518'
+      - '0.046771'
       X-XSS-Protection:
       - '0'
       vary:
@@ -317,7 +317,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -325,10 +325,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v2/filters/3/keywords
+    uri: http://localhost:3000/api/v2/filters/1/keywords
   response:
     body:
-      string: '[{"id":"3","keyword":"spam","whole_word":true},{"id":"4","keyword":"eggs","whole_word":false},{"id":"5","keyword":"foo","whole_word":true}]'
+      string: '[{"id":"1","keyword":"spam","whole_word":true},{"id":"2","keyword":"eggs","whole_word":false},{"id":"3","keyword":"foo","whole_word":true}]'
     headers:
       Cache-Control:
       - private, no-store
@@ -339,14 +339,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"a3c7206fea8e0a68cdbb63e7454aadd2"
+      - W/"8c9de560f2e0b0a646738d2bcfce03ca"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.57, cache_generate.active_support;dur=0.67,
-        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.27,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.24,
-        process_action.action_controller;dur=18.91
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.71, cache_generate.active_support;dur=0.74,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.33,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.23,
+        process_action.action_controller;dur=22.61
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -358,11 +358,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.983496Z'
+      - '2025-08-15T17:35:00.330206Z'
       X-Request-Id:
-      - 9c69600a-f430-4d93-afdb-c541f94bc4af
+      - 8bc1582d-1707-45fc-8646-c192ab0d7405
       X-Runtime:
-      - '0.032516'
+      - '0.041280'
       X-XSS-Protection:
       - '0'
       vary:
@@ -376,7 +376,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -386,7 +386,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: DELETE
-    uri: http://localhost:3000/api/v2/filters/keywords/3
+    uri: http://localhost:3000/api/v2/filters/keywords/1
   response:
     body:
       string: '{}'
@@ -404,11 +404,11 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.01, sql.active_record;dur=3.93, cache_generate.active_support;dur=0.54,
-        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.62,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=3.35,
-        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=28.96
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.16, cache_generate.active_support;dur=0.84,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.35,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=4.39,
+        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=29.50
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -420,11 +420,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.019360Z'
+      - '2025-08-15T17:35:00.378654Z'
       X-Request-Id:
-      - deefa0be-2b24-4fd6-93dc-4e2f43b3bd5c
+      - df43529f-11a8-4a1e-ae50-948a8572e480
       X-Runtime:
-      - '0.042246'
+      - '0.050425'
       X-XSS-Protection:
       - '0'
       vary:
@@ -438,7 +438,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -446,10 +446,10 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v2/filters/3/keywords
+    uri: http://localhost:3000/api/v2/filters/1/keywords
   response:
     body:
-      string: '[{"id":"4","keyword":"eggs","whole_word":false},{"id":"5","keyword":"foo","whole_word":true}]'
+      string: '[{"id":"2","keyword":"eggs","whole_word":false},{"id":"3","keyword":"foo","whole_word":true}]'
     headers:
       Cache-Control:
       - private, no-store
@@ -460,14 +460,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"ae9198d796f6174ca3033d3f89b908cc"
+      - W/"b55fa639f8ede903293e9b67e6bb854a"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.59, cache_generate.active_support;dur=0.90,
-        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.28,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.20,
-        process_action.action_controller;dur=30.29
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.84, cache_generate.active_support;dur=0.89,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.31,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.19,
+        process_action.action_controller;dur=23.29
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -479,11 +479,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.076833Z'
+      - '2025-08-15T17:35:00.435986Z'
       X-Request-Id:
-      - 34eb8d75-a112-421a-80af-8dc34c2a9197
+      - 5ea14e47-8861-4b1b-9a43-0ceaa73c6648
       X-Runtime:
-      - '0.044549'
+      - '0.042424'
       X-XSS-Protection:
       - '0'
       vary:
@@ -497,7 +497,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -507,7 +507,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: DELETE
-    uri: http://localhost:3000/api/v2/filters/3
+    uri: http://localhost:3000/api/v2/filters/1
   response:
     body:
       string: '{}'
@@ -525,11 +525,11 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=3.85, cache_generate.active_support;dur=0.59,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.36,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.77,
-        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=25.98
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.17, cache_generate.active_support;dur=8.52,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.37,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.71,
+        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=31.37
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -541,11 +541,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T19:45:00.114148Z'
+      - '2025-08-15T17:35:00.495323Z'
       X-Request-Id:
-      - b71d21d2-2e27-478c-8b5f-eb053ddac138
+      - b5330d1e-f721-4ff0-a3f0-725f32b10ac0
       X-Runtime:
-      - '0.039812'
+      - '0.058279'
       X-XSS-Protection:
       - '0'
       vary:

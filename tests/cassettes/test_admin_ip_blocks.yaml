@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -20,8 +20,8 @@ interactions:
     uri: http://localhost:3000/api/v1/admin/ip_blocks
   response:
     body:
-      string: '{"id":"2","ip":"8.8.8.0/24","severity":"no_access","comment":"Google
-        DNS is ULTRA BANNED","created_at":"2025-02-15T16:17:32.614Z","expires_at":null}'
+      string: '{"id":"1","ip":"8.8.8.0/24","severity":"no_access","comment":"Google
+        DNS is ULTRA BANNED","created_at":"2025-08-15T17:32:16.382Z","expires_at":null}'
     headers:
       Cache-Control:
       - private, no-store
@@ -32,15 +32,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"219f9620b46718276f758078ea95b372"
+      - W/"3f7f287ae36b879ce8a2742469069fcc"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.50, cache_generate.active_support;dur=4.69,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.49,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=7.31,
-        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.24,
-        process_action.action_controller;dur=33.49
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=10.19, cache_generate.active_support;dur=1.01,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.36,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=9.04,
+        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.20,
+        process_action.action_controller;dur=40.35
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -52,11 +52,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.606713Z'
+      - '2025-08-15T17:35:00.372765Z'
       X-Request-Id:
-      - 374a68b3-a923-49df-8296-f6e2640c3724
+      - 7949a258-63a9-49eb-9341-09050669ed33
       X-Runtime:
-      - '0.057636'
+      - '0.063149'
       X-XSS-Protection:
       - '0'
       vary:
@@ -70,7 +70,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -78,11 +78,11 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v1/admin/ip_blocks/2
+    uri: http://localhost:3000/api/v1/admin/ip_blocks/1
   response:
     body:
-      string: '{"id":"2","ip":"8.8.8.0/24","severity":"no_access","comment":"Google
-        DNS is ULTRA BANNED","created_at":"2025-02-15T16:17:32.614Z","expires_at":null}'
+      string: '{"id":"1","ip":"8.8.8.0/24","severity":"no_access","comment":"Google
+        DNS is ULTRA BANNED","created_at":"2025-08-15T17:32:16.382Z","expires_at":null}'
     headers:
       Cache-Control:
       - private, no-store
@@ -93,14 +93,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"219f9620b46718276f758078ea95b372"
+      - W/"3f7f287ae36b879ce8a2742469069fcc"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.67, cache_generate.active_support;dur=0.76,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.25,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.22,
-        process_action.action_controller;dur=20.43
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=2.09, cache_generate.active_support;dur=0.98,
+        cache_write.active_support;dur=0.12, instantiation.active_record;dur=3.40,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.25,
+        process_action.action_controller;dur=29.03
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -112,11 +112,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.661597Z'
+      - '2025-08-15T17:35:00.451949Z'
       X-Request-Id:
-      - 96b094a8-d854-4090-a8ad-20639c24762c
+      - 562469e8-c4b9-4981-b2e3-c79a32b0f247
       X-Runtime:
-      - '0.036990'
+      - '0.062983'
       X-XSS-Protection:
       - '0'
       vary:
@@ -130,7 +130,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -141,8 +141,8 @@ interactions:
     uri: http://localhost:3000/api/v1/admin/ip_blocks
   response:
     body:
-      string: '[{"id":"2","ip":"8.8.8.0/24","severity":"no_access","comment":"Google
-        DNS is ULTRA BANNED","created_at":"2025-02-15T16:17:32.614Z","expires_at":null}]'
+      string: '[{"id":"1","ip":"8.8.8.0/24","severity":"no_access","comment":"Google
+        DNS is ULTRA BANNED","created_at":"2025-08-15T17:32:16.382Z","expires_at":null}]'
     headers:
       Cache-Control:
       - private, no-store
@@ -153,16 +153,16 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"dafb1cb8debb9e4d1a34cea73ce6982e"
+      - W/"5dbbffb38ac1f629ca5a5544fe02753d"
       Link:
-      - <http://localhost:3000/api/v1/admin/ip_blocks?min_id=2>; rel="prev"
+      - <http://localhost:3000/api/v1/admin/ip_blocks?min_id=1>; rel="prev"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.74, cache_generate.active_support;dur=1.09,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.23,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.22,
-        process_action.action_controller;dur=20.96
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.92, cache_generate.active_support;dur=1.01,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.34,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.25,
+        process_action.action_controller;dur=24.75
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -174,11 +174,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.703742Z'
+      - '2025-08-15T17:35:00.510810Z'
       X-Request-Id:
-      - 9b10949b-a35d-4c26-afbe-29027e25c697
+      - cf7304b1-982d-483d-a5fe-97f3d79ef515
       X-Runtime:
-      - '0.038134'
+      - '0.044399'
       X-XSS-Protection:
       - '0'
       vary:
@@ -187,12 +187,12 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: id=2&comment=Updated+test+block
+    body: id=1&comment=Updated+test+block
     headers:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -204,11 +204,11 @@ interactions:
       User-Agent:
       - tests/v311
     method: PUT
-    uri: http://localhost:3000/api/v1/admin/ip_blocks/2
+    uri: http://localhost:3000/api/v1/admin/ip_blocks/1
   response:
     body:
-      string: '{"id":"2","ip":"8.8.8.0/24","severity":"no_access","comment":"Updated
-        test block","created_at":"2025-02-15T16:17:32.614Z","expires_at":null}'
+      string: '{"id":"1","ip":"8.8.8.0/24","severity":"no_access","comment":"Updated
+        test block","created_at":"2025-08-15T17:32:16.382Z","expires_at":null}'
     headers:
       Cache-Control:
       - private, no-store
@@ -219,15 +219,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       ETag:
-      - W/"84b443beeb1ce564b88b4c659e36afa7"
+      - W/"6b6f9fb28c03212a14539df314c75ed4"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=9.89, cache_generate.active_support;dur=1.01,
-        cache_write.active_support;dur=0.17, instantiation.active_record;dur=0.40,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=10.16, cache_generate.active_support;dur=0.97,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.32,
         start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
-        transaction.active_record;dur=10.14, cache_delete.active_support;dur=0.02,
-        render.active_model_serializers;dur=0.20, process_action.action_controller;dur=43.27
+        transaction.active_record;dur=9.68, cache_delete.active_support;dur=0.01,
+        render.active_model_serializers;dur=0.19, process_action.action_controller;dur=34.61
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -239,11 +239,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.755487Z'
+      - '2025-08-15T17:35:00.564091Z'
       X-Request-Id:
-      - 1f631601-7143-4f95-b8f8-bebe0f148dfb
+      - 9e21062f-3ac1-4270-ba54-811fe3f79de0
       X-Runtime:
-      - '0.060749'
+      - '0.054167'
       X-XSS-Protection:
       - '0'
       vary:
@@ -257,7 +257,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -267,7 +267,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: DELETE
-    uri: http://localhost:3000/api/v1/admin/ip_blocks/2
+    uri: http://localhost:3000/api/v1/admin/ip_blocks/1
   response:
     body:
       string: '{}'
@@ -285,11 +285,11 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=6.41, cache_generate.active_support;dur=0.93,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.36,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=6.06,
-        cache_delete.active_support;dur=0.02, render.active_model_serializers;dur=0.02,
-        process_action.action_controller;dur=29.19
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=8.99, cache_generate.active_support;dur=0.83,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.32,
+        start_processing.action_controller;dur=0.00, transaction.active_record;dur=8.23,
+        cache_delete.active_support;dur=0.01, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=33.26
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -301,11 +301,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.810162Z'
+      - '2025-08-15T17:35:00.627910Z'
       X-Request-Id:
-      - da1e5424-7b33-4723-9572-bcbd9e9544b3
+      - 9f62c0df-b9bd-4910-bc64-10bdb93f6559
       X-Runtime:
-      - '0.043990'
+      - '0.052201'
       X-XSS-Protection:
       - '0'
       vary:
@@ -319,7 +319,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -345,10 +345,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=8.21, cache_generate.active_support;dur=0.65,
-        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.34,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=35.29
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.69, cache_generate.active_support;dur=0.91,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.24,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=22.40
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -360,11 +360,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.857147Z'
+      - '2025-08-15T17:35:00.682910Z'
       X-Request-Id:
-      - ff2a6b5b-6597-4376-994d-aa3193b579e1
+      - 8fe99837-4173-4f47-8641-ece9620b747e
       X-Runtime:
-      - '0.049639'
+      - '0.041363'
       X-XSS-Protection:
       - '0'
       vary:
@@ -378,7 +378,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_2
       Connection:
@@ -404,10 +404,10 @@ interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.76, cache_generate.active_support;dur=0.86,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.23,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.77, cache_generate.active_support;dur=0.90,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.25,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=20.13
+        process_action.action_controller;dur=22.91
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -419,11 +419,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-15T16:20:00.915691Z'
+      - '2025-08-15T17:35:00.733346Z'
       X-Request-Id:
-      - ff5baf3e-bf99-4b36-a877-72986e6820e8
+      - 10225819-2e76-4e07-b17a-9c1f9652edd2
       X-Runtime:
-      - '0.039306'
+      - '0.041821'
       X-XSS-Protection:
       - '0'
       vary:

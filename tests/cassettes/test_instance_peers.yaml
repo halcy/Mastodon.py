@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -27,16 +27,16 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 13 Feb 2025 21:55:48 GMT
+      - Fri, 15 Aug 2025 17:33:02 GMT
       ETag:
       - W/"3a9f4de31c077c49f763801bdd324235"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.63, cache_generate.active_support;dur=1.73,
-        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.11,
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.64, cache_generate.active_support;dur=1.85,
+        cache_write.active_support;dur=0.14, instantiation.active_record;dur=0.11,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=19.73
+        process_action.action_controller;dur=22.68
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -48,11 +48,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-13T22:00:00.372549Z'
+      - '2025-08-15T17:35:00.019327Z'
       X-Request-Id:
-      - b50068f4-49ba-4c82-b33d-0c14d871c797
+      - c9b597ec-efae-4ea1-a51c-fdf035760ebb
       X-Runtime:
-      - '0.037760'
+      - '0.045641'
       X-XSS-Protection:
       - '0'
       vary:
@@ -66,7 +66,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Authorization:
       - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
       Connection:
@@ -88,16 +88,77 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 13 Feb 2025 21:55:48 GMT
+      - Fri, 15 Aug 2025 17:33:02 GMT
       ETag:
       - W/"3a9f4de31c077c49f763801bdd324235"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server-Timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.61, cache_generate.active_support;dur=1.69,
-        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.10,
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.67, cache_generate.active_support;dur=1.85,
+        cache_write.active_support;dur=0.15, instantiation.active_record;dur=0.11,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
+        process_action.action_controller;dur=23.50
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-RateLimit-Limit:
+      - '300'
+      X-RateLimit-Remaining:
+      - '299'
+      X-RateLimit-Reset:
+      - '2025-08-15T17:35:00.069126Z'
+      X-Request-Id:
+      - c8b51bf6-d340-4b49-b55d-fab093ae74fa
+      X-Runtime:
+      - '0.046617'
+      X-XSS-Protection:
+      - '0'
+      vary:
+      - Accept, Origin
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/peers
+  response:
+    body:
+      string: '["chitter.xyz"]'
+    headers:
+      Cache-Control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      Content-Length:
+      - '15'
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 15 Aug 2025 17:33:02 GMT
+      ETag:
+      - W/"3a9f4de31c077c49f763801bdd324235"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server-Timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.59, cache_generate.active_support;dur=1.73,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.09,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.02,
-        process_action.action_controller;dur=18.42
+        process_action.action_controller;dur=21.15
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -109,72 +170,11 @@ interactions:
       X-RateLimit-Remaining:
       - '299'
       X-RateLimit-Reset:
-      - '2025-02-13T22:00:00.409719Z'
+      - '2025-08-15T17:35:00.121115Z'
       X-Request-Id:
-      - 7a9e3f5b-2b8a-42ba-b817-94f79cfb8a46
+      - 002665d3-a6b1-4e7e-a5bf-5d696faf265d
       X-Runtime:
-      - '0.032602'
-      X-XSS-Protection:
-      - '0'
-      vary:
-      - Accept, Origin
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Authorization:
-      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
-      Connection:
-      - keep-alive
-      User-Agent:
-      - tests/v311
-    method: GET
-    uri: http://localhost:3000/api/v1/instance/peers
-  response:
-    body:
-      string: '["chitter.xyz"]'
-    headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
-      Content-Length:
-      - '15'
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 13 Feb 2025 21:55:48 GMT
-      ETag:
-      - W/"3a9f4de31c077c49f763801bdd324235"
-      Referrer-Policy:
-      - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.64, cache_generate.active_support;dur=2.34,
-        cache_write.active_support;dur=0.14, instantiation.active_record;dur=0.10,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=18.79
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-02-13T22:00:00.446894Z'
-      X-Request-Id:
-      - 6b01f460-8e3a-47da-96ec-e6b354c8dc90
-      X-Runtime:
-      - '0.033758'
+      - '0.041103'
       X-XSS-Protection:
       - '0'
       vary:
