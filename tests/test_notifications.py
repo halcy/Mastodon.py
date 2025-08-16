@@ -68,6 +68,10 @@ def test_notifications_dismiss_pre_2_9_2(api, api2):
     if sys.version_info > (3, 9): # 3.10 and up will not load the json data and regenerating it would require a 2.9.2 instance
         pytest.skip("Test skipped for 3.10 and up")
     else:
+        api._Mastodon__version_check_worked = True
+        api._Mastodon__version_check_tried = True
+        api2._Mastodon__version_check_worked = True
+        api2._Mastodon__version_check_tried = True
         with vcr.use_cassette('test_notifications_dismiss.yaml', cassette_library_dir='tests/cassettes_pre_2_9_2', record_mode='none'):
             status = None
             try:

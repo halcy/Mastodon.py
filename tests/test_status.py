@@ -59,6 +59,8 @@ def test_status_card_pre_2_9_2(api):
     if sys.version_info > (3, 9): # 3.10 and up will not load the json data and regenerating it would require a 2.9.2 instance
         pytest.skip("Test skipped for 3.10 and up")
     else:
+        api._Mastodon__version_check_worked = True
+        api._Mastodon__version_check_tried = True
         with vcr.use_cassette('test_status_card.yaml', cassette_library_dir='tests/cassettes_pre_2_9_2', record_mode='none'):    
             import time
             status = api.status_post("http://example.org/")
