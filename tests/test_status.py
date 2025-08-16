@@ -55,6 +55,8 @@ def test_status_card(api):
         api.status_delete(status['id'])
 
 # Old-version card api
+# skip these entirely now, 2.9.2 was a long time ago and we can't regenerate them.
+@pytest.mark.skip("Skipping pre-2.9.2 tests")
 def test_status_card_pre_2_9_2(api):
     if sys.version_info > (3, 9): # 3.10 and up will not load the json data and regenerating it would require a 2.9.2 instance
         pytest.skip("Test skipped for 3.10 and up")

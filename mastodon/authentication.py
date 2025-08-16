@@ -348,6 +348,8 @@ class Mastodon(Internals):
         it is not present.
 
         Returns an empty dictionary if unsupported by the server.
+
+        Technically added in 4.3.0 but we never do a version check to avoid potential complications.
         """
         assert self.api_base_url is not None
         try:
@@ -467,6 +469,8 @@ class Mastodon(Internals):
         Return a string (which  you should treat as opaque) that can be passed to :ref:`log_in()` to get an authenticated API object with the same access as this one.
 
         This is the same thing that would be written to a file by :ref:`log_in() <log_in()>` with the `to_file` parameter.
+
+        Obviously, treat it with care and store it in a manner that is appropriate for your application and the level of security you need.
         """
         if self.access_token is None:
             raise MastodonIllegalArgumentError("Not logged in, do not have a token to persist.")
