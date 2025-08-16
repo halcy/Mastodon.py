@@ -169,7 +169,7 @@ class Account(AttribAccessDict):
       * 1.1.2: added
     """
 
-    moved_to_account: "Optional[Account]"
+    moved: "Optional[Account]"
     """
     If set, Account that this user has set up as their moved-to address. (optional)
 

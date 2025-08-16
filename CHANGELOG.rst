@@ -18,6 +18,7 @@ v2.1.0 (IN PROGRESS)
 * Added missing `replies_policy` and `exclusive` parameters to list creation and update methods.
 * Add status length counter `get_status_length` (Thanks @yuletide for the suggestion)
 * Fix `notifications` returning nonsense when passing a single `id` (Thanks @chinchalinchin for the report)
+* Fix `moved` accidentally being named `moved_to_account` (Thanks @unusualevent for the report)
 
 v2.0.1
 ------
