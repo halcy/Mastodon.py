@@ -383,6 +383,9 @@ Return types
 .. autoclass:: mastodon.return_types.SupportedLocale
    :members:
 
+.. autoclass:: mastodon.return_types.OAuthServerInfo
+   :members:
+
 Deprecated types
 ================
 .. autoclass:: mastodon.return_types.Filter

@@ -14,7 +14,7 @@ from mastodon.utility import parse_version_string, api_version
 from mastodon.internals import Mastodon as Internals
 from mastodon.utility import Mastodon as Utility
 from typing import List, Optional, Union, Tuple
-from mastodon.return_types import Application, AttribAccessDict
+from mastodon.return_types import Application, AttribAccessDict, OAuthServerInfo
 from mastodon.compat import PurePath
 
 class Mastodon(Internals):
@@ -339,7 +339,7 @@ class Mastodon(Internals):
                 oauth_url = oauth_info["authorization_endpoint"] + "?" + formatted_params
         return oauth_url
     
-    def oauth_authorization_server_info(self) -> AttribAccessDict: # TODO real type for this
+    def oauth_authorization_server_info(self) -> Union[OAuthServerInfo, AttribAccessDict]:
         """
         Returns the OAuth authorization server information, including the supported grant types.
         This is useful to determine which authentication methods are available on the server, supported scopes, 

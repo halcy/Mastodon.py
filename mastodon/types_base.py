@@ -184,20 +184,20 @@ if sys.version_info < (3, 9):
             Poll, PollOption, Conversation, Tag, TagHistory, CustomEmoji, \
             Application, Relationship, Filter, FilterV2, Notification, Context, \
             UserList, MediaAttachment, MediaAttachmentMetadataContainer, MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, \
-            MediaAttachmentFocusPoint, MediaAttachmentColors, PreviewCard, PreviewCardAuthor, Search, SearchV2, \
-            Instance, InstanceConfiguration, InstanceURLs, InstanceV2, InstanceIcon, InstanceConfigurationV2, \
-            InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, \
-            InstanceUsageUsers, Rule, InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, InstanceStatusConfiguration, \
-            InstanceTranslationConfiguration, InstanceMediaConfiguration, InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, NodeinfoServices, \
-            NodeinfoUsage, NodeinfoUsageUsers, NodeinfoMetadata, Activity, Report, AdminReport, \
-            WebPushSubscription, WebPushSubscriptionAlerts, PushNotification, Preferences, FeaturedTag, Marker, \
-            Announcement, Reaction, StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, \
-            AdminMeasure, AdminMeasureData, AdminDimension, AdminDimensionData, AdminRetention, AdminCohort, \
-            AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory, AdminIpBlock, \
-            DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, StatusSource, \
-            Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, \
-            NotificationPolicySummary, RelationshipSeveranceEvent, GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, \
-            UnreadNotificationsCount, Appeal, TrendingLinkHistory, NotificationRequest, SupportedLocale
+            MediaAttachmentFocusPoint, MediaAttachmentColors, PreviewCard, TrendingLinkHistory, PreviewCardAuthor, Search, \
+            SearchV2, Instance, InstanceConfiguration, InstanceURLs, InstanceV2, InstanceIcon, \
+            InstanceConfigurationV2, InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, \
+            InstanceUsage, InstanceUsageUsers, Rule, InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, \
+            InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration, InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, \
+            NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, NodeinfoMetadata, Activity, Report, \
+            AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, PushNotification, Preferences, FeaturedTag, \
+            Marker, Announcement, Reaction, StreamReaction, FamiliarFollowers, AdminAccount, \
+            AdminIp, AdminMeasure, AdminMeasureData, AdminDimension, AdminDimensionData, AdminRetention, \
+            AdminCohort, AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory, \
+            AdminIpBlock, DomainBlock, ExtendedDescription, FilterKeyword, FilterStatus, IdentityProof, \
+            StatusSource, Suggestion, Translation, AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, \
+            NotificationPolicy, NotificationPolicySummary, RelationshipSeveranceEvent, GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, \
+            AccountWarning, UnreadNotificationsCount, Appeal, NotificationRequest, SupportedLocale, OAuthServerInfo
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())

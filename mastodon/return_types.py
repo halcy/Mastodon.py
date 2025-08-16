@@ -6758,6 +6758,131 @@ class SupportedLocale(AttribAccessDict):
 
     _version = "4.2.0"
 
+class OAuthServerInfo(AttribAccessDict):
+    """
+    Information about the OAuth authorization server.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a OAuthServerInfo object
+        mastodon.oauth_authorization_server_info()
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/oauth/#authorization-server-metadata
+    """
+
+    issuer: "str"
+    """
+    The issuer of the OAuth server. Can be used to avoid accidentally getting replies from a wrong server by comparing it against the `iss`field. Not currently used by Mastodon.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    authorization_endpoint: "str"
+    """
+    The endpoint for authorization requests.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    token_endpoint: "str"
+    """
+    The endpoint for token requests.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    revocation_endpoint: "str"
+    """
+    The endpoint for revoking tokens.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    userinfo_endpoint: "str"
+    """
+    The endpoint for retrieving OAuth user information for the logged in user.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    scopes_supported: "NonPaginatableList[str]"
+    """
+    List of scopes supported by the OAuth server.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    response_types_supported: "NonPaginatableList[str]"
+    """
+    List of response types (i.e. what kind of parameters can the server get back to your callback) supported by the OAuth server.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    response_modes_supported: "NonPaginatableList[str]"
+    """
+    List of response modes (i.e. how does the server get callback parameters back to you) supported by the OAuth server.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    grant_types_supported: "NonPaginatableList[str]"
+    """
+    List of grant types (i.e. authorization methods) supported by the OAuth server.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    token_endpoint_auth_methods_supported: "NonPaginatableList[str]"
+    """
+    List of authentication methods supported by the token endpoint.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    code_challenge_methods_supported: "NonPaginatableList[str]"
+    """
+    List of code challenge methods supported by the OAuth server.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    service_documentation: "Optional[str]"
+    """
+    URL to the service documentation (e.g. the Mastodon API reference). (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    app_registration_endpoint: "Optional[str]"
+    """
+    Endpoint for registering applications. (optional)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.4.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -6870,6 +6995,7 @@ ENTITY_NAME_MAP = {
     "Appeal": Appeal,
     "NotificationRequest": NotificationRequest,
     "SupportedLocale": SupportedLocale,
+    "OAuthServerInfo": OAuthServerInfo,
 }
 __all__ = [
     "Account",
@@ -6983,5 +7109,6 @@ __all__ = [
     "Appeal",
     "NotificationRequest",
     "SupportedLocale",
+    "OAuthServerInfo",
 ]
 

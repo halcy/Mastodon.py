@@ -9991,12 +9991,12 @@
         "description": "Information about the OAuth authorization server.",
         "fields": { 
             "issuer": {
-                "description": "The issuer of the OAuth server.",
+                "description": "The issuer of the OAuth server. Can be used to avoid accidentally getting replies from a wrong server by comparing it against the `iss`field. Not currently used by Mastodon.",
                 "enum": null,
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": null,
+                "field_structuretype": "URL",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -10006,7 +10006,7 @@
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": null,
+                "field_structuretype": "URL",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -10016,7 +10016,7 @@
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": null,
+                "field_structuretype": "URL",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -10026,17 +10026,17 @@
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": null,
+                "field_structuretype": "URL",
                 "is_optional": false,
                 "is_nullable": false
             },
             "userinfo_endpoint": {
-                "description": "The endpoint for retrieving user information.",
+                "description": "The endpoint for retrieving OAuth user information for the logged in user.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [["4.4.0", "added"]],
                 "field_type": "str",
                 "field_subtype": null,
-                "field_structuretype": null,
+                "field_structuretype": "URL",
                 "is_optional": false,
                 "is_nullable": false
             },
@@ -10051,7 +10051,7 @@
                 "is_nullable": false
             },
             "response_types_supported": {
-                "description": "List of response types supported by the OAuth server.",
+                "description": "List of response types (i.e. what kind of parameters can the server get back to your callback) supported by the OAuth server.",
                 "enum": null,
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "NonPaginatableList",
@@ -10061,7 +10061,7 @@
                 "is_nullable": false
             },
             "response_modes_supported": {
-                "description": "List of response modes supported by the OAuth server.",
+                "description": "List of response modes (i.e. how does the server get callback parameters back to you) supported by the OAuth server.",
                 "enum": null,
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "NonPaginatableList",
@@ -10071,7 +10071,7 @@
                 "is_nullable": false
             },
             "grant_types_supported": {
-                "description": "List of grant types supported by the OAuth server.",
+                "description": "List of grant types (i.e. authorization methods) supported by the OAuth server.",
                 "enum": null,
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "NonPaginatableList",
@@ -10101,7 +10101,7 @@
                 "is_nullable": false
             },
             "service_documentation": {
-                "description": "URL to the service documentation.",
+                "description": "URL to the service documentation (e.g. the Mastodon API reference).",
                 "enum": null,
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",
