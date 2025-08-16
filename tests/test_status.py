@@ -65,7 +65,7 @@ def test_status_card_pre_2_9_2(api):
             import time
             status = api.status_post("http://example.org/")
             time.sleep(5) # Card generation may take time
-            api.verify_minimum_version("2.9.2", cached=False)
+            api.verify_minimum_version("2.9.2", cached=True)
             card = api.status_card(status['id'])
             try:
                 assert card
