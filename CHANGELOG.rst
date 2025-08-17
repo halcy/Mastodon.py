@@ -21,6 +21,7 @@ v2.1.0 (IN PROGRESS)
 * Fix `moved` accidentally being named `moved_to_account` (Thanks @unusualevent for the report)
 * Added a warning for deprecated endpoints if the "deprecation" header is present
 * Added `oauth_userinfo` endpoint.
+* Added `delete_media` parameter to `status_delete`.
 
 v2.0.1
 ------

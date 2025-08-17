@@ -425,16 +425,25 @@ class Mastodon(Internals):
         return self.status_post(**keyword_args)
 
     @api_version("1.0.0", "1.0.0")
-    def status_delete(self, id: Union[Status, IdType]) -> Status:
+    def status_delete(self, id: Union[Status, IdType], delete_media: bool = None) -> Status:
         """
         Delete a status
 
-        Returns the now-deleted status, with an added "source" attribute that contains
+        Returns the now-deleted status, with an added "text" attribute that contains
         the text that was used to compose this status (this can be used to power
-        "delete and redraft" functionality)
+        "delete and redraft" functionality) as well as either poll or media_attachments
+        set in the same way. Note that when reattaching media, you have to wait up to several
+        seconds for the media to be un-attached from the original status - that operation is
+        not synchronous with the delete.
+
+        Pass `delete_media=True` to delete the media attachments of the status immediately,
+        instead of just scheduling them for deletion as part of the next media cleanup. If you
+        set this, you will not be able to reuse them in a new status (so if you're delete-redrafting,
+        you should not set this).
         """
         id = self.__unpack_id(id)
-        return self.__api_request('DELETE', f'/api/v1/statuses/{id}')
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('DELETE', f'/api/v1/statuses/{id}', params)
 
     @api_version("1.0.0", "2.0.0")
     def status_reblog(self, id: Union[Status, IdType], visibility: Optional[str] = None) -> Status:

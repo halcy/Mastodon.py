@@ -9,15 +9,9 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [ ] New endpoints for featured tags: tag_feature(name), tag_unfeature(name)
 * [ ] New endpoint: instance_terms, with or without date (format?)
 * [x] Some oauth stuff (userinfo? capability discovery? see issue for that)
-* [ ] status_delete now has a media delete param
+* [x] status_delete now has a media delete param
 * [ ] push_subscribe now has a "standard" parameter to switch between two versions. may also need to update crypto impls?
 * [ ] account_register now has a date of birth param (as above: format?)
 * [ ] update_credentials now has an attribution_domains param for link attribution (list)
 * [x] Various updates to return values (automatable, hopefully, other than docs)
 * [x] There is a "Deprecation" http header now, expose that to users?
-
-General improvements that would be good to do before doing another release
---------------------------------------------------------------------------
-* [ ] Get test coverage like, real high
-
-* [ ] Also add links to tests to the docstrings so people can see usage examples

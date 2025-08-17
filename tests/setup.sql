@@ -1,5 +1,3 @@
-DELETE FROM settings WHERE thing_id = 1234567890123456;
-DELETE FROM settings WHERE thing_id = 1234567890123457;
 DELETE FROM oauth_access_tokens WHERE id = 6543210987654321;
 DELETE FROM oauth_access_tokens WHERE id = 1234567890123456;
 DELETE FROM oauth_access_tokens WHERE id = 1234567890123457;
@@ -95,121 +93,16 @@ INSERT INTO settings (
     id,
     var,
     value,
-    thing_type,
-    thing_id,
     created_at,
     updated_at
 ) VALUES (
     123456,
     'open_registrations',
     E'--- true\n...\n',
-    NULL,
-    NULL,
     now(),
     now()
 );
 
-INSERT INTO settings (
-    id,
-    var,
-    value,
-    thing_type,
-    thing_id,
-    created_at,
-    updated_at
-) VALUES (
-    1234567890123456,
-    'notification_emails',
-    E'---\nfollow_request: false',
-    'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
-    now(),
-    now()
-);
-INSERT INTO settings (
-    id, 
-    var, 
-    value, 
-    thing_type,
-    thing_id,
-    created_at,
-    updated_at
-) VALUES (
-    1234567890123457, 
-    'default_privacy', 
-    E'--- public\n...\n', 
-    'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
-    now(),
-    now()
-);
-INSERT INTO settings (
-    id, 
-    var, 
-    value, 
-    thing_type,
-    thing_id,    
-    created_at, 
-    updated_at
-) VALUES (
-    1234567890123458,
-    'default_sensitive',
-    E'--- false\n...\n',
-    'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test@localhost'),
-    now(),
-    now()
-);
-
-
-INSERT INTO settings (
-    id,
-    var,
-    value,
-    thing_type,
-    thing_id,
-    created_at,
-    updated_at
-) VALUES (
-    1234567890123459,
-    'notification_emails',
-    E'---\nfollow_request: false',
-    'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
-    now(),
-    now()
-);
-INSERT INTO settings (
-    id, 
-    var, 
-    value, 
-    thing_type,
-    thing_id,
-    created_at,
-    updated_at
-) VALUES (
-    1234567890123460, 
-    'default_privacy', 
-    E'--- public\n...\n', 
-    'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
-    now(),
-    now()
-);
-INSERT INTO settings (
-    id, 
-    var, 
-    value, 
-    thing_type,
-    thing_id,    
-    created_at, 
-    updated_at
-) VALUES (
-    1234567890123461,
-    'default_sensitive',
-    E'--- false\n...\n',
-    'User',
-    (SELECT id FROM users WHERE email = 'mastodonpy_test_2@localhost'),
-    now(),
-    now()
-);
+UPDATE users SET
+    settings = '{"notification_emails.follow_request": false, "default_privacy": "public", "default_sensitive": false}'
+WHERE email IN ('mastodonpy_test@localhost', 'mastodonpy_test_2@localhost');

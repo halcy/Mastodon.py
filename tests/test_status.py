@@ -300,3 +300,34 @@ def test_status_translate(api, status):
     with pytest.raises(MastodonAPIError):
         translation = api.status_translate(status['id'], 'de')
         
+@pytest.mark.vcr(match_on=['path'])   
+def test_status_delete_media(api, status):
+    # Prepare a status with media
+    try:
+        media = api.media_post('tests/image.jpg')
+        status_with_media = api.status_post('Status with media', media_ids=media)
+
+        # Delete it without media wipe
+        deleted_status = api.status_delete(status_with_media['id'], delete_media=False)
+        assert deleted_status['id'] == status_with_media['id']
+        print(deleted_status.media_attachments[0].id)
+
+        time.sleep(5)  # Wait for media deletion to be processed
+
+        # Now repost and delete it with media wipe
+        status_with_media = api.status_post('Status with media reposted', media_ids=[deleted_status.media_attachments[0].id])
+        deleted_status = api.status_delete(status_with_media['id'], delete_media=True)
+        assert deleted_status['id'] == status_with_media['id']
+
+        time.sleep(5)  # Wait for media deletion to be processed
+
+        # Check that the media is deleted by trying to repost again (should fail)
+        with pytest.raises(MastodonAPIError):
+            api.status_post('Trying to repost deleted media', media_ids=status_with_media['media_attachments'][0].id)
+    finally:
+        # Delete status if it exists
+        try:
+            api.status_delete(status_with_media['id'])
+        except:
+            pass
+
