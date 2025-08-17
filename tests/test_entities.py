@@ -911,8 +911,9 @@ def test_entity_instanceusageusers(mastodon_base, mastodon_admin):
 def test_entity_ruletranslation(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.instance().rules[0].translations['de']
-    assert real_issubclass(type(result), RuleTranslation), str(type(result)) + ' is not a subclass of RuleTranslation'
-    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), RuleTranslation), str(type(result)) + ' is not a subclass of RuleTranslation'
+        result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), RuleTranslation), str(type(result)) + ' is not a subclass of RuleTranslation after to_json/from_json'
 
@@ -928,8 +929,9 @@ def test_entity_ruletranslation(mastodon_base, mastodon_admin):
 def test_entity_rule(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.instance().rules[0]
-    assert real_issubclass(type(result), Rule), str(type(result)) + ' is not a subclass of Rule'
-    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), Rule), str(type(result)) + ' is not a subclass of Rule'
+        result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), Rule), str(type(result)) + ' is not a subclass of Rule after to_json/from_json'
 

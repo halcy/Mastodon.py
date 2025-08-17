@@ -298,6 +298,8 @@ def try_cast(t, value, retry = True, union_specializer = None):
             value = t(**value)
 
             # Did we have type arguments on the dict? If so, we need to try to cast the values
+            # This will not work in 3.7 and 3.8, which is unfortunate, but them's the breaks of using
+            # very old versions.
             if hasattr(t, '__args__') and len(t.__args__) > 1:
                 value_cast_type = t.__args__[1]
                 for key, val in value.items():

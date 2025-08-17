@@ -14,11 +14,12 @@ import collections
 import base64
 import os
 import inspect
+import warnings
 
 from mastodon.versions import parse_version_string
 from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
                     MastodonUnauthorizedError, MastodonInternalServerError, MastodonBadGatewayError, MastodonServiceUnavailableError, \
-                    MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError
+                    MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError, MastodonDeprecationWarning
 from mastodon.compat import urlparse, magic, PurePath, Path
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from mastodon.return_types import AttribAccessDict, PaginatableList, try_cast_recurse
@@ -181,6 +182,10 @@ class Mastodon():
 
             if response_object is None:
                 raise MastodonIllegalArgumentError("Illegal request.")
+
+            # Is there a "deprecation" header present?
+            if 'deprecation' in response_object.headers:
+                warnings.warn("Endpoint " + endpoint + " is marked as deprecated and may be removed in future Mastodon versions.", MastodonDeprecationWarning)
 
             # Parse rate limiting headers
             if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:

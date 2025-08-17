@@ -88,3 +88,13 @@ class MastodonRatelimitError(MastodonError):
 class MastodonMalformedEventError(MastodonError):
     """Raised when the server-sent event stream is malformed"""
     pass
+
+# Warnings
+class MastodonWarning(Warning):
+    """Base class for Mastodon.py warnings"""
+    pass
+
+
+class MastodonDeprecationWarning(MastodonWarning):
+    """Raised when a deprecated feature is used"""
+    pass

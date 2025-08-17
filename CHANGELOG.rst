@@ -19,6 +19,7 @@ v2.1.0 (IN PROGRESS)
 * Add status length counter `get_status_length` (Thanks @yuletide for the suggestion and @cheeaun for the assistance)
 * Fix `notifications` returning nonsense when passing a single `id` (Thanks @chinchalinchin for the report)
 * Fix `moved` accidentally being named `moved_to_account` (Thanks @unusualevent for the report)
+* Added a warning for deprecated endpoints if the "deprecation" header is present
 
 v2.0.1
 ------
