@@ -14,7 +14,7 @@ from mastodon.utility import parse_version_string, api_version
 from mastodon.internals import Mastodon as Internals
 from mastodon.utility import Mastodon as Utility
 from typing import List, Optional, Union, Tuple
-from mastodon.return_types import Application, AttribAccessDict, OAuthServerInfo
+from mastodon.return_types import Application, AttribAccessDict, OAuthServerInfo, OAuthUserInfo
 from mastodon.compat import PurePath
 
 class Mastodon(Internals):
@@ -358,6 +358,21 @@ class Mastodon(Internals):
             response = AttribAccessDict()
         return response
 
+    @api_version("4.3.0", "4.3.0")
+    def oauth_userinfo(self) -> OAuthUserInfo:
+        """
+        Returns information about the authenticated user.
+
+        Intended for something called "OpenID Connect", which you can find information about here:
+        https://openid.net/developers/how-connect-works/ 
+        """
+        oauth_url = "".join([self.api_base_url, "/oauth/userinfo"])
+        oauth_info = self.oauth_authorization_server_info()
+        if "userinfo_endpoint" in oauth_info:
+            oauth_url = Mastodon.__protocolize(oauth_info["userinfo_endpoint"])
+            Mastodon.__oauth_url_check(oauth_url)
+        return self.__api_request('GET', oauth_url, do_ratelimiting=False, base_url_override="")
+    
     def log_in(self, username: Optional[str] = None, password: Optional[str] = None, code: Optional[str] = None, 
                redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES, 
                to_file: Optional[Union[str, PurePath]] = None, allow_http: bool = False) -> str:

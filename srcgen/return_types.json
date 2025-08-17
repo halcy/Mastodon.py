@@ -10479,5 +10479,78 @@
                 "is_nullable": false
             }
         }
+    },
+    {
+        "name": "OAuth User Info",
+        "python_name": "OAuthUserInfo",
+        "func_call": "mastodon.oauth_userinfo()",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": null,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/oauth/#userinfo",
+        "description": "Information about the currently logged in user, returned by the OAuth userinfo endpoint.",
+        "fields": {
+            "iss": {
+                "description": "The issuer of the OAuth server. Can be used to avoid accidentally getting replies from a wrong server by comparing it against the `issuer` field in OAuthServerInfo.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "sub": {
+                "description": "The subject identifier of the user. For Mastodon, the URI of the ActivityPub Actor document",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "name": {
+                "description": "The display name of the user.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "preferred_username": {
+                "description": "The preferred username of the user, i.e. the part after the first and before the second @ in their account name.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "profile ": {
+                "description": "The URL of the user’s profile page.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "picture": {
+                "description": "The URL of the user’s profile picture.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": false
+            }
+        }
     }
 ]

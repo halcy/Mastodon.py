@@ -59,7 +59,8 @@ _SCOPE_SETS = {
         'admin:write:email_domain_blocks',
         'admin:write:canonical_email_blocks',
     ],
+    'profile': []
 }
-_VALID_SCOPES = ['read', 'write', 'follow', 'push', 'admin:read', 'admin:write'] + \
+_VALID_SCOPES = ['read', 'write', 'follow', 'push', 'admin:read', 'admin:write', 'profile'] + \
     _SCOPE_SETS['read'] + _SCOPE_SETS['write'] + \
     _SCOPE_SETS['admin:read'] + _SCOPE_SETS['admin:write']

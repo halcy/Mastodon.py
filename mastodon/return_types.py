@@ -7110,6 +7110,74 @@ class OAuthServerInfo(AttribAccessDict):
 
     _version = "4.4.0"
 
+class OAuthUserInfo(AttribAccessDict):
+    """
+    Information about the currently logged in user, returned by the OAuth userinfo endpoint.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a OAuthUserInfo object
+        mastodon.oauth_userinfo()
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/oauth/#userinfo
+    """
+
+    iss: "str"
+    """
+    The issuer of the OAuth server. Can be used to avoid accidentally getting replies from a wrong server by comparing it against the `issuer` field in OAuthServerInfo.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    sub: "str"
+    """
+    The subject identifier of the user. For Mastodon, the URI of the ActivityPub Actor document.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    name: "str"
+    """
+    The display name of the user.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    preferred_username: "str"
+    """
+    The preferred username of the user, i.e. the part after the first and before the second @ in their account name.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    profile : "str"
+    """
+    The URL of the user’s profile page.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    picture: "str"
+    """
+    The URL of the user’s profile picture.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -7226,6 +7294,7 @@ ENTITY_NAME_MAP = {
     "NotificationRequest": NotificationRequest,
     "SupportedLocale": SupportedLocale,
     "OAuthServerInfo": OAuthServerInfo,
+    "OAuthUserInfo": OAuthUserInfo,
 }
 __all__ = [
     "Account",
@@ -7343,5 +7412,6 @@ __all__ = [
     "NotificationRequest",
     "SupportedLocale",
     "OAuthServerInfo",
+    "OAuthUserInfo",
 ]
 

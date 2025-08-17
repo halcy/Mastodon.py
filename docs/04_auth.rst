@@ -39,6 +39,11 @@ Authentication
 .. automethod:: Mastodon.create_account
 .. automethod:: Mastodon.email_resend_confirmation
 
+OAuth information
+-----------------
+.. automethod:: Mastodon.oauth_authorization_server_info
+.. automethod:: Mastodon.oauth_userinfo
+
 User preferences
 ----------------
 .. automethod:: Mastodon.preferences

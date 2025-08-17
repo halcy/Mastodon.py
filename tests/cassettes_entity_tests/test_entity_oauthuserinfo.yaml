@@ -1,0 +1,166 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - DUMMY
+      Connection:
+      - keep-alive
+      User-Agent:
+      - mastodonpy
+    method: GET
+    uri: https://mastodon.social/.well-known/oauth-authorization-server
+  response:
+    body:
+      string: '{"issuer": "https://mastodon.social/", "authorization_endpoint": "https://mastodon.social/oauth/authorize",
+        "token_endpoint": "https://mastodon.social/oauth/token", "revocation_endpoint":
+        "https://mastodon.social/oauth/revoke", "userinfo_endpoint": "https://mastodon.social/oauth/userinfo",
+        "scopes_supported": ["read", "profile", "write", "write:accounts", "write:blocks",
+        "write:bookmarks", "write:conversations", "write:favourites", "write:filters",
+        "write:follows", "write:lists", "write:media", "write:mutes", "write:notifications",
+        "write:reports", "write:statuses", "read:accounts", "read:blocks", "read:bookmarks",
+        "read:favourites", "read:filters", "read:follows", "read:lists", "read:mutes",
+        "read:notifications", "read:search", "read:statuses", "follow", "push", "admin:read",
+        "admin:read:accounts", "admin:read:reports", "admin:read:domain_allows", "admin:read:domain_blocks",
+        "admin:read:ip_blocks", "admin:read:email_domain_blocks", "admin:read:canonical_email_blocks",
+        "admin:write", "admin:write:accounts", "admin:write:reports", "admin:write:domain_allows",
+        "admin:write:domain_blocks", "admin:write:ip_blocks", "admin:write:email_domain_blocks",
+        "admin:write:canonical_email_blocks"], "response_types_supported": ["code"],
+        "response_modes_supported": ["query", "fragment", "form_post"], "grant_types_supported":
+        ["authorization_code", "client_credentials"], "token_endpoint_auth_methods_supported":
+        ["client_secret_basic", "client_secret_post"], "code_challenge_methods_supported":
+        ["S256"], "service_documentation": "https://docs.joinmastodon.org/", "app_registration_endpoint":
+        "https://mastodon.social/api/v1/apps"}'
+    headers:
+      Connection:
+      - keep-alive
+      Date:
+      - Sun, 17 Aug 2025 16:11:31 GMT
+      Strict-Transport-Security:
+      - max-age=31557600
+      Vary:
+      - Origin, Accept-Encoding
+      X-Cache:
+      - MISS, MISS, MISS
+      X-Cache-Hits:
+      - 0, 0, 0
+      X-Served-By:
+      - cache-fra-eddf8230103-FRA, cache-fra-eddf8230103-FRA, cache-hel1410031-HEL
+      X-Timer:
+      - S1755447092.718686,VS0,VE76
+      accept-ranges:
+      - none
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-length:
+      - '1563'
+      content-security-policy:
+      - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
+        ''self'' https://mastodon.social; img-src ''self'' data: blob: https://mastodon.social
+        https://files.mastodon.social; media-src ''self'' data: https://mastodon.social
+        https://files.mastodon.social; manifest-src ''self'' https://mastodon.social;
+        form-action ''self''; child-src ''self'' blob: https://mastodon.social; worker-src
+        ''self'' blob: https://mastodon.social; connect-src ''self'' data: blob: https://mastodon.social
+        https://files.mastodon.social wss://streaming.mastodon.social; script-src
+        ''self'' https://mastodon.social ''wasm-unsafe-eval''; frame-src ''self''
+        https:; style-src ''self'' https://mastodon.social ''nonce-xuGiALvgOfrc1xtVTIoYFw=='''
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"6039ea331b50e2b000b155f90aaead96"
+      referrer-policy:
+      - same-origin
+      transfer-encoding:
+      - chunked
+      via:
+      - 1.1 varnish, 1.1 varnish, 1.1 varnish
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-request-id:
+      - 046bcf0334eb061f18d41d273d11bdc7
+      x-runtime:
+      - '0.009508'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - DUMMY
+      Connection:
+      - keep-alive
+      User-Agent:
+      - mastodonpy
+    method: GET
+    uri: https://mastodon.social/oauth/userinfo
+  response:
+    body:
+      string: '{"iss": "https://mastodon.social/", "sub": "https://mastodon.social/users/halcy",
+        "name": "autumnal halcy", "preferred_username": "halcy", "profile": "https://mastodon.social/@halcy",
+        "picture": "https://mastodon.social/avatars/original/missing.png"}'
+    headers:
+      Connection:
+      - keep-alive
+      Date:
+      - Sun, 17 Aug 2025 16:11:31 GMT
+      Strict-Transport-Security:
+      - max-age=31557600
+      Vary:
+      - Authorization, Origin, Accept-Encoding
+      X-Cache:
+      - MISS, MISS, MISS
+      X-Cache-Hits:
+      - 0, 0, 0
+      X-Served-By:
+      - cache-fra-eddf8230036-FRA, cache-fra-eddf8230036-FRA, cache-hel1410030-HEL
+      X-Timer:
+      - S1755447092.866749,VS0,VE110
+      accept-ranges:
+      - none
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      cache-control:
+      - private, no-store
+      content-length:
+      - '239'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"2d63fbd9fa70b7e1d88f1de0be7f462c"
+      referrer-policy:
+      - same-origin
+      transfer-encoding:
+      - chunked
+      via:
+      - 1.1 varnish, 1.1 varnish, 1.1 varnish
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-request-id:
+      - 3d94a304cd78c66ccf962b7282cf9f24
+      x-runtime:
+      - '0.016761'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
