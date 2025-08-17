@@ -16,14 +16,15 @@ class Mastodon(Internals):
     @api_version("2.7.0", "2.7.0")
     def create_account(self, username: str, password: str, email: str, agreement: bool = False, reason: Optional[str] = None, 
                         locale: str = "en", scopes: List[str] = _DEFAULT_SCOPES, to_file: Optional[str] = None, 
-                        return_detailed_error: bool = False) -> Union[Optional[str], Tuple[Optional[str], AccountCreationError]]:
+                        return_detailed_error: bool = False, date_of_birth: Optional[datetime] = None) -> Union[Optional[str], Tuple[Optional[str], AccountCreationError]]:
         """
         Creates a new user account with the given username, password and email. "agreement"
         must be set to true (after showing the user the instance's user agreement and having
         them agree to it), "locale" specifies the language for the confirmation email as an
         ISO 639-1 (two letter) or, if a language does not have one, 639-3 (three letter) language
         code. `reason` can be used to specify why a user would like to join if approved-registrations
-        mode is on.
+        mode is on. date_of_birth can be used to specify the date of birth of the user, which is required
+        if the server has a minimum age requirement set.
 
         Does not require an access token, but does require a client grant.
 
@@ -53,6 +54,12 @@ class Mastodon(Internals):
             * ERR_TOO_SHORT - When an attribute is under the character requirement
             * ERR_INCLUSION - When an attribute is not one of the allowed values, e.g. unsupported locale
         """
+        # Do we have a date of birth? If so, add it to a string in YYYY-MM-DD format.
+        if date_of_birth is not None:
+            if not isinstance(date_of_birth, datetime):
+                raise MastodonIllegalArgumentError("date_of_birth must be a datetime object")
+            date_of_birth = date_of_birth.strftime("%Y-%m-%d")
+
         params = self.__generate_params(locals(), ['to_file', 'scopes'])
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
@@ -384,7 +391,8 @@ class Mastodon(Internals):
                                    avatar: Optional[PathOrFile] = None, avatar_mime_type: Optional[str] = None,
                                    header: Optional[PathOrFile] = None, header_mime_type: Optional[str] = None,
                                    locked: Optional[bool] = None, bot: Optional[bool] = None,
-                                   discoverable: Optional[bool] = None, fields: Optional[List[Tuple[str, str]]] = None) -> Account:
+                                   discoverable: Optional[bool] = None, fields: Optional[List[Tuple[str, str]]] = None,
+                                   attribution_domains: Optional[List[str]] = None) -> Account:
         """
         Update the profile for the currently logged-in user.
 
@@ -401,6 +409,9 @@ class Mastodon(Internals):
 
         `fields` can be a list of up to four name-value pairs (specified as tuples) to
         appear as semi-structured information in the user's profile.
+
+        `attribution_domains` can be a list of domains that the user wants to allow to
+        attribute content to them.
 
         The returned object reflects the updated account.
         """

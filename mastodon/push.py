@@ -35,7 +35,7 @@ class Mastodon(Internals):
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
                               follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
                               policy: str = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
-                              admin_report_events: Optional[bool] = None) -> WebPushSubscription:
+                              admin_report_events: Optional[bool] = None, standard: bool = None) -> WebPushSubscription:
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
 
@@ -61,6 +61,9 @@ class Mastodon(Internals):
         * `update_events` controls whether you receive events when a status that the logged in user has boosted has been edited.
         * `admin_sign_up_events` controls whether you receive events when a new user signs up.
         * `admin_report_events` controls whether you receive events when a new report is received.
+
+        Pass `standard=True` to use the standard webpush subscription format, instead of the pre-release RFC format
+        mastodon was using before.
         """
         if not policy in ['all', 'none', 'follower', 'followed']:
             raise MastodonIllegalArgumentError("Valid values for policy are 'all', 'none', 'follower' or 'followed'.")

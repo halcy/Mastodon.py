@@ -22,6 +22,9 @@ v2.1.0 (IN PROGRESS)
 * Added a warning for deprecated endpoints if the "deprecation" header is present
 * Added `oauth_userinfo` endpoint.
 * Added `delete_media` parameter to `status_delete`.
+* Added `standard` parameter to `push_subscription_set`.
+* Added `attribution_domains` parameter to `account_update_credentials`.
+* Added `date_of_birth` parameter to `create_account`.
 
 v2.0.1
 ------

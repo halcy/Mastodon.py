@@ -129,10 +129,13 @@ def test_account_update_credentials(api):
         fields = [
             ("bread", "toasty."),
             ("lasagna", "no!!!"),
+        ],
+        attribution_domains=[
+            "example.com",
+            "another-example.com"
         ]
     )
     
-    print(type(account.fields))
     assert account
     assert account.id
     assert account["display_name"] == 'John Lennon'
@@ -141,6 +144,8 @@ def test_account_update_credentials(api):
     assert account["fields"][0].value == "toasty."
     assert account["fields"][1].name == "lasagna"
     assert account["fields"][1].value == "no!!!"
+    assert "example.com" in account.source["attribution_domains"]
+    assert "another-example.com" in account.source["attribution_domains"]
 
     api.account_delete_avatar()
     api.account_delete_header()
