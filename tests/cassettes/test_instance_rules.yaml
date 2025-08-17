@@ -18,45 +18,45 @@ interactions:
     body:
       string: '[]'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
       - '2'
-      Content-Security-Policy:
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 15 Aug 2025 17:33:02 GMT
-      ETag:
+      date:
+      - Sun, 17 Aug 2025 18:42:44 GMT
+      etag:
       - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
-      Referrer-Policy:
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.46, cache_generate.active_support;dur=0.89,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.10,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=21.29
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-15T17:35:00.863013Z'
-      X-Request-Id:
-      - 7050eabd-f7cf-449d-95bc-0880aa2c411f
-      X-Runtime:
-      - '0.043398'
-      X-XSS-Protection:
-      - '0'
+      server-timing:
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=0.69, cache_generate.active_support;dur=1.12,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.09,
+        start_processing.action_controller;dur=0.01, render.active_model_serializers;dur=0.05,
+        process_action.action_controller;dur=25.19
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.586108Z'
+      x-request-id:
+      - dadee758-e6b3-4972-b70f-449c15e33bf0
+      x-runtime:
+      - '0.047026'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK

@@ -31,10 +31,10 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=1.49, cache_generate.active_support;dur=1.53,
-        cache_write.active_support;dur=0.12, instantiation.active_record;dur=0.30,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.80,
-        process_action.action_controller;dur=31.23
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=1.37, cache_generate.active_support;dur=1.48,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.24,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.72,
+        process_action.action_controller;dur=31.53
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -48,11 +48,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.191590Z'
+      - '2025-08-17T18:45:00.784247Z'
       x-request-id:
-      - 4848de94-7fc8-495e-865d-9627162a6bdd
+      - 98cfe928-e748-4a4c-ad73-6ec89f7023a0
       x-runtime:
-      - '0.048632'
+      - '0.049607'
       x-xss-protection:
       - '0'
     status:
@@ -94,12 +94,12 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=8.39, cache_generate.active_support;dur=1.03,
-        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.40,
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=8.42, cache_generate.active_support;dur=0.93,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.43,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=8.39, cache_delete.active_support;dur=0.03,
+        transaction.active_record;dur=9.15, cache_delete.active_support;dur=0.02,
         cache_read_multi.active_support;dur=0.04, cache_write_multi.active_support;dur=0.07,
-        render.active_model_serializers;dur=0.20, process_action.action_controller;dur=51.58
+        render.active_model_serializers;dur=0.17, process_action.action_controller;dur=50.83
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -113,11 +113,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.262385Z'
+      - '2025-08-17T18:45:00.853837Z'
       x-request-id:
-      - 2a5432ab-1d9b-4afd-add5-dc839f09185b
+      - 64eec87d-c747-4133-88e2-f0160c8c2b36
       x-runtime:
-      - '0.068927'
+      - '0.067869'
       x-xss-protection:
       - '0'
     status:
@@ -139,7 +139,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115045157726281124/unpin
+    uri: http://localhost:3000/api/v1/accounts/115045157726281124/unendorse
   response:
     body:
       string: '{"id":"115045157726281124","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
@@ -157,11 +157,11 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=2.12, cache_generate.active_support;dur=0.97,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.29,
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=1.84, cache_generate.active_support;dur=0.91,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.24,
         start_processing.action_controller;dur=0.00, cache_read_multi.active_support;dur=0.04,
         cache_write_multi.active_support;dur=0.07, render.active_model_serializers;dur=0.17,
-        process_action.action_controller;dur=34.65
+        process_action.action_controller;dur=32.42
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -175,11 +175,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.344240Z'
+      - '2025-08-17T18:45:00.932972Z'
       x-request-id:
-      - 58cbd974-304c-4c8a-a9c7-a68008a10056
+      - 408485f7-5bd5-422d-8ca1-36b126b7e932
       x-runtime:
-      - '0.053525'
+      - '0.049069'
       x-xss-protection:
       - '0'
     status:
@@ -201,7 +201,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115045157726281124/pin
+    uri: http://localhost:3000/api/v1/accounts/115045157726281124/endorse
   response:
     body:
       string: '{"id":"115045157726281124","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":true,"note":""}'
@@ -219,12 +219,12 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=6.77, cache_generate.active_support;dur=0.89,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.24,
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=6.60, cache_generate.active_support;dur=0.90,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.34,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=5.81, cache_delete.active_support;dur=0.02,
+        transaction.active_record;dur=6.05, cache_delete.active_support;dur=0.02,
         cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.07,
-        render.active_model_serializers;dur=0.15, process_action.action_controller;dur=40.99
+        render.active_model_serializers;dur=0.17, process_action.action_controller;dur=42.36
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -238,11 +238,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.407751Z'
+      - '2025-08-17T18:45:00.996669Z'
       x-request-id:
-      - bce37b09-4601-44de-bddb-59764e38a8b1
+      - 42bcb968-e007-4419-ac1a-9c2c6aa1814f
       x-runtime:
-      - '0.057512'
+      - '0.060182'
       x-xss-protection:
       - '0'
     status:
@@ -282,10 +282,10 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=1.58, cache_generate.active_support;dur=1.52,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.30,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=2.53,
-        process_action.action_controller;dur=31.18
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=1.65, cache_generate.active_support;dur=1.44,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.32,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=2.58,
+        process_action.action_controller;dur=32.28
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -299,11 +299,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.471974Z'
+      - '2025-08-17T18:45:00.068935Z'
       x-request-id:
-      - cd801b59-af1a-4370-98a9-c11ff59b0514
+      - 49e7f380-adf1-461c-8e5f-4350734a595c
       x-runtime:
-      - '0.047630'
+      - '0.050023'
       x-xss-protection:
       - '0'
     status:
@@ -325,7 +325,7 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115045157726281124/unpin
+    uri: http://localhost:3000/api/v1/accounts/115045157726281124/unendorse
   response:
     body:
       string: '{"id":"115045157726281124","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
@@ -343,12 +343,12 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=6.20, cache_generate.active_support;dur=1.00,
-        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.30,
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=6.16, cache_generate.active_support;dur=0.97,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.26,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=12.30, cache_delete.active_support;dur=0.01,
-        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.06,
-        render.active_model_serializers;dur=0.17, process_action.action_controller;dur=46.93
+        transaction.active_record;dur=4.45, cache_delete.active_support;dur=0.02,
+        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.07,
+        render.active_model_serializers;dur=0.16, process_action.action_controller;dur=37.20
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -362,11 +362,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.546432Z'
+      - '2025-08-17T18:45:00.141322Z'
       x-request-id:
-      - d70229f7-d3cb-4915-b830-31b8f127711e
+      - ee30111f-08c6-4ba7-b22c-4f577c5aadd6
       x-runtime:
-      - '0.064146'
+      - '0.053859'
       x-xss-protection:
       - '0'
     status:
@@ -404,10 +404,10 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=1.05, cache_generate.active_support;dur=1.00,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.15,
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.55, cache_generate.active_support;dur=1.30,
+        cache_write.active_support;dur=0.12, instantiation.active_record;dur=0.19,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=27.25
+        process_action.action_controller;dur=29.24
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -421,11 +421,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.623767Z'
+      - '2025-08-17T18:45:00.214070Z'
       x-request-id:
-      - ba924c2c-a49f-442c-b2e0-c5ebe21ba5fd
+      - 8b08c565-dd73-4d0d-ba5c-5ce1330a1565
       x-runtime:
-      - '0.045153'
+      - '0.050195'
       x-xss-protection:
       - '0'
     status:
@@ -465,12 +465,12 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=7.88, cache_generate.active_support;dur=1.09,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.35,
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=7.72, cache_generate.active_support;dur=0.95,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.32,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=9.20, cache_delete.active_support;dur=0.02,
-        cache_read_multi.active_support;dur=0.04, cache_write_multi.active_support;dur=0.07,
-        render.active_model_serializers;dur=0.16, process_action.action_controller;dur=47.49
+        transaction.active_record;dur=8.93, cache_delete.active_support;dur=0.02,
+        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.06,
+        render.active_model_serializers;dur=0.16, process_action.action_controller;dur=45.21
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -484,11 +484,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.680836Z'
+      - '2025-08-17T18:45:00.270490Z'
       x-request-id:
-      - 2b23eecd-245b-455e-8e90-37a33aa03ab9
+      - 842d74e3-aa11-48cf-b7da-ff2209e4bc64
       x-runtime:
-      - '0.066644'
+      - '0.063780'
       x-xss-protection:
       - '0'
     status:

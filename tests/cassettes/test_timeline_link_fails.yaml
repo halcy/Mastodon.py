@@ -18,41 +18,41 @@ interactions:
     body:
       string: '{"error":"Record not found"}'
     headers:
-      Cache-Control:
-      - private, no-store
       Content-Length:
       - '28'
-      Content-Security-Policy:
+      cache-control:
+      - private, no-store
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Referrer-Policy:
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=1.27, cache_generate.active_support;dur=1.47,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.19,
+      server-timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=1.59, cache_generate.active_support;dur=1.41,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.17,
         start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=23.93
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-15T17:40:00.727211Z'
-      X-Request-Id:
-      - dafe7495-9791-448b-b996-d1e82e14420e
-      X-Runtime:
-      - '0.046133'
-      X-XSS-Protection:
-      - '0'
+        process_action.action_controller;dur=28.26
       vary:
       - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:50:00.580309Z'
+      x-request-id:
+      - 3dcb6048-20f8-4493-b307-b7a9f03f39f0
+      x-runtime:
+      - '0.047482'
+      x-xss-protection:
+      - '0'
     status:
       code: 404
       message: Not Found

@@ -14,46 +14,46 @@ interactions:
     uri: http://localhost:3000/.well-known/oauth-authorization-server
   response:
     body:
-      string: '{"issuer":"http://localhost:3000/","authorization_endpoint":"http://localhost:3000/oauth/authorize","token_endpoint":"http://localhost:3000/oauth/token","revocation_endpoint":"http://localhost:3000/oauth/revoke","scopes_supported":["read","profile","write","write:accounts","write:blocks","write:bookmarks","write:conversations","write:favourites","write:filters","write:follows","write:lists","write:media","write:mutes","write:notifications","write:reports","write:statuses","read:accounts","read:blocks","read:bookmarks","read:favourites","read:filters","read:follows","read:lists","read:mutes","read:notifications","read:search","read:statuses","follow","push","admin:read","admin:read:accounts","admin:read:reports","admin:read:domain_allows","admin:read:domain_blocks","admin:read:ip_blocks","admin:read:email_domain_blocks","admin:read:canonical_email_blocks","admin:write","admin:write:accounts","admin:write:reports","admin:write:domain_allows","admin:write:domain_blocks","admin:write:ip_blocks","admin:write:email_domain_blocks","admin:write:canonical_email_blocks"],"response_types_supported":["code"],"response_modes_supported":["query","fragment","form_post"],"grant_types_supported":["authorization_code","password","client_credentials"],"token_endpoint_auth_methods_supported":["client_secret_basic","client_secret_post"],"code_challenge_methods_supported":["S256"],"service_documentation":"https://docs.joinmastodon.org/","app_registration_endpoint":"http://localhost:3000/api/v1/apps"}'
+      string: '{"issuer":"http://localhost:3000/","authorization_endpoint":"http://localhost:3000/oauth/authorize","token_endpoint":"http://localhost:3000/oauth/token","revocation_endpoint":"http://localhost:3000/oauth/revoke","userinfo_endpoint":"http://localhost:3000/oauth/userinfo","scopes_supported":["read","profile","write","write:accounts","write:blocks","write:bookmarks","write:conversations","write:favourites","write:filters","write:follows","write:lists","write:media","write:mutes","write:notifications","write:reports","write:statuses","read:accounts","read:blocks","read:bookmarks","read:favourites","read:filters","read:follows","read:lists","read:mutes","read:notifications","read:search","read:statuses","follow","push","admin:read","admin:read:accounts","admin:read:reports","admin:read:domain_allows","admin:read:domain_blocks","admin:read:ip_blocks","admin:read:email_domain_blocks","admin:read:canonical_email_blocks","admin:write","admin:write:accounts","admin:write:reports","admin:write:domain_allows","admin:write:domain_blocks","admin:write:ip_blocks","admin:write:email_domain_blocks","admin:write:canonical_email_blocks"],"response_types_supported":["code"],"response_modes_supported":["query","fragment","form_post"],"grant_types_supported":["authorization_code","client_credentials"],"token_endpoint_auth_methods_supported":["client_secret_basic","client_secret_post"],"code_challenge_methods_supported":["S256"],"service_documentation":"https://docs.joinmastodon.org/","app_registration_endpoint":"http://localhost:3000/api/v1/apps"}'
     headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
       Content-Length:
-      - '1503'
-      Content-Security-Policy:
+      - '1551'
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-8ig+ASqrieHMZoHf37C0sQ=='';
         media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
         form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
         ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
-        ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
+        ws://localhost:4000 ws://localhost:3036 http://localhost:3036; script-src
         ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
-        ''self'' https: http:'
-      Content-Type:
+        ''self'' https: http:; style-src ''self'' http://localhost:3000 ''unsafe-inline''
+        ''nonce-GTQA85y/0DfCjhbSqg8CRA=='''
+      content-type:
       - application/json; charset=utf-8
-      ETag:
-      - W/"af6a0b2cfc0c377eff2294e0b2f9c31c"
-      Referrer-Policy:
+      etag:
+      - W/"404fce6b59bef4889291b3ed7a6c1de3"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.04, sql.active_record;dur=0.18, cache_generate.active_support;dur=1.09,
-        cache_write.active_support;dur=0.16, start_processing.action_controller;dur=0.00,
-        render.active_model_serializers;dur=0.31, process_action.action_controller;dur=50.69
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-Request-Id:
-      - fb1a31bf-780d-4ad6-9086-4832df9528d8
-      X-Runtime:
-      - '0.070790'
-      X-XSS-Protection:
-      - '0'
+      server-timing:
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=0.18, cache_generate.active_support;dur=0.94,
+        cache_write.active_support;dur=0.21, start_processing.action_controller;dur=0.00,
+        render.active_model_serializers;dur=0.38, process_action.action_controller;dur=23.93
       vary:
       - Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-request-id:
+      - 00c55cbd-f712-4e7c-87cf-c35714b74a5d
+      x-runtime:
+      - '0.040683'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK

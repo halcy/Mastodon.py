@@ -16,48 +16,49 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":0,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.4.3","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":1},"thumbnail":"http://localhost:3000/packs-dev/images/preview.png","languages":["en"],"registrations":true,"approval_required":true,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '1259'
-      Content-Security-Policy:
+      - '1223'
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 16 Aug 2025 13:37:47 GMT
-      ETag:
-      - W/"32a76711c89057c2e4cf176fc0a878c6"
-      Referrer-Policy:
+      date:
+      - Sun, 17 Aug 2025 18:42:02 GMT
+      deprecation:
+      - '@1668384000'
+      etag:
+      - W/"28acfb3b4db9f195a61349286946eddf"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.14, sql.active_record;dur=6.86, cache_generate.active_support;dur=7.33,
-        cache_write.active_support;dur=0.41, instantiation.active_record;dur=0.16,
-        start_processing.action_controller;dur=0.00, transaction.active_record;dur=5.51,
-        cache_fetch_hit.active_support;dur=0.00, render.active_model_serializers;dur=10.21,
-        process_action.action_controller;dur=37.43
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-16T13:40:00.073572Z'
-      X-Request-Id:
-      - f06889a0-97a7-4a3d-b81b-97c9f9516269
-      X-Runtime:
-      - '0.073186'
-      X-XSS-Protection:
-      - '0'
+      server-timing:
+      - cache_read.active_support;dur=0.17, sql.active_record;dur=1.80, cache_generate.active_support;dur=6.82,
+        cache_write.active_support;dur=0.33, instantiation.active_record;dur=0.14,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=26.16, process_action.action_controller;dur=49.49
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.932771Z'
+      x-request-id:
+      - f8a2d572-1284-47e5-8b30-b047bc01b6e2
+      x-runtime:
+      - '0.066044'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -78,47 +79,47 @@ interactions:
     uri: http://localhost:3000/api/v2/instance/
   response:
     body:
-      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.3.0","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png"},"icon":[{"src":"http://localhost:3000/packs/media/icons/android-chrome-36x36-4c61fdb42936428af85afdbf8c6a45a8.png","size":"36x36"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-48x48-2027aead76dc906c981043d658a8258d.png","size":"48x48"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-72x72-799d90b81f5b28cea7355a0c0b356381.png","size":"72x72"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-96x96-c2dfcfa1268c56e59edddfe20d818b91.png","size":"96x96"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-144x144-ff3110f7772743bdd0c1c47fb7b2d4e0.png","size":"144x144"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-192x192-eddc1ed540e97b926202b7b857989d60.png","size":"192x192"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-256x256-7b2b43926019259f7c9ddee627d80a0f.png","size":"256x256"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-384x384-72068ed50b02828fc505a8d69b321dea.png","size":"384x384"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-512x512-ccb53c9fcbb5f61bf741cc54998318f0.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null},"vapid":{"public_key":"BM0khLcvEe3sNx-QO2PB1hqB-24BqdAh0_kG3nZKAHj348StAFL2EHzK1JJTplzKhmMoz3Z_cNfW6QY8ibUzdF4="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false}},"registrations":{"enabled":true,"approval_required":false,"message":null,"url":null},"api_versions":{"mastodon":2},"contact":{"email":"","account":null},"rules":[]}'
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.4.3","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs-dev/images/preview.png"},"icon":[{"src":"http://localhost:3000/packs-dev/icons/android-chrome-36x36.png","size":"36x36"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-48x48.png","size":"48x48"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-72x72.png","size":"72x72"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-96x96.png","size":"96x96"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-144x144.png","size":"144x144"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-192x192.png","size":"192x192"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-256x256.png","size":"256x256"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-384x384.png","size":"384x384"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-512x512.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null,"about":"http://localhost:3000/about","privacy_policy":"http://localhost:3000/privacy-policy","terms_of_service":null},"vapid":{"public_key":"BKGsRlMhRk26SiksmAVnO0Qme01ZMxazuh5Bt_2bd0NIAZDly-N8oqDGuiRpfZyvTdhGLedFV5Y5nkIAX0KIeZI="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"description_limit":1500,"image_matrix_limit":33177600,"image_size_limit":16777216,"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"video_frame_rate_limit":120,"video_matrix_limit":8294400,"video_size_limit":103809024},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false},"limited_federation":false},"registrations":{"enabled":true,"approval_required":true,"reason_required":false,"message":null,"min_age":null,"url":null},"api_versions":{"mastodon":6},"contact":{"email":"","account":null},"rules":[]}'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '2642'
-      Content-Security-Policy:
+      - '2500'
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 16 Aug 2025 13:37:47 GMT
-      ETag:
-      - W/"07121412715576bdb6734622e9734951"
-      Referrer-Policy:
+      date:
+      - Sun, 17 Aug 2025 18:42:03 GMT
+      etag:
+      - W/"9914aeba523dbe1671b339972854bc1b"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.14, sql.active_record;dur=1.15, cache_generate.active_support;dur=5.20,
-        cache_write.active_support;dur=0.42, instantiation.active_record;dur=0.13,
-        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
-        render.active_model_serializers;dur=17.29, process_action.action_controller;dur=36.76
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-16T13:40:00.141195Z'
-      X-Request-Id:
-      - 541d2c4b-2437-45d0-8569-cdb0f1da7ef2
-      X-Runtime:
-      - '0.056492'
-      X-XSS-Protection:
-      - '0'
+      server-timing:
+      - cache_read.active_support;dur=0.19, sql.active_record;dur=1.96, cache_generate.active_support;dur=7.06,
+        cache_write.active_support;dur=0.41, instantiation.active_record;dur=0.12,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.01,
+        render.active_model_serializers;dur=26.96, process_action.action_controller;dur=50.44
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.010628Z'
+      x-request-id:
+      - eec6f5fb-fa36-4574-9cab-cf6a3bdc5ffa
+      x-runtime:
+      - '0.068299'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -139,47 +140,49 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":0,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.4.3","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":1},"thumbnail":"http://localhost:3000/packs-dev/images/preview.png","languages":["en"],"registrations":true,"approval_required":true,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '1259'
-      Content-Security-Policy:
+      - '1223'
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 16 Aug 2025 13:37:47 GMT
-      ETag:
-      - W/"32a76711c89057c2e4cf176fc0a878c6"
-      Referrer-Policy:
+      date:
+      - Sun, 17 Aug 2025 18:42:03 GMT
+      deprecation:
+      - '@1668384000'
+      etag:
+      - W/"28acfb3b4db9f195a61349286946eddf"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.13, sql.active_record;dur=1.97, cache_generate.active_support;dur=7.09,
-        cache_write.active_support;dur=0.28, instantiation.active_record;dur=0.19,
+      server-timing:
+      - cache_read.active_support;dur=0.15, sql.active_record;dur=2.25, cache_generate.active_support;dur=9.45,
+        cache_write.active_support;dur=0.29, instantiation.active_record;dur=0.14,
         start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
-        render.active_model_serializers;dur=10.37, process_action.action_controller;dur=32.06
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-16T13:40:00.217934Z'
-      X-Request-Id:
-      - 98b1e1b2-3b1e-4124-ad61-c7d00068bd89
-      X-Runtime:
-      - '0.053349'
-      X-XSS-Protection:
-      - '0'
+        render.active_model_serializers;dur=11.74, process_action.action_controller;dur=36.95
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.100648Z'
+      x-request-id:
+      - ec786974-b57a-403f-af44-e19169c33bdb
+      x-runtime:
+      - '0.056514'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -200,47 +203,47 @@ interactions:
     uri: http://localhost:3000/api/v2/instance/
   response:
     body:
-      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.3.0","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png"},"icon":[{"src":"http://localhost:3000/packs/media/icons/android-chrome-36x36-4c61fdb42936428af85afdbf8c6a45a8.png","size":"36x36"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-48x48-2027aead76dc906c981043d658a8258d.png","size":"48x48"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-72x72-799d90b81f5b28cea7355a0c0b356381.png","size":"72x72"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-96x96-c2dfcfa1268c56e59edddfe20d818b91.png","size":"96x96"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-144x144-ff3110f7772743bdd0c1c47fb7b2d4e0.png","size":"144x144"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-192x192-eddc1ed540e97b926202b7b857989d60.png","size":"192x192"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-256x256-7b2b43926019259f7c9ddee627d80a0f.png","size":"256x256"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-384x384-72068ed50b02828fc505a8d69b321dea.png","size":"384x384"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-512x512-ccb53c9fcbb5f61bf741cc54998318f0.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null},"vapid":{"public_key":"BM0khLcvEe3sNx-QO2PB1hqB-24BqdAh0_kG3nZKAHj348StAFL2EHzK1JJTplzKhmMoz3Z_cNfW6QY8ibUzdF4="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false}},"registrations":{"enabled":true,"approval_required":false,"message":null,"url":null},"api_versions":{"mastodon":2},"contact":{"email":"","account":null},"rules":[]}'
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.4.3","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs-dev/images/preview.png"},"icon":[{"src":"http://localhost:3000/packs-dev/icons/android-chrome-36x36.png","size":"36x36"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-48x48.png","size":"48x48"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-72x72.png","size":"72x72"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-96x96.png","size":"96x96"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-144x144.png","size":"144x144"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-192x192.png","size":"192x192"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-256x256.png","size":"256x256"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-384x384.png","size":"384x384"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-512x512.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null,"about":"http://localhost:3000/about","privacy_policy":"http://localhost:3000/privacy-policy","terms_of_service":null},"vapid":{"public_key":"BKGsRlMhRk26SiksmAVnO0Qme01ZMxazuh5Bt_2bd0NIAZDly-N8oqDGuiRpfZyvTdhGLedFV5Y5nkIAX0KIeZI="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"description_limit":1500,"image_matrix_limit":33177600,"image_size_limit":16777216,"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"video_frame_rate_limit":120,"video_matrix_limit":8294400,"video_size_limit":103809024},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false},"limited_federation":false},"registrations":{"enabled":true,"approval_required":true,"reason_required":false,"message":null,"min_age":null,"url":null},"api_versions":{"mastodon":6},"contact":{"email":"","account":null},"rules":[]}'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '2642'
-      Content-Security-Policy:
+      - '2500'
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 16 Aug 2025 13:37:47 GMT
-      ETag:
-      - W/"07121412715576bdb6734622e9734951"
-      Referrer-Policy:
+      date:
+      - Sun, 17 Aug 2025 18:42:03 GMT
+      etag:
+      - W/"9914aeba523dbe1671b339972854bc1b"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.18, sql.active_record;dur=1.53, cache_generate.active_support;dur=6.37,
-        cache_write.active_support;dur=0.43, instantiation.active_record;dur=0.17,
-        start_processing.action_controller;dur=0.01, cache_fetch_hit.active_support;dur=0.00,
-        render.active_model_serializers;dur=19.33, process_action.action_controller;dur=41.40
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-16T13:40:00.300049Z'
-      X-Request-Id:
-      - ad35dc74-e306-46d8-b2d9-8b38c6ea37c4
-      X-Runtime:
-      - '0.076781'
-      X-XSS-Protection:
-      - '0'
+      server-timing:
+      - cache_read.active_support;dur=0.17, sql.active_record;dur=1.80, cache_generate.active_support;dur=5.90,
+        cache_write.active_support;dur=0.32, instantiation.active_record;dur=0.10,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.01,
+        render.active_model_serializers;dur=9.81, process_action.action_controller;dur=33.32
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.169617Z'
+      x-request-id:
+      - 3a6e64ac-ceee-44af-810c-5582411720de
+      x-runtime:
+      - '0.050172'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -261,47 +264,49 @@ interactions:
     uri: http://localhost:3000/api/v1/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.3.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":0,"domain_count":0},"thumbnail":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.4.3","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":1,"domain_count":1},"thumbnail":"http://localhost:3000/packs-dev/images/preview.png","languages":["en"],"registrations":true,"approval_required":true,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '1259'
-      Content-Security-Policy:
+      - '1223'
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 16 Aug 2025 13:37:47 GMT
-      ETag:
-      - W/"32a76711c89057c2e4cf176fc0a878c6"
-      Referrer-Policy:
+      date:
+      - Sun, 17 Aug 2025 18:42:03 GMT
+      deprecation:
+      - '@1668384000'
+      etag:
+      - W/"28acfb3b4db9f195a61349286946eddf"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.14, sql.active_record;dur=1.98, cache_generate.active_support;dur=7.41,
-        cache_write.active_support;dur=0.36, instantiation.active_record;dur=0.19,
+      server-timing:
+      - cache_read.active_support;dur=0.16, sql.active_record;dur=1.74, cache_generate.active_support;dur=7.31,
+        cache_write.active_support;dur=0.35, instantiation.active_record;dur=0.12,
         start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
-        render.active_model_serializers;dur=10.86, process_action.action_controller;dur=31.39
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-16T13:40:00.379583Z'
-      X-Request-Id:
-      - ed9198ec-564e-4bc9-988f-e7faca8d8530
-      X-Runtime:
-      - '0.052442'
-      X-XSS-Protection:
-      - '0'
+        render.active_model_serializers;dur=9.48, process_action.action_controller;dur=33.01
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.234311Z'
+      x-request-id:
+      - 149bde3e-ef39-43e5-83b2-ae40a1c31c4f
+      x-runtime:
+      - '0.050933'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -322,47 +327,47 @@ interactions:
     uri: http://localhost:3000/api/v2/instance/
   response:
     body:
-      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.3.0","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs/media/images/preview-6399aebd96ccf025654e2977454f168f.png"},"icon":[{"src":"http://localhost:3000/packs/media/icons/android-chrome-36x36-4c61fdb42936428af85afdbf8c6a45a8.png","size":"36x36"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-48x48-2027aead76dc906c981043d658a8258d.png","size":"48x48"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-72x72-799d90b81f5b28cea7355a0c0b356381.png","size":"72x72"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-96x96-c2dfcfa1268c56e59edddfe20d818b91.png","size":"96x96"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-144x144-ff3110f7772743bdd0c1c47fb7b2d4e0.png","size":"144x144"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-192x192-eddc1ed540e97b926202b7b857989d60.png","size":"192x192"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-256x256-7b2b43926019259f7c9ddee627d80a0f.png","size":"256x256"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-384x384-72068ed50b02828fc505a8d69b321dea.png","size":"384x384"},{"src":"http://localhost:3000/packs/media/icons/android-chrome-512x512-ccb53c9fcbb5f61bf741cc54998318f0.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null},"vapid":{"public_key":"BM0khLcvEe3sNx-QO2PB1hqB-24BqdAh0_kG3nZKAHj348StAFL2EHzK1JJTplzKhmMoz3Z_cNfW6QY8ibUzdF4="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false}},"registrations":{"enabled":true,"approval_required":false,"message":null,"url":null},"api_versions":{"mastodon":2},"contact":{"email":"","account":null},"rules":[]}'
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.4.3","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs-dev/images/preview.png"},"icon":[{"src":"http://localhost:3000/packs-dev/icons/android-chrome-36x36.png","size":"36x36"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-48x48.png","size":"48x48"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-72x72.png","size":"72x72"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-96x96.png","size":"96x96"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-144x144.png","size":"144x144"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-192x192.png","size":"192x192"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-256x256.png","size":"256x256"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-384x384.png","size":"384x384"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-512x512.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null,"about":"http://localhost:3000/about","privacy_policy":"http://localhost:3000/privacy-policy","terms_of_service":null},"vapid":{"public_key":"BKGsRlMhRk26SiksmAVnO0Qme01ZMxazuh5Bt_2bd0NIAZDly-N8oqDGuiRpfZyvTdhGLedFV5Y5nkIAX0KIeZI="},"accounts":{"max_featured_tags":10,"max_pinned_statuses":5},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"description_limit":1500,"image_matrix_limit":33177600,"image_size_limit":16777216,"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"video_frame_rate_limit":120,"video_matrix_limit":8294400,"video_size_limit":103809024},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false},"limited_federation":false},"registrations":{"enabled":true,"approval_required":true,"reason_required":false,"message":null,"min_age":null,"url":null},"api_versions":{"mastodon":6},"contact":{"email":"","account":null},"rules":[]}'
     headers:
-      Cache-Control:
-      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       Content-Length:
-      - '2642'
-      Content-Security-Policy:
+      - '2500'
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      Content-Type:
+      content-type:
       - application/json; charset=utf-8
-      Date:
-      - Sat, 16 Aug 2025 13:37:47 GMT
-      ETag:
-      - W/"07121412715576bdb6734622e9734951"
-      Referrer-Policy:
+      date:
+      - Sun, 17 Aug 2025 18:42:03 GMT
+      etag:
+      - W/"9914aeba523dbe1671b339972854bc1b"
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.14, sql.active_record;dur=1.42, cache_generate.active_support;dur=6.06,
-        cache_write.active_support;dur=0.37, instantiation.active_record;dur=0.17,
-        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
-        render.active_model_serializers;dur=18.15, process_action.action_controller;dur=38.66
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-RateLimit-Limit:
-      - '300'
-      X-RateLimit-Remaining:
-      - '299'
-      X-RateLimit-Reset:
-      - '2025-08-16T13:40:00.459830Z'
-      X-Request-Id:
-      - a5f30272-163d-4d76-921d-44c6cc189318
-      X-Runtime:
-      - '0.072314'
-      X-XSS-Protection:
-      - '0'
+      server-timing:
+      - cache_read.active_support;dur=0.18, sql.active_record;dur=1.74, cache_generate.active_support;dur=5.85,
+        cache_write.active_support;dur=0.30, instantiation.active_record;dur=0.13,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.01,
+        render.active_model_serializers;dur=9.70, process_action.action_controller;dur=33.02
       vary:
       - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2025-08-17T18:45:00.299567Z'
+      x-request-id:
+      - 597bc780-249b-4b42-a912-21edc985bfe2
+      x-runtime:
+      - '0.049804'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK

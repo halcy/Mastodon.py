@@ -445,6 +445,8 @@ class Mastodon(Internals):
         Pin / endorse a user.
 
         The returned object reflects the updated relationship with the user.
+
+        Deprecated, use `account_endorse` instead.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/pin')
@@ -455,9 +457,31 @@ class Mastodon(Internals):
         Unpin / un-endorse a user.
 
         The returned object reflects the updated relationship with the user.
+
+        Deprecated, use `account_unendorse` instead.
         """
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unpin')
+
+    @api_version("4.4.0", "4.4.0")
+    def account_endorse(self, id: Union[Account, IdType]) -> Relationship:
+        """
+        Endorse a user.
+
+        The returned object reflects the updated relationship with the user.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/endorse')
+    
+    @api_version("4.4.0", "4.4.0")
+    def account_unendorse(self, id: Union[Account, IdType]) -> Relationship:
+        """
+        Unendorse a user.
+
+        The returned object reflects the updated relationship with the user.
+        """
+        id = self.__unpack_id(id)
+        return self.__api_request('POST', f'/api/v1/accounts/{id}/unendorse')
 
     @api_version("3.2.0", "3.2.0")
     def account_note_set(self, id: Union[Account, IdType], comment: str) -> Account:

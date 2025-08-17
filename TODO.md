@@ -5,7 +5,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 4.4.0 TODOs
 -----------
 * [x] Fix all the issues
-* [ ] New endpoints for endorsements, replacing "pin" api, which is now deprecated: accounts_endorsements(id), account_endorse(id), account_unendorse(id)
+* [x] New endpoints for endorsements, replacing "pin" api, which is now deprecated: accounts_endorsements(id), account_endorse(id), account_unendorse(id)
 * [ ] New endpoints for featured tags: tag_feature(name), tag_unfeature(name)
 * [ ] New endpoint: instance_terms, with or without date (format?)
 * [x] Some oauth stuff (userinfo? capability discovery? see issue for that)

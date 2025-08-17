@@ -25,6 +25,7 @@ v2.1.0 (IN PROGRESS)
 * Added `standard` parameter to `push_subscription_set`.
 * Added `attribution_domains` parameter to `account_update_credentials`.
 * Added `date_of_birth` parameter to `create_account`.
+* Added `account_endorse` and `account_unendorse` methods (replacing "pin" methods)
 
 v2.0.1
 ------

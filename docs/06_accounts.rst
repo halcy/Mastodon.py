@@ -32,9 +32,9 @@ Reading
 Writing
 ~~~~~~~
 .. automethod:: Mastodon.account_update_credentials
-    
-.. automethod:: Mastodon.account_pin
-.. automethod:: Mastodon.account_unpin
+
+.. automethod:: Mastodon.account_endorse
+.. automethod:: Mastodon.account_unendorse
 
 .. automethod:: Mastodon.account_note_set
 
@@ -48,6 +48,11 @@ Writing
 
 .. automethod:: Mastodon.account_delete_avatar
 .. automethod:: Mastodon.account_delete_header
+
+Deprecated
+~~~~~~~~~~
+.. automethod:: Mastodon.account_pin
+.. automethod:: Mastodon.account_unpin
 
 Following and followers
 -----------------------

@@ -108,14 +108,24 @@ def test_notifications_policy(api2):
 @pytest.mark.vcr()
 def test_notification_requests_accept(api, api2):
     """Test fetching, accepting, and dismissing notification requests."""
-    temp = api
-    api = api2
-    api2 = temp
+    
+    # Ensure that our two users do not follow each other
+    api2.account_unfollow(api.account_verify_credentials().id)
+    api.account_unfollow(api2.account_verify_credentials().id)
+    time.sleep(5)
 
-    # Generate some request
+    # Set the notification policy such that requests should be generated
     posted = []
     api2.update_notifications_policy(for_not_following="filter", for_not_followers="filter", for_new_accounts="filter", for_limited_accounts="filter", for_private_mentions="filter")
-    time.sleep(1)
+    time.sleep(5)
+
+    # validate that our policy is set correctly
+    policy = api2.notifications_policy()
+    assert policy.for_not_following == "filter"
+    assert policy.for_not_followers == "filter"
+    assert policy.for_new_accounts == "filter"
+    assert policy.for_limited_accounts == "filter"
+    assert policy.for_private_mentions == "filter"
 
     while not api2.notifications_merged():
         time.sleep(1)
@@ -125,12 +135,15 @@ def test_notification_requests_accept(api, api2):
     try:
         reply_name = api2.account_verify_credentials().username
         for i in range(5):
-            posted.append(api.status_post(f"@{reply_name} please follow me - {i+200}!", visibility="public"))
+            posted.append(api.status_post(f"@{reply_name} please follow me - {i+600}!", visibility="direct"))
 
         time.sleep(3)
 
         # Fetch notification requests
         requests = api2.notification_requests()
+        print(posted)
+        print(api2.notifications())
+        print(requests)
         assert requests is not None
         assert len(requests) > 0
 

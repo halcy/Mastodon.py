@@ -264,6 +264,37 @@ def test_account_pin_unpin(api, api2):
         assert not any(x["id"] == user["id"] for x in endorsed2)
 
 @pytest.mark.vcr()
+def test_account_endorse_unendorse(api, api2):
+    user = api2.account_verify_credentials()
+    
+    # Make sure we are in the correct state
+    try:
+        api.account_follow(user)
+    except:
+        pass
+    
+    try:
+        api.account_unendorse(user)
+    except:
+        pass
+
+    relationship = api.account_endorse(user)
+    endorsed = api.endorsements()
+        
+    try:
+        assert relationship
+        assert relationship['endorsed']
+        assert any(x["id"] == user["id"] for x in endorsed)
+    finally:
+        relationship = api.account_unendorse(user)
+        endorsed2 = api.endorsements()
+        api.account_unfollow(user)        
+        assert relationship
+        assert not relationship['endorsed']
+        assert not any(x["id"] == user["id"] for x in endorsed2)
+
+
+@pytest.mark.vcr()
 def test_preferences(api):
     prefs = api.preferences()
     assert prefs

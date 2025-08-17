@@ -81,18 +81,21 @@ def test_status_context(status, api):
     assert context
 
 @pytest.mark.vcr()
-def test_status_reblogged_by(api, status, status3, api3):
-    api3.status_reblog(status3['id'])
+def test_status_reblogged_by(api, status3, api3):
+    assert api3.status_reblog(status3['id'])
+    time.sleep(3)
     reblogs = api3.status_reblogged_by(status3['id'])
     assert isinstance(reblogs, list)
     assert len(reblogs) == 1
-    api.status_reblog(status)
+    status = api.status_post("bwooh!", visibility='private')
+    assert api.status_reblog(status)
     reblogs = api.status_reblogged_by(status['id'])
     assert isinstance(reblogs, list)
     assert len(reblogs) == 0
 
 @pytest.mark.vcr()
-def test_status_reblog_visibility(status, api, status3, api3):
+def test_status_reblog_visibility(api, status3, api3):
+    status = api.status_post("bwooh! secret", visibility='private')
     reblog_result = api.status_reblog(status['id'], visibility = 'unlisted')
     assert reblog_result.visibility == 'private'
     reblog_result = api3.status_reblog(status3, visibility = 'unlisted')

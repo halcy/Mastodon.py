@@ -5,6 +5,7 @@ try:
     from urllib.parse import urlparse, parse_qs
 except ImportError:
     from urlparse import urlparse, parse_qs
+import vcr
 
 @pytest.mark.vcr()
 def test_auth_request_url(api):
@@ -29,36 +30,42 @@ def test_log_in_none(api_anonymous):
 
 @pytest.mark.vcr()
 def test_log_in_password(api_anonymous):
-    token = api_anonymous.log_in(
-        username='mastodonpy_test_2@localhost',
-        password='5fc638e0e53eafd9c4145b6bb852667d',
-        allow_http=True
-    )
-    assert token
+    # No password login after 4.4.0, so this can't be tested anymore against newer servers
+    with vcr.use_cassette('test_log_in_password.yaml', cassette_library_dir='tests/cassettes_pre_4_4_0', record_mode='none'):
+        token = api_anonymous.log_in(
+            username='mastodonpy_test_2@localhost',
+            password='5fc638e0e53eafd9c4145b6bb852667d',
+            allow_http=True
+        )
+        assert token
 
 @pytest.mark.vcr()
 def test_log_in_password_incorrect(api_anonymous):
-    with pytest.raises(MastodonIllegalArgumentError):
-        api_anonymous.log_in(
-            username='admin@localhost',
-            password='hunter2',
-            allow_http=True
-        )
+    # No password login after 4.4.0, so this can't be tested anymore against newer servers
+    with vcr.use_cassette('test_log_in_password_incorrect.yaml', cassette_library_dir='tests/cassettes_pre_4_4_0', record_mode='none'):
+        with pytest.raises(MastodonIllegalArgumentError):
+            api_anonymous.log_in(
+                username='admin@localhost',
+                password='hunter2',
+                allow_http=True
+            )
 
 @pytest.mark.vcr()
 def test_log_in_password_to_file(api_anonymous, tmpdir):
-    filepath = tmpdir.join('token')
-    api_anonymous.log_in(
-        username='mastodonpy_test_2@localhost',
-        password='5fc638e0e53eafd9c4145b6bb852667d',
-        to_file=str(filepath),
-        allow_http=True
-    )
-    token = filepath.read_text('UTF-8').rstrip().split("\n")[0]
-    assert token
-    api = api_anonymous
-    api.access_token = token
-    assert api.account_verify_credentials()
+    # No password login after 4.4.0, so this can't be tested anymore against newer servers
+    with vcr.use_cassette('test_log_in_password_to_file.yaml', cassette_library_dir='tests/cassettes_pre_4_4_0', record_mode='none'):    
+        filepath = tmpdir.join('token')
+        api_anonymous.log_in(
+            username='mastodonpy_test_2@localhost',
+            password='5fc638e0e53eafd9c4145b6bb852667d',
+            to_file=str(filepath),
+            allow_http=True
+        )
+        token = filepath.read_text('UTF-8').rstrip().split("\n")[0]
+        assert token
+        api = api_anonymous
+        api.access_token = token
+        assert api.account_verify_credentials()
 
 @pytest.mark.vcr()
 def test_url_errors(tmpdir):

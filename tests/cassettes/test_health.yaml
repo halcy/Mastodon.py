@@ -18,43 +18,43 @@ interactions:
     body:
       string: OK
     headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
       Content-Length:
       - '2'
-      Content-Security-Policy:
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
       - 'base-uri ''none''; default-src ''none''; frame-ancestors ''none''; font-src
         ''self'' http://localhost:3000; img-src ''self'' data: blob: http://localhost:3000;
-        style-src ''self'' http://localhost:3000 ''nonce-EkDOsT3hahRtnTyZV5XupA=='';
         media-src ''self'' data: http://localhost:3000; manifest-src ''self'' http://localhost:3000;
         form-action ''self''; child-src ''self'' blob: http://localhost:3000; worker-src
         ''self'' blob: http://localhost:3000; connect-src ''self'' data: blob: http://localhost:3000
-        ws://localhost:4000 ws://localhost:3035 http://localhost:3035; script-src
+        ws://localhost:4000 ws://localhost:3036 http://localhost:3036; script-src
         ''self'' ''unsafe-inline'' ''unsafe-eval'' http://localhost:3000; frame-src
-        ''self'' https: http:'
-      Content-Type:
+        ''self'' https: http:; style-src ''self'' http://localhost:3000 ''unsafe-inline''
+        ''nonce-jb7/B1K4hHEXlqPoj83++Q=='''
+      content-type:
       - text/plain; charset=utf-8
-      ETag:
+      etag:
       - W/"565339bc4d33d72817b583024112eb7f"
-      Referrer-Policy:
+      referrer-policy:
       - strict-origin-when-cross-origin
-      Server-Timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=0.12, cache_generate.active_support;dur=1.09,
-        cache_write.active_support;dur=0.05, start_processing.action_controller;dur=0.01,
-        render_template.action_view;dur=0.01, process_action.action_controller;dur=21.48
-      Vary:
+      server-timing:
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=0.20, cache_generate.active_support;dur=0.97,
+        cache_write.active_support;dur=0.04, start_processing.action_controller;dur=0.00,
+        render_template.action_view;dur=0.07, process_action.action_controller;dur=24.62
+      vary:
       - Accept
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Frame-Options:
+      x-frame-options:
       - SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-Request-Id:
-      - d9d6c506-1a36-440c-9f2c-9bbfb03b6af9
-      X-Runtime:
-      - '0.044690'
-      X-XSS-Protection:
+      x-request-id:
+      - 3a29a9da-ed53-400a-b460-64ca6efb7343
+      x-runtime:
+      - '0.044556'
+      x-xss-protection:
       - '0'
     status:
       code: 200
