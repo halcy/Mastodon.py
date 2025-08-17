@@ -285,9 +285,9 @@ class Account(AttribAccessDict):
       * 4.1.0: added
     """
 
-    memorial: "bool"
+    memorial: "Optional[bool]"
     """
-    Boolean indicating whether the account is an in-memoriam account.
+    Boolean indicating whether the account is an in-memoriam account. (optional)
 
     Version history:
       * 4.2.0: added
@@ -478,7 +478,15 @@ class CredentialAccountSource(AttribAccessDict):
       * 3.1.0: added
     """
 
-    _version = "4.2.0"
+    attribution_domains: "NonPaginatableList[str]"
+    """
+    List of domains that are allowed to be shown as having published something from this user.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class Status(AttribAccessDict):
     """
@@ -738,7 +746,79 @@ class Status(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    quote: "Optional[Union[Quote, ShallowQuote]]"
+    """
+    Information about a quoted status. Can be shallow (ShallowQuote, id only) or full (Quote, full status object included). (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
+class Quote(AttribAccessDict):
+    """
+    A full quote of a status, including the full status object in case of an accepted quote None if the quote is not accepted.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a Quote object
+        mastodon.status(<status id>).quote
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Quote/
+    """
+
+    state: "str"
+    """
+    The state of the quote.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    quoted_status: "Optional[Status]"
+    """
+    The quoted status object, if the quote has been accepted. (optional)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
+class ShallowQuote(AttribAccessDict):
+    """
+    A shallow quote of a status, containing only the ID of the quoted status. Used in multi-level quotes.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a ShallowQuote object
+        mastodon.status(<status id>).quote.quoted_status.quote
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/ShallowQuote/
+    """
+
+    quoted_status_id: "Optional[MaybeSnowflakeIdType]"
+    """
+    The ID of the quoted status. None if the quote is not accepted. (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    state: "str"
+    """
+    The state of the quote.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class StatusEdit(AttribAccessDict):
     """
@@ -1076,7 +1156,15 @@ class ScheduledStatusParams(AttribAccessDict):
       * 2.7.0: added
     """
 
-    _version = "2.8.0"
+    quoted_status_id: "Optional[MaybeSnowflakeIdType]"
+    """
+    ID for a status this status will quote, once posted. (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class Poll(AttribAccessDict):
     """
@@ -1333,7 +1421,15 @@ class Tag(AttribAccessDict):
       * 3.5.0: added
     """
 
-    _version = "4.0.0"
+    featuring: "Optional[bool]"
+    """
+    Whether the hashtag is featured on the logged-in users profile. (optional)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class TagHistory(AttribAccessDict):
     """
@@ -3158,7 +3254,15 @@ class InstanceConfigurationV2(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _version = "4.3.0"
+    limited_federation: "bool"
+    """
+    Whether federation on this instance is limited to explicitly allowed domains ('allowlist mode').
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class InstanceVapidKey(AttribAccessDict):
     """
@@ -3216,7 +3320,34 @@ class InstanceURLsV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    about: "Optional[str]"
+    """
+    If present, a URL where the instance's about page can be found. (optional)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    privacy_policy: "Optional[str]"
+    """
+    If present, a URL where the instance's privacy policy can be found. (optional)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    terms_of_service: "Optional[str]"
+    """
+    If present, a URL where the instance's terms of service can be found. (optional)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class InstanceThumbnail(AttribAccessDict):
     """
@@ -3386,6 +3517,38 @@ class InstanceUsageUsers(AttribAccessDict):
 
     _version = "3.0.0"
 
+class RuleTranslation(AttribAccessDict):
+    """
+    A translation for a rule into a specific language.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a RuleTranslation object
+        mastodon.instance().rules[0].translations['de']
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Rule/#translations
+    """
+
+    text: "str"
+    """
+    The rule to be followed, in few words, in the specified language.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    hint: "str"
+    """
+    Potentially, the rule to be followed, in more words, in the specified language.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
 class Rule(AttribAccessDict):
     """
     A rule that instance staff has specified users must follow on this instance.
@@ -3424,7 +3587,15 @@ class Rule(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _version = "4.3.0"
+    translations: "AttribAccessDict[str, RuleTranslation]"
+    """
+    A list of translations for the rule, as a dictionary with the key being ISO 639-1 (two-letter) language codes for available languages.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class InstanceRegistrations(AttribAccessDict):
     """
@@ -3467,11 +3638,11 @@ class InstanceRegistrations(AttribAccessDict):
 
     url: "Optional[str]"
     """
-    Presumably, a registration related URL. It is unclear what this is for. (nullable)
+    A custom URL for account registration, when using external authentication. (nullable)
     Should contain (as text): URL
 
     Version history:
-      * 4.0.0: added
+      * 4.2.0: added
     """
 
     sign_up_url: "Optional[str]"
@@ -3482,7 +3653,23 @@ class InstanceRegistrations(AttribAccessDict):
       * 4.2.0: added
     """
 
-    _version = "4.2.0"
+    reason_required: "Optional[bool]"
+    """
+    Boolean indicating whether a reason for registration is required on this instance. (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    min_age: "Optional[int]"
+    """
+    Minimum age in years required to register on this instance. (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class InstanceContact(AttribAccessDict):
     """
@@ -3675,7 +3862,15 @@ class InstanceMediaConfiguration(AttribAccessDict):
       * 3.4.2: added
     """
 
-    _version = "3.4.2"
+    description_limit: "int"
+    """
+    Maximum number of characters in a media attachment description this instance allows local users to use.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class InstancePollConfiguration(AttribAccessDict):
     """
@@ -3789,7 +3984,7 @@ class Nodeinfo(AttribAccessDict):
 
     metadata: "NodeinfoMetadata"
     """
-    Additional node metadata. On Mastodon, typically an empty object with no fields.
+    Additional node metadata. Can be entirely empty.
 
     Version history:
       * 3.0.0: added
@@ -3947,7 +4142,23 @@ class NodeinfoMetadata(AttribAccessDict):
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
-    _version = "0.0.0"
+    nodeName: "str"
+    """
+    Name of the instance, as specified by the instance admin.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    nodeDescription: "Optional[str]"
+    """
+    Description of the instance, as specified by the instance admin. (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class Activity(AttribAccessDict):
     """
@@ -4283,7 +4494,15 @@ class WebPushSubscription(AttribAccessDict):
       * 2.4.0: added
     """
 
-    _version = "4.0.0"
+    standard: "bool"
+    """
+    Boolean indicatign whether the push messages follow the standardized specifications (RFC8030+RFC8291+RFC8292). Else they follow a legacy version of the specifications (4th draft of RFC8291 and 1st draft of RFC8292).
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class WebPushSubscriptionAlerts(AttribAccessDict):
     """
@@ -4784,18 +5003,18 @@ class Reaction(AttribAccessDict):
       * 3.1.0: added
     """
 
-    url: "str"
+    url: "Optional[str]"
     """
-    URL for the custom emoji image.
+    URL for the custom emoji image. (nullable)
     Should contain (as text): URL
 
     Version history:
       * 3.1.0: added
     """
 
-    static_url: "str"
+    static_url: "Optional[str]"
     """
-    URL for a never-animated version of the custom emoji image.
+    URL for a never-animated version of the custom emoji image. (nullable)
     Should contain (as text): URL
 
     Version history:
@@ -5690,9 +5909,9 @@ class DomainBlock(AttribAccessDict):
       * 4.0.0: added
     """
 
-    comment: "str"
+    comment: "Optional[str]"
     """
-    An optional reason for the domain block.
+    An optional reason for the domain block. (nullable)
 
     Version history:
       * 4.0.0: added
@@ -6081,7 +6300,15 @@ class AccountCreationErrorDetails(AttribAccessDict):
       * 3.4.0: added
     """
 
-    _version = "3.4.0"
+    date_of_birth: "Optional[NonPaginatableList[AccountCreationErrorDetailsField]]"
+    """
+    An object giving more details about an error caused by the date of birth. (optional)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
 
 class AccountCreationErrorDetailsField(AttribAccessDict):
     """
@@ -6889,6 +7116,8 @@ ENTITY_NAME_MAP = {
     "Role": Role,
     "CredentialAccountSource": CredentialAccountSource,
     "Status": Status,
+    "Quote": Quote,
+    "ShallowQuote": ShallowQuote,
     "StatusEdit": StatusEdit,
     "FilterResult": FilterResult,
     "StatusMention": StatusMention,
@@ -6932,6 +7161,7 @@ ENTITY_NAME_MAP = {
     "InstanceStatistics": InstanceStatistics,
     "InstanceUsage": InstanceUsage,
     "InstanceUsageUsers": InstanceUsageUsers,
+    "RuleTranslation": RuleTranslation,
     "Rule": Rule,
     "InstanceRegistrations": InstanceRegistrations,
     "InstanceContact": InstanceContact,
@@ -7003,6 +7233,8 @@ __all__ = [
     "Role",
     "CredentialAccountSource",
     "Status",
+    "Quote",
+    "ShallowQuote",
     "StatusEdit",
     "FilterResult",
     "StatusMention",
@@ -7046,6 +7278,7 @@ __all__ = [
     "InstanceStatistics",
     "InstanceUsage",
     "InstanceUsageUsers",
+    "RuleTranslation",
     "Rule",
     "InstanceRegistrations",
     "InstanceContact",

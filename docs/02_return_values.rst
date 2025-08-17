@@ -74,6 +74,12 @@ Return types
 .. autoclass:: mastodon.return_types.Status
    :members:
 
+.. autoclass:: mastodon.return_types.Quote
+   :members:
+
+.. autoclass:: mastodon.return_types.ShallowQuote
+   :members:
+
 .. autoclass:: mastodon.return_types.StatusEdit
    :members:
 
@@ -195,6 +201,9 @@ Return types
    :members:
 
 .. autoclass:: mastodon.return_types.InstanceUsageUsers
+   :members:
+
+.. autoclass:: mastodon.return_types.RuleTranslation
    :members:
 
 .. autoclass:: mastodon.return_types.Rule

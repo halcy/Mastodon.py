@@ -481,7 +481,7 @@
                 "description": "Boolean indicating whether the account is an in-memoriam account.",
                 "field_type": "bool",
                 "field_subtype": null,
-                "is_optional": false,
+                "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
                     [
@@ -771,6 +771,23 @@
                         "3.1.0",
                         "added"
                     ]
+                ],
+                "enum": null
+            },
+            "attribution_domains": {
+                "description": "List of domains that are allowed to be shown as having published something from this user.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "api_version_list": [
+                    3
                 ],
                 "enum": null
             }
@@ -1197,6 +1214,115 @@
                         "added"
                     ]
                 ]
+            },
+            "quote": {
+                "description": "Information about a quoted status. Can be shallow (ShallowQuote, id only) or full (Quote, full status object included).",
+                "field_type": "Union[Quote, ShallowQuote]",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Quote",
+        "python_name": "Quote",
+        "func_call": "mastodon.status(<status id>).quote",
+        "func_call_real": "mastodon.status(115044073088181107).quote",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Quote/",
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A full quote of a status, including the full status object in case of an accepted quote None if the quote is not accepted.",
+        "fields": {
+            "state": {
+                "description": "The state of the quote.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "pending": "The quote has not been acknowledged by the quoted account yet, and requires authorization before being displayed.",
+                    "accepted": "The quote has been approved by the quoted account and can be displayed. This is the only case where quoted_status is non-null.",
+                    "rejected": "The quote has been explicitly rejected by the quoted account, and should not be displayed.",
+                    "revoked": "The quote was approved by the quoted account originally, but permission has since been revoked by the quoted account, and it should not be displayed.",
+                    "deleted": "The quote was approved by the quoted account originally, but the quoted status has since been deleted.",
+                    "unauthorized": "The quote has been approved by the quoted account, but the logged-on user is not authorized to see the quoted status."
+                }
+            },
+            "quoted_status": {
+                "description": "The quoted status object, if the quote has been accepted.",
+                "field_type": "Status",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Shallow quote",
+        "python_name": "ShallowQuote",
+        "func_call": "mastodon.status(<status id>).quote.quoted_status.quote",
+        "func_call_real": "mastodon.status(115044073088181107).quote.quoted_status.quote",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/ShallowQuote/",
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A shallow quote of a status, containing only the ID of the quoted status. Used in multi-level quotes.",
+        "fields": {
+            "quoted_status_id": {
+                "description": "The ID of the quoted status. None if the quote is not accepted.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "state": {
+                "description": "The state of the quote.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "pending": "The quote has not been acknowledged by the quoted account yet, and requires authorization before being displayed.",
+                    "accepted": "The quote has been approved by the quoted account and can be displayed. This is the only case where quoted_status_id is non-null.",
+                    "rejected": "The quote has been explicitly rejected by the quoted account, and should not be displayed.",
+                    "revoked": "The quote was approved by the quoted account originally, but permission has since been revoked by the quoted account, and it should not be displayed.",
+                    "deleted": "The quote was approved by the quoted account originally, but the quoted status has since been deleted.",
+                    "unauthorized": "The quote has been approved by the quoted account, but the logged-in user is not authorized to see the quoted status."
+                }
             }
         }
     },
@@ -1711,6 +1837,20 @@
                     ]
                 ],
                 "enum": null
+            },
+            "quoted_status_id": {
+                "description": "ID for a status this status will quote, once posted.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -2095,6 +2235,20 @@
                 "version_history": [
                     [
                         "3.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "featuring": {
+                "description": "Whether the hashtag is featured on the logged-in users profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
                         "added"
                     ]
                 ],
@@ -4882,6 +5036,19 @@
                         "added"
                     ]
                 ]
+            },
+            "limited_federation": {
+                "description": "Whether federation on this instance is limited to explicitly allowed domains ('allowlist mode')",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -4951,6 +5118,48 @@
                 "version_history": [
                     [
                         "4.0.0",
+                        "added"
+                    ]
+                ]
+            },
+            "about": {
+                "description": "If present, a URL where the instance's about page can be found.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            },
+            "privacy_policy": {
+                "description": "If present, a URL where the instance's privacy policy can be found.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            },
+            "terms_of_service": {
+                "description": "If present, a URL where the instance's terms of service can be found.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "field_structuretype": "URL",
+                "version_history": [
+                    [
+                        "4.4.0",
                         "added"
                     ]
                 ]
@@ -5164,6 +5373,47 @@
         }
     },
     {
+        "name": "Rule translation",
+        "python_name": "RuleTranslation",
+        "func_call": "mastodon.instance().rules[0].translations['de']",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Rule/#translations",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A translation for a rule into a specific language.",
+        "fields": {
+            "text": {
+                "description": "The rule to be followed, in few words, in the specified language.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "hint": {
+                "description": "Potentially, the rule to be followed, in more words, in the specified language.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
         "name": "Instance rule",
         "python_name": "Rule",
         "func_call": "mastodon.instance().rules[0]",
@@ -5211,6 +5461,20 @@
                 "version_history": [
                     [
                         "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "translations": {
+                "description": "A list of translations for the rule, as a dictionary with the key being ISO 639-1 (two-letter) language codes for available languages.",
+                "field_type": "AttribAccessDict[str, RuleTranslation]",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
                         "added"
                     ]
                 ],
@@ -5270,7 +5534,7 @@
                 ]
             },
             "url": {
-                "description": "Presumably, a registration related URL. It is unclear what this is for.",
+                "description": "A custom URL for account registration, when using external authentication.",
                 "field_type": "str",
                 "help_wanted": true,
                 "field_subtype": null,
@@ -5279,7 +5543,7 @@
                 "field_structuretype": "URL",
                 "version_history": [
                     [
-                        "4.0.0",
+                        "4.2.0",
                         "added"
                     ]
                 ]
@@ -5297,7 +5561,33 @@
                         "added"
                     ]
                 ]
-            }   
+            },
+            "reason_required": {
+                "description": "Boolean indicating whether a reason for registration is required on this instance.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            },
+            "min_age": {
+                "description": "Minimum age in years required to register on this instance.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            }
         }
     },
     {
@@ -5545,6 +5835,19 @@
                         "added"
                     ]
                 ]
+            },
+            "description_limit": {
+                "description": "Maximum number of characters in a media attachment description this instance allows local users to use.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -5703,7 +6006,7 @@
                 ]
             },
             "metadata": {
-                "description": "Additional node metadata. On Mastodon, typically an empty object with no fields.",
+                "description": "Additional node metadata. Can be entirely empty.",
                 "field_type": "NodeinfoMetadata",
                 "field_subtype": null,
                 "is_optional": false,
@@ -5892,7 +6195,34 @@
         "masto_doc_link": "https://github.com/jhass/nodeinfo",
         "func_call": "mastodon.instance_nodeinfo().metadata",
         "description": "Nodeinfo extra metadata. Entirely freeform, be careful about consuming it programatically. Survey of real world usage: https://codeberg.org/thefederationinfo/nodeinfo_metadata_survey",
-        "fields": {}
+        "fields": {
+            "nodeName": {
+                "description": "Name of the instance, as specified by the instance admin.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            },
+            "nodeDescription": {
+                "description": "Description of the instance, as specified by the instance admin.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
     },
     {
         "name": "Activity",
@@ -6427,6 +6757,19 @@
                 "version_history": [
                     [
                         "2.4.0",
+                        "added"
+                    ]
+                ]
+            },
+            "standard": {
+                "description": "Boolean indicatign whether the push messages follow the standardized specifications (RFC8030+RFC8291+RFC8292). Else they follow a legacy version of the specifications (4th draft of RFC8291 and 1st draft of RFC8292).",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
                         "added"
                     ]
                 ]
@@ -7209,7 +7552,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "field_structuretype": "URL",
                 "version_history": [
                     [
@@ -7224,7 +7567,7 @@
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "field_structuretype": "URL",
                 "version_history": [
                     [
@@ -8588,7 +8931,7 @@
                 "field_subtype": null,
                 "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": true
             }
         }
     },
@@ -9145,6 +9488,21 @@
                 "version_history": [
                     [
                         "3.4.0",
+                        "added"
+                    ]
+                ],
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AccountCreationErrorDetailsField",
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            },
+            "date_of_birth": {
+                "description": "An object giving more details about an error caused by the date of birth.",
+                "enum": null,
+                "version_history": [
+                    [
+                        "4.4.0",
                         "added"
                     ]
                 ],
