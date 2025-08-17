@@ -38,3 +38,6 @@ again after a while (see the rate limiting section above).
 to server misconfiguration.
 
 `MastodonVersionError` is raised when a version check for an API call fails.
+
+`MastodonDeprecationWarning` is raised when a deprecated API call is used. This is based
+on the `deprecation` HTTP header returned by the server.
