@@ -72,8 +72,8 @@ class Mastodon(MastoUtility, MastoAuthentication, MastoAccounts, MastoInstance, 
     Main class, imports most things from modules
     """
     # Support level
-    __SUPPORTED_MASTODON_VERSION = "4.3.0"
-    __MASTODON_PY_VERSION = "2.0.1"
+    __SUPPORTED_MASTODON_VERSION = "4.4.3"
+    __MASTODON_PY_VERSION = "2.1.0"
     
     @staticmethod
     def get_supported_version() -> str:

@@ -59,7 +59,7 @@ every aspect. This is a simple Python wrapper for that API, provided
 as a single Python module.
 
 Mastodon.py aims to implement the complete public Mastodon API. As
-of this time, it is feature complete for Mastodon version 4.3.0. The
+of this time, it is feature complete for Mastodon version 4.4.3. The
 Mastodon compatible API layers of various other pieces of software as well
 as forks, while not an official target, should also be basically
 compatible, and Mastodon.py does make some allowances for behaviour that isn't
