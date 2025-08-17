@@ -36,6 +36,8 @@ class Mastodon(Internals):
         Creates a new featured hashtag displayed on the logged-in user's profile.
 
         The returned object is the newly featured tag.
+
+        Obsoleted by `tag_feature` / `tag_unfeature`.
         """
         params = self.__generate_params(locals())
         return self.__api_request('POST', '/api/v1/featured_tags', params)
@@ -44,9 +46,35 @@ class Mastodon(Internals):
     def featured_tag_delete(self, id: Union[FeaturedTag, IdType]):
         """
         Deletes one of the logged-in user's featured hashtags.
+
+        Obsoleted by `tag_feature` / `tag_unfeature`.
         """
         id = self.__unpack_id(id)
         self.__api_request('DELETE', f'/api/v1/featured_tags/{id}')
+
+    @api_version("4.4.0", "4.4.0")
+    def tag_feature(self, name: str) -> Tag:
+        """
+        Creates a new featured hashtag displayed on the logged-in user's profile.
+
+        Same effect as above, but newer. Likely obsoletes `featured_tag_create`.
+        """
+        name = self.__unpack_id(name, field="name")
+        if name.startswith("#"):
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
+        return self.__api_request('POST', f'/api/v1/tags/{name}/feature')
+    
+    @api_version("4.4.0", "4.4.0")
+    def tag_unfeature(self, name: str) -> Tag:
+        """
+        Deletes one of the logged-in user's featured hashtags.
+
+        Same effect as above, but newer. Likely obsoletes `featured_tag_delete`.
+        """
+        name = self.__unpack_id(name, field="name")
+        if name.startswith("#"):
+            raise MastodonIllegalArgumentError("Hashtag parameter should omit leading #")
+        return self.__api_request('POST', f'/api/v1/tags/{name}/unfeature')
 
     ###
     # Reading data: Followed tags

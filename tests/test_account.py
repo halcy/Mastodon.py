@@ -339,6 +339,38 @@ def test_featured_tags(api):
             api.featured_tag_delete(featured_tag_2)
 
 @pytest.mark.vcr()
+def test_featured_tags_2(api):
+    featured_tag = None
+    featured_tag_2 = None
+    try:
+        featured_tag = api.tag_feature("ringtones")
+        assert featured_tag
+        assert featured_tag.name == "ringtones"
+        assert featured_tag.featuring == True
+        
+        with pytest.raises(MastodonIllegalArgumentError):
+            api.tag_feature("#daddycool")
+
+        featured_tag_2 = api.tag_feature("coolfree")
+        assert featured_tag_2
+        assert featured_tag_2.name == "coolfree"
+        assert featured_tag_2.featuring == True
+
+        unfeatured_tag = api.tag_unfeature(featured_tag)
+        assert unfeatured_tag.featuring == False
+        featured_tag = None
+
+        featured_tag_list = api.account_featured_tags(api.account_verify_credentials())
+        assert len(featured_tag_list) == 1
+        assert featured_tag_list[0].name == "coolfree"
+        assert "url" in featured_tag_list[0]
+    finally:
+        if featured_tag is not None:
+            api.tag_unfeature(featured_tag)
+        if featured_tag_2 is not None:            
+            api.tag_unfeature(featured_tag_2)
+
+@pytest.mark.vcr()
 def test_followed_hashtags(api):
     api.tag_unfollow("heeho")
     followed_1 = api.followed_tags()

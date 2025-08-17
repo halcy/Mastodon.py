@@ -38,8 +38,8 @@ Writing
 
 .. automethod:: Mastodon.account_note_set
 
-.. automethod:: Mastodon.featured_tag_create
-.. automethod:: Mastodon.featured_tag_delete
+.. automethod:: Mastodon.tag_feature
+.. automethod:: Mastodon.tag_unfeature
 
 .. _status_pin():
 .. automethod:: Mastodon.status_pin
@@ -54,6 +54,9 @@ Deprecated
 .. automethod:: Mastodon.account_pin
 .. automethod:: Mastodon.account_unpin
 
+.. automethod:: Mastodon.featured_tag_create
+.. automethod:: Mastodon.featured_tag_delete
+    
 Following and followers
 -----------------------
 These functions allow you to get information about the logged in users followers and users that the logged in users follows as well as follow requests and follow suggestions, and to

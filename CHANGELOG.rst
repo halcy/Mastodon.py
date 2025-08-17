@@ -26,6 +26,7 @@ v2.1.0 (IN PROGRESS)
 * Added `attribution_domains` parameter to `account_update_credentials`.
 * Added `date_of_birth` parameter to `create_account`.
 * Added `account_endorse` and `account_unendorse` methods (replacing "pin" methods)
+* Added `tag_feature` and `tag_unfeature` methods (replacing previous featured tag api)
 
 v2.0.1
 ------
