@@ -2,8 +2,9 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v2.1.0 (IN PROGRESS)
---------------------
+v2.1.0
+------
+* Bumped support level to 4.4.3
 * Fixed to_json breaking on python 3.14 (Thanks @limburgher for the report)
 * Replaced pytest-vcr (deprecated) with pytest-recording (Thanks @CyberTailor)
 * Improved timeline documentation (Thanks @adamse)
@@ -27,6 +28,7 @@ v2.1.0 (IN PROGRESS)
 * Added `date_of_birth` parameter to `create_account`.
 * Added `account_endorse` and `account_unendorse` methods (replacing "pin" methods)
 * Added `tag_feature` and `tag_unfeature` methods (replacing previous featured tag api)
+* Added `instance_terms_of_service` method.
 
 v2.0.1
 ------

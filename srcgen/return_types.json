@@ -10552,5 +10552,58 @@
                 "is_nullable": false
             }
         }
+    },
+    {
+        "name": "Instance Terms of Service",
+        "python_name": "TermsOfService",
+        "func_call": "mastodon.instance_terms_of_service()",
+        "func_call_real": null,
+        "func_call_additional": "mastodon.instance_terms_of_service(datetime(2025, 8, 17))",
+        "func_alternate_acc": true,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/instance/#terms_of_service",
+        "description": "The terms of service for the instance.",
+        "fields": {
+            "effective_date": {
+                "description": "The date when the terms of service became effective.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "effective": {
+                "description": "Whether the terms of service are currently in effect.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "bool",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "content": {
+                "description": "The contents of the terms of service.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "HTML",
+                "is_optional": false,
+                "is_nullable": false
+            },
+            "succeeded_by": {
+                "description": "If there are newer terms of service, their effective date.",
+                "enum": null,
+                "version_history": [["4.4.0", "added"]],
+                "field_type": "datetime",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": true,
+                "is_nullable": false
+            }
+        }
     }
 ]

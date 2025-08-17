@@ -4,9 +4,11 @@ from mastodon.utility import api_version
 from mastodon.compat import urlparse
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription, DomainBlock, SupportedLocale
+from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription, DomainBlock, SupportedLocale, TermsOfService
 
 from typing import Union, Optional, Dict, List
+
+import datetime
 
 class Mastodon(Internals):
     ###
@@ -126,6 +128,22 @@ class Mastodon(Internals):
         Retrieve instance rules.
         """
         return self.__api_request('GET', '/api/v1/instance/rules')
+
+    @api_version("4.4.0", "4.4.0")
+    def instance_terms_of_service(self, date: Optional[datetime.date] = None) -> TermsOfService:
+        """
+        Retrieve the instance's terms of service.
+
+        If `date` is specified, it will return the terms of service that were put in effect on that date.
+
+        NB: This is not (currently?) a range lookup, you can only get the terms of service for a specific, exact date.
+        """
+        if date is not None and not isinstance(date, datetime.date):
+            raise MastodonIllegalArgumentError("Date parameter should be a datetime.date object")
+        if date is not None:
+            date = date.strftime("%Y-%m-%d")
+        params = self.__generate_params(locals())
+        return self.__api_request('GET', '/api/v1/instance/terms_of_service', params)
 
     ###
     # Reading data: Directory

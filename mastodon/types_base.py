@@ -209,7 +209,7 @@ if sys.version_info < (3, 9):
             FilterKeyword, FilterStatus, IdentityProof, StatusSource, Suggestion, Translation, \
             AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, NotificationPolicySummary, RelationshipSeveranceEvent, \
             GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, UnreadNotificationsCount, Appeal, \
-            NotificationRequest, SupportedLocale, OAuthServerInfo, OAuthUserInfo
+            NotificationRequest, SupportedLocale, OAuthServerInfo, OAuthUserInfo, TermsOfService
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())

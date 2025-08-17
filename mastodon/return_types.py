@@ -7178,6 +7178,55 @@ class OAuthUserInfo(AttribAccessDict):
 
     _version = "4.4.0"
 
+class TermsOfService(AttribAccessDict):
+    """
+    The terms of service for the instance.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a TermsOfService object
+        mastodon.instance_terms_of_service()
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/instance/#terms_of_service
+    """
+
+    effective_date: "datetime"
+    """
+    The date when the terms of service became effective.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    effective: "bool"
+    """
+    Whether the terms of service are currently in effect.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    content: "str"
+    """
+    The contents of the terms of service.
+    Should contain (as text): HTML
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    succeeded_by: "Optional[datetime]"
+    """
+    If there are newer terms of service, their effective date. (optional)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -7295,6 +7344,7 @@ ENTITY_NAME_MAP = {
     "SupportedLocale": SupportedLocale,
     "OAuthServerInfo": OAuthServerInfo,
     "OAuthUserInfo": OAuthUserInfo,
+    "TermsOfService": TermsOfService,
 }
 __all__ = [
     "Account",
@@ -7413,5 +7463,6 @@ __all__ = [
     "SupportedLocale",
     "OAuthServerInfo",
     "OAuthUserInfo",
+    "TermsOfService",
 ]
 

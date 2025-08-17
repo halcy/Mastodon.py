@@ -1818,3 +1818,25 @@ def test_entity_oauthuserinfo(mastodon_base, mastodon_admin):
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), OAuthUserInfo), str(type(result)) + ' is not a subclass of OAuthUserInfo after to_json/from_json'
 
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_termsofservice(mastodon_base, mastodon_admin):
+    mastodon = mastodon_admin
+    result = mastodon.instance_terms_of_service()
+    assert real_issubclass(type(result), TermsOfService), str(type(result)) + ' is not a subclass of TermsOfService'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), TermsOfService), str(type(result)) + ' is not a subclass of TermsOfService after to_json/from_json'
+    result = mastodon.instance_terms_of_service(datetime(2025, 8, 17))
+    assert real_issubclass(type(result), TermsOfService), str(type(result)) + ' is not a subclass of TermsOfService (additional function)'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), TermsOfService), str(type(result)) + ' is not a subclass of TermsOfService after to_json/from_json (additional function)'
+

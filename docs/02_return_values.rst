@@ -398,6 +398,9 @@ Return types
 .. autoclass:: mastodon.return_types.OAuthUserInfo
    :members:
 
+.. autoclass:: mastodon.return_types.TermsOfService
+   :members:
+
 Deprecated types
 ================
 .. autoclass:: mastodon.return_types.Filter

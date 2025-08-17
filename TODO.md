@@ -7,7 +7,7 @@ Refer to mastodon changelog and API docs for details when implementing, add or m
 * [x] Fix all the issues
 * [x] New endpoints for endorsements, replacing "pin" api, which is now deprecated: accounts_endorsements(id), account_endorse(id), account_unendorse(id)
 * [x] New endpoints for featured tags: tag_feature(name), tag_unfeature(name)
-* [ ] New endpoint: instance_terms, with or without date (format?)
+* [x] New endpoint: instance_terms, with or without date (format?)
 * [x] Some oauth stuff (userinfo? capability discovery? see issue for that)
 * [x] status_delete now has a media delete param
 * [x] push_subscribe now has a "standard" parameter to switch between two versions. may also need to update crypto impls?

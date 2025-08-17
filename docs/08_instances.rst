@@ -19,7 +19,8 @@ current instance as well as data from the instance-wide profile directory.
 .. automethod:: Mastodon.instance_nodeinfo
 .. automethod:: Mastodon.instance_rules
 .. automethod:: Mastodon.instance_extended_description
-
+.. automethod:: Mastodon.instance_terms_of_service
+    
 Profile directory
 ~~~~~~~~~~~~~~~~~
 .. automethod:: Mastodon.directory
