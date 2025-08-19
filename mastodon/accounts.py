@@ -484,11 +484,13 @@ class Mastodon(Internals):
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unendorse')
 
     @api_version("3.2.0", "3.2.0")
-    def account_note_set(self, id: Union[Account, IdType], comment: str) -> Account:
+    def account_note_set(self, id: Union[Account, IdType], comment: str) -> Relationship:
         """
         Set a note (visible to the logged in user only) for the given account.
 
         The returned object contains the updated note.
+
+        nb: To retrieve the current note for an account, use `account_relationships`.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ["id"])
@@ -514,4 +516,5 @@ class Mastodon(Internals):
         """
         Delete the logged-in user's header.
         """
+
         self.__api_request('DELETE', '/api/v1/profile/header')
