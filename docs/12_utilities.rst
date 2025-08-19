@@ -1,5 +1,5 @@
-Utility: Pagination and Blurhash
-================================
+Utility: Pagination, Blurhash, Other Utilities
+==============================================
 .. py:module:: mastodon
     :no-index:
 .. py:class: Mastodon
@@ -33,4 +33,6 @@ Cache control
 Other utilities
 ---------------
 .. automethod:: Mastodon.get_approx_server_time
+.. _get_status_length():
 .. automethod:: Mastodon.get_status_length
+
