@@ -2,6 +2,12 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.1.1
+------
+* Fixed return type and docs for `account_set_note`.
+* Improved documentation in various places.
+* Added missing type annotations in `utility.py`.
+
 v2.1.0
 ------
 * Bumped support level to 4.4.3
