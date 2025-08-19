@@ -90,5 +90,7 @@ Writing
 Translation
 -----------
 These functions allow you to get machine translations for statuses, if the instance supports it.
+
 .. automethod:: Mastodon.status_translate
+
     
