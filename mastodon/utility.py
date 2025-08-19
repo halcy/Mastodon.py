@@ -12,8 +12,8 @@ from mastodon.internals import Mastodon as Internals
 
 from mastodon.versions import parse_version_string, max_version, api_version
 
-from typing import Optional, Union, Dict, Iterator
-from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList
+from typing import Optional, Union, Dict, Iterator, Tuple, List
+from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList, MediaAttachment
 from mastodon.types_base import Entity, try_cast
 
 from ._url_regex import url_regex
@@ -21,14 +21,14 @@ import unicodedata
 
 
 class Mastodon(Internals):
-    def set_language(self, lang):
+    def set_language(self, lang: str):
         """
         Set the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter) or, for languages that do
         not have one, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and trends.
         """
         self.lang = lang
 
-    def retrieve_mastodon_version(self):
+    def retrieve_mastodon_version(self) -> str:
         """
         Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
 
@@ -67,7 +67,7 @@ class Mastodon(Internals):
                 "Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
         return version_str
 
-    def verify_minimum_version(self, version_str, cached=False):
+    def verify_minimum_version(self, version_str: str, cached: bool = False) -> bool:
         """
         Update version info from server and verify that at least the specified version is present.
 
@@ -86,7 +86,7 @@ class Mastodon(Internals):
             return False
         return True
 
-    def get_approx_server_time(self):
+    def get_approx_server_time(self) -> datetime:
         """
         Retrieve the approximate server time
 
@@ -106,7 +106,7 @@ class Mastodon(Internals):
     ###
     # Blurhash utilities
     ###
-    def decode_blurhash(self, media_dict, out_size=(16, 16), size_per_component=True, return_linear=True):
+    def decode_blurhash(self, media_dict: MediaAttachment, out_size: Tuple[int, int] = (16, 16), size_per_component: bool = True, return_linear: bool = True) -> List[List[List[float]]]:
         """
         Basic media-dict blurhash decoding.
 
@@ -350,3 +350,4 @@ class Mastodon(Internals):
             return text
 
         return grapheme.length(countable_text(text)) + grapheme.length(spoiler_text)
+
