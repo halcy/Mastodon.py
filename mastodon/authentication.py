@@ -272,9 +272,7 @@ class Mastodon(Internals):
 
     def clear_caches(self):
         """
-        Clear cached data:
-        * Mastodon version
-        * Streaming base URL
+        Clear cached data for astodon version and streaming base URL. Most programs should not have to call this.
         """
         self.__version_check_worked = None
         self.__version_check_tried = False
@@ -531,3 +529,4 @@ class Mastodon(Internals):
         Fetch information about the current application.
         """
         return self.__api_request('GET', '/api/v1/apps/verify_credentials')
+
