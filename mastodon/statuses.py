@@ -259,6 +259,10 @@ class Mastodon(Internals):
         2.8.2, you can only have either media or a poll attached, not both at
         the same time.
 
+        You can use :ref:`get_status_length() <get_status_length()>` to count how many
+        characters a status you want to post would take up in terms of Mastodons character
+        limit. The limits can be retrieved from the instance information (`instance_v2()`).
+
         **Specific to "pleroma" feature set:**: Specify `content_type` to set
         the content type of your post on Pleroma. It accepts 'text/plain' (default),
         'text/markdown', 'text/html' and 'text/bbcode'. This parameter is not
@@ -593,4 +597,5 @@ class Mastodon(Internals):
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
+
         return self.__api_request('POST', f'/api/v1/statuses/{id}/translate', params)
