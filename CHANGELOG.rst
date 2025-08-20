@@ -2,6 +2,10 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.1.2
+-------
+* Fix broken login when instance_v2 is present but has no api_versions attribute, such as on e.g. GoToSocial. (Thank you @bfordham for the report and fix!)
+
 v2.1.1
 ------
 * Fixed return type and docs for `account_set_note`.
