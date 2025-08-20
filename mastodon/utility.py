@@ -51,7 +51,7 @@ class Mastodon(Internals):
         found_api_version = False
         try:
             instance_v2_info = self.__instance_v2()
-            if "api_versions" in instance_v2_info:
+            if "api_versions" in instance_v2_info and instance_v2_info["api_versions"]:
                 if "mastodon" in instance_v2_info["api_versions"]:
                     self.mastodon_api_version = int(
                         instance_v2_info["api_versions"]["mastodon"])
@@ -60,7 +60,7 @@ class Mastodon(Internals):
             pass
         except MastodonVersionError:
             pass
-            
+
         self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
             warnings.warn(
