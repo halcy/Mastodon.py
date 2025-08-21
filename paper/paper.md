@@ -43,3 +43,5 @@ One common research use of Mastodon.py is the collection of (meta)data about dif
 # Acknowledgements
 
 Mastodon.py contains many small, but important additions and fixes by more authors than would be practical to include in this papers author list. We would like to take this space to thank them for their work in making Mastodon.py better.
+
+# References
