@@ -15,9 +15,9 @@ authors:
     affiliation: 2
 affiliations:
   - index: 1
-    name: icosahedron.website
+    name: icosahedron.website, Germany
   - index: 2
-    name: chitter.xyz
+    name: chitter.xyz, France
 date: 21 August 2025
 bibliography: paper.bib
 ---
