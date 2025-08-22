@@ -45,6 +45,11 @@ Full documentation and basic usage examples can be found
 at https://mastodonpy.readthedocs.io/en/stable/ . Some more extensive examples can be
 found at https://github.com/halcy/MastodonpyExamples
 
+If you have any questions about using the library or think you have found a bug,
+please feel free to open an issue, a github discussion thread, or to just directly
+contact @halcy@icosahedron.website on the Fediverse or .halcy on Discord - we'll
+try to respond as quickly as possible.
+
 Acknowledgements
 ----------------
 Mastodon.py contains work by a large amount of contributors, many of which have
