@@ -10,7 +10,8 @@
   * Where code can be written to support alternate implementations or different features, write code to do this
   * Write tests specific to these features
   * We now have a "feature set" parameter to support these better.
-
+* You can also check TODO.md for any open TODOs that have been added.
+  
 # General guidelines
 
 * If you've discovered what you think is a bug, or are even just unclear on whether something is a bug, or about how to do some specific thing - just open an issue, we'll try to respond.
