@@ -39,7 +39,7 @@ Then, log in. This can be done every time your application starts, or you can us
 Note that previous versions of Mastodon allowed logging in with username and 
 password - unfortunately, due to security concerns, Mastodon has started 
 requiring OAuth starting with version 4.4.0. If you're building a bot, you
-may with to instead just generate a token in the UI (On Mastodon: 
+may wish to instead just generate a token in the UI (On Mastodon: 
 your-server.com/settings/applications) and use it directly
 
 To post, create an actual API instance:

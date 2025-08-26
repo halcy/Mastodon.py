@@ -18,9 +18,8 @@ All of these help immensely, even if it's just "hey, I don't really get why X is
 have are, so while I'm not going to implement every suggestion and do have some ideas of what does and does not make a good library, your feedback is, in fact, extremely valuable
 and welcome.
 
-If you're looking for some "starter issues" to address: Currently, we don't have support for much of any of the new 4.0.0 API endpoints implemented. Pick one and have a go,
-especially from the admin API. Tests are somewhat annoying to set up, as they need to run against a live mastodon instance - great if you can write them, but feel free to
-skip out on them, too, or just write them "in the dry" without actually running them and leaving that for someone else.
+If you're looking for some "starter issues" to address, have a look at CONTRIBUTING.md or TODO.md in the repository ( https://github.com/halcy/Mastodon.py ) and see if anything
+seems like you'd want to give it a try.
 
 Tests
 -----
