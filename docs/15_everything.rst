@@ -32,6 +32,10 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.Status
    :no-index:
+.. autoclass:: mastodon.return_types.Quote
+   :no-index:
+.. autoclass:: mastodon.return_types.ShallowQuote
+   :no-index:
 .. autoclass:: mastodon.return_types.StatusEdit
    :no-index:
 .. autoclass:: mastodon.return_types.FilterResult
@@ -113,6 +117,8 @@ Every function on a huge CTRL-F-able page
 .. autoclass:: mastodon.return_types.InstanceUsage
    :no-index:
 .. autoclass:: mastodon.return_types.InstanceUsageUsers
+   :no-index:
+.. autoclass:: mastodon.return_types.RuleTranslation
    :no-index:
 .. autoclass:: mastodon.return_types.Rule
    :no-index:
@@ -238,6 +244,12 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.SupportedLocale
    :no-index:
+.. autoclass:: mastodon.return_types.OAuthServerInfo
+   :no-index:
+.. autoclass:: mastodon.return_types.OAuthUserInfo
+   :no-index:
+.. autoclass:: mastodon.return_types.TermsOfService
+   :no-index:
 .. autoclass:: mastodon.return_types.Filter
    :no-index:
 .. autoclass:: mastodon.return_types.Search
@@ -261,6 +273,10 @@ Every function on a huge CTRL-F-able page
 .. automethod:: Mastodon.create_account
    :no-index:
 .. automethod:: Mastodon.email_resend_confirmation
+   :no-index:
+.. automethod:: Mastodon.oauth_authorization_server_info
+   :no-index:
+.. automethod:: Mastodon.oauth_userinfo
    :no-index:
 .. automethod:: Mastodon.preferences
    :no-index:
@@ -362,15 +378,15 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.account_update_credentials
    :no-index:
-.. automethod:: Mastodon.account_pin
+.. automethod:: Mastodon.account_endorse
    :no-index:
-.. automethod:: Mastodon.account_unpin
+.. automethod:: Mastodon.account_unendorse
    :no-index:
 .. automethod:: Mastodon.account_note_set
    :no-index:
-.. automethod:: Mastodon.featured_tag_create
+.. automethod:: Mastodon.tag_feature
    :no-index:
-.. automethod:: Mastodon.featured_tag_delete
+.. automethod:: Mastodon.tag_unfeature
    :no-index:
 .. automethod:: Mastodon.status_pin
    :no-index:
@@ -379,6 +395,14 @@ Every function on a huge CTRL-F-able page
 .. automethod:: Mastodon.account_delete_avatar
    :no-index:
 .. automethod:: Mastodon.account_delete_header
+   :no-index:
+.. automethod:: Mastodon.account_pin
+   :no-index:
+.. automethod:: Mastodon.account_unpin
+   :no-index:
+.. automethod:: Mastodon.featured_tag_create
+   :no-index:
+.. automethod:: Mastodon.featured_tag_delete
    :no-index:
 .. automethod:: Mastodon.account_followers
    :no-index:
@@ -475,6 +499,8 @@ Every function on a huge CTRL-F-able page
 .. automethod:: Mastodon.instance_rules
    :no-index:
 .. automethod:: Mastodon.instance_extended_description
+   :no-index:
+.. automethod:: Mastodon.instance_terms_of_service
    :no-index:
 .. automethod:: Mastodon.directory
    :no-index:
@@ -636,11 +662,17 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.fetch_remaining
    :no-index:
+.. automethod:: Mastodon.pagination_iterator
+   :no-index:
+.. automethod:: Mastodon.get_pagination_info
+   :no-index:
 .. automethod:: Mastodon.decode_blurhash
    :no-index:
 .. automethod:: Mastodon.clear_caches
    :no-index:
 .. automethod:: Mastodon.get_approx_server_time
+   :no-index:
+.. automethod:: Mastodon.get_status_length
    :no-index:
 .. automethod:: Mastodon.admin_accounts_v2
    :no-index:
