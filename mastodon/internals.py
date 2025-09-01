@@ -379,7 +379,7 @@ class Mastodon():
                 streaming_api_url = instance["urls"]["streaming_api"]
         except:
             try:
-                streaming_api_url = self.instance_v2().configuration.urls.streaming
+                streaming_api_url = self.__instance_v2().configuration.urls.streaming
             except:
                 pass
 

@@ -1,5 +1,5 @@
 # instance.py - instance-level endpoints, directory, emoji, announcements
-from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError
+from mastodon.errors import MastodonDeprecationWarning, MastodonIllegalArgumentError, MastodonNotFoundError
 from mastodon.utility import api_version
 from mastodon.compat import urlparse
 
@@ -9,6 +9,7 @@ from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Acti
 from typing import Union, Optional, Dict, List
 
 import datetime
+import warnings
 
 class Mastodon(Internals):
     ###
@@ -24,13 +25,19 @@ class Mastodon(Internals):
         This is the explicit v1 version of this function. The v2 version is available through instance_v2().
         It contains a bit more information than this one, but does not include whether invites are enabled.
         """
-        return self.__instance()
+        instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
+        return instance
 
     def __instance(self) -> Instance:
         """
         Internal, non-version-checking helper that does the same as instance_v1()
+
+        Silences the deprecation warnning, we are careful about fallbacks anywhere this is used.
+        If you are using this, this is your notice to do that.
         """
-        instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=MastodonDeprecationWarning)
+            instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
         return instance
 
     @api_version("4.0.0", "4.0.0")
