@@ -22,7 +22,7 @@ class Mastodon(Internals):
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name, scopes: List[str] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None, 
+    def create_app(client_name: str, scopes: List[str] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None, 
                    to_file: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, request_timeout: float = _DEFAULT_TIMEOUT, 
                    session: Optional[requests.Session] = None, user_agent: str = _DEFAULT_USER_AGENT) -> Tuple[str, str]:
         """
@@ -529,4 +529,5 @@ class Mastodon(Internals):
         Fetch information about the current application.
         """
         return self.__api_request('GET', '/api/v1/apps/verify_credentials')
+
 
