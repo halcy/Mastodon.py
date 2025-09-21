@@ -352,7 +352,10 @@ class Mastodon(Internals):
         assert self.api_base_url is not None
         try:
             response = self.__api_request('GET', '/.well-known/oauth-authorization-server', do_ratelimiting=False)
-        except MastodonNotFoundError:
+        except MastodonAPIError:
+            # If the server doesn't support this endpoint, we want to ignore it and move on anyway.
+            # Some will respond with a 404 (raising the subclass `MastodonNotFoundError`), while some will just serve
+            # the whole frontend UI anyway for some reason, causing JSON parsing issues and raising `MastodonAPIError`.
             response = AttribAccessDict()
         return response
 
