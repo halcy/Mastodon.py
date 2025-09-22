@@ -1,5 +1,6 @@
 # utility.py - utility functions, externally usable
 
+from typing import TypeVar
 import re
 import dateutil
 import datetime
@@ -19,6 +20,7 @@ from mastodon.types_base import Entity, try_cast
 from ._url_regex import url_regex
 import unicodedata
 
+_T = TypeVar("_T", bound=Entity)
 
 class Mastodon(Internals):
     def set_language(self, lang: str):
@@ -147,7 +149,7 @@ class Mastodon(Internals):
     ###
     # Pagination
     ###
-    def fetch_next[T: Entity](self, previous_page: Union[PaginatableList[T], T, PaginationInfo]) -> Optional[Union[PaginatableList[T], T]]:
+    def fetch_next(self, previous_page: Union[PaginatableList[_T], _T, PaginationInfo]) -> Optional[Union[PaginatableList[_T], _T]]:
         """
         Fetches the next page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -195,7 +197,7 @@ class Mastodon(Internals):
         else:
             return self.__api_request(method, endpoint, params, override_type=response_type)
 
-    def fetch_previous[T: Entity](self, next_page: Union[PaginatableList[T], T, PaginationInfo]) -> Optional[Union[PaginatableList[T], T]]:
+    def fetch_previous(self, next_page: Union[PaginatableList[_T], _T, PaginationInfo]) -> Optional[Union[PaginatableList[_T], _T]]:
         """
         Fetches the previous page of results of a paginated request. Pass in the
         previous page in its entirety, or the pagination information dict
@@ -243,7 +245,7 @@ class Mastodon(Internals):
         else:
             return self.__api_request(method, endpoint, params, override_type=response_type)
 
-    def fetch_remaining[T: Entity](self, first_page: PaginatableList[T]) -> PaginatableList[T]:
+    def fetch_remaining(self, first_page: PaginatableList[_T]) -> PaginatableList[_T]:
         """
         Fetches all the remaining pages of a paginated request starting from a
         first page and returns the entire set of results (including the first page
@@ -281,7 +283,7 @@ class Mastodon(Internals):
         else:
             return None
 
-    def pagination_iterator[T: Entity](self, start_page: Union[PaginatableList[T], PaginationInfo], direction: str = "next", return_pagination_info: bool = False) -> Iterator[T]:
+    def pagination_iterator(self, start_page: Union[PaginatableList[_T], PaginationInfo], direction: str = "next", return_pagination_info: bool = False) -> Iterator[_T]:
         """
         Returns an iterator that will yield all entries in a paginated request,
         starting from the given start_page (can also be just the PaginationInfo, in which case the
