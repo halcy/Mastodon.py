@@ -2,9 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v2.1.4 (in progress)
---------------------
+v2.1.4
+------
 * Fix missing type annotation on `client_name` in `create_app()` (Thanks @thcrt )
+* Fix type annotation for pagination methods (Thanks @thcrt )
+* Fix login being broken on some Akkoma instances that don't 404 properly (Thanks @thcrt )
 
 v2.1.3
 -------
