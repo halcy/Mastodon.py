@@ -316,8 +316,6 @@ class Mastodon(Internals):
                 if return_pagination_info:
                     yield (entry, self.get_pagination_info(current_page, direction))
                 else:
-                    print("CURRENT PAGE IS", current_page)
-                    print("YIELDING ENTRY: ", entry)
                     yield entry
 
             if direction == "next":
@@ -352,4 +350,5 @@ class Mastodon(Internals):
             return text
 
         return grapheme.length(countable_text(text)) + grapheme.length(spoiler_text)
+
 
