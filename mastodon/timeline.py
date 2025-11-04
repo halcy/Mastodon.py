@@ -18,7 +18,7 @@ class Mastodon(Internals):
                  remote: bool = False) -> PaginatableList[Status]:
         """ 
         Fetch statuses, most recent ones first. `timeline` can be 'home', 'local', 'public',
-        'tag/<hashtag<', 'list/<id>' or 'link/<url>'. See the following functions documentation for what those do.
+        'tag/<hashtag>', 'list/<id>' or 'link/<url>'. See the following functions documentation for what those do.
 
         The default timeline is the "home" timeline.
 
