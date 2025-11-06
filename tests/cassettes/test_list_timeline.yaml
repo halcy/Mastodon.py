@@ -22,10 +22,10 @@ interactions:
     body:
       string: '{"id":"5","title":"ham burglars","replies_policy":"list","exclusive":false}'
     headers:
-      Content-Length:
-      - '75'
       cache-control:
       - private, no-store
+      content-length:
+      - '75'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
@@ -35,11 +35,11 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=5.72, cache_generate.active_support;dur=1.12,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.21,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=5.90, cache_generate.active_support;dur=1.19,
+        cache_write.active_support;dur=0.24, instantiation.active_record;dur=0.22,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=5.09, render.active_model_serializers;dur=0.14,
-        process_action.action_controller;dur=33.42
+        transaction.active_record;dur=6.18, render.active_model_serializers;dur=0.19,
+        process_action.action_controller;dur=35.21
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -53,11 +53,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.035687Z'
+      - '2025-11-06T21:20:00.225881Z'
       x-request-id:
-      - 6aa43cee-fc62-4ac9-a8e0-2e1abe316a14
+      - 914f0195-d3f2-46c0-bbdc-6a534e9241d8
       x-runtime:
-      - '0.053602'
+      - '0.055291'
       x-xss-protection:
       - '0'
     status:
@@ -80,25 +80,25 @@ interactions:
     uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
     body:
-      string: '{"id":"115045157726281124","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-08-17T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2025-08-17","hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false,"attribution_domains":[]},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"1048575","color":"","highlighted":true}}'
+      string: '{"id":"115504820987601773","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-11-06T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/115504820987601773","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":"2025-11-06","hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false,"attribution_domains":[],"quote_policy":"public"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"2097151","color":"","highlighted":true}}'
     headers:
-      Content-Length:
-      - '1035'
       cache-control:
       - private, no-store
+      content-length:
+      - '1075'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"02ada8f20e4f892be151e3c297ec09a9"
+      - W/"24a2eb9d50c16e6e7237f6f3a6bbfc43"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.05, sql.active_record;dur=2.08, cache_generate.active_support;dur=1.53,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.32,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=5.27,
-        process_action.action_controller;dur=31.51
+      - cache_read.active_support;dur=0.12, sql.active_record;dur=1.42, cache_generate.active_support;dur=1.60,
+        cache_write.active_support;dur=0.15, instantiation.active_record;dur=0.24,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.63,
+        process_action.action_controller;dur=31.36
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -112,11 +112,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.090772Z'
+      - '2025-11-06T21:20:00.308090Z'
       x-request-id:
-      - c3532325-68b3-45be-8f0e-de47f1898f20
+      - 84b77616-8240-4104-94a7-fc9133be3747
       x-runtime:
-      - '0.048622'
+      - '0.050966'
       x-xss-protection:
       - '0'
     status:
@@ -140,31 +140,31 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115045157726281124/follow
+    uri: http://localhost:3000/api/v1/accounts/115504820987601773/follow
   response:
     body:
-      string: '{"id":"115045157726281124","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+      string: '{"id":"115504820987601773","following":true,"showing_reblogs":true,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
         ebayer gerne wieder"}'
     headers:
-      Content-Length:
-      - '315'
       cache-control:
       - private, no-store
+      content-length:
+      - '315'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"571a57988e4473da9d6ad5f98a1510cf"
+      - W/"54e5e00360c6b11be8479286f046ab74"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=97.23, cache_generate.active_support;dur=0.99,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.49,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=8.58, cache_generate.active_support;dur=1.01,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.44,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=97.57, cache_delete.active_support;dur=0.03,
+        transaction.active_record;dur=9.61, cache_delete.active_support;dur=0.02,
         cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.07,
-        render.active_model_serializers;dur=0.17, process_action.action_controller;dur=141.21
+        render.active_model_serializers;dur=0.18, process_action.action_controller;dur=55.53
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -178,18 +178,18 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.168256Z'
+      - '2025-11-06T21:20:00.406087Z'
       x-request-id:
-      - 7d4d4a7b-abb7-42da-8e65-1a8ad6735ad0
+      - 1c1ed8aa-3845-4e6f-8d26-7e067ca34e1f
       x-runtime:
-      - '0.159007'
+      - '0.074800'
       x-xss-protection:
       - '0'
     status:
       code: 200
       message: OK
 - request:
-    body: account_ids%5B%5D=115045157726281124
+    body: account_ids%5B%5D=115504820987601773
     headers:
       Accept:
       - '*/*'
@@ -211,10 +211,10 @@ interactions:
     body:
       string: '{}'
     headers:
-      Content-Length:
-      - '2'
       cache-control:
       - private, no-store
+      content-length:
+      - '2'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
@@ -224,11 +224,11 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=5.60, cache_generate.active_support;dur=0.90,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.29,
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=6.25, cache_generate.active_support;dur=1.18,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.30,
         start_processing.action_controller;dur=0.00, unpermitted_parameters.action_controller;dur=0.00,
-        start_transaction.active_record;dur=0.00, transaction.active_record;dur=6.12,
-        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=37.07
+        start_transaction.active_record;dur=0.00, transaction.active_record;dur=6.58,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=39.92
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -242,11 +242,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.340026Z'
+      - '2025-11-06T21:20:00.511975Z'
       x-request-id:
-      - 0174c10f-94ec-46ac-8b5c-262892f1cd24
+      - 062a7751-3a03-4191-b880-2682dd420844
       x-runtime:
-      - '0.054881'
+      - '0.058764'
       x-xss-protection:
       - '0'
     status:
@@ -273,28 +273,28 @@ interactions:
     uri: http://localhost:3000/api/v1/statuses
   response:
     body:
-      string: '{"id":"115045575387136749","created_at":"2025-08-17T18:42:47.407Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/115045575387136749","url":"http://localhost:3000/@admin/115045575387136749","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003eI
+      string: '{"id":"115504840481480357","created_at":"2025-11-06T21:19:56.603Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/115504820987601773/statuses/115504840481480357","url":"http://localhost:3000/@admin/115504840481480357","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003eI
         have never stolen a ham in my life.\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"115045157726281124","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-08-17T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":1,"last_status_at":"2025-08-17","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"quote":null,"card":null,"poll":null}'
+        test suite","website":null},"account":{"id":"115504820987601773","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-11-06T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/115504820987601773","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":1,"last_status_at":"2025-11-06","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}}'
     headers:
-      Content-Length:
-      - '1502'
       cache-control:
       - private, no-store
+      content-length:
+      - '1632'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"e045b1fb8c7463fd0c3bf4379f418005"
+      - W/"8d10a2696193efaf8ed7075a10f34015"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.07, sql.active_record;dur=14.75, cache_generate.active_support;dur=3.16,
-        cache_write.active_support;dur=0.16, instantiation.active_record;dur=0.43,
+      - cache_read.active_support;dur=0.06, sql.active_record;dur=16.07, cache_generate.active_support;dur=4.12,
+        cache_write.active_support;dur=0.16, instantiation.active_record;dur=0.48,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=5.77, render.active_model_serializers;dur=13.16,
-        process_action.action_controller;dur=60.80
+        transaction.active_record;dur=7.88, render.active_model_serializers;dur=14.55,
+        process_action.action_controller;dur=68.62
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -308,11 +308,11 @@ interactions:
       x-ratelimit-remaining:
       - '298'
       x-ratelimit-reset:
-      - '2025-08-17T21:00:00.436824Z'
+      - '2025-11-07T00:00:00.639960Z'
       x-request-id:
-      - 559fc0e3-e102-47ae-a37e-239421a8f8e8
+      - 3ff85cad-ab1d-42f3-b06a-44e0a8a3dafa
       x-runtime:
-      - '0.079752'
+      - '0.086702'
       x-xss-protection:
       - '0'
     status:
@@ -335,31 +335,31 @@ interactions:
     uri: http://localhost:3000/api/v1/timelines/list/5
   response:
     body:
-      string: '[{"id":"115045575387136749","created_at":"2025-08-17T18:42:47.407Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/115045575387136749","url":"http://localhost:3000/@admin/115045575387136749","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"\u003cp\u003eI
+      string: '[{"id":"115504840481480357","created_at":"2025-11-06T21:19:56.603Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/115504820987601773/statuses/115504840481480357","url":"http://localhost:3000/@admin/115504840481480357","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"\u003cp\u003eI
         have never stolen a ham in my life.\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"115045157726281124","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-08-17T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":1,"last_status_at":"2025-08-17","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"quote":null,"card":null,"poll":null}]'
+        test suite","website":null},"account":{"id":"115504820987601773","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-11-06T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/115504820987601773","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":1,"last_status_at":"2025-11-06","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}}]'
     headers:
-      Content-Length:
-      - '1489'
       cache-control:
       - private, no-store
+      content-length:
+      - '1619'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"379065aafb06e291602d8c274fa03f82"
+      - W/"2424df5c6dcbcd28244b6642f28f0ba6"
       link:
-      - <http://localhost:3000/api/v1/timelines/list/5?max_id=115045575387136749>;
-        rel="next", <http://localhost:3000/api/v1/timelines/list/5?min_id=115045575387136749>;
+      - <http://localhost:3000/api/v1/timelines/list/5?max_id=115504840481480357>;
+        rel="next", <http://localhost:3000/api/v1/timelines/list/5?min_id=115504840481480357>;
         rel="prev"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.07, sql.active_record;dur=3.91, cache_generate.active_support;dur=3.46,
-        cache_write.active_support;dur=0.15, instantiation.active_record;dur=0.47,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.01,
-        process_action.action_controller;dur=48.69
+      - cache_read.active_support;dur=0.07, sql.active_record;dur=4.75, cache_generate.active_support;dur=4.90,
+        cache_write.active_support;dur=0.15, instantiation.active_record;dur=0.60,
+        start_processing.action_controller;dur=0.01, render.active_model_serializers;dur=3.98,
+        process_action.action_controller;dur=53.28
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -373,11 +373,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.522507Z'
+      - '2025-11-06T21:20:00.753594Z'
       x-request-id:
-      - 0e8257cd-d1b3-4f0f-afa7-0663b7763c99
+      - 97149030-715f-4a46-89dd-9a78efceb8d2
       x-runtime:
-      - '0.070771'
+      - '0.076779'
       x-xss-protection:
       - '0'
     status:
@@ -399,31 +399,31 @@ interactions:
       User-Agent:
       - tests/v311
     method: DELETE
-    uri: http://localhost:3000/api/v1/statuses/115045575387136749
+    uri: http://localhost:3000/api/v1/statuses/115504840481480357
   response:
     body:
-      string: '{"id":"115045575387136749","created_at":"2025-08-17T18:42:47.407Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/users/admin/statuses/115045575387136749","url":"http://localhost:3000/@admin/115045575387136749","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"text":"I
+      string: '{"id":"115504840481480357","created_at":"2025-11-06T21:19:56.603Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/115504820987601773/statuses/115504840481480357","url":"http://localhost:3000/@admin/115504840481480357","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"text":"I
         have never stolen a ham in my life.","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
-        test suite","website":null},"account":{"id":"115045157726281124","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-08-17T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/users/admin","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":0,"last_status_at":"2025-08-17","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"quote":null,"card":null,"poll":null}'
+        test suite","website":null},"account":{"id":"115504820987601773","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2025-11-06T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/115504820987601773","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":0,"last_status_at":"2025-11-06","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}}'
     headers:
-      Content-Length:
-      - '1472'
       cache-control:
       - private, no-store
+      content-length:
+      - '1602'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"21176ecd8f252125eb6bf36dea0ff3c7"
+      - W/"4edbe3f10c519d6d0a0c40c4518f397d"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.07, sql.active_record;dur=8.83, cache_generate.active_support;dur=3.57,
-        cache_write.active_support;dur=0.16, instantiation.active_record;dur=0.50,
+      - cache_read.active_support;dur=0.08, sql.active_record;dur=9.18, cache_generate.active_support;dur=4.08,
+        cache_write.active_support;dur=0.15, instantiation.active_record;dur=0.55,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=5.03, render.active_model_serializers;dur=15.96,
-        process_action.action_controller;dur=53.81
+        transaction.active_record;dur=5.36, render.active_model_serializers;dur=20.18,
+        process_action.action_controller;dur=60.45
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -437,11 +437,11 @@ interactions:
       x-ratelimit-remaining:
       - '29'
       x-ratelimit-reset:
-      - '2025-08-17T19:00:00.625632Z'
+      - '2025-11-06T21:30:00.924842Z'
       x-request-id:
-      - 1042743e-4625-4330-8826-b80ad8287823
+      - bfb9f1e7-4a27-4fdf-9114-719bbed92412
       x-runtime:
-      - '0.071544'
+      - '0.080126'
       x-xss-protection:
       - '0'
     status:
@@ -463,31 +463,31 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/115045157726281124/unfollow
+    uri: http://localhost:3000/api/v1/accounts/115504820987601773/unfollow
   response:
     body:
-      string: '{"id":"115045157726281124","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+      string: '{"id":"115504820987601773","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
         ebayer gerne wieder"}'
     headers:
-      Content-Length:
-      - '317'
       cache-control:
       - private, no-store
+      content-length:
+      - '317'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"f8ddc0759cdbbb09a25a48584ab50595"
+      - W/"934507d051ba0127320eca381f8981c4"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=8.15, cache_generate.active_support;dur=0.99,
-        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.48,
+      - cache_read.active_support;dur=0.13, sql.active_record;dur=8.04, cache_generate.active_support;dur=0.96,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.57,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=12.48, cache_delete.active_support;dur=0.16,
-        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.07,
-        render.active_model_serializers;dur=0.16, process_action.action_controller;dur=59.35
+        transaction.active_record;dur=9.39, cache_delete.active_support;dur=0.02,
+        cache_read_multi.active_support;dur=0.04, cache_write_multi.active_support;dur=0.06,
+        render.active_model_serializers;dur=0.17, process_action.action_controller;dur=49.95
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -501,11 +501,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.737877Z'
+      - '2025-11-06T21:20:00.066746Z'
       x-request-id:
-      - 9c5c869c-86af-466b-91a2-1172e4ed074d
+      - e8580745-ebe0-4aec-a928-497e3846668d
       x-runtime:
-      - '0.076565'
+      - '0.067144'
       x-xss-protection:
       - '0'
     status:
@@ -532,10 +532,10 @@ interactions:
     body:
       string: '{}'
     headers:
-      Content-Length:
-      - '2'
       cache-control:
       - private, no-store
+      content-length:
+      - '2'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
@@ -545,11 +545,11 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=5.71, cache_generate.active_support;dur=0.99,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.24,
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=6.41, cache_generate.active_support;dur=1.08,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.39,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=5.35, render.active_model_serializers;dur=0.02,
-        process_action.action_controller;dur=33.94
+        transaction.active_record;dur=5.94, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=36.82
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -563,11 +563,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2025-08-17T18:45:00.828700Z'
+      - '2025-11-06T21:20:00.166809Z'
       x-request-id:
-      - 09cd5b84-17f7-4f5e-bc51-6f3afc500eda
+      - 8daea57a-98aa-4919-8a47-eb410470b6da
       x-runtime:
-      - '0.050936'
+      - '0.054657'
       x-xss-protection:
       - '0'
     status:
