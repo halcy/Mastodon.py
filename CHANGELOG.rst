@@ -2,10 +2,15 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.1.4
+------
+* Fix missing type annotation on `client_name` in `create_app()` (Thanks @thcrt )
+* Fix type annotation for pagination methods (Thanks @thcrt )
+* Fix login being broken on some Akkoma instances that don't 404 properly (Thanks @thcrt )
+
 v2.1.3
 -------
-* Fix the library throwing a deprecation warning during some internal operations due to the v1 version of the instance API being deprecated, add a fallback to the v1 API in case Mastodon actually removes the v1 endpoint in the future. (Thanks @andrew-codechimp
-for the report)
+* Fix the library throwing a deprecation warning during some internal operations due to the v1 version of the instance API being deprecated, add a fallback to the v1 API in case Mastodon actually removes the v1 endpoint in the future. (Thanks @andrew-codechimp for the report)
 * Fix "Everything" page in the docs
 
 v2.1.2
