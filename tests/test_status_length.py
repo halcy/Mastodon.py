@@ -56,7 +56,7 @@ TEST_CASES = [
 @pytest.mark.parametrize("text,expected", TEST_CASES)
 def test_get_status_length_against_ground_truth(text, expected):
     # skip if python version is less than or equal 3.7
-    if sys.version_info <= (3, 7):
+    if (sys.version_info.major, sys.version_info.minor) <= (3, 7):
         pytest.skip("Python version is less than or equal to 3.7")
     else:
         assert Mastodon.get_status_length(text) == expected

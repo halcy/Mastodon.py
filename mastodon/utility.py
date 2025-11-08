@@ -339,7 +339,7 @@ class Mastodon(Internals):
                 'To use the get_status_length function, please install the grapheme Python module.')
 
         # on python 3.7 and below, graphemeu can be inaccurate, so warn about this
-        if sys.version_info <= (3, 7):
+        if (sys.version_info.major, sys.version_info.minor) <= (3, 7):
             warnings.warn("The grapheme module may be inaccurate on Python 3.7 and below; get_status_length results may be incorrect.")
 
         username_regex = re.compile(
