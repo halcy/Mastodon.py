@@ -1,6 +1,7 @@
 # utility.py - utility functions, externally usable
 
 from typing import TypeVar
+import sys
 import re
 import dateutil
 import datetime
@@ -336,6 +337,10 @@ class Mastodon(Internals):
         if not IMPL_HAS_GRAPHEME:
             raise NotImplementedError(
                 'To use the get_status_length function, please install the grapheme Python module.')
+
+        # on python 3.7 and below, graphemeu can be inaccurate, so warn about this
+        if sys.version_info <= (3, 7):
+            warnings.warn("The grapheme module may be inaccurate on Python 3.7 and below; get_status_length results may be incorrect.")
 
         username_regex = re.compile(
             r'(^|[^/\w])@(([a-z0-9_]+)@[a-z0-9\.\-]+[a-z0-9]+)', re.IGNORECASE)

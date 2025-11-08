@@ -2,6 +2,11 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.2.0 (In progress)
+--------------------
+* Bumped support level to 4.5.0
+* Switch from `grapheme` to `graphemeu` package, which is more maintained (thanks @CyberTailor for the report).
+
 v2.1.4
 ------
 * Fix missing type annotation on `client_name` in `create_app()` (Thanks @thcrt )
