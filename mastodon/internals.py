@@ -386,14 +386,14 @@ class Mastodon():
         if not streaming_api_url is None and streaming_api_url != self.api_base_url:
             # This is probably a websockets URL, which is really for the browser, but requests can't handle it
             # So we do this below to turn it into an HTTPS or HTTP URL
-            parse = urlparse(instance["urls"]["streaming_api"])
+            parse = urlparse(streaming_api_url)
             if parse.scheme == 'wss':
                 url = "https://" + parse.netloc
             elif parse.scheme == 'ws':
                 url = "http://" + parse.netloc
             else:
                 raise MastodonAPIError(
-                    f"Could not parse streaming api location returned from server: {instance['urls']['streaming_api']}."
+                    f"Could not parse streaming api location returned from server: {streaming_api_url}."
                 )
         else:
             url = self.api_base_url
