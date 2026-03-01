@@ -185,6 +185,9 @@ class StreamListener(object):
         return event
 
     def _dispatch(self, event):
+        if not event:
+            return
+
         try:
             name = event['event']
             data = event['data']
