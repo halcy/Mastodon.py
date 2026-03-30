@@ -24,13 +24,13 @@ bibliography: paper.bib
 
 # Summary
 
-**Mastodon** [@mastodon] is a free-software microblogging social media server that allows users to post short form text and media as part of the decentralized, federated ActivityPub [@activitypub] network. **Mastodon.py** is a Python library that provides a user-friendly wrapper around the Mastodon REST and streaming APIs, enabling researchers, developers, and educators to build bots, data-collection tools, teaching examples, and full-featured clients for Mastodon and other servers that offer a Mastodon-compatible API, such as Akkoma [@akkoma2025akkoma], GoToSocial [@gotosocial2025gotosocial] and SNAC [@snac2025snac].
+**Mastodon** [@mastodon] is a free-software microblogging social media server that allows users to post short form text and media as part of the decentralized, federated ActivityPub [@activitypub] network. **Mastodon.py** is a Python library that provides a user-friendly wrapper around the Mastodon REST and streaming APIs, enabling researchers, developers, and educators to build bots, data-collection tools, teaching examples, and full-featured clients for Mastodon and other servers that offer a Mastodon-compatible API, such as Akkoma [@akkoma2025akkoma], GoToSocial [@gotosocial2025gotosocial], and SNAC [@snac2025snac].
 
-The library exposes all methods available to users of the Mastodon API while simplifying its use by handling all the implementation details required to effectively interact with it, such as authentication, pagination and dealing with rate limits. It also provides extensive documentation of methods and return values available directly as part of the library, making development easier.
+The library exposes all methods available to users of the Mastodon API while simplifying its use by handling all the implementation details required to effectively interact with it, such as authentication, pagination, and dealing with rate limits. It also provides extensive documentation of methods and return values available directly as part of the library, making development easier.
 
 # Statement of need
 
-Studying or integrating with federated social networks often requires substantial boilerplate: OAuth flows, multipart uploads, pagination, backoff under rate limits, or just plain figuring out from the API documentation what information is available where and how to get it. For many Python users - particularly those in data science, human-computer interaction, computational social science, or digital humanities - this plumbing distracts from core research objectives.
+Studying or integrating with federated social networks often requires substantial boilerplate: OAuth flows, multipart uploads, pagination, backoff under rate limits, or just plain figuring out from the API documentation what information is available where and how to get it. For many Python users, particularly those in data science, human-computer interaction, computational social science, or digital humanities, this plumbing distracts from core research objectives.
 
 **Mastodon.py** addresses this gap by providing a stable and straightforward Python implementation of the API that takes care of the details and allows its users to focus on their actual, higher level goals, instead of getting bogged down in the details of how to achieve them.
 
@@ -38,7 +38,7 @@ These features have made Mastodon.py a common choice both for building anything 
 
 # Ethics statement
 
-One common research use of Mastodon.py is the collection of (meta)data about different Mastodon instances, users and the shape of the network. We would like to use this space to remind researchers using the library to be mindful of issues around consent when performing such data collection in an environment where many users are highly privacy-conscious and dislike being talked about, rather than to [@wahner2024don].
+One common research use of Mastodon.py is the collection of (meta)data about different Mastodon instances, users, and the shape of the network. We would like to use this space to remind researchers using the library to be mindful of issues around consent when performing such data collection in an environment where many users are highly privacy-conscious and dislike being talked about, rather than to [@wahner2024don].
 
 # Acknowledgements
 
