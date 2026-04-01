@@ -1,6 +1,5 @@
 import pytest
 import os
-import vcr
 
 # Set this to True to debug issues with tests
 DEBUG_REQUESTS = False

@@ -1,8 +1,7 @@
 import pytest
-import vcr      
 from mastodon.return_types import *
 from mastodon.types_base import real_issubclass, Entity
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import sys
       
 # "never record anything with admin in the URL" filter

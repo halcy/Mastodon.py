@@ -1,5 +1,4 @@
 import pytest
-import vcr
 from mastodon.Mastodon import MastodonAPIError
 import json
 from mastodon.return_types import Status, try_cast_recurse

@@ -12,14 +12,13 @@ from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError, Mast
 from mastodon.compat import IMPL_HAS_BLURHASH, blurhash, IMPL_HAS_GRAPHEME, grapheme
 from mastodon.internals import Mastodon as Internals
 
-from mastodon.versions import parse_version_string, max_version, api_version
+from mastodon.versions import parse_version_string
 
-from typing import Optional, Union, Dict, Iterator, Tuple, List
+from typing import Optional, Union, Iterator, Tuple, List
 from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList, MediaAttachment
 from mastodon.types_base import Entity, try_cast
 
 from ._url_regex import url_regex
-import unicodedata
 
 _T = TypeVar("_T", bound=Entity)
 

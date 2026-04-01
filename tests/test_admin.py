@@ -1,5 +1,4 @@
 import pytest
-import time
 from datetime import datetime, timedelta
 from mastodon import MastodonIllegalArgumentError
 import hashlib

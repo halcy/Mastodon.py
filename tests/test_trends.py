@@ -1,6 +1,4 @@
 import pytest
-import time
-import vcr
 
 
 @pytest.mark.vcr()

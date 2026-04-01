@@ -1,5 +1,4 @@
 import pytest
-from mastodon.Mastodon import MastodonIllegalArgumentError
 from mastodon import Mastodon
 import vcr
 

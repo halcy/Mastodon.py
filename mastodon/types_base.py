@@ -1,6 +1,6 @@
 from __future__ import annotations # python < 3.9 compat
 import typing
-from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic, ForwardRef
+from typing import List, Union, Optional, Dict, Any, get_type_hints, TypeVar, IO, Generic, ForwardRef
 from datetime import datetime, timezone
 import dateutil
 import dateutil.parser

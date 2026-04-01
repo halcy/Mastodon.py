@@ -2,13 +2,11 @@ import pytest
 import itertools
 from mastodon.streaming import StreamListener, CallbackStreamListener
 from mastodon.Mastodon import MastodonMalformedEventError
-from mastodon import Mastodon
 
 import threading
 import time
 
 import select
-import sys
 
 streaming_is_patched = False
 real_connections = []
