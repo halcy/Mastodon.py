@@ -7,12 +7,11 @@ import os
 import time
 import collections
 
-from mastodon.errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError, MastodonNotFoundError
+from mastodon.errors import MastodonIllegalArgumentError, MastodonNetworkError, MastodonVersionError, MastodonAPIError
 from mastodon.defaults import _DEFAULT_SCOPES, _SCOPE_SETS, _DEFAULT_TIMEOUT, _DEFAULT_USER_AGENT
 from mastodon.utility import parse_version_string, api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.utility import Mastodon as Utility
 from typing import List, Optional, Union, Tuple
 from mastodon.return_types import Application, AttribAccessDict, OAuthServerInfo, OAuthUserInfo
 from mastodon.compat import PurePath

@@ -8,7 +8,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import MediaAttachment, PathOrFile, IdType
 
-from typing import Optional, Union, Tuple, List, Dict, Any
+from typing import Optional, Union, Tuple
 
 class Mastodon(Internals):
     ###

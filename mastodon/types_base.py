@@ -1,6 +1,6 @@
 from __future__ import annotations # python < 3.9 compat
 import typing
-from typing import List, Union, Optional, Dict, Any, Tuple, Callable, get_type_hints, TypeVar, IO, Generic, ForwardRef
+from typing import List, Union, Optional, Dict, Any, get_type_hints, TypeVar, IO, Generic, ForwardRef
 from datetime import datetime, timezone
 import dateutil
 import dateutil.parser
@@ -190,26 +190,6 @@ if sys.version_info < (3, 9):
     def resolve_type(t):
         # I'm sorry about this, but I cannot think of another way to make this work properly in versions below 3.9 that
         # cannot resolve forward references in a sane way
-        from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, \
-            Status, Quote, ShallowQuote, StatusEdit, FilterResult, StatusMention, \
-            ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, Tag, \
-            TagHistory, CustomEmoji, Application, Relationship, Filter, FilterV2, \
-            Notification, Context, UserList, MediaAttachment, MediaAttachmentMetadataContainer, MediaAttachmentImageMetadata, \
-            MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, MediaAttachmentFocusPoint, MediaAttachmentColors, PreviewCard, TrendingLinkHistory, \
-            PreviewCardAuthor, Search, SearchV2, Instance, InstanceConfiguration, InstanceURLs, \
-            InstanceV2, InstanceIcon, InstanceConfigurationV2, InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, \
-            InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, InstanceUsageUsers, RuleTranslation, Rule, \
-            InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration, \
-            InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, \
-            NodeinfoMetadata, Activity, Report, AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, \
-            PushNotification, Preferences, FeaturedTag, Marker, Announcement, Reaction, \
-            StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, AdminMeasure, AdminMeasureData, \
-            AdminDimension, AdminDimensionData, AdminRetention, AdminCohort, AdminDomainBlock, AdminCanonicalEmailBlock, \
-            AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory, AdminIpBlock, DomainBlock, ExtendedDescription, \
-            FilterKeyword, FilterStatus, IdentityProof, StatusSource, Suggestion, Translation, \
-            AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, NotificationPolicySummary, RelationshipSeveranceEvent, \
-            GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, UnreadNotificationsCount, Appeal, \
-            NotificationRequest, SupportedLocale, OAuthServerInfo, OAuthUserInfo, TermsOfService
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())

@@ -1,6 +1,6 @@
 # timeline.py - endpoints for reading various different timelines
 
-from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError
+from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals

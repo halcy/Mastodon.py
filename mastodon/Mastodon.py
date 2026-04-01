@@ -1,26 +1,6 @@
 # coding: utf-8
 
-import json
-import base64
-import os
-import os.path
-import time
-import datetime
-import collections
-from contextlib import closing
-import requests
-from requests.models import urlencode
-import dateutil
-import dateutil.parser
-import re
-import copy
 
-
-from mastodon.compat import IMPL_HAS_CRYPTO, IMPL_HAS_ECE, IMPL_HAS_BLURHASH
-from mastodon.compat import cryptography, default_backend, ec, serialization
-from mastodon.compat import http_ece
-from mastodon.compat import blurhash
-from mastodon.compat import urlparse
 
 from mastodon.utility import parse_version_string, max_version, api_version
 from mastodon.utility import Mastodon as MastoUtility
@@ -28,10 +8,7 @@ from mastodon.utility import Mastodon as MastoUtility
 from mastodon.return_types import *
 from mastodon.errors import *
 
-from mastodon.defaults import _DEFAULT_TIMEOUT, _DEFAULT_SCOPES, _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
-from mastodon.defaults import _SCOPE_SETS
 
-from mastodon.internals import Mastodon as Internals
 from mastodon.authentication import Mastodon as MastoAuthentication
 from mastodon.accounts import Mastodon as MastoAccounts
 from mastodon.instance import Mastodon as MastoInstance
