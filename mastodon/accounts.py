@@ -386,13 +386,16 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute')
 
-    @api_version("1.1.1", "3.1.0")
+    @api_version("1.1.1", "4.2.0")
     def account_update_credentials(self, display_name: Optional[str] = None, note: Optional[str] = None,
                                    avatar: Optional[PathOrFile] = None, avatar_mime_type: Optional[str] = None,
                                    header: Optional[PathOrFile] = None, header_mime_type: Optional[str] = None,
                                    locked: Optional[bool] = None, bot: Optional[bool] = None,
                                    discoverable: Optional[bool] = None, fields: Optional[List[Tuple[str, str]]] = None,
-                                   attribution_domains: Optional[List[str]] = None) -> Account:
+                                   hide_collections: Optional[bool] = None, indexable: Optional[bool] = None,
+                                   attribution_domains: Optional[List[str]] = None,
+                                   source_privacy: Optional[str] = None, source_sensitive: Optional[bool] = None,
+                                   source_language: Optional[str] = None) -> Account:
         """
         Update the profile for the currently logged-in user.
 
@@ -407,11 +410,23 @@ class Mastodon(Internals):
 
         `discoverable` specifies whether the user should appear in the user directory.
 
+        `hide_collections` specifies whether to hide the user's follower and following lists.
+
+        `indexable` specifies whether the user's public posts should be searchable by anyone.
+
         `fields` can be a list of up to four name-value pairs (specified as tuples) to
         appear as semi-structured information in the user's profile.
 
         `attribution_domains` can be a list of domains that the user wants to allow to
         attribute content to them.
+
+        `source_privacy` sets the default posting privacy. One of ``'public'``, ``'unlisted'``, 
+        or ``'private'``.
+
+        `source_sensitive` sets whether posts should be marked as sensitive by default.
+
+        `source_language` sets the default language for new posts (ISO 639-1 two-letter
+        language code).
 
         The returned object reflects the updated account.
         """
@@ -424,8 +439,17 @@ class Mastodon(Internals):
                 params_initial[f'fields_attributes[{idx}][name]'] = field_name
                 params_initial[f'fields_attributes[{idx}][value]'] = field_value
 
+        # Convert source[...] params to bracket notation
+        if source_privacy is not None:
+            params_initial['source[privacy]'] = source_privacy
+        if source_sensitive is not None:
+            params_initial['source[sensitive]'] = source_sensitive
+        if source_language is not None:
+            params_initial['source[language]'] = source_language
+
         # Clean up params
-        for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields"]:
+        for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields",
+                       "source_privacy", "source_sensitive", "source_language"]:
             if param in params_initial:
                 del params_initial[param]
 

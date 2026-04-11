@@ -150,6 +150,22 @@ def test_account_update_credentials(api):
     api.account_delete_avatar()
     api.account_delete_header()
 
+@pytest.mark.vcr(match_on=['path'])
+def test_account_update_credentials_source_and_privacy(api):
+    account = api.account_update_credentials(
+        hide_collections=True,
+        indexable=True,
+        source_privacy='unlisted',
+        source_sensitive=True,
+        source_language='en',
+    )
+    assert account
+    assert account.hide_collections == True
+    assert account.indexable == True
+    assert account.source.privacy == 'unlisted'
+    assert account.source.sensitive == True
+    assert account.source.language == 'en'
+
 @pytest.mark.vcr()
 def test_account_update_credentials_too_many_fields(api):
     with pytest.raises(MastodonAPIError):
