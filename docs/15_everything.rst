@@ -36,6 +36,8 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.ShallowQuote
    :no-index:
+.. autoclass:: mastodon.return_types.QuoteApproval
+   :no-index:
 .. autoclass:: mastodon.return_types.StatusEdit
    :no-index:
 .. autoclass:: mastodon.return_types.FilterResult
@@ -92,6 +94,10 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.SearchV2
    :no-index:
+.. autoclass:: mastodon.return_types.Collection
+   :no-index:
+.. autoclass:: mastodon.return_types.CollectionItem
+   :no-index:
 .. autoclass:: mastodon.return_types.Instance
    :no-index:
 .. autoclass:: mastodon.return_types.InstanceConfiguration
@@ -135,6 +141,12 @@ Every function on a huge CTRL-F-able page
 .. autoclass:: mastodon.return_types.InstanceMediaConfiguration
    :no-index:
 .. autoclass:: mastodon.return_types.InstancePollConfiguration
+   :no-index:
+.. autoclass:: mastodon.return_types.InstanceTimelinesAccessConfiguration
+   :no-index:
+.. autoclass:: mastodon.return_types.InstanceTimelinesAccessFeedConfiguration
+   :no-index:
+.. autoclass:: mastodon.return_types.InstanceAnnualReportCampaign
    :no-index:
 .. autoclass:: mastodon.return_types.Nodeinfo
    :no-index:
@@ -349,6 +361,12 @@ Every function on a huge CTRL-F-able page
 .. automethod:: Mastodon.poll_vote
    :no-index:
 .. automethod:: Mastodon.status_translate
+   :no-index:
+.. automethod:: Mastodon.status_quote_approval_policy
+   :no-index:
+.. automethod:: Mastodon.status_quote_approval_status
+   :no-index:
+.. automethod:: Mastodon.status_update_quote_approval_policy
    :no-index:
 .. automethod:: Mastodon.account_verify_credentials
    :no-index:

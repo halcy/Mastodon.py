@@ -155,9 +155,9 @@ def test_account_update_credentials_source_and_privacy(api):
     account = api.account_update_credentials(
         hide_collections=True,
         indexable=True,
-        source_privacy='unlisted',
-        source_sensitive=True,
-        source_language='en',
+        default_privacy='unlisted',
+        default_sensitive=True,
+        default_language='en',
     )
     assert account
     assert account.hide_collections == True
@@ -165,6 +165,26 @@ def test_account_update_credentials_source_and_privacy(api):
     assert account.source.privacy == 'unlisted'
     assert account.source.sensitive == True
     assert account.source.language == 'en'
+
+@pytest.mark.vcr(match_on=['path'])
+def test_account_update_credentials_quote_policy(api, api2):
+    # Set quote policy to followers
+    account = api.account_update_credentials(
+        default_quote_policy='followers',
+    )
+    assert account
+    assert account.source.quote_policy == 'followers'
+
+    # Verify from api2's perspective: api2 can see api's updated account
+    api2_view = api2.account(account.id)
+    assert api2_view
+
+    # Reset to public
+    account = api.account_update_credentials(
+        default_quote_policy='public',
+    )
+    assert account
+    assert account.source.quote_policy == 'public'
 
 @pytest.mark.vcr()
 def test_account_update_credentials_too_many_fields(api):

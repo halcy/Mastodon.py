@@ -1373,7 +1373,7 @@
         "description": "A full quote of a status, including the full status object in case of an accepted quote None if the quote is not accepted.",
         "fields": {
             "state": {
-                "description": "The state of the quote.",
+                "description": "The state of the quote. Unknown values should be treated as `unauthorized`.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1382,6 +1382,10 @@
                     [
                         "4.4.0",
                         "added"
+                    ],
+                    [
+                        "4.5.0",
+                        "added `blocked_account`, `blocked_domain` and `muted_account`"
                     ]
                 ],
                 "enum": {
@@ -1390,19 +1394,26 @@
                     "rejected": "The quote has been explicitly rejected by the quoted account, and should not be displayed.",
                     "revoked": "The quote was approved by the quoted account originally, but permission has since been revoked by the quoted account, and it should not be displayed.",
                     "deleted": "The quote was approved by the quoted account originally, but the quoted status has since been deleted.",
-                    "unauthorized": "The quote has been approved by the quoted account, but the logged-on user is not authorized to see the quoted status."
+                    "unauthorized": "The quote has been approved by the quoted account, but the logged-on user is not authorized to see the quoted status.",
+                    "blocked_account": "The quote has been approved, but should not be displayed because the user has blocked the account being quoted. `quoted_status` is non-null.",
+                    "blocked_domain": "The quote has been approved, but should not be displayed because the user has blocked the domain of the account being quoted. `quoted_status` is non-null.",
+                    "muted_account": "The quote has been approved, but should not be displayed because the user has muted the account being quoted. `quoted_status` is non-null."
                 }
             },
             "quoted_status": {
-                "description": "The quoted status object, if the quote has been accepted.",
+                "description": "The status being quoted, if the quote has been accepted. Null unless `state` is `accepted`, `blocked_account`, `blocked_domain`, or `muted_account`, or the wrapping Status entity was obtained by deleting the status.",
                 "field_type": "Status",
                 "field_subtype": null,
-                "is_optional": true,
-                "is_nullable": false,
+                "is_optional": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "4.4.0",
                         "added"
+                    ],
+                    [
+                        "4.5.7",
+                        "`quoted_status` is set to the quoted status regardless of `state` when the entity is returned as part of status deletion"
                     ]
                 ],
                 "enum": null
@@ -1421,7 +1432,7 @@
         "description": "A shallow quote of a status, containing only the ID of the quoted status. Used in multi-level quotes.",
         "fields": {
             "quoted_status_id": {
-                "description": "The ID of the quoted status. None if the quote is not accepted.",
+                "description": "The identifier of the status being quoted. Null unless `state` is `accepted`, `blocked_account`, `blocked_domain`, or `muted_account`, or the wrapping Status entity was obtained by deleting the status.",
                 "field_type": "MaybeSnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1430,12 +1441,16 @@
                     [
                         "4.4.0",
                         "added"
+                    ],
+                    [
+                        "4.5.7",
+                        "`quoted_status_id` is set to the status ID regardless of `state` when the entity is returned as part of status deletion"
                     ]
                 ],
                 "enum": null
             },
             "state": {
-                "description": "The state of the quote.",
+                "description": "The state of the quote. Unknown values should be treated as `unauthorized`.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -1444,6 +1459,10 @@
                     [
                         "4.4.0",
                         "added"
+                    ],
+                    [
+                        "4.5.0",
+                        "added `blocked_account`, `blocked_domain` and `muted_account`"
                     ]
                 ],
                 "enum": {
@@ -1452,7 +1471,10 @@
                     "rejected": "The quote has been explicitly rejected by the quoted account, and should not be displayed.",
                     "revoked": "The quote was approved by the quoted account originally, but permission has since been revoked by the quoted account, and it should not be displayed.",
                     "deleted": "The quote was approved by the quoted account originally, but the quoted status has since been deleted.",
-                    "unauthorized": "The quote has been approved by the quoted account, but the logged-in user is not authorized to see the quoted status."
+                    "unauthorized": "The quote has been approved by the quoted account, but the logged-in user is not authorized to see the quoted status.",
+                    "blocked_account": "The quote has been approved, but should not be displayed because the user has blocked the account being quoted. This is one of the few cases where `quoted_status_id` is non-null.",
+                    "blocked_domain": "The quote has been approved, but should not be displayed because the user has blocked the domain of the account being quoted. This is one of the few cases where `quoted_status_id` is non-null.",
+                    "muted_account": "The quote has been approved, but should not be displayed because the user has muted the account being quoted. This is one of the few cases where `quoted_status_id` is non-null."
                 }
             }
         }
@@ -3286,6 +3308,10 @@
                     [
                         "4.3.0",
                         "added `severed_relationships` and `moderation_warning`"
+                    ],
+                    [
+                        "4.5.0",
+                        "added `quote` and `quoted_update`"
                     ]
                 ],
                 "enum": {
@@ -3300,7 +3326,9 @@
                     "admin.sign_up": "Someone signed up (optionally sent to admins)",
                     "admin.report": "A new report has been filed",
                     "severed_relationships": "Follow relationships severed by moderation or block event",
-                    "moderation_warning": "A moderator has taken action or sent you a warning"
+                    "moderation_warning": "A moderator has taken action or sent you a warning",
+                    "quote": "Someone quoted one of your statuses",
+                    "quoted_update": "A status you have quoted has been edited"
                 }
             },
             "created_at": {
@@ -7703,6 +7731,34 @@
                     ]
                 ],
                 "enum": null
+            },
+            "quote": {
+                "description": "True if push subscriptions for quote events have been requested, false or not present otherwise.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "quoted_update": {
+                "description": "True if push subscriptions for quoted status update events have been requested, false or not present otherwise.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -10775,7 +10831,9 @@
                     "admin.sign_up": "Someone signed up (optionally sent to admins)",
                     "admin.report": "A new report has been filed",
                     "severed_relationships": "Follow relationships severed by moderation or block event",
-                    "moderation_warning": "A moderator has taken action or sent you a warning"
+                    "moderation_warning": "A moderator has taken action or sent you a warning",
+                    "quote": "Someone quoted one of your statuses",
+                    "quoted_update": "A status you have quoted has been edited"
                 },
                 "version_history": [["4.3.0", "added"]],
                 "field_type": "str",

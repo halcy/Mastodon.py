@@ -394,8 +394,8 @@ class Mastodon(Internals):
                                    discoverable: Optional[bool] = None, fields: Optional[List[Tuple[str, str]]] = None,
                                    hide_collections: Optional[bool] = None, indexable: Optional[bool] = None,
                                    attribution_domains: Optional[List[str]] = None,
-                                   source_privacy: Optional[str] = None, source_sensitive: Optional[bool] = None,
-                                   source_language: Optional[str] = None) -> Account:
+                                   default_privacy: Optional[str] = None, default_sensitive: Optional[bool] = None,
+                                   default_language: Optional[str] = None, default_quote_policy: Optional[str] = None) -> Account:
         """
         Update the profile for the currently logged-in user.
 
@@ -420,13 +420,16 @@ class Mastodon(Internals):
         `attribution_domains` can be a list of domains that the user wants to allow to
         attribute content to them.
 
-        `source_privacy` sets the default posting privacy. One of ``'public'``, ``'unlisted'``, 
+        `default_privacy` sets the default posting privacy. One of ``'public'``, ``'unlisted'``, 
         or ``'private'``.
 
-        `source_sensitive` sets whether posts should be marked as sensitive by default.
+        `default_sensitive` sets whether posts should be marked as sensitive by default.
 
-        `source_language` sets the default language for new posts (ISO 639-1 two-letter
+        `default_language` sets the default language for new posts (ISO 639-1 two-letter
         language code).
+
+        `default_quote_policy` sets who is allowed to quote the user's posts by default.
+        One of ``'public'``, ``'followers'``, or ``'nobody'``.
 
         The returned object reflects the updated account.
         """
@@ -440,16 +443,18 @@ class Mastodon(Internals):
                 params_initial[f'fields_attributes[{idx}][value]'] = field_value
 
         # Convert source[...] params to bracket notation
-        if source_privacy is not None:
-            params_initial['source[privacy]'] = source_privacy
-        if source_sensitive is not None:
-            params_initial['source[sensitive]'] = source_sensitive
-        if source_language is not None:
-            params_initial['source[language]'] = source_language
+        if default_privacy is not None:
+            params_initial['source[privacy]'] = default_privacy
+        if default_sensitive is not None:
+            params_initial['source[sensitive]'] = default_sensitive
+        if default_language is not None:
+            params_initial['source[language]'] = default_language
+        if default_quote_policy is not None:
+            params_initial['source[quote_policy]'] = default_quote_policy
 
         # Clean up params
         for param in ["avatar", "avatar_mime_type", "header", "header_mime_type", "fields",
-                       "source_privacy", "source_sensitive", "source_language"]:
+                       "default_privacy", "default_sensitive", "default_language", "default_quote_policy"]:
             if param in params_initial:
                 del params_initial[param]
 

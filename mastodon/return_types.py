@@ -844,21 +844,23 @@ class Quote(AttribAccessDict):
 
     state: "str"
     """
-    The state of the quote.
+    The state of the quote. Unknown values should be treated as `unauthorized`.
 
     Version history:
       * 4.4.0: added
+      * 4.5.0: added `blocked_account`, `blocked_domain` and `muted_account`
     """
 
     quoted_status: "Optional[Status]"
     """
-    The quoted status object, if the quote has been accepted. (optional)
+    The status being quoted, if the quote has been accepted. Null unless `state` is `accepted`, `blocked_account`, `blocked_domain`, or `muted_account`, or the wrapping Status entity was obtained by deleting the status. (nullable)
 
     Version history:
       * 4.4.0: added
+      * 4.5.7: `quoted_status` is set to the quoted status regardless of `state` when the entity is returned as part of status deletion
     """
 
-    _version = "4.4.0"
+    _version = "4.5.7"
 
 class ShallowQuote(AttribAccessDict):
     """
@@ -876,21 +878,23 @@ class ShallowQuote(AttribAccessDict):
 
     quoted_status_id: "Optional[MaybeSnowflakeIdType]"
     """
-    The ID of the quoted status. None if the quote is not accepted. (nullable)
+    The identifier of the status being quoted. Null unless `state` is `accepted`, `blocked_account`, `blocked_domain`, or `muted_account`, or the wrapping Status entity was obtained by deleting the status. (nullable)
 
     Version history:
       * 4.4.0: added
+      * 4.5.7: `quoted_status_id` is set to the status ID regardless of `state` when the entity is returned as part of status deletion
     """
 
     state: "str"
     """
-    The state of the quote.
+    The state of the quote. Unknown values should be treated as `unauthorized`.
 
     Version history:
       * 4.4.0: added
+      * 4.5.0: added `blocked_account`, `blocked_domain` and `muted_account`
     """
 
-    _version = "4.4.0"
+    _version = "4.5.7"
 
 class QuoteApproval(AttribAccessDict):
     """
@@ -2053,6 +2057,7 @@ class Notification(AttribAccessDict):
       * 3.5.0: added `update` and `admin.sign_up`
       * 4.0.0: added `admin.report`
       * 4.3.0: added `severed_relationships` and `moderation_warning`
+      * 4.5.0: added `quote` and `quoted_update`
     """
 
     created_at: "datetime"
@@ -2112,7 +2117,7 @@ class Notification(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _version = "4.3.0"
+    _version = "4.5.0"
 
 class Context(AttribAccessDict):
     """
@@ -5080,7 +5085,23 @@ class WebPushSubscriptionAlerts(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    quote: "Optional[bool]"
+    """
+    True if push subscriptions for quote events have been requested, false or not present otherwise. (nullable)
+
+    Version history:
+      * 4.5.0: added
+    """
+
+    quoted_update: "Optional[bool]"
+    """
+    True if push subscriptions for quoted status update events have been requested, false or not present otherwise. (nullable)
+
+    Version history:
+      * 4.5.0: added
+    """
+
+    _version = "4.5.0"
 
 class PushNotification(AttribAccessDict):
     """

@@ -117,14 +117,23 @@ class Mastodon(Internals):
                     sensitive: Optional[bool] = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
                     poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, edit: bool = False,
-                    strict_content_type: bool = False, media_attributes: Optional[List[Dict[str, Any]]] = None) -> Union[Status, ScheduledStatus]:
+                    strict_content_type: bool = False, media_attributes: Optional[List[Dict[str, Any]]] = None,
+                    quoted_status_id: Optional[Union[Status, IdType]] = None, quote_approval_policy: Optional[str] = None) -> Union[Status, ScheduledStatus]:
         """
         Internal statuses poster helper
         """
         if quote_id is not None:
             if self.feature_set != "fedibird":
-                raise MastodonIllegalArgumentError('quote_id is only available with feature set fedibird')
+                raise MastodonIllegalArgumentError('quote_id is only available with feature set fedibird. For standard Mastodon, use quoted_status_id instead.')
             quote_id = self.__unpack_id(quote_id)
+
+        if quoted_status_id is not None:
+            quoted_status_id = self.__unpack_id(quoted_status_id)
+
+        if quote_approval_policy is not None:
+            valid_policies = ['public', 'followers', 'nobody']
+            if quote_approval_policy not in valid_policies:
+                raise MastodonIllegalArgumentError(f'Invalid quote_approval_policy. Valid values are {valid_policies}')
 
         if content_type is not None:
             if self.feature_set != "pleroma":
@@ -206,11 +215,12 @@ class Mastodon(Internals):
             # Edit
             return self.__api_request('PUT', f'/api/v1/statuses/{self.__unpack_id(edit)}', params, headers=headers, use_json=use_json, override_type=cast_type)
 
-    @api_version("1.0.0", "2.8.0")
+    @api_version("1.0.0", "4.5.0")
     def status_post(self, status: str, in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
-                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, strict_content_type: bool = False) -> Union[Status, ScheduledStatus]:
+                    poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, strict_content_type: bool = False,
+                    quoted_status_id: Optional[Union[Status, IdType]] = None, quote_approval_policy: Optional[str] = None) -> Union[Status, ScheduledStatus]:
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -259,6 +269,16 @@ class Mastodon(Internals):
         2.8.2, you can only have either media or a poll attached, not both at
         the same time.
 
+        Pass `quoted_status_id` to quote another status. The quoted status must
+        exist, be accessible to the logged-in user, and the quote policy must
+        allow it. If the post body does not contain a link to the quoted post,
+        the server will prepend one for backward compatibility. Note that a
+        status cannot have both a poll / media and a quote.
+
+        Pass `quote_approval_policy` to set who is allowed to quote this status.
+        One of ``'public'``, ``'followers'``, or ``'nobody'``. If omitted, the user's
+        default setting is used. Ignored if `visibility` is ``'private'`` or ``'direct'``.
+
         You can use :ref:`get_status_length() <get_status_length()>` to count how many
         characters a status you want to post would take up in terms of Mastodons character
         limit. The limits can be retrieved from the instance information (`instance_v2()`).
@@ -272,6 +292,8 @@ class Mastodon(Internals):
 
         **Specific to "fedibird" feature set:**: The `quote_id` parameter is
         a non-standard extension that specifies the id of a quoted status.
+        For standard Mastodon 4.5+, use `quoted_status_id` instead, this does
+        absolutely nothing.
 
         Returns the new status.
         """
@@ -289,7 +311,9 @@ class Mastodon(Internals):
             poll,
             quote_id,
             edit=None,
-            strict_content_type=strict_content_type
+            strict_content_type=strict_content_type,
+            quoted_status_id=quoted_status_id,
+            quote_approval_policy=quote_approval_policy
         )
 
     @api_version("1.0.0", "2.8.0")
@@ -336,14 +360,17 @@ class Mastodon(Internals):
     @api_version("3.5.0", "4.1.0")
     def status_update(self, id: Union[Status, IdType], status: str, spoiler_text: Optional[str] = None, 
                       sensitive: Optional[bool] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None, 
-                      poll: Optional[Union[Poll, IdType]] = None, media_attributes: Optional[List[Dict[str, Any]]] = None) -> Status:
+                      poll: Optional[Union[Poll, IdType]] = None, media_attributes: Optional[List[Dict[str, Any]]] = None,
+                      quote_approval_policy: Optional[str] = None) -> Status:
         """
         Edit a status. The meanings of the fields are largely the same as in :ref:`status_post() <status_post()>`,
         though not every field can be edited. The `status` parameter is mandatory.
 
         Note that editing a poll will reset the votes.
 
-        To edit media metadata, generate a list of dictionaries with the following keys:
+        To edit media metadata, pass a list of dictionaries describing the edits as `media_attributes`.
+        You can use :ref:`generate_media_edit_attributes() <generate_media_edit_attributes()>`
+        to generate these dictionaries.
         """
         return self.__status_internal(
             status=status,
@@ -352,7 +379,8 @@ class Mastodon(Internals):
             spoiler_text=spoiler_text,
             poll=poll,
             edit=id,
-            media_attributes=media_attributes
+            media_attributes=media_attributes,
+            quote_approval_policy=quote_approval_policy
         )
 
     @api_version("3.5.0", "3.5.0")
@@ -377,12 +405,13 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('GET', f"/api/v1/statuses/{id}/source")
 
-    @api_version("1.0.0", "2.8.0")
+    @api_version("1.0.0", "4.5.0")
     def status_reply(self, to_status: Union[Status, IdType], status: str, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
                     poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, untag: bool = False, 
-                    strict_content_type: bool = False) -> Status:
+                    strict_content_type: bool = False, quoted_status_id: Optional[Union[Status, IdType]] = None,
+                    quote_approval_policy: Optional[str] = None) -> Status:
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to the status text and retains
@@ -599,3 +628,57 @@ class Mastodon(Internals):
         params = self.__generate_params(locals(), ['id'])
 
         return self.__api_request('POST', f'/api/v1/statuses/{id}/translate', params)
+
+    ###
+    # Reading data: Quotes
+    ###
+    @api_version("4.5.0", "4.5.0")
+    def status_quotes(self, id: Union[Status, IdType], max_id: Optional[Union[Status, IdType]] = None,
+                      since_id: Optional[Union[Status, IdType]] = None, limit: Optional[int] = None) -> PaginatableList[Status]:
+        """
+        Fetch a list of statuses that quote the given status.
+
+        Requires a logged-in user.
+        """
+        id = self.__unpack_id(id)
+        params = self.__generate_params(locals(), ['id'])
+        return self.__api_request('GET', f'/api/v1/statuses/{id}/quotes', params)
+
+    ###
+    # Writing data: Quotes
+    ###
+    @api_version("4.5.0", "4.5.0")
+    def status_quote_revoke(self, id: Union[Status, IdType], quoting_status_id: Union[Status, IdType]) -> Status:
+        """
+        Revoke quote authorization of a status that is quoting one of the logged in users statuses.
+
+        `id` is the ID of the status that is being quoted, and `quoting_status_id`
+        is the ID of the status that is quoting it. 
+
+        Returns the quoting status with the quote state set to ``'revoked'``.
+        """
+        id = self.__unpack_id(id)
+        quoting_status_id = self.__unpack_id(quoting_status_id)
+        return self.__api_request('POST', f'/api/v1/statuses/{id}/quotes/{quoting_status_id}/revoke')
+
+    @api_version("4.5.0", "4.5.0")
+    def status_update_quote_approval_policy(self, id: Union[Status, IdType], quote_approval_policy: str) -> Status:
+        """
+        Update the quote approval policy of a status without going through the full edit flow.
+
+        `quote_approval_policy` is one of ``'public'``, ``'followers'``, or ``'nobody'``.
+
+        * ``'public'`` - anyone (except blocked users) can quote and will be automatically accepted
+        * ``'followers'`` - only followers and the author can quote
+        * ``'nobody'`` - only the author can quote
+
+        If the status has a visibility of ``'private'`` or ``'direct'``, the policy
+        will always be set to ``'nobody'`` regardless of the value passed in.
+        Changing the policy does not invalidate past quotes, use :ref:`status_quote_revoke() <status_quote_revoke()>`
+        for that.
+
+        Returns the updated status.
+        """
+        params = self.__generate_params(locals(), ['id'])
+        id = self.__unpack_id(id)
+        return self.__api_request('PUT', f'/api/v1/statuses/{id}/interaction_policy', params)

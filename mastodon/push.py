@@ -35,7 +35,8 @@ class Mastodon(Internals):
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
                               follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
                               policy: str = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
-                              admin_report_events: Optional[bool] = None, standard: bool = None) -> WebPushSubscription:
+                              admin_report_events: Optional[bool] = None, quote_events: Optional[bool] = None,
+                              quoted_update_events: Optional[bool] = None, standard: bool = None) -> WebPushSubscription:
         """
         Sets up or modifies the push subscription the logged-in user has for this app.
 
@@ -61,6 +62,8 @@ class Mastodon(Internals):
         * `update_events` controls whether you receive events when a status that the logged in user has boosted has been edited.
         * `admin_sign_up_events` controls whether you receive events when a new user signs up.
         * `admin_report_events` controls whether you receive events when a new report is received.
+        * `quote_events` controls whether you receive events when someone quotes one of the logged in user's statuses.
+        * `quoted_update_events` controls whether you receive events when a status the logged in user has quoted has been edited.
 
         Pass `standard=True` to use the standard webpush subscription format, instead of the pre-release RFC format
         mastodon was using before.
@@ -110,6 +113,12 @@ class Mastodon(Internals):
         if admin_report_events is not None:
             params['data[alerts][admin.report]'] = admin_report_events
 
+        if quote_events is not None:
+            params['data[alerts][quote]'] = quote_events
+
+        if quoted_update_events is not None:
+            params['data[alerts][quoted_update]'] = quoted_update_events
+
         # Canonicalize booleans
         params = self.__generate_params(params)
 
@@ -121,7 +130,8 @@ class Mastodon(Internals):
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
                               follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
                               policy: Optional[str] = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
-                              admin_report_events: Optional[bool] = None) -> WebPushSubscription:
+                              admin_report_events: Optional[bool] = None, quote_events: Optional[bool] = None,
+                              quoted_update_events: Optional[bool] = None) -> WebPushSubscription:
         """
         Modifies what kind of events the app wishes to subscribe to.
 
@@ -162,6 +172,12 @@ class Mastodon(Internals):
         
         if admin_report_events is not None:
             params['data[alerts][admin.report]'] = admin_report_events
+
+        if quote_events is not None:
+            params['data[alerts][quote]'] = quote_events
+
+        if quoted_update_events is not None:
+            params['data[alerts][quoted_update]'] = quoted_update_events
 
         # Canonicalize booleans
         params = self.__generate_params(params)

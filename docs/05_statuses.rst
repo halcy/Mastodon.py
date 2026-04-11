@@ -93,4 +93,16 @@ These functions allow you to get machine translations for statuses, if the insta
 
 .. automethod:: Mastodon.status_translate
 
-    
+Quoting
+--------
+These functions allow you to get and update quote approval policies for statuses, as well as to get the quote approval status of a status.
+
+Reading
+~~~~~~~
+.. automethod:: Mastodon.status_quote_approval_policy
+.. automethod:: Mastodon.status_quote_approval_status
+
+Writing
+~~~~~~~
+.. automethod:: Mastodon.status_update_quote_approval_policy
+

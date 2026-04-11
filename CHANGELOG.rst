@@ -9,7 +9,7 @@ v2.2.0 (In progress)
 * Fixed a crash due to unbound local in stream_public (Thanks @elnikkis for the report and fix)
 * Fix invalid event error in heartbeats (Thanks @tribela for the report and fix)
 * Add several missing parameters to `account_update_credentials`
-
+* Add quote support (Several new endpoints and entities)
 
 v2.1.4
 ------
