@@ -43,6 +43,18 @@ def test_push_set(api):
     assert not should_throw
 
 @pytest.mark.vcr(match_on=['path'])
+def test_push_set_all_events(api):
+    priv, pub = api.push_subscription_generate_keys()
+    sub = api.push_subscription_set("example.com", pub,
+        follow_events=True, favourite_events=True, reblog_events=True,
+        mention_events=True, poll_events=True, follow_request_events=True,
+        status_events=True, update_events=True, admin_sign_up_events=True,
+        admin_report_events=True, quote_events=True, quoted_update_events=True,
+        policy='all')
+    assert sub
+    assert sub.endpoint == "https://example.com"
+
+@pytest.mark.vcr(match_on=['path'])
 def test_push_update(api):
     priv, pub = api.push_subscription_generate_keys()
     sub = api.push_subscription_set("example.com", pub,follow_events=False,
@@ -69,6 +81,18 @@ def test_push_update(api):
     assert sub2.alerts.favourite is True
     assert sub2.alerts.reblog is True
     assert sub2.alerts.mention is True
+
+@pytest.mark.vcr(match_on=['path'])
+def test_push_update_all_events(api):
+    priv, pub = api.push_subscription_generate_keys()
+    api.push_subscription_set("example.com", pub)
+
+    sub = api.push_subscription_update(
+        follow_events=True, favourite_events=True, reblog_events=True,
+        mention_events=True, poll_events=True, follow_request_events=True,
+        status_events=True, update_events=True, admin_sign_up_events=True,
+        admin_report_events=True, quote_events=True, quoted_update_events=True)
+    assert sub
   
 
 @pytest.mark.vcr(match_on=['path'])

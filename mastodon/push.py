@@ -101,7 +101,7 @@ class Mastodon(Internals):
         if follow_request_events is not None:
             params['data[alerts][follow_request]'] = follow_request_events
 
-        if follow_request_events is not None:
+        if status_events is not None:
             params['data[alerts][status]'] = status_events
 
         if update_events is not None:
@@ -161,7 +161,7 @@ class Mastodon(Internals):
         if follow_request_events is not None:
             params['data[alerts][follow_request]'] = follow_request_events
 
-        if follow_request_events is not None:
+        if status_events is not None:
             params['data[alerts][status]'] = status_events
 
         if update_events is not None:

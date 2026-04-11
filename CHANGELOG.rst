@@ -10,6 +10,7 @@ v2.2.0 (In progress)
 * Fix invalid event error in heartbeats (Thanks @tribela for the report and fix)
 * Add several missing parameters to `account_update_credentials`
 * Add quote support (Several new endpoints and entities)
+* Fixed a bug in push subscriptions for status push subscriptions
 
 v2.1.4
 ------
