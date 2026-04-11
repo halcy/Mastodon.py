@@ -91,7 +91,7 @@ def _str_to_type(mastopy_type):
         elif mastopy_type == "typing.Optional":
             full_type = Optional[sub_type]
         elif mastopy_type == "typing.Union":
-            full_type = Union.__getitem__(tuple(sub_type_list))
+            full_type = Union[tuple(sub_type_list)]
     else:
         full_type = ENTITY_NAME_MAP.get(mastopy_type, None)
     if full_type is None:
