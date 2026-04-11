@@ -115,6 +115,14 @@ def test_heartbeat():
     assert listener.heartbeats == 2
 
 
+
+def test_heartbeat_empty_line():
+    """Empty event after heartbeat should not raise an error."""
+    listener = Listener()
+    # Heartbeat followed by empty line triggers _dispatch with empty event
+    listener.handle_stream_([':thump', ''])
+    assert listener.heartbeats == 1
+
 def test_status():
     listener = Listener()
     listener.handle_stream_([
