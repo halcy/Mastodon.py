@@ -16,10 +16,10 @@ interactions:
     uri: https://mastodon.social/api/v2/instance/
   response:
     body:
-      string: '{"domain": "mastodon.social", "title": "Mastodon", "version": "4.6.0-nightly.2025-11-06",
+      string: '{"domain": "mastodon.social", "title": "Mastodon", "version": "4.6.0-nightly.2026-04-09",
         "source_url": "https://github.com/mastodon/mastodon", "description": "The
-        original server operated by the Mastodon gGmbH non-profit", "usage": {"users":
-        {"active_month": 257831}}, "thumbnail": {"url": "https://files.mastodon.social/site_uploads/files/000/000/001/@1x/57c12f441d083cde.png",
+        original server of Mastodon, operated by Mastodon GmbH for the common good.\r\n\r\n",
+        "usage": {"users": {"active_month": 286109}}, "thumbnail": {"url": "https://files.mastodon.social/site_uploads/files/000/000/001/@1x/57c12f441d083cde.png",
         "blurhash": "UeKUpFxuo~R%0nW;WCnhF6RjaJt757oJodS$", "versions": {"@1x": "https://files.mastodon.social/site_uploads/files/000/000/001/@1x/57c12f441d083cde.png",
         "@2x": "https://files.mastodon.social/site_uploads/files/000/000/001/@2x/57c12f441d083cde.png"}},
         "icon": [{"src": "https://mastodon.social/packs/assets/android-chrome-36x36-DLiBQg3N.png",
@@ -35,8 +35,10 @@ interactions:
         "wss://streaming.mastodon.social", "status": "https://status.mastodon.social",
         "about": "https://mastodon.social/about", "privacy_policy": "https://mastodon.social/privacy-policy",
         "terms_of_service": null}, "vapid": {"public_key": "BCk-QqERU0q-CfYZjcuB6lnyyOYfJ2AifKqfeGIm7Z-HiTU5T9eTG5GxVA0_OH5mMlI4UkkDTpaZwozy0TzdZ2M="},
-        "accounts": {"max_featured_tags": 10, "max_pinned_statuses": 5}, "statuses":
-        {"max_characters": 500, "max_media_attachments": 4, "characters_reserved_per_url":
+        "accounts": {"max_display_name_length": 30, "max_note_length": 500, "max_avatar_description_length":
+        150, "max_header_description_length": 150, "max_featured_tags": 10, "max_pinned_statuses":
+        5, "max_profile_fields": 4, "profile_field_name_limit": 255, "profile_field_value_limit":
+        255}, "statuses": {"max_characters": 500, "max_media_attachments": 4, "characters_reserved_per_url":
         23}, "media_attachments": {"description_limit": 1500, "image_matrix_limit":
         33177600, "image_size_limit": 16777216, "supported_mime_types": ["image/jpeg",
         "image/png", "image/gif", "image/heic", "image/heif", "image/webp", "image/avif",
@@ -47,33 +49,49 @@ interactions:
         120, "video_matrix_limit": 8294400, "video_size_limit": 103809024}, "polls":
         {"max_options": 4, "max_characters_per_option": 50, "min_expiration": 300,
         "max_expiration": 2629746}, "translation": {"enabled": true}, "timelines_access":
-        {"live_feeds": {"local": "public", "remote": "public"}, "hashtag_feeds": {"local":
-        "public", "remote": "public"}, "trending_link_feeds": {"local": "public",
-        "remote": "public"}}, "limited_federation": false}, "registrations": {"enabled":
-        true, "approval_required": false, "reason_required": false, "message": null,
-        "min_age": 16, "url": null}, "api_versions": {"mastodon": 7}, "contact": {"email":
-        "staff@mastodon.social", "account": {"id": "13179", "username": "Mastodon",
-        "acct": "Mastodon", "display_name": "Mastodon", "locked": false, "bot": false,
-        "discoverable": true, "indexable": false, "group": false, "created_at": "2016-11-23T00:00:00.000Z",
-        "note": "<p>A free, open-source decentralised social network to connect with
-        your friends and others, anywhere.</p>", "url": "https://mastodon.social/@Mastodon",
+        {"live_feeds": {"local": "disabled", "remote": "disabled"}, "hashtag_feeds":
+        {"local": "public", "remote": "public"}, "trending_link_feeds": {"local":
+        "public", "remote": "public"}}, "limited_federation": false}, "registrations":
+        {"enabled": true, "approval_required": false, "reason_required": false, "message":
+        null, "min_age": 16, "url": null}, "api_versions": {"mastodon": 9}, "wrapstodon":
+        null, "contact": {"email": "staff@mastodon.social", "account": {"id": "13179",
+        "username": "Mastodon", "acct": "Mastodon", "display_name": "Mastodon", "locked":
+        false, "bot": false, "discoverable": true, "indexable": true, "group": false,
+        "created_at": "2016-11-23T00:00:00.000Z", "note": "<p>Our mission is to connect
+        the world through thriving online communities.</p><p>This is the primary account
+        for the Mastodon project.</p><p>For technical software updates, follow <span
+        class=\"h-card\" translate=\"no\"><a href=\"https://mastodon.social/@MastodonEngineering\"
+        class=\"u-url mention\">@<span>MastodonEngineering</span></a></span></p><p>For
+        news and updates on the Mastodon servers that we operate (like this one!),
+        follow <span class=\"h-card\" translate=\"no\"><a href=\"https://mastodon.social/@staff\"
+        class=\"u-url mention\">@<span>staff</span></a></span></p>", "url": "https://mastodon.social/@Mastodon",
         "uri": "https://mastodon.social/users/Mastodon", "avatar": "https://files.mastodon.social/accounts/avatars/000/013/179/original/b4ceb19c9c54ec7e.png",
         "avatar_static": "https://files.mastodon.social/accounts/avatars/000/013/179/original/b4ceb19c9c54ec7e.png",
+        "avatar_description": "The Mastodon logo: a white shape of a stylised elephant
+        head; a bold lower-case m shape is cut out, showing a soothing purple gradient.",
         "header": "https://files.mastodon.social/accounts/headers/000/013/179/original/1375be116fbe0f1d.png",
         "header_static": "https://files.mastodon.social/accounts/headers/000/013/179/original/1375be116fbe0f1d.png",
-        "followers_count": 852751, "following_count": 41, "statuses_count": 392, "last_status_at":
-        "2025-11-06", "hide_collections": false, "noindex": false, "emojis": [], "roles":
-        [], "fields": [{"name": "Homepage", "value": "<a href=\"https://joinmastodon.org\"
+        "header_description": "An image of a mobile device displaying the Mastodon
+        app, on a cartoon background featuring rolling hills and white fluffy clouds.",
+        "followers_count": 868366, "following_count": 45, "statuses_count": 494, "last_status_at":
+        "2026-04-10", "hide_collections": false, "show_media": true, "show_media_replies":
+        true, "show_featured": true, "noindex": false, "emojis": [], "roles": [],
+        "fields": [{"name": "Homepage", "value": "<a href=\"https://joinmastodon.org\"
         target=\"_blank\" rel=\"nofollow noopener me\" translate=\"no\"><span class=\"invisible\">https://</span><span
         class=\"\">joinmastodon.org</span><span class=\"invisible\"></span></a>",
-        "verified_at": "2018-10-31T04:11:00.076+00:00"}, {"name": "Patreon", "value":
-        "<a href=\"https://patreon.com/mastodon\" target=\"_blank\" rel=\"nofollow
+        "verified_at": "2018-10-31T04:11:00.076+00:00"}, {"name": "Source Code", "value":
+        "<a href=\"https://github.com/mastodon\" target=\"_blank\" rel=\"nofollow
         noopener me\" translate=\"no\"><span class=\"invisible\">https://</span><span
-        class=\"\">patreon.com/mastodon</span><span class=\"invisible\"></span></a>",
-        "verified_at": null}, {"name": "GitHub", "value": "<a href=\"https://github.com/mastodon\"
-        target=\"_blank\" rel=\"nofollow noopener me\" translate=\"no\"><span class=\"invisible\">https://</span><span
         class=\"\">github.com/mastodon</span><span class=\"invisible\"></span></a>",
-        "verified_at": "2023-07-21T13:27:45.996+00:00"}]}}, "rules": [{"id": "1",
+        "verified_at": "2023-07-21T13:27:45.996+00:00"}, {"name": "Blog", "value":
+        "<a href=\"https://blog.joinmastodon.org\" target=\"_blank\" rel=\"nofollow
+        noopener me\" translate=\"no\"><span class=\"invisible\">https://</span><span
+        class=\"\">blog.joinmastodon.org</span><span class=\"invisible\"></span></a>",
+        "verified_at": "2025-11-24T15:45:57.501+00:00"}, {"name": "Donate", "value":
+        "<a href=\"https://joinmastodon.org/sponsors#donate\" target=\"_blank\" rel=\"nofollow
+        noopener me\" translate=\"no\"><span class=\"invisible\">https://</span><span
+        class=\"ellipsis\">joinmastodon.org/sponsors#dona</span><span class=\"invisible\">te</span></a>",
+        "verified_at": "2025-11-24T15:37:03.351+00:00"}]}}, "rules": [{"id": "1",
         "text": "Sexually explicit or violent media must be marked as sensitive or
         with a content warning", "hint": "This includes content that is particularly
         provocative even if it may not show specific body parts, as well as dead bodies,
@@ -368,11 +386,11 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '161'
+      - '87'
       Connection:
       - keep-alive
       Date:
-      - Thu, 06 Nov 2025 21:31:05 GMT
+      - Sat, 11 Apr 2026 14:36:29 GMT
       Strict-Transport-Security:
       - max-age=31557600
       Vary:
@@ -382,25 +400,27 @@ interactions:
       X-Cache:
       - MISS, HIT, HIT
       X-Cache-Hits:
-      - 0, 4, 1
+      - 0, 6, 2
       X-Served-By:
-      - cache-fra-etou8220030-FRA, cache-fra-etou8220030-FRA, cache-hel1410025-HEL
+      - cache-fra-eddf8230226-FRA, cache-fra-eddf8230226-FRA, cache-hel1410024-HEL
       X-Timer:
-      - S1762464666.688898,VS0,VE1
+      - S1775918190.585643,VS0,VE0
       alt-svc:
       - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
       cache-control:
       - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       content-length:
-      - '24115'
+      - '25327'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"3d59131da0cd07db8c5901d84cfc07b5"
+      - W/"e1c759635e1d76545a7c97aabc0ea9e9"
       referrer-policy:
       - same-origin
+      server:
+      - Mastodon
       x-content-type-options:
       - nosniff
       x-frame-options:
@@ -408,13 +428,13 @@ interactions:
       x-ratelimit-limit:
       - '300'
       x-ratelimit-remaining:
-      - '285'
+      - '299'
       x-ratelimit-reset:
-      - '2025-11-06T21:30:00.986227Z'
+      - '2026-04-11T14:20:00.832623Z'
       x-request-id:
-      - 7ed6a1b6664e9198f229ac403142b325
+      - c3ca0317-6b58-4578-af4b-8f01b0c310ad
       x-runtime:
-      - '0.031428'
+      - '0.007708'
       x-xss-protection:
       - '0'
     status:

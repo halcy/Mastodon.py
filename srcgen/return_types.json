@@ -490,6 +490,76 @@
                     ]
                 ],
                 "enum": null
+            },
+            "avatar_description": {
+                "description": "Alt text description for the user's avatar image.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "header_description": {
+                "description": "Alt text description for the user's header image.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "show_media": {
+                "description": "Whether the account wishes to have a Media tab with media attachments on their profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "show_media_replies": {
+                "description": "Whether the account wishes to have replies in the Media tab on their profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "show_featured": {
+                "description": "Whether the account wishes to have a Featured tab on their profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -790,6 +860,27 @@
                     3
                 ],
                 "enum": null
+            },
+            "quote_policy": {
+                "description": "The default quote policy to be used for new statuses.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "api_version_list": [
+                    7
+                ],
+                "enum": {
+                    "public": "Anyone (except blocked accounts) can quote",
+                    "followers": "Only followers and author can quote",
+                    "nobody": "Only author can quote"
+                }
             }
         }
     },
@@ -1227,6 +1318,46 @@
                         "added"
                     ]
                 ]
+            },
+            "quotes_count": {
+                "description": "How many accepted quotes this status has.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ]
+            },
+            "tagged_collections": {
+                "description": "Collections linked in this status.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Collection",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "quote_approval": {
+                "description": "Summary of the post's quote approval policy and how it applies to the current user, indicating whether the user can be expected to be allowed to quote that post.",
+                "field_type": "QuoteApproval",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -1322,6 +1453,76 @@
                     "revoked": "The quote was approved by the quoted account originally, but permission has since been revoked by the quoted account, and it should not be displayed.",
                     "deleted": "The quote was approved by the quoted account originally, but the quoted status has since been deleted.",
                     "unauthorized": "The quote has been approved by the quoted account, but the logged-in user is not authorized to see the quoted status."
+                }
+            }
+        }
+    },
+    {
+        "name": "Quote approval",
+        "python_name": "QuoteApproval",
+        "func_call": "mastodon.status(<status id>).quote_approval",
+        "func_call_real": "mastodon.status(110446223051565765).quote_approval",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/QuoteApproval/",
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Summary of a status' quote approval policy and how it applies to the requesting user.",
+        "fields": {
+            "automatic": {
+                "description": "Describes who is expected to be able to quote that status and have the quote automatically authorized. An empty list means that nobody is expected to be able to quote this post.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Anybody is expected to be able to quote this status and have the quote be automatically accepted.",
+                    "followers": "Followers are expected to be able to quote this status and have the quote be automatically accepted.",
+                    "following": "People followed by the author are expected to be able to quote this status and have the quote be automatically accepted.",
+                    "unsupported_policy": "The underlying quote policy is not supported by Mastodon."
+                }
+            },
+            "manual": {
+                "description": "Describes who is expected to have their quotes of this status be manually reviewed by the author before being accepted. An empty list means that nobody is expected to be able to quote this post.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Anybody is expected to be able to quote this status, but have the quote be accepted only after manual review.",
+                    "followers": "Followers are expected to be able to quote this status, but have the quote be accepted only after manual review.",
+                    "following": "People followed by the author are expected to be able to quote this status, but have the quote be accepted only after manual review.",
+                    "unsupported_policy": "The underlying quote policy is not supported by Mastodon."
+                }
+            },
+            "current_user": {
+                "description": "Describes how this status' quote policy applies to the current user.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "automatic": "The requesting user is expected to be allowed to quote and have their quote be automatically accepted.",
+                    "manual": "The requesting user is expected to be allowed to quote after manual review of the post by the quoted status' author.",
+                    "denied": "The requesting user is not expected to be allowed to quote this post.",
+                    "unknown": "The user is not covered by the quote policies supported by Mastodon. Should be treated as denied."
                 }
             }
         }
@@ -1851,6 +2052,24 @@
                     ]
                 ],
                 "enum": null
+            },
+            "quote_approval_policy": {
+                "description": "The quote approval policy to be used for this status once posted.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Anyone (except blocked accounts) can quote",
+                    "followers": "Only followers and author can quote",
+                    "nobody": "Only author can quote"
+                }
             }
         }
     },
@@ -2744,6 +2963,20 @@
                         "added"
                     ]
                 ]
+            },
+            "muting_expires_at": {
+                "description": "Date at which the mute expires, if the logged-in user has set a timed mute on this account.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -4087,6 +4320,20 @@
                         "added"
                     ]
                 ]
+            },
+            "missing_attribution": {
+                "description": "True if the linked article claims to be written by the current user without the user having the article's domain in their attribution_domains. Used to prompt them to review and add the domain.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -4323,6 +4570,291 @@
                 "version_history": [
                     [
                         "1.1.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "collections": {
+                "description": "List of collections resulting from the query.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Collection",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Collection",
+        "python_name": "Collection",
+        "func_call": "mastodon.search_v2('cats', type='collections').collections[0]",
+        "masto_doc_link": null,
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "A collection of accounts, associated with a hashtag.",
+        "fields": {
+            "id": {
+                "description": "The ID of the collection in the database.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "uri": {
+                "description": "The URI of the collection for federation.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "name": {
+                "description": "The name of the collection.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "description": {
+                "description": "A description of the collection.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "language": {
+                "description": "The language of the collection.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "TwoLetterLanguageCodeEnum",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "account_id": {
+                "description": "The ID of the account that owns this collection.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "local": {
+                "description": "Whether the collection belongs to a local account.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "sensitive": {
+                "description": "Whether the collection is marked as sensitive.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "discoverable": {
+                "description": "Whether the collection is discoverable.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "item_count": {
+                "description": "The number of items in this collection.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "created_at": {
+                "description": "When the collection was created.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "updated_at": {
+                "description": "When the collection was last updated.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "tag": {
+                "description": "The hashtag associated with this collection.",
+                "field_type": "Tag",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "items": {
+                "description": "The items in this collection.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "CollectionItem",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Collection item",
+        "python_name": "CollectionItem",
+        "func_call": "mastodon.search_v2('cats', type='collections').collections[0].items[0]",
+        "masto_doc_link": null,
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "An item in a collection, representing an account that has been added to the collection.",
+        "fields": {
+            "id": {
+                "description": "The ID of the collection item in the database.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "state": {
+                "description": "The state of this collection item.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "pending": "The item is pending approval.",
+                    "accepted": "The item has been accepted into the collection.",
+                    "rejected": "The item has been rejected from the collection.",
+                    "revoked": "The item's inclusion has been revoked."
+                }
+            },
+            "account_id": {
+                "description": "The ID of the account associated with this item. Only present when the item is accepted.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
                         "added"
                     ]
                 ],
@@ -4885,6 +5417,19 @@
                         "added"
                     ]
                 ]
+            },
+            "wrapstodon": {
+                "description": "Info about Wrapstodon / year-in-review feature for the instance, if available.",
+                "field_type": "InstanceAnnualReportCampaign",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -5046,6 +5591,19 @@
                 "version_history": [
                     [
                         "4.4.0",
+                        "added"
+                    ]
+                ]
+            },
+            "timelines_access": {
+                "description": "Access restrictions on different timelines, including live feeds, hashtag feeds, and trending link feeds.",
+                "field_type": "InstanceTimelinesAccessConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
                         "added"
                     ]
                 ]
@@ -5666,6 +6224,97 @@
                         "added"
                     ]
                 ]
+            },
+            "max_display_name_length": {
+                "description": "The maximum length allowed for an account's display name.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
+            },
+            "max_note_length": {
+                "description": "The maximum length allowed for an account's bio.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
+            },
+            "max_avatar_description_length": {
+                "description": "The maximum length allowed for an avatar's alt text description.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
+            },
+            "max_header_description_length": {
+                "description": "The maximum length allowed for a header image's alt text description.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
+            },
+            "max_profile_fields": {
+                "description": "The maximum number of custom profile fields allowed to be set.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
+            },
+            "profile_field_name_limit": {
+                "description": "The maximum size of a profile field name, in characters.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
+            },
+            "profile_field_value_limit": {
+                "description": "The maximum size of a profile field value, in characters.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ]
             }
         }
     },
@@ -5913,6 +6562,134 @@
                         "added"
                     ]
                 ]
+            }
+        }
+    },
+    {
+        "name": "Instance timelines access configuration",
+        "python_name": "InstanceTimelinesAccessConfiguration",
+        "func_call": "mastodon.instance_v2().configuration.timelines_access",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Access restrictions on different timelines.",
+        "fields": {
+            "live_feeds": {
+                "description": "Access restrictions on public feeds.",
+                "field_type": "InstanceTimelinesAccessFeedConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ]
+            },
+            "hashtag_feeds": {
+                "description": "Access restrictions on hashtag feeds.",
+                "field_type": "InstanceTimelinesAccessFeedConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ]
+            },
+            "trending_link_feeds": {
+                "description": "Access restrictions on trending link feeds.",
+                "field_type": "InstanceTimelinesAccessFeedConfiguration",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "name": "Instance timelines access feed configuration",
+        "python_name": "InstanceTimelinesAccessFeedConfiguration",
+        "func_call": "mastodon.instance_v2().configuration.timelines_access.live_feeds",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Access restrictions for local and remote posts in a specific feed type.",
+        "fields": {
+            "local": {
+                "description": "Access restrictions for local posts in this feed.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Access is available to both visitors and logged-in users.",
+                    "authenticated": "Access requires authentication.",
+                    "disabled": "Access is only possible for users with the View live and topic feeds permission."
+                }
+            },
+            "remote": {
+                "description": "Access restrictions for remote posts in this feed.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Access is available to both visitors and logged-in users.",
+                    "authenticated": "Access requires authentication.",
+                    "disabled": "Access is only possible for users with the View live and topic feeds permission."
+                }
+            }
+        }
+    },
+    {
+        "name": "Instance annual report campaign",
+        "python_name": "InstanceAnnualReportCampaign",
+        "func_call": "mastodon.instance_v2().wrapstodon",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "Information about the Wrapstodon / year-in-review feature for the instance. This is not officially documented by Mastodon and may change without notice.",
+        "fields": {
+            "year": {
+                "description": "The year this annual report campaign is for.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -7156,6 +7933,25 @@
                         "added"
                     ]
                 ]
+            },
+            "posting:default:quote_policy": {
+                "python_name": "posting_default_quote_policy",
+                "description": "Default quote policy for new posts. Also found in CredentialAccountSource as `quote_policy`.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.5.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Anyone (except blocked accounts) can quote",
+                    "followers": "Only followers and author can quote",
+                    "nobody": "Only author can quote"
+                }
             }
         }
     },
@@ -10531,7 +11327,7 @@
                 "is_optional": false,
                 "is_nullable": false
             },
-            "profile ": {
+            "profile": {
                 "description": "The URL of the user’s profile page.",
                 "enum": null,
                 "version_history": [["4.4.0", "added"]],

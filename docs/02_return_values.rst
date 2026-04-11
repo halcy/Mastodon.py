@@ -80,6 +80,9 @@ Return types
 .. autoclass:: mastodon.return_types.ShallowQuote
    :members:
 
+.. autoclass:: mastodon.return_types.QuoteApproval
+   :members:
+
 .. autoclass:: mastodon.return_types.StatusEdit
    :members:
 
@@ -164,6 +167,12 @@ Return types
 .. autoclass:: mastodon.return_types.SearchV2
    :members:
 
+.. autoclass:: mastodon.return_types.Collection
+   :members:
+
+.. autoclass:: mastodon.return_types.CollectionItem
+   :members:
+
 .. autoclass:: mastodon.return_types.Instance
    :members:
 
@@ -228,6 +237,15 @@ Return types
    :members:
 
 .. autoclass:: mastodon.return_types.InstancePollConfiguration
+   :members:
+
+.. autoclass:: mastodon.return_types.InstanceTimelinesAccessConfiguration
+   :members:
+
+.. autoclass:: mastodon.return_types.InstanceTimelinesAccessFeedConfiguration
+   :members:
+
+.. autoclass:: mastodon.return_types.InstanceAnnualReportCampaign
    :members:
 
 .. autoclass:: mastodon.return_types.Nodeinfo
@@ -411,5 +429,4 @@ Deprecated types
 
 .. autoclass:: mastodon.return_types.IdentityProof
    :members:
-
 

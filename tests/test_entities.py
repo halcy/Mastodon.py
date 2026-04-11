@@ -169,6 +169,23 @@ def test_entity_shallowquote(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+def test_entity_quoteapproval(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.status(110446223051565765).quote_approval
+    assert real_issubclass(type(result), QuoteApproval), str(type(result)) + ' is not a subclass of QuoteApproval'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), QuoteApproval), str(type(result)) + ' is not a subclass of QuoteApproval after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
 def test_entity_statusedit(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.status_history(110446223051565765)[-1]
@@ -1053,6 +1070,40 @@ def test_entity_instancepollconfiguration(mastodon_base, mastodon_admin):
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), InstancePollConfiguration), str(type(result)) + ' is not a subclass of InstancePollConfiguration after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_instancetimelinesaccessconfiguration(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.instance_v2().configuration.timelines_access
+    assert real_issubclass(type(result), InstanceTimelinesAccessConfiguration), str(type(result)) + ' is not a subclass of InstanceTimelinesAccessConfiguration'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), InstanceTimelinesAccessConfiguration), str(type(result)) + ' is not a subclass of InstanceTimelinesAccessConfiguration after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_instancetimelinesaccessfeedconfiguration(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.instance_v2().configuration.timelines_access.live_feeds
+    assert real_issubclass(type(result), InstanceTimelinesAccessFeedConfiguration), str(type(result)) + ' is not a subclass of InstanceTimelinesAccessFeedConfiguration'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), InstanceTimelinesAccessFeedConfiguration), str(type(result)) + ' is not a subclass of InstanceTimelinesAccessFeedConfiguration after to_json/from_json'
 
 @pytest.mark.vcr(
     filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],

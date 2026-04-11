@@ -191,16 +191,17 @@ if sys.version_info < (3, 9):
         # I'm sorry about this, but I cannot think of another way to make this work properly in versions below 3.9 that
         # cannot resolve forward references in a sane way
         from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, \
-            Status, Quote, ShallowQuote, StatusEdit, FilterResult, StatusMention, \
-            ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, Tag, \
-            TagHistory, CustomEmoji, Application, Relationship, Filter, FilterV2, \
-            Notification, Context, UserList, MediaAttachment, MediaAttachmentMetadataContainer, MediaAttachmentImageMetadata, \
-            MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, MediaAttachmentFocusPoint, MediaAttachmentColors, PreviewCard, TrendingLinkHistory, \
-            PreviewCardAuthor, Search, SearchV2, Instance, InstanceConfiguration, InstanceURLs, \
-            InstanceV2, InstanceIcon, InstanceConfigurationV2, InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, \
-            InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, InstanceUsageUsers, RuleTranslation, Rule, \
-            InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration, \
-            InstancePollConfiguration, Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, \
+            Status, Quote, ShallowQuote, QuoteApproval, StatusEdit, FilterResult, \
+            StatusMention, ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, \
+            Tag, TagHistory, CustomEmoji, Application, Relationship, Filter, \
+            FilterV2, Notification, Context, UserList, MediaAttachment, MediaAttachmentMetadataContainer, \
+            MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata, MediaAttachmentFocusPoint, MediaAttachmentColors, PreviewCard, \
+            TrendingLinkHistory, PreviewCardAuthor, Search, SearchV2, Collection, CollectionItem, \
+            Instance, InstanceConfiguration, InstanceURLs, InstanceV2, InstanceIcon, InstanceConfigurationV2, \
+            InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, \
+            InstanceUsageUsers, RuleTranslation, Rule, InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, \
+            InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration, InstancePollConfiguration, InstanceTimelinesAccessConfiguration, InstanceTimelinesAccessFeedConfiguration, \
+            InstanceAnnualReportCampaign, Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, \
             NodeinfoMetadata, Activity, Report, AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, \
             PushNotification, Preferences, FeaturedTag, Marker, Announcement, Reaction, \
             StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, AdminMeasure, AdminMeasureData, \
