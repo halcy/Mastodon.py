@@ -488,6 +488,8 @@ class Entity():
             serialize_data["_mastopy_extra_data"]["_pagination_next"] = self._pagination_next
         if hasattr(self, "_pagination_prev") and self._pagination_prev is not None:
             serialize_data["_mastopy_extra_data"]["_pagination_prev"] = self._pagination_prev
+        if hasattr(self, "_async_refresh") and self._async_refresh is not None:
+            serialize_data["_mastopy_extra_data"]["_async_refresh"] = self._async_refresh
 
         def json_serial(obj):
             if isinstance(obj, datetime):
@@ -543,6 +545,8 @@ class Entity():
                 response_type = return_data._pagination_prev.get("_mastopy_type", None)
                 if response_type is not None:
                     return_data._pagination_prev["_mastopy_type"] = _str_to_type(response_type)
+            if "_async_refresh" in json_result["_mastopy_extra_data"]:
+                return_data._async_refresh = json_result["_mastopy_extra_data"]["_async_refresh"]
 
         return return_data
 
@@ -641,7 +645,7 @@ class AttribAccessDict(OrderedStrDict, Entity):
         """
         Override to force access of normal attributes to go through __getattr__
         """
-        if attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "__class__"]:
+        if attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "_async_refresh", "__class__"]:
             return super(AttribAccessDict, self).__getattribute__(attr)
         if attr in self.__class__.__annotations__:
             return self.__getattr__(attr)
@@ -676,8 +680,8 @@ class AttribAccessDict(OrderedStrDict, Entity):
         """
         Attribute setter that calls through to dict setter but will throw if attribute is not in dict
         """
-        if attr in self or attr in ["_AttribAccessDict__union_specializer", "_mastopy_type"]:
-            if attr == "_mastopy_type":
+        if attr in self or attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "_async_refresh"]:
+            if attr in ["_mastopy_type", "_async_refresh"]:
                 super(AttribAccessDict, self).__setattr__(attr, val)
             else:
                 self[attr] = val

@@ -360,6 +360,29 @@ class Mastodon():
                                 del prev_params['max_id']
                             response._pagination_prev = prev_params
         
+            # Parse Mastodon-Async-Refresh header
+            if 'Mastodon-Async-Refresh' in response_object.headers:
+                async_refresh_header = response_object.headers['Mastodon-Async-Refresh']
+                async_refresh_info = {}
+                for part in async_refresh_header.split(","):
+                    part = part.strip()
+                    if "=" in part:
+                        key, value = part.split("=", 1)
+                        key = key.strip()
+                        value = value.strip().strip('"')
+                        if key in ('retry', 'result_count'):
+                            try:
+                                value = int(value)
+                            except ValueError:
+                                pass
+                        async_refresh_info[key] = value
+                async_refresh_info['_method'] = method
+                async_refresh_info['_endpoint'] = endpoint
+                async_refresh_info['_params'] = copy.deepcopy(params)
+                async_refresh_info['_mastopy_type'] = final_type
+                if hasattr(response, '__dict__') or isinstance(response, dict):
+                    response._async_refresh = async_refresh_info
+
         return response
 
     def __get_streaming_base(self) -> str:

@@ -419,6 +419,9 @@ Return types
 .. autoclass:: mastodon.return_types.TermsOfService
    :members:
 
+.. autoclass:: mastodon.return_types.AsyncRefresh
+   :members:
+
 Deprecated types
 ================
 .. autoclass:: mastodon.return_types.Filter

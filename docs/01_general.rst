@@ -98,6 +98,18 @@ a paginated request as well as for fetching all pages starting from a first page
 For details, see :ref:`fetch_next() <fetch_next()>`, :ref:`fetch_previous() <fetch_previous()>`. 
 and :ref:`fetch_remaining() <fetch_remaining()>`.
 
+Async refreshes
+---------------
+Some API endpoints may return a ``Mastodon-Async-Refresh`` header, indicating that the
+server is still fetching additional data in the background (e.g. fetching remote replies
+for a status context, or refreshing the home timeline). Mastodon.py parses this header
+and attaches the information to the returned object.
+
+You can use :ref:`get_async_refresh_info() <get_async_refresh_info()>` to check whether
+a result has async refresh information, :ref:`get_async_refresh_status() <get_async_refresh_status()>` 
+to poll the server for the current status of a refresh, and :ref:`await_async_refresh() <await_async_refresh()>` 
+to wait for a refresh to complete and then re-fetch the original resource.
+
 IDs and unpacking
 -----------------
 Mastodon's API uses IDs in several places: User IDs, Toot IDs, ...

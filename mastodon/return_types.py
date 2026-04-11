@@ -7739,6 +7739,40 @@ class TermsOfService(AttribAccessDict):
 
     _version = "4.4.0"
 
+class AsyncRefresh(AttribAccessDict):
+    """
+    Status of an asynchronous refresh. Returned by the async_refreshes endpoint.
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AsyncRefresh/
+    """
+
+    id: "str"
+    """
+    The ID of the async refresh.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    status: "str"
+    """
+    Status of the async refresh.
+    Should contain (as text): AsyncRefreshStatusEnum
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    result_count: "Optional[int]"
+    """
+    Optional number of results already created/fetched as part of this async refresh. (nullable)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
 ENTITY_NAME_MAP = {
     "Account": Account,
     "AccountField": AccountField,
@@ -7863,6 +7897,8 @@ ENTITY_NAME_MAP = {
     "OAuthServerInfo": OAuthServerInfo,
     "OAuthUserInfo": OAuthUserInfo,
     "TermsOfService": TermsOfService,
+    "AsyncRefresh": AsyncRefresh,
+    "AttribAccessDict": AttribAccessDict,
 }
 __all__ = [
     "Account",
@@ -7988,5 +8024,6 @@ __all__ = [
     "OAuthServerInfo",
     "OAuthUserInfo",
     "TermsOfService",
+    "AsyncRefresh",
 ]
 

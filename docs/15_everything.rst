@@ -684,6 +684,12 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.get_pagination_info
    :no-index:
+.. automethod:: Mastodon.get_async_refresh_info
+   :no-index:
+.. automethod:: Mastodon.get_async_refresh_status
+   :no-index:
+.. automethod:: Mastodon.await_async_refresh
+   :no-index:
 .. automethod:: Mastodon.decode_blurhash
    :no-index:
 .. automethod:: Mastodon.clear_caches

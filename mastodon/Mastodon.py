@@ -55,6 +55,7 @@ from mastodon.preferences import Mastodon as MastoPreferences
 from mastodon.push import Mastodon as MastoPush
 from mastodon.admin import Mastodon as MastoAdmin
 from mastodon.streaming_endpoints import Mastodon as MastoStreaming
+from mastodon.async_refresh import Mastodon as MastoAsyncRefresh
 
 
 ###
@@ -64,7 +65,7 @@ from mastodon.streaming_endpoints import Mastodon as MastoStreaming
 ###
 class Mastodon(MastoUtility, MastoAuthentication, MastoAccounts, MastoInstance, MastoTimeline, MastoStatuses, MastoPolls, MastoNotifications, MastoHashtags,
                 MastoFilters, MastoSuggestions, MastoEndorsements, MastoRelationships, MastoLists, MastoTrends, MastoSearch, MastoFavourites, MastoReports,
-                MastoPreferences, MastoPush, MastoAdmin, MastoConversations, MastoMedia, MastoStreaming):
+                MastoPreferences, MastoPush, MastoAdmin, MastoConversations, MastoMedia, MastoStreaming, MastoAsyncRefresh):
     """
     Thorough and easy to use Mastodon
     API wrapper in Python.

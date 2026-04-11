@@ -11459,5 +11459,51 @@
                 "is_nullable": false
             }
         }
+    },
+    {
+        "name": "Async refresh status",
+        "python_name": "AsyncRefresh",
+        "func_call": null,
+        "func_call_real": null,
+        "func_call_additional": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AsyncRefresh/",
+        "description": "Status of an asynchronous refresh. Returned by the async_refreshes endpoint.",
+        "fields": {
+            "id": {
+                "description": "The ID of the async refresh.",
+                "field_type": "IdType",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [["4.4.0", "added"]],
+                "enum": null
+            },
+            "status": {
+                "description": "Status of the async refresh.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "AsyncRefreshStatusEnum",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [["4.4.0", "added"]],
+                "enum": {
+                    "running": "A background job is still running to perform the async refresh",
+                    "finished": "The background job performing this async refresh has finished"
+                }
+            },
+            "result_count": {
+                "description": "if specified, number of results already created/fetched as part of this async refresh.",
+                "field_type": "int",
+                "field_subtype": null,
+                "field_structuretype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [["4.4.0", "added"]],
+                "enum": null
+            }
+        }
     }
 ]

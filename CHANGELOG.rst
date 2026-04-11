@@ -12,6 +12,8 @@ v2.2.0 (In progress)
 * Add quote support (Several new endpoints and entities)
 * Fix a bug in push subscriptions for status push subscriptions
 * Fix a bug in Pleroma ID parsing
+* Samples: Make samples work on Windows (Thanks @AllynH for the report and fix)
+* Add support for async refreshes
 
 v2.1.4
 ------
