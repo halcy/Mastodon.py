@@ -185,7 +185,7 @@ class Mastodon(Internals):
         return self.__api_request('PUT', '/api/v1/push/subscription', params)
 
     @api_version("2.4.0", "2.4.0")
-    def push_subscription_delete(self):
+    def push_subscription_delete(self) -> None:
         """
         Remove the current push subscription the logged-in user has for this app.
         """

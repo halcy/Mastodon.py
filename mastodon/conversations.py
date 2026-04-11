@@ -23,7 +23,7 @@ class Mastodon(Internals):
     # Writing data: Conversations
     ###
     @api_version("2.6.0", "2.6.0")
-    def conversations_read(self, id: Union[Conversation, IdType]):
+    def conversations_read(self, id: Union[Conversation, IdType]) -> Conversation:
         """
         Marks a single conversation as read.
 

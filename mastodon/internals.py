@@ -79,6 +79,8 @@ class Mastodon():
                 return_type = AttribAccessDict
                 if func_obj is not None:
                     return_type = func_obj.__annotations__.get('return', AttribAccessDict)
+                if return_type is None:
+                    return_type = AttribAccessDict
             else:
                 return_type = override_type
         except:

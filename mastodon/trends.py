@@ -11,7 +11,7 @@ class Mastodon(Internals):
     # Reading data: Trends
     ###
     @api_version("2.4.3", "3.5.0")
-    def trends(self, limit: Optional[int] = None):
+    def trends(self, limit: Optional[int] = None) -> NonPaginatableList[Tag]:
         """
         Old alias for :ref:`trending_tags() <trending_tags()>`
 

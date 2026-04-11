@@ -41,7 +41,7 @@ class Mastodon(Internals):
     # Writing data: Follow suggestions
     ###
     @api_version("2.4.3", "2.4.3")
-    def suggestion_delete(self, account_id: Union[Account, IdType]):
+    def suggestion_delete(self, account_id: Union[Account, IdType]) -> None:
         """
         Remove the user with the given `account_id` from the follow suggestions.
         """

@@ -43,7 +43,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/featured_tags', params)
 
     @api_version("3.0.0", "3.0.0")
-    def featured_tag_delete(self, id: Union[FeaturedTag, IdType]):
+    def featured_tag_delete(self, id: Union[FeaturedTag, IdType]) -> None:
         """
         Deletes one of the logged-in user's featured hashtags.
 

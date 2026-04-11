@@ -606,7 +606,7 @@ class Mastodon(Internals):
         return self.__api_request('PUT', f'/api/v1/scheduled_statuses/{id}', params)
 
     @api_version("2.7.0", "2.7.0")
-    def scheduled_status_delete(self, id: Union[Status, IdType]):
+    def scheduled_status_delete(self, id: Union[Status, IdType]) -> None:
         """
         Deletes a scheduled status.
         """

@@ -2,8 +2,8 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v2.2.0 (In progress)
---------------------
+v2.2.0
+------
 * Bumped support level to 4.5.0
 * Switch from `grapheme` to `graphemeu` package, which is more maintained (thanks @CyberTailor for the report).
 * Fix a crash due to unbound local in stream_public (Thanks @elnikkis for the report and fix)
@@ -14,6 +14,7 @@ v2.2.0 (In progress)
 * Fix a bug in Pleroma ID parsing
 * Samples: Make samples work on Windows (Thanks @AllynH for the report and fix)
 * Add support for async refreshes
+* Fix various other bugs and documentation issues
 
 v2.1.4
 ------

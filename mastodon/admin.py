@@ -61,7 +61,7 @@ class Mastodon(Internals):
     def admin_accounts(self, remote: bool = False, by_domain: Optional[str] = None, status: str = 'active', username: Optional[str] = None, 
                        display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, staff_only: bool = False, 
                        max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, 
-                       limit: Optional[int] = None):
+                       limit: Optional[int] = None) -> List[AdminAccount]:
         """
         Currently a synonym for admin_accounts_v1, now deprecated. You are strongly encouraged to use admin_accounts_v2 instead, since this one is kind of bad.
 
@@ -208,7 +208,7 @@ class Mastodon(Internals):
 
     @api_version("2.9.1", "2.9.1")
     def admin_account_moderate(self, id: Union[Account, AdminAccount, IdType], action: Optional[str] = None, report_id: Optional[Union[AdminReport, PrimitiveIdType]] = None, 
-                               warning_preset_id: Optional[PrimitiveIdType] = None, text: Optional[str] = None, send_email_notification: Optional[bool] = True):
+                               warning_preset_id: Optional[PrimitiveIdType] = None, text: Optional[str] = None, send_email_notification: Optional[bool] = True) -> None:
         """
         Perform a moderation action on an account.
 
@@ -417,7 +417,7 @@ class Mastodon(Internals):
         return self.__api_request('PUT', f'/api/v1/admin/domain_blocks/{id}', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_delete_domain_block(self, id = Union[AdminDomainBlock, IdType]):
+    def admin_delete_domain_block(self, id: Union[AdminDomainBlock, IdType]) -> None:
         """
         Removes moderation action against a given domain. Requires scope `admin:write:domain_blocks`.
 
@@ -650,7 +650,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/domain_allows', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_delete_domain_allow(self, id: Union[AdminDomainAllow, IdType]):
+    def admin_delete_domain_allow(self, id: Union[AdminDomainAllow, IdType]) -> None:
         """
         Remove a domain from the allowlist. Requires scope `admin:write:domain_allows`.
         
@@ -693,7 +693,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/email_domain_blocks', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_delete_email_domain_block(self, id: IdType):
+    def admin_delete_email_domain_block(self, id: IdType) -> None:
         """
         Remove an email domain block. Requires scope `admin:write:email_domain_blocks`.
         
@@ -799,7 +799,7 @@ class Mastodon(Internals):
         return self.__api_request('PUT', f'/api/v1/admin/ip_blocks/{id}', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_delete_ip_block(self, id: Union[AdminIpBlock, IdType]):
+    def admin_delete_ip_block(self, id: Union[AdminIpBlock, IdType]) -> None:
         """
         Remove an IP block. Requires scope `admin:write:ip_blocks`.
         """

@@ -74,14 +74,14 @@ class Mastodon(Internals):
     # Writing data: Notifications
     ###
     @api_version("1.0.0", "1.0.0")
-    def notifications_clear(self):
+    def notifications_clear(self) -> None:
         """
         Clear out a user's notifications
         """
         self.__api_request('POST', '/api/v1/notifications/clear')
 
     @api_version("1.3.0", "2.9.2")
-    def notifications_dismiss(self, id: Union[Notification, IdType]):
+    def notifications_dismiss(self, id: Union[Notification, IdType]) -> None:
         """
         Deletes a single notification
         """

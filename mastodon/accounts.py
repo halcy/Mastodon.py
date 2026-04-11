@@ -115,7 +115,7 @@ class Mastodon(Internals):
             return response['access_token']
 
     @api_version("3.4.0", "3.4.0")
-    def email_resend_confirmation(self):
+    def email_resend_confirmation(self) -> None:
         """
         Requests a re-send of the users confirmation mail for an unconfirmed logged in user.
 
@@ -534,14 +534,14 @@ class Mastodon(Internals):
         return self.__api_request('GET', f'/api/v1/accounts/{id}/featured_tags')
 
     @api_version("4.2.0", "4.2.0")
-    def account_delete_avatar(self):
+    def account_delete_avatar(self) -> None:
         """
         Delete the logged-in user's avatar.
         """
         self.__api_request('DELETE', '/api/v1/profile/avatar')
     
     @api_version("4.2.0", "4.2.0")
-    def account_delete_header(self):
+    def account_delete_header(self) -> None:
         """
         Delete the logged-in user's header.
         """

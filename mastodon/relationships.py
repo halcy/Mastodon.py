@@ -77,7 +77,7 @@ class Mastodon(Internals):
     # Writing data: Domain blocks
     ###
     @api_version("1.4.0", "1.4.0")
-    def domain_block(self, domain: str):
+    def domain_block(self, domain: str) -> None:
         """
         Add a block for all statuses originating from the specified domain for the logged-in user.
         """
@@ -85,7 +85,7 @@ class Mastodon(Internals):
         self.__api_request('POST', '/api/v1/domain_blocks', params)
 
     @api_version("1.4.0", "1.4.0")
-    def domain_unblock(self, domain: str):
+    def domain_unblock(self, domain: str) -> None:
         """
         Remove a domain block for the logged-in user.
         """
