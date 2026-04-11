@@ -23,10 +23,7 @@ classifiers = [
 dependencies = [
     'requests>=2.4.2',
     'python-dateutil',
-    'python-magic-bin ; platform_system=="Windows"',
-    'python-magic ; platform_system!="Windows"',
     'decorator>=4.0.0',
-    'blurhash>=1.1.4',
 ]
 
 [project.optional-dependencies]
@@ -39,6 +36,10 @@ blurhash = [
 ]
 grapheme = [
     'graphemeu>=0.7.2',
+]
+magic = [
+    'python-magic-bin ; platform_system=="Windows"',
+    'python-magic ; platform_system!="Windows"',
 ]
 test = [
     'pytest',
