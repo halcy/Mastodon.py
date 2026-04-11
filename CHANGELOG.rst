@@ -6,11 +6,12 @@ v2.2.0 (In progress)
 --------------------
 * Bumped support level to 4.5.0
 * Switch from `grapheme` to `graphemeu` package, which is more maintained (thanks @CyberTailor for the report).
-* Fixed a crash due to unbound local in stream_public (Thanks @elnikkis for the report and fix)
+* Fix a crash due to unbound local in stream_public (Thanks @elnikkis for the report and fix)
 * Fix invalid event error in heartbeats (Thanks @tribela for the report and fix)
 * Add several missing parameters to `account_update_credentials`
 * Add quote support (Several new endpoints and entities)
-* Fixed a bug in push subscriptions for status push subscriptions
+* Fix a bug in push subscriptions for status push subscriptions
+* Fix a bug in Pleroma ID parsing
 
 v2.1.4
 ------

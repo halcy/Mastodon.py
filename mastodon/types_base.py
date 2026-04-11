@@ -24,7 +24,6 @@ def base62_to_int(base62: str) -> int:
     """
     str_len = len(base62)
     val = 0
-    base62 = base62.lower()
     for idx, char in enumerate(base62):
         power = (str_len - (idx + 1))
         val += BASE62_ALPHABET.index(char) * (62 ** power)
