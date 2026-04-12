@@ -82,11 +82,30 @@ about who helped with which particular feature or fix in the changelog.
 
 Research use and citing
 -----------------------
-If you use Mastodon.py in your research, please cite it according to the latest CITATION.cff from the repository:
+If you use Mastodon.py as part of your research, please review and cite the following paper:
 
-https://github.com/halcy/Mastodon.py/blob/master/CITATION.cff
+    Diener et al., (2026). Mastodon.py: A Python library for the Mastodon API. *Journal of Open Source Software*, 11(120), 8946, https://doi.org/10.21105/joss.08946
 
-As a personal request, It is important to me to ask you to make sure that the subjects of 
+BibTeX:
+
+.. code-block:: bibtex
+
+    @article{Diener2026,
+        doi = {10.21105/joss.08946},
+        url = {https://doi.org/10.21105/joss.08946},
+        year = {2026},
+        publisher = {The Open Journal},
+        volume = {11},
+        number = {120},
+        pages = {8946},
+        author = {Diener, Lorenz and Delcourt, Corentin},
+        title = {Mastodon.py: A Python library for the Mastodon API},
+        journal = {Journal of Open Source Software}
+    }
+
+Full citation metadata is also available in the `CITATION.cff <https://github.com/halcy/Mastodon.py/blob/master/CITATION.cff>`_ in the repository.
+
+As a personal request, it is important to me to ask you to make sure that the subjects of
 your research - fediverse users - are alright with the research you are doing on them
 and/or that you have secured the approval of your institutions ethics board.
 
