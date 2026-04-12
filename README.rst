@@ -56,6 +56,9 @@ If you use Mastodon.py as part of your research, please review and cite the foll
 
     Diener et al., (2026). Mastodon.py: A Python library for the Mastodon API. *Journal of Open Source Software*, 11(120), 8946, https://doi.org/10.21105/joss.08946
 
+.. image:: https://joss.theoj.org/papers/10.21105/joss.08946/status.svg
+   :target: https://doi.org/10.21105/joss.08946
+
 Acknowledgements
 ----------------
 Mastodon.py contains work by a large amount of contributors, many of which have
