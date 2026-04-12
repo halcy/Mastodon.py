@@ -75,3 +75,17 @@ def test_status_quote_revoke(api, api2):
             api2.status_delete(quoted)
     finally:
         api.status_delete(original)
+
+@pytest.mark.vcr()
+def test_status_reply_with_quote(api, status):
+    reply_target = api.status_post('reply to me')
+    try:
+        quoted = api.status_reply(reply_target, 'yoooo check this out', quoted_status_id=status)
+        try:
+            assert quoted
+            assert quoted.in_reply_to_id == reply_target.id
+            assert quoted.quote is not None or quoted.quoted_status is not None
+        finally:
+            api.status_delete(quoted)
+    finally:
+        api.status_delete(reply_target)
