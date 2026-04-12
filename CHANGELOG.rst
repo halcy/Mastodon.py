@@ -2,6 +2,10 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.2.1
+------
+* Updated citation information to match the new JOSS publication (Thanks @dataspider and @professornaite for reviewing and @danielskatz for editing)
+
 v2.2.0
 ------
 * Bumped support level to 4.5.0
