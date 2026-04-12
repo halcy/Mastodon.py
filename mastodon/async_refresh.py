@@ -80,9 +80,9 @@ class Mastodon(Internals):
         Returns the re-fetched original entity on success, or None if the 
         timeout or max attempts was exceeded before the refresh finished.
 
-        Raises `MastodonIllegalArgumentError`_ if the passed object has async refresh 
+        Raises `MastodonIllegalArgumentError` if the passed object has async refresh 
         information but is missing the original request information needed to re-fetch.
-        Raises `MastodonAPIError`_ if any of the API requests made during the process 
+        Raises `MastodonAPIError` if any of the API requests made during the process 
         fail with an error response.
         """
         async_refresh_info = getattr(result, '_async_refresh', None)

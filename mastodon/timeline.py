@@ -104,6 +104,6 @@ class Mastodon(Internals):
 
         Note: The URL must be *exactly* the same as one fron `trending_links()`, including the protocol and potentially trailing slash.
 
-        Raises a MastodonNotFoundError if the URL is not currently trending.
+        Raises a `MastodonNotFoundError` if the URL is not currently trending.
         """
         return self.timeline(f'link?url={url}', max_id=max_id, min_id=min_id, since_id=since_id, limit=limit, only_media=only_media, local=local, remote=remote)
