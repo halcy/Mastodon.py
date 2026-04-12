@@ -99,10 +99,10 @@ These functions allow you to get and update quote approval policies for statuses
 
 Reading
 ~~~~~~~
-.. automethod:: Mastodon.status_quote_approval_policy
-.. automethod:: Mastodon.status_quote_approval_status
+.. automethod:: Mastodon.status_quotes
 
 Writing
 ~~~~~~~
-.. automethod:: Mastodon.status_update_quote_approval_policy
+.. automethod:: Mastodon.status_quote_revoke
+.. automethod:: Mastodon.status_update_quote_approval_status
 
