@@ -18,7 +18,7 @@ class Mastodon(Internals):
         """
         Extract async refresh information from an API result, if present.
 
-        Returns a tuple of (`AsyncRefresh`_, retry_seconds) where the entity
+        Returns a tuple of (:class:`AsyncRefresh`, retry_seconds) where the entity
         contains the ``id``, ``status`` (always ``"running"``), and optionally
         ``result_count``, and retry_seconds is the server-suggested polling
         interval in seconds.
@@ -40,14 +40,14 @@ class Mastodon(Internals):
         """
         Get the status of an async refresh by its ID. The ID can be obtained from
         a previous API response that included the ``Mastodon-Async-Refresh`` header,
-        accessible via `get_async_refresh_info()`_.
+        accessible via :meth:`get_async_refresh_info`.
 
-        You can pass in an async refresh ID, an `AsyncRefresh`_ entity (e.g. from 
-        a previous call to this function or from `get_async_refresh_info()`_), or 
+        You can pass in an async refresh ID, an :class:`AsyncRefresh` entity (e.g. from 
+        a previous call to this function or from :meth:`get_async_refresh_info`), or 
         an API result that has async refresh information (i.e. a previous API 
         result that had the header set).
 
-        Returns an `AsyncRefresh`_ dict.
+        Returns an :class:`AsyncRefresh` dict.
         """
         async_refresh_id = self.__get_async_refresh_id(result_or_id)
         response = self.__api_request('GET', f'/api/v1_alpha/async_refreshes/{async_refresh_id}', override_type=dict)

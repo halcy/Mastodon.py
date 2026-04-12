@@ -364,9 +364,9 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.status_translate
    :no-index:
-.. automethod:: Mastodon.status_quote_approval_policy
+.. automethod:: Mastodon.status_quotes
    :no-index:
-.. automethod:: Mastodon.status_quote_approval_status
+.. automethod:: Mastodon.status_quote_revoke
    :no-index:
 .. automethod:: Mastodon.status_update_quote_approval_policy
    :no-index:

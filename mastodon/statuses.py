@@ -369,7 +369,7 @@ class Mastodon(Internals):
         Note that editing a poll will reset the votes.
 
         To edit media metadata, pass a list of dictionaries describing the edits as `media_attributes`.
-        You can use :ref:`generate_media_edit_attributes() <generate_media_edit_attributes()>`
+        You can use :meth:`generate_media_edit_attributes`
         to generate these dictionaries.
         """
         return self.__status_internal(
@@ -621,7 +621,7 @@ class Mastodon(Internals):
         """
         Translate the status content into some language.
 
-        Raises a MastodonAPIError if the server can't perform the requested translation, for any
+        Raises a `MastodonAPIError` if the server can't perform the requested translation, for any
         reason (doesn't support translation, unsupported language pair, etc.).
         """
         id = self.__unpack_id(id)
@@ -674,7 +674,7 @@ class Mastodon(Internals):
 
         If the status has a visibility of ``'private'`` or ``'direct'``, the policy
         will always be set to ``'nobody'`` regardless of the value passed in.
-        Changing the policy does not invalidate past quotes, use :ref:`status_quote_revoke() <status_quote_revoke()>`
+        Changing the policy does not invalidate past quotes, use :meth:`status_quote_revoke`
         for that.
 
         Returns the updated status.
