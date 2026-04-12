@@ -262,6 +262,8 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.TermsOfService
    :no-index:
+.. autoclass:: mastodon.return_types.AsyncRefresh
+   :no-index:
 .. autoclass:: mastodon.return_types.Filter
    :no-index:
 .. autoclass:: mastodon.return_types.Search

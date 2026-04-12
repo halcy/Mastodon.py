@@ -7743,10 +7743,17 @@ class AsyncRefresh(AttribAccessDict):
     """
     Status of an asynchronous refresh. Returned by the async_refreshes endpoint.
 
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AsyncRefresh object
+        None
+
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AsyncRefresh/
     """
 
-    id: "str"
+    id: "IdType"
     """
     The ID of the async refresh.
 
@@ -7765,7 +7772,7 @@ class AsyncRefresh(AttribAccessDict):
 
     result_count: "Optional[int]"
     """
-    Optional number of results already created/fetched as part of this async refresh. (nullable)
+    if specified, number of results already created/fetched as part of this async refresh. (nullable)
 
     Version history:
       * 4.4.0: added
@@ -7774,6 +7781,7 @@ class AsyncRefresh(AttribAccessDict):
     _version = "4.4.0"
 
 ENTITY_NAME_MAP = {
+    "AttribAccessDict": AttribAccessDict,
     "Account": Account,
     "AccountField": AccountField,
     "Role": Role,
@@ -7898,7 +7906,6 @@ ENTITY_NAME_MAP = {
     "OAuthUserInfo": OAuthUserInfo,
     "TermsOfService": TermsOfService,
     "AsyncRefresh": AsyncRefresh,
-    "AttribAccessDict": AttribAccessDict,
 }
 __all__ = [
     "Account",
