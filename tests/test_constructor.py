@@ -125,3 +125,60 @@ def test_streaming_base_is_cached(api, monkeypatch):
     assert first == "https://stream.example"
     assert second == "https://stream.example"
     assert calls["v1"] == 1
+
+
+def test_timeline_is_available_from_v2_config(api, monkeypatch):
+    def fake_instance_v2(cached=False):
+        return {
+            "configuration": {
+                "timelines_access": {
+                    "live_feeds": {"local": "disabled", "remote": "public"},
+                    "hashtag_feeds": {"local": "disabled", "remote": "disabled"},
+                }
+            }
+        }
+
+    monkeypatch.setattr(api, "_Mastodon__instance_v2", fake_instance_v2)
+
+    assert api.timeline_is_available("public", local=True, remote=False) is False
+    assert api.timeline_is_available("public", local=False, remote=True) is True
+    assert api.timeline_is_available("public") is True
+    assert api.timeline_is_available("hashtag") is False
+
+
+def test_timeline_is_available_fallback_on_missing_v2(api, monkeypatch):
+    def fake_instance_v2(cached=False):
+        raise MastodonNotFoundError("No v2 instance endpoint")
+
+    monkeypatch.setattr(api, "_Mastodon__instance_v2", fake_instance_v2)
+
+    assert api.timeline_is_available("public") is True
+    assert api.timeline_is_available("hashtag", local=True) is True
+
+
+def test_timeline_is_available_handles_weird_values(api, monkeypatch):
+    def fake_instance_v2(cached=False):
+        return {
+            "configuration": {
+                "timelines_access": {
+                    "live_feeds": {"local": {"unexpected": "shape"}, "remote": None},
+                }
+            }
+        }
+
+    monkeypatch.setattr(api, "_Mastodon__instance_v2", fake_instance_v2)
+
+    assert api.timeline_is_available("public", local=True) is True
+    assert api.timeline_is_available("public", remote=True) is True
+
+
+def test_timeline_is_available_invalid_timeline_raises(api):
+    with pytest.raises(MastodonIllegalArgumentError):
+        api.timeline_is_available("home")
+
+
+@pytest.mark.skip(reason="TODO test against live server.")
+def test_timeline_is_available_live_server_disabled(mastodon_base):
+    assert isinstance(mastodon_base.timeline_is_available("public"), bool)
+    assert isinstance(mastodon_base.timeline_is_available("local"), bool)
+    assert isinstance(mastodon_base.timeline_is_available("remote"), bool)

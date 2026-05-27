@@ -29,6 +29,50 @@ from mastodon.return_types import *
 # Internal helpers, dragons probably
 ###
 class Mastodon():
+    def timeline_is_available(self, timeline: str = "public", local: bool = False, remote: bool = False, 
+                              with_auth: bool = False, fail_hard: bool = False) -> bool:
+        """
+        Determine whether a given public timeline feed variant is available on this instance.
+
+        Supported parameter values are as in `timeline()`.
+
+        Set `with_auth` to True to return True for timelines that require login, not just fully public ones.
+        Set `fail_hard` to True to raise an exception if we fail to determine availability, instead of silently returning True.
+        """
+        timeline_to_feed_key = {
+            "public": "live_feeds",
+            "hashtag": "hashtag_feeds",
+            "trending_links": "trending_link_feeds",
+        }
+        if timeline not in timeline_to_feed_key:
+            raise MastodonIllegalArgumentError(f"Unknown timeline: {timeline}")
+        feed_key = timeline_to_feed_key[timeline]
+
+        valid_values = ("public")
+        if with_auth:
+            valid_values = ("authenticated", "public")
+            
+        try:
+            instance_v2_info = self.__instance_v2(cached=True)
+
+            timelines_access = instance_v2_info["configuration"]["timelines_access"]
+            feed_config = timelines_access[feed_key]
+            local_available = feed_config["local"] in valid_values
+            remote_available = feed_config["remote"] in valid_values
+
+            if local and remote:
+                return local_available and remote_available
+            elif local:
+                return local_available
+            elif remote:
+                return remote_available
+            else:
+                return local_available or remote_available
+        except Exception as e:
+            if fail_hard:
+                raise MastodonAPIError(f"Failed to determine timeline availability for '{timeline}'.") from e
+            return True
+
     def __datetime_to_epoch(self, date_time: datetime) -> float:
         """
         Converts a python datetime to unix epoch, accounting for
