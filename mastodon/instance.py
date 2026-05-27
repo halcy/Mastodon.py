@@ -28,16 +28,20 @@ class Mastodon(Internals):
         instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
         return instance
 
-    def __instance(self) -> Instance:
+    def __instance(self, cached: bool = False) -> Instance:
         """
         Internal, non-version-checking helper that does the same as instance_v1()
 
         Silences the deprecation warnning, we are careful about fallbacks anywhere this is used.
         If you are using this, this is your notice to do that.
         """
+        if cached and self.__instance_v1_cache is not None:
+            return self.__instance_v1_cache
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=MastodonDeprecationWarning)
             instance = self.__api_request('GET', '/api/v1/instance/', override_type=Instance)
+        self.__instance_v1_cache = instance
         return instance
 
     @api_version("4.0.0", "4.0.0")
@@ -49,11 +53,15 @@ class Mastodon(Internals):
         """
         return self.__api_request('GET', '/api/v2/instance/')
 
-    def __instance_v2(self) -> InstanceV2:
+    def __instance_v2(self, cached: bool = False) -> InstanceV2:
         """
         Internal, non-version-checking helper that does the same as instance_v2()
         """
+        if cached and self.__instance_v2_cache is not None:
+            return self.__instance_v2_cache
+
         instance = self.__api_request('GET', '/api/v2/instance/', override_type=InstanceV2)
+        self.__instance_v2_cache = instance
         return instance
 
     @api_version("1.1.0", "4.0.0")

@@ -399,12 +399,12 @@ class Mastodon():
         # Try to support implementations that have no v1 endpoint (Sharkey does this)
         streaming_api_url = None
         try:
-            instance = self.__instance()
+            instance = self.__instance(cached=True)
             if  "streaming_api" in instance["urls"]:
                 streaming_api_url = instance["urls"]["streaming_api"]
         except:
             try:
-                streaming_api_url = self.__instance_v2().configuration.urls.streaming
+                streaming_api_url = self.__instance_v2(cached=True).configuration.urls.streaming
             except:
                 pass
 
@@ -417,12 +417,15 @@ class Mastodon():
             elif parse.scheme == 'ws':
                 url = "http://" + parse.netloc
             else:
+                if parse.scheme in ('http', 'https'):
+                    url = parse.scheme + "://" + parse.netloc
                 raise MastodonAPIError(
                     f"Could not parse streaming api location returned from server: {streaming_api_url}."
                 )
         else:
             url = self.api_base_url
         assert not url is None
+        self.__streaming_base = url
         return url
 
     def __stream(self, endpoint, listener, params={}, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):

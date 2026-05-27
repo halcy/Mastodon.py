@@ -254,8 +254,10 @@ class Mastodon(Internals):
             self.__version_check_tried = True
             self.__version_check_worked = True
 
-        # Cached version check
+        # Cached version/instance checks
         self.__streaming_base = None
+        self.__instance_v1_cache = None
+        self.__instance_v2_cache = None
 
         # Versioning
         if mastodon_version is None and self.version_check_mode != 'none':
@@ -277,6 +279,8 @@ class Mastodon(Internals):
         self.__version_check_worked = None
         self.__version_check_tried = False
         self.__streaming_base = None
+        self.__instance_v1_cache = None
+        self.__instance_v2_cache = None
 
     def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", 
                          scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None, 

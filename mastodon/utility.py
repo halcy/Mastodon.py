@@ -31,43 +31,44 @@ class Mastodon(Internals):
         """
         self.lang = lang
 
-    def retrieve_mastodon_version(self) -> str:
+    def retrieve_mastodon_version(self, fail_hard=False) -> str:
         """
         Determine installed Mastodon version and set major, minor and patch (not including RC info) accordingly.
 
         Returns the version string, possibly including rc info.
         """
         try:
-            version_str = self.__normalize_version_string(
-                self.__instance()["version"])
+            version_str = self.__normalize_version_string(self.__instance(cached=True)["version"])
             self.__version_check_worked = True
         except Exception as e:
+            if fail_hard:
+                raise MastodonVersionError("Failed to retrieve Mastodon version") from e
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
             self.__version_check_worked = False
-        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(
-            version_str)
+        self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
 
         # If the instance has an API version, we store that as well.
         # If we have a version >= 4.3.0 but no API version, we throw a warning that this is a Weird Implementation,
         # which might help with adoption of the API versioning or at least give us a better picture of how it is going.
         found_api_version = False
         try:
-            instance_v2_info = self.__instance_v2()
-            if "api_versions" in instance_v2_info and instance_v2_info["api_versions"]:
+            instance_v2_info = self.__instance_v2(cached=True)
+            if instance_v2_info and "api_versions" in instance_v2_info and instance_v2_info["api_versions"]:
                 if "mastodon" in instance_v2_info["api_versions"]:
                     self.mastodon_api_version = int(
                         instance_v2_info["api_versions"]["mastodon"])
                     found_api_version = True
-        except MastodonNotFoundError:
-            pass
-        except MastodonVersionError:
+        except Exception as e:
+            # Not the worlds most important issue if this fails,
+            # so we silently eat it, unless requested not to
+            if fail_hard:
+                raise MastodonVersionError("Failed to retrieve Mastodon version") from e
             pass
 
         self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
-            warnings.warn(
-                "Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
+            warnings.warn("Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
         return version_str
 
     def verify_minimum_version(self, version_str: str, cached: bool = False) -> bool:
