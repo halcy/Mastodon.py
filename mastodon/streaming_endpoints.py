@@ -1,6 +1,8 @@
-    # relationships.py - endpoints for user and domain blocks and mutes as well as follow requests
+# streaming_endpoints.py - endpoints for getting streaming data using the HTTP SSE streaming API
 
-from mastodon.errors import MastodonIllegalArgumentError
+import warnings
+
+from mastodon.errors import MastodonIllegalArgumentError, MastodonWarning
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from mastodon.utility import api_version
 
@@ -27,6 +29,12 @@ class Mastodon(Internals):
         Set `local` to True to only get local statuses.
         Set `remote` to True to only get remote statuses.
         """
+        if not self.timeline_is_available("public", local=local, remote=remote, with_auth=self.access_token is not None, fail_hard=False):
+            warnings.warn(
+                "Public stream appears to be unavailable on this instance for the current auth context.",
+                MastodonWarning
+            )
+
         base = '/api/v1/streaming/public'
         if local:
             base += '/local'
@@ -56,6 +64,13 @@ class Mastodon(Internals):
         """
         if tag.startswith("#"):
             raise MastodonIllegalArgumentError("Tag parameter should omit leading #")
+
+        if not self.timeline_is_available("hashtag", local=local, with_auth=self.access_token is not None, fail_hard=False):
+            warnings.warn(
+                "Hashtag stream appears to be unavailable on this instance for the current auth context.",
+                MastodonWarning
+            )
+
         base = '/api/v1/streaming/hashtag'
         if local:
             base += '/local'

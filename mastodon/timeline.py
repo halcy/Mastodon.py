@@ -1,6 +1,8 @@
 # timeline.py - endpoints for reading various different timelines
 
-from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError
+import warnings
+
+from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError, MastodonWarning
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
@@ -29,6 +31,34 @@ class Mastodon(Internals):
 
         See <https://docs.joinmastodon.org/methods/timelines/> for a description of the parameters.
         """
+        check_timeline = None
+        check_local = local
+        check_remote = remote
+
+        if timeline == "public":
+            check_timeline = "public"
+        elif timeline == "local":
+            check_timeline = "public"
+            check_local = True
+            check_remote = False
+        elif timeline.startswith("tag/"):
+            check_timeline = "hashtag"
+        elif timeline.startswith("link"):
+            check_timeline = "trending_links"
+
+        if check_timeline is not None:
+            available = self.timeline_is_available(check_timeline,
+                local=check_local,
+                remote=check_remote,
+                with_auth=self.access_token is not None,
+                fail_hard=False,
+            )
+            if not available:
+                warnings.warn(
+                    f"Timeline '{timeline}' appears to be unavailable on this instance for the current auth context.",
+                    MastodonWarning
+                )
+
         params_initial = locals()
 
         if not local:

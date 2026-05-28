@@ -19,7 +19,7 @@ import warnings
 from mastodon.versions import parse_version_string
 from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
                     MastodonUnauthorizedError, MastodonInternalServerError, MastodonBadGatewayError, MastodonServiceUnavailableError, \
-                    MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError, MastodonDeprecationWarning
+                    MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError, MastodonDeprecationWarning, MastodonWarning
 from mastodon.compat import urlparse, magic, PurePath, Path
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from mastodon.return_types import AttribAccessDict, PaginatableList, try_cast_recurse
@@ -439,6 +439,12 @@ class Mastodon():
         """
         if self.__streaming_base is not None:
             return self.__streaming_base
+
+        if not self.timeline_is_available("public", with_auth=self.access_token is not None, fail_hard=False):
+            warnings.warn(
+                "Public timeline appears to be unavailable on this instance for the current auth context; streaming may fail.",
+                MastodonWarning
+            )
         
         # Try to support implementations that have no v1 endpoint (Sharkey does this)
         streaming_api_url = None
