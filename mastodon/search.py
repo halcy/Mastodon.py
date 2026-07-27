@@ -21,10 +21,10 @@ class Mastodon(Internals):
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
     @api_version("1.1.0", "2.8.0")
-    def search(self, q: str, resolve: bool = True, result_type: Optional[str] = None, 
-               account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None, 
-               min_id: Optional[IdType] = None, max_id: Optional[IdType] = None, 
-               exclude_unreviewed: bool = True) -> Union[Search, SearchV2]:
+    def search(self, q: str, resolve: bool = True, result_type: Optional[str] = None,
+               account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None,
+               min_id: Optional[IdType] = None, max_id: Optional[IdType] = None,
+               exclude_unreviewed: bool = True, limit: Optional[int] = None) -> Union[Search, SearchV2]:
         """
         Fetch matching hashtags, accounts and statuses. Will perform webfinger
         lookups if resolve is True. Full-text search is only enabled if
@@ -42,6 +42,10 @@ class Mastodon(Internals):
         those that have been reviewed by moderators. It is on by default. When using the
         v1 search API (pre 2.4.1), it is ignored.
 
+        `limit` caps the number of results returned per category (accounts, statuses
+        and hashtags). It is only forwarded to the server when using the v2 search API
+        (pre 2.4.1 does not support it and it is silently ignored on search_v1).
+
         Will use search_v1 (no tags in return values) on Mastodon versions before
         2.4.1), search_v2 otherwise. Parameters other than resolve are only available
         on Mastodon 2.8.0 or above - this function will throw a MastodonVersionError
@@ -49,7 +53,7 @@ class Mastodon(Internals):
         number will be used for this to avoid uneccesary requests.
         """
         if self.verify_minimum_version("2.4.1", cached=True):
-            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed)
+            return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed, limit=limit)
         else:
             self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
             return self.search_v1(q, resolve=resolve)
@@ -68,12 +72,12 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/search', params)
 
     @api_version("2.4.1", "2.8.0")
-    def search_v2(self, q, resolve: bool = True, result_type: Optional[str] = None, 
-               account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None, 
-               min_id: Optional[IdType] = None, max_id: Optional[IdType] = None, 
-               exclude_unreviewed: bool = True) -> SearchV2:
+    def search_v2(self, q, resolve: bool = True, result_type: Optional[str] = None,
+               account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None,
+               min_id: Optional[IdType] = None, max_id: Optional[IdType] = None,
+               exclude_unreviewed: bool = True, limit: Optional[int] = None) -> SearchV2:
         """
-        Identical to `search_v1()`, except in that it returns tags as objects, 
+        Identical to `search_v1()`, except in that it returns tags as objects,
         has more parameters, and resolves by default.
 
         For more details documentation, please see `search()`
