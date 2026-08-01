@@ -5,38 +5,39 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v1/instance/
+    uri: http://localhost:3000/api/v2/instance/
   response:
     body:
-      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.5.0","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":5,"domain_count":0},"thumbnail":"http://localhost:3000/packs-dev/images/preview.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.6.4","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs-dev/images/preview.png","description":"Two
+        smiling cartoon mastodons (who look like elephants) toss a paper plane between
+        them. They''re surrounded by a bright blue sky and floating planets with trees
+        and more mastodons on them."},"icon":[{"src":"http://localhost:3000/packs-dev/icons/android-chrome-36x36.png","size":"36x36"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-48x48.png","size":"48x48"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-72x72.png","size":"72x72"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-96x96.png","size":"96x96"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-144x144.png","size":"144x144"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-192x192.png","size":"192x192"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-256x256.png","size":"256x256"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-384x384.png","size":"384x384"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-512x512.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null,"about":"http://localhost:3000/about","privacy_policy":"http://localhost:3000/privacy-policy","terms_of_service":null},"vapid":{"public_key":"BAhxXyHfAoMqrZECjRI56F5QrE4ynVlkZFMdKSpTIsWRNoWUVgut-Bnz2xsMSwiN4AF0b4I7ixF24OwiicOJivw="},"accounts":{"max_display_name_length":40,"max_note_length":500,"max_avatar_description_length":150,"max_header_description_length":150,"max_featured_tags":10,"max_pinned_statuses":5,"max_profile_fields":4,"profile_field_name_limit":255,"profile_field_value_limit":255},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"description_limit":10000,"image_matrix_limit":33177600,"image_size_limit":16777216,"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"video_frame_rate_limit":120,"video_matrix_limit":8294400,"video_size_limit":103809024},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false},"timelines_access":{"live_feeds":{"local":"public","remote":"public"},"hashtag_feeds":{"local":"public","remote":"public"},"trending_link_feeds":{"local":"public","remote":"public"}},"limited_federation":false},"registrations":{"enabled":true,"approval_required":false,"reason_required":false,"message":null,"min_age":null,"url":null},"api_versions":{"mastodon":11},"wrapstodon":null,"contact":{"email":"","account":null},"rules":[]}'
     headers:
       cache-control:
       - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
       content-length:
-      - '1224'
+      - '3118'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       date:
-      - Sun, 12 Apr 2026 07:49:10 GMT
-      deprecation:
-      - '@1668384000'
+      - Sat, 01 Aug 2026 13:55:46 GMT
       etag:
-      - W/"1f7520b21604a396249e2b7b3ec49f9b"
+      - W/"0ebf00609010ff9e53e8f9eb814970f3"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.19, sql.active_record;dur=2.19, cache_generate.active_support;dur=13.17,
-        cache_write.active_support;dur=0.34, start_processing.action_controller;dur=0.00,
-        instantiation.active_record;dur=0.07, cache_fetch_hit.active_support;dur=0.00,
-        render.active_model_serializers;dur=30.72, process_action.action_controller;dur=53.79
+      - cache_read.active_support;dur=0.24, sql.active_record;dur=3.25, cache_generate.active_support;dur=11.36,
+        cache_write.active_support;dur=0.44, start_processing.action_controller;dur=0.00,
+        cache_fetch_hit.active_support;dur=0.01, instantiation.active_record;dur=0.06,
+        render.active_model_serializers;dur=34.03, process_action.action_controller;dur=38.63
       vary:
       - Accept, Origin
       x-content-type-options:
@@ -50,11 +51,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-12T07:50:00.815486Z'
+      - '2026-08-01T14:00:00.433500Z'
       x-request-id:
-      - 6bd96d33-3f22-49d6-85f7-a69a1b2e51c4
+      - 750b33c9-fffe-48ce-91ea-58fec4adc780
       x-runtime:
-      - '0.070203'
+      - '0.057047'
       x-xss-protection:
       - '0'
     status:
@@ -66,7 +67,68 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body:
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.6.4","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":17,"domain_count":1},"thumbnail":"http://localhost:3000/packs-dev/images/preview.png","languages":["en"],"registrations":true,"approval_required":false,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+    headers:
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-length:
+      - '1225'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Sat, 01 Aug 2026 13:55:46 GMT
+      deprecation:
+      - '@1668384000'
+      etag:
+      - W/"bf75ccb3811878224f026507b8fc7bd7"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.15, sql.active_record;dur=2.92, cache_generate.active_support;dur=9.24,
+        cache_write.active_support;dur=0.38, start_processing.action_controller;dur=0.00,
+        instantiation.active_record;dur=0.08, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=25.19, process_action.action_controller;dur=29.42
+      vary:
+      - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-01T14:00:00.510046Z'
+      x-request-id:
+      - 519fb74d-5ff1-4f6b-a94d-ed9dcf19602b
+      x-runtime:
+      - '0.045205'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
       Connection:
       - keep-alive
       User-Agent:
@@ -86,7 +148,7 @@ interactions:
       Content-Type:
       - text/plain
       Date:
-      - Sun, 12 Apr 2026 07:49:10 GMT
+      - Sat, 01 Aug 2026 13:55:46 GMT
       Keep-Alive:
       - timeout=5
       Transfer-Encoding:
@@ -94,7 +156,7 @@ interactions:
       X-Powered-By:
       - Express
       X-Request-Id:
-      - 1edad686-c0b7-4e2c-8c1e-6c886ad6c6d1
+      - 8c690593-22ed-4429-a429-c1321b6d6671
     status:
       code: 200
       message: OK

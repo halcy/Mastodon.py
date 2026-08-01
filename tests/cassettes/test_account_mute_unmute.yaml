@@ -16,26 +16,25 @@ interactions:
     uri: http://localhost:3000/api/v1/accounts/verify_credentials
   response:
     body:
-      string: '{"id":"116390608267280254","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-04-12T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/116390608267280254","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":null,"hide_collections":null,"noindex":false,"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false,"attribution_domains":[],"quote_policy":"public"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"2097151","color":"","highlighted":true}}'
+      string: '{"id":"117020565693913441","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020565693913441","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":0,"statuses_count":6,"last_status_at":"2026-08-01","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":null,"indexable":false,"attribution_domains":[],"quote_policy":"public"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[],"role":{"id":"3","name":"Owner","permissions":"8388607","color":"","highlighted":true,"collection_limit":10}}'
     headers:
       cache-control:
       - private, no-store
       content-length:
-      - '1067'
+      - '1282'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"6e3200cd01a70885e7a8c1ee42c2760f"
+      - W/"00b80bcd92367de34019db3a5bcbdb6e"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.06, sql.active_record;dur=25.35, cache_generate.active_support;dur=2.73,
-        cache_write.active_support;dur=0.22, instantiation.active_record;dur=7.41,
-        start_processing.action_controller;dur=0.01, start_transaction.active_record;dur=0.01,
-        transaction.active_record;dur=14.97, render.active_model_serializers;dur=47.61,
-        process_action.action_controller;dur=109.12
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.99, cache_generate.active_support;dur=2.49,
+        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.18,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=4.74,
+        process_action.action_controller;dur=12.42
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -49,11 +48,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-12T07:45:00.666385Z'
+      - '2026-08-01T14:00:00.527447Z'
       x-request-id:
-      - 6c3887bc-66ca-4df7-988b-44dd08d9ef4c
+      - 12e20725-cc4d-4703-a494-2ac5fd82ec38
       x-runtime:
-      - '0.148715'
+      - '0.028184'
       x-xss-protection:
       - '0'
     status:
@@ -77,30 +76,31 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/116390608267280254/mute
+    uri: http://localhost:3000/api/v1/accounts/117020565693913441/mute
   response:
     body:
-      string: '{"id":"116390608267280254","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":true,"muting_notifications":true,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
+      string: '{"id":"117020565693913441","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":true,"muting_notifications":true,"muting_expires_at":null,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+        ebayer gerne wieder"}'
     headers:
       cache-control:
       - private, no-store
       content-length:
-      - '292'
+      - '340'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"a0a47c2692389d4a5fbbc5142758781f"
+      - W/"446722a2596bed6f7426c12db84024d7"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=36.47, cache_generate.active_support;dur=1.52,
-        cache_write.active_support;dur=0.09, instantiation.active_record;dur=0.86,
-        start_processing.action_controller;dur=0.01, start_transaction.active_record;dur=0.02,
-        transaction.active_record;dur=23.66, cache_delete.active_support;dur=0.03,
-        cache_read_multi.active_support;dur=0.07, cache_write_multi.active_support;dur=0.10,
-        render.active_model_serializers;dur=0.24, process_action.action_controller;dur=120.85
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.48, cache_generate.active_support;dur=1.12,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.28,
+        start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
+        transaction.active_record;dur=5.65, cache_delete.active_support;dur=0.02,
+        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.05,
+        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=22.56
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -114,11 +114,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-12T07:45:00.899010Z'
+      - '2026-08-01T14:00:00.584228Z'
       x-request-id:
-      - f39fcd47-92c4-4744-b9c4-830350a3bd83
+      - 204cac5f-8663-4008-a454-352d2a2233dc
       x-runtime:
-      - '0.197330'
+      - '0.037388'
       x-xss-protection:
       - '0'
     status:
@@ -140,30 +140,31 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/116390608267280254/unmute
+    uri: http://localhost:3000/api/v1/accounts/117020565693913441/unmute
   response:
     body:
-      string: '{"id":"116390608267280254","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
+      string: '{"id":"117020565693913441","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"muting_expires_at":null,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+        ebayer gerne wieder"}'
     headers:
       cache-control:
       - private, no-store
       content-length:
-      - '294'
+      - '342'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"915b4e8702641b7e7031fcbb51a8e058"
+      - W/"c69c562a22bd2dcb1536b5489588a321"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.10, sql.active_record;dur=17.10, cache_generate.active_support;dur=2.67,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.62,
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.16, cache_generate.active_support;dur=1.00,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=1.71,
         start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=5.73, cache_delete.active_support;dur=0.03,
-        cache_read_multi.active_support;dur=0.04, cache_write_multi.active_support;dur=0.07,
-        render.active_model_serializers;dur=0.22, process_action.action_controller;dur=1020.10
+        transaction.active_record;dur=4.66, cache_delete.active_support;dur=0.02,
+        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.06,
+        render.active_model_serializers;dur=0.14, process_action.action_controller;dur=34.00
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -177,11 +178,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-12T07:45:00.436355Z'
+      - '2026-08-01T14:00:00.633515Z'
       x-request-id:
-      - 467929c1-3126-44fe-bb42-eeaf1b50caa6
+      - 96bd4bd3-9e21-4bfc-88e9-e78e0a5353bc
       x-runtime:
-      - '1.401120'
+      - '0.049106'
       x-xss-protection:
       - '0'
     status:
@@ -205,30 +206,31 @@ interactions:
       User-Agent:
       - tests/v311
     method: POST
-    uri: http://localhost:3000/api/v1/accounts/116390608267280254/mute
+    uri: http://localhost:3000/api/v1/accounts/117020565693913441/mute
   response:
     body:
-      string: '{"id":"116390608267280254","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":true,"muting_notifications":true,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}'
+      string: '{"id":"117020565693913441","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":true,"muting_notifications":true,"muting_expires_at":"2026-08-01T13:58:16Z","requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+        ebayer gerne wieder"}'
     headers:
       cache-control:
       - private, no-store
       content-length:
-      - '292'
+      - '358'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"a0a47c2692389d4a5fbbc5142758781f"
+      - W/"04eb421f95cadeced5dca30f5fc90244"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=22.56, cache_generate.active_support;dur=1.25,
-        cache_write.active_support;dur=0.11, instantiation.active_record;dur=5.90,
-        start_processing.action_controller;dur=0.01, start_transaction.active_record;dur=0.00,
-        transaction.active_record;dur=7.33, cache_delete.active_support;dur=0.04,
-        cache_read_multi.active_support;dur=0.06, cache_write_multi.active_support;dur=0.13,
-        render.active_model_serializers;dur=0.23, process_action.action_controller;dur=91.26
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.19, cache_generate.active_support;dur=1.29,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.32,
+        start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
+        transaction.active_record;dur=5.07, cache_delete.active_support;dur=0.02,
+        cache_read_multi.active_support;dur=0.03, cache_write_multi.active_support;dur=0.08,
+        render.active_model_serializers;dur=0.15, process_action.action_controller;dur=22.91
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -242,11 +244,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-12T07:45:00.568188Z'
+      - '2026-08-01T14:00:00.693146Z'
       x-request-id:
-      - 24fb3bdc-8627-46f9-bb7e-874259c3d6bc
+      - 4d4ecd49-9207-40e9-ae2d-a68f7c0e9368
       x-runtime:
-      - '0.126220'
+      - '0.037995'
       x-xss-protection:
       - '0'
     status:
@@ -266,29 +268,30 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
-    uri: http://localhost:3000/api/v1/accounts/relationships?id=116390608267280254
+    uri: http://localhost:3000/api/v1/accounts/relationships?id=117020565693913441
   response:
     body:
-      string: '[{"id":"116390608267280254","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":""}]'
+      string: '[{"id":"117020565693913441","following":false,"showing_reblogs":false,"notifying":false,"languages":null,"followed_by":false,"blocking":false,"blocked_by":false,"muting":false,"muting_notifications":false,"muting_expires_at":null,"requested":false,"requested_by":false,"domain_blocking":false,"endorsed":false,"note":"top
+        ebayer gerne wieder"}]'
     headers:
       cache-control:
       - private, no-store
       content-length:
-      - '296'
+      - '344'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
       content-type:
       - application/json; charset=utf-8
       etag:
-      - W/"5b19b2cfdf8aeab9c49bfe19f0b8b181"
+      - W/"105f51844942c06f216bc6ae79b6def6"
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.02, sql.active_record;dur=2.98, cache_generate.active_support;dur=1.46,
-        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.21,
-        start_processing.action_controller;dur=0.00, cache_read_multi.active_support;dur=0.03,
-        cache_write_multi.active_support;dur=0.06, render.active_model_serializers;dur=0.61,
-        process_action.action_controller;dur=58.90
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=2.46, cache_generate.active_support;dur=1.19,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.19,
+        start_processing.action_controller;dur=0.00, cache_read_multi.active_support;dur=0.02,
+        cache_write_multi.active_support;dur=0.05, render.active_model_serializers;dur=0.16,
+        process_action.action_controller;dur=13.95
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -302,11 +305,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-12T07:45:00.716275Z'
+      - '2026-08-01T14:00:00.753146Z'
       x-request-id:
-      - 1ea04eb5-5d0e-4f65-a8e3-fe209a49e70f
+      - b9d7d5d3-c9f2-4084-8193-51e59e6120bb
       x-runtime:
-      - '0.079611'
+      - '0.030415'
       x-xss-protection:
       - '0'
     status:

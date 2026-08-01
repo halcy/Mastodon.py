@@ -13,6 +13,70 @@ interactions:
       User-Agent:
       - tests/v311
     method: GET
+    uri: http://localhost:3000/api/v2/instance/
+  response:
+    body:
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.6.4","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":0}},"thumbnail":{"url":"http://localhost:3000/packs-dev/images/preview.png","description":"Two
+        smiling cartoon mastodons (who look like elephants) toss a paper plane between
+        them. They''re surrounded by a bright blue sky and floating planets with trees
+        and more mastodons on them."},"icon":[{"src":"http://localhost:3000/packs-dev/icons/android-chrome-36x36.png","size":"36x36"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-48x48.png","size":"48x48"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-72x72.png","size":"72x72"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-96x96.png","size":"96x96"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-144x144.png","size":"144x144"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-192x192.png","size":"192x192"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-256x256.png","size":"256x256"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-384x384.png","size":"384x384"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-512x512.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null,"about":"http://localhost:3000/about","privacy_policy":"http://localhost:3000/privacy-policy","terms_of_service":null},"vapid":{"public_key":"BAhxXyHfAoMqrZECjRI56F5QrE4ynVlkZFMdKSpTIsWRNoWUVgut-Bnz2xsMSwiN4AF0b4I7ixF24OwiicOJivw="},"accounts":{"max_display_name_length":40,"max_note_length":500,"max_avatar_description_length":150,"max_header_description_length":150,"max_featured_tags":10,"max_pinned_statuses":5,"max_profile_fields":4,"profile_field_name_limit":255,"profile_field_value_limit":255},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"description_limit":10000,"image_matrix_limit":33177600,"image_size_limit":16777216,"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"video_frame_rate_limit":120,"video_matrix_limit":8294400,"video_size_limit":103809024},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false},"timelines_access":{"live_feeds":{"local":"public","remote":"public"},"hashtag_feeds":{"local":"public","remote":"public"},"trending_link_feeds":{"local":"public","remote":"public"}},"limited_federation":false},"registrations":{"enabled":true,"approval_required":false,"reason_required":false,"message":null,"min_age":null,"url":null},"api_versions":{"mastodon":11},"wrapstodon":null,"contact":{"email":"","account":null},"rules":[]}'
+    headers:
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-length:
+      - '3118'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Sat, 01 Aug 2026 13:56:08 GMT
+      etag:
+      - W/"0ebf00609010ff9e53e8f9eb814970f3"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.27, sql.active_record;dur=3.10, cache_generate.active_support;dur=9.13,
+        cache_write.active_support;dur=0.44, instantiation.active_record;dur=0.11,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.01,
+        render.active_model_serializers;dur=27.40, process_action.action_controller;dur=32.28
+      vary:
+      - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-01T14:00:00.167624Z'
+      x-request-id:
+      - 3340800e-fa6a-4ef0-bd89-dbff953a013f
+      x-runtime:
+      - '0.048822'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
     uri: http://localhost:3000/api/v1/timelines/link?url=http://example.com/
   response:
     body:
@@ -29,10 +93,10 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.08, sql.active_record;dur=4.60, cache_generate.active_support;dur=2.47,
-        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.24,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.03,
-        process_action.action_controller;dur=36.05
+      - cache_read.active_support;dur=0.05, sql.active_record;dur=2.31, cache_generate.active_support;dur=2.30,
+        cache_write.active_support;dur=0.13, instantiation.active_record;dur=0.20,
+        start_processing.action_controller;dur=0.01, rescue_from_callback.action_controller;dur=0.00,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=12.74
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -46,11 +110,11 @@ interactions:
       x-ratelimit-remaining:
       - '299'
       x-ratelimit-reset:
-      - '2026-04-11T23:25:00.141739Z'
+      - '2026-08-01T14:00:00.241082Z'
       x-request-id:
-      - fd870fdc-6556-40cb-9c54-767841754b21
+      - 8b860c7e-2200-4d64-85be-a79c37a79f5b
       x-runtime:
-      - '0.057563'
+      - '0.031320'
       x-xss-protection:
       - '0'
     status:

@@ -35,10 +35,10 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       server-timing:
-      - cache_read.active_support;dur=0.03, sql.active_record;dur=0.90, cache_generate.active_support;dur=1.17,
-        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.26,
-        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.04,
-        process_action.action_controller;dur=32.43
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=1.30, cache_generate.active_support;dur=1.10,
+        cache_write.active_support;dur=0.08, instantiation.active_record;dur=0.28,
+        start_processing.action_controller;dur=0.00, rescue_from_callback.action_controller;dur=0.01,
+        render.active_model_serializers;dur=0.02, process_action.action_controller;dur=13.84
       vary:
       - Authorization, Origin
       x-content-type-options:
@@ -50,13 +50,13 @@ interactions:
       x-ratelimit-limit:
       - '300'
       x-ratelimit-remaining:
-      - '230'
+      - '227'
       x-ratelimit-reset:
-      - '2026-04-12T00:00:00.848531Z'
+      - '2026-08-01T15:00:00.290597Z'
       x-request-id:
-      - cc697663-fc29-439b-ad3d-ca2f13c51be1
+      - f1dcfea6-9c38-46be-8bdb-06760918e147
       x-runtime:
-      - '0.049759'
+      - '0.030609'
       x-xss-protection:
       - '0'
     status:

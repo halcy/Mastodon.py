@@ -58,6 +58,10 @@ class Mastodon(Internals):
                     f"Timeline '{timeline}' appears to be unavailable on this instance for the current auth context.",
                     MastodonWarning
                 )
+            del available
+        del check_timeline
+        del check_local
+        del check_remote
 
         params_initial = locals()
 
@@ -69,6 +73,7 @@ class Mastodon(Internals):
 
         if not only_media:
             del params_initial['only_media']
+
 
         if timeline == "local":
             timeline = "public"

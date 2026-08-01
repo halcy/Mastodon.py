@@ -45,8 +45,13 @@ def test_status_missing(api):
 def test_status_card(api):
     import time
     status = api.status_post("http://example.org/")
-    time.sleep(20) # Card generation may take time
-    card = api.status_card(status['id'])
+
+    card = None
+    for i in range(0, 30):
+        if not card is None:
+            break
+        time.sleep(1)
+        card = api.status_card(status['id'])
     
     try:
         assert card
@@ -208,6 +213,7 @@ def test_scheduled_status(api):
 
 # The following two tests need to be manually (!) ran 10 minutes apart when recording.
 # Sorry, I can't think of a better way to test scheduled statuses actually work as intended.
+# Delete the timestamp file when you rerecord this!
 @pytest.mark.vcr(match_on=['path'])
 def test_scheduled_status_long_part1(api):
     with vcr.use_cassette('test_scheduled_status_long_part1.yaml', cassette_library_dir='tests/cassettes_special', record_mode='once'):  
