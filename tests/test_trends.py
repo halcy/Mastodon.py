@@ -3,7 +3,9 @@ import time
 import vcr
 
 
-@pytest.mark.vcr()
+# Explicitly give casette path due to a Very Weird Bug that happens on python 3.10 and 3.11 only
+# and only on CI, somehow.
+@pytest.mark.vcr(cassette_path='tests/cassettes/test_trending_tags.yaml')
 def test_trending_tags(api):
     tags = api.trending_tags()
     assert isinstance(tags, list)
