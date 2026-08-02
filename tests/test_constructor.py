@@ -174,7 +174,7 @@ def test_timeline_is_available_handles_weird_values(api, monkeypatch):
 
 def test_timeline_is_available_invalid_timeline_raises(api):
     with pytest.raises(MastodonIllegalArgumentError):
-        api.timeline_is_available("home")
+        api.timeline_is_available("home", fail_hard=True)
 
 
 @pytest.mark.skip(reason="TODO test against live server.")
