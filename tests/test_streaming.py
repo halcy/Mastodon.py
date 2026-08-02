@@ -12,6 +12,7 @@ import sys
 streaming_is_patched = False
 real_connections = []
 close_connections = False
+real_get_response = None
 
 @pytest.fixture(scope='module')
 def vcr_config():

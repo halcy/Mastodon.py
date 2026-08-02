@@ -128,22 +128,27 @@ def test_timeline_disabled(api):
     assert len(record) == 0
 
     # Same for streaming API
-    listener = StreamListener()
-    with warnings.catch_warnings(record=True) as record:
-        warnings.simplefilter("always")
-        api.stream_public(local=True, listener=listener, run_async=True)
-    assert len(record) == 0
+    handles = []
+    try:
+        listener = StreamListener()
+        with warnings.catch_warnings(record=True) as record:
+            warnings.simplefilter("always")
+            handles.append(api.stream_public(local=True, listener=listener, run_async=True))
+        assert len(record) == 0
 
-    # Test that a warning is emitted trying to access a stream for a timeline that is not available
-    with warnings.catch_warnings(record=True) as record:
-        warnings.simplefilter("always")
-        api_anonymous.stream_public(local=True, listener=listener, run_async=True)
-    assert any(issubclass(w.category, MastodonWarning) for w in record)
+        # Test that a warning is emitted trying to access a stream for a timeline that is not available
+        with warnings.catch_warnings(record=True) as record:
+            warnings.simplefilter("always")
+            handles.append(api_anonymous.stream_public(local=True, listener=listener, run_async=True))
+        assert any(issubclass(w.category, MastodonWarning) for w in record)
 
-    # Try fail-hard mode for timeline_is_available
-    with pytest.raises(MastodonIllegalArgumentError):
-        api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=True)
+        # Try fail-hard mode for timeline_is_available
+        with pytest.raises(MastodonIllegalArgumentError):
+            api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=True)
 
-    # Without fail-hard, it should return True if it cannot determine availability.
-    assert api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=False)
+        # Without fail-hard, it should return True if it cannot determine availability.
+        assert api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=False)
+    finally:
+        for handle in handles:
+            handle.close()
     
