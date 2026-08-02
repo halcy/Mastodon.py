@@ -707,7 +707,9 @@ def test_entity_searchv2(mastodon_base, mastodon_admin):
 )
 def test_entity_instance(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    result = mastodon.instance_v1()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", MastodonDeprecationWarning)
+        result = mastodon.instance_v1()
     assert real_issubclass(type(result), Instance), str(type(result)) + ' is not a subclass of Instance'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -724,7 +726,9 @@ def test_entity_instance(mastodon_base, mastodon_admin):
 )
 def test_entity_instanceconfiguration(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    result = mastodon.instance_v1().configuration
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", MastodonDeprecationWarning)
+        result = mastodon.instance_v1().configuration
     assert real_issubclass(type(result), InstanceConfiguration), str(type(result)) + ' is not a subclass of InstanceConfiguration'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -741,12 +745,17 @@ def test_entity_instanceconfiguration(mastodon_base, mastodon_admin):
 )
 def test_entity_instanceurls(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    result = mastodon.instance_v1().urls
+    # Ignore MastodonDeprecationWarning
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", MastodonDeprecationWarning)
+        result = mastodon.instance_v1().urls
     assert real_issubclass(type(result), InstanceURLs), str(type(result)) + ' is not a subclass of InstanceURLs'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), InstanceURLs), str(type(result)) + ' is not a subclass of InstanceURLs after to_json/from_json'
-    result = mastodon.instance_v1().urls
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", MastodonDeprecationWarning)
+        result = mastodon.instance_v1().urls
     assert real_issubclass(type(result), InstanceURLs), str(type(result)) + ' is not a subclass of InstanceURLs (additional function)'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -882,7 +891,10 @@ def test_entity_instancethumbnailversions(mastodon_base, mastodon_admin):
 )
 def test_entity_instancestatistics(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    result = mastodon.instance_v1().stats
+    # Ignore MastodonDeprecationWarning
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=MastodonDeprecationWarning)
+        result = mastodon.instance_v1().stats
     assert real_issubclass(type(result), InstanceStatistics), str(type(result)) + ' is not a subclass of InstanceStatistics'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):

@@ -1,6 +1,6 @@
 import pytest
 from mastodon import Mastodon
-from mastodon.Mastodon import MastodonIllegalArgumentError
+from mastodon.Mastodon import MastodonIllegalArgumentError, MastodonNotFoundError
 
 def test_constructor_from_filenames(tmpdir):
     client = tmpdir.join('client')
