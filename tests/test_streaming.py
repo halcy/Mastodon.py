@@ -62,6 +62,21 @@ def patch_streaming():
         return real_get_response(*args, **kwargs)
     vcr.stubs.VCRConnection.getresponse = fake_get_response
 
+def unpatch_streaming():
+    import vcr.stubs
+
+    global streaming_is_patched
+    if streaming_is_patched is False:
+        return
+    streaming_is_patched = False
+
+    # We need to unfortunately patch this. This *will* break in future versions, most likely.
+    # But this is the best we can do, I think.
+    real_get_response = vcr.stubs.VCRConnection.getresponse
+    def fake_get_response(*args, **kwargs):
+        return real_get_response(*args, **kwargs)
+    vcr.stubs.VCRConnection.getresponse = fake_get_response
+
 def streaming_close():
     global real_connections
     global close_connections
@@ -409,6 +424,7 @@ def test_stream_user_direct(api, api2, api3, vcr):
     assert notifications[0].status.id == posted[1].id
     
     t.join()
+    unpatch_streaming()
     
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_local(api, api2, vcr):
@@ -447,6 +463,7 @@ def test_stream_user_local(api, api2, vcr):
     assert updates[0].id == posted[0].id
     
     t.join()
+    unpatch_streaming()
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_direct(api, api2, vcr):
@@ -482,7 +499,9 @@ def test_stream_direct(api, api2, vcr):
     stream.close()
 
     assert len(conversations) == 1
-
+    t.join()
+    unpatch_streaming()
+    
 @pytest.mark.vcr()
 def test_stream_healthy(api_anonymous):
     assert api_anonymous.stream_healthy()

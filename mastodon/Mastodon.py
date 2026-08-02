@@ -74,7 +74,7 @@ class Mastodon(MastoUtility, MastoAuthentication, MastoAccounts, MastoInstance, 
     """
     # Support level
     __SUPPORTED_MASTODON_VERSION = "4.5.8"
-    __MASTODON_PY_VERSION = "2.2.1"
+    __MASTODON_PY_VERSION = "2.2.2"
     
     @staticmethod
     def get_supported_version() -> str:

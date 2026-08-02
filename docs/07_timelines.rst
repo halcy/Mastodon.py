@@ -11,6 +11,7 @@ access is allowed even when not authenticated if the instance admin has enabled 
 
 .. _timeline():
 .. automethod:: Mastodon.timeline
+.. automethod:: Mastodon.timeline_is_available
 .. automethod:: Mastodon.timeline_home
 .. automethod:: Mastodon.timeline_local
 .. _timeline_public():

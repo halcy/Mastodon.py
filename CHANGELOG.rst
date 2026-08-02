@@ -2,6 +2,14 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.2.2
+-------
+* Improve instance information caching
+* Add a function to check whether a given timeline is available on an instance (Thanks @pdeitel for the report that triggered this)
+* Add warnings when a user tries to access the stream for a deprecated timeline (Thanks @pdeitel for the report that triggered this)
+* Add missing `limit` parameter for `search` (Thanks @Vitexus)
+* Various small fixes and improvements to testing
+
 v2.2.1
 ------
 * Updated citation information to match the new JOSS publication (Thanks @dataspider and @professornaite for reviewing and @danielskatz for editing)
