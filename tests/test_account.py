@@ -3,6 +3,9 @@ from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError
 import re
 import time
 
+from mastodon.errors import MastodonDeprecationWarning
+import warnings
+
 @pytest.mark.vcr()
 def test_account(api):
     account = api.account(api.account_verify_credentials())
@@ -262,12 +265,15 @@ def test_follow_suggestions(api2):
     """
     # In 3.4.0+, it doesn't seem possible to seed suggestions like before, so instead, 
     # we just test the endpoints function
-    suggestions = api2.suggestions()
-    assert isinstance(suggestions, list)
-    suggestions = api2.suggestions_v2()
-    assert isinstance(suggestions, list)
-    suggestions = api2.suggestions_v1()
-    assert isinstance(suggestions, list)
+    # Ignore MastodonDeprecationWarning
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", MastodonDeprecationWarning)
+        suggestions = api2.suggestions()
+        assert isinstance(suggestions, list)
+        suggestions = api2.suggestions_v2()
+        assert isinstance(suggestions, list)
+        suggestions = api2.suggestions_v1()
+        assert isinstance(suggestions, list)
 
 @pytest.mark.vcr()
 def test_account_pin_unpin(api, api2):

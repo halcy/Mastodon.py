@@ -4,6 +4,9 @@ from mastodon.return_types import *
 from mastodon.types_base import real_issubclass, Entity
 from datetime import datetime, timedelta, timezone
 import sys
+
+import warnings
+from mastodon.errors import MastodonDeprecationWarning
       
 # "never record anything with admin in the URL" filter
 def vcr_filter(request):
@@ -414,7 +417,10 @@ def test_entity_relationship(mastodon_base, mastodon_admin):
 )
 def test_entity_filter(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    result = mastodon.filters()[0]
+    # Ignore MastodonDeprecationWarning
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", MastodonDeprecationWarning)
+        result = mastodon.filters()[0]
     assert real_issubclass(type(result), Filter), str(type(result)) + ' is not a subclass of Filter'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):

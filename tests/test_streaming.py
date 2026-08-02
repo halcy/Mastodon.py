@@ -162,13 +162,13 @@ def test_delete():
     assert listener.deletes == ["123"]
 
 
-@pytest.mark.parametrize('events', itertools.permutations([
+@pytest.mark.parametrize('events', list(itertools.permutations([
     ['event: update', 'data: {"foo": "bar"}', ''],
     ['event: notification', 'data: {"foo": "bar"}', ''],
     ['event: delete', 'data: 123', ''],
     [':toot toot'],
     [':beep beep'],
-]))
+])))
 def test_many(events):
     listener = Listener()
     stream = [
