@@ -1,9 +1,11 @@
 import pytest
 import time
-from mastodon.Mastodon import MastodonAPIError, MastodonIllegalArgumentError, MastodonUnauthorizedError, MastodonNotFoundError
+from mastodon.Mastodon import Mastodon, MastodonAPIError, MastodonIllegalArgumentError, MastodonUnauthorizedError, MastodonNotFoundError, MastodonWarning
+from mastodon.streaming import StreamListener
 import datetime
 import pickle
 import os
+import warnings
 
 @pytest.mark.vcr()
 def test_public_tl_anonymous(api_anonymous, status3):
@@ -107,4 +109,41 @@ def test_min_max_id_datetimes(api, status):
 def test_timeline_link_fails(api):
     with pytest.raises(MastodonNotFoundError):
         api.timeline_link("http://example.com/")
-        
+
+@pytest.mark.vcr()
+def test_timeline_disabled(api):
+    # Create anonymous mastosoc API instance
+    api_anonymous = Mastodon(api_base_url = "https://mastodon.social")
+
+    # Test against test server: Check for disabled timelines
+    assert api.timeline_is_available("public", local=True, remote=True, with_auth=True, fail_hard=False)
+
+    # Test against mastosoc: Same timeline is NOT available logged out
+    assert not api_anonymous.timeline_is_available("public", local=True, remote=True, with_auth=False, fail_hard=False)
+
+    # Test that no warning is emitted for a logged in user when the timeline is available
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter("always")
+        api.timeline("public", local=True, remote=True)
+    assert len(record) == 0
+
+    # Same for streaming API
+    listener = StreamListener()
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter("always")
+        api.stream_public(local=True, listener=listener, run_async=True)
+    assert len(record) == 0
+
+    # Test that a warning is emitted trying to access a stream for a timeline that is not available
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter("always")
+        api_anonymous.stream_public(local=True, listener=listener, run_async=True)
+    assert any(issubclass(w.category, MastodonWarning) for w in record)
+
+    # Try fail-hard mode for timeline_is_available
+    with pytest.raises(MastodonIllegalArgumentError):
+        api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=True)
+
+    # Without fail-hard, it should return True if it cannot determine availability.
+    assert api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=False)
+    

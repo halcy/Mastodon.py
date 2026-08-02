@@ -27,6 +27,7 @@ from mastodon.return_types import *
 
 ###
 # Internal helpers, dragons probably
+# timeline_is_available is exported and can be used, it is here for import circularity reasons
 ###
 class Mastodon():
     def timeline_is_available(self, timeline: str = "public", local: bool = False, remote: bool = False, 
@@ -45,7 +46,9 @@ class Mastodon():
             "trending_links": "trending_link_feeds",
         }
         if timeline not in timeline_to_feed_key:
-            raise MastodonIllegalArgumentError(f"Unknown timeline: {timeline}")
+            if fail_hard:
+                raise MastodonIllegalArgumentError(f"Unknown timeline: {timeline}")
+            return True
         feed_key = timeline_to_feed_key[timeline]
 
         valid_values = ("public")

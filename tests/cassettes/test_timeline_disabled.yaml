@@ -1,0 +1,1311 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/instance/
+  response:
+    body:
+      string: '{"domain":"localhost:3000","title":"Mastodon","version":"4.6.4","source_url":"https://github.com/mastodon/mastodon","description":"","usage":{"users":{"active_month":4}},"thumbnail":{"url":"http://localhost:3000/packs-dev/images/preview.png","description":"Two
+        smiling cartoon mastodons (who look like elephants) toss a paper plane between
+        them. They''re surrounded by a bright blue sky and floating planets with trees
+        and more mastodons on them."},"icon":[{"src":"http://localhost:3000/packs-dev/icons/android-chrome-36x36.png","size":"36x36"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-48x48.png","size":"48x48"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-72x72.png","size":"72x72"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-96x96.png","size":"96x96"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-144x144.png","size":"144x144"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-192x192.png","size":"192x192"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-256x256.png","size":"256x256"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-384x384.png","size":"384x384"},{"src":"http://localhost:3000/packs-dev/icons/android-chrome-512x512.png","size":"512x512"}],"languages":["en"],"configuration":{"urls":{"streaming":"ws://localhost:4000","status":null,"about":"http://localhost:3000/about","privacy_policy":"http://localhost:3000/privacy-policy","terms_of_service":null},"vapid":{"public_key":"BMSp9DUGHjNgPFWgM6Y0wACYUqHgZAvUBikoPnvDpl2RRXJCgBx4xu89nhHfVMq9tVMG__vCrxmK_wBo0Al6mx4="},"accounts":{"max_display_name_length":40,"max_note_length":500,"max_avatar_description_length":150,"max_header_description_length":150,"max_featured_tags":10,"max_pinned_statuses":5,"max_profile_fields":4,"profile_field_name_limit":255,"profile_field_value_limit":255},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"description_limit":10000,"image_matrix_limit":33177600,"image_size_limit":16777216,"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"video_frame_rate_limit":120,"video_matrix_limit":8294400,"video_size_limit":103809024},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746},"translation":{"enabled":false},"timelines_access":{"live_feeds":{"local":"public","remote":"public"},"hashtag_feeds":{"local":"public","remote":"public"},"trending_link_feeds":{"local":"public","remote":"public"}},"limited_federation":false},"registrations":{"enabled":true,"approval_required":true,"reason_required":false,"message":null,"min_age":null,"url":null},"api_versions":{"mastodon":11},"wrapstodon":null,"contact":{"email":"","account":null},"rules":[]}'
+    headers:
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-length:
+      - '3117'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Sun, 02 Aug 2026 07:15:13 GMT
+      etag:
+      - W/"b75a5eb9ebe2d9fadb217474f9f0b90a"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.22, sql.active_record;dur=3.27, cache_generate.active_support;dur=10.26,
+        cache_write.active_support;dur=0.49, instantiation.active_record;dur=0.12,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.01,
+        render.active_model_serializers;dur=31.73, process_action.action_controller;dur=36.38
+      vary:
+      - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-02T07:20:00.237802Z'
+      x-request-id:
+      - d2f172b5-bb7f-411e-b2e7-0e0c6f4acdf7
+      x-runtime:
+      - '0.053561'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - mastodonpy
+    method: GET
+    uri: https://mastodon.social/api/v2/instance/
+  response:
+    body:
+      string: "{\"domain\":\"mastodon.social\",\"title\":\"Mastodon\",\"version\"\
+        :\"4.7.0-alpha.2+pr-39999-68e5caf\",\"source_url\":\"https://github.com/mastodon/mastodon\"\
+        ,\"description\":\"The original server of Mastodon, operated by Mastodon GmbH\
+        \ for the common good.\\r\\n\\r\\n\",\"usage\":{\"users\":{\"active_month\"\
+        :269307}},\"thumbnail\":{\"url\":\"https://files.mastodon.social/site_uploads/files/000/000/001/@1x/57c12f441d083cde.png\"\
+        ,\"blurhash\":\"UeKUpFxuo~R%0nW;WCnhF6RjaJt757oJodS$\",\"versions\":{\"@1x\"\
+        :\"https://files.mastodon.social/site_uploads/files/000/000/001/@1x/57c12f441d083cde.png\"\
+        ,\"@2x\":\"https://files.mastodon.social/site_uploads/files/000/000/001/@2x/57c12f441d083cde.png\"\
+        },\"description\":\"Colourful illustration of a Mastodon (a sort of elephant)\
+        \ carrying a bindle and joining a group of other Mastodons. The other Mastodons\
+        \ have many different colours and are holding up a Welcome sign.\"},\"icon\"\
+        :[{\"src\":\"https://mastodon.social/packs/assets/android-chrome-36x36-DLiBQg3N.png\"\
+        ,\"size\":\"36x36\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-48x48-C7lKWFwX.png\"\
+        ,\"size\":\"48x48\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-72x72-9LRpA3QN.png\"\
+        ,\"size\":\"72x72\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-96x96-BKKwkkY-.png\"\
+        ,\"size\":\"96x96\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-144x144-D-ewI-KZ.png\"\
+        ,\"size\":\"144x144\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-192x192-jYKJbpas.png\"\
+        ,\"size\":\"192x192\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-256x256-DXt2vsq7.png\"\
+        ,\"size\":\"256x256\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-384x384-CbK7cG33.png\"\
+        ,\"size\":\"384x384\"},{\"src\":\"https://mastodon.social/packs/assets/android-chrome-512x512-Dz2ThkhV.png\"\
+        ,\"size\":\"512x512\"}],\"languages\":[\"en\"],\"configuration\":{\"urls\"\
+        :{\"streaming\":\"wss://streaming.mastodon.social\",\"status\":\"https://status.mastodon.social\"\
+        ,\"about\":\"https://mastodon.social/about\",\"privacy_policy\":\"https://mastodon.social/privacy-policy\"\
+        ,\"terms_of_service\":\"https://mastodon.social/terms-of-service\"},\"vapid\"\
+        :{\"public_key\":\"BCk-QqERU0q-CfYZjcuB6lnyyOYfJ2AifKqfeGIm7Z-HiTU5T9eTG5GxVA0_OH5mMlI4UkkDTpaZwozy0TzdZ2M=\"\
+        },\"accounts\":{\"max_display_name_length\":40,\"max_note_length\":500,\"\
+        max_avatar_description_length\":150,\"max_header_description_length\":150,\"\
+        max_featured_tags\":10,\"max_pinned_statuses\":5,\"max_profile_fields\":4,\"\
+        profile_field_name_limit\":255,\"profile_field_value_limit\":255},\"statuses\"\
+        :{\"max_characters\":500,\"max_media_attachments\":4,\"characters_reserved_per_url\"\
+        :23},\"media_attachments\":{\"description_limit\":10000,\"image_matrix_limit\"\
+        :33177600,\"image_size_limit\":16777216,\"supported_mime_types\":[\"image/jpeg\"\
+        ,\"image/png\",\"image/gif\",\"image/heic\",\"image/heif\",\"image/webp\"\
+        ,\"image/avif\",\"video/webm\",\"video/mp4\",\"video/quicktime\",\"video/ogg\"\
+        ,\"audio/wave\",\"audio/wav\",\"audio/x-wav\",\"audio/x-pn-wave\",\"audio/vnd.wave\"\
+        ,\"audio/ogg\",\"audio/vorbis\",\"audio/mpeg\",\"audio/mp3\",\"audio/webm\"\
+        ,\"audio/flac\",\"audio/aac\",\"audio/m4a\",\"audio/x-m4a\",\"audio/mp4\"\
+        ,\"audio/3gpp\",\"video/x-ms-asf\"],\"video_frame_rate_limit\":120,\"video_matrix_limit\"\
+        :8294400,\"video_size_limit\":103809024},\"polls\":{\"max_options\":4,\"max_characters_per_option\"\
+        :50,\"min_expiration\":300,\"max_expiration\":2629746},\"translation\":{\"\
+        enabled\":true},\"timelines_access\":{\"live_feeds\":{\"local\":\"disabled\"\
+        ,\"remote\":\"disabled\"},\"hashtag_feeds\":{\"local\":\"public\",\"remote\"\
+        :\"public\"},\"trending_link_feeds\":{\"local\":\"public\",\"remote\":\"public\"\
+        }},\"limited_federation\":false},\"registrations\":{\"enabled\":true,\"approval_required\"\
+        :false,\"reason_required\":false,\"message\":null,\"min_age\":16,\"url\":null},\"\
+        api_versions\":{\"mastodon\":11},\"wrapstodon\":null,\"contact\":{\"email\"\
+        :\"staff@mastodon.social\",\"account\":{\"id\":\"13179\",\"username\":\"Mastodon\"\
+        ,\"acct\":\"Mastodon\",\"display_name\":\"Mastodon\",\"locked\":false,\"bot\"\
+        :false,\"discoverable\":true,\"indexable\":true,\"group\":false,\"created_at\"\
+        :\"2016-11-23T00:00:00.000Z\",\"note\":\"<p>Our mission is to connect the\
+        \ world through thriving online communities.</p><p>This is the primary account\
+        \ for the Mastodon project.</p><p>For technical software updates, follow <span\
+        \ class=\\\"h-card\\\" translate=\\\"no\\\"><a href=\\\"https://mastodon.social/@MastodonEngineering\\\
+        \" class=\\\"u-url mention\\\">@<span>MastodonEngineering</span></a></span></p><p>For\
+        \ news and updates on the Mastodon servers that we operate (like this one!),\
+        \ follow <span class=\\\"h-card\\\" translate=\\\"no\\\"><a href=\\\"https://mastodon.social/@staff\\\
+        \" class=\\\"u-url mention\\\">@<span>staff</span></a></span></p>\",\"url\"\
+        :\"https://mastodon.social/@Mastodon\",\"uri\":\"https://mastodon.social/users/Mastodon\"\
+        ,\"avatar\":\"https://files.mastodon.social/accounts/avatars/000/013/179/original/b4ceb19c9c54ec7e.png\"\
+        ,\"avatar_static\":\"https://files.mastodon.social/accounts/avatars/000/013/179/original/b4ceb19c9c54ec7e.png\"\
+        ,\"avatar_description\":\"The Mastodon logo: a white shape of a stylised elephant\
+        \ head; a bold lower-case m shape is cut out, showing a soothing purple gradient.\"\
+        ,\"header\":\"https://files.mastodon.social/accounts/headers/000/013/179/original/1375be116fbe0f1d.png\"\
+        ,\"header_static\":\"https://files.mastodon.social/accounts/headers/000/013/179/original/1375be116fbe0f1d.png\"\
+        ,\"header_description\":\"An image of a mobile device displaying the Mastodon\
+        \ app, on a cartoon background featuring rolling hills and white fluffy clouds.\"\
+        ,\"followers_count\":876233,\"following_count\":51,\"statuses_count\":555,\"\
+        last_status_at\":\"2026-07-31\",\"hide_collections\":false,\"show_media\"\
+        :true,\"show_media_replies\":true,\"show_featured\":true,\"noindex\":false,\"\
+        feature_approval\":{\"automatic\":[\"public\"],\"manual\":[],\"current_user\"\
+        :\"denied\"},\"emojis\":[],\"roles\":[],\"fields\":[{\"name\":\"Homepage\"\
+        ,\"value\":\"<a href=\\\"https://joinmastodon.org\\\" target=\\\"_blank\\\"\
+        \ rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\"><span class=\\\"invisible\\\
+        \">https://</span><span class=\\\"\\\">joinmastodon.org</span><span class=\\\
+        \"invisible\\\"></span></a>\",\"verified_at\":\"2018-10-31T04:11:00.076+00:00\"\
+        },{\"name\":\"Source Code\",\"value\":\"<a href=\\\"https://github.com/mastodon\\\
+        \" target=\\\"_blank\\\" rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\
+        \"><span class=\\\"invisible\\\">https://</span><span class=\\\"\\\">github.com/mastodon</span><span\
+        \ class=\\\"invisible\\\"></span></a>\",\"verified_at\":\"2023-07-21T13:27:45.996+00:00\"\
+        },{\"name\":\"Blog\",\"value\":\"<a href=\\\"https://blog.joinmastodon.org\\\
+        \" target=\\\"_blank\\\" rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\
+        \"><span class=\\\"invisible\\\">https://</span><span class=\\\"\\\">blog.joinmastodon.org</span><span\
+        \ class=\\\"invisible\\\"></span></a>\",\"verified_at\":\"2025-11-24T15:45:57.501+00:00\"\
+        },{\"name\":\"Donate\",\"value\":\"<a href=\\\"https://joinmastodon.org/sponsors#donate\\\
+        \" target=\\\"_blank\\\" rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\
+        \"><span class=\\\"invisible\\\">https://</span><span class=\\\"ellipsis\\\
+        \">joinmastodon.org/sponsors#dona</span><span class=\\\"invisible\\\">te</span></a>\"\
+        ,\"verified_at\":\"2025-11-24T15:37:03.351+00:00\"}]}},\"rules\":[{\"id\"\
+        :\"1\",\"text\":\"Sexually explicit or violent media must be marked as sensitive\
+        \ or with a content warning\",\"hint\":\"This includes content that is particularly\
+        \ provocative even if it may not show specific body parts, as well as dead\
+        \ bodies, bloody injuries, and other gore. Particularly obscene content may\
+        \ be prohibited entirely. Profile pictures and header images may not contain\
+        \ sexually explicit or violent media.\",\"translations\":{\"de\":{\"text\"\
+        :\"Sexuell explizite Darstellungen oder solche von Gewalt m\xFCssen mit einer\
+        \ Inhaltswarnung versehen werden.\",\"hint\":\"Das beinhaltet ausdr\xFCcklich\
+        \ provokative Inhalte, auch wenn keine bestimmten K\xF6rperteile zu sehen\
+        \ sind, sowie Leichname, blutige Verletzungen und vergleichbare extreme Darstellungen.\
+        \ Besonders obsz\xF6ne Inhalte k\xF6nnen vollst\xE4ndig verboten werden. Profil-\
+        \ und Titelbilder d\xFCrfen keine sexuell expliziten oder Gewaltdarstellungen\
+        \ abbilden.\"},\"es\":{\"text\":\"El contenido sexual expl\xEDcito o violento\
+        \ debe marcarse como sensible o con una advertencia de contenido.\",\"hint\"\
+        :\"Esto incluye contenido especialmente provocativo, aunque no muestre partes\
+        \ espec\xEDficas del cuerpo, as\xED como cad\xE1veres, heridas sangrientas\
+        \ y otras escenas sangrientas. Los contenidos especialmente obscenos pueden\
+        \ prohibirse por completo. Las fotos de perfil y las im\xE1genes de cabecera\
+        \ no pueden contener contenido sexual expl\xEDcito o violento.\"},\"fr\":{\"\
+        text\":\"Le contenu \xE9rotique, pornographique ou violent doit \xEAtre marqu\xE9\
+        \ comme sensible ou avoir un avertissement de contenu.\",\"hint\":\"Cela inclut\
+        \ le contenu particuli\xE8rement provocateur m\xEAme s\u2019il ne montre pas\
+        \ particuli\xE8rement de parties intimes, ainsi que les photos de cadavres,\
+        \ de blessures sanglantes et autres sc\xE8nes d\xE9rangeantes. Le contenu\
+        \ particuli\xE8rement obsc\xE8ne peut \xEAtre compl\xE8tement interdit. Les\
+        \ images de profil et d\u2019en-t\xEAte ne doivent pas contenir de contenu\
+        \ sexuellement explicite ou violent.\"},\"nl\":{\"text\":\"Seksueel expliciet\
+        \ of gewelddadig beeldmateriaal moet als \u2018gevoelig\u2019 gemarkeerd worden,\
+        \ of met een inhoudswaarschuwing gemarkeerd.\",\"hint\":\"Dit omvat ook inhoud\
+        \ die gedeeltelijk aanstootgevend is zelfs als het geen lichaamsdelen toont,\
+        \ en ook dode lichamen, bloederige verwondingen en andere gruwelijkheden.\
+        \ Zeer obscene inhoud kan helemaal verboden worden. Profielfoto\u2019s en\
+        \ headerafbeeldingen mogen geen seksueel expliciete of geweldadige inhoud\
+        \ hebben.\"},\"ru\":{\"text\":\"\u0421\u0435\u043A\u0441\u0443\u0430\u043B\
+        \u044C\u043D\u043E \u043E\u0442\u043A\u0440\u043E\u0432\u0435\u043D\u043D\u044B\
+        \u0435 \u0438\u043B\u0438 \u0436\u0435\u0441\u0442\u043E\u043A\u0438\u0435\
+        \ \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F \u0438\
+        \u043B\u0438 \u0432\u0438\u0434\u0435\u043E \u0434\u043E\u043B\u0436\u043D\
+        \u044B \u0431\u044B\u0442\u044C \u043F\u043E\u043C\u0435\u0447\u0435\u043D\
+        \u044B \u043A\u0430\u043A \u0447\u0443\u0432\u0441\u0442\u0432\u0438\u0442\
+        \u0435\u043B\u044C\u043D\u044B\u0435 \u0438\u043B\u0438 \u0441\u043A\u0440\
+        \u044B\u0442\u044B \u043F\u043E\u0434 \u0441\u043F\u043E\u0439\u043B\u0435\
+        \u0440.\",\"hint\":\"\u042D\u0442\u043E \u0432\u043A\u043B\u044E\u0447\u0430\
+        \u0435\u0442 \u0432 \u0441\u0435\u0431\u044F \u043E\u0441\u043E\u0431\u0435\
+        \u043D\u043D\u043E \u043F\u0440\u043E\u0432\u043E\u0446\u0438\u0440\u0443\u044E\
+        \u0449\u0438\u0439 \u043A\u043E\u043D\u0442\u0435\u043D\u0442, \u0434\u0430\
+        \u0436\u0435 \u0435\u0441\u043B\u0438 \u043E\u043D \u043D\u0435 \u043F\u043E\
+        \u043A\u0430\u0437\u044B\u0432\u0430\u0435\u0442 \u043E\u043F\u0440\u0435\u0434\
+        \u0435\u043B\u0451\u043D\u043D\u044B\u0435 \u0447\u0430\u0441\u0442\u0438\
+        \ \u0442\u0435\u043B\u0430, \u0430 \u0442\u0430\u043A\u0436\u0435 \u043C\u0451\
+        \u0440\u0442\u0432\u044B\u0435 \u0442\u0435\u043B\u0430, \u043E\u043A\u0440\
+        \u043E\u0432\u0430\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u0440\u0430\u043D\
+        \u044B \u0438 \u043F\u0440\u043E\u0447\u0443\u044E \u043A\u0440\u043E\u0432\
+        \u044C. \u041E\u0441\u043E\u0431\u0435\u043D\u043D\u043E \u0436\u0435\u0441\
+        \u0442\u043E\u043A\u0438\u0439 \u043A\u043E\u043D\u0442\u0435\u043D\u0442\
+        \ \u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C \u0437\u0430\u043F\
+        \u0440\u0435\u0449\u0451\u043D \u043F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\
+        \u044E. \u0410\u0432\u0430\u0442\u0430\u0440\u044B \u0438 \u043E\u0431\u043B\
+        \u043E\u0436\u043A\u0438 \u043F\u0440\u043E\u0444\u0438\u043B\u0435\u0439\
+        \ \u043D\u0435 \u0434\u043E\u043B\u0436\u043D\u044B \u0441\u043E\u0434\u0435\
+        \u0440\u0436\u0430\u0442\u044C \u0441\u0435\u043A\u0441\u0443\u0430\u043B\u044C\
+        \u043D\u043E \u043E\u0442\u043A\u0440\u043E\u0432\u0435\u043D\u043D\u044B\u0435\
+        \ \u0438\u043B\u0438 \u0436\u0435\u0441\u0442\u043E\u043A\u0438\u0435 \u0438\
+        \u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F.\"},\"zh-CN\"\
+        :{\"text\":\"\u8272\u60C5\u6216\u66B4\u529B\u5A92\u4F53\u5FC5\u987B\u6807\u8BB0\
+        \u4E3A\u654F\u611F\u6216\u6709\u5185\u5BB9\u8B66\u544A\",\"hint\":\"\u8FD9\
+        \u5305\u62EC\u7279\u522B\u6311\u9017\u6027\u7684\u5185\u5BB9\uFF0C\u5373\u4F7F\
+        \u5B83\u53EF\u80FD\u6CA1\u6709\u663E\u793A\u7279\u5B9A\u7684\u8EAB\u4F53\u90E8\
+        \u4F4D\uFF0C\u4EE5\u53CA\u5C38\u4F53\u3001\u8840\u8165\u4F24\u5BB3\u548C\u5176\
+        \u4ED6\u8840\u8165\u5185\u5BB9\u3002\u7279\u522B\u6DEB\u79FD\u7684\u5185\u5BB9\
+        \u53EF\u80FD\u4F1A\u88AB\u5B8C\u5168\u7981\u6B62\u3002\u4E2A\u4EBA\u8D44\u6599\
+        \u56FE\u7247\u548C\u5934\u50CF\u4E0D\u5F97\u5305\u542B\u8272\u60C5\u6216\u66B4\
+        \u529B\u5185\u5BB9\u3002\"},\"zh-TW\":{\"text\":\"\u6027\u6697\u793A\u6216\
+        \u66B4\u529B\u5A92\u9AD4\u5FC5\u9808\u6A19\u793A\u70BA\u654F\u611F\u6216\u9644\
+        \u5E36\u5167\u5BB9\u8B66\u793A\",\"hint\":\"\u9019\u5305\u62EC\u7279\u5225\
+        \u6311\u91C1\u7684\u5167\u5BB9\uFF0C\u5373\u4F7F\u5B83\u53EF\u80FD\u6C92\u6709\
+        \u986F\u793A\u7279\u5B9A\u7684\u8EAB\u9AD4\u90E8\u4F4D\uFF0C\u4EE5\u53CA\u5C4D\
+        \u9AD4\u3001\u8840\u8165\u50B7\u5BB3\u548C\u5176\u4ED6\u8840\u8165\u5167\u5BB9\
+        \u3002\u7279\u5225\u7325\u893B\u7684\u5167\u5BB9\u53EF\u80FD\u6703\u88AB\u5B8C\
+        \u5168\u7981\u6B62\u3002\u500B\u4EBA\u6A94\u6848\u5716\u7247\u548C\u6A19\u984C\
+        \u5716\u7247\u4E0D\u5F97\u5305\u542B\u8272\u60C5\u6216\u66B4\u529B\u5A92\u9AD4\
+        \u3002\"}}},{\"id\":\"2\",\"text\":\"No racism, sexism, homophobia, transphobia,\
+        \ ableism, xenophobia, or casteism.\",\"hint\":\"Transphobic behavior such\
+        \ as intentional misgendering and deadnaming is strictly prohibited. Promotion\
+        \ of \\\"conversion therapy\\\" is strictly prohibited. Criticism of governments\
+        \ and religions is permissible unless being used as a proxy for discrimination.\"\
+        ,\"translations\":{\"de\":{\"text\":\"Kein(e) Rassismus, Sexismus, Homophobie,\
+        \ Transphobie, Behindertenfeindlichkeit, Fremdenfeindlichkeit oder Kasteismus.\"\
+        ,\"hint\":\"Transphobes Verhalten wie die absichtliche Verwendung von falschen\
+        \ Anreden und Pronomen sowie Deadnaming ist strengstens verboten. Die Werbung\
+        \ f\xFCr Konversionstherapien ist strengstens verboten. Die Kritik an Regierungen\
+        \ und Religionen ist zul\xE4ssig, sofern sie nicht stellvertretend f\xFCr\
+        \ Diskriminierung verwendet wird.\"},\"es\":{\"text\":\"Prohibido el racismo,\
+        \ sexismo, homofobia, transfobia, able\xEDsmo, xenofobia o casticismo.\",\"\
+        hint\":\"Queda terminantemente prohibido el comportamiento transf\xF3bico,\
+        \ como el uso intencionado de nombres falsos o el \\\"deadnaming\\\". La promoci\xF3\
+        n de la \\\"terapia de conversi\xF3n\\\" est\xE1 estrictamente prohibida.\
+        \ Se permiten las cr\xEDticas a gobiernos y religiones, a menos que se utilicen\
+        \ como excusa para la discriminaci\xF3n.\"},\"fr\":{\"text\":\"Pas de racisme,\
+        \ sexisme, homophobie, transphobie, validisme, x\xE9nophobie ou discrimination\
+        \ de caste.\",\"hint\":\"Les comportements intentionnellement transphobes,\
+        \ comme le m\xE9genrage ou le morinommage (\u201Cdeadnaming\u201D) est strictement\
+        \ interdit. La promotion des \u201Cth\xE9rapies de conversion\u201D est strictement\
+        \ interdite. La critique des gouvernements et religions est autoris\xE9e,\
+        \ sauf dans les cas ou elle est utilis\xE9e comme paravent pour de la discrimination.\"\
+        },\"nl\":{\"text\":\"Geen racisme, seksisme, homofobie, transfobie, validisme,\
+        \ xenofobie of kastendiscriminatie.\",\"hint\":\"Transfobisch gedrag zoals\
+        \ opzettelijk misgenderen en deadnaming is ten strengste verboden. Het promoten\
+        \ van \u201Cconversie therapie\u201D is ten strengste verboden. Kritiek op\
+        \ overheden en religies is toegestaan tenzij het wordt gebruikt als proxy\
+        \ voor racisme.\"},\"ru\":{\"text\":\"\u0417\u0430\u043F\u0440\u0435\u0449\
+        \u0430\u0435\u0442\u0441\u044F \u0440\u0430\u0441\u0438\u0437\u043C, \u0441\
+        \u0435\u043A\u0441\u0438\u0437\u043C, \u0433\u043E\u043C\u043E\u0444\u043E\
+        \u0431\u0438\u044F, \u0442\u0440\u0430\u043D\u0441\u0444\u043E\u0431\u0438\
+        \u044F, \u044D\u0439\u0431\u043B\u0438\u0437\u043C, \u043A\u0441\u0435\u043D\
+        \u043E\u0444\u043E\u0431\u0438\u044F \u0438 \u043A\u0430\u0441\u0442\u043E\
+        \u0432\u043E\u0441\u0442\u044C.\",\"hint\":\"\u0422\u0440\u0430\u043D\u0441\
+        \u0444\u043E\u0431\u043D\u043E\u0435 \u043F\u043E\u0432\u0435\u0434\u0435\u043D\
+        \u0438\u0435, \u0442\u0430\u043A\u043E\u0435 \u043A\u0430\u043A \u043E\u0441\
+        \u043E\u0437\u043D\u0430\u043D\u043D\u044B\u0439 \u043C\u0438\u0441\u0433\u0435\
+        \u043D\u0434\u0435\u0440\u0438\u043D\u0433 \u0438 \u0434\u0435\u0434\u043D\
+        \u0435\u0439\u043C\u0438\u043D\u0433, \u0441\u0442\u0440\u043E\u0433\u043E\
+        \ \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\u043E. \u041F\u0440\u043E\
+        \u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435 \\\"\u043A\u043E\u043D\u0432\
+        \u0435\u0440\u0441\u0438\u043E\u043D\u043D\u043E\u0439 \u0442\u0435\u0440\u0430\
+        \u043F\u0438\u0438\\\" \u0441\u0442\u0440\u043E\u0433\u043E \u0437\u0430\u043F\
+        \u0440\u0435\u0449\u0435\u043D\u043E. \u041A\u0440\u0438\u0442\u0438\u043A\
+        \u0430 \u043F\u0440\u0430\u0432\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\
+        \ \u0438 \u0440\u0435\u043B\u0438\u0433\u0438\u0439 \u0440\u0430\u0437\u0440\
+        \u0435\u0448\u0435\u043D\u0430, \u043A\u0440\u043E\u043C\u0435 \u0441\u043B\
+        \u0443\u0447\u0430\u0435\u0432, \u043A\u043E\u0433\u0434\u0430 \u043E\u043D\
+        \u0430 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0435\u0442\u0441\u044F\
+        \ \u043A\u0430\u043A \u043E\u043F\u0440\u0430\u0432\u0434\u0430\u043D\u0438\
+        \u0435 \u0434\u043B\u044F \u0434\u0438\u0441\u043A\u0440\u0438\u043C\u0438\
+        \u043D\u0430\u0446\u0438\u0438.\"},\"zh-CN\":{\"text\":\"\u7981\u6B62\u79CD\
+        \u65CF\u4E3B\u4E49\u3001\u6027\u522B\u6B67\u89C6\u3001\u4EC7\u89C6\u540C\u6027\
+        \u604B\u3001\u4EC7\u89C6\u53D8\u6027\u8005\u3001\u5F02\u80FD\u8005\u3001\u4EC7\
+        \u5916\u5FC3\u7406\u6216\u79CD\u59D3\u6B67\u89C6\u3002\",\"hint\":\"\u4E25\
+        \u7981\u53D8\u6027\u4EC7\u89C6\u884C\u4E3A\uFF0C\u5982\u6545\u610F\u8BEF\u7528\
+        \u6027\u522B\u548C\u6B7B\u540D\u3002\u4E25\u7981\u5BA3\u4F20 \u201C\u8F6C\u6362\
+        \u7597\u6CD5\u201D\u3002\u5141\u8BB8\u6279\u8BC4\u653F\u5E9C\u548C\u5B97\u6559\
+        \uFF0C\u9664\u975E\u88AB\u7528\u4F5C\u6B67\u89C6\u7684\u4EE3\u540D\u8BCD\u3002\
+        \"},\"zh-TW\":{\"text\":\"\u7981\u6B62\u7A2E\u65CF\u4E3B\u7FA9\u3001\u6027\
+        \u5225\u4E3B\u7FA9\u3001\u6050\u540C\u4E3B\u7FA9\u3001\u6050\u8B8A\u6027\u4E3B\
+        \u7FA9\u3001\u80FD\u529B\u4E3B\u7FA9\u3001\u4EC7\u5916\u4E3B\u7FA9\u6216\u7A2E\
+        \u6027\u4E3B\u7FA9\u3002\",\"hint\":\"\u56B4\u7981\u8B8A\u6027\u4EC7\u8996\
+        \u884C\u70BA\uFF0C\u4F8B\u5982\u6545\u610F\u8AA4\u7528\u6027\u5225\u548C\u66B1\
+        \u7A31\u3002\u56B4\u7981\u5BA3\u50B3\u300C\u626D\u8F49\u6CBB\u7642\u300D\u3002\
+        \u5141\u8A31\u6279\u8A55\u653F\u5E9C\u548C\u5B97\u6559\uFF0C\u9664\u975E\u88AB\
+        \u7528\u4F86\u4EE3\u8868\u6B67\u8996\u3002\"}}},{\"id\":\"3\",\"text\":\"\
+        No incitement of violence or promotion of violent ideologies\",\"hint\":\"\
+        Calling for people or groups to be assassinated, murdered, or attacked physically\
+        \ is strictly prohibited. Support for violent groups or events is prohibited.\"\
+        ,\"translations\":{\"de\":{\"text\":\"Keine Anstiftung zu Gewalt oder F\xF6\
+        rderung gewaltt\xE4tiger Ideologien.\",\"hint\":\"Der Aufruf zum Mord oder\
+        \ k\xF6rperlichen Attacken auf Personen oder Gruppen ist strengstens verboten.\
+        \ Die Unterst\xFCtzung gewaltt\xE4tiger Gruppen oder Veranstaltungen ist verboten.\"\
+        },\"es\":{\"text\":\"Prohibida la incitaci\xF3n a la violencia o la promoci\xF3\
+        n de ideolog\xEDas violentas.\",\"hint\":\"Est\xE1 estrictamente prohibido\
+        \ hacer llamamientos para que se asesine, mate o agreda f\xEDsicamente a personas\
+        \ o grupos. Est\xE1 prohibido apoyar a grupos o acontecimientos violentos.\"\
+        },\"fr\":{\"text\":\"Pas d\u2019incitation \xE0 la violence ou de promotion\
+        \ d\u2019id\xE9ologies violentes.\",\"hint\":\"L\u2019appel au meutre, \xE0\
+        \ la violence ou \xE0 l\u2019action physique envers des personnes ou des groupes\
+        \ de personnes est strictement interdit. Le soutien \xE0 des groupes ou \xE9\
+        v\xE8nements violents est interdit.\"},\"nl\":{\"text\":\"Niet aanzetten tot\
+        \ geweld of verspreiden van gewelddadige ideologie\xEBn.\",\"hint\":\"Mensen\
+        \ of groepen aanzetten tot moord, aanslagen of fysieke aanvallen is ten strengste\
+        \ verboden. Steun voor gewelddadige groeperingen of evenementen is verboden.\"\
+        },\"ru\":{\"text\":\"\u0417\u0430\u043F\u0440\u0435\u0449\u0430\u0435\u0442\
+        \u0441\u044F \u043F\u043E\u0434\u0441\u0442\u0440\u0435\u043A\u0430\u0442\u0435\
+        \u043B\u044C\u0441\u0442\u0432\u043E \u043A \u0436\u0435\u0441\u0442\u043E\
+        \u043A\u043E\u0441\u0442\u0438 \u0438\u043B\u0438 \u043F\u0440\u043E\u0434\
+        \u0432\u0438\u0436\u0435\u043D\u0438\u0435 \u0436\u0435\u0441\u0442\u043E\u043A\
+        \u0438\u0445 \u0438\u0434\u0435\u043E\u043B\u043E\u0433\u0438\u0439.\",\"\
+        hint\":\"\u041F\u0440\u0438\u0437\u044B\u0432\u044B \u043A \u043F\u043E\u043A\
+        \u0443\u0448\u0435\u043D\u0438\u044F\u043C, \u0443\u0431\u0438\u0439\u0441\
+        \u0442\u0432\u0430\u043C \u0438 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\
+        \u043A\u0438\u043C \u0430\u0442\u0430\u043A\u0430\u043C \u043D\u0430 \u043B\
+        \u044E\u0434\u0435\u0439 \u0438\u043B\u0438 \u0433\u0440\u0443\u043F\u043F\
+        \u044B \u043B\u044E\u0434\u0435\u0439 \u0441\u0442\u0440\u043E\u0433\u043E\
+        \ \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\u044B. \u041F\u043E\u0434\
+        \u0434\u0435\u0440\u0436\u043A\u0430 \u0436\u0435\u0441\u0442\u043E\u043A\u0438\
+        \u0445 \u0441\u043E\u043E\u0431\u0449\u0435\u0441\u0442\u0432 \u0438\u043B\
+        \u0438 \u0441\u043E\u0431\u044B\u0442\u0438\u0439 \u0437\u0430\u043F\u0440\
+        \u0435\u0449\u0435\u043D\u0430.\"},\"zh-CN\":{\"text\":\"\u4E0D\u5F97\u717D\
+        \u52A8\u66B4\u529B\u6216\u5BA3\u626C\u66B4\u529B\u610F\u8BC6\u5F62\u6001\"\
+        ,\"hint\":\"\u4E25\u7981\u547C\u5401\u6697\u6740\u3001\u8C0B\u6740\u6216\u4EBA\
+        \u8EAB\u653B\u51FB\u4ED6\u4EBA\u6216\u56E2\u4F53\u3002\u7981\u6B62\u652F\u6301\
+        \u66B4\u529B\u56E2\u4F53\u6216\u4E8B\u4EF6\u3002\"},\"zh-TW\":{\"text\":\"\
+        \u56B4\u7981\u717D\u52D5\u66B4\u529B\u6216\u5BA3\u63DA\u66B4\u529B\u610F\u8B58\
+        \u5F62\u614B\",\"hint\":\"\u56B4\u7981\u547C\u7C72\u6697\u6BBA\u3001\u8B00\
+        \u6BBA\u6216\u4EBA\u8EAB\u653B\u64CA\u4ED6\u4EBA\u6216\u5718\u9AD4\u3002\u56B4\
+        \u7981\u652F\u6301\u66B4\u529B\u5718\u9AD4\u6216\u4E8B\u4EF6\u3002\"}}},{\"\
+        id\":\"4\",\"text\":\"No harassment, block evasion, dogpiling, or doxxing\
+        \ of others\",\"hint\":\"Repeat attempts to communicate with users who have\
+        \ blocked you or creation of accounts solely to harass or insult individuals\
+        \ is strictly prohibited. Coordinated activity to attack other users is prohibited.\
+        \ Posting of private personal information about others is prohibited.\",\"\
+        translations\":{\"de\":{\"text\":\"Keine Bel\xE4stigungen, Umgehung von Blockierungen,\
+        \ Dogpiling oder Doxxing.\",\"hint\":\"Wiederholte Kommunikationsversuche\
+        \ mit Profilen, die dich blockiert haben, oder die Erstellung neuer Konten,\
+        \ die ausschlie\xDFlich dazu dienen, andere zu bel\xE4stigen oder zu beleidigen,\
+        \ sind strengstens verboten. Koordinierte Angriffe auf andere Profile sind\
+        \ verboten. Die Ver\xF6ffentlichung von privaten und pers\xF6nlichen Informationen\
+        \ anderer ist verboten.\"},\"es\":{\"text\":\"No acosar, evadir bloqueos,\
+        \ \\\"dogpiling\\\" (abuso en l\xEDnea por grupos de acosadores) o doxeo de\
+        \ otros.\",\"hint\":\"Est\xE1 estrictamente prohibido intentar comunicarse\
+        \ repetidamente con usuarios que te hayan bloqueado o crear cuentas con el\
+        \ \xFAnico fin de acosar o insultar a otras personas. Queda prohibida la actividad\
+        \ coordinada para atacar a otros usuarios. Est\xE1 prohibido publicar informaci\xF3\
+        n personal privada sobre otras personas.\"},\"fr\":{\"text\":\"Pas de harc\xE8\
+        lement, d\u2019esquive de blocage, de \u201Cdogpiling\u201D, ou de divulgation\
+        \ de donn\xE9es personnelles d\u2019autrui.\",\"hint\":\"Les tentatives r\xE9\
+        p\xE9t\xE9es de communiquer avec des utilisateur\xB7ices qui vont ont bloqu\xE9\
+        \ ainsi que la cr\xE9ation de comptes pour harceler ou insulter autrui sont\
+        \ strictement interdites. Les attaques coordonn\xE9es contre autrui sont interdites.\
+        \ La publication de donn\xE9es personnelles d\u2019autrui est interdite.\"\
+        },\"nl\":{\"text\":\"Geen intimidatie, omzeilen van blokkades, groepsaanvallen\
+        \ of het verspreiden van priv\xE9gegevens van anderen.\",\"hint\":\"Herhaalde\
+        \ pogingen tot communiceren met gebruikers die je hebben geblokkeerd, of het\
+        \ maken van accounts enkel om personen te intimideren of beledigen is ten\
+        \ strengste verboden. Geco\xF6rdineerde activiteit om andere gebruikers aan\
+        \ te vallen is verboden. Het plaatsen van priv\xE9-gegevens van anderen is\
+        \ verboden.\"},\"ru\":{\"text\":\"\u0417\u0430\u043F\u0440\u0435\u0449\u0430\
+        \u0435\u0442\u0441\u044F \u0442\u0440\u0430\u0432\u043B\u044F, \u0438\u0437\
+        \u0431\u0435\u0433\u0430\u043D\u0438\u0435 \u0431\u043B\u043E\u043A\u0438\u0440\
+        \u043E\u0432\u043E\u043A, \u043D\u0430\u0431\u0435\u0433\u0438 \u0438 \u0440\
+        \u0430\u0437\u0433\u043B\u0430\u0448\u0435\u043D\u0438\u0435 \u043B\u0438\u0447\
+        \u043D\u043E\u0439 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u0438\
+        \ \u0434\u0440\u0443\u0433\u0438\u0445 \u043B\u0438\u0446.\",\"hint\":\"\u041F\
+        \u043E\u0432\u0442\u043E\u0440\u044F\u044E\u0449\u0438\u0435\u0441\u044F \u043F\
+        \u043E\u043F\u044B\u0442\u043A\u0438 \u0432\u0437\u0430\u0438\u043C\u043E\u0434\
+        \u0435\u0439\u0441\u0442\u0432\u043E\u0432\u0430\u0442\u044C \u0441 \u043F\
+        \u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F\u043C\u0438\
+        , \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0432\u0430\u0441 \u0437\u0430\
+        \u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u043B\u0438, \u0438\
+        \ \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u0435 \u0443\u0447\u0451\u0442\
+        \u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439 \u0438\u0441\
+        \u043A\u043B\u044E\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0440\u0430\
+        \u0434\u0438 \u0442\u0440\u0430\u0432\u043B\u0438 \u0438\u043B\u0438 \u043E\
+        \u0441\u043A\u043E\u0440\u0431\u043B\u0435\u043D\u0438\u0439, \u0441\u0442\
+        \u0440\u043E\u0433\u043E \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\u044B\
+        . \u0421\u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0438\u0440\u043E\u0432\
+        \u0430\u043D\u043D\u0430\u044F \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\
+        \u0442\u044C \u0441 \u0446\u0435\u043B\u044C\u044E \u0430\u0442\u0430\u043A\
+        \u0438 \u043D\u0430 \u0434\u0440\u0443\u0433\u0438\u0445 \u043F\u043E\u043B\
+        \u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 \u0437\u0430\u043F\
+        \u0440\u0435\u0449\u0435\u043D\u0430. \u041F\u0443\u0431\u043B\u0438\u043A\
+        \u0430\u0446\u0438\u044F \u043B\u0438\u0447\u043D\u043E\u0439 \u0438\u043D\
+        \u0444\u043E\u0440\u043C\u0430\u0446\u0438\u0438 \u0434\u0440\u0443\u0433\u0438\
+        \u0445 \u043B\u0438\u0446 \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\
+        \u0430.\"},\"zh-CN\":{\"text\":\"\u4E0D\u5F97\u9A9A\u6270\u3001\u56DE\u907F\
+        \u5C01\u7981\u3001\u8BFD\u8C24\u6216\u653B\u51FB\u4ED6\u4EBA\",\"hint\":\"\
+        \u4E25\u7981\u91CD\u590D\u5C1D\u8BD5\u4E0E\u5DF2\u5C01\u7981\u60A8\u7684\u7528\
+        \u6237\u4EA4\u6D41\uFF0C\u6216\u4EC5\u4E3A\u9A9A\u6270\u6216\u4FAE\u8FB1\u4ED6\
+        \u4EBA\u800C\u521B\u5EFA\u8D26\u6237\u3002\u4E25\u7981\u534F\u540C\u653B\u51FB\
+        \u5176\u4ED6\u7528\u6237\u3002\u7981\u6B62\u53D1\u5E03\u4ED6\u4EBA\u7684\u79C1\
+        \u4EBA\u4E2A\u4EBA\u4FE1\u606F\u3002\"},\"zh-TW\":{\"text\":\"\u56B4\u7981\
+        \u9A37\u64FE\u3001\u8FF4\u907F\u5C01\u9396\u3001\u717D\u52D5\u6216\u8AA3\u884A\
+        \u4ED6\u4EBA\",\"hint\":\"\u56B4\u7981\u91CD\u8907\u5617\u8A66\u8207\u5DF2\
+        \u5C01\u9396\u60A8\u7684\u4F7F\u7528\u8005\u6E9D\u901A\uFF0C\u6216\u7D14\u7CB9\
+        \u70BA\u4E86\u9A37\u64FE\u6216\u4FAE\u8FB1\u4ED6\u4EBA\u800C\u5EFA\u7ACB\u5E33\
+        \u865F\u3002\u7981\u6B62\u653B\u64CA\u5176\u4ED6\u4F7F\u7528\u8005\u7684\u5354\
+        \u8ABF\u6D3B\u52D5\u3002\u7981\u6B62\u5F35\u8CBC\u4ED6\u4EBA\u7684\u79C1\u4EBA\
+        \u500B\u4EBA\u8CC7\u8A0A\u3002\"}}},{\"id\":\"7\",\"text\":\"Do not share\
+        \ information widely-known to be false and misleading\",\"hint\":\"False and\
+        \ misleading information and links from low-quality sources may not be posted,\
+        \ especially if they are likely to mislead or confuse others or endanger their\
+        \ safety.\",\"translations\":{\"de\":{\"text\":\"Verbreitet keine Informationen,\
+        \ von denen allgemein bekannt ist, dass sie falsch oder irref\xFChrend.\"\
+        ,\"hint\":\"Falsche und irref\xFChrende Informationen sowie Links aus unseri\xF6\
+        sen Quellen d\xFCrfen nicht gepostet werden, insbesondere wenn sie geeignet\
+        \ sind, andere in die Irre zu f\xFChren oder deren Sicherheit zu gef\xE4hrden.\"\
+        },\"es\":{\"text\":\"No compartas informaci\xF3n ampliamente conocida por\
+        \ ser falsa y enga\xF1osa.\",\"hint\":\"No est\xE1 permitido publicar informaci\xF3\
+        n falsa y enga\xF1osa ni enlaces de fuentes de baja calidad, especialmente\
+        \ si pueden inducir a error o confusi\xF3n a otras personas o poner en peligro\
+        \ su seguridad.\"},\"fr\":{\"text\":\"Ne partagez pas d\u2019informations\
+        \ connues pour \xEAtre fausses ou trompeuses.\",\"hint\":\"Les informations\
+        \ fausses ou trompeuses, ainsi que les liens vers des sources de mauvaise\
+        \ qualit\xE9 ne doivent pas \xEAtre publi\xE9es, particuli\xE8rement si elles\
+        \ risquent de tromper, d\u2019induire en erreur, de semer la confusion ou\
+        \ de mettre des personnes en danger.\"},\"nl\":{\"text\":\"Deel geen informatie\
+        \ die algemeen bekend staat als onjuist en misleidend.\",\"hint\":\"Onjuiste\
+        \ en misleidende informatie en links naar onbetrouwbare bronnen mogen niet\
+        \ geplaatst worden, zeker als deze waarschijnlijk anderen misleiden of verwarren,\
+        \ of hun veiligheid in  gevaar brengt.\"},\"ru\":{\"text\":\"\u041D\u0435\
+        \ \u043F\u0443\u0431\u043B\u0438\u043A\u0443\u0439\u0442\u0435 \u0437\u0430\
+        \u0432\u0435\u0434\u043E\u043C\u043E \u043B\u043E\u0436\u043D\u0443\u044E\
+        \ \u0438 \u0432\u0432\u043E\u0434\u044F\u0449\u0443\u044E \u0432 \u0437\u0430\
+        \u0431\u043B\u0443\u0436\u0434\u0435\u043D\u0438\u0435 \u0438\u043D\u0444\u043E\
+        \u0440\u043C\u0430\u0446\u0438\u044E.\",\"hint\":\"\u0417\u0430\u043F\u0440\
+        \u0435\u0449\u0435\u043D\u0430 \u043F\u0443\u0431\u043B\u0438\u043A\u0430\u0446\
+        \u0438\u044F \u043B\u043E\u0436\u043D\u043E\u0439 \u0438 \u0432\u0432\u043E\
+        \u0434\u044F\u0449\u0435\u0439 \u0432 \u0437\u0430\u0431\u043B\u0443\u0436\
+        \u0434\u0435\u043D\u0438\u0435 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\
+        \u0438\u0438 \u0438 \u0441\u0441\u044B\u043B\u043E\u043A \u0438\u0437 \u043D\
+        \u0438\u0437\u043A\u043E\u043A\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043D\
+        \u043D\u044B\u0445 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u043E\u0432\
+        , \u043E\u0441\u043E\u0431\u0435\u043D\u043D\u043E \u0435\u0441\u043B\u0438\
+        \ \u044D\u0442\u043E \u043C\u043E\u0436\u0435\u0442 \u0441\u0431\u0438\u0442\
+        \u044C \u0434\u0440\u0443\u0433\u0438\u0445 \u043B\u044E\u0434\u0435\u0439\
+        \ \u0441 \u0442\u043E\u043B\u043A\u0443, \u0437\u0430\u043F\u0443\u0442\u0430\
+        \u0442\u044C \u0438\u0445, \u0438\u043B\u0438 \u043F\u043E\u0434\u0432\u0435\
+        \u0440\u0433\u043D\u0443\u0442\u044C \u0438\u0445 \u043E\u043F\u0430\u0441\
+        \u043D\u043E\u0441\u0442\u0438.\"},\"zh-CN\":{\"text\":\"\u4E0D\u5F97\u5206\
+        \u4EAB\u4F17\u6240\u5468\u77E5\u7684\u865A\u5047\u548C\u8BEF\u5BFC\u6027\u4FE1\
+        \u606F\\r\\n\",\"hint\":\"\u4E0D\u5F97\u53D1\u5E03\u865A\u5047\u548C\u8BEF\
+        \u5BFC\u6027\u4FE1\u606F\u4EE5\u53CA\u6765\u81EA\u4F4E\u8D28\u91CF\u6765\u6E90\
+        \u7684\u94FE\u63A5\uFF0C\u5C24\u5176\u662F\u53EF\u80FD\u8BEF\u5BFC\u6216\u6DF7\
+        \u6DC6\u4ED6\u4EBA\u6216\u5371\u53CA\u4ED6\u4EBA\u5B89\u5168\u7684\u4FE1\u606F\
+        \u3002\"},\"zh-TW\":{\"text\":\"\u8ACB\u52FF\u5206\u4EAB\u5EE3\u70BA\u4EBA\
+        \u77E5\u7684\u865B\u5047\u548C\u8AA4\u5C0E\u8CC7\u8A0A\",\"hint\":\"\u4E0D\
+        \u5F97\u5F35\u8CBC\u865B\u5047\u548C\u8AA4\u5C0E\u8CC7\u8A0A\u4EE5\u53CA\u4F86\
+        \u81EA\u4F4E\u54C1\u8CEA\u4F86\u6E90\u7684\u9023\u7D50\uFF0C\u5C24\u5176\u662F\
+        \u53EF\u80FD\u8AA4\u5C0E\u6216\u6DF7\u6DC6\u4ED6\u4EBA\u6216\u5371\u5BB3\u4ED6\
+        \u4EBA\u5B89\u5168\u7684\u8CC7\u8A0A\u3002\"}}},{\"id\":\"1008\",\"text\"\
+        :\"Content created by others must be attributed, and use of generative AI\
+        \ must be disclosed\",\"hint\":\"Content created by others must clearly provide\
+        \ a reference to the author, creator, or source. For adult content, this should\
+        \ include performers. Accounts may not solely post AI-generated content.\"\
+        ,\"translations\":{\"de\":{\"text\":\"Von anderen erstellte Inhalte m\xFC\
+        ssen gekennzeichnet und die Nutzung generativer KI offengelegt werden.\",\"\
+        hint\":\"Von anderen erstellte Inhalte m\xFCssen durch einen eindeutigen Verweis\
+        \ auf den/die Autor*in oder die Quelle gekennzeichnet werden. Bei nicht jugendfreien\
+        \ Inhalten sollte dies auch die Darsteller*innen einschlie\xDFen. Konten d\xFC\
+        rfen nicht ausschlie\xDFlich KI-generierte Inhalte posten.\"},\"es\":{\"text\"\
+        :\"Los contenidos creados por terceros deben ser atribuidos y el uso de IA\
+        \ debe ser revelado.\",\"hint\":\"Los contenidos creados por terceros deben\
+        \ proporcionar claramente una referencia al autor, creador o fuente. En el\
+        \ caso de los contenidos para adultos, debe incluirse a los artistas. Las\
+        \ cuentas no pueden publicar \xFAnicamente contenidos generados por IA.\"\
+        },\"fr\":{\"text\":\"Le contenu cr\xE9e par autrui doit \xEAtre attribu\xE9\
+        , et l\u2019utilisation d\u2019IA g\xE9n\xE9rative doit \xEAtre marqu\xE9\
+        \ comme tel.\",\"hint\":\"Le contenu cr\xE9\xE9 par autrui doit fournir une\
+        \ r\xE9f\xE9rence explicite \xE0 son auteur\xB7ice, cr\xE9ateur\xB7ice ou\
+        \ sa source. Cela inclut les acteur\xB7ice de contenu pour adulte. Les comptes\
+        \ publiant exclusivement du contenu g\xE9n\xE9r\xE9 par IA sont interdits.\"\
+        },\"nl\":{\"text\":\"Inhoud gemaakt door anderen moet worden toegeschreven,\
+        \ en het gebruik van generatieve AI moet worden aangegeven.\",\"hint\":\"\
+        Inhoud gemaakt door anderen moet een duidelijke referentie naar de auteur,\
+        \ maker of bron bevatten. Voor Content created by others must clearly provide\
+        \ a reference to the author, creator, or source. Voor inhoud voor volwassenen,\
+        \ moet het model worden vermeld. Accounts mogen niet uitsluitend door AI gegenereerde\
+        \ inhoud plaatsen.\"},\"ru\":{\"text\":\"\u041A\u043E\u043D\u0442\u0435\u043D\
+        \u0442, \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0439 \u0434\u0440\
+        \u0443\u0433\u0438\u043C\u0438, \u0434\u043E\u043B\u0436\u0435\u043D \u043F\
+        \u0443\u0431\u043B\u0438\u043A\u043E\u0432\u0430\u0442\u044C\u0441\u044F \u0441\
+        \ \u0443\u043A\u0430\u0437\u0430\u043D\u0438\u0435\u043C \u0430\u0432\u0442\
+        \u043E\u0440\u0441\u0442\u0432\u0430, \u0430 \u0438\u0441\u043F\u043E\u043B\
+        \u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 \u0433\u0435\u043D\u0435\u0440\
+        \u0430\u0442\u0438\u0432\u043D\u043E\u0433\u043E \u0418\u0418 \u0434\u043E\
+        \u043B\u0436\u043D\u043E \u0431\u044B\u0442\u044C \u0440\u0430\u0441\u043A\
+        \u0440\u044B\u0442\u043E.\",\"hint\":\"\u041A\u043E\u043D\u0442\u0435\u043D\
+        \u0442, \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0439 \u0434\u0440\
+        \u0443\u0433\u0438\u043C\u0438, \u0434\u043E\u043B\u0436\u0435\u043D \u044F\
+        \u0432\u043D\u044B\u043C \u043E\u0431\u0440\u0430\u0437\u043E\u043C \u0441\
+        \u043E\u043F\u0440\u043E\u0432\u043E\u0436\u0434\u0430\u0442\u044C\u0441\u044F\
+        \ \u043E\u0442\u0441\u044B\u043B\u043A\u043E\u0439 \u043A \u0430\u0432\u0442\
+        \u043E\u0440\u0443, \u0441\u043E\u0437\u0434\u0430\u0442\u0435\u043B\u044E\
+        \ \u0438\u043B\u0438 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0443\
+        . \u0414\u043B\u044F \u043A\u043E\u043D\u0442\u0435\u043D\u0442\u0430 \u0434\
+        \u043B\u044F \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445 \u044D\u0442\
+        \u043E \u0432\u043A\u043B\u044E\u0447\u0430\u0435\u0442 \u0432 \u0441\u0435\
+        \u0431\u044F \u0430\u043A\u0442\u0451\u0440\u043E\u0432. \u0423\u0447\u0451\
+        \u0442\u043D\u044B\u0435 \u0437\u0430\u043F\u0438\u0441\u0438 \u043D\u0435\
+        \ \u043C\u043E\u0433\u0443\u0442 \u043F\u0443\u0431\u043B\u0438\u043A\u043E\
+        \u0432\u0430\u0442\u044C \u0438\u0441\u043A\u043B\u044E\u0447\u0438\u0442\u0435\
+        \u043B\u044C\u043D\u043E \u043A\u043E\u043D\u0442\u0435\u043D\u0442, \u0441\
+        \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\
+        \u0439 \u0441 \u043F\u043E\u043C\u043E\u0449\u044C\u044E \u0418\u0418.\"},\"\
+        zh-CN\":{\"text\":\"\u4ED6\u4EBA\u521B\u5EFA\u7684\u5185\u5BB9\u5FC5\u987B\
+        \u6CE8\u660E\u51FA\u5904\uFF0C\u4F7F\u7528\u4EBA\u5DE5\u667A\u80FD\u4EA7\u751F\
+        \u7684\u5185\u5BB9\u5FC5\u987B\u516C\u5F00\u548C\u62AB\u9732\u8BF4\u660E\"\
+        ,\"hint\":\"\u4ED6\u4EBA\u521B\u5EFA\u7684\u5185\u5BB9\u5FC5\u987B\u660E\u786E\
+        \u6CE8\u660E\u4F5C\u8005\u3001\u521B\u5EFA\u8005\u6216\u6765\u6E90\u3002\u5BF9\
+        \u4E8E\u6210\u4EBA\u5185\u5BB9\uFF0C\u5E94\u5305\u62EC\u8868\u6F14\u8005\u3002\
+        \u8D26\u6237\u4E0D\u5F97\u4EC5\u53D1\u5E03\u4EBA\u5DE5\u667A\u80FD\u751F\u6210\
+        \u7684\u5185\u5BB9\u3002\"},\"zh-TW\":{\"text\":\"\u7531\u4ED6\u4EBA\u5275\
+        \u4F5C\u7684\u5167\u5BB9\u5FC5\u9808\u8A3B\u660E\u4F86\u6E90\uFF0C\u4F7F\u7528\
+        \u4EBA\u5DE5\u667A\u80FD\u7522\u751F\u7684\u5167\u5BB9\u5FC5\u9808\u516C\u958B\
+        \u548C\u62AB\u9732\u8AAA\u660E\",\"hint\":\"\u4ED6\u4EBA\u5275\u4F5C\u7684\
+        \u5167\u5BB9\u5FC5\u9808\u6E05\u695A\u63D0\u4F9B\u4F5C\u8005\u3001\u5275\u4F5C\
+        \u4EBA\u6216\u4F86\u6E90\u7684\u53C3\u7167\u3002\u5C0D\u65BC\u6210\u4EBA\u5167\
+        \u5BB9\uFF0C\u9019\u61C9\u8A72\u5305\u62EC\u8868\u6F14\u8005\u3002\u5E33\u6236\
+        \u4E0D\u5F97\u50C5\u767C\u4F48\u4EBA\u5DE5\u667A\u80FD\u7522\u751F\u7684\u5167\
+        \u5BB9\u3002\"}}}]}"
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '278'
+      Connection:
+      - keep-alive
+      Date:
+      - Sun, 02 Aug 2026 07:15:14 GMT
+      Strict-Transport-Security:
+      - max-age=31557600
+      Vary:
+      - Accept, Origin, Accept-Encoding
+      Via:
+      - 1.1 varnish, 1.1 varnish
+      X-Cache:
+      - MISS, HIT, MISS
+      X-Cache-Hits:
+      - 0, 11, 0
+      X-Served-By:
+      - cache-fra-eddf8230226-FRA, cache-fra-eddf8230226-FRA, cache-hel1410034-HEL
+      X-Timer:
+      - S1785654915.627611,VS0,VE26
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-length:
+      - '25668'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"aa82bb99cf44f8a94e5a09776f241136"
+      referrer-policy:
+      - same-origin
+      server:
+      - Mastodon
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-02T07:10:00.327266Z'
+      x-request-id:
+      - 12a1318b-66d2-42fe-8b12-634b71b4f624
+      x-runtime:
+      - '0.007901'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/timelines/public?local=1&remote=1
+  response:
+    body:
+      string: '[{"id":"117024258897469903","created_at":"2026-08-02T05:28:01.712Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024258897469903","url":"http://localhost:3000/@admin/117024258897469903","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>you
+        can&#39;t say that on television</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024255518755710","created_at":"2026-08-02T05:27:10.158Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024255518755710","url":"http://localhost:3000/@admin/117024255518755710","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>you
+        can&#39;t say that on television</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024252039241798","created_at":"2026-08-02T05:26:17.065Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024252039241798","url":"http://localhost:3000/@admin/117024252039241798","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>on
+        the internet, nobody knows you&#39;re a plane</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024251962941243","created_at":"2026-08-02T05:26:15.902Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024251962941243","url":"http://localhost:3000/@admin/117024251962941243","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p><span
+        class=\"h-card\" translate=\"no\"><a href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\">@<span>mastodonpy_test</span></a></span> beep beep
+        I&#39;m a jeep</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[{"id":"117020617404561855","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024250297456807","created_at":"2026-08-02T05:25:50.487Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024250297456807","url":"http://localhost:3000/@admin/117024250297456807","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>you
+        can&#39;t say that on television</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024248092393661","created_at":"2026-08-02T05:25:16.840Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/ap/users/117020617404561855/statuses/117024248092393661","url":"http://localhost:3000/@mastodonpy_test/117024248092393661","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"<p>it&#39;s
+        cool guy</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617404561855","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117020617404561855","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":1,"statuses_count":14,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024244337465834","created_at":"2026-08-02T05:24:19.544Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/ap/users/117020617404561855/statuses/117024244337465834","url":"http://localhost:3000/@mastodonpy_test/117024244337465834","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"<p>it&#39;s
+        cool guy</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617404561855","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117020617404561855","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":1,"statuses_count":14,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024240491756869","created_at":"2026-08-02T05:23:20.863Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/ap/users/117020617404561855/statuses/117024240491756869","url":"http://localhost:3000/@mastodonpy_test/117024240491756869","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"<p>it&#39;s
+        cool guy</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617404561855","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117020617404561855","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":1,"statuses_count":14,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024236484142415","created_at":"2026-08-02T05:22:19.712Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024236484142415","url":"http://localhost:3000/@admin/117024236484142415","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>on
+        the internet, nobody knows you&#39;re a plane</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024236408130890","created_at":"2026-08-02T05:22:18.555Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024236408130890","url":"http://localhost:3000/@admin/117024236408130890","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p><span
+        class=\"h-card\" translate=\"no\"><a href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\">@<span>mastodonpy_test</span></a></span> beep beep
+        I&#39;m a jeep</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[{"id":"117020617404561855","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024234746323939","created_at":"2026-08-02T05:21:53.196Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024234746323939","url":"http://localhost:3000/@admin/117024234746323939","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>you
+        can&#39;t say that on television</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024233066383499","created_at":"2026-08-02T05:21:27.563Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/ap/users/117020617404561855/statuses/117024233066383499","url":"http://localhost:3000/@mastodonpy_test/117024233066383499","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"<p>it&#39;s
+        cool guy</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617404561855","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117020617404561855","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":1,"statuses_count":14,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024227439098469","created_at":"2026-08-02T05:20:01.696Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024227439098469","url":"http://localhost:3000/@admin/117024227439098469","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>on
+        the internet, nobody knows you&#39;re a plane</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024227363429538","created_at":"2026-08-02T05:20:00.544Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024227363429538","url":"http://localhost:3000/@admin/117024227363429538","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p><span
+        class=\"h-card\" translate=\"no\"><a href=\"http://localhost:3000/@mastodonpy_test\"
+        class=\"u-url mention\">@<span>mastodonpy_test</span></a></span> beep beep
+        I&#39;m a jeep</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[{"id":"117020617404561855","username":"mastodonpy_test","url":"http://localhost:3000/@mastodonpy_test","acct":"mastodonpy_test"}],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024225693536405","created_at":"2026-08-02T05:19:35.062Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024225693536405","url":"http://localhost:3000/@admin/117024225693536405","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>you
+        can&#39;t say that on television</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024223451116006","created_at":"2026-08-02T05:19:00.844Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024223451116006","url":"http://localhost:3000/@admin/117024223451116006","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>it&#39;s
+        cool guy too</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024223441804901","created_at":"2026-08-02T05:19:00.704Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/ap/users/117020617404561855/statuses/117024223441804901","url":"http://localhost:3000/@mastodonpy_test/117024223441804901","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"<p>it&#39;s
+        cool guy</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617404561855","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117020617404561855","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":1,"statuses_count":14,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024220902669631","created_at":"2026-08-02T05:18:21.958Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024220902669631","url":"http://localhost:3000/@admin/117024220902669631","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>it&#39;s
+        cool guy too</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024220892131781","created_at":"2026-08-02T05:18:21.797Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"ja","uri":"http://localhost:3000/ap/users/117020617404561855/statuses/117024220892131781","url":"http://localhost:3000/@mastodonpy_test/117024220892131781","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"<p>it&#39;s
+        cool guy</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617404561855","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117020617404561855","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":1,"statuses_count":14,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}},{"id":"117024218475038112","created_at":"2026-08-02T05:17:44.915Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"http://localhost:3000/ap/users/117020617136550219/statuses/117024218475038112","url":"http://localhost:3000/@admin/117024218475038112","replies_count":0,"reblogs_count":0,"favourites_count":0,"quotes_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"content":"<p>it&#39;s
+        cool guy too</p>","filtered":[],"reblog":null,"application":{"name":"Mastodon.py
+        test suite","website":null},"account":{"id":"117020617136550219","username":"admin","acct":"admin","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-08-01T00:00:00.000Z","note":"","url":"http://localhost:3000/@admin","uri":"http://localhost:3000/ap/users/117020617136550219","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":1,"following_count":0,"statuses_count":21,"last_status_at":"2026-08-02","hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"tagged_collections":[],"quote":null,"card":null,"poll":null,"quote_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"}}]'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '36942'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"da7710bfb1c6a2c43ee26d4e76fc6288"
+      link:
+      - <http://localhost:3000/api/v1/timelines/public?local=1&max_id=117024218475038112&remote=1>;
+        rel="next", <http://localhost:3000/api/v1/timelines/public?local=1&min_id=117024258897469903&remote=1>;
+        rel="prev"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.82, sql.active_record;dur=7.13, cache_generate.active_support;dur=13.20,
+        cache_write.active_support;dur=0.30, instantiation.active_record;dur=0.92,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.09,
+        render.active_model_serializers;dur=90.12, process_action.action_controller;dur=140.87
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-02T07:20:00.449153Z'
+      x-request-id:
+      - 774179bd-ebb4-4da7-8eff-d2484c8dabdd
+      x-runtime:
+      - '0.163471'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/instance/
+  response:
+    body:
+      string: '{"uri":"localhost:3000","title":"Mastodon","short_description":"","description":"","email":"","version":"4.6.4","urls":{"streaming_api":"ws://localhost:4000"},"stats":{"user_count":4,"status_count":35,"domain_count":0},"thumbnail":"http://localhost:3000/packs-dev/images/preview.png","languages":["en"],"registrations":true,"approval_required":true,"invites_enabled":true,"configuration":{"accounts":{"max_featured_tags":10},"statuses":{"max_characters":500,"max_media_attachments":4,"characters_reserved_per_url":23},"media_attachments":{"supported_mime_types":["image/jpeg","image/png","image/gif","image/heic","image/heif","image/webp","image/avif","video/webm","video/mp4","video/quicktime","video/ogg","audio/wave","audio/wav","audio/x-wav","audio/x-pn-wave","audio/vnd.wave","audio/ogg","audio/vorbis","audio/mpeg","audio/mp3","audio/webm","audio/flac","audio/aac","audio/m4a","audio/x-m4a","audio/mp4","audio/3gpp","video/x-ms-asf"],"image_size_limit":16777216,"image_matrix_limit":33177600,"video_size_limit":103809024,"video_frame_rate_limit":120,"video_matrix_limit":8294400},"polls":{"max_options":4,"max_characters_per_option":50,"min_expiration":300,"max_expiration":2629746}},"contact_account":null,"rules":[]}'
+    headers:
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-length:
+      - '1224'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Sun, 02 Aug 2026 07:15:14 GMT
+      deprecation:
+      - '@1668384000'
+      etag:
+      - W/"9b01dbb11c9a03f78231c758814a849d"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.15, sql.active_record;dur=3.05, cache_generate.active_support;dur=12.04,
+        cache_write.active_support;dur=0.45, instantiation.active_record;dur=1.30,
+        start_processing.action_controller;dur=0.00, cache_fetch_hit.active_support;dur=0.00,
+        render.active_model_serializers;dur=36.67, process_action.action_controller;dur=41.41
+      vary:
+      - Accept, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-02T07:20:00.425117Z'
+      x-request-id:
+      - 8a0fe92d-06d6-4b59-aeb3-fc8f36107de7
+      x-runtime:
+      - '0.059652'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - mastodonpy
+    method: GET
+    uri: https://mastodon.social/api/v1/instance/
+  response:
+    body:
+      string: "{\"uri\":\"mastodon.social\",\"title\":\"Mastodon\",\"short_description\"\
+        :\"The original server of Mastodon, operated by Mastodon GmbH for the common\
+        \ good.\\r\\n\\r\\n\",\"description\":\"\",\"email\":\"staff@mastodon.social\"\
+        ,\"version\":\"4.7.0-alpha.2+pr-39999-68e5caf\",\"urls\":{\"streaming_api\"\
+        :\"wss://streaming.mastodon.social\"},\"stats\":{\"user_count\":3354594,\"\
+        status_count\":183323404,\"domain_count\":120970},\"thumbnail\":\"https://files.mastodon.social/site_uploads/files/000/000/001/@1x/57c12f441d083cde.png\"\
+        ,\"languages\":[\"en\"],\"registrations\":true,\"approval_required\":false,\"\
+        invites_enabled\":true,\"configuration\":{\"accounts\":{\"max_featured_tags\"\
+        :10},\"statuses\":{\"max_characters\":500,\"max_media_attachments\":4,\"characters_reserved_per_url\"\
+        :23},\"media_attachments\":{\"supported_mime_types\":[\"image/jpeg\",\"image/png\"\
+        ,\"image/gif\",\"image/heic\",\"image/heif\",\"image/webp\",\"image/avif\"\
+        ,\"video/webm\",\"video/mp4\",\"video/quicktime\",\"video/ogg\",\"audio/wave\"\
+        ,\"audio/wav\",\"audio/x-wav\",\"audio/x-pn-wave\",\"audio/vnd.wave\",\"audio/ogg\"\
+        ,\"audio/vorbis\",\"audio/mpeg\",\"audio/mp3\",\"audio/webm\",\"audio/flac\"\
+        ,\"audio/aac\",\"audio/m4a\",\"audio/x-m4a\",\"audio/mp4\",\"audio/3gpp\"\
+        ,\"video/x-ms-asf\"],\"image_size_limit\":16777216,\"image_matrix_limit\"\
+        :33177600,\"video_size_limit\":103809024,\"video_frame_rate_limit\":120,\"\
+        video_matrix_limit\":8294400},\"polls\":{\"max_options\":4,\"max_characters_per_option\"\
+        :50,\"min_expiration\":300,\"max_expiration\":2629746}},\"contact_account\"\
+        :{\"id\":\"13179\",\"username\":\"Mastodon\",\"acct\":\"Mastodon\",\"display_name\"\
+        :\"Mastodon\",\"locked\":false,\"bot\":false,\"discoverable\":true,\"indexable\"\
+        :true,\"group\":false,\"created_at\":\"2016-11-23T00:00:00.000Z\",\"note\"\
+        :\"<p>Our mission is to connect the world through thriving online communities.</p><p>This\
+        \ is the primary account for the Mastodon project.</p><p>For technical software\
+        \ updates, follow <span class=\\\"h-card\\\" translate=\\\"no\\\"><a href=\\\
+        \"https://mastodon.social/@MastodonEngineering\\\" class=\\\"u-url mention\\\
+        \">@<span>MastodonEngineering</span></a></span></p><p>For news and updates\
+        \ on the Mastodon servers that we operate (like this one!), follow <span class=\\\
+        \"h-card\\\" translate=\\\"no\\\"><a href=\\\"https://mastodon.social/@staff\\\
+        \" class=\\\"u-url mention\\\">@<span>staff</span></a></span></p>\",\"url\"\
+        :\"https://mastodon.social/@Mastodon\",\"uri\":\"https://mastodon.social/users/Mastodon\"\
+        ,\"avatar\":\"https://files.mastodon.social/accounts/avatars/000/013/179/original/b4ceb19c9c54ec7e.png\"\
+        ,\"avatar_static\":\"https://files.mastodon.social/accounts/avatars/000/013/179/original/b4ceb19c9c54ec7e.png\"\
+        ,\"avatar_description\":\"The Mastodon logo: a white shape of a stylised elephant\
+        \ head; a bold lower-case m shape is cut out, showing a soothing purple gradient.\"\
+        ,\"header\":\"https://files.mastodon.social/accounts/headers/000/013/179/original/1375be116fbe0f1d.png\"\
+        ,\"header_static\":\"https://files.mastodon.social/accounts/headers/000/013/179/original/1375be116fbe0f1d.png\"\
+        ,\"header_description\":\"An image of a mobile device displaying the Mastodon\
+        \ app, on a cartoon background featuring rolling hills and white fluffy clouds.\"\
+        ,\"followers_count\":876233,\"following_count\":51,\"statuses_count\":555,\"\
+        last_status_at\":\"2026-07-31\",\"hide_collections\":false,\"show_media\"\
+        :true,\"show_media_replies\":true,\"show_featured\":true,\"noindex\":false,\"\
+        feature_approval\":{\"automatic\":[\"public\"],\"manual\":[],\"current_user\"\
+        :\"denied\"},\"emojis\":[],\"roles\":[],\"fields\":[{\"name\":\"Homepage\"\
+        ,\"value\":\"<a href=\\\"https://joinmastodon.org\\\" target=\\\"_blank\\\"\
+        \ rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\"><span class=\\\"invisible\\\
+        \">https://</span><span class=\\\"\\\">joinmastodon.org</span><span class=\\\
+        \"invisible\\\"></span></a>\",\"verified_at\":\"2018-10-31T04:11:00.076+00:00\"\
+        },{\"name\":\"Source Code\",\"value\":\"<a href=\\\"https://github.com/mastodon\\\
+        \" target=\\\"_blank\\\" rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\
+        \"><span class=\\\"invisible\\\">https://</span><span class=\\\"\\\">github.com/mastodon</span><span\
+        \ class=\\\"invisible\\\"></span></a>\",\"verified_at\":\"2023-07-21T13:27:45.996+00:00\"\
+        },{\"name\":\"Blog\",\"value\":\"<a href=\\\"https://blog.joinmastodon.org\\\
+        \" target=\\\"_blank\\\" rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\
+        \"><span class=\\\"invisible\\\">https://</span><span class=\\\"\\\">blog.joinmastodon.org</span><span\
+        \ class=\\\"invisible\\\"></span></a>\",\"verified_at\":\"2025-11-24T15:45:57.501+00:00\"\
+        },{\"name\":\"Donate\",\"value\":\"<a href=\\\"https://joinmastodon.org/sponsors#donate\\\
+        \" target=\\\"_blank\\\" rel=\\\"nofollow noopener me\\\" translate=\\\"no\\\
+        \"><span class=\\\"invisible\\\">https://</span><span class=\\\"ellipsis\\\
+        \">joinmastodon.org/sponsors#dona</span><span class=\\\"invisible\\\">te</span></a>\"\
+        ,\"verified_at\":\"2025-11-24T15:37:03.351+00:00\"}]},\"rules\":[{\"id\":\"\
+        1\",\"text\":\"Sexually explicit or violent media must be marked as sensitive\
+        \ or with a content warning\",\"hint\":\"This includes content that is particularly\
+        \ provocative even if it may not show specific body parts, as well as dead\
+        \ bodies, bloody injuries, and other gore. Particularly obscene content may\
+        \ be prohibited entirely. Profile pictures and header images may not contain\
+        \ sexually explicit or violent media.\",\"translations\":{\"de\":{\"text\"\
+        :\"Sexuell explizite Darstellungen oder solche von Gewalt m\xFCssen mit einer\
+        \ Inhaltswarnung versehen werden.\",\"hint\":\"Das beinhaltet ausdr\xFCcklich\
+        \ provokative Inhalte, auch wenn keine bestimmten K\xF6rperteile zu sehen\
+        \ sind, sowie Leichname, blutige Verletzungen und vergleichbare extreme Darstellungen.\
+        \ Besonders obsz\xF6ne Inhalte k\xF6nnen vollst\xE4ndig verboten werden. Profil-\
+        \ und Titelbilder d\xFCrfen keine sexuell expliziten oder Gewaltdarstellungen\
+        \ abbilden.\"},\"es\":{\"text\":\"El contenido sexual expl\xEDcito o violento\
+        \ debe marcarse como sensible o con una advertencia de contenido.\",\"hint\"\
+        :\"Esto incluye contenido especialmente provocativo, aunque no muestre partes\
+        \ espec\xEDficas del cuerpo, as\xED como cad\xE1veres, heridas sangrientas\
+        \ y otras escenas sangrientas. Los contenidos especialmente obscenos pueden\
+        \ prohibirse por completo. Las fotos de perfil y las im\xE1genes de cabecera\
+        \ no pueden contener contenido sexual expl\xEDcito o violento.\"},\"fr\":{\"\
+        text\":\"Le contenu \xE9rotique, pornographique ou violent doit \xEAtre marqu\xE9\
+        \ comme sensible ou avoir un avertissement de contenu.\",\"hint\":\"Cela inclut\
+        \ le contenu particuli\xE8rement provocateur m\xEAme s\u2019il ne montre pas\
+        \ particuli\xE8rement de parties intimes, ainsi que les photos de cadavres,\
+        \ de blessures sanglantes et autres sc\xE8nes d\xE9rangeantes. Le contenu\
+        \ particuli\xE8rement obsc\xE8ne peut \xEAtre compl\xE8tement interdit. Les\
+        \ images de profil et d\u2019en-t\xEAte ne doivent pas contenir de contenu\
+        \ sexuellement explicite ou violent.\"},\"nl\":{\"text\":\"Seksueel expliciet\
+        \ of gewelddadig beeldmateriaal moet als \u2018gevoelig\u2019 gemarkeerd worden,\
+        \ of met een inhoudswaarschuwing gemarkeerd.\",\"hint\":\"Dit omvat ook inhoud\
+        \ die gedeeltelijk aanstootgevend is zelfs als het geen lichaamsdelen toont,\
+        \ en ook dode lichamen, bloederige verwondingen en andere gruwelijkheden.\
+        \ Zeer obscene inhoud kan helemaal verboden worden. Profielfoto\u2019s en\
+        \ headerafbeeldingen mogen geen seksueel expliciete of geweldadige inhoud\
+        \ hebben.\"},\"ru\":{\"text\":\"\u0421\u0435\u043A\u0441\u0443\u0430\u043B\
+        \u044C\u043D\u043E \u043E\u0442\u043A\u0440\u043E\u0432\u0435\u043D\u043D\u044B\
+        \u0435 \u0438\u043B\u0438 \u0436\u0435\u0441\u0442\u043E\u043A\u0438\u0435\
+        \ \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F \u0438\
+        \u043B\u0438 \u0432\u0438\u0434\u0435\u043E \u0434\u043E\u043B\u0436\u043D\
+        \u044B \u0431\u044B\u0442\u044C \u043F\u043E\u043C\u0435\u0447\u0435\u043D\
+        \u044B \u043A\u0430\u043A \u0447\u0443\u0432\u0441\u0442\u0432\u0438\u0442\
+        \u0435\u043B\u044C\u043D\u044B\u0435 \u0438\u043B\u0438 \u0441\u043A\u0440\
+        \u044B\u0442\u044B \u043F\u043E\u0434 \u0441\u043F\u043E\u0439\u043B\u0435\
+        \u0440.\",\"hint\":\"\u042D\u0442\u043E \u0432\u043A\u043B\u044E\u0447\u0430\
+        \u0435\u0442 \u0432 \u0441\u0435\u0431\u044F \u043E\u0441\u043E\u0431\u0435\
+        \u043D\u043D\u043E \u043F\u0440\u043E\u0432\u043E\u0446\u0438\u0440\u0443\u044E\
+        \u0449\u0438\u0439 \u043A\u043E\u043D\u0442\u0435\u043D\u0442, \u0434\u0430\
+        \u0436\u0435 \u0435\u0441\u043B\u0438 \u043E\u043D \u043D\u0435 \u043F\u043E\
+        \u043A\u0430\u0437\u044B\u0432\u0430\u0435\u0442 \u043E\u043F\u0440\u0435\u0434\
+        \u0435\u043B\u0451\u043D\u043D\u044B\u0435 \u0447\u0430\u0441\u0442\u0438\
+        \ \u0442\u0435\u043B\u0430, \u0430 \u0442\u0430\u043A\u0436\u0435 \u043C\u0451\
+        \u0440\u0442\u0432\u044B\u0435 \u0442\u0435\u043B\u0430, \u043E\u043A\u0440\
+        \u043E\u0432\u0430\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u0440\u0430\u043D\
+        \u044B \u0438 \u043F\u0440\u043E\u0447\u0443\u044E \u043A\u0440\u043E\u0432\
+        \u044C. \u041E\u0441\u043E\u0431\u0435\u043D\u043D\u043E \u0436\u0435\u0441\
+        \u0442\u043E\u043A\u0438\u0439 \u043A\u043E\u043D\u0442\u0435\u043D\u0442\
+        \ \u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C \u0437\u0430\u043F\
+        \u0440\u0435\u0449\u0451\u043D \u043F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\
+        \u044E. \u0410\u0432\u0430\u0442\u0430\u0440\u044B \u0438 \u043E\u0431\u043B\
+        \u043E\u0436\u043A\u0438 \u043F\u0440\u043E\u0444\u0438\u043B\u0435\u0439\
+        \ \u043D\u0435 \u0434\u043E\u043B\u0436\u043D\u044B \u0441\u043E\u0434\u0435\
+        \u0440\u0436\u0430\u0442\u044C \u0441\u0435\u043A\u0441\u0443\u0430\u043B\u044C\
+        \u043D\u043E \u043E\u0442\u043A\u0440\u043E\u0432\u0435\u043D\u043D\u044B\u0435\
+        \ \u0438\u043B\u0438 \u0436\u0435\u0441\u0442\u043E\u043A\u0438\u0435 \u0438\
+        \u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F.\"},\"zh-CN\"\
+        :{\"text\":\"\u8272\u60C5\u6216\u66B4\u529B\u5A92\u4F53\u5FC5\u987B\u6807\u8BB0\
+        \u4E3A\u654F\u611F\u6216\u6709\u5185\u5BB9\u8B66\u544A\",\"hint\":\"\u8FD9\
+        \u5305\u62EC\u7279\u522B\u6311\u9017\u6027\u7684\u5185\u5BB9\uFF0C\u5373\u4F7F\
+        \u5B83\u53EF\u80FD\u6CA1\u6709\u663E\u793A\u7279\u5B9A\u7684\u8EAB\u4F53\u90E8\
+        \u4F4D\uFF0C\u4EE5\u53CA\u5C38\u4F53\u3001\u8840\u8165\u4F24\u5BB3\u548C\u5176\
+        \u4ED6\u8840\u8165\u5185\u5BB9\u3002\u7279\u522B\u6DEB\u79FD\u7684\u5185\u5BB9\
+        \u53EF\u80FD\u4F1A\u88AB\u5B8C\u5168\u7981\u6B62\u3002\u4E2A\u4EBA\u8D44\u6599\
+        \u56FE\u7247\u548C\u5934\u50CF\u4E0D\u5F97\u5305\u542B\u8272\u60C5\u6216\u66B4\
+        \u529B\u5185\u5BB9\u3002\"},\"zh-TW\":{\"text\":\"\u6027\u6697\u793A\u6216\
+        \u66B4\u529B\u5A92\u9AD4\u5FC5\u9808\u6A19\u793A\u70BA\u654F\u611F\u6216\u9644\
+        \u5E36\u5167\u5BB9\u8B66\u793A\",\"hint\":\"\u9019\u5305\u62EC\u7279\u5225\
+        \u6311\u91C1\u7684\u5167\u5BB9\uFF0C\u5373\u4F7F\u5B83\u53EF\u80FD\u6C92\u6709\
+        \u986F\u793A\u7279\u5B9A\u7684\u8EAB\u9AD4\u90E8\u4F4D\uFF0C\u4EE5\u53CA\u5C4D\
+        \u9AD4\u3001\u8840\u8165\u50B7\u5BB3\u548C\u5176\u4ED6\u8840\u8165\u5167\u5BB9\
+        \u3002\u7279\u5225\u7325\u893B\u7684\u5167\u5BB9\u53EF\u80FD\u6703\u88AB\u5B8C\
+        \u5168\u7981\u6B62\u3002\u500B\u4EBA\u6A94\u6848\u5716\u7247\u548C\u6A19\u984C\
+        \u5716\u7247\u4E0D\u5F97\u5305\u542B\u8272\u60C5\u6216\u66B4\u529B\u5A92\u9AD4\
+        \u3002\"}}},{\"id\":\"2\",\"text\":\"No racism, sexism, homophobia, transphobia,\
+        \ ableism, xenophobia, or casteism.\",\"hint\":\"Transphobic behavior such\
+        \ as intentional misgendering and deadnaming is strictly prohibited. Promotion\
+        \ of \\\"conversion therapy\\\" is strictly prohibited. Criticism of governments\
+        \ and religions is permissible unless being used as a proxy for discrimination.\"\
+        ,\"translations\":{\"de\":{\"text\":\"Kein(e) Rassismus, Sexismus, Homophobie,\
+        \ Transphobie, Behindertenfeindlichkeit, Fremdenfeindlichkeit oder Kasteismus.\"\
+        ,\"hint\":\"Transphobes Verhalten wie die absichtliche Verwendung von falschen\
+        \ Anreden und Pronomen sowie Deadnaming ist strengstens verboten. Die Werbung\
+        \ f\xFCr Konversionstherapien ist strengstens verboten. Die Kritik an Regierungen\
+        \ und Religionen ist zul\xE4ssig, sofern sie nicht stellvertretend f\xFCr\
+        \ Diskriminierung verwendet wird.\"},\"es\":{\"text\":\"Prohibido el racismo,\
+        \ sexismo, homofobia, transfobia, able\xEDsmo, xenofobia o casticismo.\",\"\
+        hint\":\"Queda terminantemente prohibido el comportamiento transf\xF3bico,\
+        \ como el uso intencionado de nombres falsos o el \\\"deadnaming\\\". La promoci\xF3\
+        n de la \\\"terapia de conversi\xF3n\\\" est\xE1 estrictamente prohibida.\
+        \ Se permiten las cr\xEDticas a gobiernos y religiones, a menos que se utilicen\
+        \ como excusa para la discriminaci\xF3n.\"},\"fr\":{\"text\":\"Pas de racisme,\
+        \ sexisme, homophobie, transphobie, validisme, x\xE9nophobie ou discrimination\
+        \ de caste.\",\"hint\":\"Les comportements intentionnellement transphobes,\
+        \ comme le m\xE9genrage ou le morinommage (\u201Cdeadnaming\u201D) est strictement\
+        \ interdit. La promotion des \u201Cth\xE9rapies de conversion\u201D est strictement\
+        \ interdite. La critique des gouvernements et religions est autoris\xE9e,\
+        \ sauf dans les cas ou elle est utilis\xE9e comme paravent pour de la discrimination.\"\
+        },\"nl\":{\"text\":\"Geen racisme, seksisme, homofobie, transfobie, validisme,\
+        \ xenofobie of kastendiscriminatie.\",\"hint\":\"Transfobisch gedrag zoals\
+        \ opzettelijk misgenderen en deadnaming is ten strengste verboden. Het promoten\
+        \ van \u201Cconversie therapie\u201D is ten strengste verboden. Kritiek op\
+        \ overheden en religies is toegestaan tenzij het wordt gebruikt als proxy\
+        \ voor racisme.\"},\"ru\":{\"text\":\"\u0417\u0430\u043F\u0440\u0435\u0449\
+        \u0430\u0435\u0442\u0441\u044F \u0440\u0430\u0441\u0438\u0437\u043C, \u0441\
+        \u0435\u043A\u0441\u0438\u0437\u043C, \u0433\u043E\u043C\u043E\u0444\u043E\
+        \u0431\u0438\u044F, \u0442\u0440\u0430\u043D\u0441\u0444\u043E\u0431\u0438\
+        \u044F, \u044D\u0439\u0431\u043B\u0438\u0437\u043C, \u043A\u0441\u0435\u043D\
+        \u043E\u0444\u043E\u0431\u0438\u044F \u0438 \u043A\u0430\u0441\u0442\u043E\
+        \u0432\u043E\u0441\u0442\u044C.\",\"hint\":\"\u0422\u0440\u0430\u043D\u0441\
+        \u0444\u043E\u0431\u043D\u043E\u0435 \u043F\u043E\u0432\u0435\u0434\u0435\u043D\
+        \u0438\u0435, \u0442\u0430\u043A\u043E\u0435 \u043A\u0430\u043A \u043E\u0441\
+        \u043E\u0437\u043D\u0430\u043D\u043D\u044B\u0439 \u043C\u0438\u0441\u0433\u0435\
+        \u043D\u0434\u0435\u0440\u0438\u043D\u0433 \u0438 \u0434\u0435\u0434\u043D\
+        \u0435\u0439\u043C\u0438\u043D\u0433, \u0441\u0442\u0440\u043E\u0433\u043E\
+        \ \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\u043E. \u041F\u0440\u043E\
+        \u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435 \\\"\u043A\u043E\u043D\u0432\
+        \u0435\u0440\u0441\u0438\u043E\u043D\u043D\u043E\u0439 \u0442\u0435\u0440\u0430\
+        \u043F\u0438\u0438\\\" \u0441\u0442\u0440\u043E\u0433\u043E \u0437\u0430\u043F\
+        \u0440\u0435\u0449\u0435\u043D\u043E. \u041A\u0440\u0438\u0442\u0438\u043A\
+        \u0430 \u043F\u0440\u0430\u0432\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\
+        \ \u0438 \u0440\u0435\u043B\u0438\u0433\u0438\u0439 \u0440\u0430\u0437\u0440\
+        \u0435\u0448\u0435\u043D\u0430, \u043A\u0440\u043E\u043C\u0435 \u0441\u043B\
+        \u0443\u0447\u0430\u0435\u0432, \u043A\u043E\u0433\u0434\u0430 \u043E\u043D\
+        \u0430 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0435\u0442\u0441\u044F\
+        \ \u043A\u0430\u043A \u043E\u043F\u0440\u0430\u0432\u0434\u0430\u043D\u0438\
+        \u0435 \u0434\u043B\u044F \u0434\u0438\u0441\u043A\u0440\u0438\u043C\u0438\
+        \u043D\u0430\u0446\u0438\u0438.\"},\"zh-CN\":{\"text\":\"\u7981\u6B62\u79CD\
+        \u65CF\u4E3B\u4E49\u3001\u6027\u522B\u6B67\u89C6\u3001\u4EC7\u89C6\u540C\u6027\
+        \u604B\u3001\u4EC7\u89C6\u53D8\u6027\u8005\u3001\u5F02\u80FD\u8005\u3001\u4EC7\
+        \u5916\u5FC3\u7406\u6216\u79CD\u59D3\u6B67\u89C6\u3002\",\"hint\":\"\u4E25\
+        \u7981\u53D8\u6027\u4EC7\u89C6\u884C\u4E3A\uFF0C\u5982\u6545\u610F\u8BEF\u7528\
+        \u6027\u522B\u548C\u6B7B\u540D\u3002\u4E25\u7981\u5BA3\u4F20 \u201C\u8F6C\u6362\
+        \u7597\u6CD5\u201D\u3002\u5141\u8BB8\u6279\u8BC4\u653F\u5E9C\u548C\u5B97\u6559\
+        \uFF0C\u9664\u975E\u88AB\u7528\u4F5C\u6B67\u89C6\u7684\u4EE3\u540D\u8BCD\u3002\
+        \"},\"zh-TW\":{\"text\":\"\u7981\u6B62\u7A2E\u65CF\u4E3B\u7FA9\u3001\u6027\
+        \u5225\u4E3B\u7FA9\u3001\u6050\u540C\u4E3B\u7FA9\u3001\u6050\u8B8A\u6027\u4E3B\
+        \u7FA9\u3001\u80FD\u529B\u4E3B\u7FA9\u3001\u4EC7\u5916\u4E3B\u7FA9\u6216\u7A2E\
+        \u6027\u4E3B\u7FA9\u3002\",\"hint\":\"\u56B4\u7981\u8B8A\u6027\u4EC7\u8996\
+        \u884C\u70BA\uFF0C\u4F8B\u5982\u6545\u610F\u8AA4\u7528\u6027\u5225\u548C\u66B1\
+        \u7A31\u3002\u56B4\u7981\u5BA3\u50B3\u300C\u626D\u8F49\u6CBB\u7642\u300D\u3002\
+        \u5141\u8A31\u6279\u8A55\u653F\u5E9C\u548C\u5B97\u6559\uFF0C\u9664\u975E\u88AB\
+        \u7528\u4F86\u4EE3\u8868\u6B67\u8996\u3002\"}}},{\"id\":\"3\",\"text\":\"\
+        No incitement of violence or promotion of violent ideologies\",\"hint\":\"\
+        Calling for people or groups to be assassinated, murdered, or attacked physically\
+        \ is strictly prohibited. Support for violent groups or events is prohibited.\"\
+        ,\"translations\":{\"de\":{\"text\":\"Keine Anstiftung zu Gewalt oder F\xF6\
+        rderung gewaltt\xE4tiger Ideologien.\",\"hint\":\"Der Aufruf zum Mord oder\
+        \ k\xF6rperlichen Attacken auf Personen oder Gruppen ist strengstens verboten.\
+        \ Die Unterst\xFCtzung gewaltt\xE4tiger Gruppen oder Veranstaltungen ist verboten.\"\
+        },\"es\":{\"text\":\"Prohibida la incitaci\xF3n a la violencia o la promoci\xF3\
+        n de ideolog\xEDas violentas.\",\"hint\":\"Est\xE1 estrictamente prohibido\
+        \ hacer llamamientos para que se asesine, mate o agreda f\xEDsicamente a personas\
+        \ o grupos. Est\xE1 prohibido apoyar a grupos o acontecimientos violentos.\"\
+        },\"fr\":{\"text\":\"Pas d\u2019incitation \xE0 la violence ou de promotion\
+        \ d\u2019id\xE9ologies violentes.\",\"hint\":\"L\u2019appel au meutre, \xE0\
+        \ la violence ou \xE0 l\u2019action physique envers des personnes ou des groupes\
+        \ de personnes est strictement interdit. Le soutien \xE0 des groupes ou \xE9\
+        v\xE8nements violents est interdit.\"},\"nl\":{\"text\":\"Niet aanzetten tot\
+        \ geweld of verspreiden van gewelddadige ideologie\xEBn.\",\"hint\":\"Mensen\
+        \ of groepen aanzetten tot moord, aanslagen of fysieke aanvallen is ten strengste\
+        \ verboden. Steun voor gewelddadige groeperingen of evenementen is verboden.\"\
+        },\"ru\":{\"text\":\"\u0417\u0430\u043F\u0440\u0435\u0449\u0430\u0435\u0442\
+        \u0441\u044F \u043F\u043E\u0434\u0441\u0442\u0440\u0435\u043A\u0430\u0442\u0435\
+        \u043B\u044C\u0441\u0442\u0432\u043E \u043A \u0436\u0435\u0441\u0442\u043E\
+        \u043A\u043E\u0441\u0442\u0438 \u0438\u043B\u0438 \u043F\u0440\u043E\u0434\
+        \u0432\u0438\u0436\u0435\u043D\u0438\u0435 \u0436\u0435\u0441\u0442\u043E\u043A\
+        \u0438\u0445 \u0438\u0434\u0435\u043E\u043B\u043E\u0433\u0438\u0439.\",\"\
+        hint\":\"\u041F\u0440\u0438\u0437\u044B\u0432\u044B \u043A \u043F\u043E\u043A\
+        \u0443\u0448\u0435\u043D\u0438\u044F\u043C, \u0443\u0431\u0438\u0439\u0441\
+        \u0442\u0432\u0430\u043C \u0438 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\
+        \u043A\u0438\u043C \u0430\u0442\u0430\u043A\u0430\u043C \u043D\u0430 \u043B\
+        \u044E\u0434\u0435\u0439 \u0438\u043B\u0438 \u0433\u0440\u0443\u043F\u043F\
+        \u044B \u043B\u044E\u0434\u0435\u0439 \u0441\u0442\u0440\u043E\u0433\u043E\
+        \ \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\u044B. \u041F\u043E\u0434\
+        \u0434\u0435\u0440\u0436\u043A\u0430 \u0436\u0435\u0441\u0442\u043E\u043A\u0438\
+        \u0445 \u0441\u043E\u043E\u0431\u0449\u0435\u0441\u0442\u0432 \u0438\u043B\
+        \u0438 \u0441\u043E\u0431\u044B\u0442\u0438\u0439 \u0437\u0430\u043F\u0440\
+        \u0435\u0449\u0435\u043D\u0430.\"},\"zh-CN\":{\"text\":\"\u4E0D\u5F97\u717D\
+        \u52A8\u66B4\u529B\u6216\u5BA3\u626C\u66B4\u529B\u610F\u8BC6\u5F62\u6001\"\
+        ,\"hint\":\"\u4E25\u7981\u547C\u5401\u6697\u6740\u3001\u8C0B\u6740\u6216\u4EBA\
+        \u8EAB\u653B\u51FB\u4ED6\u4EBA\u6216\u56E2\u4F53\u3002\u7981\u6B62\u652F\u6301\
+        \u66B4\u529B\u56E2\u4F53\u6216\u4E8B\u4EF6\u3002\"},\"zh-TW\":{\"text\":\"\
+        \u56B4\u7981\u717D\u52D5\u66B4\u529B\u6216\u5BA3\u63DA\u66B4\u529B\u610F\u8B58\
+        \u5F62\u614B\",\"hint\":\"\u56B4\u7981\u547C\u7C72\u6697\u6BBA\u3001\u8B00\
+        \u6BBA\u6216\u4EBA\u8EAB\u653B\u64CA\u4ED6\u4EBA\u6216\u5718\u9AD4\u3002\u56B4\
+        \u7981\u652F\u6301\u66B4\u529B\u5718\u9AD4\u6216\u4E8B\u4EF6\u3002\"}}},{\"\
+        id\":\"4\",\"text\":\"No harassment, block evasion, dogpiling, or doxxing\
+        \ of others\",\"hint\":\"Repeat attempts to communicate with users who have\
+        \ blocked you or creation of accounts solely to harass or insult individuals\
+        \ is strictly prohibited. Coordinated activity to attack other users is prohibited.\
+        \ Posting of private personal information about others is prohibited.\",\"\
+        translations\":{\"de\":{\"text\":\"Keine Bel\xE4stigungen, Umgehung von Blockierungen,\
+        \ Dogpiling oder Doxxing.\",\"hint\":\"Wiederholte Kommunikationsversuche\
+        \ mit Profilen, die dich blockiert haben, oder die Erstellung neuer Konten,\
+        \ die ausschlie\xDFlich dazu dienen, andere zu bel\xE4stigen oder zu beleidigen,\
+        \ sind strengstens verboten. Koordinierte Angriffe auf andere Profile sind\
+        \ verboten. Die Ver\xF6ffentlichung von privaten und pers\xF6nlichen Informationen\
+        \ anderer ist verboten.\"},\"es\":{\"text\":\"No acosar, evadir bloqueos,\
+        \ \\\"dogpiling\\\" (abuso en l\xEDnea por grupos de acosadores) o doxeo de\
+        \ otros.\",\"hint\":\"Est\xE1 estrictamente prohibido intentar comunicarse\
+        \ repetidamente con usuarios que te hayan bloqueado o crear cuentas con el\
+        \ \xFAnico fin de acosar o insultar a otras personas. Queda prohibida la actividad\
+        \ coordinada para atacar a otros usuarios. Est\xE1 prohibido publicar informaci\xF3\
+        n personal privada sobre otras personas.\"},\"fr\":{\"text\":\"Pas de harc\xE8\
+        lement, d\u2019esquive de blocage, de \u201Cdogpiling\u201D, ou de divulgation\
+        \ de donn\xE9es personnelles d\u2019autrui.\",\"hint\":\"Les tentatives r\xE9\
+        p\xE9t\xE9es de communiquer avec des utilisateur\xB7ices qui vont ont bloqu\xE9\
+        \ ainsi que la cr\xE9ation de comptes pour harceler ou insulter autrui sont\
+        \ strictement interdites. Les attaques coordonn\xE9es contre autrui sont interdites.\
+        \ La publication de donn\xE9es personnelles d\u2019autrui est interdite.\"\
+        },\"nl\":{\"text\":\"Geen intimidatie, omzeilen van blokkades, groepsaanvallen\
+        \ of het verspreiden van priv\xE9gegevens van anderen.\",\"hint\":\"Herhaalde\
+        \ pogingen tot communiceren met gebruikers die je hebben geblokkeerd, of het\
+        \ maken van accounts enkel om personen te intimideren of beledigen is ten\
+        \ strengste verboden. Geco\xF6rdineerde activiteit om andere gebruikers aan\
+        \ te vallen is verboden. Het plaatsen van priv\xE9-gegevens van anderen is\
+        \ verboden.\"},\"ru\":{\"text\":\"\u0417\u0430\u043F\u0440\u0435\u0449\u0430\
+        \u0435\u0442\u0441\u044F \u0442\u0440\u0430\u0432\u043B\u044F, \u0438\u0437\
+        \u0431\u0435\u0433\u0430\u043D\u0438\u0435 \u0431\u043B\u043E\u043A\u0438\u0440\
+        \u043E\u0432\u043E\u043A, \u043D\u0430\u0431\u0435\u0433\u0438 \u0438 \u0440\
+        \u0430\u0437\u0433\u043B\u0430\u0448\u0435\u043D\u0438\u0435 \u043B\u0438\u0447\
+        \u043D\u043E\u0439 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u0438\
+        \ \u0434\u0440\u0443\u0433\u0438\u0445 \u043B\u0438\u0446.\",\"hint\":\"\u041F\
+        \u043E\u0432\u0442\u043E\u0440\u044F\u044E\u0449\u0438\u0435\u0441\u044F \u043F\
+        \u043E\u043F\u044B\u0442\u043A\u0438 \u0432\u0437\u0430\u0438\u043C\u043E\u0434\
+        \u0435\u0439\u0441\u0442\u0432\u043E\u0432\u0430\u0442\u044C \u0441 \u043F\
+        \u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F\u043C\u0438\
+        , \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0432\u0430\u0441 \u0437\u0430\
+        \u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u043B\u0438, \u0438\
+        \ \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u0435 \u0443\u0447\u0451\u0442\
+        \u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439 \u0438\u0441\
+        \u043A\u043B\u044E\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0440\u0430\
+        \u0434\u0438 \u0442\u0440\u0430\u0432\u043B\u0438 \u0438\u043B\u0438 \u043E\
+        \u0441\u043A\u043E\u0440\u0431\u043B\u0435\u043D\u0438\u0439, \u0441\u0442\
+        \u0440\u043E\u0433\u043E \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\u044B\
+        . \u0421\u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0438\u0440\u043E\u0432\
+        \u0430\u043D\u043D\u0430\u044F \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\
+        \u0442\u044C \u0441 \u0446\u0435\u043B\u044C\u044E \u0430\u0442\u0430\u043A\
+        \u0438 \u043D\u0430 \u0434\u0440\u0443\u0433\u0438\u0445 \u043F\u043E\u043B\
+        \u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439 \u0437\u0430\u043F\
+        \u0440\u0435\u0449\u0435\u043D\u0430. \u041F\u0443\u0431\u043B\u0438\u043A\
+        \u0430\u0446\u0438\u044F \u043B\u0438\u0447\u043D\u043E\u0439 \u0438\u043D\
+        \u0444\u043E\u0440\u043C\u0430\u0446\u0438\u0438 \u0434\u0440\u0443\u0433\u0438\
+        \u0445 \u043B\u0438\u0446 \u0437\u0430\u043F\u0440\u0435\u0449\u0435\u043D\
+        \u0430.\"},\"zh-CN\":{\"text\":\"\u4E0D\u5F97\u9A9A\u6270\u3001\u56DE\u907F\
+        \u5C01\u7981\u3001\u8BFD\u8C24\u6216\u653B\u51FB\u4ED6\u4EBA\",\"hint\":\"\
+        \u4E25\u7981\u91CD\u590D\u5C1D\u8BD5\u4E0E\u5DF2\u5C01\u7981\u60A8\u7684\u7528\
+        \u6237\u4EA4\u6D41\uFF0C\u6216\u4EC5\u4E3A\u9A9A\u6270\u6216\u4FAE\u8FB1\u4ED6\
+        \u4EBA\u800C\u521B\u5EFA\u8D26\u6237\u3002\u4E25\u7981\u534F\u540C\u653B\u51FB\
+        \u5176\u4ED6\u7528\u6237\u3002\u7981\u6B62\u53D1\u5E03\u4ED6\u4EBA\u7684\u79C1\
+        \u4EBA\u4E2A\u4EBA\u4FE1\u606F\u3002\"},\"zh-TW\":{\"text\":\"\u56B4\u7981\
+        \u9A37\u64FE\u3001\u8FF4\u907F\u5C01\u9396\u3001\u717D\u52D5\u6216\u8AA3\u884A\
+        \u4ED6\u4EBA\",\"hint\":\"\u56B4\u7981\u91CD\u8907\u5617\u8A66\u8207\u5DF2\
+        \u5C01\u9396\u60A8\u7684\u4F7F\u7528\u8005\u6E9D\u901A\uFF0C\u6216\u7D14\u7CB9\
+        \u70BA\u4E86\u9A37\u64FE\u6216\u4FAE\u8FB1\u4ED6\u4EBA\u800C\u5EFA\u7ACB\u5E33\
+        \u865F\u3002\u7981\u6B62\u653B\u64CA\u5176\u4ED6\u4F7F\u7528\u8005\u7684\u5354\
+        \u8ABF\u6D3B\u52D5\u3002\u7981\u6B62\u5F35\u8CBC\u4ED6\u4EBA\u7684\u79C1\u4EBA\
+        \u500B\u4EBA\u8CC7\u8A0A\u3002\"}}},{\"id\":\"7\",\"text\":\"Do not share\
+        \ information widely-known to be false and misleading\",\"hint\":\"False and\
+        \ misleading information and links from low-quality sources may not be posted,\
+        \ especially if they are likely to mislead or confuse others or endanger their\
+        \ safety.\",\"translations\":{\"de\":{\"text\":\"Verbreitet keine Informationen,\
+        \ von denen allgemein bekannt ist, dass sie falsch oder irref\xFChrend.\"\
+        ,\"hint\":\"Falsche und irref\xFChrende Informationen sowie Links aus unseri\xF6\
+        sen Quellen d\xFCrfen nicht gepostet werden, insbesondere wenn sie geeignet\
+        \ sind, andere in die Irre zu f\xFChren oder deren Sicherheit zu gef\xE4hrden.\"\
+        },\"es\":{\"text\":\"No compartas informaci\xF3n ampliamente conocida por\
+        \ ser falsa y enga\xF1osa.\",\"hint\":\"No est\xE1 permitido publicar informaci\xF3\
+        n falsa y enga\xF1osa ni enlaces de fuentes de baja calidad, especialmente\
+        \ si pueden inducir a error o confusi\xF3n a otras personas o poner en peligro\
+        \ su seguridad.\"},\"fr\":{\"text\":\"Ne partagez pas d\u2019informations\
+        \ connues pour \xEAtre fausses ou trompeuses.\",\"hint\":\"Les informations\
+        \ fausses ou trompeuses, ainsi que les liens vers des sources de mauvaise\
+        \ qualit\xE9 ne doivent pas \xEAtre publi\xE9es, particuli\xE8rement si elles\
+        \ risquent de tromper, d\u2019induire en erreur, de semer la confusion ou\
+        \ de mettre des personnes en danger.\"},\"nl\":{\"text\":\"Deel geen informatie\
+        \ die algemeen bekend staat als onjuist en misleidend.\",\"hint\":\"Onjuiste\
+        \ en misleidende informatie en links naar onbetrouwbare bronnen mogen niet\
+        \ geplaatst worden, zeker als deze waarschijnlijk anderen misleiden of verwarren,\
+        \ of hun veiligheid in  gevaar brengt.\"},\"ru\":{\"text\":\"\u041D\u0435\
+        \ \u043F\u0443\u0431\u043B\u0438\u043A\u0443\u0439\u0442\u0435 \u0437\u0430\
+        \u0432\u0435\u0434\u043E\u043C\u043E \u043B\u043E\u0436\u043D\u0443\u044E\
+        \ \u0438 \u0432\u0432\u043E\u0434\u044F\u0449\u0443\u044E \u0432 \u0437\u0430\
+        \u0431\u043B\u0443\u0436\u0434\u0435\u043D\u0438\u0435 \u0438\u043D\u0444\u043E\
+        \u0440\u043C\u0430\u0446\u0438\u044E.\",\"hint\":\"\u0417\u0430\u043F\u0440\
+        \u0435\u0449\u0435\u043D\u0430 \u043F\u0443\u0431\u043B\u0438\u043A\u0430\u0446\
+        \u0438\u044F \u043B\u043E\u0436\u043D\u043E\u0439 \u0438 \u0432\u0432\u043E\
+        \u0434\u044F\u0449\u0435\u0439 \u0432 \u0437\u0430\u0431\u043B\u0443\u0436\
+        \u0434\u0435\u043D\u0438\u0435 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\
+        \u0438\u0438 \u0438 \u0441\u0441\u044B\u043B\u043E\u043A \u0438\u0437 \u043D\
+        \u0438\u0437\u043A\u043E\u043A\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043D\
+        \u043D\u044B\u0445 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u043E\u0432\
+        , \u043E\u0441\u043E\u0431\u0435\u043D\u043D\u043E \u0435\u0441\u043B\u0438\
+        \ \u044D\u0442\u043E \u043C\u043E\u0436\u0435\u0442 \u0441\u0431\u0438\u0442\
+        \u044C \u0434\u0440\u0443\u0433\u0438\u0445 \u043B\u044E\u0434\u0435\u0439\
+        \ \u0441 \u0442\u043E\u043B\u043A\u0443, \u0437\u0430\u043F\u0443\u0442\u0430\
+        \u0442\u044C \u0438\u0445, \u0438\u043B\u0438 \u043F\u043E\u0434\u0432\u0435\
+        \u0440\u0433\u043D\u0443\u0442\u044C \u0438\u0445 \u043E\u043F\u0430\u0441\
+        \u043D\u043E\u0441\u0442\u0438.\"},\"zh-CN\":{\"text\":\"\u4E0D\u5F97\u5206\
+        \u4EAB\u4F17\u6240\u5468\u77E5\u7684\u865A\u5047\u548C\u8BEF\u5BFC\u6027\u4FE1\
+        \u606F\\r\\n\",\"hint\":\"\u4E0D\u5F97\u53D1\u5E03\u865A\u5047\u548C\u8BEF\
+        \u5BFC\u6027\u4FE1\u606F\u4EE5\u53CA\u6765\u81EA\u4F4E\u8D28\u91CF\u6765\u6E90\
+        \u7684\u94FE\u63A5\uFF0C\u5C24\u5176\u662F\u53EF\u80FD\u8BEF\u5BFC\u6216\u6DF7\
+        \u6DC6\u4ED6\u4EBA\u6216\u5371\u53CA\u4ED6\u4EBA\u5B89\u5168\u7684\u4FE1\u606F\
+        \u3002\"},\"zh-TW\":{\"text\":\"\u8ACB\u52FF\u5206\u4EAB\u5EE3\u70BA\u4EBA\
+        \u77E5\u7684\u865B\u5047\u548C\u8AA4\u5C0E\u8CC7\u8A0A\",\"hint\":\"\u4E0D\
+        \u5F97\u5F35\u8CBC\u865B\u5047\u548C\u8AA4\u5C0E\u8CC7\u8A0A\u4EE5\u53CA\u4F86\
+        \u81EA\u4F4E\u54C1\u8CEA\u4F86\u6E90\u7684\u9023\u7D50\uFF0C\u5C24\u5176\u662F\
+        \u53EF\u80FD\u8AA4\u5C0E\u6216\u6DF7\u6DC6\u4ED6\u4EBA\u6216\u5371\u5BB3\u4ED6\
+        \u4EBA\u5B89\u5168\u7684\u8CC7\u8A0A\u3002\"}}},{\"id\":\"1008\",\"text\"\
+        :\"Content created by others must be attributed, and use of generative AI\
+        \ must be disclosed\",\"hint\":\"Content created by others must clearly provide\
+        \ a reference to the author, creator, or source. For adult content, this should\
+        \ include performers. Accounts may not solely post AI-generated content.\"\
+        ,\"translations\":{\"de\":{\"text\":\"Von anderen erstellte Inhalte m\xFC\
+        ssen gekennzeichnet und die Nutzung generativer KI offengelegt werden.\",\"\
+        hint\":\"Von anderen erstellte Inhalte m\xFCssen durch einen eindeutigen Verweis\
+        \ auf den/die Autor*in oder die Quelle gekennzeichnet werden. Bei nicht jugendfreien\
+        \ Inhalten sollte dies auch die Darsteller*innen einschlie\xDFen. Konten d\xFC\
+        rfen nicht ausschlie\xDFlich KI-generierte Inhalte posten.\"},\"es\":{\"text\"\
+        :\"Los contenidos creados por terceros deben ser atribuidos y el uso de IA\
+        \ debe ser revelado.\",\"hint\":\"Los contenidos creados por terceros deben\
+        \ proporcionar claramente una referencia al autor, creador o fuente. En el\
+        \ caso de los contenidos para adultos, debe incluirse a los artistas. Las\
+        \ cuentas no pueden publicar \xFAnicamente contenidos generados por IA.\"\
+        },\"fr\":{\"text\":\"Le contenu cr\xE9e par autrui doit \xEAtre attribu\xE9\
+        , et l\u2019utilisation d\u2019IA g\xE9n\xE9rative doit \xEAtre marqu\xE9\
+        \ comme tel.\",\"hint\":\"Le contenu cr\xE9\xE9 par autrui doit fournir une\
+        \ r\xE9f\xE9rence explicite \xE0 son auteur\xB7ice, cr\xE9ateur\xB7ice ou\
+        \ sa source. Cela inclut les acteur\xB7ice de contenu pour adulte. Les comptes\
+        \ publiant exclusivement du contenu g\xE9n\xE9r\xE9 par IA sont interdits.\"\
+        },\"nl\":{\"text\":\"Inhoud gemaakt door anderen moet worden toegeschreven,\
+        \ en het gebruik van generatieve AI moet worden aangegeven.\",\"hint\":\"\
+        Inhoud gemaakt door anderen moet een duidelijke referentie naar de auteur,\
+        \ maker of bron bevatten. Voor Content created by others must clearly provide\
+        \ a reference to the author, creator, or source. Voor inhoud voor volwassenen,\
+        \ moet het model worden vermeld. Accounts mogen niet uitsluitend door AI gegenereerde\
+        \ inhoud plaatsen.\"},\"ru\":{\"text\":\"\u041A\u043E\u043D\u0442\u0435\u043D\
+        \u0442, \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0439 \u0434\u0440\
+        \u0443\u0433\u0438\u043C\u0438, \u0434\u043E\u043B\u0436\u0435\u043D \u043F\
+        \u0443\u0431\u043B\u0438\u043A\u043E\u0432\u0430\u0442\u044C\u0441\u044F \u0441\
+        \ \u0443\u043A\u0430\u0437\u0430\u043D\u0438\u0435\u043C \u0430\u0432\u0442\
+        \u043E\u0440\u0441\u0442\u0432\u0430, \u0430 \u0438\u0441\u043F\u043E\u043B\
+        \u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 \u0433\u0435\u043D\u0435\u0440\
+        \u0430\u0442\u0438\u0432\u043D\u043E\u0433\u043E \u0418\u0418 \u0434\u043E\
+        \u043B\u0436\u043D\u043E \u0431\u044B\u0442\u044C \u0440\u0430\u0441\u043A\
+        \u0440\u044B\u0442\u043E.\",\"hint\":\"\u041A\u043E\u043D\u0442\u0435\u043D\
+        \u0442, \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0439 \u0434\u0440\
+        \u0443\u0433\u0438\u043C\u0438, \u0434\u043E\u043B\u0436\u0435\u043D \u044F\
+        \u0432\u043D\u044B\u043C \u043E\u0431\u0440\u0430\u0437\u043E\u043C \u0441\
+        \u043E\u043F\u0440\u043E\u0432\u043E\u0436\u0434\u0430\u0442\u044C\u0441\u044F\
+        \ \u043E\u0442\u0441\u044B\u043B\u043A\u043E\u0439 \u043A \u0430\u0432\u0442\
+        \u043E\u0440\u0443, \u0441\u043E\u0437\u0434\u0430\u0442\u0435\u043B\u044E\
+        \ \u0438\u043B\u0438 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0443\
+        . \u0414\u043B\u044F \u043A\u043E\u043D\u0442\u0435\u043D\u0442\u0430 \u0434\
+        \u043B\u044F \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445 \u044D\u0442\
+        \u043E \u0432\u043A\u043B\u044E\u0447\u0430\u0435\u0442 \u0432 \u0441\u0435\
+        \u0431\u044F \u0430\u043A\u0442\u0451\u0440\u043E\u0432. \u0423\u0447\u0451\
+        \u0442\u043D\u044B\u0435 \u0437\u0430\u043F\u0438\u0441\u0438 \u043D\u0435\
+        \ \u043C\u043E\u0433\u0443\u0442 \u043F\u0443\u0431\u043B\u0438\u043A\u043E\
+        \u0432\u0430\u0442\u044C \u0438\u0441\u043A\u043B\u044E\u0447\u0438\u0442\u0435\
+        \u043B\u044C\u043D\u043E \u043A\u043E\u043D\u0442\u0435\u043D\u0442, \u0441\
+        \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\
+        \u0439 \u0441 \u043F\u043E\u043C\u043E\u0449\u044C\u044E \u0418\u0418.\"},\"\
+        zh-CN\":{\"text\":\"\u4ED6\u4EBA\u521B\u5EFA\u7684\u5185\u5BB9\u5FC5\u987B\
+        \u6CE8\u660E\u51FA\u5904\uFF0C\u4F7F\u7528\u4EBA\u5DE5\u667A\u80FD\u4EA7\u751F\
+        \u7684\u5185\u5BB9\u5FC5\u987B\u516C\u5F00\u548C\u62AB\u9732\u8BF4\u660E\"\
+        ,\"hint\":\"\u4ED6\u4EBA\u521B\u5EFA\u7684\u5185\u5BB9\u5FC5\u987B\u660E\u786E\
+        \u6CE8\u660E\u4F5C\u8005\u3001\u521B\u5EFA\u8005\u6216\u6765\u6E90\u3002\u5BF9\
+        \u4E8E\u6210\u4EBA\u5185\u5BB9\uFF0C\u5E94\u5305\u62EC\u8868\u6F14\u8005\u3002\
+        \u8D26\u6237\u4E0D\u5F97\u4EC5\u53D1\u5E03\u4EBA\u5DE5\u667A\u80FD\u751F\u6210\
+        \u7684\u5185\u5BB9\u3002\"},\"zh-TW\":{\"text\":\"\u7531\u4ED6\u4EBA\u5275\
+        \u4F5C\u7684\u5167\u5BB9\u5FC5\u9808\u8A3B\u660E\u4F86\u6E90\uFF0C\u4F7F\u7528\
+        \u4EBA\u5DE5\u667A\u80FD\u7522\u751F\u7684\u5167\u5BB9\u5FC5\u9808\u516C\u958B\
+        \u548C\u62AB\u9732\u8AAA\u660E\",\"hint\":\"\u4ED6\u4EBA\u5275\u4F5C\u7684\
+        \u5167\u5BB9\u5FC5\u9808\u6E05\u695A\u63D0\u4F9B\u4F5C\u8005\u3001\u5275\u4F5C\
+        \u4EBA\u6216\u4F86\u6E90\u7684\u53C3\u7167\u3002\u5C0D\u65BC\u6210\u4EBA\u5167\
+        \u5BB9\uFF0C\u9019\u61C9\u8A72\u5305\u62EC\u8868\u6F14\u8005\u3002\u5E33\u6236\
+        \u4E0D\u5F97\u50C5\u767C\u4F48\u4EBA\u5DE5\u667A\u80FD\u7522\u751F\u7684\u5167\
+        \u5BB9\u3002\"}}}]}"
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '262'
+      Connection:
+      - keep-alive
+      Date:
+      - Sun, 02 Aug 2026 07:15:15 GMT
+      Strict-Transport-Security:
+      - max-age=31557600
+      Vary:
+      - Accept, Origin, Accept-Encoding
+      Via:
+      - 1.1 varnish, 1.1 varnish
+      X-Cache:
+      - MISS, HIT, MISS
+      X-Cache-Hits:
+      - 0, 40, 0
+      X-Served-By:
+      - cache-fra-etou8220141-FRA, cache-fra-etou8220141-FRA, cache-hel1410033-HEL
+      X-Timer:
+      - S1785654916.817975,VS0,VE57
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      cache-control:
+      - max-age=300, public, stale-while-revalidate=30, stale-if-error=86400
+      content-length:
+      - '23384'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      deprecation:
+      - '@1668384000'
+      etag:
+      - W/"151626c489877de37ab57850abd9c668"
+      referrer-policy:
+      - same-origin
+      server:
+      - Mastodon
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-08-02T07:15:00.264012Z'
+      x-request-id:
+      - 08052877-62ec-4100-8099-5356af472aa6
+      x-runtime:
+      - '0.044560'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
