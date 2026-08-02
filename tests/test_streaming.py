@@ -7,7 +7,6 @@ from mastodon import Mastodon
 import threading
 import time
 
-import select
 import sys
 
 streaming_is_patched = False
@@ -21,7 +20,8 @@ def vcr_config():
     }
 
 def patch_streaming():
-    # For monkeypatching so we can make vcrpy better
+    # For monkeypatching so we can make vcrpy work for our purposes for
+    # SSE streams.
     import vcr.stubs
 
     global streaming_is_patched
@@ -29,37 +29,46 @@ def patch_streaming():
     if streaming_is_patched is True:
         return
     streaming_is_patched = True
-    
+
+    # We need to unfortunately patch this. This *will* break in future versions, most likely.
+    # But this is the best we can do, I think.
     real_get_response = vcr.stubs.VCRConnection.getresponse
     def fake_get_response(*args, **kwargs):
         global close_connections
-        close_connections = False
         if args[0]._vcr_request.path.startswith("/api/v1/streaming/"):
+            close_connections = False
             real_connections.append(args[0].real_connection)
-            real_connection_real_get_response = args[0].real_connection.getresponse
+            vcr_connection = args[0]
+            real_connection_real_get_response = vcr_connection.real_connection.getresponse
             def fakeRealConnectionGetresponse(*args, **kwargs):
+                response_options = vcr_connection.real_connection._response_options
+                vcr_connection.real_connection._response_options = response_options._replace(
+                    preload_content=False
+                )
                 response = real_connection_real_get_response(*args, **kwargs)
                 real_body = b""
                 try:
+                    # Read in an interruptible way so we can stop the stream (which otherwise)
+                    # goes on forever
                     while close_connections is False:
-                        if len(select.select([response], [], [], 0.01)[0]) > 0:
-                            chunk = response.read(1)
-                            real_body += chunk
-                except AttributeError: 
-                    pass # Connection closed
-                response.read = (lambda: real_body)
+                        chunk = response._fp.read1(65536)
+                        real_body += chunk
+                except Exception:
+                    pass
+                response._body = real_body
+                response.read = lambda *args, **kwargs: real_body
                 return response
-            args[0].real_connection.getresponse = fakeRealConnectionGetresponse
+            vcr_connection.real_connection.getresponse = fakeRealConnectionGetresponse
         return real_get_response(*args, **kwargs)
     vcr.stubs.VCRConnection.getresponse = fake_get_response
 
 def streaming_close():
     global real_connections
     global close_connections
+    close_connections = True
     for connection in real_connections:
         connection.close()
     real_connections = []
-    close_connections = True
     
 class Listener(StreamListener):
     def __init__(self):
@@ -326,7 +335,6 @@ def test_multiline_payload():
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_direct(api, api2, api3, vcr):
-    # NB: Streaming tests *run only on 3.9* until someone figures out why the patch for vcrpy isn't working on versions > 1.0.2
     patch_streaming()
 
     # Be extra super paranoid
@@ -404,7 +412,6 @@ def test_stream_user_direct(api, api2, api3, vcr):
     
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_local(api, api2, vcr):
-    # NB: Streaming tests *run only on 3.9* until someone figures out why the patch for vcrpy isn't working on versions > 1.0.2
     patch_streaming()
     vcr.match_on = ["path"]
     time.sleep(1)
@@ -426,8 +433,6 @@ def test_stream_user_local(api, api2, vcr):
         vcr.match_on = ["path"]
         time.sleep(5)
         posted.append(api.status_post("it's cool guy"))
-        # Have to do some other network event after the first one for vcrpy reasons
-        api2.status_post("it's cool guy too")
         time.sleep(10)
         streaming_close()
         
@@ -445,7 +450,6 @@ def test_stream_user_local(api, api2, vcr):
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_direct(api, api2, vcr):
-    # NB: Streaming test *run only on 3.9* until someone figures out why the patch for vcrpy isn't working on versions > 1.0.2
     time.sleep(1)
     patch_streaming()
     
