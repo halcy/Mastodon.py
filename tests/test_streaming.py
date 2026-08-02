@@ -26,6 +26,7 @@ def patch_streaming():
 
     global streaming_is_patched
     global close_connections
+    global real_get_response
     if streaming_is_patched is True:
         return
     streaming_is_patched = True
@@ -66,16 +67,11 @@ def unpatch_streaming():
     import vcr.stubs
 
     global streaming_is_patched
+    global real_get_response
     if streaming_is_patched is False:
         return
     streaming_is_patched = False
-
-    # We need to unfortunately patch this. This *will* break in future versions, most likely.
-    # But this is the best we can do, I think.
-    real_get_response = vcr.stubs.VCRConnection.getresponse
-    def fake_get_response(*args, **kwargs):
-        return real_get_response(*args, **kwargs)
-    vcr.stubs.VCRConnection.getresponse = fake_get_response
+    vcr.stubs.VCRConnection.getresponse = real_get_response
 
 def streaming_close():
     global real_connections
