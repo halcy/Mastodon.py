@@ -149,6 +149,12 @@ def test_timeline_disabled(api):
         # Without fail-hard, it should return True if it cannot determine availability.
         assert api.timeline_is_available("thisisnotarealtimeline", local=True, remote=True, fail_hard=False)
     finally:
+        wait_cycles = 0
         for handle in handles:
             handle.close()
+            while handle.is_alive():
+                time.sleep(0.1)
+                wait_cycles += 1
+                if wait_cycles > 1000:
+                    assert False
     
