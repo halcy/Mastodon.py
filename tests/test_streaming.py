@@ -1,8 +1,9 @@
 import pytest
 import itertools
 from mastodon.streaming import StreamListener, CallbackStreamListener
-from mastodon.Mastodon import MastodonMalformedEventError
+from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from mastodon import Mastodon
+from requests.exceptions import ChunkedEncodingError, ConnectionError, ReadTimeout
 
 import threading
 import time
@@ -90,6 +91,10 @@ class Listener(StreamListener):
         self.heartbeats = 0
         self.bla_called = False
         self.do_something_called = False
+        self.aborts = []
+
+    def on_abort(self, err):
+        self.aborts.append(err)
 
     def on_update(self, status):
         self.updates.append(status)
@@ -344,6 +349,36 @@ def test_multiline_payload():
         '',
     ])
     assert listener.updates == [{"foo": "bar"}]
+
+
+class RaisingResponse():
+    """A response object whose iter_content immediately raises `exception`."""
+    def __init__(self, exception):
+        self.exception = exception
+
+    def iter_content(self, chunk_size):
+        raise self.exception
+        yield  # pragma: no cover - makes this a generator function
+
+
+@pytest.mark.parametrize("raised,expected", [
+    (ChunkedEncodingError("nope"), MastodonNetworkError),
+    (ReadTimeout("nope"), MastodonReadTimeout),
+    (ConnectionError("nope"), MastodonNetworkError),
+])
+def test_handle_stream_transport_errors(raised, expected):
+    """
+    Transport level errors have to surface as the matching Mastodon.py error, and the
+    same object has to be handed to on_abort. Everything that reaches the caller of
+    handle_stream must also be a MastodonNetworkError, because that is what the
+    auto-reconnect handler in Mastodon.__stream catches to decide to reconnect.
+    """
+    listener = Listener()
+    with pytest.raises(expected) as exc_info:
+        listener.handle_stream(RaisingResponse(raised))
+    assert isinstance(exc_info.value, MastodonNetworkError)
+    assert exc_info.value.__cause__ is raised
+    assert listener.aborts == [exc_info.value]
 
 @pytest.mark.vcr(match_on=['path'])
 def test_stream_user_direct(api, api2, api3, vcr):

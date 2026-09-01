@@ -157,12 +157,12 @@ class StreamListener(object):
             raise exception from err
         except ReadTimeout as err:
             exception = MastodonReadTimeout(
-                "Timed out while reading from server."),
+                "Timed out while reading from server.")
             self.on_abort(exception)
             raise exception from err
         except ConnectionError as err:
             exception = MastodonNetworkError(
-                "Requests reports connection error."),
+                "Requests reports connection error.")
             self.on_abort(exception)
             raise exception from err
 
