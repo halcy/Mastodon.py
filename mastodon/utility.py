@@ -39,13 +39,14 @@ class Mastodon(Internals):
         """
         try:
             version_str = self.__normalize_version_string(self.__instance(cached=True)["version"])
-            self.__version_check_worked = True
+            # We use -1 as a success flag to avoid potential 0 == None bugs
+            self.__version_check_failure_count = -1
         except Exception as e:
             if fail_hard:
                 raise MastodonVersionError("Failed to retrieve Mastodon version") from e
             # instance() was added in 1.1.0, so our best guess is 1.0.0.
             version_str = "1.0.0"
-            self.__version_check_worked = False
+            self.__version_check_failure_count += 1
         self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
 
         # If the instance has an API version, we store that as well.
@@ -79,8 +80,10 @@ class Mastodon(Internals):
 
         Returns True if version requirement is satisfied, False if not.
         """
-        if not cached or not self.__version_check_tried or not self.__version_check_worked:
-            self.retrieve_mastodon_version()
+        # We use -1 as a success flag to avoid potential 0 == None bugs
+        if not cached or not self.__version_check_tried or self.__version_check_failure_count != -1:
+            if self.__version_check_failure_count < 10:
+                self.retrieve_mastodon_version()
         major, minor, patch = parse_version_string(version_str)
         if major > self.mastodon_major:
             return False

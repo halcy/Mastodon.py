@@ -22,8 +22,8 @@ class Mastodon(Internals):
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name: str, scopes: List[str] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None, 
-                   to_file: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, request_timeout: float = _DEFAULT_TIMEOUT, 
+    def create_app(client_name: str, scopes: List[str] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None,
+                   to_file: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, request_timeout: float = _DEFAULT_TIMEOUT,
                    session: Optional[requests.Session] = None, user_agent: str = _DEFAULT_USER_AGENT) -> Tuple[str, str]:
         """
         Create a new app with given `client_name` and `scopes` (The basic scopes are "read", "write", "follow" and "push"
@@ -90,10 +90,10 @@ class Mastodon(Internals):
     ###
     # Authentication, including constructor
     ###
-    def __init__(self, client_id: Optional[Union[str, PurePath]] = None, client_secret: Optional[str] = None, 
+    def __init__(self, client_id: Optional[Union[str, PurePath]] = None, client_secret: Optional[str] = None,
                  access_token: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, debug_requests: bool = False,
-                 ratelimit_method: str = "wait", ratelimit_pacefactor: float = 1.1, request_timeout: float = _DEFAULT_TIMEOUT, 
-                 mastodon_version: Optional[str] = None, version_check_mode: str = "none", session: Optional[requests.Session] = None, 
+                 ratelimit_method: str = "wait", ratelimit_pacefactor: float = 1.1, request_timeout: float = _DEFAULT_TIMEOUT,
+                 mastodon_version: Optional[str] = None, version_check_mode: str = "none", session: Optional[requests.Session] = None,
                  feature_set: str = "mainline", user_agent: str = _DEFAULT_USER_AGENT, lang: Optional[str] = None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
@@ -136,7 +136,7 @@ class Mastodon(Internals):
         a client app name to use it as a `User-Agent` name.
 
         `lang` can be used to change the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter)
-        or for a language that has none, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and 
+        or for a language that has none, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and
         trends. You can change the language using set_language().
 
         The version check mode can be set to "none" (now the default behaviour), "changed" or "created". If set to
@@ -158,7 +158,7 @@ class Mastodon(Internals):
         self.ratelimit_method = ratelimit_method
         self._token_expired = datetime.datetime.now()
         self._refresh_token = None
-        
+
         self.__logged_in_id = None
 
         self.ratelimit_limit = 300
@@ -247,12 +247,13 @@ class Mastodon(Internals):
         # We also emit a warning if the version is >= 4.3.0 but no API version is found.
         self.mastodon_api_version = 0
 
-        self.__version_check_worked = None
+        self.__version_check_failure_count = 0
         self.__version_check_tried = False
 
         if not mastodon_version is None:
             self.__version_check_tried = True
-            self.__version_check_worked = True
+            # We use -1 as a success flag to avoid potential 0 == None bugs
+            self.__version_check_failure_count = -1
 
         # Cached version/instance checks
         self.__streaming_base = None
@@ -276,14 +277,14 @@ class Mastodon(Internals):
         """
         Clear cached data for astodon version and streaming base URL. Most programs should not have to call this.
         """
-        self.__version_check_worked = None
+        self.__version_check_failure_count = 0
         self.__version_check_tried = False
         self.__streaming_base = None
         self.__instance_v1_cache = None
         self.__instance_v2_cache = None
 
-    def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", 
-                         scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None, 
+    def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob",
+                         scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None,
                          lang: Optional[str] = None, skip_server_info = False, allow_http: bool = False) -> str:
         """
         Returns the URL that a client needs to request an OAuth grant from the server.
@@ -294,7 +295,7 @@ class Mastodon(Internals):
         `scopes` are as in :ref:`log_in() <log_in()>`, redirect_uris is where the user should be redirected to
         after authentication. Note that `redirect_uris` must be one of the URLs given during
         app registration, and that despite the plural-like name, you only get to use one here.
-        When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed, otherwise it is added 
+        When using urn:ietf:wg:oauth:2.0:oob, the code is simply displayed, otherwise it is added
         to the given URL as the "code" request parameter. Note that if you pass scopes, you MUST
         pass the same set of scopes to :ref:`log_in() <log_in()>` and `create_app() <create_app()>`,
         otherwise, your auth request will fail.
@@ -329,7 +330,7 @@ class Mastodon(Internals):
         params['state'] = state
         params['lang'] = lang
         formatted_params = urlencode(params)
-        
+
         # If we don't know better, assume the OAuth endpoint is at /oauth/authorize
         oauth_url = "".join([self.api_base_url, "/oauth/authorize?", formatted_params])
 
@@ -340,13 +341,13 @@ class Mastodon(Internals):
                 Mastodon.__oauth_url_check(oauth_info["authorization_endpoint"], allow_http=allow_http)
                 oauth_url = oauth_info["authorization_endpoint"] + "?" + formatted_params
         return oauth_url
-    
+
     def oauth_authorization_server_info(self) -> Union[OAuthServerInfo, AttribAccessDict]:
         """
         Returns the OAuth authorization server information, including the supported grant types.
-        This is useful to determine which authentication methods are available on the server, supported scopes, 
+        This is useful to determine which authentication methods are available on the server, supported scopes,
         URLs to make various OAuth requests, to, etc. Mastodon only supports this after version 4.3.0, and alternative
-        implementations may or may not support it, so if aiming for maximum compatibility, you should likely assume 
+        implementations may or may not support it, so if aiming for maximum compatibility, you should likely assume
         it is not present.
 
         Returns an empty dictionary if unsupported by the server.
@@ -369,7 +370,7 @@ class Mastodon(Internals):
         Returns information about the authenticated user.
 
         Intended for something called "OpenID Connect", which you can find information about here:
-        https://openid.net/developers/how-connect-works/ 
+        https://openid.net/developers/how-connect-works/
         """
         oauth_url = "".join([self.api_base_url, "/oauth/userinfo"])
         oauth_info = self.oauth_authorization_server_info()
@@ -377,20 +378,20 @@ class Mastodon(Internals):
             oauth_url = Mastodon.__protocolize(oauth_info["userinfo_endpoint"])
             Mastodon.__oauth_url_check(oauth_url)
         return self.__api_request('GET', oauth_url, do_ratelimiting=False, base_url_override="")
-    
-    def log_in(self, username: Optional[str] = None, password: Optional[str] = None, code: Optional[str] = None, 
-               redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES, 
+
+    def log_in(self, username: Optional[str] = None, password: Optional[str] = None, code: Optional[str] = None,
+               redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES,
                to_file: Optional[Union[str, PurePath]] = None, allow_http: bool = False) -> str:
         """
         Get the access token for a user, either via OAuth code flow, or (deprecated) password flow.
 
-        Will throw a `MastodonIllegalArgumentError` if the OAuth flow data is incorrect, and `MastodonAPIError` if all 
+        Will throw a `MastodonIllegalArgumentError` if the OAuth flow data is incorrect, and `MastodonAPIError` if all
         of the requested scopes were not granted.
 
         For OAuth2, obtain a code via having your user go to the URL returned by
         :ref:`auth_request_url() <auth_request_url()>` and pass it as the code parameter. In this case,
         make sure to also pass the same redirect_uri parameter as you used when
-        generating the auth request URL, as well as the same set of scopes, or else your auth request will fail. 
+        generating the auth request URL, as well as the same set of scopes, or else your auth request will fail.
         If passing `code`you should not pass `username` or `password`.
 
         When using the password flow, the username is the email address used to log in into Mastodon.
@@ -400,7 +401,7 @@ class Mastodon(Internals):
 
         Can persist access token to file `to_file`, to be used in the constructor. Pass `allow_http` to allow
         HTTP URLs for the OAuth server, which is recommended only for testing.
-        
+
         Returns the access token as a string.
         """
         # This isn't called often, so no real need to cache
@@ -423,7 +424,7 @@ class Mastodon(Internals):
                 if "authorization_code" not in oauth_info["grant_types_supported"]:
                     # This would be a very weird case, but I guess we can provide a good error here anyways.
                     raise MastodonIllegalArgumentError('Authorization code flow is not supported by this instance. Please obtain a token in some other way.')
-                 
+
         if username is not None and password is not None:
             params = self.__generate_params(locals(), ['scopes', 'to_file', 'code', 'refresh_token', 'allow_http'])
             params['grant_type'] = 'password'
@@ -479,11 +480,12 @@ class Mastodon(Internals):
 
         # Retry version check if needed (might be required in limited federation mode since
         # if the API is locked down, we need to auth before we can get the version)
-        if not self.__version_check_worked:
+        # We use -1 as a success flag to avoid potential 0 == None bugs
+        if self.__version_check_failure_count != -1 and self.__version_check_failure_count < 10:
             self.retrieve_mastodon_version()
 
         return response['access_token']
-    
+
     def persistable_login_credentials(self):
         """
         Return a string (which  you should treat as opaque) that can be passed to :ref:`log_in()` to get an authenticated API object with the same access as this one.
