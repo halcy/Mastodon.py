@@ -14,7 +14,8 @@ import copy
 # A type representing a file name as a PurePath or string, or a file-like object, for convenience
 PathOrFile = Union[str, PurePath, IO[bytes]]
 
-BASE62_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+BASE62_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
 def base62_to_int(base62: str) -> int:
     """
     internal helper for *oma compat: convert a base62 string to an int since
@@ -42,6 +43,39 @@ def int_to_base62(val: int) -> str:
         val, digit = divmod(val, 62)
         base62.append(BASE62_ALPHABET[digit])
     return ''.join(reversed(base62))
+
+def _pleroma_id_to_int(value: str) -> Optional[int]:
+    if not 18 <= len(value) <= 22:
+        return None
+
+    try:
+        flake = base62_to_int(value)
+    except ValueError:
+        return None
+    if flake >= 2 ** 128:
+        return None
+
+    timestamp_ms = flake >> 64
+    latest_plausible_timestamp_ms = int(datetime.now().timestamp() * 1000) + 24 * 60 * 60 * 1000
+    if timestamp_ms <= 0 or timestamp_ms > latest_plausible_timestamp_ms:
+        return None
+
+    return flake
+
+def _pleroma_id_to_datetime(value: str) -> Optional[datetime]:
+    flake = _pleroma_id_to_int(value)
+    if flake is None:
+        return None
+
+    try:
+        return datetime.fromtimestamp((flake >> 64) / 1000)
+    except (OverflowError, OSError, ValueError):
+        return None
+
+def _datetime_to_id(value: datetime, assume_pleroma: bool) -> Union[int, str]:
+    if assume_pleroma:
+        return int_to_base62(int(value.timestamp() * 1000) << 64)
+    return (int(value.timestamp()) << 16) * 1000
 
 
 PrimitiveIdType = Union[str, int]
@@ -116,12 +150,19 @@ class MaybeSnowflakeIdType(str):
     3) Halfway transparently convert to and from datetime with the correct format for the server we're talking to
     """
     def __new__(cls, value, *args, **kwargs):
+        if isinstance(value, cls):
+            value = str(value)
+        elif isinstance(value, datetime):
+            assume_pleroma = kwargs.get("assume_pleroma", args[0] if args else False)
+            value = _datetime_to_id(value, assume_pleroma)
         try:
             return super(cls, cls).__new__(cls, value)
         except:
             return object.__new__(cls)
 
     def __init__(self, val: Union[PrimitiveIdType, datetime], assume_pleroma: bool = False):
+        if isinstance(val, MaybeSnowflakeIdType):
+            val = str(val)
         try:
             super(MaybeSnowflakeIdType, self).__init__()
         except:
@@ -129,12 +170,11 @@ class MaybeSnowflakeIdType(str):
         if isinstance(val, (int, str)):
             self.__val = val
         elif isinstance(val, datetime):
-            self.__val = (int(val.timestamp()) << 16) * 1000
-            if assume_pleroma:
-                self.__val = int_to_base62(self.__val)
+            self.__val = _datetime_to_id(val, assume_pleroma)
         else:
             raise TypeError(f"Expected int or str, got {type(val).__name__}")
         self.assume_pleroma = assume_pleroma
+        self.__order_value = self.__get_order_value(self.__val, assume_pleroma)
         
     def to_datetime(self) -> Optional[datetime]:
         """
@@ -143,24 +183,21 @@ class MaybeSnowflakeIdType(str):
         snowflake IDs, so it can in fact return None.
         """
         val = self.__val
+        if isinstance(val, str):
+            if self.assume_pleroma:
+                pleroma_datetime = _pleroma_id_to_datetime(val)
+                if pleroma_datetime is not None:
+                    return pleroma_datetime
+            try:
+                val = int(val)
+            except ValueError:
+                return _pleroma_id_to_datetime(val)
+
+        timestamp_s = (int(val) // 1000) >> 16
         try:
-            # Pleroma ID compat. First, try to just cast to int. If that fails *or*
-            # if we are told to assume Pleroma, try to convert from base62.
-            if isinstance(self.__val, str):
-                try_base62 = False
-                try:
-                    val = int(self.__val)
-                except:
-                    try_base62 = True
-                if try_base62 or self.assume_pleroma:
-                    val = base62_to_int(self.__val)
-        except:
+            return datetime.fromtimestamp(timestamp_s)
+        except (OverflowError, OSError, ValueError):
             return None
-        
-        # TODO: This matches the masto approach, whether this matches the
-        # Pleroma approach is to be verified.
-        timestamp_s = int(int(val) / 1000) >> 16
-        return datetime.fromtimestamp(timestamp_s)
 
     def __str__(self) -> str:
         """
@@ -178,6 +215,50 @@ class MaybeSnowflakeIdType(str):
         if isinstance(self.__val, str):
             return int(self.__val)
         return self.__val
+
+    @staticmethod
+    def __get_order_value(value, assume_pleroma: bool = False) -> Optional[Tuple[int, int]]:
+        if isinstance(value, bool):
+            return None
+        if isinstance(value, int):
+            return value, 0
+        if isinstance(value, str):
+            if assume_pleroma:
+                pleroma_value = _pleroma_id_to_int(value)
+                if pleroma_value is not None:
+                    return divmod(pleroma_value, 2 ** 48)
+            try:
+                numeric_value = int(value)
+            except ValueError:
+                pleroma_value = _pleroma_id_to_int(value)
+                if pleroma_value is not None:
+                    return divmod(pleroma_value, 2 ** 48)
+                return None
+            if str(numeric_value) == value:
+                return numeric_value, 0
+        return None
+
+    @staticmethod
+    def __comparison_value(other) -> Tuple[int, int]:
+        if isinstance(other, MaybeSnowflakeIdType):
+            value = other.__order_value
+        else:
+            value = MaybeSnowflakeIdType.__get_order_value(other)
+        if value is not None:
+            return value
+        raise TypeError(f"ID {other!r} is not comparable with IDs")
+
+    def __lt__(self, other) -> bool:
+        return self.__comparison_value(self) < self.__comparison_value(other)
+
+    def __le__(self, other) -> bool:
+        return self.__comparison_value(self) <= self.__comparison_value(other)
+
+    def __gt__(self, other) -> bool:
+        return self.__comparison_value(self) > self.__comparison_value(other)
+
+    def __ge__(self, other) -> bool:
+        return self.__comparison_value(self) >= self.__comparison_value(other)
     
     def __repr__(self) -> str:
         """

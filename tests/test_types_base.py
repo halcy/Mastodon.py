@@ -7,10 +7,10 @@ def test_base62_to_int_zero():
     assert base62_to_int('0') == 0
 
 def test_base62_to_int_single_digit():
-    assert base62_to_int('a') == 10
-    assert base62_to_int('z') == 35
-    assert base62_to_int('A') == 36
-    assert base62_to_int('Z') == 61
+    assert base62_to_int('A') == 10
+    assert base62_to_int('Z') == 35
+    assert base62_to_int('a') == 36
+    assert base62_to_int('z') == 61
 
 def test_base62_to_int_multidigit():
     assert base62_to_int('10') == 62
@@ -20,8 +20,8 @@ def test_int_to_base62_zero():
     assert int_to_base62(0) == '0'
 
 def test_int_to_base62_small():
-    assert int_to_base62(10) == 'a'
-    assert int_to_base62(61) == 'Z'
+    assert int_to_base62(10) == 'A'
+    assert int_to_base62(61) == 'z'
     assert int_to_base62(62) == '10'
 
 def test_base62_roundtrip():
@@ -45,19 +45,25 @@ def test_to_datetime_mastodon_snowflake_int():
     assert dt is not None
     assert dt.year == 2022
 
-def test_to_datetime_pleroma_base62():
-    known_int = 109404970108594430
-    base62_str = int_to_base62(known_int)
-    snowflake = MaybeSnowflakeIdType(base62_str, assume_pleroma=True)
+def test_to_datetime_pleroma_family_flake():
+    snowflake = MaybeSnowflakeIdType("9n2ciuz1wdesFnrGJU")
     dt = snowflake.to_datetime()
     assert dt is not None
-    assert dt.year == 2022
+    assert dt.timestamp() == pytest.approx(1568795327.357)
 
-def test_to_datetime_non_numeric_string():
-    base62_str = int_to_base62(109404970108594430)
-    snowflake = MaybeSnowflakeIdType(base62_str)
-    dt = snowflake.to_datetime()
-    assert dt is not None
+@pytest.mark.parametrize("misskey_id", [
+    "9abcdefgh0",
+    "9abcdefgh0abcdef",
+    "01941f297c00123456789abc",
+    "g1941f297c00123456789abc",
+    "67748580123456789abcdef0",
+    "01JGFJJ0000123456789ABCDEF",
+])
+def test_to_datetime_rejects_misskey_ids(misskey_id):
+    assert MaybeSnowflakeIdType(misskey_id).to_datetime() is None
+
+def test_to_datetime_rejects_implausible_base62_id():
+    assert MaybeSnowflakeIdType("zzzzzzzzzzzzzzzzzz").to_datetime() is None
 
 def test_to_datetime_roundtrip():
     original = datetime(2023, 6, 15, 12, 0, 0)
@@ -72,6 +78,45 @@ def test_to_datetime_roundtrip_pleroma():
     result = snowflake.to_datetime()
     assert result is not None
     assert abs((result - original).total_seconds()) < 2
+    assert snowflake == str(snowflake)
+
+def test_id_numeric_comparison():
+    assert MaybeSnowflakeIdType(9) < MaybeSnowflakeIdType(80)
+    assert MaybeSnowflakeIdType("9") <= 9
+    assert 80 > MaybeSnowflakeIdType("9")
+    assert MaybeSnowflakeIdType("9") != 9
+    assert hash(MaybeSnowflakeIdType("9")) == hash("9")
+
+def test_pleroma_id_comparison_is_cached(monkeypatch):
+    older = MaybeSnowflakeIdType("9n2ciuz1wdesFnrGJU")
+    newer = MaybeSnowflakeIdType(datetime(2023, 6, 15), assume_pleroma=True)
+
+    monkeypatch.setattr("mastodon.types_base._pleroma_id_to_int", lambda value: None)
+
+    assert older < newer
+
+def test_id_numeric_comparison_rejects_non_numeric_values():
+    for value in (True, "opaque"):
+        with pytest.raises(TypeError, match=f"ID {value!r} is not comparable with IDs"):
+            MaybeSnowflakeIdType(9) < value
+
+def test_statuses_sort_by_mixed_id_types():
+    from mastodon.return_types import Status
+
+    timestamp = 1609459200
+    snowflake = lambda seconds: (seconds << 16) * 1000
+    oldest = Status(id=datetime.fromtimestamp(timestamp, timezone.utc))
+    naive_datetime = Status(id=datetime.fromtimestamp(timestamp + 1))
+    middle = Status(id=str(snowflake(timestamp + 2)))
+    pleroma = Status(id=MaybeSnowflakeIdType(
+        datetime.fromtimestamp(timestamp + 2.5, timezone.utc),
+        assume_pleroma=True,
+    ))
+    newest = Status(id=snowflake(timestamp + 3))
+
+    assert sorted([newest, pleroma, oldest, middle, naive_datetime], key=lambda status: status.id) == [
+        oldest, naive_datetime, middle, pleroma, newest
+    ]
 
 def test_str_to_type_simple():
     from mastodon.return_types import Status

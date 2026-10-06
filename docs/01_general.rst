@@ -147,8 +147,34 @@ correspond to times, with a low resolution, so it is possible to convert a time 
 a Snowflake ID and search for posts between two dates. Mastodon.py will do the
 conversion for you automatically when you pass a `datetime` object as the id.
 
-Note that this functionality will *not* work on anything but Mastodon and forks,
-and that it is somewhat inexact due to the relatively low resolution.
+ID formats are not standardized across Mastodon-compatible servers. Mastodon
+and Pleroma forks use Snowflake IDs (encoded as base62, for the latter), Misskey
+and forks use lexicographically sortable IDs with very varied configurable formats,
+SNAC uses low-resolution-timestamp prefixed hash IDs. Pixelfed uses numeric snowflake 
+IDs, but they are not the same kind of snowflake IDs mastodon uses so if you convert
+them to datetimes or compare them to other servers, you will get nonsense results, and 
+there isn't really much I can do about that.
+
+Where we have an actual Snowflake ID (Mastodon, Pleromalikes), Mastodon.py 
+`MaybeSnowflakeIdType` objects allow for numerical comparison and conversion 
+to datetime objects:
+
+.. code-block:: python
+
+    statuses = sorted(statuses, key=lambda status: status.id)
+
+Trying to compare or convert IDs that are not recognized as Snowflake IDs will 
+result in a `TypeError`. If you want to sort IDs lexicographically, and you
+are confidence that you are in a situation where this is the correct thing to do,
+you can cast them to strings for sorting. For example:
+
+.. code-block:: python
+
+    statuses = sorted(statuses, key=lambda status: str(status.id))
+
+Alternately, for maximum compatibility, avoid doing this, and compare the
+statuses created-at times instead - this is slower, but should be more reliable
+across all kinds of different implementations.
 
 Versioning
 ----------

@@ -8,6 +8,8 @@ v2.2.3 (WIP)
 * Fix logic issue in version check code that prevented correct functioning on Pixelfed (Thanks @gunchleoc , and @xsuchy for the report)
 * Fix issue with ratelimit code that could lead to crashes in some circumstances (Thanks @xsuchy for the report)
 * Cache type hints for massively improved performance (Thanks @toelke for the suggestion)
+* Make MaybeSnowflakeIDs sortable (Thanks @haraldg for the report and suggestion)
+* Fix timestamp parsing for Pleromalike Flake IDs
 
 v2.2.2
 -------
@@ -520,4 +522,3 @@ v.1.0.1
 v.1.0.0
 -------
 * Initial Release
-
