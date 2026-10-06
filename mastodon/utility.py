@@ -47,6 +47,7 @@ class Mastodon(Internals):
             version_str = "1.0.0"
             self.__version_check_worked = False
         self.mastodon_major, self.mastodon_minor, self.mastodon_patch = parse_version_string(version_str)
+        self.__version_check_tried = True
 
         # If the instance has an API version, we store that as well.
         # If we have a version >= 4.3.0 but no API version, we throw a warning that this is a Weird Implementation,
@@ -66,7 +67,6 @@ class Mastodon(Internals):
                 raise MastodonVersionError("Failed to retrieve Mastodon version") from e
             pass
 
-        self.__version_check_tried = True
         if not found_api_version and self.verify_minimum_version("4.3.0", cached=True):
             warnings.warn("Mastodon version is detected as >= 4.3.0, but no API version found. Please report this.")
         return version_str
