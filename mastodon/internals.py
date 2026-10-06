@@ -161,9 +161,14 @@ class Mastodon():
 
         # "pace" mode ratelimiting: Assume constant rate of requests, sleep a little less long than it
         # would take to not hit the rate limit at that request rate.
-        if do_ratelimiting and self.ratelimit_method == "pace":
-            if self.ratelimit_remaining == 0:
-                to_next = self.ratelimit_reset - time.time()
+        if do_ratelimiting and self.ratelimit_method == "pace" and self.ratelimit_lastcall is not None:
+            current_time = time.time()
+            if self.ratelimit_reset is None or self.ratelimit_reset <= current_time:
+                raise MastodonRatelimitError(
+                    "Cannot pace requests because the server did not provide a usable rate limit reset time.")
+
+            if self.ratelimit_remaining <= 0:
+                to_next = self.ratelimit_reset - current_time
                 if to_next > 0:
                     # As a precaution, never sleep longer than 5 minutes
                     to_next = min(to_next, 5 * 60)
@@ -237,35 +242,54 @@ class Mastodon():
                 warnings.warn("Endpoint " + endpoint + " is marked as deprecated and may be removed in future Mastodon versions.", MastodonDeprecationWarning)
 
             # Parse rate limiting headers
-            if 'X-RateLimit-Remaining' in response_object.headers and do_ratelimiting:
-                self.ratelimit_remaining = int(
-                    response_object.headers['X-RateLimit-Remaining'])
-                self.ratelimit_limit = int(
-                    response_object.headers['X-RateLimit-Limit'])
-
-                # For gotosocial, we need an int representation, but for non-ints this would crash
-                try:
-                    ratelimit_intrep = str(int(response_object.headers['X-RateLimit-Reset']))
-                except:
-                    ratelimit_intrep = None
-
-                try:
-                    if ratelimit_intrep is not None and ratelimit_intrep == response_object.headers['X-RateLimit-Reset']:
-                        self.ratelimit_reset = int(
-                            response_object.headers['X-RateLimit-Reset'])
-                    else:
-                        ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
-                        self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
-
-                    # Adjust server time to local clock
-                    if 'Date' in response_object.headers:
-                        server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
-                        server_time = self.__datetime_to_epoch(server_time_datetime)
-                        server_time_diff = time.time() - server_time
-                        self.ratelimit_reset += server_time_diff
+            if do_ratelimiting:
+                if 'X-RateLimit-Remaining' in response_object.headers:
+                    try:
+                        ratelimit_remaining = int(response_object.headers['X-RateLimit-Remaining'])
+                        self.ratelimit_remaining = ratelimit_remaining
                         self.ratelimit_lastcall = time.time()
-                except Exception as e:
-                    raise MastodonRatelimitError(f"Rate limit time calculations failed: {e}")
+                    except:
+                        # This is a problem only for "pace" mode
+                        if self.ratelimit_method == 'pace':
+                            raise MastodonRatelimitError(f"Could not parse X-RateLimit-Remaining header, required for pace mode.")
+
+                if 'X-RateLimit-Limit' in response_object.headers:
+                    try:
+                        self.ratelimit_limit = int(response_object.headers['X-RateLimit-Limit'])
+                    except:
+                        pass
+
+                if 'X-RateLimit-Reset' in response_object.headers:
+                    # For gotosocial, we need an int representation, but for non-ints this would crash
+                    try:
+                        ratelimit_intrep = str(int(response_object.headers['X-RateLimit-Reset']))
+                    except:
+                        ratelimit_intrep = None
+
+                    try:
+                        if ratelimit_intrep is not None and ratelimit_intrep == response_object.headers['X-RateLimit-Reset']:
+                            self.ratelimit_reset = int(response_object.headers['X-RateLimit-Reset'])
+                        else:
+                            ratelimit_reset_datetime = dateutil.parser.parse(response_object.headers['X-RateLimit-Reset'])
+                            self.ratelimit_reset = self.__datetime_to_epoch(ratelimit_reset_datetime)
+
+                        # Adjust server time to local clock
+                        if 'Date' in response_object.headers:
+                            server_time_datetime = dateutil.parser.parse(response_object.headers['Date'])
+                            server_time = self.__datetime_to_epoch(server_time_datetime)
+                            server_time_diff = time.time() - server_time
+                            self.ratelimit_reset += server_time_diff
+                        if self.ratelimit_reset > time.time():
+                            self._ratelimit_backoff = 2
+                        else:
+                            self.ratelimit_reset = None
+                    except Exception as e:
+                        raise MastodonRatelimitError(f"Rate limit time calculations failed: {e}")
+                elif self.ratelimit_reset is not None and self.ratelimit_reset <= time.time():
+                    self.ratelimit_reset = None
+
+                if response_object.ok:
+                    self._ratelimit_backoff = 2
 
             # Handle response
             if self.debug_requests:
@@ -289,14 +313,23 @@ class Mastodon():
                 if response_object.status_code == 429:
                     if self.ratelimit_method == 'throw' or not do_ratelimiting:
                         raise MastodonRatelimitError('Hit rate limit.')
-                    elif self.ratelimit_method in ('wait', 'pace'):
-                        to_next = self.ratelimit_reset - time.time()
-                        if to_next > 0:
-                            # As a precaution, never sleep longer than 5 minutes
-                            to_next = min(to_next, 5 * 60)
-                            time.sleep(to_next)
-                            request_complete = False
-                            continue
+                    elif self.ratelimit_method == 'pace':
+                        if self.ratelimit_reset is None or self.ratelimit_reset <= time.time():
+                            raise MastodonRatelimitError(
+                                "Hit rate limit, but cannot pace requests because the server did not provide "
+                                "a usable rate limit reset time.")
+                    elif self.ratelimit_method == 'wait':
+                        if self.ratelimit_reset is None or self.ratelimit_reset <= time.time():
+                            self.ratelimit_reset = time.time() + self._ratelimit_backoff
+                            self._ratelimit_backoff = min(self._ratelimit_backoff * 2, 5 * 60)
+
+                    to_next = self.ratelimit_reset - time.time()
+                    if to_next > 0:
+                        # As a precaution, never sleep longer than 5 minutes
+                        to_next = min(to_next, 5 * 60)
+                        time.sleep(to_next)
+                        request_complete = False
+                        continue
 
                 if not skip_error_check:
                     if response_object.status_code == 404:

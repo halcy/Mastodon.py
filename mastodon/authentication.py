@@ -162,10 +162,11 @@ class Mastodon(Internals):
         self.__logged_in_id = None
 
         self.ratelimit_limit = 300
-        self.ratelimit_reset = time.time()
+        self.ratelimit_reset = None
         self.ratelimit_remaining = 300
-        self.ratelimit_lastcall = time.time()
+        self.ratelimit_lastcall = None
         self.ratelimit_pacefactor = ratelimit_pacefactor
+        self._ratelimit_backoff = 2
 
         self.request_timeout = request_timeout
 

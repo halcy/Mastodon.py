@@ -26,7 +26,8 @@ modes are not thread safe).
 
    .. attribute:: Mastodon.ratelimit_reset
 
-      Time at which the rate limit will next be reset, as a POSIX timestamp.
+      Time at which the rate limit will next be reset, as a POSIX timestamp, or
+      ``None`` if the server did not provide a usable reset time.
 
    .. attribute:: Mastodon.ratelimit_limit
 
@@ -34,13 +35,15 @@ modes are not thread safe).
 
    .. attribute:: Mastodon.ratelimit_lastcall
 
-      Time at which these values have last been seen and updated, as a POSIX timestamp.
+      Time at which these values have last been seen and updated, as a POSIX
+      timestamp, or ``None`` if no rate limit information has been received yet.
 
 In "wait" mode, once a request hits the rate limit, Mastodon.py will wait until
 the rate limit resets and then try again, until the request succeeds or an error
 is encountered. This mode is for applications that would rather just not worry about rate limits
 much, don't poll the API all that often, and are okay with a call sometimes just taking
-a while.
+a while. If the server does not provide a reset time, Mastodon.py retries with
+exponential backoff between 2 seconds and 5 minutes.
 
 In "pace" mode, Mastodon.py will delay each new request after the first one such that,
 if requests were to continue at the same rate, only a certain fraction (set in the
@@ -49,7 +52,8 @@ be (and by default, is) greater than one. If the rate limit is hit, "pace" behav
 "wait". This mode is probably the most advanced one and allows you to just poll in
 a loop without ever sleeping at all yourself. It is for applications that would rather
 just pretend there is no such thing as a rate limit and are fine with sometimes not
-being very interactive.
+being very interactive. Pace mode raises a `MastodonRatelimitError` if the server
+provides rate limit information without a usable reset time.
 
 In addition to the per-user limit, there is a per-IP limit of 7500 requests per 5
 minute time slot, and tighter limits on logins. Mastodon.py does not make any effort
