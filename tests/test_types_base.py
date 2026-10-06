@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, timezone
-from mastodon.types_base import base62_to_int, int_to_base62, MaybeSnowflakeIdType, _str_to_type, PaginatableList, NonPaginatableList
+from mastodon.types_base import base62_to_int, int_to_base62, MaybeSnowflakeIdType, _str_to_type, PaginatableList, NonPaginatableList, AttribAccessDict, _get_cached_type_hints
 from typing import Optional, Union
 
 def test_base62_to_int_zero():
@@ -100,6 +100,12 @@ def test_str_to_type_unknown():
 def test_str_to_type_invalid_subtype_container():
     with pytest.raises(ValueError, match="Subtype not allowed"):
         _str_to_type("Status[Account]")
+
+def test_type_hints_failure_returns_empty_dict():
+    class DynamicEntity(AttribAccessDict):
+        value: "MissingType"
+
+    assert _get_cached_type_hints(DynamicEntity) == {}
 
 def test_str_to_type_dangling_open_bracket():
     with pytest.raises(ValueError, match="Invalid type"):

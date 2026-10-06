@@ -2,6 +2,13 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.2.3 (WIP)
+------------
+* Fix stream error handlers raising a tuple instead of an exception (Thanks @dylanpulver )
+* Fix logic issue in version check code that prevented correct functioning on Pixelfed (Thanks @gunchleoc , and @xsuchy for the report)
+* Fix issue with ratelimit code that could lead to crashes in some circumstances (Thanks @xsuchy for the report)
+* Cache type hints for massively improved performance (Thanks @toelke for the suggestion)
+
 v2.2.2
 -------
 * Improve instance information caching

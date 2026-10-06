@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import dateutil
 import dateutil.parser
 from collections import OrderedDict
+from functools import lru_cache
 from mastodon.compat import PurePath
 import sys
 import json
@@ -603,6 +604,16 @@ try:
 except:
     OrderedStrDict = OrderedDict
 
+@lru_cache(maxsize=1024)
+def _cached_type_hints(obj):
+    return get_type_hints(obj)
+
+def _get_cached_type_hints(obj):
+    try:
+        return _cached_type_hints(obj)
+    except Exception:
+        return {}
+
 class AttribAccessDict(OrderedStrDict, Entity):
     """
     Base return object class for Mastodon.py.
@@ -698,17 +709,8 @@ class AttribAccessDict(OrderedStrDict, Entity):
         # If we're already an AttribAccessDict subclass, skip all the casting
         if not isinstance(val, AttribAccessDict):
             # Collate type hints that we may have
-            type_hints = {}
-            try:
-                type_hints = get_type_hints(self.__class__)
-            except:
-                pass
-            init_hints = {}
-            try:
-                init_hints = get_type_hints(self.__class__.__init__)
-            except:
-                pass
-            type_hints.update(init_hints)
+            type_hints = dict(_get_cached_type_hints(self.__class__))
+            type_hints.update(_get_cached_type_hints(self.__class__.__init__))
 
             # Ugly hack: We have to specialize unions by hand because you can't just guess by content generally
             # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
