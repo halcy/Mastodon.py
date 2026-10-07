@@ -332,7 +332,7 @@
                 "enum": null
             },
             "fields": {
-                "description": "List of up to four (by default) AccountFields",
+                "description": "List of up to four (by default) AccountFields, with user chosen account metadata",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "AccountField",
                 "is_optional": false,
@@ -560,6 +560,34 @@
                     ]
                 ],
                 "enum": null
+            },
+            "feature_approval": {
+                "description": "Summary of the account's policy with regards to being featured in a Collection and how it applies to the logged in user.",
+                "field_type": "FeatureApproval",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "invalid_handle": {
+                "description": "Whether the account has an invalid handle. Used as a placeholder for accounts where the actual handle cannot be verified.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.7.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -775,7 +803,7 @@
                 "enum": null
             },
             "fields": {
-                "description": "Metadata about the account.",
+                "description": "List of up to four (by default) AccountFields, with user chosen account metadata.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "AccountField",
                 "is_optional": false,
@@ -3312,23 +3340,29 @@
                     [
                         "4.5.0",
                         "added `quote` and `quoted_update`"
+                    ],
+                    [
+                        "4.6.0",
+                        "added `added_to_collection` and `collection_update`"
                     ]
                 ],
                 "enum": {
-                    "mention": "Someone mentioned you in their status",
-                    "status": "Someone you enabled notifications for has posted a status",
-                    "reblog": "Someone boosted one of your statuses",
-                    "follow": "Someone followed you",
-                    "follow_request": "Someone requested to follow you",
-                    "favourite": "Someone favourited one of your statuses",
-                    "poll": "A poll you created or voted in has ended",
-                    "update": "A status you interacted with has been edited",
-                    "admin.sign_up": "Someone signed up (optionally sent to admins)",
-                    "admin.report": "A new report has been filed",
-                    "severed_relationships": "Follow relationships severed by moderation or block event",
-                    "moderation_warning": "A moderator has taken action or sent you a warning",
-                    "quote": "Someone quoted one of your statuses",
-                    "quoted_update": "A status you have quoted has been edited"
+                    "mention": "Someone mentioned the logged-in user in their status",
+                    "status": "Someone the logged-in user enabled notifications for has posted a status",
+                    "reblog": "Someone boosted one of the logged-in user's statuses",
+                    "follow": "Someone followed the logged-in user",
+                    "follow_request": "Someone requested to follow the logged-in user",
+                    "favourite": "Someone favourited one of the logged-in user's statuses",
+                    "poll": "A poll the logged-in user created or voted in has ended",
+                    "update": "A status the logged-in user interacted with has been edited",
+                    "admin.sign_up": "Someone signed up (optionally sent to admins, including the logged-in user)",
+                    "admin.report": "A new report has been filed (optionally sent to admins, including the logged-in user)",
+                    "severed_relationships": "Follow relationships severed by moderation or block event involving the logged-in user",
+                    "moderation_warning": "A moderator has taken action or sent the logged-in user a warning",
+                    "quote": "Someone quoted one of the logged-in user's statuses",
+                    "quoted_update": "A status the logged-in user has quoted has been edited",
+                    "added_to_collection": "Someone added the logged-in user to a Collection.",
+                    "collection_update": "A Collection the logged-in user is featured in was updated."
                 }
             },
             "created_at": {
@@ -3394,7 +3428,12 @@
             "report": {
                 "description": "Report that was the object of the notification.",
                 "enum": null,
-                "version_history": [["4.0.0", "added"]],
+                "version_history": [
+                    [
+                        "4.0.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "Report",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -3404,7 +3443,12 @@
             "event": {
                 "description": "Summary of the event that caused follow relationships to be severed.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "RelationshipSeveranceEvent",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -3414,12 +3458,45 @@
             "moderation_warning": {
                 "description": "Moderation warning that caused the notification.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "AccountWarning",
                 "field_subtype": null,
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
+            },
+            "fallback": {
+                "description": "Fallback information for a notification type the client does not support, when `supported_types` is used when querying.",
+                "field_type": "NotificationFallback",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "collection": {
+                "description": "The Collection that was the object of the notification.",
+                "field_type": "Collection",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -4604,7 +4681,7 @@
                 "enum": null
             },
             "collections": {
-                "description": "List of collections resulting from the query.",
+                "description": "Collections matching the search query.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Collection",
                 "is_optional": false,
@@ -4622,16 +4699,30 @@
     {
         "name": "Collection",
         "python_name": "Collection",
-        "func_call": "mastodon.search_v2('cats', type='collections').collections[0]",
-        "masto_doc_link": null,
+        "func_call": "mastodon.search_v2('cats', result_type='collections').collections[0]",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": false,
-        "manual_update": true,
-        "description": "A collection of accounts, associated with a hashtag.",
+        "manual_update": false,
+        "description": "Represents a curated collection of accounts that a user recommends others to follow.",
         "fields": {
             "id": {
-                "description": "The ID of the collection in the database.",
+                "description": "The collection id.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "account_id": {
+                "description": "The id of the account that curates this Collection.",
                 "field_type": "MaybeSnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4659,8 +4750,23 @@
                 ],
                 "enum": null
             },
+            "url": {
+                "description": "The URL of the Collection's HTML page.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
             "name": {
-                "description": "The name of the collection.",
+                "description": "The name of the Collection.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4674,9 +4780,10 @@
                 "enum": null
             },
             "description": {
-                "description": "A description of the collection.",
+                "description": "An optional description of the Collection.",
                 "field_type": "str",
                 "field_subtype": null,
+                "field_structuretype": "HTML",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -4688,26 +4795,12 @@
                 "enum": null
             },
             "language": {
-                "description": "The language of the collection.",
+                "description": "The primary language of this Collection.",
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "4.6.0",
-                        "added"
-                    ]
-                ],
-                "enum": null
-            },
-            "account_id": {
-                "description": "The ID of the account that owns this collection.",
-                "field_type": "MaybeSnowflakeIdType",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "4.6.0",
@@ -4731,7 +4824,7 @@
                 "enum": null
             },
             "sensitive": {
-                "description": "Whether the collection is marked as sensitive.",
+                "description": "Whether the Collection has been marked as including sensitive content.",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4745,7 +4838,7 @@
                 "enum": null
             },
             "discoverable": {
-                "description": "Whether the collection is discoverable.",
+                "description": "Whether the Collection should appear on the owner's profile, in search results, and in recommendations.",
                 "field_type": "bool",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4758,12 +4851,12 @@
                 ],
                 "enum": null
             },
-            "item_count": {
-                "description": "The number of items in this collection.",
-                "field_type": "int",
+            "tag": {
+                "description": "A single hashtag that describes this Collection.",
+                "field_type": "ShallowTag",
                 "field_subtype": null,
                 "is_optional": false,
-                "is_nullable": false,
+                "is_nullable": true,
                 "version_history": [
                     [
                         "4.6.0",
@@ -4773,7 +4866,7 @@
                 "enum": null
             },
             "created_at": {
-                "description": "When the collection was created.",
+                "description": "When the Collection was created.",
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4787,7 +4880,7 @@
                 "enum": null
             },
             "updated_at": {
-                "description": "When the collection was last updated.",
+                "description": "When the Collection was last updated.",
                 "field_type": "datetime",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4800,9 +4893,9 @@
                 ],
                 "enum": null
             },
-            "tag": {
-                "description": "The hashtag associated with this collection.",
-                "field_type": "Tag",
+            "item_count": {
+                "description": "The number of items in this Collection.",
+                "field_type": "int",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -4815,7 +4908,7 @@
                 "enum": null
             },
             "items": {
-                "description": "The items in this collection.",
+                "description": "The items in this Collection.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "CollectionItem",
                 "is_optional": false,
@@ -4833,16 +4926,16 @@
     {
         "name": "Collection item",
         "python_name": "CollectionItem",
-        "func_call": "mastodon.search_v2('cats', type='collections').collections[0].items[0]",
-        "masto_doc_link": null,
+        "func_call": "mastodon.search_v2('cats', result_type='collections').collections[0].items[0]",
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionItem/",
         "func_call_real": null,
         "func_call_additional": null,
         "func_alternate_acc": false,
-        "manual_update": true,
-        "description": "An item in a collection, representing an account that has been added to the collection.",
+        "manual_update": false,
+        "description": "Represents a single item in a Collection.",
         "fields": {
             "id": {
-                "description": "The ID of the collection item in the database.",
+                "description": "The item id.",
                 "field_type": "MaybeSnowflakeIdType",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4855,8 +4948,22 @@
                 ],
                 "enum": null
             },
+            "account_id": {
+                "description": "The id of the account this item represents.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
             "state": {
-                "description": "The state of this collection item.",
+                "description": "The current state of the item.",
                 "field_type": "str",
                 "field_subtype": null,
                 "is_optional": false,
@@ -4868,17 +4975,17 @@
                     ]
                 ],
                 "enum": {
-                    "pending": "The item is pending approval.",
-                    "accepted": "The item has been accepted into the collection.",
-                    "rejected": "The item has been rejected from the collection.",
-                    "revoked": "The item's inclusion has been revoked."
+                    "pending": "The account's consent to be added to this Collection is pending.",
+                    "accepted": "The account has consented to be featured in this Collection.",
+                    "rejected": "The account has rejected the request to be added to this Collection.",
+                    "revoked": "The account has revoked consent to be featured in this Collection (after accepting initially)."
                 }
             },
-            "account_id": {
-                "description": "The ID of the account associated with this item. Only present when the item is accepted.",
-                "field_type": "MaybeSnowflakeIdType",
+            "created_at": {
+                "description": "When the item was added to the Collection.",
+                "field_type": "datetime",
                 "field_subtype": null,
-                "is_optional": true,
+                "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
                     [
@@ -5447,17 +5554,18 @@
                 ]
             },
             "wrapstodon": {
-                "description": "Info about Wrapstodon / year-in-review feature for the instance, if available.",
-                "field_type": "InstanceAnnualReportCampaign",
+                "description": "The current Wrapstodon annual-report campaign identifier (generally: The year, e.g. 2026), if any is active.",
+                "field_type": "int",
                 "field_subtype": null,
-                "is_optional": true,
-                "is_nullable": false,
+                "is_optional": false,
+                "is_nullable": true,
                 "version_history": [
                     [
-                        "4.4.0",
+                        "4.6.0",
                         "added"
                     ]
-                ]
+                ],
+                "enum": null
             }
         }
     },
@@ -5802,6 +5910,20 @@
                 "version_history": [
                     [
                         "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "description": {
+                "description": "The thumbnail's alt text.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
                         "added"
                     ]
                 ],
@@ -6691,33 +6813,6 @@
                     "authenticated": "Access requires authentication.",
                     "disabled": "Access is only possible for users with the View live and topic feeds permission."
                 }
-            }
-        }
-    },
-    {
-        "name": "Instance annual report campaign",
-        "python_name": "InstanceAnnualReportCampaign",
-        "func_call": "mastodon.instance_v2().wrapstodon",
-        "masto_doc_link": "https://docs.joinmastodon.org/entities/Instance/",
-        "func_call_real": null,
-        "func_call_additional": null,
-        "func_alternate_acc": false,
-        "manual_update": true,
-        "description": "Information about the Wrapstodon / year-in-review feature for the instance. This is not officially documented by Mastodon and may change without notice.",
-        "fields": {
-            "year": {
-                "description": "The year this annual report campaign is for.",
-                "field_type": "int",
-                "field_subtype": null,
-                "is_optional": false,
-                "is_nullable": false,
-                "version_history": [
-                    [
-                        "4.4.0",
-                        "added"
-                    ]
-                ],
-                "enum": null
             }
         }
     },
@@ -10438,7 +10533,12 @@
                     "filter": "Mark notifications as filtered.",
                     "drop": "Prevent creation of the notification object altogether."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10452,7 +10552,12 @@
                     "filter": "Mark notifications as filtered.",
                     "drop": "Prevent creation of the notification object altogether."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10466,7 +10571,12 @@
                     "filter": "Mark notifications as filtered.",
                     "drop": "Prevent creation of the notification object altogether."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10480,7 +10590,12 @@
                     "filter": "Mark notifications as filtered.",
                     "drop": "Prevent creation of the notification object altogether."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10494,7 +10609,12 @@
                     "filter": "Mark notifications as filtered.",
                     "drop": "Prevent creation of the notification object altogether."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10503,7 +10623,12 @@
             },
             "summary": {
                 "description": "A summary of the filtered notifications.",
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NotificationPolicySummary",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10525,7 +10650,12 @@
         "fields": {
             "pending_requests_count": {
                 "description": "Number of different accounts from which the user has non-dismissed filtered notifications. Capped at 100.",
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10534,7 +10664,12 @@
             },
             "pending_notifications_count": {
                 "description": "Number of total non-dismissed filtered notifications. May be inaccurate.",
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10557,7 +10692,12 @@
             "id": {
                 "description": "The ID of the relationship severance event in the database.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10571,7 +10711,12 @@
                     "user_domain_block": "The user blocked a whole domain.",
                     "account_suspension": "A moderator suspended a specific account."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "RelationshipSeveranceEventType",
@@ -10581,7 +10726,12 @@
             "purged": {
                 "description": "Whether the list of severed relationships is unavailable because the data has been purged.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "bool",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10591,7 +10741,12 @@
             "target_name": {
                 "description": "Name of the target of the moderation/block event. This is either a domain name or a user handle, depending on the event type.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10601,7 +10756,12 @@
             "followers_count": {
                 "description": "Number of followers that were removed as result of the event.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10611,7 +10771,12 @@
             "following_count": {
                 "description": "Number of accounts the user stopped following as result of the event.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10621,7 +10786,12 @@
             "created_at": {
                 "description": "When the event took place.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10644,7 +10814,12 @@
             "accounts": {
                 "description": "Accounts referenced by grouped notifications.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Account",
                 "field_structuretype": null,
@@ -10654,7 +10829,12 @@
             "partial_accounts": {
                 "description": "Partial accounts referenced by grouped notifications. Only returned with expand_accounts=partial_avatars.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "PartialAccountWithAvatar",
                 "field_structuretype": null,
@@ -10664,7 +10844,12 @@
             "statuses": {
                 "description": "Statuses referenced by grouped notifications.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "field_structuretype": null,
@@ -10674,7 +10859,12 @@
             "notification_groups": {
                 "description": "The grouped notifications themselves. Is actually in fact paginatable, but via the parent object.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "NotificationGroup",
                 "field_structuretype": null,
@@ -10684,7 +10874,12 @@
             "_pagination_next": {
                 "description": "Information about the next page of results. Added here as a special case to allow for pagination of the lists inside of this object.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "PaginationInfo",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10694,7 +10889,12 @@
             "_pagination_prev": {
                 "description": "Information about the previous page of results. Added here as a special case to allow for pagination of the lists inside of this object.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "PaginationInfo",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10717,7 +10917,12 @@
             "id": {
                 "description": "The account ID.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10727,7 +10932,12 @@
             "acct": {
                 "description": "The Webfinger account URI.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10735,9 +10945,14 @@
                 "is_nullable": false
             },
             "url": {
-                "description": "The location of the user’s profile page.",
+                "description": "The location of the users profile page.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10747,7 +10962,12 @@
             "avatar": {
                 "description": "An image icon (avatar) shown in the profile.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10757,7 +10977,12 @@
             "avatar_static": {
                 "description": "A static version of the avatar. May differ if the main avatar is animated.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10767,7 +10992,12 @@
             "locked": {
                 "description": "Whether the account manually approves follow requests.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "bool",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10777,7 +11007,12 @@
             "bot": {
                 "description": "Indicates that the account may perform automated actions.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "bool",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10800,7 +11035,12 @@
             "group_key": {
                 "description": "Group key identifying the grouped notifications. Treated as opaque.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10810,7 +11050,12 @@
             "notifications_count": {
                 "description": "Total number of individual notifications in this group.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10833,9 +11078,29 @@
                     "severed_relationships": "Follow relationships severed by moderation or block event",
                     "moderation_warning": "A moderator has taken action or sent you a warning",
                     "quote": "Someone quoted one of your statuses",
-                    "quoted_update": "A status you have quoted has been edited"
+                    "quoted_update": "A status you have quoted has been edited",
+                    "annual_report": "Your annual report is ready.",
+                    "added_to_collection": "Someone added you to a Collection.",
+                    "collection_update": "A Collection you are featured in was updated."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ],
+                    [
+                        "4.4.0",
+                        "added `annual_report`"
+                    ],
+                    [
+                        "4.5.0",
+                        "added `quote` and `quoted_update`"
+                    ],
+                    [
+                        "4.6.0",
+                        "added `added_to_collection` and `collection_update`"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "NotificationTypeEnum",
@@ -10845,7 +11110,12 @@
             "most_recent_notification_id": {
                 "description": "ID of the most recent notification in the group.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10855,7 +11125,12 @@
             "page_min_id": {
                 "description": "ID of the oldest notification in this group within the current page.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10865,7 +11140,12 @@
             "page_max_id": {
                 "description": "ID of the newest notification in this group within the current page.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10875,7 +11155,12 @@
             "latest_page_notification_at": {
                 "description": "Date at which the most recent notification within this group (in the current page) was created.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10885,7 +11170,12 @@
             "sample_account_ids": {
                 "description": "IDs of some of the accounts who most recently triggered notifications in this group.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -10895,7 +11185,12 @@
             "status_id": {
                 "description": "ID of the Status that was the object of the notification.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10905,7 +11200,12 @@
             "report": {
                 "description": "Report that was the object of the notification.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "Report",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10915,7 +11215,12 @@
             "event": {
                 "description": "Summary of the event that caused follow relationships to be severed.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "RelationshipSeveranceEvent",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10925,12 +11230,59 @@
             "moderation_warning": {
                 "description": "Moderation warning that caused the notification.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "AccountWarning",
                 "field_subtype": null,
                 "field_structuretype": null,
                 "is_optional": true,
                 "is_nullable": false
+            },
+            "fallback": {
+                "description": "Fallback information for a notification type the client does not support, when `supported_types` is used when querying.",
+                "field_type": "NotificationFallback",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "collection": {
+                "description": "The Collection that was the object of the notification.",
+                "field_type": "Collection",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "annual_report": {
+                "description": "The annual report event that was the object of the notification.",
+                "field_type": "AnnualReportEvent",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -10948,7 +11300,12 @@
             "id": {
                 "description": "The ID of the account warning in the database.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10966,7 +11323,12 @@
                     "silence": "The target account has been limited.",
                     "suspend": "The target account has been suspended."
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10976,7 +11338,12 @@
             "text": {
                 "description": "Message from the moderator to the target account.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -10986,7 +11353,12 @@
             "status_ids": {
                 "description": "List of status IDs relevant to the warning. May be null.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -10996,7 +11368,12 @@
             "target_account": {
                 "description": "Account against which a moderation decision has been taken.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "Account",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11006,7 +11383,12 @@
             "appeal": {
                 "description": "Appeal submitted by the target account, if any.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "Appeal",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11016,7 +11398,12 @@
             "created_at": {
                 "description": "When the event took place.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11039,7 +11426,12 @@
             "count": {
                 "description": "The capped number of unread notifications. The cap is not documented.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "int",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11062,7 +11454,12 @@
             "text": {
                 "description": "Text of the appeal from the moderated account to the moderators..",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11076,7 +11473,12 @@
                     "rejected": "The appeal has been rejected by a moderator",
                     "pending": "The appeal has been submitted, but neither approved nor rejected yet"
                 },
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "AppealStateEnum",
@@ -11099,7 +11501,12 @@
             "id": {
                 "description": "The ID of the notification request in the database.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11109,7 +11516,12 @@
             "created_at": {
                 "description": "When the first filtered notification from that user was created.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11119,7 +11531,12 @@
             "updated_at": {
                 "description": "When the notification request was last updated.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11129,7 +11546,12 @@
             "account": {
                 "description": "The account that performed the action that generated the filtered notifications.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "Account",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11137,9 +11559,14 @@
                 "is_nullable": false
             },
             "notifications_count": {
-                "description": "How many of this account’s notifications were filtered.",
+                "description": "How many of this accounts notifications were filtered.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11149,7 +11576,12 @@
             "last_status": {
                 "description": "Most recent status associated with a filtered notification from that account.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "Status",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11172,7 +11604,12 @@
             "code": {
                 "description": "The locale code.",
                 "enum": null,
-                "version_history": [["4.2.0", "added"]],
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11182,7 +11619,12 @@
             "name": {
                 "description": "The name of the locale.",
                 "enum": null,
-                "version_history": [["4.2.0", "added"]],
+                "version_history": [
+                    [
+                        "4.2.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11201,11 +11643,16 @@
         "manual_update": false,
         "masto_doc_link": "https://docs.joinmastodon.org/methods/oauth/#authorization-server-metadata",
         "description": "Information about the OAuth authorization server.",
-        "fields": { 
+        "fields": {
             "issuer": {
                 "description": "The issuer of the OAuth server. Can be used to avoid accidentally getting replies from a wrong server by comparing it against the `iss`field. Not currently used by Mastodon.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11215,7 +11662,12 @@
             "authorization_endpoint": {
                 "description": "The endpoint for authorization requests.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11225,7 +11677,12 @@
             "token_endpoint": {
                 "description": "The endpoint for token requests.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11235,7 +11692,12 @@
             "revocation_endpoint": {
                 "description": "The endpoint for revoking tokens.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11245,7 +11707,12 @@
             "userinfo_endpoint": {
                 "description": "The endpoint for retrieving OAuth user information for the logged in user.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11255,7 +11722,12 @@
             "scopes_supported": {
                 "description": "List of scopes supported by the OAuth server.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -11265,7 +11737,12 @@
             "response_types_supported": {
                 "description": "List of response types (i.e. what kind of parameters can the server get back to your callback) supported by the OAuth server.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -11275,7 +11752,12 @@
             "response_modes_supported": {
                 "description": "List of response modes (i.e. how does the server get callback parameters back to you) supported by the OAuth server.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -11285,7 +11767,12 @@
             "grant_types_supported": {
                 "description": "List of grant types (i.e. authorization methods) supported by the OAuth server.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -11295,7 +11782,12 @@
             "token_endpoint_auth_methods_supported": {
                 "description": "List of authentication methods supported by the token endpoint.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -11305,7 +11797,12 @@
             "code_challenge_methods_supported": {
                 "description": "List of code challenge methods supported by the OAuth server.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "NonPaginatableList",
                 "field_subtype": "str",
                 "field_structuretype": null,
@@ -11315,7 +11812,12 @@
             "service_documentation": {
                 "description": "URL to the service documentation (e.g. the Mastodon API reference).",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11325,7 +11827,12 @@
             "app_registration_endpoint": {
                 "description": "Endpoint for registering applications.",
                 "enum": null,
-                "version_history": [["4.3.0", "added"]],
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11348,7 +11855,12 @@
             "iss": {
                 "description": "The issuer of the OAuth server. Can be used to avoid accidentally getting replies from a wrong server by comparing it against the `issuer` field in OAuthServerInfo.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11358,7 +11870,12 @@
             "sub": {
                 "description": "The subject identifier of the user. For Mastodon, the URI of the ActivityPub Actor document",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11368,7 +11885,12 @@
             "name": {
                 "description": "The display name of the user.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11378,7 +11900,12 @@
             "preferred_username": {
                 "description": "The preferred username of the user, i.e. the part after the first and before the second @ in their account name.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11386,9 +11913,14 @@
                 "is_nullable": false
             },
             "profile": {
-                "description": "The URL of the user’s profile page.",
+                "description": "The URL of the users profile page.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11396,9 +11928,14 @@
                 "is_nullable": false
             },
             "picture": {
-                "description": "The URL of the user’s profile picture.",
+                "description": "The URL of the users profile picture.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "URL",
@@ -11421,7 +11958,12 @@
             "effective_date": {
                 "description": "The date when the terms of service became effective.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11431,7 +11973,12 @@
             "effective": {
                 "description": "Whether the terms of service are currently in effect.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "bool",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11441,7 +11988,12 @@
             "content": {
                 "description": "The contents of the terms of service.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "str",
                 "field_subtype": null,
                 "field_structuretype": "HTML",
@@ -11451,7 +12003,12 @@
             "succeeded_by": {
                 "description": "If there are newer terms of service, their effective date.",
                 "enum": null,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "field_type": "datetime",
                 "field_subtype": null,
                 "field_structuretype": null,
@@ -11478,7 +12035,12 @@
                 "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "enum": null
             },
             "status": {
@@ -11488,7 +12050,12 @@
                 "field_structuretype": "AsyncRefreshStatusEnum",
                 "is_optional": false,
                 "is_nullable": false,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
                 "enum": {
                     "running": "A background job is still running to perform the async refresh",
                     "finished": "The background job performing this async refresh has finished"
@@ -11501,7 +12068,1463 @@
                 "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": true,
-                "version_history": [["4.4.0", "added"]],
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Profile",
+        "python_name": "Profile",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Profile/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Represents the current user's profile, with source values for all editable fields. Text fields are provided as raw text (vs rendered HTML in `Account` fields).",
+        "fields": {
+            "id": {
+                "description": "The account id.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "display_name": {
+                "description": "The profile's display name.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "note": {
+                "description": "The profile's bio or description as raw text.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "fields": {
+                "description": "List of up to four (by default) ProfileFields, with the raw versions of user chosen metadata about the account.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "ProfileField",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "avatar": {
+                "description": "URL for this users avatar, or null if unset.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "avatar_static": {
+                "description": "A static version of the avatar, or null if unset.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "avatar_description": {
+                "description": "A textual description of the avatar.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "header": {
+                "description": "URL for an image banner shown above the profile and in profile cards, or null if unset.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "header_static": {
+                "description": "A static version of the header, or null if unset.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "header_description": {
+                "description": "A textual description of the profile header.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "locked": {
+                "description": "Whether the account manually approves follow requests.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "bot": {
+                "description": "Whether the account identifies as a bot or may perform automated actions.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "hide_collections": {
+                "description": "Whether the user hides the contents of their follows and followers collections.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "discoverable": {
+                "description": "Whether the account has opted into discovery features such as the profile directory.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "indexable": {
+                "description": "Whether the account allows indexing by search engines.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "show_media": {
+                "description": "Whether the account wishes to have a Media tab with media attachments on their profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "show_media_replies": {
+                "description": "Whether the account wishes to have replies in the Media tab on their profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "show_featured": {
+                "description": "Whether the account wishes to have a Featured tab on their profile.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "attribution_domains": {
+                "description": "Domains of websites allowed to credit the account.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "featured_tags": {
+                "description": "Hashtags featured on the profile.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "FeaturedTag",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Profile field",
+        "python_name": "ProfileField",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Profile/#Field",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A profile metadata field containing raw text (vs rendered HTML in `Account` fields).",
+        "fields": {
+            "name": {
+                "description": "The key of the field's key-value pair, as raw text.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "value": {
+                "description": "The value associated with the `name` key, as raw text.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "verified_at": {
+                "description": "Timestamp of when the server verified a URL value for a rel=\"me\" link.",
+                "field_type": "datetime",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Shallow tag",
+        "python_name": "ShallowTag",
+        "func_call": "mastodon.search_v2('cats', result_type='collections').collections[0].tag",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/ShallowTag/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Minimal representation of a hashtag.",
+        "fields": {
+            "name": {
+                "description": "The value of the hashtag after the # sign.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "url": {
+                "description": "A link to the hashtag on the local server.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Feature approval",
+        "python_name": "FeatureApproval",
+        "func_call": "mastodon.account(<account id>).feature_approval",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/FeatureApproval/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Summary of an account's policy for being featured in a Collection and how it applies to the logged in user.",
+        "fields": {
+            "automatic": {
+                "description": "Who is expected to be able to feature the account and have this authorized automatically.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Anybody may feature this account and have it accepted automatically.",
+                    "followers": "Followers may feature this account and have it accepted automatically.",
+                    "following": "People followed by this account may feature it and have it accepted automatically.",
+                    "unsupported_policy": "The underlying policy is not supported."
+                }
+            },
+            "manual": {
+                "description": "Who is expected to have attempts to feature this account reviewed manually.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "str",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "public": "Anybody may request to feature this account, subject to manual review.",
+                    "followers": "Followers may request to feature this account, subject to manual review.",
+                    "following": "People followed by this account may request to feature it, subject to manual review.",
+                    "unsupported_policy": "The underlying policy is not supported."
+                }
+            },
+            "current_user": {
+                "description": "How this account's feature approval policy applies to the logged-in user.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "automatic": "The requesting user may feature this account with automatic acceptance.",
+                    "manual": "The requesting user may feature this account subject to manual review.",
+                    "denied": "The requesting user is not expected to be allowed to feature this account.",
+                    "unknown": "The user is not covered by policies supported by the server and should be treated as denied.",
+                    "missing": "The account has no supported policy and should be treated as denied."
+                }
+            }
+        }
+    },
+    {
+        "name": "Wrapped collection",
+        "python_name": "WrappedCollection",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "A Collection wrapped in an extensible response object. Used by endpoints that do not return full collection data.",
+        "fields": {
+            "collection": {
+                "description": "The actual Collection.",
+                "field_type": "Collection",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Collections",
+        "python_name": "Collections",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "A list of Collections wrapped in an extensible response object.",
+        "fields": {
+            "collections": {
+                "description": "A list of Collections.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Collection",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Collection with accounts",
+        "python_name": "CollectionWithAccounts",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionWithAccounts/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "A Collection together with full account data for its owner and members.",
+        "fields": {
+            "accounts": {
+                "description": "Full account entities for the Collection owner and every account in the Collection.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Account",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "collection": {
+                "description": "The actual Collection.",
+                "field_type": "Collection",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Wrapped collection item",
+        "python_name": "WrappedCollectionItem",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionItem/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "A CollectionItem wrapped in an extensible response object. Used by endpoints that do not return full collection data.",
+        "fields": {
+            "collection_item": {
+                "description": "The actual Collection item.",
+                "field_type": "CollectionItem",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Notification fallback",
+        "python_name": "NotificationFallback",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/NotificationFallback/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Represents a fallback rendering for a notification type the client does not support.",
+        "fields": {
+            "title": {
+                "description": "Localized fallback title for the notification.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "HTML",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "summary": {
+                "description": "Localized fallback summary for the notification.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "HTML",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "details": {
+                "description": "Localized notification details to display when opening the notification.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "HTML",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report event",
+        "python_name": "AnnualReportEvent",
+        "func_call": "mastodon.grouped_notifications().notification_groups[0].annual_report",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": null,
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Represents an annual report becoming available in a grouped notification.",
+        "fields": {
+            "year": {
+                "description": "The year of the annual report.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.4.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report",
+        "python_name": "AnnualReport",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Represents a summary of a user's activity during a given year.",
+        "fields": {
+            "year": {
+                "description": "The year this report is from.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "data": {
+                "description": "The raw report data. Its schema depends on `schema_version`.",
+                "field_type": "Union[AnnualReportDataV2, AnnualReportDataV1, AttribAccessDict]",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ],
+                    [
+                        "4.6.0",
+                        "added schema version 2"
+                    ]
+                ],
+                "enum": null
+            },
+            "schema_version": {
+                "description": "The schema version of the report, defining how to interpret `data`.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ],
+                    [
+                        "4.6.0",
+                        "added schema version 2"
+                    ]
+                ],
+                "enum": null
+            },
+            "share_url": {
+                "description": "An optional link to a shareable version of the report.",
+                "field_type": "str",
+                "field_subtype": null,
+                "field_structuretype": "URL",
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "account_id": {
+                "description": "The account ID the annual report is about.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Wrapped annual reports",
+        "python_name": "WrappedAnnualReports",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "One or more AnnualReports wrapped with referenced Account and Status entities.",
+        "fields": {
+            "annual_reports": {
+                "description": "Full AnnualReport entities for the reports.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReport",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "accounts": {
+                "description": "Full Account entities for accounts mentioned in the reports.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Account",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "statuses": {
+                "description": "Full Status entities for statuses mentioned in the reports.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "Status",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report data (schema version 2)",
+        "python_name": "AnnualReportDataV2",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "The data payload of an AnnualReport with `schema_version` 2.",
+        "fields": {
+            "archetype": {
+                "description": "The archetype assigned from the accounts posting habits.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "lurker": "The account posted, replied, and boosted less than the yearly average.",
+                    "booster": "The account boosted more than twice as often as it posted standalone statuses.",
+                    "pollster": "At least ten percent of the accounts standalone statuses contained polls.",
+                    "replier": "The account replied more than twice as often as it posted standalone statuses.",
+                    "oracle": "The account does not match one of the other archetypes."
+                }
+            },
+            "top_statuses": {
+                "description": "The accounts most-boosted status. The other interaction categories are retained as null values for compatibility.",
+                "field_type": "AnnualReportTopStatusesV2",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "time_series": {
+                "description": "Nominally a time series of objects describing how the account's activity evolved over the year, in reality there is only a single entry.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportTimeSeriesEntryV2",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "top_hashtags": {
+                "description": "The accounts most frequently used hashtags.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportNameAndCount",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report data (schema version 1)",
+        "python_name": "AnnualReportDataV1",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "The data payload of an AnnualReport with `schema_version` 1.",
+        "fields": {
+            "archetype": {
+                "description": "The archetype assigned from the accounts posting habits.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "lurker": "The account posted, replied, and boosted less than the yearly average.",
+                    "booster": "The account boosted more than twice as often as it posted standalone statuses.",
+                    "pollster": "At least ten percent of the accounts standalone statuses contained polls.",
+                    "replier": "The account replied more than twice as often as it posted standalone statuses.",
+                    "oracle": "The account does not match one of the other archetypes."
+                }
+            },
+            "type_distribution": {
+                "description": "A breakdown of the accounts statuses by type.",
+                "field_type": "AnnualReportTypeDistribution",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "top_statuses": {
+                "description": "The accounts most-interacted-with statuses by interaction type.",
+                "field_type": "AnnualReportTopStatusesV1",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "most_used_apps": {
+                "description": "The applications used most frequently for posting",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportNameAndCount",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "commonly_interacted_with_accounts": {
+                "description": "The accounts most frequently replied to.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportAccountAndCount",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "time_series": {
+                "description": "A time series of objects describing how the account's activity evolved over the year.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportTimeSeriesEntryV1",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "top_hashtags": {
+                "description": "The accounts most frequently used hashtags.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportNameAndCount",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "most_reblogged_accounts": {
+                "description": "The accounts most frequently boosted by the account.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AnnualReportAccountAndCount",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "percentiles": {
+                "description": "The accounts posting-activity percentile on its server.",
+                "field_type": "AnnualReportPercentiles",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report top statuses (schema version 2)",
+        "python_name": "AnnualReportTopStatusesV2",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "Status IDs selected for an AnnualReport schema version 2 payload.",
+        "fields": {
+            "by_reblogs": {
+                "description": "The ID of the accounts most-boosted eligible status.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "by_favourites": {
+                "description": "Reserved for compatibility; always null in schema version 2.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "by_replies": {
+                "description": "Reserved for compatibility; always null in schema version 2.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report top statuses (schema version 1)",
+        "python_name": "AnnualReportTopStatusesV1",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "Status IDs selected for an AnnualReport schema version 1 payload.",
+        "fields": {
+            "by_reblogs": {
+                "description": "The ID of the accounts most-boosted eligible status.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "by_favourites": {
+                "description": "The ID of the accounts most-favourited eligible status.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "by_replies": {
+                "description": "The ID of the accounts most-replied-to eligible status.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report time-series entry (schema version 2)",
+        "python_name": "AnnualReportTimeSeriesEntryV2",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "The cumulative year-end activity entry in an AnnualReport schema version 2 payload.",
+        "fields": {
+            "month": {
+                "description": "The final month represented by this cumulative entry. Currently always 12.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "statuses": {
+                "description": "The number of statuses posted during the year.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "followers": {
+                "description": "The number of followers gained during the year.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report time-series entry (schema version 1)",
+        "python_name": "AnnualReportTimeSeriesEntryV1",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "One month of activity in an AnnualReport schema version 1 payload.",
+        "fields": {
+            "month": {
+                "description": "The month number, from 1 through 12.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "statuses": {
+                "description": "The number of statuses posted during the month.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "following": {
+                "description": "The number of accounts followed during the month.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "followers": {
+                "description": "The number of followers gained during the month.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report type distribution",
+        "python_name": "AnnualReportTypeDistribution",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "A breakdown of statuses by type in an AnnualReport schema version 1 payload.",
+        "fields": {
+            "total": {
+                "description": "The total number of statuses.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "reblogs": {
+                "description": "The number of boosts.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "replies": {
+                "description": "The number of replies to other accounts.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "standalone": {
+                "description": "The number of statuses that were neither replies nor boosts.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report name and count",
+        "python_name": "AnnualReportNameAndCount",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "A named annual-report item and the number of times it occurred.",
+        "fields": {
+            "name": {
+                "description": "The application or hashtag name.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "count": {
+                "description": "The number of occurrences.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report account and count",
+        "python_name": "AnnualReportAccountAndCount",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "An account referenced by an AnnualReport schema version 1 payload and its interaction count.",
+        "fields": {
+            "account_id": {
+                "description": "The account ID.",
+                "field_type": "MaybeSnowflakeIdType",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "count": {
+                "description": "The number of interactions.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            }
+        }
+    },
+    {
+        "name": "Annual report percentiles",
+        "python_name": "AnnualReportPercentiles",
+        "func_call": "TODO",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
+        "func_alternate_acc": false,
+        "manual_update": true,
+        "description": "Posting-activity percentiles in an AnnualReport schema version 1 payload.",
+        "fields": {
+            "statuses": {
+                "description": "The percentage of accounts on the server that posted fewer statuses.",
+                "field_type": "float",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.3.0",
+                        "added"
+                    ]
+                ],
                 "enum": null
             }
         }

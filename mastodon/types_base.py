@@ -354,6 +354,44 @@ def real_issubclass(type1, type2orig):
         valid_types = [type2]
     return issubclass(type1, tuple(valid_types))
 
+_UNION_DISCRIMINATORS = {
+    "MediaAttachment": "type",
+    "AnnualReport": "schema_version",
+}
+
+_UNION_SPECIALIZATIONS = {
+    "MediaAttachment": {
+        "image": "MediaAttachmentImageMetadata",
+        "video": "MediaAttachmentVideoMetadata",
+        "audio": "MediaAttachmentAudioMetadata",
+        "gifv": "MediaAttachmentVideoMetadata",
+    },
+    "AnnualReport": {
+        1: "AnnualReportDataV1",
+        2: "AnnualReportDataV2",
+        "1": "AnnualReportDataV1",
+        "2": "AnnualReportDataV2",
+    },
+}
+
+_UNION_SPECIALIZATION_DEFAULTS = {
+    "AnnualReport": "AttribAccessDict",
+}
+
+
+def _specialized_union_type(t, union_specializer):
+    entity_name, discriminator = union_specializer
+    specialized_type_name = _UNION_SPECIALIZATIONS.get(entity_name, {}).get(
+        discriminator,
+        _UNION_SPECIALIZATION_DEFAULTS.get(entity_name),
+    )
+    if specialized_type_name is None:
+        return None
+    return next(
+        (union_type for union_type in t.__args__ if union_type.__name__ == specialized_type_name),
+        None,
+    )
+
 # Helper functions for typecasting attempts
 def try_cast(t, value, retry = True, union_specializer = None):
     """
@@ -472,13 +510,7 @@ def try_cast_recurse(t, value, union_specializer=None):
                 value = orig_type(value_cast)
             elif orig_type is Union:
                 if union_specializer is not None:
-                    from mastodon.return_types import MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata, MediaAttachmentAudioMetadata
-                    real_type = {
-                        "image": MediaAttachmentImageMetadata,
-                        "video": MediaAttachmentVideoMetadata,
-                        "audio": MediaAttachmentAudioMetadata,
-                        "gifv": MediaAttachmentVideoMetadata,
-                    }.get(union_specializer, None)
+                    real_type = _specialized_union_type(t, union_specializer)
                 if isinstance(value, dict) and "quoted_status_id" in value:
                     from mastodon.return_types import ShallowQuote
                     real_type = ShallowQuote
@@ -715,8 +747,18 @@ class AttribAccessDict(OrderedStrDict, Entity):
         """
         super(AttribAccessDict, self).__init__()
         if "__union_specializer" in kwargs:
-            self.__union_specializer = kwargs["__union_specializer"]
-            del kwargs["__union_specializer"]
+            union_specializer = kwargs.pop("__union_specializer")
+        else:
+            entity_name = type(self).__name__
+            discriminator = _UNION_DISCRIMINATORS.get(entity_name)
+            union_specializer = None
+            if discriminator is not None:
+                union_specializer = (entity_name, kwargs.get(discriminator))
+        if union_specializer is not None:
+            super(AttribAccessDict, self).__setattr__(
+                "_AttribAccessDict__union_specializer",
+                union_specializer,
+            )
         if "__annotations__" in self.__class__.__dict__:
             for attr, _ in self.__class__.__annotations__.items():
                 attr_name = attr
@@ -793,13 +835,12 @@ class AttribAccessDict(OrderedStrDict, Entity):
             type_hints = dict(_get_cached_type_hints(self.__class__))
             type_hints.update(_get_cached_type_hints(self.__class__.__init__))
 
-            # Ugly hack: We have to specialize unions by hand because you can't just guess by content generally
-            # Note for developers: This means type MUST be set before meta. fortunately, we can enforce this via
-            # the type hints (assuming that the order of annotations is not changed, which python does not guarantee,
-            # if it ever does: we'll have to add another hack to the constructor)
-            from mastodon.return_types import MediaAttachment
-            if type(self) == MediaAttachment and key == "type":
-                self.__union_specializer = val
+            entity_name = type(self).__name__
+            if _UNION_DISCRIMINATORS.get(entity_name) == key:
+                super(AttribAccessDict, self).__setattr__(
+                    "_AttribAccessDict__union_specializer",
+                    (entity_name, val),
+                )
 
             # Do we have a union specializer attribute?
             union_specializer = None
@@ -819,10 +860,6 @@ class AttribAccessDict(OrderedStrDict, Entity):
         # Finally, call out to setattr and setitem proper
         super(AttribAccessDict, self).__setattr__(key, val)
         super(AttribAccessDict, self).__setitem__(key, val)
-
-        # Remove union specializer if we have one
-        if "_AttribAccessDict__union_specializer" in self:
-            del self["_AttribAccessDict__union_specializer"]
 
     def __eq__(self, other):
         """

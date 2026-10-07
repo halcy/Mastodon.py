@@ -3,6 +3,20 @@ from datetime import datetime, timezone
 from mastodon.types_base import base62_to_int, int_to_base62, MaybeSnowflakeIdType, _str_to_type, PaginatableList, NonPaginatableList, AttribAccessDict, _get_cached_type_hints
 from typing import Optional, Union
 
+
+class AnnualReportDataV2(AttribAccessDict):
+    current: int
+
+
+class AnnualReportDataV1(AttribAccessDict):
+    previous: int
+
+
+class AnnualReport(AttribAccessDict):
+    data: Union[AnnualReportDataV2, AnnualReportDataV1, AttribAccessDict]
+    schema_version: int
+
+
 def test_base62_to_int_zero():
     assert base62_to_int('0') == 0
 
@@ -159,3 +173,33 @@ def test_str_to_type_dangling_open_bracket():
 def test_str_to_type_dangling_close_bracket():
     with pytest.raises(ValueError, match="Invalid type"):
         _str_to_type("Status]")
+
+@pytest.mark.parametrize("schema_version, expected_type", [
+    (2, AnnualReportDataV2),
+    ("2", AnnualReportDataV2),
+    (1, AnnualReportDataV1),
+    ("1", AnnualReportDataV1),
+])
+def test_annual_report_union_specialization(schema_version, expected_type):
+    report = AnnualReport(data={"value": 1}, schema_version=schema_version)
+
+    assert type(report.data) is expected_type
+
+@pytest.mark.parametrize("schema_version", [None, 3, "future"])
+def test_annual_report_union_specialization_falls_back(schema_version):
+    report = AnnualReport(data={"future_value": 1}, schema_version=schema_version)
+
+    assert type(report.data) is AttribAccessDict
+
+def test_media_union_specialization():
+    from mastodon.return_types import MediaAttachment, MediaAttachmentImageMetadata, MediaAttachmentVideoMetadata
+
+    image = MediaAttachment(type="image", meta={"original": {}, "small": {}})
+    video = MediaAttachment(type="video", meta={"original": {}, "small": {}})
+    reassigned = MediaAttachment()
+    reassigned.type = "video"
+    reassigned.meta = {"original": {}, "small": {}}
+
+    assert type(image.meta.original) is MediaAttachmentImageMetadata
+    assert type(video.meta.original) is MediaAttachmentVideoMetadata
+    assert type(reassigned.meta.original) is MediaAttachmentVideoMetadata
