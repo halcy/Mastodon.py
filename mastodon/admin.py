@@ -243,15 +243,20 @@ class Mastodon(Internals):
 
         self.__api_request('POST', f'/api/v1/admin/accounts/{id}/action', params)
 
-    @api_version("2.9.1", "2.9.1")
-    def admin_reports(self, resolved: Optional[bool] = False, account_id: Optional[Union[Account, AdminAccount, IdType]] = None, 
+    @api_version("2.9.1", "4.6.0")
+    def admin_reports(self, resolved: Optional[bool] = False, account_id: Optional[Union[Account, AdminAccount, IdType]] = None,
                       target_account_id: Optional[Union[Account, AdminAccount, IdType]] = None, max_id: Optional[IdType] = None, 
-                      min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, limit: Optional[int] = None) -> PaginatableList[AdminReport]:
+                      min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, limit: Optional[int] = None,
+                      unresolved: Optional[bool] = None) -> PaginatableList[AdminReport]:
         """
         Fetches the list of reports.
 
-        Set `resolved` to True to search for resolved reports. `account_id` and `target_account_id`
-        can be used to get reports filed by or about a specific user.
+        By default, only unresolved reports are returned. Set `resolved` to True to return
+        only resolved reports. Set both `resolved` and `unresolved` to True to return all
+        reports; setting only `unresolved` to True is equivalent to the default behavior.
+
+        `account_id` and `target_account_id` can be used to get reports filed by or about
+        a specific user.
         """
         if account_id is not None:
             account_id = self.__unpack_id(account_id)

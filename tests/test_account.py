@@ -127,8 +127,10 @@ def test_account_update_credentials(api):
         display_name='John Lennon',
         note='I walk funny',
         avatar = "tests/image.jpg",
+        avatar_description="John Lennon (me) doing a funny walk",
         header = image,
         header_mime_type = "image/jpeg",
+        header_description="John Lennon doing a funny walk with my funny hat",
         fields = [
             ("bread", "toasty."),
             ("lasagna", "no!!!"),
@@ -143,6 +145,8 @@ def test_account_update_credentials(api):
     assert account.id
     assert account["display_name"] == 'John Lennon'
     assert re.sub("<.*?>", " ", account["note"]).strip() == 'I walk funny'
+    assert account.avatar_description == "John Lennon (me) doing a funny walk"
+    assert account.header_description == "John Lennon doing a funny walk with my funny hat"
     assert account["fields"][0].name == "bread"
     assert account["fields"][0].value == "toasty."
     assert account["fields"][1].name == "lasagna"
@@ -152,6 +156,26 @@ def test_account_update_credentials(api):
 
     api.account_delete_avatar()
     api.account_delete_header()
+
+
+@pytest.mark.vcr()
+def test_account_statuses_exclude_direct(api, api2):
+    public_status = api.status_post("Public account status", visibility="public")
+    mentioned_account = api2.account_verify_credentials()
+    direct_status = api.status_post(
+        f"@{mentioned_account.acct} Direct account status",
+        visibility="direct",
+    )
+
+    try:
+        statuses = api.account_statuses(api.account_verify_credentials(), exclude_direct=True)
+        status_ids = [status.id for status in statuses]
+        assert public_status.id in status_ids
+        assert direct_status.id not in status_ids
+    finally:
+        api.status_delete(public_status)
+        api.status_delete(direct_status)
+
 
 @pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials_source_and_privacy(api):

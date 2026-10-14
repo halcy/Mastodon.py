@@ -12,12 +12,12 @@ def mention(api2):
 @pytest.mark.vcr()
 def test_notifications(api, mention):
     time.sleep(3)
-    notifications = api.notifications()
-    assert api.notifications(notifications[0])
+    notifications = api.notifications(supported_types=["mention"])
+    assert api.notifications(notifications[0], supported_types=["mention"])
     assert notifications[0].status.id == mention.id
     assert api.notifications_unread_count().count > 0
 
-    notification_single_id = api.notifications(notifications[0])
+    notification_single_id = api.notifications(notifications[0], supported_types=["mention"])
     assert notification_single_id.id == notifications[0].id
 
 @pytest.mark.vcr()
@@ -175,7 +175,11 @@ def test_grouped_notifications(api, api2, api3):
         
         time.sleep(2)
 
-        grouped_notifs = api.grouped_notifications(limit=10, expand_accounts="partial_avatars")
+        grouped_notifs = api.grouped_notifications(
+            limit=10,
+            expand_accounts="partial_avatars",
+            supported_types=["favourite"],
+        )
         assert grouped_notifs
         assert hasattr(grouped_notifs, "_pagination_next")
         assert hasattr(grouped_notifs, "_pagination_prev")
@@ -184,7 +188,7 @@ def test_grouped_notifications(api, api2, api3):
         assert any("favourite" in key or "reblog" in key for key in group_keys), "Expected a grouped notification"
 
         group_key = group_keys[0]  # Take first group
-        single_grouped_notif = api.grouped_notification(group_key)
+        single_grouped_notif = api.grouped_notification(group_key, supported_types=["favourite"])
         assert single_grouped_notif
         assert single_grouped_notif.notification_groups[0].group_key == group_key
 

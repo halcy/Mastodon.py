@@ -19,6 +19,20 @@ def test_polls(api, api2):
     assert poll3.own_votes == [1, 0]
     
     api2.status_delete(status_poll)
+
+
+@pytest.mark.vcr()
+def test_poll_with_media(api2):
+    media = api2.media_post("tests/image.jpg", synchronous=True)
+    poll_params = api2.make_poll(["four twenty", "sixty-nine"], 300)
+    status = api2.status_post("nice", media_ids=[media], poll=poll_params)
+
+    try:
+        assert status.poll
+        assert status.media_attachments
+        assert status.media_attachments[0].id == media.id
+    finally:
+        api2.status_delete(status, delete_media=True)
     
 @pytest.mark.vcr()    
 @pytest.mark.xfail(strict=True)

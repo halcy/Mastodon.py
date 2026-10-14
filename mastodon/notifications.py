@@ -10,10 +10,11 @@ class Mastodon(Internals):
     ###
     # Reading data: Notifications
     ###
-    @api_version("1.0.0", "3.5.0")
+    @api_version("1.0.0", "4.6.0")
     def notifications(self, id: Optional[Union[Notification, IdType]] = None, account_id: Optional[Union[Account, IdType]] = None, max_id:  Optional[Union[Notification, IdType]] = None, 
                       min_id:  Optional[Union[Notification, IdType]] = None, since_id:  Optional[Union[Notification, IdType]] = None, limit: Optional[int] = None, 
-                      exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None) -> Union[PaginatableList[Notification], Notification]:
+                      exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None,
+                      supported_types: Optional[List[str]] = None) -> Union[PaginatableList[Notification], Notification]:
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
@@ -40,6 +41,9 @@ class Mastodon(Internals):
         `exclude_types` to all but mentions.
 
         Can be passed an `id` to fetch a single notification.
+
+        Pass `supported_types` to identify the notification types the client can render.
+        Unsupported notification types may then include a fallback representation.
         """
         if mentions_only is not None:
             if exclude_types is None and types is None:
@@ -60,7 +64,8 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/notifications', params)
         else:
             id = self.__unpack_id(id)
-            return self.__api_request('GET', f"/api/v1/notifications/{id}", override_type=Notification)
+            params = self.__generate_params({"supported_types": supported_types})
+            return self.__api_request('GET', f"/api/v1/notifications/{id}", params, override_type=Notification)
 
     # Implement GET /api/v1/notifications/unread_count HTTP/1.1
     @api_version("4.3.0", "4.3.0")
@@ -190,13 +195,14 @@ class Mastodon(Internals):
     ##
     # Grouped notifications
     ##
-    @api_version("4.3.0", "4.3.0")
+    @api_version("4.3.0", "4.6.0")
     def grouped_notifications(self, max_id: Optional[IdType] = None, since_id: Optional[IdType] = None,
                               min_id: Optional[IdType] = None, limit: Optional[int] = None,
                               types: Optional[List[str]] = None, exclude_types: Optional[List[str]] = None,
                               account_id: Optional[Union[Account, IdType]] = None,
                               expand_accounts: Optional[str] = "partial_avatars", grouped_types: Optional[List[str]] = None,
-                              include_filtered: Optional[bool] = None) -> GroupedNotificationsResults:
+                              include_filtered: Optional[bool] = None,
+                              supported_types: Optional[List[str]] = None) -> GroupedNotificationsResults:
         """
         Fetch grouped notifications for the user. Requires scope `read:notifications`.
 
@@ -212,16 +218,23 @@ class Mastodon(Internals):
         include a smaller set of account details (in the `partial_accounts` field) for some (but not all - the most
         recent account triggering a notification is always returned in full) of the included accounts. 
         The default is partial_avatars.
+
+        Pass `supported_types` to identify the notification types the client can render.
+        Unsupported notification types may then include a fallback representation.
         """
         params = self.__generate_params(locals())
         return self.__api_request('GET', '/api/v2/notifications', params, force_pagination=True)
 
-    @api_version("4.3.0", "4.3.0")
-    def grouped_notification(self, group_key: str) -> GroupedNotificationsResults:
+    @api_version("4.3.0", "4.6.0")
+    def grouped_notification(self, group_key: str, supported_types: Optional[List[str]] = None) -> GroupedNotificationsResults:
         """
         Fetch details of a single grouped notification by its group key. Requires scope `read:notifications`.
+
+        Pass `supported_types` to identify the notification types the client can render.
+        Unsupported notification types may then include a fallback representation.
         """
-        return self.__api_request('GET', f'/api/v2/notifications/{group_key}')
+        params = self.__generate_params({"supported_types": supported_types})
+        return self.__api_request('GET', f'/api/v2/notifications/{group_key}', params)
 
     @api_version("4.3.0", "4.3.0")
     def dismiss_grouped_notification(self, group_key: str) -> None:

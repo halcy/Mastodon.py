@@ -128,12 +128,21 @@ def test_admin_reports(api3, api2, status3):
     
     report_list = api2.admin_reports()
     assert(report.id in [x.id for x in report_list])
+
+    unresolved_report_list = api2.admin_reports(unresolved=True)
+    assert(report.id in [x.id for x in unresolved_report_list])
     
     report = api2.admin_report_resolve(report)
     report_list = api2.admin_reports()
     assert(report.action_taken)
     assert(report.action_taken_by_account.id == account2.id)
     assert(not report.id in [x.id for x in report_list])
+
+    resolved_report_list = api2.admin_reports(resolved=True)
+    assert(report.id in [x.id for x in resolved_report_list])
+
+    all_report_list = api2.admin_reports(resolved=True, unresolved=True)
+    assert(report.id in [x.id for x in all_report_list])
     
     report = api2.admin_report_reopen(report)
     report_list = api2.admin_reports()

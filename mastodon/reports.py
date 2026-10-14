@@ -5,7 +5,7 @@ from mastodon.errors import MastodonVersionError, MastodonIllegalArgumentError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import NonPaginatableList, Report, Account, IdType, Status, Rule
+from mastodon.return_types import NonPaginatableList, Report, Account, IdType, Status, Rule, Collection
 from typing import Union, Optional, List
 
 class Mastodon(Internals):
@@ -27,9 +27,11 @@ class Mastodon(Internals):
     ###
     # Writing data: Reports
     ###
-    @api_version("1.1.0", "3.5.0")
+    @api_version("1.1.0", "4.6.0")
     def report(self, account_id: Union[Account, IdType], status_ids: Optional[Union[Status, IdType]] = None, comment: Optional[str] = None, 
-               forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None, forward_to_domains: Optional[List[str]] = None) -> Report:
+               forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None,
+               forward_to_domains: Optional[List[str]] = None,
+               collection_ids: Optional[List[Union[Collection, IdType]]] = None) -> Report:
         """
         Report statuses to the instances administrators.
 
@@ -43,6 +45,9 @@ class Mastodon(Internals):
         instance as well as sending it to the instance local administrators. Set
         forward_to_domains to a list of domains to forward the report to (only domains of
         people mentioned in the status), or omitto forward to the domain of the reported status.
+
+        `collection_ids` can contain Collection IDs or Collection objects associated with
+        the report. Collection objects are unpacked and only their IDs are sent.
         """
         if category is not None and not category in ["spam", "violation", "other"]:
             raise MastodonIllegalArgumentError("Invalid report category (must be spam, violation or other)")
@@ -53,6 +58,9 @@ class Mastodon(Internals):
             if not isinstance(status_ids, list):
                 status_ids = [status_ids]
             status_ids = [self.__unpack_id(x) for x in status_ids]
+
+        if collection_ids is not None:
+            collection_ids = [self.__unpack_id(x) for x in collection_ids]
 
         params_initial = locals()
         if not forward:

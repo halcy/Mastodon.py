@@ -153,12 +153,6 @@ class Mastodon(Internals):
 
         params_initial = locals()
 
-        # Validate poll/media exclusivity
-        if poll is not None:
-            if media_ids is not None and len(media_ids) != 0:
-                raise ValueError(
-                    'Status can have media or poll attached - not both.')
-
         # Validate visibility parameter
         valid_visibilities = ['private', 'public', 'unlisted', 'direct']
         if params_initial['visibility'] is None:
@@ -215,7 +209,7 @@ class Mastodon(Internals):
             # Edit
             return self.__api_request('PUT', f'/api/v1/statuses/{self.__unpack_id(edit)}', params, headers=headers, use_json=use_json, override_type=cast_type)
 
-    @api_version("1.0.0", "4.5.0")
+    @api_version("1.0.0", "4.6.0")
     def status_post(self, status: str, in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
                     sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
                     idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
@@ -265,9 +259,10 @@ class Mastodon(Internals):
         status_post returns a `ScheduledStatus` instead.
 
         Pass `poll` to attach a poll to the status. An appropriate object can be
-        constructed using :ref:`make_poll() <make_poll()>` . Note that as of Mastodon version
-        2.8.2, you can only have either media or a poll attached, not both at
-        the same time.
+        constructed using :ref:`make_poll() <make_poll()>`. Mastodon 4.6 and newer
+        allow polls and media to be attached to the same status, versions lower than
+        4.6 only accept either-or. Versions below 4.6 will cause Mastodon.py to throw
+        a `MastodonAPIError` if you try providing both.
 
         Pass `quoted_status_id` to quote another status. The quoted status must
         exist, be accessible to the logged-in user, and the quote policy must

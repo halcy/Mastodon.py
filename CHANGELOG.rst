@@ -4,12 +4,19 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v2.2.3 (WIP)
 ------------
+* Bump support level to 4.7.3, update return types with newly added fields
 * Fix stream error handlers raising a tuple instead of an exception (Thanks @dylanpulver )
 * Fix logic issue in version check code that prevented correct functioning on Pixelfed (Thanks @gunchleoc , and @xsuchy for the report)
 * Fix issue with ratelimit code that could lead to crashes in some circumstances (Thanks @xsuchy for the report)
 * Cache type hints for massively improved performance (Thanks @toelke for the suggestion)
 * Make MaybeSnowflakeIDs sortable (Thanks @haraldg for the report and suggestion)
 * Fix timestamp parsing for Pleromalike Flake IDs
+* 4.6 support: Add `supported_types` to notification related endpoints
+* 4.6 support: Add `exclude_direct` to `account_statuses`,#
+* 4.6 support: Add `collection_ids` to `report`
+* 4.6 support: Add `unresolved` to `admin_reports`
+* 4.6 support: Add avatar and header description parameters to `account_update_credentials`
+* Allow status creation with both media attachments and a poll, as supported by Mastodon 4.6 and newer
 
 v2.2.2
 -------

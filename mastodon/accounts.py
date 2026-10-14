@@ -162,11 +162,11 @@ class Mastodon(Internals):
         """
         return self.account_verify_credentials()
 
-    @api_version("1.0.0", "2.8.0")
-    def account_statuses(self, id: Union[Account, IdType], only_media: bool = False, pinned: bool = False, exclude_replies: bool = False, 
-                         exclude_reblogs: bool = False, tagged: Optional[str] = None, max_id: Optional[Union[Status, IdType, datetime]] = None, 
+    @api_version("1.0.0", "4.6.0")
+    def account_statuses(self, id: Union[Account, IdType], only_media: bool = False, pinned: bool = False, exclude_replies: bool = False,
+                         exclude_reblogs: bool = False, tagged: Optional[str] = None, max_id: Optional[Union[Status, IdType, datetime]] = None,
                          min_id: Optional[Union[Status, IdType, datetime]] = None, since_id: Optional[Union[Status, IdType, datetime]] = None, 
-                         limit: Optional[int] = None) -> PaginatableList[Status]:
+                         limit: Optional[int] = None, exclude_direct: bool = False) -> PaginatableList[Status]:
         """
         Fetch statuses by user `id`. Same options as :ref:`timeline() <timeline()>` are permitted.
         Returned toots are from the perspective of the logged-in user, i.e.
@@ -178,6 +178,7 @@ class Mastodon(Internals):
         as of Mastodon 2.1.0, this only works properly for instance-local users.
         If `exclude_replies` is set, filter out all statuses that are replies.
         If `exclude_reblogs` is set, filter out all statuses that are reblogs.
+        If `exclude_direct` is set, filter out statuses with direct visibility.
         If `tagged` is set, return only statuses that are tagged with `tagged`. Only a single tag without a '#' is valid.
 
         Does not require authentication for Mastodon versions after 2.7.0 (returns
@@ -202,6 +203,8 @@ class Mastodon(Internals):
             del params["exclude_replies"]
         if not exclude_reblogs:
             del params["exclude_reblogs"]
+        if not exclude_direct:
+            del params["exclude_direct"]
 
         return self.__api_request('GET', f'/api/v1/accounts/{id}/statuses', params)
 
@@ -386,7 +389,7 @@ class Mastodon(Internals):
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/accounts/{id}/unmute')
 
-    @api_version("1.1.1", "4.2.0")
+    @api_version("1.1.1", "4.6.1")
     def account_update_credentials(self, display_name: Optional[str] = None, note: Optional[str] = None,
                                    avatar: Optional[PathOrFile] = None, avatar_mime_type: Optional[str] = None,
                                    header: Optional[PathOrFile] = None, header_mime_type: Optional[str] = None,
@@ -395,7 +398,9 @@ class Mastodon(Internals):
                                    hide_collections: Optional[bool] = None, indexable: Optional[bool] = None,
                                    attribution_domains: Optional[List[str]] = None,
                                    default_privacy: Optional[str] = None, default_sensitive: Optional[bool] = None,
-                                   default_language: Optional[str] = None, default_quote_policy: Optional[str] = None) -> Account:
+                                   default_language: Optional[str] = None, default_quote_policy: Optional[str] = None,
+                                   avatar_description: Optional[str] = None,
+                                   header_description: Optional[str] = None) -> Account:
         """
         Update the profile for the currently logged-in user.
 
@@ -403,6 +408,9 @@ class Mastodon(Internals):
 
         `avatar` and 'header' are images. As with media uploads, it is possible to either
         pass image data and a mime type, or a filename of an image file, for either.
+
+        `avatar_description` and `header_description` are plain-text descriptions of the
+        corresponding images for accessibility purposes.
 
         `locked` specifies whether the user needs to manually approve follow requests.
 
