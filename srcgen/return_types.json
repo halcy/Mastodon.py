@@ -4699,7 +4699,7 @@
     {
         "name": "Collection",
         "python_name": "Collection",
-        "func_call": "mastodon.search_v2('cats', result_type='collections').collections[0]",
+        "func_call": "mastodon.collection('TODO').collection",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
         "func_call_real": null,
         "func_call_additional": null,
@@ -4926,7 +4926,7 @@
     {
         "name": "Collection item",
         "python_name": "CollectionItem",
-        "func_call": "mastodon.search_v2('cats', result_type='collections').collections[0].items[0]",
+        "func_call": "mastodon.collection('TODO').collection.items[0]",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionItem/",
         "func_call_real": null,
         "func_call_additional": null,
@@ -12081,7 +12081,7 @@
     {
         "name": "Profile",
         "python_name": "Profile",
-        "func_call": "TODO",
+        "func_call": "mastodon.profile()",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Profile/",
@@ -12378,7 +12378,7 @@
     {
         "name": "Profile field",
         "python_name": "ProfileField",
-        "func_call": "TODO",
+        "func_call": "mastodon.profile().fields[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Profile/#Field",
@@ -12546,7 +12546,7 @@
     {
         "name": "Wrapped collection",
         "python_name": "WrappedCollection",
-        "func_call": "TODO",
+        "func_call": "WrappedCollection(collection=mastodon.collection('TODO').collection)",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
@@ -12573,7 +12573,7 @@
     {
         "name": "Collections",
         "python_name": "Collections",
-        "func_call": "TODO",
+        "func_call": "mastodon.account_collections(mastodon.me())",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
@@ -12600,7 +12600,7 @@
     {
         "name": "Collection with accounts",
         "python_name": "CollectionWithAccounts",
-        "func_call": "TODO",
+        "func_call": "mastodon.collection('TODO')",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionWithAccounts/",
@@ -12641,7 +12641,7 @@
     {
         "name": "Wrapped collection item",
         "python_name": "WrappedCollectionItem",
-        "func_call": "TODO",
+        "func_call": "WrappedCollectionItem(collection_item=mastodon.collection('TODO').collection.items[0])",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionItem/",
@@ -12751,9 +12751,41 @@
         }
     },
     {
+        "name": "Annual report state",
+        "python_name": "AnnualReportState",
+        "func_call": "mastodon.annual_report_state(1900)",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/methods/annual_reports/#get-state",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Represents the generation state of an annual report.",
+        "fields": {
+            "state": {
+                "description": "The current generation state of the annual report.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": {
+                    "available": "The annual report has been generated and is available.",
+                    "generating": "The annual report is currently being generated.",
+                    "eligible": "The annual report can be generated.",
+                    "ineligible": "The annual report cannot be generated."
+                }
+            }
+        }
+    },
+    {
         "name": "Annual report",
         "python_name": "AnnualReport",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_reports().annual_reports[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
@@ -12845,7 +12877,7 @@
     {
         "name": "Wrapped annual reports",
         "python_name": "WrappedAnnualReports",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_reports()",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",

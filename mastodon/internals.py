@@ -24,6 +24,7 @@ from mastodon.compat import urlparse, magic, PurePath, Path
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from mastodon.return_types import AttribAccessDict, PaginatableList, try_cast_recurse
 from mastodon.return_types import *
+from mastodon.types_base import EmptyResponse
 
 ###
 # Internal helpers, dragons probably
@@ -365,12 +366,21 @@ class Mastodon():
                     # within the new type system. This should be overall more robust.
                     response = response_object.json()
                 except Exception as e:
-                    raise MastodonAPIError(
-                        f"Could not parse response as JSON, response code was {response_object.status_code}, "
-                        f"bad json content was {response_object.content!r}.",
-                        f"Exception was: {e}"
-                    )
-                response, final_type = self.__try_cast_to_type(response, override_type = override_type)
+                    if response_object.content:
+                        raise MastodonAPIError(
+                            f"Could not parse response as JSON, response code was {response_object.status_code}, "
+                            f"bad json content was {response_object.content!r}.",
+                            f"Exception was: {e}"
+                        )
+                    response, final_type = self.__try_cast_to_type({}, override_type=override_type)
+                    if not isinstance(response, EmptyResponse):
+                        raise MastodonAPIError(
+                            f"Could not parse response as JSON, response code was {response_object.status_code}, "
+                            f"bad json content was {response_object.content!r}.",
+                            f"Exception was: {e}"
+                        )
+                else:
+                    response, final_type = self.__try_cast_to_type(response, override_type=override_type)
             else:
                 response = response_object.content
 

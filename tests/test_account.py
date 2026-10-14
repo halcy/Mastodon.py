@@ -154,8 +154,13 @@ def test_account_update_credentials(api):
     assert "example.com" in account.source["attribution_domains"]
     assert "another-example.com" in account.source["attribution_domains"]
 
-    api.account_delete_avatar()
-    api.account_delete_header()
+    account = api.account_delete_avatar()
+    assert account.id
+    assert account.avatar.endswith("/avatars/original/missing.png")
+
+    account = api.account_delete_header()
+    assert account.id
+    assert account.header.endswith("/headers/original/missing.png")
 
 
 @pytest.mark.vcr()

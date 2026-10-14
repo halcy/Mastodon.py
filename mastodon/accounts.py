@@ -542,16 +542,16 @@ class Mastodon(Internals):
         return self.__api_request('GET', f'/api/v1/accounts/{id}/featured_tags')
 
     @api_version("4.2.0", "4.2.0")
-    def account_delete_avatar(self) -> None:
+    def account_delete_avatar(self) -> Account:
         """
-        Delete the logged-in user's avatar.
+        Delete the logged-in user's avatar and return the updated account.
         """
-        self.__api_request('DELETE', '/api/v1/profile/avatar')
-    
+        return self.__api_request('DELETE', '/api/v1/profile/avatar')
+
     @api_version("4.2.0", "4.2.0")
-    def account_delete_header(self) -> None:
+    def account_delete_header(self) -> Account:
         """
-        Delete the logged-in user's header.
+        Delete the logged-in user's header and return the updated account.
         """
 
-        self.__api_request('DELETE', '/api/v1/profile/header')
+        return self.__api_request('DELETE', '/api/v1/profile/header')

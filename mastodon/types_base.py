@@ -878,6 +878,12 @@ class AttribAccessDict(OrderedStrDict, Entity):
                 pass
         return False
 
+class EmptyResponse(AttribAccessDict):
+    """
+    Type for endpoints that may return a successful response with no body,
+    but with metadata attached.
+    """
+
 WebpushCryptoParamsPubkey = Dict[str, str]
 """A type containing the parameters for a encrypting webpush data. Considered opaque / implementation detail."""
 
