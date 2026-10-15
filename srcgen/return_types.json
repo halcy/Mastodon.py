@@ -588,6 +588,15 @@
                     ]
                 ],
                 "enum": null
+            },
+            "state": {
+                "description": "State of the logged-in account. Only present on credential account responses. Contains functional, confirmed and approved booleans, a nullable error_code identifying why the account is not functional, and a nullable localized error message.",
+                "field_type": "CredentialAccountState",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
             }
         }
     },
@@ -722,6 +731,20 @@
                 "version_history": [
                     [
                         "4.0.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
+            },
+            "collection_limit": {
+                "description": "Maximum number of Collections that users with this role are allowed to create.",
+                "field_type": "int",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
                         "added"
                     ]
                 ],
@@ -909,6 +932,64 @@
                     "followers": "Only followers and author can quote",
                     "nobody": "Only author can quote"
                 }
+            }
+        }
+    },
+    {
+        "name": "Credential account state",
+        "python_name": "CredentialAccountState",
+        "func_call": "mastodon.account_verify_credentials().state",
+        "func_call_real": null,
+        "func_call_additional": null,
+        "masto_doc_link": "https://docs.joinmastodon.org/entities/Account/",
+        "func_alternate_acc": false,
+        "manual_update": false,
+        "description": "Describes whether the logged-in account is functional, confirmed and approved, and any reason why it cannot operate.",
+        "fields": {
+            "functional": {
+                "description": "Whether the account is currently functional.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
+            },
+            "confirmed": {
+                "description": "Whether the account has confirmed its email address.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
+            },
+            "approved": {
+                "description": "Whether the account has been approved.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
+            },
+            "error_code": {
+                "description": "The code identifying why the account is not functional, or None if there is no error.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [],
+                "enum": null
+            },
+            "error": {
+                "description": "A localized explanation of why the account is not functional, or None if there is no error.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": true,
+                "version_history": [],
+                "enum": null
             }
         }
     },
@@ -1832,7 +1913,7 @@
         "func_call_real": "mastodon.status_post(\"posting in the far future\", scheduled_at=datetime(2100,12,12))",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/ScheduledStatus/",
         "func_call_additional": null,
-        "func_alternate_acc": false,
+        "func_alternate_acc": true,
         "manual_update": false,
         "description": "A scheduled status / toot to be eventually posted.",
         "fields": {
@@ -1900,7 +1981,7 @@
         "func_call_real": "mastodon.status_post(\"posting in the far future\", scheduled_at=datetime(2100,12,12)).params",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/ScheduledStatus/",
         "func_call_additional": null,
-        "func_alternate_acc": false,
+        "func_alternate_acc": true,
         "manual_update": false,
         "description": "Parameters for a status / toot to be posted in the future.",
         "fields": {
@@ -4699,7 +4780,7 @@
     {
         "name": "Collection",
         "python_name": "Collection",
-        "func_call": "mastodon.collection('TODO').collection",
+        "func_call": "mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0]",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
         "func_call_real": null,
         "func_call_additional": null,
@@ -4908,6 +4989,7 @@
                 "enum": null
             },
             "items": {
+                "python_name": "collection_items",
                 "description": "The items in this Collection.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "CollectionItem",
@@ -4926,7 +5008,7 @@
     {
         "name": "Collection item",
         "python_name": "CollectionItem",
-        "func_call": "mastodon.collection('TODO').collection.items[0]",
+        "func_call": "mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0].collection_items[0]",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionItem/",
         "func_call_real": null,
         "func_call_additional": null,
@@ -7121,6 +7203,24 @@
                         "added"
                     ]
                 ]
+            },
+            "optInServerDirectory": {
+                "description": "Whether the server opts in to being listed in server directories, such as the directory on joinmastodon.org.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
+            },
+            "optInServerRecommendation": {
+                "description": "Whether the server opts in to being recommended during sign-up in applications such as the official Mastodon clients.",
+                "field_type": "bool",
+                "field_subtype": null,
+                "is_optional": true,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
             }
         }
     },
@@ -10634,6 +10734,19 @@
                 "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false
+            },
+            "for_bots": {
+                "description": "Whether to accept, filter or drop eligible notifications from bot accounts that the user does not follow.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": {
+                    "accept": "Accept notifications.",
+                    "filter": "Mark notifications as filtered.",
+                    "drop": "Prevent creation of the notification object altogether."
+                }
             }
         }
     },
@@ -11018,6 +11131,20 @@
                 "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false
+            },
+            "avatar_description": {
+                "description": "A textual description of the avatar image.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [
+                    [
+                        "4.6.0",
+                        "added"
+                    ]
+                ],
+                "enum": null
             }
         }
     },
@@ -12372,6 +12499,25 @@
                     ]
                 ],
                 "enum": null
+            },
+            "formatted_note": {
+                "description": "The profile biography rendered as HTML, alongside the raw text in note.",
+                "field_type": "str",
+                "field_subtype": null,
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null,
+                "field_structuretype": "HTML"
+            },
+            "formatted_fields": {
+                "description": "Profile metadata fields with HTML-rendered values. Each field contains name, value and verified_at, alongside the raw fields in fields.",
+                "field_type": "NonPaginatableList",
+                "field_subtype": "AccountField",
+                "is_optional": false,
+                "is_nullable": false,
+                "version_history": [],
+                "enum": null
             }
         }
     },
@@ -12433,7 +12579,7 @@
     {
         "name": "Shallow tag",
         "python_name": "ShallowTag",
-        "func_call": "mastodon.search_v2('cats', result_type='collections').collections[0].tag",
+        "func_call": "mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0].tag",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/ShallowTag/",
@@ -12476,7 +12622,7 @@
         "name": "Feature approval",
         "python_name": "FeatureApproval",
         "func_call": "mastodon.account(<account id>).feature_approval",
-        "func_call_real": null,
+        "func_call_real": "mastodon.account(23972).feature_approval",
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/FeatureApproval/",
         "func_alternate_acc": false,
@@ -12546,12 +12692,12 @@
     {
         "name": "Wrapped collection",
         "python_name": "WrappedCollection",
-        "func_call": "WrappedCollection(collection=mastodon.collection('TODO').collection)",
-        "func_call_real": null,
+        "func_call": "mastodon.collection_create('Example collection')",
+        "func_call_real": "WrappedCollection(collection=mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0])",
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "A Collection wrapped in an extensible response object. Used by endpoints that do not return full collection data.",
         "fields": {
             "collection": {
@@ -12578,7 +12724,7 @@
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "A list of Collections wrapped in an extensible response object.",
         "fields": {
             "collections": {
@@ -12600,7 +12746,7 @@
     {
         "name": "Collection with accounts",
         "python_name": "CollectionWithAccounts",
-        "func_call": "mastodon.collection('TODO')",
+        "func_call": "mastodon.collection('117412545986727508')",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionWithAccounts/",
@@ -12641,12 +12787,12 @@
     {
         "name": "Wrapped collection item",
         "python_name": "WrappedCollectionItem",
-        "func_call": "WrappedCollectionItem(collection_item=mastodon.collection('TODO').collection.items[0])",
-        "func_call_real": null,
+        "func_call": "mastodon.collection_item_add('<collection id>', '<account id>')",
+        "func_call_real": "WrappedCollectionItem(collection_item=mastodon.collection('117412545986727508').collection.collection_items[0])",
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/CollectionItem/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "A CollectionItem wrapped in an extensible response object. Used by endpoints that do not return full collection data.",
         "fields": {
             "collection_item": {
@@ -12668,12 +12814,12 @@
     {
         "name": "Notification fallback",
         "python_name": "NotificationFallback",
-        "func_call": "TODO",
+        "func_call": "next(notification.fallback for notification in mastodon.notifications(supported_types=['follow']) if notification.fallback is not None)",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/NotificationFallback/",
         "func_alternate_acc": false,
-        "manual_update": false,
+        "manual_update": true,
         "description": "Represents a fallback rendering for a notification type the client does not support.",
         "fields": {
             "title": {
@@ -12731,7 +12877,7 @@
         "func_call_additional": null,
         "masto_doc_link": null,
         "func_alternate_acc": false,
-        "manual_update": false,
+        "manual_update": true,
         "description": "Represents an annual report becoming available in a grouped notification.",
         "fields": {
             "year": {
@@ -12785,9 +12931,9 @@
     {
         "name": "Annual report",
         "python_name": "AnnualReport",
-        "func_call": "mastodon.annual_reports().annual_reports[0]",
+        "func_call": "mastodon.annual_report(2025).annual_reports[0]",
         "func_call_real": null,
-        "func_call_additional": null,
+        "func_call_additional": "mastodon.annual_report(2024).annual_reports[0]",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
         "manual_update": false,
@@ -12877,12 +13023,12 @@
     {
         "name": "Wrapped annual reports",
         "python_name": "WrappedAnnualReports",
-        "func_call": "mastodon.annual_reports()",
+        "func_call": "mastodon.annual_report(2025)",
         "func_call_real": null,
-        "func_call_additional": null,
+        "func_call_additional": "mastodon.annual_report(2024)",
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "One or more AnnualReports wrapped with referenced Account and Status entities.",
         "fields": {
             "annual_reports": {
@@ -12932,12 +13078,12 @@
     {
         "name": "Annual report data (schema version 2)",
         "python_name": "AnnualReportDataV2",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2025).annual_reports[0].data",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "The data payload of an AnnualReport with `schema_version` 2.",
         "fields": {
             "archetype": {
@@ -13007,12 +13153,12 @@
     {
         "name": "Annual report data (schema version 1)",
         "python_name": "AnnualReportDataV1",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "The data payload of an AnnualReport with `schema_version` 1.",
         "fields": {
             "archetype": {
@@ -13152,12 +13298,12 @@
     {
         "name": "Annual report top statuses (schema version 2)",
         "python_name": "AnnualReportTopStatusesV2",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2025).annual_reports[0].data.top_statuses",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "Status IDs selected for an AnnualReport schema version 2 payload.",
         "fields": {
             "by_reblogs": {
@@ -13207,12 +13353,12 @@
     {
         "name": "Annual report top statuses (schema version 1)",
         "python_name": "AnnualReportTopStatusesV1",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data.top_statuses",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "Status IDs selected for an AnnualReport schema version 1 payload.",
         "fields": {
             "by_reblogs": {
@@ -13262,12 +13408,12 @@
     {
         "name": "Annual report time-series entry (schema version 2)",
         "python_name": "AnnualReportTimeSeriesEntryV2",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2025).annual_reports[0].data.time_series[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "The cumulative year-end activity entry in an AnnualReport schema version 2 payload.",
         "fields": {
             "month": {
@@ -13317,12 +13463,12 @@
     {
         "name": "Annual report time-series entry (schema version 1)",
         "python_name": "AnnualReportTimeSeriesEntryV1",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data.time_series[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "One month of activity in an AnnualReport schema version 1 payload.",
         "fields": {
             "month": {
@@ -13386,12 +13532,12 @@
     {
         "name": "Annual report type distribution",
         "python_name": "AnnualReportTypeDistribution",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data.type_distribution",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "A breakdown of statuses by type in an AnnualReport schema version 1 payload.",
         "fields": {
             "total": {
@@ -13455,12 +13601,12 @@
     {
         "name": "Annual report name and count",
         "python_name": "AnnualReportNameAndCount",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data.most_used_apps[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "A named annual-report item and the number of times it occurred.",
         "fields": {
             "name": {
@@ -13496,7 +13642,7 @@
     {
         "name": "Annual report account and count",
         "python_name": "AnnualReportAccountAndCount",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data.commonly_interacted_with_accounts[0]",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
@@ -13537,12 +13683,12 @@
     {
         "name": "Annual report percentiles",
         "python_name": "AnnualReportPercentiles",
-        "func_call": "TODO",
+        "func_call": "mastodon.annual_report(2024).annual_reports[0].data.percentiles",
         "func_call_real": null,
         "func_call_additional": null,
         "masto_doc_link": "https://docs.joinmastodon.org/entities/AnnualReport/",
         "func_alternate_acc": false,
-        "manual_update": true,
+        "manual_update": false,
         "description": "Posting-activity percentiles in an AnnualReport schema version 1 payload.",
         "fields": {
             "statuses": {

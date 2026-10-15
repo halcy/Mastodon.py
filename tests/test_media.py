@@ -45,7 +45,7 @@ def test_media_post(api, sensitive):
     assert media
     assert media.url is None
 
-    time.sleep(10)
+    time.sleep(20)
     media2 = api.media(media)
     assert media2.id == media.id
     assert media2.url is not None

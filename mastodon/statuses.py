@@ -165,9 +165,6 @@ class Mastodon(Internals):
         if params_initial['language'] is None:
             del params_initial['language']
 
-        if params_initial['sensitive'] is False:
-            del params_initial['sensitive']
-
         headers = {}
         if idempotency_key is not None:
             headers['Idempotency-Key'] = idempotency_key

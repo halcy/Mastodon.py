@@ -55,7 +55,7 @@ def test_list_timeline(api, api2, mastodon_list):
     api.list_accounts_add(mastodon_list, user)
     
     status = api2.status_post("I have never stolen a ham in my life.", visibility="public")
-    time.sleep(2)
+    time.sleep(10)
     assert any(x.id == status.id for x in api.timeline_list(mastodon_list))
 
     api2.status_delete(status)

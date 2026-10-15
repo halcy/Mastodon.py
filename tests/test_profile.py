@@ -11,7 +11,7 @@ def test_profile(api):
     assert profile.id == api.account_verify_credentials().id
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['method', 'path', 'query'])
 def test_profile_update(api):
     original = api.profile()
     with open('tests/image.jpg', 'rb') as image_file:
@@ -89,3 +89,22 @@ def test_profile_update(api):
         )
         api.account_delete_avatar()
         api.account_delete_header()
+
+
+def test_profile_update_image_descriptions(api, requests_mock):
+    from urllib.parse import parse_qs
+
+    requests_mock.patch('http://localhost:3000/api/v1/profile', json={
+        'id': '123',
+        'avatar_description': 'Avatar alt text',
+        'header_description': 'Header alt text',
+    })
+    profile = api.profile_update(
+        avatar_description='Avatar alt text',
+        header_description='Header alt text',
+    )
+    params = parse_qs(requests_mock.last_request.text)
+    assert params['avatar_description'] == ['Avatar alt text']
+    assert params['header_description'] == ['Header alt text']
+    assert profile.avatar_description == 'Avatar alt text'
+    assert profile.header_description == 'Header alt text'

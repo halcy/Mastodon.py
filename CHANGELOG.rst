@@ -20,7 +20,8 @@ v2.2.3 (WIP)
 * 4.6 support: Add collections support: `collection_create`, `collection`, `account_collections`, `account_in_collections`, `collection_update`, `collection_delete`, `collection_item_add`, `collection_item_delete`, and `collection_item_revoke`
 * 4.6 support: Add annual reports / year in review support: `annual_reports`, `annual_report`, `annual_report_state`, `annual_report_read`, and `annual_report_generate`, including previously unsupported endpoints introduced in 4.3 and 4.4
 * Allow status creation with both media attachments and a poll, as supported by Mastodon 4.6 and newer
-* Various small bugfixes
+* Various small bug and documentation fixes
+* Tests: Streaming test recording now works on newer Python versions
 
 v2.2.2
 -------

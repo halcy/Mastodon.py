@@ -4,9 +4,6 @@ from mastodon.return_types import *
 from mastodon.types_base import real_issubclass, Entity
 from datetime import datetime, timedelta, timezone
 import sys
-
-import warnings
-from mastodon.errors import MastodonDeprecationWarning
       
 # "never record anything with admin in the URL" filter
 def vcr_filter(request):
@@ -106,6 +103,23 @@ def test_entity_credentialaccountsource(mastodon_base, mastodon_admin):
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), CredentialAccountSource), str(type(result)) + ' is not a subclass of CredentialAccountSource after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_credentialaccountstate(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.account_verify_credentials().state
+    assert real_issubclass(type(result), CredentialAccountState), str(type(result)) + ' is not a subclass of CredentialAccountState'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), CredentialAccountState), str(type(result)) + ' is not a subclass of CredentialAccountState after to_json/from_json'
 
 @pytest.mark.vcr(
     filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
@@ -246,7 +260,7 @@ def test_entity_statusmention(mastodon_base, mastodon_admin):
     cassette_library_dir='tests/cassettes_entity_tests'
 )
 def test_entity_scheduledstatus(mastodon_base, mastodon_admin):
-    mastodon = mastodon_base
+    mastodon = mastodon_admin
     result = mastodon.status_post("posting in the far future", scheduled_at=datetime(2100,12,12))
     assert real_issubclass(type(result), ScheduledStatus), str(type(result)) + ' is not a subclass of ScheduledStatus'
     result = Entity.from_json(result.to_json())
@@ -263,7 +277,7 @@ def test_entity_scheduledstatus(mastodon_base, mastodon_admin):
     cassette_library_dir='tests/cassettes_entity_tests'
 )
 def test_entity_scheduledstatusparams(mastodon_base, mastodon_admin):
-    mastodon = mastodon_base
+    mastodon = mastodon_admin
     result = mastodon.status_post("posting in the far future", scheduled_at=datetime(2100,12,12)).params
     assert real_issubclass(type(result), ScheduledStatusParams), str(type(result)) + ' is not a subclass of ScheduledStatusParams'
     result = Entity.from_json(result.to_json())
@@ -417,10 +431,7 @@ def test_entity_relationship(mastodon_base, mastodon_admin):
 )
 def test_entity_filter(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    # Ignore MastodonDeprecationWarning
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", MastodonDeprecationWarning)
-        result = mastodon.filters()[0]
+    result = mastodon.filters()[0]
     assert real_issubclass(type(result), Filter), str(type(result)) + ' is not a subclass of Filter'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -705,11 +716,43 @@ def test_entity_searchv2(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+def test_entity_collection(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0]
+    assert real_issubclass(type(result), Collection), str(type(result)) + ' is not a subclass of Collection'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), Collection), str(type(result)) + ' is not a subclass of Collection after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_collectionitem(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0].collection_items[0]
+    assert real_issubclass(type(result), CollectionItem), str(type(result)) + ' is not a subclass of CollectionItem'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), CollectionItem), str(type(result)) + ' is not a subclass of CollectionItem after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
 def test_entity_instance(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", MastodonDeprecationWarning)
-        result = mastodon.instance_v1()
+    result = mastodon.instance_v1()
     assert real_issubclass(type(result), Instance), str(type(result)) + ' is not a subclass of Instance'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -726,9 +769,7 @@ def test_entity_instance(mastodon_base, mastodon_admin):
 )
 def test_entity_instanceconfiguration(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", MastodonDeprecationWarning)
-        result = mastodon.instance_v1().configuration
+    result = mastodon.instance_v1().configuration
     assert real_issubclass(type(result), InstanceConfiguration), str(type(result)) + ' is not a subclass of InstanceConfiguration'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -745,17 +786,12 @@ def test_entity_instanceconfiguration(mastodon_base, mastodon_admin):
 )
 def test_entity_instanceurls(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    # Ignore MastodonDeprecationWarning
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", MastodonDeprecationWarning)
-        result = mastodon.instance_v1().urls
+    result = mastodon.instance_v1().urls
     assert real_issubclass(type(result), InstanceURLs), str(type(result)) + ' is not a subclass of InstanceURLs'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), InstanceURLs), str(type(result)) + ' is not a subclass of InstanceURLs after to_json/from_json'
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", MastodonDeprecationWarning)
-        result = mastodon.instance_v1().urls
+    result = mastodon.instance_v1().urls
     assert real_issubclass(type(result), InstanceURLs), str(type(result)) + ' is not a subclass of InstanceURLs (additional function)'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -891,10 +927,7 @@ def test_entity_instancethumbnailversions(mastodon_base, mastodon_admin):
 )
 def test_entity_instancestatistics(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
-    # Ignore MastodonDeprecationWarning
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=MastodonDeprecationWarning)
-        result = mastodon.instance_v1().stats
+    result = mastodon.instance_v1().stats
     assert real_issubclass(type(result), InstanceStatistics), str(type(result)) + ' is not a subclass of InstanceStatistics'
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
@@ -1908,4 +1941,354 @@ def test_entity_termsofservice(mastodon_base, mastodon_admin):
     result = Entity.from_json(result.to_json())
     if sys.version_info >= (3, 9):
         assert real_issubclass(type(result), TermsOfService), str(type(result)) + ' is not a subclass of TermsOfService after to_json/from_json (additional function)'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_profile(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.profile()
+    assert real_issubclass(type(result), Profile), str(type(result)) + ' is not a subclass of Profile'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), Profile), str(type(result)) + ' is not a subclass of Profile after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_profilefield(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.profile().fields[0]
+    assert real_issubclass(type(result), ProfileField), str(type(result)) + ' is not a subclass of ProfileField'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), ProfileField), str(type(result)) + ' is not a subclass of ProfileField after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_shallowtag(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0].tag
+    assert real_issubclass(type(result), ShallowTag), str(type(result)) + ' is not a subclass of ShallowTag'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), ShallowTag), str(type(result)) + ' is not a subclass of ShallowTag after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_featureapproval(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.account(23972).feature_approval
+    assert real_issubclass(type(result), FeatureApproval), str(type(result)) + ' is not a subclass of FeatureApproval'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), FeatureApproval), str(type(result)) + ' is not a subclass of FeatureApproval after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_wrappedcollection(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = WrappedCollection(collection=mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0])
+    assert real_issubclass(type(result), WrappedCollection), str(type(result)) + ' is not a subclass of WrappedCollection'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), WrappedCollection), str(type(result)) + ' is not a subclass of WrappedCollection after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_collections(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.account_collections(mastodon.me())
+    assert real_issubclass(type(result), Collections), str(type(result)) + ' is not a subclass of Collections'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), Collections), str(type(result)) + ' is not a subclass of Collections after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_collectionwithaccounts(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.collection('117412545986727508')
+    assert real_issubclass(type(result), CollectionWithAccounts), str(type(result)) + ' is not a subclass of CollectionWithAccounts'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), CollectionWithAccounts), str(type(result)) + ' is not a subclass of CollectionWithAccounts after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_wrappedcollectionitem(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = WrappedCollectionItem(collection_item=mastodon.collection('117412545986727508').collection.collection_items[0])
+    assert real_issubclass(type(result), WrappedCollectionItem), str(type(result)) + ' is not a subclass of WrappedCollectionItem'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), WrappedCollectionItem), str(type(result)) + ' is not a subclass of WrappedCollectionItem after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreportstate(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report_state(1900)
+    assert real_issubclass(type(result), AnnualReportState), str(type(result)) + ' is not a subclass of AnnualReportState'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportState), str(type(result)) + ' is not a subclass of AnnualReportState after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreport(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2025).annual_reports[0]
+    assert real_issubclass(type(result), AnnualReport), str(type(result)) + ' is not a subclass of AnnualReport'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReport), str(type(result)) + ' is not a subclass of AnnualReport after to_json/from_json'
+    result = mastodon.annual_report(2024).annual_reports[0]
+    assert real_issubclass(type(result), AnnualReport), str(type(result)) + ' is not a subclass of AnnualReport (additional function)'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReport), str(type(result)) + ' is not a subclass of AnnualReport after to_json/from_json (additional function)'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_wrappedannualreports(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2025)
+    assert real_issubclass(type(result), WrappedAnnualReports), str(type(result)) + ' is not a subclass of WrappedAnnualReports'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), WrappedAnnualReports), str(type(result)) + ' is not a subclass of WrappedAnnualReports after to_json/from_json'
+    result = mastodon.annual_report(2024)
+    assert real_issubclass(type(result), WrappedAnnualReports), str(type(result)) + ' is not a subclass of WrappedAnnualReports (additional function)'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), WrappedAnnualReports), str(type(result)) + ' is not a subclass of WrappedAnnualReports after to_json/from_json (additional function)'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreportdatav2(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2025).annual_reports[0].data
+    assert real_issubclass(type(result), AnnualReportDataV2), str(type(result)) + ' is not a subclass of AnnualReportDataV2'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportDataV2), str(type(result)) + ' is not a subclass of AnnualReportDataV2 after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreportdatav1(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2024).annual_reports[0].data
+    assert real_issubclass(type(result), AnnualReportDataV1), str(type(result)) + ' is not a subclass of AnnualReportDataV1'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportDataV1), str(type(result)) + ' is not a subclass of AnnualReportDataV1 after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreporttopstatusesv2(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2025).annual_reports[0].data.top_statuses
+    assert real_issubclass(type(result), AnnualReportTopStatusesV2), str(type(result)) + ' is not a subclass of AnnualReportTopStatusesV2'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportTopStatusesV2), str(type(result)) + ' is not a subclass of AnnualReportTopStatusesV2 after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreporttopstatusesv1(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2024).annual_reports[0].data.top_statuses
+    assert real_issubclass(type(result), AnnualReportTopStatusesV1), str(type(result)) + ' is not a subclass of AnnualReportTopStatusesV1'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportTopStatusesV1), str(type(result)) + ' is not a subclass of AnnualReportTopStatusesV1 after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreporttimeseriesentryv2(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2025).annual_reports[0].data.time_series[0]
+    assert real_issubclass(type(result), AnnualReportTimeSeriesEntryV2), str(type(result)) + ' is not a subclass of AnnualReportTimeSeriesEntryV2'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportTimeSeriesEntryV2), str(type(result)) + ' is not a subclass of AnnualReportTimeSeriesEntryV2 after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreporttimeseriesentryv1(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2024).annual_reports[0].data.time_series[0]
+    assert real_issubclass(type(result), AnnualReportTimeSeriesEntryV1), str(type(result)) + ' is not a subclass of AnnualReportTimeSeriesEntryV1'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportTimeSeriesEntryV1), str(type(result)) + ' is not a subclass of AnnualReportTimeSeriesEntryV1 after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreporttypedistribution(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2024).annual_reports[0].data.type_distribution
+    assert real_issubclass(type(result), AnnualReportTypeDistribution), str(type(result)) + ' is not a subclass of AnnualReportTypeDistribution'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportTypeDistribution), str(type(result)) + ' is not a subclass of AnnualReportTypeDistribution after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreportnameandcount(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2024).annual_reports[0].data.most_used_apps[0]
+    assert real_issubclass(type(result), AnnualReportNameAndCount), str(type(result)) + ' is not a subclass of AnnualReportNameAndCount'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportNameAndCount), str(type(result)) + ' is not a subclass of AnnualReportNameAndCount after to_json/from_json'
+
+@pytest.mark.vcr(
+    filter_query_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_post_data_parameters=[('access_token', 'DUMMY'), ('client_id', 'DUMMY'), ('client_secret', 'DUMMY')],
+    filter_headers=[('Authorization', 'DUMMY')],
+    before_record_request=vcr_filter,
+    before_record_response=token_scrubber,
+    match_on=['method', 'uri'],
+    cassette_library_dir='tests/cassettes_entity_tests'
+)
+def test_entity_annualreportpercentiles(mastodon_base, mastodon_admin):
+    mastodon = mastodon_base
+    result = mastodon.annual_report(2024).annual_reports[0].data.percentiles
+    assert real_issubclass(type(result), AnnualReportPercentiles), str(type(result)) + ' is not a subclass of AnnualReportPercentiles'
+    result = Entity.from_json(result.to_json())
+    if sys.version_info >= (3, 9):
+        assert real_issubclass(type(result), AnnualReportPercentiles), str(type(result)) + ' is not a subclass of AnnualReportPercentiles after to_json/from_json'
 

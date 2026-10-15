@@ -184,19 +184,29 @@ def test_account_statuses_exclude_direct(api, api2):
 
 @pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials_source_and_privacy(api):
-    account = api.account_update_credentials(
-        hide_collections=True,
-        indexable=True,
-        default_privacy='unlisted',
-        default_sensitive=True,
-        default_language='en',
-    )
-    assert account
-    assert account.hide_collections == True
-    assert account.indexable == True
-    assert account.source.privacy == 'unlisted'
-    assert account.source.sensitive == True
-    assert account.source.language == 'en'
+    original = api.account_verify_credentials()
+    try:
+        account = api.account_update_credentials(
+            hide_collections=True,
+            indexable=True,
+            default_privacy='unlisted',
+            default_sensitive=True,
+            default_language='en',
+        )
+        assert account
+        assert account.hide_collections == True
+        assert account.indexable == True
+        assert account.source.privacy == 'unlisted'
+        assert account.source.sensitive == True
+        assert account.source.language == 'en'
+    finally:
+        api.account_update_credentials(
+            hide_collections=original.hide_collections,
+            indexable=original.indexable,
+            default_privacy=original.source.privacy,
+            default_sensitive=original.source.sensitive,
+            default_language=original.source.language or "",
+        )
 
 @pytest.mark.vcr(match_on=['path'])
 def test_account_update_credentials_quote_policy(api, api2):
@@ -372,17 +382,19 @@ def test_preferences(api):
 
 @pytest.mark.vcr()
 def test_suggested_tags(api):
-    status = None
+    statuses = []
     try:
-        status = api.status_post("cool free #ringtones")
+        statuses.append(api.status_post("cool free #ringtones"))
+        statuses.append(api.status_post("even more cool free #ringtones"))
         time.sleep(2)
-        
+
         suggests = api.featured_tag_suggestions()
-        assert suggests
-        assert len(suggests) > 0
+        assert any(tag.name == "ringtones" for tag in suggests)
     finally:
-        api.status_delete(status)
+        for status in statuses:
+            api.status_delete(status)
     
+
 @pytest.mark.vcr()
 def test_featured_tags(api):
     featured_tag = None

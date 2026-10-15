@@ -4,6 +4,7 @@ from datetime import timezone, datetime, timedelta
 from contextlib import closing
 import mimetypes
 import threading
+from typing import List, Optional, Union
 import uuid
 import dateutil.parser
 import time
@@ -15,6 +16,7 @@ import base64
 import os
 import inspect
 import warnings
+from mastodon.types_base import IdType
 
 from mastodon.versions import parse_version_string
 from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
@@ -684,7 +686,7 @@ class Mastodon():
 
         return params
 
-    def __unpack_id(self, id, dateconv = False, listify = False, field = "id"):
+    def __unpack_id(self, id, dateconv = False, listify = False, field = "id") -> Optional[Union[IdType, List[IdType]]]:
         """
         Internal object-to-id converter
 

@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: status=posting+in+the+far+future&scheduled_at=2100-12-11T22%3A00%3A00%2B00%3A00
+    body: status=posting+in+the+far+future&sensitive=0&scheduled_at=2100-12-11T22%3A00%3A00%2B00%3A00
     headers:
       Accept:
       - '*/*'
@@ -11,60 +11,48 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '79'
+      - '91'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
       - mastodonpy
     method: POST
-    uri: https://mastodon.social/api/v1/statuses
+    uri: https://icosahedron.website/api/v1/statuses
   response:
     body:
-      string: '{"id": "259505", "scheduled_at": "2100-12-11T22:00:00.000Z", "params":
+      string: '{"id": "122", "scheduled_at": "2100-12-11T22:00:00.000Z", "params":
         {"text": "posting in the far future", "quote_approval_policy": "public", "media_ids":
-        null, "sensitive": null, "spoiler_text": null, "visibility": null, "language":
+        null, "sensitive": "0", "spoiler_text": null, "visibility": null, "language":
         null, "scheduled_at": null, "poll": null, "allowed_mentions": null, "idempotency":
         null, "with_rate_limit": false, "in_reply_to_id": null, "application_id":
-        7537082, "quoted_status_id": null}, "media_attachments": []}'
+        4828, "quoted_status_id": null}, "media_attachments": []}'
     headers:
-      Accept-Ranges:
-      - none
       Connection:
       - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
       Date:
-      - Sat, 11 Apr 2026 23:14:17 GMT
-      Strict-Transport-Security:
-      - max-age=31557600
+      - Thu, 15 Oct 2026 16:59:02 GMT
+      Transfer-Encoding:
+      - chunked
       Vary:
-      - Authorization, Origin, Accept-Encoding
-      Via:
-      - 1.1 varnish, 1.1 varnish
-      X-Cache:
-      - MISS, MISS, MISS
-      X-Cache-Hits:
-      - 0, 0, 0
-      X-Served-By:
-      - cache-fra-etou8220157-FRA, cache-fra-etou8220198-FRA, cache-hel1410031-HEL
-      X-Timer:
-      - S1775949257.203133,VS0,VE123
-      alt-svc:
-      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+      - Accept-Encoding
+      - Authorization, Origin
       cache-control:
       - private, no-store
       content-length:
-      - '472'
+      - '465'
       content-security-policy:
       - default-src 'none'; frame-ancestors 'none'; form-action 'none'
-      content-type:
-      - application/json; charset=utf-8
       etag:
-      - W/"dcea3e3e7da30ef96ca553eabb5b2dce"
+      - W/"09b06ba0e2bc56aea281a4c1be4e2d53"
       referrer-policy:
       - same-origin
       server:
       - Mastodon
-      transfer-encoding:
-      - chunked
+      strict-transport-security:
+      - max-age=63072000; includeSubDomains
+      - max-age=31536000
       x-content-type-options:
       - nosniff
       x-frame-options:
@@ -72,13 +60,13 @@ interactions:
       x-ratelimit-limit:
       - '300'
       x-ratelimit-remaining:
-      - '274'
+      - '296'
       x-ratelimit-reset:
-      - '2026-04-12T00:00:00.299615Z'
+      - '2026-10-15T18:00:00.142011Z'
       x-request-id:
-      - 1221a799-6a2d-47bd-b34a-6655b2cf89db
+      - 5b4d1212-36ed-41e9-a243-4ea048850160
       x-runtime:
-      - '0.059188'
+      - '0.024529'
       x-xss-protection:
       - '0'
     status:

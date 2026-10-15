@@ -271,7 +271,7 @@ if sys.version_info < (3, 9):
     def resolve_type(t):
         # I'm sorry about this, but I cannot think of another way to make this work properly in versions below 3.9 that
         # cannot resolve forward references in a sane way
-        from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, \
+        from mastodon.return_types import Account, AccountField, Role, CredentialAccountSource, CredentialAccountState, \
             Status, Quote, ShallowQuote, QuoteApproval, StatusEdit, FilterResult, \
             StatusMention, ScheduledStatus, ScheduledStatusParams, Poll, PollOption, Conversation, \
             Tag, TagHistory, CustomEmoji, Application, Relationship, Filter, \
@@ -282,16 +282,20 @@ if sys.version_info < (3, 9):
             InstanceVapidKey, InstanceURLsV2, InstanceThumbnail, InstanceThumbnailVersions, InstanceStatistics, InstanceUsage, \
             InstanceUsageUsers, RuleTranslation, Rule, InstanceRegistrations, InstanceContact, InstanceAccountConfiguration, \
             InstanceStatusConfiguration, InstanceTranslationConfiguration, InstanceMediaConfiguration, InstancePollConfiguration, InstanceTimelinesAccessConfiguration, InstanceTimelinesAccessFeedConfiguration, \
-            InstanceAnnualReportCampaign, Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, \
-            NodeinfoMetadata, Activity, Report, AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, \
-            PushNotification, Preferences, FeaturedTag, Marker, Announcement, Reaction, \
-            StreamReaction, FamiliarFollowers, AdminAccount, AdminIp, AdminMeasure, AdminMeasureData, \
-            AdminDimension, AdminDimensionData, AdminRetention, AdminCohort, AdminDomainBlock, AdminCanonicalEmailBlock, \
-            AdminDomainAllow, AdminEmailDomainBlock, AdminEmailDomainBlockHistory, AdminIpBlock, DomainBlock, ExtendedDescription, \
-            FilterKeyword, FilterStatus, IdentityProof, StatusSource, Suggestion, Translation, \
-            AccountCreationError, AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, NotificationPolicySummary, RelationshipSeveranceEvent, \
-            GroupedNotificationsResults, PartialAccountWithAvatar, NotificationGroup, AccountWarning, UnreadNotificationsCount, Appeal, \
-            NotificationRequest, SupportedLocale, OAuthServerInfo, OAuthUserInfo, TermsOfService, AsyncRefresh
+            Nodeinfo, NodeinfoSoftware, NodeinfoServices, NodeinfoUsage, NodeinfoUsageUsers, NodeinfoMetadata, \
+            Activity, Report, AdminReport, WebPushSubscription, WebPushSubscriptionAlerts, PushNotification, \
+            Preferences, FeaturedTag, Marker, Announcement, Reaction, StreamReaction, \
+            FamiliarFollowers, AdminAccount, AdminIp, AdminMeasure, AdminMeasureData, AdminDimension, \
+            AdminDimensionData, AdminRetention, AdminCohort, AdminDomainBlock, AdminCanonicalEmailBlock, AdminDomainAllow, \
+            AdminEmailDomainBlock, AdminEmailDomainBlockHistory, AdminIpBlock, DomainBlock, ExtendedDescription, FilterKeyword, \
+            FilterStatus, IdentityProof, StatusSource, Suggestion, Translation, AccountCreationError, \
+            AccountCreationErrorDetails, AccountCreationErrorDetailsField, NotificationPolicy, NotificationPolicySummary, RelationshipSeveranceEvent, GroupedNotificationsResults, \
+            PartialAccountWithAvatar, NotificationGroup, AccountWarning, UnreadNotificationsCount, Appeal, NotificationRequest, \
+            SupportedLocale, OAuthServerInfo, OAuthUserInfo, TermsOfService, AsyncRefresh, Profile, \
+            ProfileField, ShallowTag, FeatureApproval, WrappedCollection, Collections, CollectionWithAccounts, \
+            WrappedCollectionItem, NotificationFallback, AnnualReportEvent, AnnualReportState, AnnualReport, WrappedAnnualReports, \
+            AnnualReportDataV2, AnnualReportDataV1, AnnualReportTopStatusesV2, AnnualReportTopStatusesV1, AnnualReportTimeSeriesEntryV2, AnnualReportTimeSeriesEntryV1, \
+            AnnualReportTypeDistribution, AnnualReportNameAndCount, AnnualReportAccountAndCount, AnnualReportPercentiles
         if isinstance(t, ForwardRef):
             try:
                 t = t._evaluate(globals(), locals(), frozenset())
@@ -413,6 +417,8 @@ def try_cast(t, value, retry = True, union_specializer = None):
             return value
     try:
         if real_issubclass(t, AttribAccessDict):
+            if isinstance(value, get_type_class(t)):
+                return value
             if union_specializer is not None:
                 value["__union_specializer"] = union_specializer
             value = t(**value)
@@ -581,8 +587,13 @@ class Entity():
         def remove_renamed_fields(obj):
             if isinstance(obj, dict):
                 if hasattr(obj.__class__, "_rename_map"):
-                    for field in getattr(obj.__class__, "_rename_map").values():
-                        if field in obj:
+                    for alias, field in getattr(obj.__class__, "_rename_map").items():
+                        # Keep the wire name for fields that collide with dict methods.
+                        if callable(getattr(obj.__class__, field, None)):
+                            if alias in obj:
+                                OrderedDict.__setitem__(obj, field, obj[alias])
+                                del obj[alias]
+                        elif field in obj:
                             del obj[field]
                 for key in obj:
                     remove_renamed_fields(obj[key])
@@ -746,6 +757,9 @@ class AttribAccessDict(OrderedStrDict, Entity):
         Constructor that calls through to dict constructor and then sets attributes for all keys.
         """
         super(AttribAccessDict, self).__init__()
+
+        # Set type for directly constructed instances of AttribAccessDict and subclasses
+        super(AttribAccessDict, self).__setattr__("_mastopy_type", type(self).__name__)
         if "__union_specializer" in kwargs:
             union_specializer = kwargs.pop("__union_specializer")
         else:
@@ -761,19 +775,23 @@ class AttribAccessDict(OrderedStrDict, Entity):
             )
         if "__annotations__" in self.__class__.__dict__:
             for attr, _ in self.__class__.__annotations__.items():
-                attr_name = attr
-                if hasattr(self.__class__, "_rename_map"):
-                    attr_name = getattr(self.__class__, "_rename_map").get(attr, attr)
-                    if attr_name in kwargs:
-                        self[attr] = kwargs[attr_name]
-                        assert not attr in kwargs, f"Duplicate attribute {attr}"
+                attr_name = getattr(self.__class__, "_rename_map", {}).get(attr, attr)
+                if attr_name != attr and attr_name in kwargs and attr in kwargs:
+                    raise AssertionError(f"Duplicate attribute {attr}")
+                if attr_name in kwargs:
+                    self[attr] = kwargs[attr_name]
                 elif attr in kwargs:
                     self[attr] = kwargs[attr]
                 else:
                     self[attr] = None
         for attr in kwargs:
             if not attr in self:
-                self[attr] = kwargs[attr]
+                rename_map = getattr(self.__class__, "_rename_map", {})
+                alias = next((alias for alias, field in rename_map.items() if field == attr), None)
+                if alias in self:
+                    super(AttribAccessDict, self).__setitem__(attr, self[alias])
+                else:
+                    self[attr] = kwargs[attr]
                 
     def __getattribute__(self, attr):
         """
@@ -858,7 +876,9 @@ class AttribAccessDict(OrderedStrDict, Entity):
                     val = try_cast_recurse(EntityList, val, union_specializer)
 
         # Finally, call out to setattr and setitem proper
-        super(AttribAccessDict, self).__setattr__(key, val)
+        # API fields must not replace methods such as items(), used by repr and deepcopy.
+        if not callable(getattr(self.__class__, key, None)):
+            super(AttribAccessDict, self).__setattr__(key, val)
         super(AttribAccessDict, self).__setitem__(key, val)
 
     def __eq__(self, other):

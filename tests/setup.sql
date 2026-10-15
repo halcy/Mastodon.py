@@ -106,3 +106,14 @@ INSERT INTO settings (
 UPDATE users SET
     settings = '{"notification_emails.follow_request": false, "default_privacy": "public", "default_sensitive": false}'
 WHERE email IN ('mastodonpy_test@localhost', 'mastodonpy_test_2@localhost');
+
+-- Feed distribution only includes users who have signed in recently.
+UPDATE users SET current_sign_in_at = now()
+WHERE id IN (
+    SELECT resource_owner_id FROM oauth_access_tokens
+    WHERE token IN (
+        '__MASTODON_PY_TEST_ACCESS_TOKEN',
+        '__MASTODON_PY_TEST_ACCESS_TOKEN_2',
+        '__MASTODON_PY_TEST_ACCESS_TOKEN_3'
+    )
+);

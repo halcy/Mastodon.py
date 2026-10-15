@@ -21,7 +21,7 @@ def test_polls(api, api2):
     api2.status_delete(status_poll)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr(match_on=['method', 'path', 'query'])
 def test_poll_with_media(api2):
     media = api2.media_post("tests/image.jpg", synchronous=True)
     poll_params = api2.make_poll(["four twenty", "sixty-nine"], 300)

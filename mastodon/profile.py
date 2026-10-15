@@ -25,12 +25,15 @@ class Mastodon(Internals):
                        indexable: Optional[bool] = None, show_media: Optional[bool] = None,
                        show_media_replies: Optional[bool] = None, show_featured: Optional[bool] = None,
                        attribution_domains: Optional[List[str]] = None,
-                       fields: Optional[List[Tuple[str, str]]] = None) -> Profile:
+                       fields: Optional[List[Tuple[str, str]]] = None,
+                       avatar_description: Optional[str] = None,
+                       header_description: Optional[str] = None) -> Profile:
         """
         Update the logged-in user's editable profile and return the updated profile.
 
         `avatar` and `header` may be filenames or file-like objects. Direct file data
         requires the corresponding MIME type.
+        `avatar_description` and `header_description` set alt text for these images.
 
         `locked` indicates whether the account is private (requiring follow approvals
         for all accounts). 

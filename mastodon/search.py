@@ -1,6 +1,6 @@
 # search.py - search endpoints
 
-from mastodon.errors import MastodonVersionError
+from mastodon.errors import MastodonIllegalArgumentError, MastodonVersionError
 from mastodon.utility import api_version
 
 from mastodon.internals import Mastodon as Internals
@@ -34,6 +34,10 @@ class Mastodon(Internals):
         `result_type` can be one of "accounts", "hashtags" or "statuses", to only
         search for that type of object.
 
+        Search *can* be used to resolve collections from a URL, but does *not*
+        search for collections by name, and return_type cannot be used to filter 
+        for collections.
+
         Specify `account_id` to only get results from the account with that id.
 
         `offset`, `min_id` and `max_id` can be used to paginate.
@@ -51,6 +55,7 @@ class Mastodon(Internals):
         on Mastodon 2.8.0 or above - this function will throw a MastodonVersionError
         if you try to use them on versions before that. Note that the cached version
         number will be used for this to avoid uneccesary requests.
+
         """
         if self.verify_minimum_version("2.4.1", cached=True):
             return self.search_v2(q, resolve=resolve, result_type=result_type, account_id=account_id, offset=offset, min_id=min_id, max_id=max_id, exclude_unreviewed=exclude_unreviewed, limit=limit)
@@ -82,6 +87,8 @@ class Mastodon(Internals):
 
         For more details documentation, please see `search()`
         """
+        if result_type is not None and not result_type in ["accounts", "hashtags", "statuses"]:
+            raise MastodonIllegalArgumentError("Invalid result_type. Must be one of 'accounts', 'hashtags', or 'statuses'.")
         self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
         params = self.__generate_params(locals(), dateconv=True)
 

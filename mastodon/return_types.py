@@ -1,7 +1,7 @@
 from __future__ import annotations # python< 3.9 compat
 from datetime import datetime
 from typing import Union, Optional, Tuple, List, IO, Dict
-from mastodon.types_base import AttribAccessDict, IdType, MaybeSnowflakeIdType, PaginationInfo, PrimitiveIdType, EntityList, PaginatableList, NonPaginatableList, PathOrFile, WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, try_cast_recurse, try_cast, real_issubclass
+from mastodon.types_base import AttribAccessDict, EmptyResponse, IdType, MaybeSnowflakeIdType, PaginationInfo, PrimitiveIdType, EntityList, PaginatableList, NonPaginatableList, PathOrFile, WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, try_cast_recurse, try_cast, real_issubclass
 
 class Account(AttribAccessDict):
     """
@@ -203,7 +203,7 @@ class Account(AttribAccessDict):
 
     fields: "NonPaginatableList[AccountField]"
     """
-    List of up to four (by default) AccountFields.
+    List of up to four (by default) AccountFields, with user chosen account metadata.
 
     Version history:
       * 2.4.0: added
@@ -333,7 +333,30 @@ class Account(AttribAccessDict):
       * 4.6.0: added
     """
 
-    _version = "4.6.0"
+    feature_approval: "FeatureApproval"
+    """
+    Summary of the account's policy with regards to being featured in a Collection and how it applies to the logged in user.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    invalid_handle: "Optional[bool]"
+    """
+    Whether the account has an invalid handle. Used as a placeholder for accounts where the actual handle cannot be verified. (optional)
+
+    Version history:
+      * 4.7.0: added
+    """
+
+    state: "Optional[CredentialAccountState]"
+    """
+    State of the logged-in account. Only present on credential account responses. Contains functional, confirmed and approved booleans, a nullable error_code identifying why the account is not functional, and a nullable localized error message. (optional)
+
+    Version history:
+    """
+
+    _version = "4.7.0"
 
 class AccountField(AttribAccessDict):
     """
@@ -429,7 +452,15 @@ class Role(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    collection_limit: "int"
+    """
+    Maximum number of Collections that users with this role are allowed to create.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
 
 class CredentialAccountSource(AttribAccessDict):
     """
@@ -480,7 +511,7 @@ class CredentialAccountSource(AttribAccessDict):
 
     fields: "NonPaginatableList[AccountField]"
     """
-    Metadata about the account.
+    List of up to four (by default) AccountFields, with user chosen account metadata.
 
     Version history:
       * 2.4.0: added
@@ -535,6 +566,57 @@ class CredentialAccountSource(AttribAccessDict):
     """
 
     _version = "4.5.0"
+
+class CredentialAccountState(AttribAccessDict):
+    """
+    Describes whether the logged-in account is functional, confirmed and approved, and any reason why it cannot operate.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a CredentialAccountState object
+        mastodon.account_verify_credentials().state
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Account/
+    """
+
+    functional: "bool"
+    """
+    Whether the account is currently functional.
+
+    Version history:
+    """
+
+    confirmed: "bool"
+    """
+    Whether the account has confirmed its email address.
+
+    Version history:
+    """
+
+    approved: "bool"
+    """
+    Whether the account has been approved.
+
+    Version history:
+    """
+
+    error_code: "Optional[str]"
+    """
+    The code identifying why the account is not functional, or None if there is no error. (nullable)
+
+    Version history:
+    """
+
+    error: "Optional[str]"
+    """
+    A localized explanation of why the account is not functional, or None if there is no error. (nullable)
+
+    Version history:
+    """
+
+    _version = "0.0.0"
 
 class Status(AttribAccessDict):
     """
@@ -2058,6 +2140,7 @@ class Notification(AttribAccessDict):
       * 4.0.0: added `admin.report`
       * 4.3.0: added `severed_relationships` and `moderation_warning`
       * 4.5.0: added `quote` and `quoted_update`
+      * 4.6.0: added `added_to_collection` and `collection_update`
     """
 
     created_at: "datetime"
@@ -2117,7 +2200,23 @@ class Notification(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _version = "4.5.0"
+    fallback: "Optional[NotificationFallback]"
+    """
+    Fallback information for a notification type the client does not support, when `supported_types` is used when querying. (optional)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    collection: "Optional[Collection]"
+    """
+    The Collection that was the object of the notification. (optional)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
 
 class Context(AttribAccessDict):
     """
@@ -2921,7 +3020,7 @@ class SearchV2(AttribAccessDict):
 
     collections: "NonPaginatableList[Collection]"
     """
-    List of collections resulting from the query.
+    Collections matching the search query.
 
     Version history:
       * 4.6.0: added
@@ -2931,21 +3030,29 @@ class SearchV2(AttribAccessDict):
 
 class Collection(AttribAccessDict):
     """
-    A collection of accounts, associated with a hashtag.
+    Represents a curated collection of accounts that a user recommends others to follow.
 
     Example:
 
     .. code-block:: python
 
         # Returns a Collection object
-        mastodon.search_v2('cats', type='collections').collections[0]
+        mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0]
 
-    See also (Mastodon API documentation): None
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Collection/
     """
 
     id: "MaybeSnowflakeIdType"
     """
-    The ID of the collection in the database.
+    The collection id.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    account_id: "MaybeSnowflakeIdType"
+    """
+    The id of the account that curates this Collection.
 
     Version history:
       * 4.6.0: added
@@ -2960,9 +3067,18 @@ class Collection(AttribAccessDict):
       * 4.6.0: added
     """
 
+    url: "Optional[str]"
+    """
+    The URL of the Collection's HTML page. (nullable)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
     name: "str"
     """
-    The name of the collection.
+    The name of the Collection.
 
     Version history:
       * 4.6.0: added
@@ -2970,24 +3086,17 @@ class Collection(AttribAccessDict):
 
     description: "str"
     """
-    A description of the collection.
+    An optional description of the Collection.
+    Should contain (as text): HTML
 
     Version history:
       * 4.6.0: added
     """
 
-    language: "str"
+    language: "Optional[str]"
     """
-    The language of the collection.
+    The primary language of this Collection. (nullable)
     Should contain (as text): TwoLetterLanguageCodeEnum
-
-    Version history:
-      * 4.6.0: added
-    """
-
-    account_id: "MaybeSnowflakeIdType"
-    """
-    The ID of the account that owns this collection.
 
     Version history:
       * 4.6.0: added
@@ -3003,7 +3112,7 @@ class Collection(AttribAccessDict):
 
     sensitive: "bool"
     """
-    Whether the collection is marked as sensitive.
+    Whether the Collection has been marked as including sensitive content.
 
     Version history:
       * 4.6.0: added
@@ -3011,15 +3120,15 @@ class Collection(AttribAccessDict):
 
     discoverable: "bool"
     """
-    Whether the collection is discoverable.
+    Whether the Collection should appear on the owner's profile, in search results, and in recommendations.
 
     Version history:
       * 4.6.0: added
     """
 
-    item_count: "int"
+    tag: "Optional[ShallowTag]"
     """
-    The number of items in this collection.
+    A single hashtag that describes this Collection. (nullable)
 
     Version history:
       * 4.6.0: added
@@ -3027,7 +3136,7 @@ class Collection(AttribAccessDict):
 
     created_at: "datetime"
     """
-    When the collection was created.
+    When the Collection was created.
 
     Version history:
       * 4.6.0: added
@@ -3035,55 +3144,50 @@ class Collection(AttribAccessDict):
 
     updated_at: "datetime"
     """
-    When the collection was last updated.
+    When the Collection was last updated.
 
     Version history:
       * 4.6.0: added
     """
 
-    tag: "Tag"
+    item_count: "int"
     """
-    The hashtag associated with this collection.
+    The number of items in this Collection.
 
     Version history:
       * 4.6.0: added
     """
 
-    items: "NonPaginatableList[CollectionItem]"
+    collection_items: "NonPaginatableList[CollectionItem]"
     """
-    The items in this collection.
+    The items in this Collection.
 
     Version history:
       * 4.6.0: added
     """
 
     _version = "4.6.0"
+    _rename_map = {
+        "collection_items": "items",
+    }
 
 class CollectionItem(AttribAccessDict):
     """
-    An item in a collection, representing an account that has been added to the collection.
+    Represents a single item in a Collection.
 
     Example:
 
     .. code-block:: python
 
         # Returns a CollectionItem object
-        mastodon.search_v2('cats', type='collections').collections[0].items[0]
+        mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0].collection_items[0]
 
-    See also (Mastodon API documentation): None
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/CollectionItem/
     """
 
     id: "MaybeSnowflakeIdType"
     """
-    The ID of the collection item in the database.
-
-    Version history:
-      * 4.6.0: added
-    """
-
-    state: "str"
-    """
-    The state of this collection item.
+    The item id.
 
     Version history:
       * 4.6.0: added
@@ -3091,7 +3195,23 @@ class CollectionItem(AttribAccessDict):
 
     account_id: "Optional[MaybeSnowflakeIdType]"
     """
-    The ID of the account associated with this item. Only present when the item is accepted. (optional)
+    The id of the account this item represents. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    state: "str"
+    """
+    The current state of the item.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    created_at: "datetime"
+    """
+    When the item was added to the Collection.
 
     Version history:
       * 4.6.0: added
@@ -3468,15 +3588,15 @@ class InstanceV2(AttribAccessDict):
       * 4.3.0: added
     """
 
-    wrapstodon: "Optional[InstanceAnnualReportCampaign]"
+    wrapstodon: "Optional[int]"
     """
-    Info about Wrapstodon / year-in-review feature for the instance, if available. (optional)
+    The current Wrapstodon annual-report campaign identifier (generally: The year, e.g. 2026), if any is active. (nullable)
 
     Version history:
-      * 4.4.0: added
+      * 4.6.0: added
     """
 
-    _version = "4.4.0"
+    _version = "4.6.0"
 
 class InstanceIcon(AttribAccessDict):
     """
@@ -3724,7 +3844,15 @@ class InstanceThumbnail(AttribAccessDict):
       * 4.0.0: added
     """
 
-    _version = "4.0.0"
+    description: "str"
+    """
+    The thumbnail's alt text.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
 
 class InstanceThumbnailVersions(AttribAccessDict):
     """
@@ -4383,30 +4511,6 @@ class InstanceTimelinesAccessFeedConfiguration(AttribAccessDict):
 
     _version = "4.5.0"
 
-class InstanceAnnualReportCampaign(AttribAccessDict):
-    """
-    Information about the Wrapstodon / year-in-review feature for the instance. This is not officially documented by Mastodon and may change without notice.
-
-    Example:
-
-    .. code-block:: python
-
-        # Returns a InstanceAnnualReportCampaign object
-        mastodon.instance_v2().wrapstodon
-
-    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
-    """
-
-    year: "int"
-    """
-    The year this annual report campaign is for.
-
-    Version history:
-      * 4.4.0: added
-    """
-
-    _version = "4.4.0"
-
 class Nodeinfo(AttribAccessDict):
     """
     The instances standardized NodeInfo data.
@@ -4643,6 +4747,20 @@ class NodeinfoMetadata(AttribAccessDict):
 
     Version history:
       * 4.4.0: added
+    """
+
+    optInServerDirectory: "Optional[bool]"
+    """
+    Whether the server opts in to being listed in server directories, such as the directory on joinmastodon.org. (optional)
+
+    Version history:
+    """
+
+    optInServerRecommendation: "Optional[bool]"
+    """
+    Whether the server opts in to being recommended during sign-up in applications such as the official Mastodon clients. (optional)
+
+    Version history:
     """
 
     _version = "4.4.0"
@@ -6916,6 +7034,13 @@ class NotificationPolicy(AttribAccessDict):
       * 4.3.0: added
     """
 
+    for_bots: "str"
+    """
+    Whether to accept, filter or drop eligible notifications from bot accounts that the user does not follow.
+
+    Version history:
+    """
+
     _version = "4.3.0"
 
 class NotificationPolicySummary(AttribAccessDict):
@@ -7119,7 +7244,7 @@ class PartialAccountWithAvatar(AttribAccessDict):
 
     url: "str"
     """
-    The location of the user’s profile page.
+    The location of the users profile page.
 
     Version history:
       * 4.3.0: added
@@ -7157,7 +7282,15 @@ class PartialAccountWithAvatar(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _version = "4.3.0"
+    avatar_description: "str"
+    """
+    A textual description of the avatar image.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
 
 class NotificationGroup(AttribAccessDict):
     """
@@ -7196,6 +7329,9 @@ class NotificationGroup(AttribAccessDict):
 
     Version history:
       * 4.3.0: added
+      * 4.4.0: added `annual_report`
+      * 4.5.0: added `quote` and `quoted_update`
+      * 4.6.0: added `added_to_collection` and `collection_update`
     """
 
     most_recent_notification_id: "str"
@@ -7270,7 +7406,31 @@ class NotificationGroup(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _version = "4.3.0"
+    fallback: "Optional[NotificationFallback]"
+    """
+    Fallback information for a notification type the client does not support, when `supported_types` is used when querying. (optional)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    collection: "Optional[Collection]"
+    """
+    The Collection that was the object of the notification. (optional)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    annual_report: "Optional[AnnualReportEvent]"
+    """
+    The annual report event that was the object of the notification. (optional)
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.6.0"
 
 class AccountWarning(AttribAccessDict):
     """
@@ -7449,7 +7609,7 @@ class NotificationRequest(AttribAccessDict):
 
     notifications_count: "str"
     """
-    How many of this account’s notifications were filtered.
+    How many of this accounts notifications were filtered.
 
     Version history:
       * 4.3.0: added
@@ -7672,7 +7832,7 @@ class OAuthUserInfo(AttribAccessDict):
 
     profile: "str"
     """
-    The URL of the user’s profile page.
+    The URL of the users profile page.
     Should contain (as text): URL
 
     Version history:
@@ -7681,7 +7841,7 @@ class OAuthUserInfo(AttribAccessDict):
 
     picture: "str"
     """
-    The URL of the user’s profile picture.
+    The URL of the users profile picture.
     Should contain (as text): URL
 
     Version history:
@@ -7780,12 +7940,1056 @@ class AsyncRefresh(AttribAccessDict):
 
     _version = "4.4.0"
 
+class Profile(AttribAccessDict):
+    """
+    Represents the current user's profile, with source values for all editable fields. Text fields are provided as raw text (vs rendered HTML in `Account` fields).
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a Profile object
+        mastodon.profile()
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Profile/
+    """
+
+    id: "MaybeSnowflakeIdType"
+    """
+    The account id.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    display_name: "str"
+    """
+    The profile's display name.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    note: "str"
+    """
+    The profile's bio or description as raw text.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    fields: "NonPaginatableList[ProfileField]"
+    """
+    List of up to four (by default) ProfileFields, with the raw versions of user chosen metadata about the account.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    avatar: "Optional[str]"
+    """
+    URL for this users avatar, or null if unset. (nullable)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    avatar_static: "Optional[str]"
+    """
+    A static version of the avatar, or null if unset. (nullable)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    avatar_description: "str"
+    """
+    A textual description of the avatar.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    header: "Optional[str]"
+    """
+    URL for an image banner shown above the profile and in profile cards, or null if unset. (nullable)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    header_static: "Optional[str]"
+    """
+    A static version of the header, or null if unset. (nullable)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    header_description: "str"
+    """
+    A textual description of the profile header.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    locked: "bool"
+    """
+    Whether the account manually approves follow requests.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    bot: "bool"
+    """
+    Whether the account identifies as a bot or may perform automated actions.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    hide_collections: "Optional[bool]"
+    """
+    Whether the user hides the contents of their follows and followers collections. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    discoverable: "Optional[bool]"
+    """
+    Whether the account has opted into discovery features such as the profile directory. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    indexable: "bool"
+    """
+    Whether the account allows indexing by search engines.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    show_media: "bool"
+    """
+    Whether the account wishes to have a Media tab with media attachments on their profile.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    show_media_replies: "bool"
+    """
+    Whether the account wishes to have replies in the Media tab on their profile.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    show_featured: "bool"
+    """
+    Whether the account wishes to have a Featured tab on their profile.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    attribution_domains: "NonPaginatableList[str]"
+    """
+    Domains of websites allowed to credit the account.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    featured_tags: "NonPaginatableList[FeaturedTag]"
+    """
+    Hashtags featured on the profile.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    formatted_note: "str"
+    """
+    The profile biography rendered as HTML, alongside the raw text in note.
+    Should contain (as text): HTML
+
+    Version history:
+    """
+
+    formatted_fields: "NonPaginatableList[AccountField]"
+    """
+    Profile metadata fields with HTML-rendered values. Each field contains name, value and verified_at, alongside the raw fields in fields.
+
+    Version history:
+    """
+
+    _version = "4.6.0"
+
+class ProfileField(AttribAccessDict):
+    """
+    A profile metadata field containing raw text (vs rendered HTML in `Account` fields).
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a ProfileField object
+        mastodon.profile().fields[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Profile/#Field
+    """
+
+    name: "str"
+    """
+    The key of the field's key-value pair, as raw text.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    value: "str"
+    """
+    The value associated with the `name` key, as raw text.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    verified_at: "Optional[datetime]"
+    """
+    Timestamp of when the server verified a URL value for a rel="me" link. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class ShallowTag(AttribAccessDict):
+    """
+    Minimal representation of a hashtag.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a ShallowTag object
+        mastodon.search_v2('https://mastodon.social/collections/117412545986727508').collections[0].tag
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/ShallowTag/
+    """
+
+    name: "str"
+    """
+    The value of the hashtag after the # sign.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    url: "str"
+    """
+    A link to the hashtag on the local server.
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class FeatureApproval(AttribAccessDict):
+    """
+    Summary of an account's policy for being featured in a Collection and how it applies to the logged in user.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a FeatureApproval object
+        mastodon.account(<account id>).feature_approval
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FeatureApproval/
+    """
+
+    automatic: "NonPaginatableList[str]"
+    """
+    Who is expected to be able to feature the account and have this authorized automatically.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    manual: "NonPaginatableList[str]"
+    """
+    Who is expected to have attempts to feature this account reviewed manually.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    current_user: "str"
+    """
+    How this account's feature approval policy applies to the logged-in user.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class WrappedCollection(AttribAccessDict):
+    """
+    A Collection wrapped in an extensible response object. Used by endpoints that do not return full collection data.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a WrappedCollection object
+        mastodon.collection_create('Example collection')
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Collection/
+    """
+
+    collection: "Collection"
+    """
+    The actual Collection.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class Collections(AttribAccessDict):
+    """
+    A list of Collections wrapped in an extensible response object.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a Collections object
+        mastodon.account_collections(mastodon.me())
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Collection/
+    """
+
+    collections: "NonPaginatableList[Collection]"
+    """
+    A list of Collections.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class CollectionWithAccounts(AttribAccessDict):
+    """
+    A Collection together with full account data for its owner and members.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a CollectionWithAccounts object
+        mastodon.collection('117412545986727508')
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/CollectionWithAccounts/
+    """
+
+    accounts: "NonPaginatableList[Account]"
+    """
+    Full account entities for the Collection owner and every account in the Collection.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    collection: "Collection"
+    """
+    The actual Collection.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class WrappedCollectionItem(AttribAccessDict):
+    """
+    A CollectionItem wrapped in an extensible response object. Used by endpoints that do not return full collection data.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a WrappedCollectionItem object
+        mastodon.collection_item_add('<collection id>', '<account id>')
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/CollectionItem/
+    """
+
+    collection_item: "CollectionItem"
+    """
+    The actual Collection item.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class NotificationFallback(AttribAccessDict):
+    """
+    Represents a fallback rendering for a notification type the client does not support.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a NotificationFallback object
+        next(notification.fallback for notification in mastodon.notifications(supported_types=['follow']) if notification.fallback is not None)
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationFallback/
+    """
+
+    title: "str"
+    """
+    Localized fallback title for the notification.
+    Should contain (as text): HTML
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    summary: "Optional[str]"
+    """
+    Localized fallback summary for the notification. (nullable)
+    Should contain (as text): HTML
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    details: "Optional[str]"
+    """
+    Localized notification details to display when opening the notification. (nullable)
+    Should contain (as text): HTML
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class AnnualReportEvent(AttribAccessDict):
+    """
+    Represents an annual report becoming available in a grouped notification.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportEvent object
+        mastodon.grouped_notifications().notification_groups[0].annual_report
+
+    See also (Mastodon API documentation): None
+    """
+
+    year: "str"
+    """
+    The year of the annual report.
+
+    Version history:
+      * 4.4.0: added
+    """
+
+    _version = "4.4.0"
+
+class AnnualReportState(AttribAccessDict):
+    """
+    Represents the generation state of an annual report.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportState object
+        mastodon.annual_report_state(1900)
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/annual_reports/#get-state
+    """
+
+    state: "str"
+    """
+    The current generation state of the annual report.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class AnnualReport(AttribAccessDict):
+    """
+    Represents a summary of a user's activity during a given year.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReport object
+        mastodon.annual_report(2025).annual_reports[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    year: "int"
+    """
+    The year this report is from.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    data: "Union[AnnualReportDataV2, AnnualReportDataV1, AttribAccessDict]"
+    """
+    The raw report data. Its schema depends on `schema_version`.
+
+    Version history:
+      * 4.3.0: added
+      * 4.6.0: added schema version 2
+    """
+
+    schema_version: "int"
+    """
+    The schema version of the report, defining how to interpret `data`.
+
+    Version history:
+      * 4.3.0: added
+      * 4.6.0: added schema version 2
+    """
+
+    share_url: "Optional[str]"
+    """
+    An optional link to a shareable version of the report. (nullable)
+    Should contain (as text): URL
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    account_id: "MaybeSnowflakeIdType"
+    """
+    The account ID the annual report is about.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class WrappedAnnualReports(AttribAccessDict):
+    """
+    One or more AnnualReports wrapped with referenced Account and Status entities.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a WrappedAnnualReports object
+        mastodon.annual_report(2025)
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    annual_reports: "NonPaginatableList[AnnualReport]"
+    """
+    Full AnnualReport entities for the reports.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    accounts: "NonPaginatableList[Account]"
+    """
+    Full Account entities for accounts mentioned in the reports.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    statuses: "NonPaginatableList[Status]"
+    """
+    Full Status entities for statuses mentioned in the reports.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportDataV2(AttribAccessDict):
+    """
+    The data payload of an AnnualReport with `schema_version` 2.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportDataV2 object
+        mastodon.annual_report(2025).annual_reports[0].data
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    archetype: "str"
+    """
+    The archetype assigned from the accounts posting habits.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    top_statuses: "AnnualReportTopStatusesV2"
+    """
+    The accounts most-boosted status. The other interaction categories are retained as null values for compatibility.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    time_series: "NonPaginatableList[AnnualReportTimeSeriesEntryV2]"
+    """
+    Nominally a time series of objects describing how the account's activity evolved over the year, in reality there is only a single entry.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    top_hashtags: "NonPaginatableList[AnnualReportNameAndCount]"
+    """
+    The accounts most frequently used hashtags.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class AnnualReportDataV1(AttribAccessDict):
+    """
+    The data payload of an AnnualReport with `schema_version` 1.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportDataV1 object
+        mastodon.annual_report(2024).annual_reports[0].data
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    archetype: "str"
+    """
+    The archetype assigned from the accounts posting habits.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    type_distribution: "AnnualReportTypeDistribution"
+    """
+    A breakdown of the accounts statuses by type.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    top_statuses: "AnnualReportTopStatusesV1"
+    """
+    The accounts most-interacted-with statuses by interaction type.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    most_used_apps: "NonPaginatableList[AnnualReportNameAndCount]"
+    """
+    The applications used most frequently for posting.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    commonly_interacted_with_accounts: "NonPaginatableList[AnnualReportAccountAndCount]"
+    """
+    The accounts most frequently replied to.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    time_series: "NonPaginatableList[AnnualReportTimeSeriesEntryV1]"
+    """
+    A time series of objects describing how the account's activity evolved over the year.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    top_hashtags: "NonPaginatableList[AnnualReportNameAndCount]"
+    """
+    The accounts most frequently used hashtags.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    most_reblogged_accounts: "NonPaginatableList[AnnualReportAccountAndCount]"
+    """
+    The accounts most frequently boosted by the account.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    percentiles: "AnnualReportPercentiles"
+    """
+    The accounts posting-activity percentile on its server.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportTopStatusesV2(AttribAccessDict):
+    """
+    Status IDs selected for an AnnualReport schema version 2 payload.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportTopStatusesV2 object
+        mastodon.annual_report(2025).annual_reports[0].data.top_statuses
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    by_reblogs: "Optional[MaybeSnowflakeIdType]"
+    """
+    The ID of the accounts most-boosted eligible status. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    by_favourites: "Optional[MaybeSnowflakeIdType]"
+    """
+    Reserved for compatibility; always null in schema version 2. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    by_replies: "Optional[MaybeSnowflakeIdType]"
+    """
+    Reserved for compatibility; always null in schema version 2. (nullable)
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class AnnualReportTopStatusesV1(AttribAccessDict):
+    """
+    Status IDs selected for an AnnualReport schema version 1 payload.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportTopStatusesV1 object
+        mastodon.annual_report(2024).annual_reports[0].data.top_statuses
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    by_reblogs: "Optional[MaybeSnowflakeIdType]"
+    """
+    The ID of the accounts most-boosted eligible status. (nullable)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    by_favourites: "Optional[MaybeSnowflakeIdType]"
+    """
+    The ID of the accounts most-favourited eligible status. (nullable)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    by_replies: "Optional[MaybeSnowflakeIdType]"
+    """
+    The ID of the accounts most-replied-to eligible status. (nullable)
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportTimeSeriesEntryV2(AttribAccessDict):
+    """
+    The cumulative year-end activity entry in an AnnualReport schema version 2 payload.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportTimeSeriesEntryV2 object
+        mastodon.annual_report(2025).annual_reports[0].data.time_series[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    month: "int"
+    """
+    The final month represented by this cumulative entry. Currently always 12.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    statuses: "int"
+    """
+    The number of statuses posted during the year.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    followers: "int"
+    """
+    The number of followers gained during the year.
+
+    Version history:
+      * 4.6.0: added
+    """
+
+    _version = "4.6.0"
+
+class AnnualReportTimeSeriesEntryV1(AttribAccessDict):
+    """
+    One month of activity in an AnnualReport schema version 1 payload.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportTimeSeriesEntryV1 object
+        mastodon.annual_report(2024).annual_reports[0].data.time_series[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    month: "int"
+    """
+    The month number, from 1 through 12.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    statuses: "int"
+    """
+    The number of statuses posted during the month.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    following: "int"
+    """
+    The number of accounts followed during the month.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    followers: "int"
+    """
+    The number of followers gained during the month.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportTypeDistribution(AttribAccessDict):
+    """
+    A breakdown of statuses by type in an AnnualReport schema version 1 payload.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportTypeDistribution object
+        mastodon.annual_report(2024).annual_reports[0].data.type_distribution
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    total: "int"
+    """
+    The total number of statuses.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    reblogs: "int"
+    """
+    The number of boosts.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    replies: "int"
+    """
+    The number of replies to other accounts.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    standalone: "int"
+    """
+    The number of statuses that were neither replies nor boosts.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportNameAndCount(AttribAccessDict):
+    """
+    A named annual-report item and the number of times it occurred.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportNameAndCount object
+        mastodon.annual_report(2024).annual_reports[0].data.most_used_apps[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    name: "str"
+    """
+    The application or hashtag name.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    count: "int"
+    """
+    The number of occurrences.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportAccountAndCount(AttribAccessDict):
+    """
+    An account referenced by an AnnualReport schema version 1 payload and its interaction count.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportAccountAndCount object
+        mastodon.annual_report(2024).annual_reports[0].data.commonly_interacted_with_accounts[0]
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    account_id: "MaybeSnowflakeIdType"
+    """
+    The account ID.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    count: "int"
+    """
+    The number of interactions.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
+class AnnualReportPercentiles(AttribAccessDict):
+    """
+    Posting-activity percentiles in an AnnualReport schema version 1 payload.
+
+    Example:
+
+    .. code-block:: python
+
+        # Returns a AnnualReportPercentiles object
+        mastodon.annual_report(2024).annual_reports[0].data.percentiles
+
+    See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
+    """
+
+    statuses: "float"
+    """
+    The percentage of accounts on the server that posted fewer statuses.
+
+    Version history:
+      * 4.3.0: added
+    """
+
+    _version = "4.3.0"
+
 ENTITY_NAME_MAP = {
     "AttribAccessDict": AttribAccessDict,
+    "EmptyResponse": EmptyResponse,
     "Account": Account,
     "AccountField": AccountField,
     "Role": Role,
     "CredentialAccountSource": CredentialAccountSource,
+    "CredentialAccountState": CredentialAccountState,
     "Status": Status,
     "Quote": Quote,
     "ShallowQuote": ShallowQuote,
@@ -7846,7 +9050,6 @@ ENTITY_NAME_MAP = {
     "InstancePollConfiguration": InstancePollConfiguration,
     "InstanceTimelinesAccessConfiguration": InstanceTimelinesAccessConfiguration,
     "InstanceTimelinesAccessFeedConfiguration": InstanceTimelinesAccessFeedConfiguration,
-    "InstanceAnnualReportCampaign": InstanceAnnualReportCampaign,
     "Nodeinfo": Nodeinfo,
     "NodeinfoSoftware": NodeinfoSoftware,
     "NodeinfoServices": NodeinfoServices,
@@ -7906,12 +9109,36 @@ ENTITY_NAME_MAP = {
     "OAuthUserInfo": OAuthUserInfo,
     "TermsOfService": TermsOfService,
     "AsyncRefresh": AsyncRefresh,
+    "Profile": Profile,
+    "ProfileField": ProfileField,
+    "ShallowTag": ShallowTag,
+    "FeatureApproval": FeatureApproval,
+    "WrappedCollection": WrappedCollection,
+    "Collections": Collections,
+    "CollectionWithAccounts": CollectionWithAccounts,
+    "WrappedCollectionItem": WrappedCollectionItem,
+    "NotificationFallback": NotificationFallback,
+    "AnnualReportEvent": AnnualReportEvent,
+    "AnnualReportState": AnnualReportState,
+    "AnnualReport": AnnualReport,
+    "WrappedAnnualReports": WrappedAnnualReports,
+    "AnnualReportDataV2": AnnualReportDataV2,
+    "AnnualReportDataV1": AnnualReportDataV1,
+    "AnnualReportTopStatusesV2": AnnualReportTopStatusesV2,
+    "AnnualReportTopStatusesV1": AnnualReportTopStatusesV1,
+    "AnnualReportTimeSeriesEntryV2": AnnualReportTimeSeriesEntryV2,
+    "AnnualReportTimeSeriesEntryV1": AnnualReportTimeSeriesEntryV1,
+    "AnnualReportTypeDistribution": AnnualReportTypeDistribution,
+    "AnnualReportNameAndCount": AnnualReportNameAndCount,
+    "AnnualReportAccountAndCount": AnnualReportAccountAndCount,
+    "AnnualReportPercentiles": AnnualReportPercentiles,
 }
 __all__ = [
     "Account",
     "AccountField",
     "Role",
     "CredentialAccountSource",
+    "CredentialAccountState",
     "Status",
     "Quote",
     "ShallowQuote",
@@ -7972,7 +9199,6 @@ __all__ = [
     "InstancePollConfiguration",
     "InstanceTimelinesAccessConfiguration",
     "InstanceTimelinesAccessFeedConfiguration",
-    "InstanceAnnualReportCampaign",
     "Nodeinfo",
     "NodeinfoSoftware",
     "NodeinfoServices",
@@ -8032,5 +9258,28 @@ __all__ = [
     "OAuthUserInfo",
     "TermsOfService",
     "AsyncRefresh",
+    "Profile",
+    "ProfileField",
+    "ShallowTag",
+    "FeatureApproval",
+    "WrappedCollection",
+    "Collections",
+    "CollectionWithAccounts",
+    "WrappedCollectionItem",
+    "NotificationFallback",
+    "AnnualReportEvent",
+    "AnnualReportState",
+    "AnnualReport",
+    "WrappedAnnualReports",
+    "AnnualReportDataV2",
+    "AnnualReportDataV1",
+    "AnnualReportTopStatusesV2",
+    "AnnualReportTopStatusesV1",
+    "AnnualReportTimeSeriesEntryV2",
+    "AnnualReportTimeSeriesEntryV1",
+    "AnnualReportTypeDistribution",
+    "AnnualReportNameAndCount",
+    "AnnualReportAccountAndCount",
+    "AnnualReportPercentiles",
 ]
 

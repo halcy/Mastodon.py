@@ -47,7 +47,7 @@ def test_status_card(api):
     status = api.status_post("http://example.org/")
 
     card = None
-    for i in range(0, 30):
+    for i in range(0, 60):
         if not card is None:
             break
         time.sleep(1)
@@ -266,7 +266,7 @@ def test_status_update_with_media_edit(api2):
     assert media
     assert media.url is None
     
-    time.sleep(5)
+    time.sleep(20)
     media2 = api2.media(media)
     assert media2.id == media.id
     assert media2.url is not None
@@ -321,14 +321,14 @@ def test_status_delete_media(api, status):
         assert deleted_status['id'] == status_with_media['id']
         print(deleted_status.media_attachments[0].id)
 
-        time.sleep(5)  # Wait for media deletion to be processed
+        time.sleep(20)  # Wait for media deletion to be processed
 
         # Now repost and delete it with media wipe
         status_with_media = api.status_post('Status with media reposted', media_ids=[deleted_status.media_attachments[0].id])
         deleted_status = api.status_delete(status_with_media['id'], delete_media=True)
         assert deleted_status['id'] == status_with_media['id']
 
-        time.sleep(5)  # Wait for media deletion to be processed
+        time.sleep(20)  # Wait for media deletion to be processed
 
         # Check that the media is deleted by trying to repost again (should fail)
         with pytest.raises(MastodonAPIError):

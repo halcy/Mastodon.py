@@ -30,6 +30,8 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.CredentialAccountSource
    :no-index:
+.. autoclass:: mastodon.return_types.CredentialAccountState
+   :no-index:
 .. autoclass:: mastodon.return_types.Status
    :no-index:
 .. autoclass:: mastodon.return_types.Quote

@@ -1,5 +1,6 @@
 import pytest
 import itertools
+from http.client import HTTPConnection as StdlibHTTPConnection
 from mastodon.streaming import StreamListener, CallbackStreamListener
 from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from mastodon import Mastodon
@@ -33,36 +34,44 @@ def patch_streaming():
         return
     streaming_is_patched = True
 
-    # We need to unfortunately patch this. This *will* break in future versions, most likely.
-    # But this is the best we can do, I think.
+    import http.client
+
+    close_connections = False
     real_get_response = vcr.stubs.VCRConnection.getresponse
-    def fake_get_response(*args, **kwargs):
-        global close_connections
-        if args[0]._vcr_request.path.startswith("/api/v1/streaming/"):
-            close_connections = False
-            real_connections.append(args[0].real_connection)
-            vcr_connection = args[0]
-            real_connection_real_get_response = vcr_connection.real_connection.getresponse
-            def fakeRealConnectionGetresponse(*args, **kwargs):
-                response_options = vcr_connection.real_connection._response_options
-                vcr_connection.real_connection._response_options = response_options._replace(
-                    preload_content=False
-                )
-                response = real_connection_real_get_response(*args, **kwargs)
-                real_body = b""
-                try:
-                    # Read in an interruptible way so we can stop the stream (which otherwise)
-                    # goes on forever
-                    while close_connections is False:
-                        chunk = response._fp.read1(65536)
-                        real_body += chunk
-                except Exception:
-                    pass
-                response._body = real_body
-                response.read = lambda *args, **kwargs: real_body
-                return response
-            vcr_connection.real_connection.getresponse = fakeRealConnectionGetresponse
-        return real_get_response(*args, **kwargs)
+
+    def fake_get_response(vcr_connection, *args, **kwargs):
+        if not vcr_connection._vcr_request.path.startswith("/api/v1/streaming/"):
+            return real_get_response(vcr_connection, *args, **kwargs)
+
+        connection = vcr_connection.real_connection
+        original_getresponse = connection.getresponse
+
+        def capture_response(*args, **kwargs):
+            response = StdlibHTTPConnection.getresponse(connection)
+            real_connections.append(connection)
+            chunks = []
+            try:
+                while not close_connections:
+                    chunk = response.read1(65536)
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+            except (OSError, http.client.HTTPException):
+                if not close_connections:
+                    raise
+            finally:
+                response.close()
+                connection.close()
+            body = b"".join(chunks)
+            response.read = lambda *args, **kwargs: body
+            return response
+
+        connection.getresponse = capture_response
+        try:
+            return real_get_response(vcr_connection, *args, **kwargs)
+        finally:
+            connection.getresponse = original_getresponse
+
     vcr.stubs.VCRConnection.getresponse = fake_get_response
 
 def unpatch_streaming():
@@ -79,10 +88,23 @@ def streaming_close():
     global real_connections
     global close_connections
     close_connections = True
+    import socket
     for connection in real_connections:
-        connection.close()
+        if connection.sock is not None:
+            try:
+                connection.sock.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
     real_connections = []
     
+@pytest.fixture(autouse=True)
+def cleanup_streaming_recording():
+    yield
+    if streaming_is_patched:
+        streaming_close()
+        unpatch_streaming()
+
+
 class Listener(StreamListener):
     def __init__(self):
         self.updates = []

@@ -1,0 +1,365 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/verify_credentials
+  response:
+    body:
+      string: '{"id":"117440889521580399","username":"mastodonpy_test_2","acct":"mastodonpy_test_2","display_name":"","locked":false,"bot":false,"discoverable":true,"indexable":true,"group":false,"created_at":"2026-10-14T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test_2","uri":"http://localhost:3000/ap/users/117440889521580399","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":null,"hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":["public"],"manual":[],"current_user":"automatic"},"source":{"privacy":"public","sensitive":false,"language":null,"note":"","fields":[],"follow_requests_count":0,"hide_collections":null,"discoverable":true,"indexable":true,"attribution_domains":[],"quote_policy":"public"},"emojis":[],"roles":[],"fields":[],"role":{"id":"-99","name":"","permissions":"65536","color":"","highlighted":false,"collection_limit":10}}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '1279'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"5849dfcaf82623b85f9f1e7f6700f7b9"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.06, sql.active_record;dur=2.08, cache_generate.active_support;dur=2.16,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.20,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=6.04,
+        process_action.action_controller;dur=13.73
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:25:00.963209Z'
+      x-request-id:
+      - 5c6698a7-dbde-4b5a-ab82-7d52678fb26f
+      x-runtime:
+      - '0.031069'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: name=Mastodon.py+revocation+test&sensitive=0&discoverable=1&account_ids%5B%5D=117440889521580399
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/collections
+  response:
+    body:
+      string: '{"collection":{"id":"117440895780192730","uri":"http://localhost:3000/ap/users/117440889384582621/collections/117440895780192730","name":"Mastodon.py
+        revocation test","description":null,"language":null,"account_id":"117440889384582621","local":true,"sensitive":false,"discoverable":true,"url":"http://localhost:3000/collections/117440895780192730","item_count":1,"created_at":"2026-10-14T19:24:16.024Z","updated_at":"2026-10-14T19:24:16.024Z","tag":null,"items":[{"id":"117440895780231885","state":"accepted","created_at":"2026-10-14T19:24:16.028Z","account_id":"117440889521580399"}]}}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '586'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"02b9ff4071b0427cffd1c6c86eb2e4a6"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=12.99, cache_generate.active_support;dur=1.06,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.47,
+        start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
+        transaction.active_record;dur=14.62, render.active_model_serializers;dur=8.11,
+        process_action.action_controller;dur=46.58
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:25:00.003849Z'
+      x-request-id:
+      - 6ea5cfd6-b6f3-4bb8-9d9c-b1fb34b0a518
+      x-runtime:
+      - '0.063624'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/117440889521580399/in_collections?limit=1&offset=0
+  response:
+    body:
+      string: '{"collections":[{"id":"117440895780192730","uri":"http://localhost:3000/ap/users/117440889384582621/collections/117440895780192730","name":"Mastodon.py
+        revocation test","description":null,"language":null,"account_id":"117440889384582621","local":true,"sensitive":false,"discoverable":true,"url":"http://localhost:3000/collections/117440895780192730","item_count":1,"created_at":"2026-10-14T19:24:16.024Z","updated_at":"2026-10-14T19:24:16.024Z","tag":null,"items":[{"id":"117440895780231885","state":"accepted","created_at":"2026-10-14T19:24:16.028Z","account_id":"117440889521580399"}]}]}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '589'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"5458cdb015c1cc2b377b3a3ae9cf3965"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=2.50, cache_generate.active_support;dur=1.19,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.32,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=3.73,
+        process_action.action_controller;dur=17.09
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:25:00.100842Z'
+      x-request-id:
+      - 507be6dc-ae68-481b-9693-afb74cfc2f7d
+      x-runtime:
+      - '0.058921'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/collections/117440895780192730/items/117440895780231885/revoke
+  response:
+    body:
+      string: ''
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '0'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - text/html
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.16, cache_generate.active_support;dur=1.05,
+        cache_write.active_support;dur=0.07, instantiation.active_record;dur=0.30,
+        start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
+        transaction.active_record;dur=6.75, process_action.action_controller;dur=18.76
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:25:00.141080Z'
+      x-request-id:
+      - b98a30a9-e6a1-466c-8bbe-f5e326b7d2c0
+      x-runtime:
+      - '0.033915'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN_3
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/accounts/117440889521580399/in_collections
+  response:
+    body:
+      string: '{"collections":[{"id":"117440895780192730","uri":"http://localhost:3000/ap/users/117440889384582621/collections/117440895780192730","name":"Mastodon.py
+        revocation test","description":null,"language":null,"account_id":"117440889384582621","local":true,"sensitive":false,"discoverable":true,"url":"http://localhost:3000/collections/117440895780192730","item_count":0,"created_at":"2026-10-14T19:24:16.024Z","updated_at":"2026-10-14T19:24:16.024Z","tag":null,"items":[]}]}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '469'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"d2a48cf3cb0a2c5d0f2a62497f44236d"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=2.26, cache_generate.active_support;dur=0.97,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.23,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=2.83,
+        process_action.action_controller;dur=14.02
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:25:00.182050Z'
+      x-request-id:
+      - e5b42bb8-108a-4574-a848-85d4a14c25cb
+      x-runtime:
+      - '0.029044'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: DELETE
+    uri: http://localhost:3000/api/v1/collections/117440895780192730
+  response:
+    body:
+      string: ''
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '0'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - text/html
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=7.00, cache_generate.active_support;dur=1.09,
+        cache_write.active_support;dur=0.06, instantiation.active_record;dur=0.23,
+        start_processing.action_controller;dur=0.00, start_transaction.active_record;dur=0.00,
+        transaction.active_record;dur=7.54, render.active_model_serializers;dur=0.44,
+        process_action.action_controller;dur=19.78
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:25:00.220297Z'
+      x-request-id:
+      - 55386f60-8291-4f28-a149-987799f137ff
+      x-runtime:
+      - '0.034924'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

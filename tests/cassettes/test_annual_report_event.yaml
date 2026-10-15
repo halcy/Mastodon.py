@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v2/notifications?expand_accounts=partial_avatars&types%5B%5D=annual_report
+  response:
+    body:
+      string: '{"accounts":[{"id":"117445532305075988","username":"mastodonpy_test","acct":"mastodonpy_test","display_name":"","locked":true,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2026-10-15T00:00:00.000Z","note":"","url":"http://localhost:3000/@mastodonpy_test","uri":"http://localhost:3000/ap/users/117445532305075988","avatar":"http://localhost:3000/avatars/original/missing.png","avatar_static":"http://localhost:3000/avatars/original/missing.png","avatar_description":"","header":"http://localhost:3000/headers/original/missing.png","header_static":"http://localhost:3000/headers/original/missing.png","header_description":"","followers_count":0,"following_count":0,"statuses_count":0,"last_status_at":null,"hide_collections":null,"show_media":true,"show_media_replies":true,"show_featured":true,"noindex":false,"feature_approval":{"automatic":[],"manual":[],"current_user":"denied"},"emojis":[],"roles":[],"fields":[]}],"partial_accounts":[],"statuses":[],"notification_groups":[{"group_key":"ungrouped-8","notifications_count":1,"type":"annual_report","most_recent_notification_id":8,"page_min_id":"8","page_max_id":"8","latest_page_notification_at":"2026-10-15T15:26:16.748Z","sample_account_ids":["117445532305075988"],"annual_report":{"year":"2025"}}]}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '1286'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"a3592275647e8666162d80a4464abdc2"
+      link:
+      - <http://localhost:3000/api/v2/notifications?max_id=8&types%5B%5D=annual_report>;
+        rel="next", <http://localhost:3000/api/v2/notifications?min_id=8&types%5B%5D=annual_report>;
+        rel="prev"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.06, sql.active_record;dur=13.66, cache_generate.active_support;dur=9.98,
+        cache_write.active_support;dur=0.12, instantiation.active_record;dur=1.97,
+        start_processing.action_controller;dur=0.01, render.active_model_serializers;dur=9.54,
+        process_action.action_controller;dur=29.30
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-15T15:30:00.099363Z'
+      x-request-id:
+      - 9c5f27fe-01b5-4043-bb0a-7d6cb3a0771c
+      x-runtime:
+      - '0.068725'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

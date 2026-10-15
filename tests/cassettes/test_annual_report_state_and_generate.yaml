@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1/annual_reports/1900/state
+  response:
+    body:
+      string: '{"state":"ineligible"}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '22'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"279d13d95f65252b9c156c76b3f0b0cf"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.04, sql.active_record;dur=1.60, cache_generate.active_support;dur=1.57,
+        cache_write.active_support;dur=0.10, instantiation.active_record;dur=0.19,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=11.60
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:05:00.836502Z'
+      x-request-id:
+      - 2726cfa0-1529-4cb0-b421-e1803a050f56
+      x-runtime:
+      - '0.027361'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - tests/v311
+    method: POST
+    uri: http://localhost:3000/api/v1/annual_reports/1900/generate
+  response:
+    body:
+      string: '{}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '2'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      etag:
+      - W/"44136fa355b3678a1146ad16f7e8649e"
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.03, sql.active_record;dur=1.44, cache_generate.active_support;dur=1.38,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.22,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=9.24
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-14T19:05:00.870397Z'
+      x-request-id:
+      - 3bf4f01b-a233-46a4-afdc-2ec7106006cf
+      x-runtime:
+      - '0.024385'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

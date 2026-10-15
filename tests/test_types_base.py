@@ -203,3 +203,63 @@ def test_media_union_specialization():
     assert type(image.meta.original) is MediaAttachmentImageMetadata
     assert type(video.meta.original) is MediaAttachmentVideoMetadata
     assert type(reassigned.meta.original) is MediaAttachmentVideoMetadata
+
+
+def test_collection_items_alias_preserves_dict_methods_and_serialization():
+    from mastodon.return_types import Collection, CollectionItem, SearchV2
+    from mastodon.types_base import Entity, try_cast_recurse
+    import json
+
+    collection = Collection(id="456", name="Example", items=[{"id": "123"}])
+    assert isinstance(collection.collection_items, NonPaginatableList)
+    assert isinstance(collection.collection_items[0], CollectionItem)
+    assert collection.collection_items is collection["items"]
+    assert dict(collection.items())["items"] is collection.collection_items
+
+    result = try_cast_recurse(SearchV2, {"collections": [{"id": "456", "name": "Example", "items": [{"id": "123"}]}]})
+    assert isinstance(result.collections[0], Collection)
+    assert isinstance(result.collections[0].collection_items[0], CollectionItem)
+    assert result.collections[0].id == "456"
+    assert "collection_items" in repr(result)
+    serialized = result.to_json()
+    data = json.loads(serialized)["_mastopy_data"]["collections"][0]
+    assert "items" in data
+    assert "collection_items" not in data
+    restored = Entity.from_json(serialized)
+    assert restored.collections[0].collection_items[0].id == "123"
+
+
+@pytest.mark.parametrize("entity_name, field_name", [
+    ("WrappedCollection", "collection"),
+    ("WrappedCollectionItem", "collection_item"),
+])
+def test_directly_constructed_wrapper_serialization(entity_name, field_name):
+    from mastodon import return_types
+    from mastodon.types_base import Entity
+
+    entity_type = getattr(return_types, entity_name)
+    wrapper = entity_type(**{field_name: {"id": "123"}})
+    restored = Entity.from_json(wrapper.to_json())
+
+    assert type(restored) is entity_type
+    assert type(restored[field_name]) is type(wrapper[field_name])
+    assert restored[field_name].id == "123"
+
+
+@pytest.mark.parametrize("state", [
+    {"functional": True, "confirmed": True, "approved": True, "error_code": None, "error": None},
+    {"functional": False, "confirmed": False, "approved": True, "error_code": "unconfirmed", "error": "Confirm your email"},
+])
+def test_credential_account_state_cast_and_roundtrip(state):
+    from mastodon.return_types import Account, CredentialAccountState
+    from mastodon.types_base import Entity
+
+    account = Account(id="123", state=state)
+    assert isinstance(account.state, CredentialAccountState)
+    assert account.state.functional is state["functional"]
+    assert account.state.error_code == state["error_code"]
+    assert account.state.error == state["error"]
+    restored = Entity.from_json(account.to_json())
+    assert isinstance(restored.state, CredentialAccountState)
+    assert restored.state == account.state
+    assert Account(id="456").state is None

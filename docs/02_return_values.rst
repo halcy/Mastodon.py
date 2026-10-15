@@ -57,6 +57,9 @@ Base types
 .. autoclass:: mastodon.types_base.EntityList
    :members:
 
+.. autoclass:: mastodon.types_base.EmptyResponse
+   :members:
+
 Return types
 ============
 .. autoclass:: mastodon.return_types.Account
@@ -69,6 +72,9 @@ Return types
    :members:
 
 .. autoclass:: mastodon.return_types.CredentialAccountSource
+   :members:
+
+.. autoclass:: mastodon.return_types.CredentialAccountState
    :members:
 
 .. autoclass:: mastodon.return_types.Status
@@ -245,9 +251,6 @@ Return types
 .. autoclass:: mastodon.return_types.InstanceTimelinesAccessFeedConfiguration
    :members:
 
-.. autoclass:: mastodon.return_types.InstanceAnnualReportCampaign
-   :members:
-
 .. autoclass:: mastodon.return_types.Nodeinfo
    :members:
 
@@ -420,6 +423,75 @@ Return types
    :members:
 
 .. autoclass:: mastodon.return_types.AsyncRefresh
+   :members:
+
+.. autoclass:: mastodon.return_types.Profile
+   :members:
+
+.. autoclass:: mastodon.return_types.ProfileField
+   :members:
+
+.. autoclass:: mastodon.return_types.ShallowTag
+   :members:
+
+.. autoclass:: mastodon.return_types.FeatureApproval
+   :members:
+
+.. autoclass:: mastodon.return_types.WrappedCollection
+   :members:
+
+.. autoclass:: mastodon.return_types.Collections
+   :members:
+
+.. autoclass:: mastodon.return_types.CollectionWithAccounts
+   :members:
+
+.. autoclass:: mastodon.return_types.WrappedCollectionItem
+   :members:
+
+.. autoclass:: mastodon.return_types.NotificationFallback
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportEvent
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportState
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReport
+   :members:
+
+.. autoclass:: mastodon.return_types.WrappedAnnualReports
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportDataV2
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportDataV1
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportTopStatusesV2
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportTopStatusesV1
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportTimeSeriesEntryV2
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportTimeSeriesEntryV1
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportTypeDistribution
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportNameAndCount
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportAccountAndCount
+   :members:
+
+.. autoclass:: mastodon.return_types.AnnualReportPercentiles
    :members:
 
 Deprecated types

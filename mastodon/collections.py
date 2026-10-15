@@ -12,7 +12,7 @@ class Mastodon(Internals):
     @api_version("4.6.0", "4.6.0")
     def collection_create(self, name: str, description: Optional[str] = None,
                           language: Optional[str] = None, tag_name: Optional[str] = None,
-                          sensitive: Optional[bool] = None, discoverable: Optional[bool] = None,
+                          sensitive: bool = False, discoverable: bool = False,
                           account_ids: Optional[List[Union[Account, IdType]]] = None) -> WrappedCollection:
         """
         Create a Collection of accounts for follow recommendation purposes, optionally 
@@ -25,7 +25,7 @@ class Mastodon(Internals):
 
         `sensitive` indicates whether the new collection contains sensitive content, `discoverable` indicates
         whether the new collection is discoverable by other users through discovery functionality (or otherwise,
-        only visible by direct link).
+        only visible by direct link). Both default to False when creating a collection.
         """
         if account_ids is not None:
             account_ids = self.__unpack_id(account_ids, listify=True)
@@ -79,6 +79,8 @@ class Mastodon(Internals):
         Update a Collection.
 
         Parameters are the same as in `collection_create`, less `account_ids`.
+        Omitted parameters retain their existing values, including `sensitive` and
+        `discoverable`.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
