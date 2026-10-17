@@ -2,9 +2,6 @@
 # If you'd like to contribute to Mastodon.py, here's some concrete areas that need work:
 
 * Features are currently up to date and mostly tested, but there are some areas where tests could be better, especially for all the wrong-argument and error state checks. Check the codecov page and try to add tests those areas.
-* Nodeinfo is currently just documented by reference to the spec. It could be documented better.
-* Nodeinfo currently just retrieves the 2.0 spec version. It should likely attempt to retrieve other versions as well, trying to get the most recent one available.
-* We currently don't use OAuth Proof Key for Code Exchange - that should be implemented at some point (for servers that support it).
 * Other implementations of the Mastodon API as well as Mastodon forks exist - it may be good to try to support these:
   * Figure out what they do different and file issues / document it
   * Where code can be written to support alternate implementations or different features, write code to do this
@@ -20,3 +17,7 @@
 * We don't generally accept purely cosmetic changes, please avoid patches that only apply formatting.
 * If you have any questions about contributing or the library, you can either open up a discussion in the github discussions section, open an issue, or directly talk to @halcy@icosahedron.website on the Fediverse or .halcy on discord.
   
+# LLM / Agent use
+* Please do not submit fully AI-generated pull requests. I will not merge them. It's been my experience that if you do that without a very good understanding of the codebase *and* thoroughly reviewing everything, the resulting design decisions are generally very poor. Please try investigate and understand the problem yourself and then write a patch instead, or just report a bug, so I can fix the issue myself. A bad fix is more work than a good bug report.
+* Please do not do do any large-scale processing of the codebase. That includes refactoring, formatting, documentation changes, etc.
+* This also includes fully automated bug / security issue scanning. Please do not submit bug reports about issues unless you have personally seen those issues happen, or have personally reproduced them and made sure that they are in fact real, actual problems and not just chaff. If you do see an issue happen, and want to triage it with an LLM, be my guest, but please not have the computer find and auto-submit issues or PRs.

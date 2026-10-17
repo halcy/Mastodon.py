@@ -214,3 +214,74 @@ def test_stream_websocket_only_media(api, websocket_cassette):
         stream.join()
         for status in posted:
             api.status_delete(status, delete_media=True)
+
+
+@pytest.mark.vcr(match_on=['method', 'path', 'query'])
+def test_stream_websocket_subscription_error(api, websocket_cassette):
+    from mastodon.errors import MastodonAPIError
+
+    errors = []
+    listener = CallbackStreamListener(stream_error_handler=lambda error, stream: errors.append((error, stream)))
+    with api.stream_open_websocket(listener) as stream:
+        stream.subscribe('mastodonpy_invalid_stream', listener=listener)
+        wait_for(lambda: bool(errors))
+        assert len(errors) == 1
+        error, for_stream = errors[0]
+        assert isinstance(error, MastodonAPIError)
+        assert error.args[1] == 400
+        assert 'Unknown stream type' in str(error)
+        assert for_stream is None
+        assert stream.is_alive()
+    assert not stream.is_alive()
+
+
+@pytest.mark.vcr(match_on=['method', 'path', 'query'])
+def test_stream_websocket_unsubscribe_context_manager(api, websocket_cassette):
+    with api.stream_open_websocket(CallbackStreamListener()) as stream:
+        subscription = stream.subscribe('user')
+        if websocket_cassette.recording:
+            time.sleep(2)
+        assert subscription.is_alive()
+        assert stream.unsubscribe('user') is stream
+        assert stream.subscriptions == []
+        assert not subscription.is_alive()
+        with pytest.raises(MastodonIllegalArgumentError, match='Not subscribed'):
+            stream.unsubscribe('user')
+        assert stream.is_alive()
+    assert stream.closed
+    assert not stream.is_alive()
+    assert not stream.is_receiving()
+    with pytest.raises(MastodonIllegalArgumentError, match='closed'):
+        stream.subscribe('user')
+
+
+@pytest.mark.vcr(match_on=['method', 'path', 'query', 'body'])
+@pytest.mark.parametrize('local', [False, True])
+def test_stream_websocket_hashtag(api, websocket_cassette, local):
+    first_updates = []
+    second_updates = []
+    posted = []
+    try:
+        with api.stream_open_websocket() as stream:
+            first = api.stream_hashtag(
+                'MastodonPyStreamFirst', CallbackStreamListener(update_handler=first_updates.append),
+                local=local, websocket_handle=stream)
+            second = api.stream_hashtag(
+                'mastodonpystreamsecond', CallbackStreamListener(update_handler=second_updates.append),
+                local=local, websocket_handle=stream)
+            assert first.stream == ('hashtag:local' if local else 'hashtag')
+            assert second.stream == first.stream
+            with pytest.raises(MastodonIllegalArgumentError, match='leading #'):
+                api.stream_hashtag('#invalid', CallbackStreamListener(), websocket_handle=stream)
+            if websocket_cassette.recording:
+                time.sleep(2)
+            posted.append(api.status_post('First hashtag stream test #MastodonPyStreamFirst', visibility='public'))
+            posted.append(api.status_post('Second hashtag stream test #mastodonpystreamsecond', visibility='public'))
+            wait_for(lambda: bool(first_updates) and bool(second_updates))
+            if websocket_cassette.recording:
+                time.sleep(5)
+        assert [status.id for status in first_updates] == [posted[0].id]
+        assert [status.id for status in second_updates] == [posted[1].id]
+    finally:
+        for status in posted:
+            api.status_delete(status)

@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Authorization:
+      - Bearer __MASTODON_PY_TEST_ACCESS_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - tests/v311
+    method: GET
+    uri: http://localhost:3000/api/v1_alpha/async_refreshes/0
+  response:
+    body:
+      string: '{"error":"Not Found"}'
+    headers:
+      cache-control:
+      - private, no-store
+      content-length:
+      - '21'
+      content-security-policy:
+      - default-src 'none'; frame-ancestors 'none'; form-action 'none'
+      content-type:
+      - application/json; charset=utf-8
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      server-timing:
+      - cache_read.active_support;dur=0.02, sql.active_record;dur=1.11, cache_generate.active_support;dur=1.09,
+        cache_write.active_support;dur=0.11, instantiation.active_record;dur=0.17,
+        start_processing.action_controller;dur=0.00, render.active_model_serializers;dur=0.02,
+        process_action.action_controller;dur=8.15
+      vary:
+      - Authorization, Origin
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      x-permitted-cross-domain-policies:
+      - none
+      x-ratelimit-limit:
+      - '300'
+      x-ratelimit-remaining:
+      - '299'
+      x-ratelimit-reset:
+      - '2026-10-17T19:00:00.627698Z'
+      x-request-id:
+      - 5eab947f-e217-45f8-9df7-30b1ef6eb95e
+      x-runtime:
+      - '0.032928'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 404
+      message: Not Found
+version: 1

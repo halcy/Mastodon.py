@@ -1,0 +1,12 @@
+version: 1
+connections:
+- request:
+    path: /api/v1/streaming
+    authorization: true
+  interactions:
+  - send:
+      type: subscribe
+      stream: mastodonpy_invalid_stream
+  - receive:
+      error: Unknown stream type
+      status: 400
