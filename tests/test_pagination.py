@@ -166,4 +166,43 @@ def test_pagination_iterator(api3):
         for status in iterator:
             assert UNLIKELY_HASHTAG in status['content']
             assert type(status) == type(hashtag[0])
-        
+
+
+@pytest.mark.vcr()
+def test_offset_navigation(api):
+    from mastodon.types_base import PaginatableList
+
+    first = api.account_search('admin', limit=1)
+    assert isinstance(first, PaginatableList)
+    assert len(first) == 1
+    assert isinstance(first._pagination_next, PaginationInfo)
+    assert api.fetch_previous(first) is None
+
+    restored = Entity.from_json(first.to_json())
+    assert isinstance(restored._pagination_next, PaginationInfo)
+    second = api.fetch_next(api.get_pagination_info(restored, 'next'))
+    expected = api.account_search('admin', limit=1, offset=1)
+    assert [account.id for account in second] == [account.id for account in expected]
+    assert isinstance(second._pagination_prev, PaginationInfo)
+    previous = api.fetch_previous(second)
+    assert [account.id for account in previous] == [account.id for account in first]
+
+
+@pytest.mark.vcr()
+def test_offset_iteration(api):
+    expected = api.account_search('admin')
+    assert len(expected) == 2
+    first = api.account_search('admin', limit=1)
+    expected_ids = [account.id for account in expected]
+
+    remaining = api.fetch_remaining(first)
+    assert [account.id for account in remaining] == expected_ids
+    assert [account.id for account in api.pagination_iterator(first)] == expected_ids
+    assert [account.id for account in api.pagination_iterator(first._pagination_next)] == expected_ids[1:]
+
+    second = api.fetch_next(first)
+    empty = api.fetch_next(second)
+    assert empty == []
+    assert api.fetch_next(empty) is None
+    previous = api.fetch_previous(Entity.from_json(empty.to_json()))
+    assert [account.id for account in previous] == [account.id for account in second]

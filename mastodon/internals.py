@@ -1,6 +1,7 @@
 # internals.py - many internal helpers
 
 from datetime import timezone, datetime, timedelta
+from urllib.parse import parse_qs
 from contextlib import closing
 import mimetypes
 from typing import List, Optional, Union
@@ -15,7 +16,7 @@ import base64
 import os
 import inspect
 import warnings
-from mastodon.types_base import IdType
+from mastodon.types_base import IdType, PaginationInfo
 
 from mastodon.versions import parse_version_string
 from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
@@ -146,7 +147,7 @@ class Mastodon():
 
     def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None,
                         do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None, override_type=None,
-                        force_pagination=False):
+                        force_pagination=False, offset_pagination=False, offset_pagination_previous=None):
         """
         Internal API request helper.
 
@@ -398,13 +399,31 @@ class Mastodon():
                     if 'rel' not in url:
                         continue
 
+                    if offset_pagination and url['rel'] in ('next', 'prev'):
+                        query = requests.utils.urlparse(url['url']).query
+                        link_params = parse_qs(query)
+                        if 'offset' in link_params:
+                            page_params = PaginationInfo(copy.deepcopy(params))
+                            page_params.update({
+                                '_pagination_method': method,
+                                '_pagination_endpoint': endpoint,
+                                '_mastopy_type': final_type,
+                                '_pagination_offset': offset_pagination,
+                                '_pagination_lang': lang_override,
+                                'offset': int(link_params['offset'][0]),
+                            })
+                            if 'limit' in link_params:
+                                page_params['limit'] = int(link_params['limit'][0])
+                            setattr(response, '_pagination_' + url['rel'], page_params)
+                            continue
+
                     if url['rel'] == 'next':
                         # Be paranoid and extract max_id specifically
                         next_url = url['url']
                         matchgroups = re.search(r"[?&]max_id=([^&]+)", next_url)
 
                         if matchgroups:
-                            next_params = copy.deepcopy(params)
+                            next_params = PaginationInfo(copy.deepcopy(params))
                             next_params['_pagination_method'] = method
                             next_params['_pagination_endpoint'] = endpoint
                             next_params['_mastopy_type'] = final_type
@@ -426,7 +445,7 @@ class Mastodon():
                         # Old and busted (pre-2.6.0): since_id pagination
                         matchgroups = re.search(r"[?&]since_id=([^&]+)", prev_url)
                         if matchgroups:
-                            prev_params = copy.deepcopy(params)
+                            prev_params = PaginationInfo(copy.deepcopy(params))
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
                             prev_params['_mastopy_type'] = final_type
@@ -442,7 +461,7 @@ class Mastodon():
                         # New and fantastico (post-2.6.0): min_id pagination
                         matchgroups = re.search(r"[?&]min_id=([^&]+)", prev_url)
                         if matchgroups:
-                            prev_params = copy.deepcopy(params)
+                            prev_params = PaginationInfo(copy.deepcopy(params))
                             prev_params['_pagination_method'] = method
                             prev_params['_pagination_endpoint'] = endpoint
                             prev_params['_mastopy_type'] = final_type
@@ -455,6 +474,28 @@ class Mastodon():
                                 del prev_params['max_id']
                             response._pagination_prev = prev_params
         
+            # Without Link headers, advance by the actual number of returned items.
+            if offset_pagination and isinstance(response, PaginatableList) and not response_object.headers.get('Link'):
+                offset = int(params.get('offset', 0))
+                page_params = PaginationInfo(copy.deepcopy(params))
+                page_params.update({
+                    '_pagination_method': method,
+                    '_pagination_endpoint': endpoint,
+                    '_mastopy_type': final_type,
+                    '_pagination_offset': True,
+                    '_pagination_lang': lang_override,
+                })
+                if response:
+                    response._pagination_next = PaginationInfo(
+                        page_params, offset=offset + len(response), _pagination_offset_previous=offset)
+                if offset > 0:
+                    previous_offset = offset_pagination_previous
+                    if previous_offset is None and response:
+                        previous_offset = max(0, offset - len(response))
+                    if previous_offset is not None:
+                        response._pagination_prev = PaginationInfo(
+                            page_params, offset=previous_offset, limit=offset - previous_offset)
+
             # Parse Mastodon-Async-Refresh header
             if 'Mastodon-Async-Refresh' in response_object.headers:
                 async_refresh_header = response_object.headers['Mastodon-Async-Refresh']

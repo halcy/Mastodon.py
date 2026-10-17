@@ -695,10 +695,10 @@ a datetime (which will get converted to a snowflake id).
 T = TypeVar('T')
 class PaginatableList(List[T], Entity):
     """
-    This is a list with pagination information attached.
+    This is a list with cursor-based or offset-based pagination information attached.
 
     It is returned by the API when a list of items is requested, and the response contains
-    a Link header with pagination information.
+    a Link header with pagination information, or an endpoint supports offset pagination.
     """
     _pagination_next: Optional[PaginationInfo]
     _pagination_prev: Optional[PaginationInfo]

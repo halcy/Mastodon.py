@@ -244,21 +244,20 @@ class Mastodon(Internals):
                                   params)
 
     @api_version("1.0.0", "2.8.0")
-    def account_search(self, q: str, limit: Optional[int] = None, following: bool = False, resolve: bool = False, offset: Optional[int] = None) -> NonPaginatableList[Account]:
+    def account_search(self, q: str, limit: Optional[int] = None, following: bool = False, resolve: bool = False, offset: Optional[int] = None) -> PaginatableList[Account]:
         """
         Fetch matching accounts. Will lookup an account remotely if the search term is
         in the username@domain format and not yet in the database. Set `following` to
         True to limit the search to users the logged-in user follows.
 
-        Paginated in a weird way ("limit" / "offset"), if you want to fetch all results
-        here please do it yourself for now.
+        Uses offset/limit pagination.
         """
         params = self.__generate_params(locals())
 
         if params["following"] == False:
             del params["following"]
 
-        return self.__api_request('GET', '/api/v1/accounts/search', params)
+        return self.__api_request('GET', '/api/v1/accounts/search', params, offset_pagination=True)
 
     @api_version("2.1.0", "2.1.0")
     def account_lists(self, id: Union[Account, IdType]) -> NonPaginatableList[UserList]:

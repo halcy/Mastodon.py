@@ -4,7 +4,7 @@ from mastodon.utility import api_version
 from mastodon.compat import urlparse
 
 from mastodon.internals import Mastodon as Internals
-from mastodon.return_types import Instance, InstanceV2, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription, DomainBlock, SupportedLocale, TermsOfService
+from mastodon.return_types import Instance, InstanceV2, PaginatableList, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription, DomainBlock, SupportedLocale, TermsOfService
 
 from typing import Union, Optional, Dict, List
 
@@ -165,7 +165,7 @@ class Mastodon(Internals):
     ###
     @api_version("3.0.0", "3.0.0")
     def directory(self, offset: Optional[int] = None, limit: Optional[int] = None, 
-                  order: Optional[str] = None, local: Optional[bool] = None) -> NonPaginatableList[Account]:
+                  order: Optional[str] = None, local: Optional[bool] = None) -> PaginatableList[Account]:
         """
         Fetch the contents of the profile directory, if enabled on the server.
 
@@ -178,11 +178,10 @@ class Mastodon(Internals):
 
         `local` True to return only local accounts.
 
-        Uses offset/limit pagination, not currently handled by the pagination utility functions,
-        do it manually if you have to.
+        Uses offset/limit pagination.
         """
         params = self.__generate_params(locals())
-        return self.__api_request('GET', '/api/v1/directory', params)
+        return self.__api_request('GET', '/api/v1/directory', params, offset_pagination=True)
 
     ###
     # Reading data: Emoji

@@ -190,14 +190,18 @@ class Mastodon(Internals):
             response_type = params['_mastopy_type']
             del params['_mastopy_type']
 
+        offset_pagination = params.pop('_pagination_offset', False)
+        offset_pagination_previous = params.pop('_pagination_offset_previous', None)
+        lang_override = params.pop('_pagination_lang', None)
+
         force_pagination = False
         if not isinstance(previous_page, list):
             force_pagination = True
 
         if not is_pagination_dict:
-            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type)
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
         else:
-            return self.__api_request(method, endpoint, params, override_type=response_type)
+            return self.__api_request(method, endpoint, params, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
 
     def fetch_previous(self, next_page: Union[PaginatableList[_T], _T, PaginationInfo]) -> Optional[Union[PaginatableList[_T], _T]]:
         """
@@ -238,14 +242,18 @@ class Mastodon(Internals):
             response_type = params['_mastopy_type']
             del params['_mastopy_type']
 
+        offset_pagination = params.pop('_pagination_offset', False)
+        offset_pagination_previous = params.pop('_pagination_offset_previous', None)
+        lang_override = params.pop('_pagination_lang', None)
+
         force_pagination = False
         if not isinstance(next_page, list):
             force_pagination = True
 
         if not is_pagination_dict:
-            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type)
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
         else:
-            return self.__api_request(method, endpoint, params, override_type=response_type)
+            return self.__api_request(method, endpoint, params, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
 
     def fetch_remaining(self, first_page: PaginatableList[_T]) -> PaginatableList[_T]:
         """

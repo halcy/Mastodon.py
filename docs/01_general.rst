@@ -89,18 +89,20 @@ instance may choose to return less results than you requested - by default, Mast
 will return no more than 40 statuses and no more than 80 accounts no matter how high
 you set the limit.
 
-The responses returned by paginated endpoints contain a "link" header that specifies
-which parameters to use to get the next and previous pages. Mastodon.py parses these
-and stores them (if present) in the first (for the previous page) and last (for the
-next page) item of the returned list as _pagination_prev and _pagination_next. They
-are accessible only via attribute-style access. Note that this means that if you
-want to persist pagination info with your data, you'll have to take care of that
-manually (or persist objects, not just dicts).
+Paginated responses use ``PaginatableList``, with navigation metadata stored on the
+Internally. The pagination helpers support both ID cursors and offset/limit pagination. 
+
+Use the object's ``to_json()`` and ``Entity.from_json()`` methods to preserve
+pagination metadata when saving and restoring a page. Converting the response to
+a plain list discards this metadata.
 
 There are convenience functions available for fetching the previous and next page of
 a paginated request as well as for fetching all pages starting from a first page.
 For details, see :ref:`fetch_next() <fetch_next()>`, :ref:`fetch_previous() <fetch_previous()>`. 
-and :ref:`fetch_remaining() <fetch_remaining()>`.
+and :ref:`fetch_remaining() <fetch_remaining()>`. There is also an iterator available to
+iterate through all items in a paginated response (:ref:`iter_paginated() <iter_paginated()>`).
+
+You can retrieve pagination information using :ref:`get_pagination_info() <get_pagination_info()>`.
 
 Async refreshes
 ---------------
