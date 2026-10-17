@@ -131,16 +131,16 @@ def test_stream_user_shared_websocket(api, websocket_cassette):
 def test_stream_websocket_subscribe_unsubscribe(api, websocket_cassette):
     stream = api.stream_open_websocket()
     try:
-        assert stream.subscriptions == []
+        assert stream.subscriptions() == []
 
         subscription = stream.subscribe("hashtag", listener=CallbackStreamListener(), tag="mastodonpy")
-        assert stream.subscriptions == [subscription]
+        assert stream.subscriptions() == [subscription]
         assert subscription.stream == "hashtag"
         assert subscription.params == {"tag": "mastodonpy"}
         assert subscription.is_alive()
 
         subscription.close()
-        assert stream.subscriptions == []
+        assert stream.subscriptions() == []
         assert not subscription.is_alive()
     finally:
         stream.close()
@@ -243,7 +243,7 @@ def test_stream_websocket_unsubscribe_context_manager(api, websocket_cassette):
             time.sleep(2)
         assert subscription.is_alive()
         assert stream.unsubscribe('user') is stream
-        assert stream.subscriptions == []
+        assert stream.subscriptions() == []
         assert not subscription.is_alive()
         with pytest.raises(MastodonIllegalArgumentError, match='Not subscribed'):
             stream.unsubscribe('user')
