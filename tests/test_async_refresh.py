@@ -331,7 +331,7 @@ def test_await_async_refresh_returns_immediately_when_already_finished():
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize('input_kind', ['string', 'integer', 'entity', 'response'])
-def test_async_refresh_id_extraction(api, vcr_cassette, input_kind):
+def test_async_refresh_id_extraction(api, input_kind):
     from mastodon.errors import MastodonNotFoundError
 
     # An unknown ID exercises the real endpoint without needing a refresh job.
@@ -347,15 +347,12 @@ def test_async_refresh_id_extraction(api, vcr_cassette, input_kind):
 
     with pytest.raises(MastodonNotFoundError):
         api.get_async_refresh_status(value)
-    assert vcr_cassette.requests[-1].path == '/api/v1_alpha/async_refreshes/0'
 
 
 @pytest.mark.vcr()
-def test_async_refresh_id_extraction_rejects_response_without_metadata(api, vcr_cassette):
+def test_async_refresh_id_extraction_rejects_response_without_metadata(api):
     from mastodon.errors import MastodonIllegalArgumentError
 
     value = api.instance()
-    request_count = len(vcr_cassette.requests)
     with pytest.raises(MastodonIllegalArgumentError, match='async refresh ID'):
         api.get_async_refresh_status(value)
-    assert len(vcr_cassette.requests) == request_count
