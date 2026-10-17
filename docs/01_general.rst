@@ -100,7 +100,7 @@ There are convenience functions available for fetching the previous and next pag
 a paginated request as well as for fetching all pages starting from a first page.
 For details, see :ref:`fetch_next() <fetch_next()>`, :ref:`fetch_previous() <fetch_previous()>`. 
 and :ref:`fetch_remaining() <fetch_remaining()>`. There is also an iterator available to
-iterate through all items in a paginated response (:ref:`iter_paginated() <iter_paginated()>`),
+iterate through all items in a paginated response (:ref:`pagination_page_iterator() <pagination_page_iterator()>`),
 and an iterator for complete pages (:ref:`pagination_page_iterator() <pagination_page_iterator()>`).
 
 You can retrieve pagination information using :ref:`get_pagination_info() <get_pagination_info()>`.
@@ -187,9 +187,24 @@ Alternately, for maximum compatibility, avoid doing this, and compare the
 statuses created-at times instead - this is slower, but should be more reliable
 across all kinds of different implementations.
 
+Persisting things
+-----------------
+Mastodon.py has special functions for dumping any return value from an API call to
+a JSON object and to turn that JSON back into a Mastodon.py object. 
+This will also persist type information and possible pagination information,
+to make it possible to fully restore the original Mastodon.py object from the JSON.
+
+.. code-block:: python
+
+    json_data = mastodon_object.to_json()
+    restored_object = Entity.from_json(json_data)
+
+Read more in the documentation for the :ref:`to_json() <to_json()>` and 
+:ref:`from_json() <from_json()>` methods.
+
 Versioning
 ----------
-Mastodon.py will check if a certain endpoint is available before doing API
+Mastodon.py can check if a certain endpoint is available before doing API
 calls. By default, it checks against the version of Mastodon retrieved on
 init(), or the version you specified. Mastodon.py can be set (in the
 constructor) to either check if an endpoint is available at all (this is the

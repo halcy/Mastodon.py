@@ -85,7 +85,6 @@ class WebSocketStreamHandle(StreamHandle):
 
         self._connect()
 
-    @property
     def subscriptions(self):
         """Return a list of active subscriptions."""
         with self._lock:

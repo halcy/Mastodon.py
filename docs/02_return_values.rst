@@ -1,7 +1,6 @@
 Return values
 =============
 .. py:module:: mastodon
-   :no-index:
 .. py:class: Mastodon
 
 Unless otherwise specified, all data is returned as Python dictionaries, matching
@@ -35,7 +34,7 @@ All return values can be converted from and to JSON using the `to_json()` and `f
 methods defined on the `mastodon.types_base.Entity` class.
 
 Base types
-==========
+----------
 .. autoclass:: mastodon.types_base.AttribAccessDict
    :members:
 
@@ -61,7 +60,7 @@ Base types
    :members:
 
 Return types
-============
+------------
 .. autoclass:: mastodon.return_types.Account
    :members:
 

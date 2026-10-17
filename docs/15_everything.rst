@@ -22,6 +22,8 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.types_base.EntityList
    :no-index:
+.. autoclass:: mastodon.types_base.EmptyResponse
+   :no-index:
 .. autoclass:: mastodon.return_types.Account
    :no-index:
 .. autoclass:: mastodon.return_types.AccountField
@@ -148,8 +150,6 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.InstanceTimelinesAccessFeedConfiguration
    :no-index:
-.. autoclass:: mastodon.return_types.InstanceAnnualReportCampaign
-   :no-index:
 .. autoclass:: mastodon.return_types.Nodeinfo
    :no-index:
 .. autoclass:: mastodon.return_types.NodeinfoSoftware
@@ -265,6 +265,52 @@ Every function on a huge CTRL-F-able page
 .. autoclass:: mastodon.return_types.TermsOfService
    :no-index:
 .. autoclass:: mastodon.return_types.AsyncRefresh
+   :no-index:
+.. autoclass:: mastodon.return_types.Profile
+   :no-index:
+.. autoclass:: mastodon.return_types.ProfileField
+   :no-index:
+.. autoclass:: mastodon.return_types.ShallowTag
+   :no-index:
+.. autoclass:: mastodon.return_types.FeatureApproval
+   :no-index:
+.. autoclass:: mastodon.return_types.WrappedCollection
+   :no-index:
+.. autoclass:: mastodon.return_types.Collections
+   :no-index:
+.. autoclass:: mastodon.return_types.CollectionWithAccounts
+   :no-index:
+.. autoclass:: mastodon.return_types.WrappedCollectionItem
+   :no-index:
+.. autoclass:: mastodon.return_types.NotificationFallback
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportEvent
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportState
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReport
+   :no-index:
+.. autoclass:: mastodon.return_types.WrappedAnnualReports
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportDataV2
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportDataV1
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportTopStatusesV2
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportTopStatusesV1
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportTimeSeriesEntryV2
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportTimeSeriesEntryV1
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportTypeDistribution
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportNameAndCount
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportAccountAndCount
+   :no-index:
+.. autoclass:: mastodon.return_types.AnnualReportPercentiles
    :no-index:
 .. autoclass:: mastodon.return_types.Filter
    :no-index:
@@ -492,6 +538,8 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.timeline
    :no-index:
+.. automethod:: Mastodon.timeline_is_available
+   :no-index:
 .. automethod:: Mastodon.timeline_home
    :no-index:
 .. automethod:: Mastodon.timeline_local
@@ -640,6 +688,8 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.stream_user
    :no-index:
+.. automethod:: Mastodon.stream_user_notifications
+   :no-index:
 .. automethod:: Mastodon.stream_public
    :no-index:
 .. automethod:: Mastodon.stream_local
@@ -647,6 +697,10 @@ Every function on a huge CTRL-F-able page
 .. automethod:: Mastodon.stream_hashtag
    :no-index:
 .. automethod:: Mastodon.stream_list
+   :no-index:
+.. automethod:: Mastodon.stream_direct
+   :no-index:
+.. automethod:: Mastodon.stream_open_websocket
    :no-index:
 .. automethod:: Mastodon.stream_healthy
    :no-index:
@@ -670,6 +724,50 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: CallbackStreamListener
    :no-index:
+.. autoclass:: StreamHandle
+   :no-index:
+.. automethod:: StreamHandle.close
+   :no-index:
+.. automethod:: StreamHandle.is_alive
+   :no-index:
+.. automethod:: StreamHandle.is_receiving
+   :no-index:
+.. automethod:: StreamHandle.join
+   :no-index:
+.. autoclass:: SSEStreamHandle
+   :no-index:
+.. automethod:: SSEStreamHandle.close
+   :no-index:
+.. automethod:: SSEStreamHandle.is_alive
+   :no-index:
+.. automethod:: SSEStreamHandle.is_receiving
+   :no-index:
+.. automethod:: SSEStreamHandle.join
+   :no-index:
+.. autoclass:: WebSocketStreamHandle
+   :no-index:
+.. automethod:: WebSocketStreamHandle.subscribe
+   :no-index:
+.. automethod:: WebSocketStreamHandle.unsubscribe
+   :no-index:
+.. automethod:: WebSocketStreamHandle.subscriptions
+   :no-index:
+.. automethod:: WebSocketStreamHandle.close
+   :no-index:
+.. automethod:: WebSocketStreamHandle.is_alive
+   :no-index:
+.. automethod:: WebSocketStreamHandle.is_receiving
+   :no-index:
+.. automethod:: WebSocketStreamHandle.join
+   :no-index:
+.. autoclass:: WebSocketSubscription
+   :no-index:
+.. automethod:: WebSocketSubscription.close
+   :no-index:
+.. automethod:: WebSocketSubscription.is_alive
+   :no-index:
+.. automethod:: WebSocketSubscription.is_receiving
+   :no-index:
 .. automethod:: Mastodon.markers_get
    :no-index:
 .. automethod:: Mastodon.markers_set
@@ -685,6 +783,8 @@ Every function on a huge CTRL-F-able page
 .. automethod:: Mastodon.fetch_remaining
    :no-index:
 .. automethod:: Mastodon.pagination_iterator
+   :no-index:
+.. automethod:: Mastodon.pagination_page_iterator
    :no-index:
 .. automethod:: Mastodon.get_pagination_info
    :no-index:
