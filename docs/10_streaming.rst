@@ -19,6 +19,32 @@ using the `on_abort` handler to fill in events since the last received one and t
 Both `run_async` and `reconnect_async` default to false, and you'll have to set each to true
 separately to get the behaviour described above.
 
+By default, the streaming API uses HTTP server-sent events. There is now also support for the
+WebSocket streaming API, which allows multiplexing of multiple streams over one connection
+and should probably be preferred by applications relying heavily on streaming.
+
+Support requires the optional ``websocket_streaming`` dependencies:
+
+    pip install "Mastodon.py[websocket_streaming]"
+
+WebSocket stream handles can carry multiple subscriptions. Open one connection
+with :meth:`Mastodon.stream_open_websocket`. Then, subscribe to or unsubscribe from
+individual streams using the `subscribe` or `unsubscribe` methods on the returned handle:
+
+.. code-block:: python
+
+    [...]
+
+    stream = mastodon.stream_open_websocket(listener)
+    stream.subscribe("user")
+    stream.subscribe("hashtag", tag="python")
+
+You can also pass a websocket handle as the `websocket_handle` parameter to the existing
+stream endpoint methods for a more drop in replacement experience.
+
+Valid stream names and subscription parameters are documented in
+:meth:`WebSocketStreamHandle.subscribe`.
+
 The connection may be closed at any time by calling the handles close() method. The
 current status of the handler thread can be checked with the handles is_alive() function,
 and the streaming status can be checked by calling is_receiving().
@@ -46,15 +72,16 @@ When in not-async mode or async mode without async_reconnect, the stream functio
 various exceptions: `MastodonMalformedEventError` if a received event cannot be parsed and
 `MastodonNetworkError` if any connection problems occur.
 
-Mastodon.py currently does not support websocket based, multiplexed streams, but might in the future.
-
 Stream endpoints
 ----------------
 .. automethod:: Mastodon.stream_user
+.. automethod:: Mastodon.stream_user_notifications
 .. automethod:: Mastodon.stream_public
 .. automethod:: Mastodon.stream_local
 .. automethod:: Mastodon.stream_hashtag
 .. automethod:: Mastodon.stream_list
+.. automethod:: Mastodon.stream_direct
+.. automethod:: Mastodon.stream_open_websocket
 .. automethod:: Mastodon.stream_healthy
 
 StreamListener
@@ -75,3 +102,44 @@ CallbackStreamListener
 
 .. autoclass:: CallbackStreamListener
 
+StreamHandle
+------------
+
+Both asynchronous SSE and WebSocket handles implement this lifecycle interface.
+Calling ``close()`` permanently closes a handle. Use ``join()`` to wait for its
+worker thread to exit.
+
+.. autoclass:: StreamHandle
+.. automethod:: StreamHandle.close
+.. automethod:: StreamHandle.is_alive
+.. automethod:: StreamHandle.is_receiving
+.. automethod:: StreamHandle.join
+
+SSEStreamHandle
+---------------
+
+.. autoclass:: SSEStreamHandle
+.. automethod:: SSEStreamHandle.close
+.. automethod:: SSEStreamHandle.is_alive
+.. automethod:: SSEStreamHandle.is_receiving
+.. automethod:: SSEStreamHandle.join
+
+WebSocketStreamHandle
+---------------------
+
+.. autoclass:: WebSocketStreamHandle
+.. automethod:: WebSocketStreamHandle.subscribe
+.. automethod:: WebSocketStreamHandle.unsubscribe
+.. automethod:: WebSocketStreamHandle.subscriptions
+.. automethod:: WebSocketStreamHandle.close
+.. automethod:: WebSocketStreamHandle.is_alive
+.. automethod:: WebSocketStreamHandle.is_receiving
+.. automethod:: WebSocketStreamHandle.join
+
+WebSocketSubscription
+~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: WebSocketSubscription
+.. automethod:: WebSocketSubscription.close
+.. automethod:: WebSocketSubscription.is_alive
+.. automethod:: WebSocketSubscription.is_receiving

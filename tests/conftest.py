@@ -1,6 +1,9 @@
 import pytest
 import os
 import vcr
+from pathlib import Path
+
+from tests.websocket_cassette import WebSocketCassette
 
 # Set this to True to debug issues with tests
 DEBUG_REQUESTS = True
@@ -67,6 +70,20 @@ def vcr_config():
 def vcr_cassette_dir(request) -> str:
     module = request.node.fspath  # current test file
     return os.path.join(module.dirname, "cassettes")
+
+@pytest.fixture
+def websocket_cassette(request, monkeypatch, vcr_cassette_dir):
+    from mastodon import streaming_websocket
+
+    cassette_path = Path(vcr_cassette_dir) / f"{request.node.name}.ws.yaml"
+    cassette = WebSocketCassette(
+        cassette_path,
+        "once",
+        streaming_websocket._open_websocket,
+    )
+    monkeypatch.setattr(streaming_websocket, "_open_websocket", cassette.open_websocket)
+    yield cassette
+    cassette.finish()
 
 # Fixtures for testing against actual, real servers
 # Please be extremely careful with these

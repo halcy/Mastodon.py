@@ -4,17 +4,135 @@ https://github.com/mastodon/documentation/blob/master/content/en/methods/timelin
 """
 
 import json
+import threading
+import time
+from contextlib import closing
 try:
     from inspect import signature
 except:
     pass
 
-from mastodon import Mastodon
-from mastodon.Mastodon import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
+from mastodon.errors import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from mastodon.return_types import AttribAccessDict, Status, Notification, IdType, Conversation, Announcement, StreamReaction, try_cast_recurse
 from typing import Optional, Any
 
 from requests.exceptions import ChunkedEncodingError, ReadTimeout, ConnectionError
+
+class StreamHandle:
+    """Handle for an asynchronous streaming connection."""
+
+    def close(self):
+        """Permanently close the streaming connection."""
+        raise NotImplementedError
+
+    def is_alive(self):
+        """Return True while the connection's worker thread is alive.
+
+        The connection may be in any state, including reconnecting.
+        """
+        return self._thread is not None and self._thread.is_alive()
+
+    def is_receiving(self):
+        """Return True while the worker is running and available to receive events
+        with the streaming connection established."""
+        return self.running and not self.closed and not self.reconnecting and self.is_alive()
+
+    def join(self, timeout=None):
+        """Wait for the worker thread to exit without closing the connection.
+
+        Normally called after close(). ``timeout`` limits the wait in seconds;
+        None waits indefinitely. Returns None; use is_alive() to check whether
+        the thread exited. Calling from the worker itself returns immediately.
+        """
+        if self._thread is not None and self._thread is not threading.current_thread():
+            self._thread.join(timeout)
+
+
+class SSEStreamHandle(StreamHandle):
+    """An asynchronous HTTP server-sent events connection.
+
+    Returned by streaming endpoints when ``run_async=True``. Closing the handle
+    permanently stops the stream.
+    """
+
+    def __init__(self, connection, connect_func, reconnect_async, reconnect_async_wait_sec, listener):
+        self.listener = listener
+        self._thread = None
+        self.closed = False
+        self.running = True
+        self.connection = connection
+        self.connect_func = connect_func
+        self.reconnect_async = reconnect_async
+        self.reconnect_async_wait_sec = reconnect_async_wait_sec
+        self.reconnecting = False
+
+    def close(self):
+        """Permanently stop streaming and close the HTTP connection."""
+        self.closed = True
+        if self.connection is not None:
+            self.connection.close()
+
+    def _sleep_attentive(self):
+        if self._thread != threading.current_thread():
+            raise RuntimeError(
+                "Illegal call from outside the stream_handle thread")
+        time_remaining = self.reconnect_async_wait_sec
+        while time_remaining > 0 and not self.closed:
+            time.sleep(0.5)
+            time_remaining -= 0.5
+
+    def _threadproc(self):
+        self._thread = threading.current_thread()
+
+        # Run until closed or until error if not autoreconnecting
+        while self.running:
+            if self.connection is not None:
+                with closing(self.connection) as r:
+                    try:
+                        self.listener.handle_stream(r)
+                    except (AttributeError, MastodonMalformedEventError, MastodonNetworkError) as e:
+                        if not (self.closed or self.reconnect_async):
+                            raise e
+                        else:
+                            if self.closed:
+                                self.running = False
+
+            # Reconnect loop. Try immediately once, then with delays on error.
+            if (self.reconnect_async and not self.closed) or self.connection is None:
+                self.reconnecting = True
+                connect_success = False
+                while not connect_success:
+                    if self.closed:
+                        # Someone from outside stopped the streaming
+                        self.running = False
+                        break
+                    try:
+                        the_connection = self.connect_func()
+                        if the_connection.status_code != 200:
+                            exception = MastodonNetworkError(f"Could not connect to server. "
+                                                                f"HTTP status: {the_connection.status_code}")
+                            self.listener.on_abort(exception)
+                            self._sleep_attentive()
+                        if self.closed:
+                            # Here we have maybe a rare race condition. Exactly on connect, someone
+                            # stopped the streaming before. We close the previous established connection:
+                            the_connection.close()
+                        else:
+                            self.connection = the_connection
+                            connect_success = True
+                    except:
+                        self._sleep_attentive()
+                        connect_success = False
+                self.reconnecting = False
+            else:
+                self.running = False
+        return 0
+
+    def _start(self):
+        self._thread = threading.Thread(target=self._threadproc, daemon=True)
+        self._thread.start()
+        return self
+
 
 class StreamListener(object):
     """Callbacks for the streaming API. Create a subclass, override the on_xxx
@@ -33,6 +151,7 @@ class StreamListener(object):
         "announcement_delete": IdType,
         "status_update": Status,
         "encrypted_message": AttribAccessDict,
+        "notifications_merged": None,
     }
 
     def on_update(self, status: Status):
@@ -83,6 +202,14 @@ class StreamListener(object):
         """An encrypted message has been received. Currently unused."""
         pass
 
+    def on_notifications_merged(self):
+        """Accepted notification requests have finished merging into the notifications stream."""
+        pass
+
+    def on_websocket_error(self, error, for_stream=None):
+        """A WebSocket subscription was rejected."""
+        pass
+
     def on_abort(self, err):
         """There was a connection error, read timeout or other error fatal to
         the streaming connection. The exception object about to be raised
@@ -110,7 +237,8 @@ class StreamListener(object):
         """A generic event handler that is called for every event received.
         The name contains the event name and data contains the content of the event.
 
-        for_stream is currently unused, but might be added in the future if we ever add websocket support.
+        For WebSocket events, `for_stream` identifies the multiplexed stream
+        that produced the event.
 
         Called before the more specific on_xxx handlers.
         """
@@ -190,25 +318,51 @@ class StreamListener(object):
 
         try:
             name = event['event']
-            data = event['data']
             try:
                 for_stream = json.loads(event['stream'])
             except:
                 for_stream = None
-            payload = json.loads(data)
-            cast_type = self.__EVENT_NAME_TO_TYPE.get(name, AttribAccessDict)
-            payload = try_cast_recurse(cast_type, payload)
         except KeyError as err:
             exception = MastodonMalformedEventError(
                 'Missing field', err.args[0], event)
             self.on_abort(exception)
             raise exception from err
-        except ValueError as err:
-            # py2: plain ValueError
-            # py3: json.JSONDecodeError, a subclass of ValueError
-            exception = MastodonMalformedEventError('Bad JSON', data)
+
+        self._dispatch_event(name, event.get('data'), for_stream, 'data' in event)
+
+    def handle_websocket_message(self, message):
+        """Parse and dispatch one decoded Mastodon WebSocket message."""
+        try:
+            name = message['event']
+        except KeyError as err:
+            exception = MastodonMalformedEventError('Missing field', err.args[0], message)
             self.on_abort(exception)
             raise exception from err
+
+        self._dispatch_event(
+            name,
+            message.get('payload'),
+            message.get('stream'),
+            'payload' in message,
+        )
+
+    def _dispatch_event(self, name, raw_payload, for_stream, payload_present):
+        cast_type = self.__EVENT_NAME_TO_TYPE.get(name, AttribAccessDict)
+        if cast_type is None and (not payload_present or raw_payload in (None, 'undefined')):
+            payload = None
+        else:
+            if not payload_present:
+                exception = MastodonMalformedEventError('Missing field', 'payload', name)
+                self.on_abort(exception)
+                raise exception
+            try:
+                payload = json.loads(raw_payload)
+            except (TypeError, ValueError) as err:
+                exception = MastodonMalformedEventError('Bad JSON', raw_payload)
+                self.on_abort(exception)
+                raise exception from err
+            if cast_type is not None:
+                payload = try_cast_recurse(cast_type, payload)
 
         # New mastodon API also supports event names with dots,
         # specifically, status_update.
@@ -221,23 +375,30 @@ class StreamListener(object):
         except:
             handler_args = handler.__code__.co_varnames[:handler.__code__.co_argcount]
 
-        # The "for_stream" is right now only theoretical - it's only supported on websocket,
-        # and we do not support websocket based multiplexed streams (yet).
-        if "for_stream" in handler_args:
-            self.on_any_event(name, payload, for_stream)            
-            if handler != self.on_unknown_event:
-                handler(payload, for_stream)
-            else:
-                handler(name, payload, for_stream)
+        try:
+            any_handler_args = list(signature(self.on_any_event).parameters)
+        except:
+            any_handler_args = self.on_any_event.__code__.co_varnames[:self.on_any_event.__code__.co_argcount]
+
+        if "for_stream" in any_handler_args:
+            self.on_any_event(name, payload, for_stream)
         else:
-            if handler != self.on_unknown_event:
-                self.on_any_event(name, payload)
-                if handler == self.on_filters_changed:
-                    handler()
-                else:
-                    handler(payload)
+            self.on_any_event(name, payload)
+
+        if "for_stream" in handler_args:
+            if handler == self.on_unknown_event:
+                handler(name, payload, for_stream)
+            elif cast_type is None:
+                handler(for_stream=for_stream)
             else:
+                handler(payload, for_stream)
+        else:
+            if handler == self.on_unknown_event:
                 handler(name, payload)
+            elif cast_type is None:
+                handler()
+            else:
+                handler(payload)
 
 
 class CallbackStreamListener(StreamListener):
@@ -261,7 +422,9 @@ class CallbackStreamListener(StreamListener):
                  announcement_handler=None,
                  announcement_reaction_handler=None,
                  announcement_delete_handler=None,
-                 encryted_message_handler=None
+                 encryted_message_handler=None,
+                 notifications_merged_handler=None,
+                 stream_error_handler=None,
                  ):
         super(CallbackStreamListener, self).__init__()
         self.update_handler = update_handler
@@ -276,6 +439,8 @@ class CallbackStreamListener(StreamListener):
         self.announcement_reaction_handler = announcement_reaction_handler
         self.announcement_delete_handler = announcement_delete_handler
         self.encryted_message_handler = encryted_message_handler
+        self.notifications_merged_handler = notifications_merged_handler
+        self.stream_error_handler = stream_error_handler
 
     def on_update(self, status):
         if self.update_handler is not None:
@@ -322,6 +487,14 @@ class CallbackStreamListener(StreamListener):
     def on_encrypted_message(self, unclear):
         if self.encryted_message_handler is not None:
             self.encryted_message_handler(unclear)
+
+    def on_notifications_merged(self):
+        if self.notifications_merged_handler is not None:
+            self.notifications_merged_handler()
+
+    def on_websocket_error(self, error, for_stream=None):
+        if self.stream_error_handler is not None:
+            self.stream_error_handler(error, for_stream)
 
     def on_unknown_event(self, name: str, unknown_event: Optional[Any] = None):
         if self.unknown_event_handler is not None:

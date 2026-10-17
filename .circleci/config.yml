@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test_old,webpush,blurhash,grapheme]"
+          command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test_old,webpush,blurhash,grapheme]"
+          command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test_old,webpush,blurhash,grapheme]"
+          command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -46,7 +46,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash,grapheme]"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -59,7 +59,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash,grapheme]"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -72,7 +72,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash,grapheme]"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -85,7 +85,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash,grapheme]"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Install codecov"
           command: "pip install codecov"             
@@ -104,7 +104,7 @@ jobs:
       - checkout
       - run:
           name: "Install test deps"
-          command: "pip install .[test,webpush,blurhash,grapheme]"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
       - run:
           name: "Run tests"
           command: "pytest --junitxml=tests/result.xml"
@@ -112,7 +112,33 @@ jobs:
           path: tests    
   run-tests-314:
     docker:
-      - image: python:3.14-rc-bookworm
+      - image: cimg/python:3.14
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
+      - run:
+          name: "Run tests"
+          command: "pytest --junitxml=tests/result.xml"
+      - store_test_results:
+          path: tests
+  run-tests-315:
+    docker:
+      - image: cimg/python:3.15
+    steps:
+      - checkout
+      - run:
+          name: "Install test deps"
+          command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
+      - run:
+          name: "Run tests"
+          command: "pytest --junitxml=tests/result.xml"
+      - store_test_results:
+          path: tests
+  run-tests-316:
+    docker:
+      - image: python:3.16-rc-trixie
     steps:
       - checkout
       - run:
@@ -124,13 +150,13 @@ jobs:
           name: Upgrade pip and install test deps
           command: |
             python -m pip install --upgrade pip
-            pip install .[test,webpush,blurhash,grapheme]
+            pip install .[test,webpush,websocket_streaming,blurhash,grapheme]
       - run:
           name: Run tests
           command: |
             pytest --junitxml=tests/result.xml
       - store_test_results:
-          path: tests                    
+          path: tests
 workflows:
   run-tests-workflow:
     jobs:
@@ -143,3 +169,5 @@ workflows:
       - run-tests-312-cov
       - run-tests-313
       - run-tests-314
+      - run-tests-315
+      - run-tests-316

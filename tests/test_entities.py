@@ -429,6 +429,7 @@ def test_entity_relationship(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+@pytest.mark.filterwarnings("ignore::mastodon.errors.MastodonDeprecationWarning")
 def test_entity_filter(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.filters()[0]
@@ -750,6 +751,7 @@ def test_entity_collectionitem(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+@pytest.mark.filterwarnings("ignore::mastodon.errors.MastodonDeprecationWarning")
 def test_entity_instance(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.instance_v1()
@@ -767,6 +769,7 @@ def test_entity_instance(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+@pytest.mark.filterwarnings("ignore::mastodon.errors.MastodonDeprecationWarning")
 def test_entity_instanceconfiguration(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.instance_v1().configuration
@@ -784,6 +787,7 @@ def test_entity_instanceconfiguration(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+@pytest.mark.filterwarnings("ignore::mastodon.errors.MastodonDeprecationWarning")
 def test_entity_instanceurls(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.instance_v1().urls
@@ -925,6 +929,7 @@ def test_entity_instancethumbnailversions(mastodon_base, mastodon_admin):
     match_on=['method', 'uri'],
     cassette_library_dir='tests/cassettes_entity_tests'
 )
+@pytest.mark.filterwarnings("ignore::mastodon.errors.MastodonDeprecationWarning")
 def test_entity_instancestatistics(mastodon_base, mastodon_admin):
     mastodon = mastodon_base
     result = mastodon.instance_v1().stats

@@ -11,6 +11,36 @@ import time
 
 import sys
 
+
+def test_sse_stream_handle_join():
+    from unittest.mock import Mock
+    from mastodon import SSEStreamHandle, StreamHandle
+
+    receiving = threading.Event()
+    stopped = threading.Event()
+    connection = Mock(status_code=200)
+    connection.close.side_effect = stopped.set
+
+    def receive(response):
+        receiving.set()
+        assert stopped.wait(timeout=5), 'Stream was not closed'
+
+    listener = Mock(handle_stream=receive)
+    handle = SSEStreamHandle(None, lambda: connection, False, 0, listener)._start()
+    try:
+        assert isinstance(handle, StreamHandle)
+        assert receiving.wait(timeout=5), 'Stream did not start'
+        assert handle.join(timeout=0) is None
+        assert handle.is_alive()
+        handle.close()
+        assert handle.join(timeout=5) is None
+        assert not handle.is_alive()
+        assert not handle.is_receiving()
+    finally:
+        handle.close()
+        handle.join(timeout=5)
+
+
 streaming_is_patched = False
 real_connections = []
 close_connections = False
@@ -559,3 +589,55 @@ def test_stream_direct(api, api2, vcr):
 @pytest.mark.vcr()
 def test_stream_healthy(api_anonymous):
     assert api_anonymous.stream_healthy()
+
+
+@pytest.mark.vcr(match_on=['method', 'path', 'query'])
+def test_stream_public_only_media(api):
+    media = api.media_post('tests/image.jpg', synchronous=True, file_name='only-media.jpg')
+    updates = []
+    media_updates = []
+    streams = []
+    posted = []
+    patch_streaming()
+    try:
+        for only_media, received in [(False, updates), (True, media_updates)]:
+            stream = api.stream_public(
+                CallbackStreamListener(update_handler=received.append),
+                local=True, only_media=only_media, run_async=True,
+            )
+            streams.append(stream)
+            # Open one connection at a time: VCR temporarily unpatches HTTP
+            # globally while sending a live request. A second concurrent open
+            # during that window could bypass the recorder.
+            deadline = time.monotonic() + 30
+            while len(real_connections) < len(streams) and stream.connection is None:
+                assert time.monotonic() < deadline, 'Public stream did not connect'
+                time.sleep(0.1)
+
+        # VCR buffers live SSE responses until streaming_close(). On replay,
+        # the handles receive the already buffered responses immediately.
+        if real_connections:
+            time.sleep(2)
+
+        posted.append(api.status_post('SSE text-only stream test', visibility='public'))
+        posted.append(api.status_post(
+            'SSE media-only stream test', media_ids=[media], visibility='public',
+        ))
+        if real_connections:
+            time.sleep(20)  # Allow background distribution to both streams.
+        streaming_close()
+        for stream in streams:
+            stream._thread.join(timeout=10)
+            assert not stream.is_alive(), 'SSE recording did not finish'
+
+        assert len(updates) == 2
+        assert {status.id for status in updates} == {status.id for status in posted}
+        assert [status.id for status in media_updates] == [posted[1].id]
+        assert media_updates[0].media_attachments[0].id == media.id
+    finally:
+        streaming_close()
+        for stream in streams:
+            stream.close()
+            stream._thread.join(timeout=5)
+        for status in posted:
+            api.status_delete(status, delete_media=True)

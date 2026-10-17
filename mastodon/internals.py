@@ -3,7 +3,6 @@
 from datetime import timezone, datetime, timedelta
 from contextlib import closing
 import mimetypes
-import threading
 from typing import List, Optional, Union
 import uuid
 import dateutil.parser
@@ -26,6 +25,8 @@ from mastodon.compat import urlparse, magic, PurePath, Path
 from mastodon.defaults import _DEFAULT_STREAM_TIMEOUT, _DEFAULT_STREAM_RECONNECT_WAIT_SEC
 from mastodon.return_types import AttribAccessDict, PaginatableList, try_cast_recurse
 from mastodon.return_types import *
+from mastodon.streaming import SSEStreamHandle
+from mastodon.streaming_websocket import WebSocketStreamHandle
 from mastodon.types_base import EmptyResponse
 
 ###
@@ -517,14 +518,50 @@ class Mastodon():
             else:
                 if parse.scheme in ('http', 'https'):
                     url = parse.scheme + "://" + parse.netloc
-                raise MastodonAPIError(
-                    f"Could not parse streaming api location returned from server: {streaming_api_url}."
-                )
+                else:
+                    raise MastodonAPIError(
+                        f"Could not parse streaming api location returned from server: {streaming_api_url}."
+                    )
         else:
             url = self.api_base_url
         assert not url is None
         self.__streaming_base = url
         return url
+
+    def __get_streaming_websocket_url(self) -> str:
+        """Return the WebSocket endpoint for the instance streaming server."""
+        streaming_base = urlparse(self.__get_streaming_base())
+        if streaming_base.scheme == 'https':
+            scheme = 'wss'
+        elif streaming_base.scheme == 'http':
+            scheme = 'ws'
+        else:
+            raise MastodonAPIError(
+                f"Could not construct WebSocket streaming URL from: {self.__get_streaming_base()}."
+            )
+        path = streaming_base.path.rstrip('/')
+        return f"{scheme}://{streaming_base.netloc}{path}/api/v1/streaming"
+
+    def __open_websocket_stream(self, listener=None, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False,
+                                reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC, start=True):
+        """
+        Internal streaming API helper.
+
+        Returns a handle to the open WebSocket connection that the user can close if they
+        wish to terminate it, and use it to subscribe/unsubscribe to various streams.
+        """
+        handle = WebSocketStreamHandle(
+            self.__get_streaming_websocket_url(),
+            self.access_token,
+            self.user_agent,
+            listener=listener,
+            timeout=timeout,
+            reconnect=reconnect_async,
+            reconnect_wait_sec=reconnect_async_wait_sec,
+        )
+        if start:
+            handle._start()
+        return handle
 
     def __stream(self, endpoint, listener, params={}, run_async=False, timeout=_DEFAULT_STREAM_TIMEOUT, reconnect_async=False, reconnect_async_wait_sec=_DEFAULT_STREAM_RECONNECT_WAIT_SEC):
         """
@@ -554,94 +591,10 @@ class Mastodon():
             return connection
         connection = None
 
-        # Async stream handler
-        class __stream_handle():
-            def __init__(self, connection, connect_func, reconnect_async, reconnect_async_wait_sec):
-                self.closed = False
-                self.running = True
-                self.connection = connection
-                self.connect_func = connect_func
-                self.reconnect_async = reconnect_async
-                self.reconnect_async_wait_sec = reconnect_async_wait_sec
-                self.reconnecting = False
-
-            def close(self):
-                self.closed = True
-                if self.connection is not None:
-                    self.connection.close()
-
-            def is_alive(self):
-                return self._thread.is_alive()
-
-            def is_receiving(self):
-                if self.closed or not self.running or self.reconnecting or not self.is_alive():
-                    return False
-                else:
-                    return True
-
-            def _sleep_attentive(self):
-                if self._thread != threading.current_thread():
-                    raise RuntimeError(
-                        "Illegal call from outside the stream_handle thread")
-                time_remaining = self.reconnect_async_wait_sec
-                while time_remaining > 0 and not self.closed:
-                    time.sleep(0.5)
-                    time_remaining -= 0.5
-
-            def _threadproc(self):
-                self._thread = threading.current_thread()
-
-                # Run until closed or until error if not autoreconnecting
-                while self.running:
-                    if self.connection is not None:
-                        with closing(self.connection) as r:
-                            try:
-                                listener.handle_stream(r)
-                            except (AttributeError, MastodonMalformedEventError, MastodonNetworkError) as e:
-                                if not (self.closed or self.reconnect_async):
-                                    raise e
-                                else:
-                                    if self.closed:
-                                        self.running = False
-
-                    # Reconnect loop. Try immediately once, then with delays on error.
-                    if (self.reconnect_async and not self.closed) or self.connection is None:
-                        self.reconnecting = True
-                        connect_success = False
-                        while not connect_success:
-                            if self.closed:
-                                # Someone from outside stopped the streaming
-                                self.running = False
-                                break
-                            try:
-                                the_connection = self.connect_func()
-                                if the_connection.status_code != 200:
-                                    exception = MastodonNetworkError(f"Could not connect to server. "
-                                                                        f"HTTP status: {the_connection.status_code}")
-                                    listener.on_abort(exception)
-                                    self._sleep_attentive()
-                                if self.closed:
-                                    # Here we have maybe a rare race condition. Exactly on connect, someone
-                                    # stopped the streaming before. We close the previous established connection:
-                                    the_connection.close()
-                                else:
-                                    self.connection = the_connection
-                                    connect_success = True
-                            except:
-                                self._sleep_attentive()
-                                connect_success = False
-                        self.reconnecting = False
-                    else:
-                        self.running = False
-                return 0
-
         if run_async:
-            handle = __stream_handle(
-                connection, connect_func, reconnect_async, reconnect_async_wait_sec)
-            t = threading.Thread(args=(), target=handle._threadproc)
-            t.daemon = True
-            t.start()
-            return handle
+            handle = SSEStreamHandle(
+                connection, connect_func, reconnect_async, reconnect_async_wait_sec, listener)
+            return handle._start()
         else:
             # Blocking, never returns (can only leave via exception)
             connection = connect_func()

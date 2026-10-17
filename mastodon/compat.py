@@ -51,3 +51,10 @@ try:
 except:
     IMPL_HAS_GRAPHEME = False
     grapheme = None
+
+IMPL_HAS_WEBSOCKET = True
+try:
+    import websocket
+except ImportError:
+    IMPL_HAS_WEBSOCKET = False
+    websocket = None

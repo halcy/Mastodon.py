@@ -21,6 +21,8 @@ v2.2.3 (WIP)
 * 4.6 support: Add annual reports / year in review support: `annual_reports`, `annual_report`, `annual_report_state`, `annual_report_read`, and `annual_report_generate`, including previously unsupported endpoints introduced in 4.3 and 4.4
 * Allow status creation with both media attachments and a poll, as supported by Mastodon 4.6 and newer
 * Various small bug and documentation fixes
+* Add `only_media` support for streams
+* Add support for websocket streaming: `stream_open_websocket` and a new handle class
 * Tests: Streaming test recording now works on newer Python versions
 
 v2.2.2

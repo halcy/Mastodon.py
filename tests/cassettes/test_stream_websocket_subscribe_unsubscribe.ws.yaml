@@ -1,0 +1,14 @@
+version: 1
+connections:
+- request:
+    path: /api/v1/streaming
+    authorization: true
+  interactions:
+  - send:
+      type: subscribe
+      stream: hashtag
+      tag: mastodonpy
+  - send:
+      type: unsubscribe
+      stream: hashtag
+      tag: mastodonpy
