@@ -19,7 +19,7 @@ import warnings
 from mastodon.types_base import IdType, PaginationInfo
 
 from mastodon.versions import parse_version_string
-from mastodon.errors import MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
+from mastodon.errors import MastodonIOError, MastodonFileNotFoundError, MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
                     MastodonUnauthorizedError, MastodonInternalServerError, MastodonBadGatewayError, MastodonServiceUnavailableError, \
                     MastodonGatewayTimeoutError, MastodonServerError, MastodonAPIError, MastodonMalformedEventError, MastodonDeprecationWarning, MastodonWarning
 from mastodon.compat import urlparse, magic, PurePath, Path
@@ -753,9 +753,24 @@ class Mastodon():
                 media_file = str(Path(media_file).resolve())
             except:
                 pass
-        if isinstance(media_file, str) and os.path.isfile(media_file):
-            mime_type = self.__guess_type(media_file)
-            media_file = open(media_file, 'rb')
+        if isinstance(media_file, str):
+            path = media_file
+            opened_file = None
+            try:
+                opened_file = open(path, 'rb')
+                mime_type = self.__guess_type(path)
+            except OSError as error:
+                if opened_file is not None:
+                    opened_file.close()
+                error_type = MastodonFileNotFoundError if isinstance(error, FileNotFoundError) else MastodonIOError
+                raise error_type(f"Could not load media file {path!r}: {error}") from error
+            except Exception:
+                if opened_file is not None:
+                    opened_file.close()
+                raise
+            media_file = opened_file
+            if mime_type is None:
+                media_file.close()
         if mime_type is None:
             raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
         if file_name is None:

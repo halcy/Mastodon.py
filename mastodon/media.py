@@ -32,14 +32,17 @@ class Mastodon(Internals):
                    thumbnail: Optional[PathOrFile] = None, thumbnail_mime_type: Optional[str] = None, 
                    synchronous: bool = False) -> MediaAttachment:
         """
-        Post an image, video or audio file. `media_file` can either be data or
-        a file name. If data is passed directly, the mime type has to be specified
+        Post an image, video or audio file. Pass `media_file` as a string or Path
+        for a file name, or as bytes or a file-like object for data.
+        If data is passed directly, the mime type has to be specified
         manually, otherwise, it is determined from the file name. `focus` should be a tuple
         of floats between -1 and 1, giving the x and y coordinates of the images
         focus point for cropping (with the origin being the images center).
 
         Throws a `MastodonIllegalArgumentError` if the mime type of the
-        passed data or file can not be determined properly.
+        passed data or file can not be determined properly. Throws
+        `MastodonFileNotFoundError` for a missing file, or `MastodonIOError`
+        for other errors opening or reading the file.
 
         `file_name` can be specified to upload a file with the given name,
         which is ignored by Mastodon, but some other Fediverse server software

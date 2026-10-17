@@ -10,6 +10,7 @@ v2.2.3 (WIP)
 * Fix issue with ratelimit code that could lead to crashes in some circumstances (Thanks @xsuchy for the report)
 * Cache type hints for massively improved performance (Thanks @toelke for the suggestion)
 * Make MaybeSnowflakeIDs sortable (Thanks @haraldg for the report and suggestion)
+* Improve error handling for media uploads (Thanks @aescling for the suggestion)
 * Fix timestamp parsing for Pleromalike Flake IDs
 * 4.6 support: Add `supported_types` to notification related endpoints
 * 4.6 support: Add `exclude_direct` to `account_statuses`,#
