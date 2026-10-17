@@ -206,3 +206,159 @@ def test_offset_iteration(api):
     assert api.fetch_next(empty) is None
     previous = api.fetch_previous(Entity.from_json(empty.to_json()))
     assert [account.id for account in previous] == [account.id for account in second]
+
+
+@pytest.mark.vcr()
+@pytest.mark.parametrize('method', ['search', 'search_v2'])
+def test_search_offset_navigation(api, method):
+    from mastodon.return_types import SearchV2
+
+    search = getattr(api, method)
+    first = search('admin', result_type='accounts', limit=1)
+    assert isinstance(first, SearchV2)
+    assert '_pagination_next' not in first
+    assert '_pagination_prev' not in first
+    assert len(first.accounts) == 1
+    assert first.statuses == []
+    assert isinstance(first._pagination_next, PaginationInfo)
+    assert api.fetch_previous(first) is None
+
+    restored = Entity.from_json(first.to_json())
+    second = api.fetch_next(restored)
+    expected = search('admin', result_type='accounts', limit=1, offset=1)
+    assert isinstance(second, SearchV2)
+    assert [account.id for account in second.accounts] == [account.id for account in expected.accounts]
+    assert len(second.accounts) == 1
+    previous = api.fetch_previous(second)
+    assert [account.id for account in previous.accounts] == [account.id for account in first.accounts]
+    empty = api.fetch_next(second)
+    assert empty.accounts == []
+    assert api.fetch_next(empty) is None
+    assert api.fetch_previous(empty).accounts[0].id == second.accounts[0].id
+
+    untyped = search('admin', limit=1)
+    assert api.fetch_next(untyped) is None
+    assert api.fetch_previous(untyped) is None
+
+
+@pytest.mark.vcr()
+@pytest.mark.parametrize('method', ['account_collections', 'account_in_collections'])
+def test_collections_offset_navigation(api, api3, method):
+    from mastodon.return_types import Collections
+
+    owner = api.account_verify_credentials()
+    member = api3.account_verify_credentials()
+    collections = []
+    try:
+        for i in range(2):
+            result = api.collection_create(
+                name='Pagination test ' + str(i), sensitive=False,
+                discoverable=True, account_ids=[member])
+            collections.append(result.collection)
+        reader = api if method == 'account_collections' else api3
+        account = owner if method == 'account_collections' else member
+        fetch = getattr(reader, method)
+        first = fetch(account, limit=1)
+        assert isinstance(first, Collections)
+        assert '_pagination_next' not in first
+        assert '_pagination_prev' not in first
+        assert len(first.collections) == 1
+        assert isinstance(first._pagination_next, PaginationInfo)
+        second = reader.fetch_next(Entity.from_json(first.to_json()))
+        expected = fetch(account, limit=1, offset=1)
+        assert isinstance(second, Collections)
+        assert len(second.collections) == 1
+        assert [item.id for item in second.collections] == [item.id for item in expected.collections]
+        assert second.collections[0].id != first.collections[0].id
+        previous = reader.fetch_previous(second)
+        assert previous.collections[0].id == first.collections[0].id
+        empty = fetch(account, offset=1000000, limit=1)
+        assert empty.collections == []
+        assert reader.fetch_next(empty) is None
+    finally:
+        for collection in collections:
+            api.collection_delete(collection)
+
+
+@pytest.mark.vcr()
+@pytest.mark.parametrize('wrapped', [False, True])
+def test_pagination_page_iterator(api, wrapped):
+    from mastodon.errors import MastodonIllegalArgumentError
+
+    if wrapped:
+        first = api.search_v2('admin', result_type='accounts', limit=1)
+        entries = lambda page: page.accounts
+    else:
+        first = api.account_search('admin', limit=1)
+        entries = lambda page: page
+
+    pages = list(api.pagination_page_iterator(first))
+    assert len(pages) == 3
+    assert pages[0] is first
+    assert [len(entries(page)) for page in pages] == [1, 1, 0]
+    assert entries(pages[0])[0].id != entries(pages[1])[0].id
+    assert all(type(page) is type(first) for page in pages)
+
+    backwards = list(api.pagination_page_iterator(pages[1], direction='previous'))
+    assert [entries(page)[0].id for page in backwards] == [entries(pages[1])[0].id, entries(first)[0].id]
+    resumed = list(api.pagination_page_iterator(api.get_pagination_info(first, 'next'), return_pagination_info=True))
+    assert [len(entries(page)) for page, info in resumed] == [1, 0]
+    assert isinstance(resumed[0][1], PaginationInfo)
+    assert resumed[1][1] is None
+    previous_info = api.get_pagination_info(pages[1], 'previous')
+    resumed_backwards = list(api.pagination_page_iterator(previous_info, direction='previous', return_pagination_info=True))
+    assert len(resumed_backwards) == 1
+    assert entries(resumed_backwards[0][0])[0].id == entries(first)[0].id
+    assert resumed_backwards[0][1] is None
+    with pytest.raises(MastodonIllegalArgumentError):
+        list(api.pagination_page_iterator(first, direction='invalid'))
+
+
+@pytest.mark.vcr()
+def test_collections_page_iterator(api, api3):
+    from mastodon.return_types import Collections
+
+    member = api3.account_verify_credentials()
+    created = []
+    try:
+        for i in range(2):
+            created.append(api.collection_create(
+                name='Page iterator test ' + str(i), sensitive=False,
+                discoverable=True, account_ids=[member]).collection)
+        first = api.account_collections(api.account_verify_credentials(), limit=1)
+        pages = list(api.pagination_page_iterator(first))
+        assert all(isinstance(page, Collections) for page in pages)
+        ids = [item.id for page in pages for item in page.collections]
+        assert all(collection.id in ids for collection in created)
+        assert len(ids) == len(set(ids))
+        assert api.get_pagination_info(pages[-1], 'next') is None
+    finally:
+        for collection in created:
+            api.collection_delete(collection)
+
+
+@pytest.mark.vcr()
+def test_grouped_notifications_page_iterator(api, api2):
+    import time
+    from itertools import islice
+    from mastodon.return_types import GroupedNotificationsResults
+
+    posted = []
+    try:
+        username = api.account_verify_credentials().username
+        for i in range(2):
+            posted.append(api2.status_post('@' + username + ' page iterator test ' + str(i), visibility='public'))
+        time.sleep(5)
+        first = api.grouped_notifications(limit=1, types=['mention'], expand_accounts='full')
+        pages = list(islice(api.pagination_page_iterator(first), 2))
+        assert len(pages) == 2
+        assert all(isinstance(page, GroupedNotificationsResults) for page in pages)
+        assert all(len(page.notification_groups) == 1 for page in pages)
+        assert pages[0].notification_groups[0].group_key != pages[1].notification_groups[0].group_key
+        for page in pages:
+            status_ids = [status.id for status in page.statuses]
+            assert page.notification_groups[0].status_id in status_ids
+            assert page.accounts
+    finally:
+        for status in posted:
+            api2.status_delete(status)

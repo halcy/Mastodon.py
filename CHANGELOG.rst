@@ -24,6 +24,7 @@ v2.2.3 (WIP)
 * Add `only_media` support for streams
 * Add support for websocket streaming: `stream_open_websocket` and a new handle class
 * Tests: Streaming test recording now works on newer Python versions
+* Better pagination support: Endpoints that use offset/limit pagination are now supported generally, and `fetch_next()`, `fetch_previous()`, and the newly added `pagination_page_iterator()` can be used to navigate through responses for endpoints that use a wrapper object with a nested list.
 
 v2.2.2
 -------

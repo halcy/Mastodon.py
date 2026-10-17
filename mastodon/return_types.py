@@ -2984,6 +2984,8 @@ class SearchV2(AttribAccessDict):
     """
     A search result, with accounts, hashtags and statuses.
 
+    When result_type is specified, paginate the selected result list by passing the complete SearchV2 object to fetch_next() or fetch_previous(), rather than the nested list.
+
     Example:
 
     .. code-block:: python
@@ -2996,7 +2998,7 @@ class SearchV2(AttribAccessDict):
 
     accounts: "NonPaginatableList[Account]"
     """
-    List of Accounts resulting from the query.
+    List of Accounts resulting from the query. When result_type="accounts", this list can be paginated via the outer SearchV2 object.
 
     Version history:
       * 1.1.0: added
@@ -3004,7 +3006,7 @@ class SearchV2(AttribAccessDict):
 
     hashtags: "NonPaginatableList[Tag]"
     """
-    List of Tags resulting from the query.
+    List of Tags resulting from the query. When result_type="hashtags", this list can be paginated via the outer SearchV2 object.
 
     Version history:
       * 2.4.1: added
@@ -3012,7 +3014,7 @@ class SearchV2(AttribAccessDict):
 
     statuses: "NonPaginatableList[Status]"
     """
-    List of Statuses resulting from the query.
+    List of Statuses resulting from the query. When result_type="statuses", this list can be paginated via the outer SearchV2 object.
 
     Version history:
       * 1.1.0: added
@@ -7194,22 +7196,6 @@ class GroupedNotificationsResults(AttribAccessDict):
       * 4.3.0: added
     """
 
-    _pagination_next: "Optional[PaginationInfo]"
-    """
-    Information about the next page of results. Added here as a special case to allow for pagination of the lists inside of this object. (optional)
-
-    Version history:
-      * 4.3.0: added
-    """
-
-    _pagination_prev: "Optional[PaginationInfo]"
-    """
-    Information about the previous page of results. Added here as a special case to allow for pagination of the lists inside of this object. (optional)
-
-    Version history:
-      * 4.3.0: added
-    """
-
     _version = "4.3.0"
 
 class PartialAccountWithAvatar(AttribAccessDict):
@@ -8276,6 +8262,8 @@ class Collections(AttribAccessDict):
     """
     A list of Collections wrapped in an extensible response object.
 
+    Paginate this response by passing the complete Collections object to fetch_next() or fetch_previous(), rather than its nested collections list.
+
     Example:
 
     .. code-block:: python
@@ -8288,7 +8276,7 @@ class Collections(AttribAccessDict):
 
     collections: "NonPaginatableList[Collection]"
     """
-    A list of Collections.
+    A list of Collections. This list can be paginated via the outer Collections object.
 
     Version history:
       * 4.6.0: added

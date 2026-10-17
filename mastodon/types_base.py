@@ -749,9 +749,12 @@ class AttribAccessDict(OrderedStrDict, Entity):
     backward compatibility as well as compatibility with other implementations of the Mastodon API.
 
     This class can ALSO have pagination information attached, for paginating lists *inside* the object,
-    because that's what Mastodon 4.3.0 does for groupee notifications. This is special cased in the class
-    definition, though.
+    such as grouped notifications, typed search results, and Collections. Navigation
+    metadata is stored as private attributes, separate from API response fields.
     """
+    _pagination_next = None
+    _pagination_prev = None
+
     def __init__(self, **kwargs):
         """
         Constructor that calls through to dict constructor and then sets attributes for all keys.
@@ -797,7 +800,7 @@ class AttribAccessDict(OrderedStrDict, Entity):
         """
         Override to force access of normal attributes to go through __getattr__
         """
-        if attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "_async_refresh", "__class__"]:
+        if attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "_async_refresh", "_pagination_next", "_pagination_prev", "__class__"]:
             return super(AttribAccessDict, self).__getattribute__(attr)
         if attr in self.__class__.__annotations__:
             return self.__getattr__(attr)
@@ -832,8 +835,8 @@ class AttribAccessDict(OrderedStrDict, Entity):
         """
         Attribute setter that calls through to dict setter but will throw if attribute is not in dict
         """
-        if attr in self or attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "_async_refresh"]:
-            if attr in ["_mastopy_type", "_async_refresh"]:
+        if attr in self or attr in ["_AttribAccessDict__union_specializer", "_mastopy_type", "_async_refresh", "_pagination_next", "_pagination_prev"]:
+            if attr in ["_mastopy_type", "_async_refresh", "_pagination_next", "_pagination_prev"]:
                 super(AttribAccessDict, self).__setattr__(attr, val)
             else:
                 self[attr] = val

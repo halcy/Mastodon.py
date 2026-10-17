@@ -45,12 +45,11 @@ class Mastodon(Internals):
         """
         Retrieve Collections owned by an account.
 
-        Paginated via limit/offset instead of via normal cursor-based pagination, which is currently
-        not supported by Mastodon.py pagination helpers.
+        Supports offset/limit pagination on the wrapper object.
         """
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', f'/api/v1/accounts/{id}/collections', params)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/collections', params, offset_pagination=True, offset_pagination_field='collections')
 
     @api_version("4.6.0", "4.6.0")
     def account_in_collections(self, id: Optional[Union[Account, IdType]], limit: Optional[int] = None,
@@ -61,14 +60,13 @@ class Mastodon(Internals):
         A different accounts id can be specified as the `id` parameter, however, this will currently 
         lead to Mastodon throwing an error.
 
-        Paginated via limit/offset instead of via normal cursor-based pagination, which is currently
-        not supported by Mastodon.py pagination helpers.
+        Supports offset/limit pagination on the wrapper object.
         """
         if id is None:
             id = self.me()
         id = self.__unpack_id(id)
         params = self.__generate_params(locals(), ['id'])
-        return self.__api_request('GET', f'/api/v1/accounts/{id}/in_collections', params)
+        return self.__api_request('GET', f'/api/v1/accounts/{id}/in_collections', params, offset_pagination=True, offset_pagination_field='collections')
 
     @api_version("4.6.0", "4.6.0")
     def collection_update(self, id: Union[Collection, IdType], name: Optional[str] = None,

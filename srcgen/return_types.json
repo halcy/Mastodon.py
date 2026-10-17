@@ -4713,14 +4713,14 @@
         "func_call_additional": null,
         "func_alternate_acc": false,
         "manual_update": false,
-        "description": "A search result, with accounts, hashtags and statuses.",
+        "description": "A search result, with accounts, hashtags and statuses.\n\nWhen result_type is specified, paginate the selected result list by passing the complete SearchV2 object to fetch_next() or fetch_previous(), rather than the nested list.",
         "has_versions": [
             "v1",
             "v2"
         ],
         "fields": {
             "accounts": {
-                "description": "List of Accounts resulting from the query",
+                "description": "List of Accounts resulting from the query. When result_type=\"accounts\", this list can be paginated via the outer SearchV2 object.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Account",
                 "is_optional": false,
@@ -4734,7 +4734,7 @@
                 "enum": null
             },
             "hashtags": {
-                "description": "List of Tags resulting from the query",
+                "description": "List of Tags resulting from the query. When result_type=\"hashtags\", this list can be paginated via the outer SearchV2 object.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Tag",
                 "is_optional": false,
@@ -4748,7 +4748,7 @@
                 "enum": null
             },
             "statuses": {
-                "description": "List of Statuses resulting from the query",
+                "description": "List of Statuses resulting from the query. When result_type=\"statuses\", this list can be paginated via the outer SearchV2 object.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Status",
                 "is_optional": false,
@@ -10983,36 +10983,6 @@
                 "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false
-            },
-            "_pagination_next": {
-                "description": "Information about the next page of results. Added here as a special case to allow for pagination of the lists inside of this object.",
-                "enum": null,
-                "version_history": [
-                    [
-                        "4.3.0",
-                        "added"
-                    ]
-                ],
-                "field_type": "PaginationInfo",
-                "field_subtype": null,
-                "field_structuretype": null,
-                "is_optional": true,
-                "is_nullable": false
-            },
-            "_pagination_prev": {
-                "description": "Information about the previous page of results. Added here as a special case to allow for pagination of the lists inside of this object.",
-                "enum": null,
-                "version_history": [
-                    [
-                        "4.3.0",
-                        "added"
-                    ]
-                ],
-                "field_type": "PaginationInfo",
-                "field_subtype": null,
-                "field_structuretype": null,
-                "is_optional": true,
-                "is_nullable": false
             }
         }
     },
@@ -12725,10 +12695,10 @@
         "masto_doc_link": "https://docs.joinmastodon.org/entities/Collection/",
         "func_alternate_acc": false,
         "manual_update": false,
-        "description": "A list of Collections wrapped in an extensible response object.",
+        "description": "A list of Collections wrapped in an extensible response object.\n\nPaginate this response by passing the complete Collections object to fetch_next() or fetch_previous(), rather than its nested collections list.",
         "fields": {
             "collections": {
-                "description": "A list of Collections.",
+                "description": "A list of Collections. This list can be paginated via the outer Collections object.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "Collection",
                 "is_optional": false,

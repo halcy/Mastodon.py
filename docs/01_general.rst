@@ -100,9 +100,18 @@ There are convenience functions available for fetching the previous and next pag
 a paginated request as well as for fetching all pages starting from a first page.
 For details, see :ref:`fetch_next() <fetch_next()>`, :ref:`fetch_previous() <fetch_previous()>`. 
 and :ref:`fetch_remaining() <fetch_remaining()>`. There is also an iterator available to
-iterate through all items in a paginated response (:ref:`iter_paginated() <iter_paginated()>`).
+iterate through all items in a paginated response (:ref:`iter_paginated() <iter_paginated()>`),
+and an iterator for complete pages (:ref:`pagination_page_iterator() <pagination_page_iterator()>`).
 
 You can retrieve pagination information using :ref:`get_pagination_info() <get_pagination_info()>`.
+
+Some endpoints are paginated "inside out" - a wrapper object is returned from the endpoint
+which has pagination information attached, but the list that is paginated is not the
+top-level object itself but rather, a list nested inside of it. Currently, this is the case
+for Collections, GroupedNotifications, and Search when a result_type is specified. For these
+endpoints, `fetch_next`, `fetch_previous` and `pagination_page_iterator` are supported, 
+but `fetch_remaining` and `pagination_iterator` are not, since how exactly to merge the top 
+level object is ambiguous.
 
 Async refreshes
 ---------------

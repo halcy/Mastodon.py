@@ -85,6 +85,9 @@ class Mastodon(Internals):
         Identical to `search_v1()`, except in that it returns tags as objects,
         has more parameters, and resolves by default.
 
+        When `result_type` is specified, pass the complete response to
+        `fetch_next()` or `fetch_previous()` to paginate.
+
         For more details documentation, please see `search()`
         """
         if result_type is not None and not result_type in ["accounts", "hashtags", "statuses"]:
@@ -102,4 +105,4 @@ class Mastodon(Internals):
             params["type"] = params["result_type"]
             del params["result_type"]
 
-        return self.__api_request('GET', '/api/v2/search', params)
+        return self.__api_request('GET', '/api/v2/search', params, offset_pagination=result_type is not None, offset_pagination_field=result_type)

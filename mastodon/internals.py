@@ -147,7 +147,7 @@ class Mastodon():
 
     def __api_request(self, method, endpoint, params={}, files={}, headers={}, access_token_override=None, base_url_override=None,
                         do_ratelimiting=True, use_json=False, parse=True, return_response_object=False, skip_error_check=False, lang_override=None, override_type=None,
-                        force_pagination=False, offset_pagination=False, offset_pagination_previous=None):
+                        force_pagination=False, offset_pagination=False, offset_pagination_field=None, offset_pagination_previous=None):
         """
         Internal API request helper.
 
@@ -389,8 +389,9 @@ class Mastodon():
                 response = response_object.content
 
             # Parse link headers
-            if (isinstance(response, list) or force_pagination) and 'Link' in response_object.headers and response_object.headers['Link'] != "":
-                if not isinstance(response, PaginatableList) and not force_pagination:
+            if (isinstance(response, list) or force_pagination or offset_pagination) and \
+                'Link' in response_object.headers and response_object.headers['Link'] != "":
+                if isinstance(response, list) and not isinstance(response, PaginatableList) and not force_pagination:
                     response = PaginatableList(response)
                 if final_type is None:
                     final_type = str(type(response))
@@ -409,6 +410,7 @@ class Mastodon():
                                 '_pagination_endpoint': endpoint,
                                 '_mastopy_type': final_type,
                                 '_pagination_offset': offset_pagination,
+                                '_pagination_offset_field': offset_pagination_field,
                                 '_pagination_lang': lang_override,
                                 'offset': int(link_params['offset'][0]),
                             })
@@ -475,23 +477,25 @@ class Mastodon():
                             response._pagination_prev = prev_params
         
             # Without Link headers, advance by the actual number of returned items.
-            if offset_pagination and isinstance(response, PaginatableList) and not response_object.headers.get('Link'):
+            if offset_pagination and not response_object.headers.get('Link'):
+                entries = getattr(response, offset_pagination_field) if offset_pagination_field is not None else response
                 offset = int(params.get('offset', 0))
                 page_params = PaginationInfo(copy.deepcopy(params))
                 page_params.update({
                     '_pagination_method': method,
                     '_pagination_endpoint': endpoint,
                     '_mastopy_type': final_type,
-                    '_pagination_offset': True,
+                    '_pagination_offset': offset_pagination,
+                    '_pagination_offset_field': offset_pagination_field,
                     '_pagination_lang': lang_override,
                 })
-                if response:
+                if entries:
                     response._pagination_next = PaginationInfo(
-                        page_params, offset=offset + len(response), _pagination_offset_previous=offset)
+                        page_params, offset=offset + len(entries), _pagination_offset_previous=offset)
                 if offset > 0:
                     previous_offset = offset_pagination_previous
-                    if previous_offset is None and response:
-                        previous_offset = max(0, offset - len(response))
+                    if previous_offset is None and entries:
+                        previous_offset = max(0, offset - len(entries))
                     if previous_offset is not None:
                         response._pagination_prev = PaginationInfo(
                             page_params, offset=previous_offset, limit=offset - previous_offset)

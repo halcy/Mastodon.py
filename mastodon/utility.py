@@ -22,6 +22,7 @@ from ._url_regex import url_regex
 import unicodedata
 
 _T = TypeVar("_T", bound=Entity)
+_Page = TypeVar("_Page", bound=Entity)
 
 class Mastodon(Internals):
     def set_language(self, lang: str):
@@ -191,6 +192,7 @@ class Mastodon(Internals):
             del params['_mastopy_type']
 
         offset_pagination = params.pop('_pagination_offset', False)
+        offset_pagination_field = params.pop('_pagination_offset_field', None)
         offset_pagination_previous = params.pop('_pagination_offset_previous', None)
         lang_override = params.pop('_pagination_lang', None)
 
@@ -199,9 +201,9 @@ class Mastodon(Internals):
             force_pagination = True
 
         if not is_pagination_dict:
-            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_field=offset_pagination_field, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
         else:
-            return self.__api_request(method, endpoint, params, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
+            return self.__api_request(method, endpoint, params, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_field=offset_pagination_field, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
 
     def fetch_previous(self, next_page: Union[PaginatableList[_T], _T, PaginationInfo]) -> Optional[Union[PaginatableList[_T], _T]]:
         """
@@ -243,6 +245,7 @@ class Mastodon(Internals):
             del params['_mastopy_type']
 
         offset_pagination = params.pop('_pagination_offset', False)
+        offset_pagination_field = params.pop('_pagination_offset_field', None)
         offset_pagination_previous = params.pop('_pagination_offset_previous', None)
         lang_override = params.pop('_pagination_lang', None)
 
@@ -251,9 +254,9 @@ class Mastodon(Internals):
             force_pagination = True
 
         if not is_pagination_dict:
-            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
+            return self.__api_request(method, endpoint, params, force_pagination=force_pagination, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_field=offset_pagination_field, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
         else:
-            return self.__api_request(method, endpoint, params, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
+            return self.__api_request(method, endpoint, params, override_type=response_type, offset_pagination=offset_pagination, offset_pagination_field=offset_pagination_field, offset_pagination_previous=offset_pagination_previous, lang_override=lang_override)
 
     def fetch_remaining(self, first_page: PaginatableList[_T]) -> PaginatableList[_T]:
         """
@@ -264,9 +267,9 @@ class Mastodon(Internals):
         Be careful, as this might generate a lot of requests, depending on what you are
         fetching, and might cause you to run into rate limits very quickly.
 
-        Does not work with grouped notifications, since they use a somewhat weird, inside-out
-        pagination scheme. If you need to access these in a paginated way, use fetch_next and fetch_previous
-        directly.
+        Works only with list responses. For grouped notifications, typed search, and
+        Collections responses, use pagination_page_iterator(), fetch_next() and
+        fetch_previous() on the complete response.
         """
         first_page = copy.deepcopy(first_page)
 
@@ -278,7 +281,7 @@ class Mastodon(Internals):
 
         return all_pages
 
-    def get_pagination_info(self, page: PaginatableList[Entity], pagination_direction: str) -> Optional[PaginationInfo]:
+    def get_pagination_info(self, page: Union[PaginatableList[Entity], Entity], pagination_direction: str) -> Optional[PaginationInfo]:
         """
         Extracts pagination information from a paginated response.
 
@@ -305,9 +308,9 @@ class Mastodon(Internals):
         If return_pagination_info is True, the iterator will instead yield tuples of (Entity, PaginationInfo),
         where PaginationInfo is a dictionary containing pagination information for the current page and direction.
 
-        Does not work with grouped notifications, since they use a somewhat weird, inside-out
-        pagination scheme. If you need to access these in a paginated way, use fetch_next and fetch_previous
-        directly.
+        Works only with list responses. For grouped notifications, typed search, and
+        Collections responses, use pagination_page_iterator(), fetch_next() and
+        fetch_previous() on the complete response.
         """
         if direction not in ["next", "previous"]:
             raise MastodonIllegalArgumentError(
@@ -332,6 +335,38 @@ class Mastodon(Internals):
                 current_page = self.fetch_next(current_page)
             else:
                 current_page = self.fetch_previous(current_page)
+
+    def pagination_page_iterator(self, start_page: Union[_Page, PaginationInfo], direction: str = "next",
+                                 return_pagination_info: bool = False) -> Iterator[Union[_Page, Tuple[_Page, Optional[PaginationInfo]]]]:
+        """
+        Yield complete pages, starting with start_page and fetching subsequent pages
+        as needed. Supports list responses and wrappers such as grouped notifications,
+        typed search results, and Collections.
+
+        Set direction to "next" or "previous". If start_page is PaginationInfo,
+        the first page is fetched using that information and direction.
+
+        If return_pagination_info is True, yield (page, PaginationInfo) tuples,
+        with navigation information for the selected direction, or None at the end.
+
+        Every returned response is yielded, including an empty terminal page if the
+        server returns one. Iteration stops when no further page is available.
+        """
+        if direction not in ("next", "previous"):
+            raise MastodonIllegalArgumentError("Invalid pagination direction: {}".format(direction))
+
+        fetch_page = self.fetch_next if direction == "next" else self.fetch_previous
+        if hasattr(start_page, "_pagination_endpoint") or (isinstance(start_page, dict) and '_pagination_endpoint' in start_page):
+            current_page = fetch_page(start_page)
+        else:
+            current_page = start_page
+
+        while current_page is not None:
+            if return_pagination_info:
+                yield (current_page, self.get_pagination_info(current_page, direction))
+            else:
+                yield current_page
+            current_page = fetch_page(current_page)
 
     @staticmethod
     def get_status_length(text: str, spoiler_text: str = "") -> int:

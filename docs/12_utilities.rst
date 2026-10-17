@@ -16,6 +16,8 @@ These functions allow for convenient retrieval of paginated data.
 .. automethod:: Mastodon.fetch_remaining
 .. _pagination_iterator():
 .. automethod:: Mastodon.pagination_iterator
+.. _pagination_page_iterator():
+.. automethod:: Mastodon.pagination_page_iterator
 .. _get_pagination_info():
 .. automethod:: Mastodon.get_pagination_info
 
