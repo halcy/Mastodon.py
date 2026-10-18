@@ -2,8 +2,8 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
-v2.2.3 (WIP)
-------------
+v2.3.2
+-------
 * Bump support level to 4.7.3, update return types with newly added fields
 * Fix stream error handlers raising a tuple instead of an exception (Thanks @dylanpulver )
 * Fix logic issue in version check code that prevented correct functioning on Pixelfed (Thanks @gunchleoc , and @xsuchy for the report)
