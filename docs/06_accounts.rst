@@ -127,6 +127,29 @@ Writing
 .. automethod:: Mastodon.list_accounts_delete
 
 
+Collections
+-----------
+Collections are curated groups of accounts for follow recommendations.
+
+Account collection listings use offset/limit pagination on the outer ``Collections``
+response. Pass the complete response to ``fetch_next()``, ``fetch_previous()``, or
+``pagination_page_iterator()``.
+
+Reading
+~~~~~~~
+.. automethod:: Mastodon.collection
+.. automethod:: Mastodon.account_collections
+.. automethod:: Mastodon.account_in_collections
+
+Writing
+~~~~~~~
+.. automethod:: Mastodon.collection_create
+.. automethod:: Mastodon.collection_update
+.. automethod:: Mastodon.collection_delete
+.. automethod:: Mastodon.collection_item_add
+.. automethod:: Mastodon.collection_item_delete
+.. automethod:: Mastodon.collection_item_revoke
+
 Following tags
 --------------
 These functions allow you to get information about tags that the logged in user is following and to follow 

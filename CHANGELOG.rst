@@ -2,6 +2,10 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.3.3
+------
+* Document Collections endpoints in the accounts API reference.
+
 v2.3.2
 ------
 * Bump support level to 4.7.3, update return types with newly added fields

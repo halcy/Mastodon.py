@@ -530,6 +530,24 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. automethod:: Mastodon.list_accounts_delete
    :no-index:
+.. automethod:: Mastodon.collection
+   :no-index:
+.. automethod:: Mastodon.account_collections
+   :no-index:
+.. automethod:: Mastodon.account_in_collections
+   :no-index:
+.. automethod:: Mastodon.collection_create
+   :no-index:
+.. automethod:: Mastodon.collection_update
+   :no-index:
+.. automethod:: Mastodon.collection_delete
+   :no-index:
+.. automethod:: Mastodon.collection_item_add
+   :no-index:
+.. automethod:: Mastodon.collection_item_delete
+   :no-index:
+.. automethod:: Mastodon.collection_item_revoke
+   :no-index:
 .. automethod:: Mastodon.followed_tags
    :no-index:
 .. automethod:: Mastodon.tag_follow
