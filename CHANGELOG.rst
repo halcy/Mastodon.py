@@ -3,7 +3,7 @@ version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
 v2.3.2
--------
+------
 * Bump support level to 4.7.3, update return types with newly added fields
 * Fix stream error handlers raising a tuple instead of an exception (Thanks @dylanpulver )
 * Fix logic issue in version check code that prevented correct functioning on Pixelfed (Thanks @gunchleoc , and @xsuchy for the report)
@@ -28,7 +28,7 @@ v2.3.2
 * Better pagination support: Endpoints that use offset/limit pagination are now supported generally, and `fetch_next()`, `fetch_previous()`, and the newly added `pagination_page_iterator()` can be used to navigate through responses for endpoints that use a wrapper object with a nested list.
 
 v2.2.2
--------
+------
 * Improve instance information caching
 * Add a function to check whether a given timeline is available on an instance (Thanks @pdeitel for the report that triggered this)
 * Add warnings when a user tries to access the stream for a deprecated timeline (Thanks @pdeitel for the report that triggered this)
