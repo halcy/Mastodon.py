@@ -17,7 +17,7 @@ v2.3.2
 * Improve error handling for media uploads (Thanks @aescling for the suggestion)
 * Fix timestamp parsing for Pleromalike Flake IDs
 * 4.6 support: Add `supported_types` to notification related endpoints
-* 4.6 support: Add `exclude_direct` to `account_statuses`,#
+* 4.6 support: Add `exclude_direct` to `account_statuses`
 * 4.6 support: Add `collection_ids` to `report`
 * 4.6 support: Add `unresolved` to `admin_reports`
 * 4.6 support: Add avatar and header description parameters to `account_update_credentials`
