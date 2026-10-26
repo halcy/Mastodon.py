@@ -10,7 +10,10 @@ from mastodon import compat
 from mastodon.errors import MastodonIllegalArgumentError
 
 
-pytestmark = pytest.mark.skipif(os.environ.get("MASTODON_TEST_NO_OPTIONAL_DEPS") != "1")
+pytestmark = pytest.mark.skipif(
+    os.environ.get("MASTODON_TEST_NO_OPTIONAL_DEPS") != "1",
+    reason = "No-optional dependencies tests skipped unless MASTODON_TEST_NO_OPTIONAL_DEPS=1"
+)
 
 @pytest.mark.parametrize("module,flag", [
     ("cryptography", "IMPL_HAS_CRYPTO"),
