@@ -32,9 +32,11 @@ try:
 except ImportError:
     from urlparse import urlparse # type: ignore
 
+IMPL_HAS_MAGIC = True
 try:
     import magic
 except ImportError:
+    IMPL_HAS_MAGIC = False
     magic = None
 
 try:

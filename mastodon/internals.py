@@ -772,7 +772,7 @@ class Mastodon():
             if mime_type is None:
                 media_file.close()
         if mime_type is None:
-            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type.')
+            raise MastodonIllegalArgumentError('Could not determine mime type or data passed directly without mime type. Installing the "magic" extra dependency may help.')
         if file_name is None:
             random_suffix = uuid.uuid4().hex
             file_name = f"mastodonpyupload_{time.time()}_{random_suffix}{mimetypes.guess_extension(mime_type)}"
