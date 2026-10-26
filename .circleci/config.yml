@@ -1,4 +1,32 @@
 version: 2.1
+commands:
+  test-and-store-coverage:
+    parameters:
+      python-version:
+        type: string
+      pytest-args:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: "Run tests"
+          command: |
+            mkdir -p coverage
+            COVERAGE_RCFILE=.circleci/coverage.ini \
+            COVERAGE_FILE=coverage/.coverage.py<< parameters.python-version >> \
+            pytest --junitxml=tests/result.xml \
+              --cov-report=term \
+              --cov-report=xml:coverage/coverage-py<< parameters.python-version >>.xml \
+              << parameters.pytest-args >>
+      - store_test_results:
+          path: tests
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - .coverage.py<< parameters.python-version >>
 jobs:
   run-tests-36:
     docker:
@@ -8,11 +36,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "36"
   run-tests-37:
     docker:
       - image: cimg/python:3.7
@@ -21,11 +46,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "37"
   run-tests-38:
     docker:
       - image: cimg/python:3.8
@@ -34,11 +56,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "38"
   run-tests-39:
     docker:
       - image: cimg/python:3.9
@@ -47,11 +66,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "39"
   run-tests-310:
     docker:
       - image: cimg/python:3.10
@@ -60,11 +76,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests   
+      - test-and-store-coverage:
+          python-version: "310"
   run-tests-311:
     docker:
       - image: cimg/python:3.11
@@ -73,12 +86,9 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests    
-  run-tests-312-cov:
+      - test-and-store-coverage:
+          python-version: "311"
+  run-tests-312:
     docker:
       - image: cimg/python:3.12
     steps:
@@ -86,17 +96,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Install codecov"
-          command: "pip install codecov"             
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests       
-      - run:
-          name: "Notify codecov"
-          command: "codecov"
+      - test-and-store-coverage:
+          python-version: "312"
   run-tests-313:
     docker:
       - image: cimg/python:3.13
@@ -105,11 +106,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests    
+      - test-and-store-coverage:
+          python-version: "313"
   run-tests-314:
     docker:
       - image: cimg/python:3.14
@@ -118,11 +116,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "314"
   run-tests-315:
     docker:
       - image: cimg/python:3.15
@@ -131,11 +126,25 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
+      - test-and-store-coverage:
+          python-version: "315"
+  run-tests-315-no-optional:
+    docker:
+      - image: cimg/python:3.15
+    environment:
+      MASTODON_TEST_NO_OPTIONAL_DEPS: "1"
+    steps:
+      - checkout
       - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+          name: "Install test deps without optional features"
+          command: |
+            python -m venv /tmp/mastodon-no-optional
+            echo 'source /tmp/mastodon-no-optional/bin/activate' >> "$BASH_ENV"
+            source /tmp/mastodon-no-optional/bin/activate
+            pip install .[test]
+      - test-and-store-coverage:
+          python-version: "315-no-optional"
+          pytest-args: "tests/test_optional_dependencies.py"
   run-tests-316:
     docker:
       - image: python:3.16-rc-trixie
@@ -151,12 +160,34 @@ jobs:
           command: |
             python -m pip install --upgrade pip
             pip install .[test,webpush,websocket_streaming,blurhash,grapheme]
+      - test-and-store-coverage:
+          python-version: "316"
+  aggregate-coverage:
+    docker:
+      - image: cimg/python:3.15
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/coverage
       - run:
-          name: Run tests
+          name: "Install coverage tools"
+          command: "pip install coverage codecov"
+      - run:
+          name: "Combine coverage from all Python versions"
           command: |
-            pytest --junitxml=tests/result.xml
-      - store_test_results:
-          path: tests
+            export COVERAGE_RCFILE=.circleci/coverage.ini
+            mkdir -p coverage
+            coverage combine --keep /tmp/coverage
+            coverage report
+            coverage xml -o coverage/coverage.xml
+            coverage html -d coverage/html
+            cp .coverage coverage/.coverage
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+      - run:
+          name: "Notify codecov"
+          command: "codecov -f coverage/coverage.xml"
 workflows:
   run-tests-workflow:
     jobs:
@@ -166,8 +197,21 @@ workflows:
       - run-tests-39
       - run-tests-310
       - run-tests-311
-      - run-tests-312-cov
+      - run-tests-312
       - run-tests-313
       - run-tests-314
       - run-tests-315
+      - run-tests-315-no-optional
       #- run-tests-316 # 3.16 isn't quite ready for primetime yet
+      - aggregate-coverage:
+          requires:
+            - run-tests-37
+            - run-tests-38
+            - run-tests-39
+            - run-tests-310
+            - run-tests-311
+            - run-tests-312
+            - run-tests-313
+            - run-tests-314
+            - run-tests-315
+            - run-tests-315-no-optional
