@@ -145,7 +145,26 @@ jobs:
       - test-and-store-coverage:
           python-version: "315-no-optional"
           pytest-args: "tests/test_optional_dependencies.py"
-  run-tests-316:
+  run-tests-315-windows:
+    executor: win/server-2025
+    steps:
+      - checkout
+      - run:
+          name: Install Python 3.15
+          command: |
+            python -m pip install --upgrade uv
+            uv python install 3.15
+            uv venv --python 3.15 --managed-python .venv
+            .\.venv\Scripts\python.exe --version
+      - run:
+          name: Install test dependencies
+          command: |
+            uv pip install --python .venv\Scripts\python.exe ".[test,webpush,websocket_streaming,blurhash,grapheme]"
+      - run:
+          name: Run tests
+          command: |
+            .\.venv\Scripts\python.exe -m pytest          
+  run-tests-316-rc:
     docker:
       - image: python:3.16-rc-trixie
     steps:
@@ -203,7 +222,8 @@ workflows:
       - run-tests-314
       - run-tests-315
       - run-tests-315-no-optional
-      - run-tests-316
+      - run-tests-315-windows      
+      - run-tests-316-rc
       - aggregate-coverage:
           requires:
             - run-tests-37
@@ -216,4 +236,5 @@ workflows:
             - run-tests-314
             - run-tests-315
             - run-tests-315-no-optional
-            - run-tests-316
+            - run-tests-315-windows               
+            - run-tests-316-rc
