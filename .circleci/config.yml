@@ -159,6 +159,7 @@ jobs:
           name: Upgrade pip and install test deps
           command: |
             python -m pip install --upgrade pip
+            python -m pip install "cffi @ git+https://github.com/python-cffi/cffi.git@main"
             pip install .[test,webpush,websocket_streaming,blurhash,grapheme]
       - test-and-store-coverage:
           python-version: "316"
