@@ -4,6 +4,9 @@ orbs:
 commands:
   test-and-store-coverage:
     parameters:
+      pytest-command:
+        type: string
+        default: "pytest"
       python-version:
         type: string
       pytest-args:
@@ -16,7 +19,7 @@ commands:
             mkdir -p coverage
             COVERAGE_RCFILE=.circleci/coverage.ini \
             COVERAGE_FILE=coverage/.coverage.py<< parameters.python-version >> \
-            pytest --junitxml=tests/result.xml \
+            << parameters.pytest-command >> --junitxml=tests/result.xml \
               --cov-report=term \
               --cov-report=xml:coverage/coverage-py<< parameters.python-version >>.xml \
               << parameters.pytest-args >>
