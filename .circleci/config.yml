@@ -154,6 +154,20 @@ jobs:
     executor: win/server-2025
     steps:
       - checkout
+
+      - run:
+          name: Install Python 3.15
+          command: |
+            python -m pip install --upgrade uv
+            uv python install 3.15
+            uv venv --python 3.15 --managed-python .venv
+            .\.venv\Scripts\python.exe --version
+
+      - run:
+          name: Install test dependencies
+          command: |
+            uv pip install --python .venv\Scripts\python.exe ".[test,webpush,websocket_streaming,blurhash,grapheme]"
+
       - run:
           name: Run tests with coverage
           command: |
