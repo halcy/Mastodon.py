@@ -152,20 +152,54 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Run tests with coverage
+          command: |
+            New-Item -ItemType Directory -Force coverage | Out-Null
+
+            $env:COVERAGE_RCFILE = ".circleci/coverage.ini"
+            $env:COVERAGE_FILE = "coverage/.coverage.py315-windows"
+
+            .\.venv\Scripts\python.exe -m pytest `
+              --junitxml=tests/result.xml `
+              --cov-report=term `
+              --cov-report=xml:coverage/coverage-py315-windows.xml
+
+      - store_test_results:
+          path: tests
+
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - .coverage.py315-windows
+  run-tests-315-macos:
+    macos:
+      xcode: "27.2"
+    resource_class: m4pro.medium
+    steps:
+      - checkout
+
+      - run:
           name: Install Python 3.15
           command: |
-            python -m pip install --upgrade uv
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            export PATH="$HOME/.local/bin:$PATH"
             uv python install 3.15
             uv venv --python 3.15 --managed-python .venv
-            .\.venv\Scripts\python.exe --version
+            .venv/bin/python --version
+
       - run:
           name: Install test dependencies
           command: |
-            uv pip install --python .venv\Scripts\python.exe ".[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: Run tests
-          command: |
-            .\.venv\Scripts\python.exe -m pytest          
+            export PATH="$HOME/.local/bin:$PATH"
+            uv pip install --python .venv/bin/python ".[test,webpush,websocket_streaming,blurhash,grapheme]"
+
+      - test-and-store-coverage:
+          python-version: "315-macos"
+          pytest-command: ".venv/bin/python -m pytest"            
   run-tests-316-rc:
     docker:
       - image: python:3.16-rc-trixie
@@ -224,7 +258,8 @@ workflows:
       - run-tests-314
       - run-tests-315
       - run-tests-315-no-optional
-      - run-tests-315-windows      
+      - run-tests-315-windows
+      - run-tests-315-macos
       - run-tests-316-rc
       - aggregate-coverage:
           requires:
@@ -238,5 +273,6 @@ workflows:
             - run-tests-314
             - run-tests-315
             - run-tests-315-no-optional
-            - run-tests-315-windows               
+            - run-tests-315-windows
+            - run-tests-315-macos
             - run-tests-316-rc
