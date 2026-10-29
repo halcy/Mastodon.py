@@ -276,7 +276,7 @@ workflows:
       - run-tests-315
       - run-tests-315-no-optional
       - run-tests-315-windows
-      - run-tests-315-macos
+      #- run-tests-315-macos # would be nice to have mac os tests, but unfortunately runners on circleci are extremely scarce
       - run-tests-316-rc
       - aggregate-coverage:
           requires:
@@ -291,5 +291,4 @@ workflows:
             - run-tests-315
             - run-tests-315-no-optional
             - run-tests-315-windows
-            - run-tests-315-macos
             - run-tests-316-rc
