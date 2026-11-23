@@ -67,7 +67,8 @@ try:
 except ImportError:
     from enum import Enum
     class StringEnum(str, Enum):
-        __str__ = str.__str__
+        def __str__(self):
+            return self.value
         @staticmethod
         def _generate_next_value_(name, start, count, last_values):
             return name.lower()
