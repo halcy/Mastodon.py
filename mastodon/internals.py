@@ -4,7 +4,10 @@ from datetime import timezone, datetime, timedelta
 from urllib.parse import parse_qs
 from contextlib import closing
 import mimetypes
-from typing import Dict, List, Optional, Union, Literal, overload
+import sys
+from typing import Dict, List, Optional, Union, overload
+if sys.version_info >= (3, 9):
+    from typing import Literal
 import uuid
 import dateutil.parser
 import time
@@ -685,21 +688,21 @@ class Mastodon():
 
         return params
 
+    if sys.version_info >= (3, 9):
+        @overload
+        def __unpack_id(self, id: PrimitiveIdType, dateconv: bool = False, listify: Literal[False] = False, field: str = "id") -> PrimitiveIdType: ...
 
-    @overload
-    def __unpack_id(self, id: PrimitiveIdType, dateconv: bool = False, listify: Literal[False] = False, field: str = "id") -> PrimitiveIdType: ...
+        @overload
+        def __unpack_id(self, id: IdType, dateconv: bool = False, listify: Literal[False] = False, field: str = "id") -> IdType: ...
 
-    @overload
-    def __unpack_id(self, id: IdType, dateconv: bool = False, listify: Literal[False] = False, field: str = "id") -> IdType: ...
+        @overload
+        def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool = False, *, listify: Literal[True], field: str = "id") -> List[IdType]: ...
 
-    @overload
-    def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool = False, *, listify: Literal[True], field: str = "id") -> List[IdType]: ...
+        @overload
+        def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool, listify: Literal[True], field: str = "id") -> List[IdType]: ...
 
-    @overload
-    def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool, listify: Literal[True], field: str = "id") -> List[IdType]: ...
-
-    @overload
-    def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool = False, listify: bool = False, field: str = "id") -> Union[IdType, List[IdType]]: ...
+        @overload
+        def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool = False, listify: bool = False, field: str = "id") -> Union[IdType, List[IdType]]: ...
 
     def __unpack_id(self, id: Optional[Union[IdType, AttribAccessDict, List[Union[IdType, AttribAccessDict]]]], dateconv: bool = False, listify: bool = False, field: str = "id") -> Optional[Union[IdType, List[IdType]]]:
         """
