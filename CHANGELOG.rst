@@ -9,6 +9,7 @@ v2.4
   passing a correct parameter, use the appropriate enums.
 * Fixed some incorrectly documented parameters, especially in the admin API.
 * Cleaned up internal typing a little bit
+* Fix some small path bugs affecting windows users
 
 v2.3.3
 ------

@@ -65,7 +65,13 @@ try:
     from enum import StrEnum
     StringEnum = StrEnum
 except ImportError:
-    from enum import Enum
+    try:
+        from enum import Enum
+    except ImportError:
+        # Replacement for Enum for 3.7 and 3.8
+        class Enum:
+            pass
+
     class StringEnum(str, Enum):
         __str__ = str.__str__
         @staticmethod
