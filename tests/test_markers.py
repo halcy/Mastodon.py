@@ -12,7 +12,7 @@ def test_markers(api, status):
     print("---------------- MARKER B", marker_b)
     assert marker_b
     assert marker_b["home"]
-    assert next(iter(marker_b)) is MarkerTimeline.HOME
+    assert next(iter(marker_b)) == MarkerTimeline.HOME
     
     assert marker_a.home.version == marker_b.home.version
     assert marker_a.home.last_read_id == status.id

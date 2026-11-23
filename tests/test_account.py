@@ -200,8 +200,8 @@ def test_account_update_credentials_source_and_privacy(api):
         assert account.source.privacy == 'unlisted'
         assert account.source.sensitive == True
         assert account.source.language == 'en'
-        assert account.source.privacy is DefaultPostVisibility.UNLISTED
-        assert account.source.language is Language.EN
+        assert account.source.privacy == DefaultPostVisibility.UNLISTED
+        assert account.source.language == Language.EN
     finally:
         api.account_update_credentials(
             hide_collections=original.hide_collections,

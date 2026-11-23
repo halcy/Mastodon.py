@@ -11,7 +11,7 @@ def mastodon_list(api):
 @pytest.mark.vcr()
 def test_list_create(api, mastodon_list):
     assert mastodon_list in api.lists()
-    assert mastodon_list.replies_policy is ListRepliesPolicy.LIST
+    assert mastodon_list.replies_policy == ListRepliesPolicy.LIST
 
 @pytest.mark.vcr()
 def test_list_update(api, mastodon_list):

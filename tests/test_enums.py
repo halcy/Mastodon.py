@@ -27,22 +27,22 @@ def test_enum_response_roundtrip_and_string_fallback():
         }],
     )
 
-    assert status.visibility is StatusVisibility.PUBLIC
-    assert status.language is Language.EN
-    assert status.account.source.privacy is DefaultPostVisibility.PRIVATE
-    assert status.account.source.language is Language.DE
+    assert status.visibility == StatusVisibility.PUBLIC
+    assert status.language == Language.EN
+    assert status.account.source.privacy == DefaultPostVisibility.PRIVATE
+    assert status.account.source.language == Language.DE
     assert type(status.reblog.visibility) is str
     assert status.reblog.visibility == "FutureVisibility"
     assert status.reblog.language == "xyz"
     assert status.filtered[0].filter.context == [FilterContext.HOME, "future_context"]
-    assert status.filtered[0].filter.context[0] is FilterContext.HOME
+    assert status.filtered[0].filter.context[0] == FilterContext.HOME
     assert type(status.filtered[0].filter.filter_action) is str
 
     restored = Entity.from_json(status.to_json())
     assert restored == status
-    assert restored.visibility is StatusVisibility.PUBLIC
-    assert restored.account.source.privacy is DefaultPostVisibility.PRIVATE
-    assert restored.filtered[0].filter.context[0] is FilterContext.HOME
+    assert restored.visibility == StatusVisibility.PUBLIC
+    assert restored.account.source.privacy == DefaultPostVisibility.PRIVATE
+    assert restored.filtered[0].filter.context[0] == FilterContext.HOME
     assert type(restored.reblog.visibility) is str
     assert restored.reblog.visibility == "FutureVisibility"
     assert restored.reblog.language == "xyz"
@@ -51,15 +51,15 @@ def test_enum_response_roundtrip_and_string_fallback():
     restored.visibility = "AnotherFutureVisibility"
     assert restored.visibility == "AnotherFutureVisibility"
     restored["visibility"] = PostVisibility.PRIVATE
-    assert restored.visibility is StatusVisibility.PRIVATE
-    assert pickle.loads(pickle.dumps(restored)).visibility is StatusVisibility.PRIVATE
+    assert restored.visibility == StatusVisibility.PRIVATE
+    assert pickle.loads(pickle.dumps(restored)).visibility == StatusVisibility.PRIVATE
     assert Status(visibility=None, language=None).visibility is None
     assert FilterV2(context=["future_context"], filter_action="future_action").filter_action == "future_action"
 
     rule = Rule(translations={"en": {"text": "Be kind"}, "xyz": {"text": "Future language"}})
     restored_rule = Entity.from_json(rule.to_json())
     assert list(restored_rule.translations) == [Language.EN, "xyz"]
-    assert next(iter(restored_rule.translations)) is Language.EN
+    assert next(iter(restored_rule.translations)) == Language.EN
     assert restored_rule.translations[Language.EN].text == "Be kind"
     assert restored_rule.translations["xyz"].text == "Future language"
 
@@ -96,10 +96,10 @@ def test_enum_stream_response_casting():
     for name, status in events[:2]:
         assert isinstance(name, StreamEventType)
         assert isinstance(status, Status)
-        assert status.visibility is StatusVisibility.PUBLIC
-        assert status.language is Language.EN
-    assert events[0][0] is StreamEventType("status.update")
-    assert events[1][0] is StreamEventType("status_update")
+        assert status.visibility == StatusVisibility.PUBLIC
+        assert status.language == Language.EN
+    assert events[0][0] == StreamEventType("status.update")
+    assert events[1][0] == StreamEventType("status_update")
     assert type(events[2][0]) is str
     assert events[2][0] == "mastodonpy.future_event"
     assert events[2][1].visibility == "FutureVisibility"

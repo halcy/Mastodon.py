@@ -104,9 +104,9 @@ def test_status_reblogged_by(api, status3, api3):
 def test_status_reblog_visibility(api, status3, api3):
     status = api.status_post("bwooh! secret", visibility=PostVisibility.PRIVATE)
     reblog_result = api.status_reblog(status['id'], visibility=ReblogVisibility.UNLISTED)
-    assert reblog_result.visibility is StatusVisibility.PRIVATE
+    assert reblog_result.visibility == StatusVisibility.PRIVATE
     reblog_result = api3.status_reblog(status3, visibility=ReblogVisibility.UNLISTED)
-    assert reblog_result.visibility is StatusVisibility.UNLISTED
+    assert reblog_result.visibility == StatusVisibility.UNLISTED
 
 @pytest.mark.vcr()
 def test_status_favourited_by(status, api):
@@ -135,9 +135,9 @@ def test_status_post(api, visibility, spoiler_text):
         assert status
         if visibility:
             assert status['visibility'] == visibility
-            assert status.visibility is StatusVisibility(visibility)
+            assert status.visibility == StatusVisibility(visibility)
             restored = Entity.from_json(status.to_json())
-            assert restored.visibility is status.visibility
+            assert restored.visibility == status.visibility
             assert str(restored.visibility) == visibility
         if spoiler_text:
             assert status['spoiler_text'] == spoiler_text

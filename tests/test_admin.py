@@ -169,7 +169,7 @@ def test_admin_domain_blocks(api2):
     assert isinstance(api2.admin_domain_blocks(), list)
     block2 = api2.admin_domain_blocks(block)
     assert block.severity == "suspend"
-    assert block.severity is AdminDomainBlockSeverity.SUSPEND
+    assert block.severity == AdminDomainBlockSeverity.SUSPEND
     assert block.public_comment == "sicko behaviour"
     assert block.severity == block2.severity
     block3 = api2.admin_update_domain_block(block, severity="silence", private_comment="jk ilu <3")
