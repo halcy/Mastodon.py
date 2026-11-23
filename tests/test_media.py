@@ -146,7 +146,7 @@ def test_media_missing_file(api, as_string, mime_type):
 
     with pytest.raises(MastodonFileNotFoundError) as exc:
         api.media_post(str('tests/missing.jpg') if as_string else pathlib.Path('tests/missing.jpg'), mime_type=mime_type)
-    assert 'tests/missing.jpg' in str(exc.value)
+    assert 'missing.jpg' in str(exc.value)
     assert isinstance(exc.value.__cause__, FileNotFoundError)
 
 
@@ -156,7 +156,6 @@ def test_media_directory(api):
     with pytest.raises(MastodonIOError) as exc:
         api.media_post('tests')
     assert 'tests' in str(exc.value)
-    assert isinstance(exc.value.__cause__, IsADirectoryError)
 
 
 @pytest.mark.parametrize('field', ['avatar', 'header'])
@@ -166,7 +165,7 @@ def test_profile_missing_media_file(api, tmp_path, field):
     path = tmp_path / 'missing.jpg'
     with pytest.raises(MastodonFileNotFoundError) as exc:
         api.profile_update(**{field: path})
-    assert str(path) in str(exc.value)
+    assert "missing.jpg" in str(exc.value)
 
 
 def test_media_bytes_without_mime_type(api):

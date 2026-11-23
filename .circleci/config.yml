@@ -1,4 +1,37 @@
 version: 2.1
+orbs:
+  win: circleci/windows@5.1
+commands:
+  test-and-store-coverage:
+    parameters:
+      pytest-command:
+        type: string
+        default: "pytest"
+      python-version:
+        type: string
+      pytest-args:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: "Run tests"
+          command: |
+            mkdir -p coverage
+            COVERAGE_RCFILE=.circleci/coverage.ini \
+            COVERAGE_FILE=coverage/.coverage.py<< parameters.python-version >> \
+            << parameters.pytest-command >> --junitxml=tests/result.xml \
+              --cov-report=term \
+              --cov-report=xml:coverage/coverage-py<< parameters.python-version >>.xml \
+              << parameters.pytest-args >>
+      - store_test_results:
+          path: tests
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - .coverage.py<< parameters.python-version >>
 jobs:
   run-tests-36:
     docker:
@@ -8,11 +41,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "36"
   run-tests-37:
     docker:
       - image: cimg/python:3.7
@@ -21,11 +51,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "37"
   run-tests-38:
     docker:
       - image: cimg/python:3.8
@@ -34,11 +61,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test_old,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "38"
   run-tests-39:
     docker:
       - image: cimg/python:3.9
@@ -47,11 +71,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "39"
   run-tests-310:
     docker:
       - image: cimg/python:3.10
@@ -60,11 +81,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests   
+      - test-and-store-coverage:
+          python-version: "310"
   run-tests-311:
     docker:
       - image: cimg/python:3.11
@@ -73,12 +91,9 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests    
-  run-tests-312-cov:
+      - test-and-store-coverage:
+          python-version: "311"
+  run-tests-312:
     docker:
       - image: cimg/python:3.12
     steps:
@@ -86,17 +101,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Install codecov"
-          command: "pip install codecov"             
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests       
-      - run:
-          name: "Notify codecov"
-          command: "codecov"
+      - test-and-store-coverage:
+          python-version: "312"
   run-tests-313:
     docker:
       - image: cimg/python:3.13
@@ -105,11 +111,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests    
+      - test-and-store-coverage:
+          python-version: "313"
   run-tests-314:
     docker:
       - image: cimg/python:3.14
@@ -118,11 +121,8 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
-      - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
-      - store_test_results:
-          path: tests
+      - test-and-store-coverage:
+          python-version: "314"
   run-tests-315:
     docker:
       - image: cimg/python:3.15
@@ -131,12 +131,93 @@ jobs:
       - run:
           name: "Install test deps"
           command: "pip install .[test,webpush,websocket_streaming,blurhash,grapheme]"
+      - test-and-store-coverage:
+          python-version: "315"
+  run-tests-315-no-optional:
+    docker:
+      - image: cimg/python:3.15
+    environment:
+      MASTODON_TEST_NO_OPTIONAL_DEPS: "1"
+    steps:
+      - checkout
       - run:
-          name: "Run tests"
-          command: "pytest --junitxml=tests/result.xml"
+          name: "Install test deps without optional features"
+          command: |
+            python -m venv /tmp/mastodon-no-optional
+            echo 'source /tmp/mastodon-no-optional/bin/activate' >> "$BASH_ENV"
+            source /tmp/mastodon-no-optional/bin/activate
+            pip install .[test]
+      - test-and-store-coverage:
+          python-version: "315-no-optional"
+          pytest-args: "tests/test_optional_dependencies.py"
+  run-tests-315-windows:
+    executor: win/server-2025
+    steps:
+      - checkout
+
+      - run:
+          name: Install Python 3.15
+          command: |
+            python -m pip install --upgrade uv
+            uv python install 3.15
+            uv venv --python 3.15 --managed-python .venv
+            .\.venv\Scripts\python.exe --version
+
+      - run:
+          name: Install test dependencies
+          command: |
+            uv pip install --python .venv\Scripts\python.exe ".[test,webpush,websocket_streaming,blurhash,grapheme]"
+
+      - run:
+          name: Run tests with coverage
+          command: |
+            New-Item -ItemType Directory -Force coverage | Out-Null
+
+            $env:COVERAGE_RCFILE = ".circleci/coverage.ini"
+            $env:COVERAGE_FILE = "coverage/.coverage.py315-windows"
+
+            .\.venv\Scripts\python.exe -m pytest `
+              --junitxml=tests/result.xml `
+              --cov-report=term `
+              --cov-report=xml:coverage/coverage-py315-windows.xml
+
       - store_test_results:
           path: tests
-  run-tests-316:
+
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - .coverage.py315-windows
+  run-tests-315-macos:
+    macos:
+      xcode: "27.2"
+    resource_class: m4pro.medium
+    steps:
+      - checkout
+
+      - run:
+          name: Install Python 3.15
+          command: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            export PATH="$HOME/.local/bin:$PATH"
+            uv python install 3.15
+            uv venv --python 3.15 --managed-python .venv
+            .venv/bin/python --version
+
+      - run:
+          name: Install test dependencies
+          command: |
+            export PATH="$HOME/.local/bin:$PATH"
+            uv pip install --python .venv/bin/python ".[test,webpush,websocket_streaming,blurhash,grapheme]"
+
+      - test-and-store-coverage:
+          python-version: "315-macos"
+          pytest-command: ".venv/bin/python -m pytest"            
+  run-tests-316-rc:
     docker:
       - image: python:3.16-rc-trixie
     steps:
@@ -150,13 +231,36 @@ jobs:
           name: Upgrade pip and install test deps
           command: |
             python -m pip install --upgrade pip
+            python -m pip install "cffi @ git+https://github.com/python-cffi/cffi.git@main"
             pip install .[test,webpush,websocket_streaming,blurhash,grapheme]
+      - test-and-store-coverage:
+          python-version: "316"
+  aggregate-coverage:
+    docker:
+      - image: cimg/python:3.15
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/coverage
       - run:
-          name: Run tests
+          name: "Install coverage tools"
+          command: "pip install coverage codecov"
+      - run:
+          name: "Combine coverage from all Python versions"
           command: |
-            pytest --junitxml=tests/result.xml
-      - store_test_results:
-          path: tests
+            export COVERAGE_RCFILE=.circleci/coverage.ini
+            mkdir -p coverage
+            coverage combine --keep /tmp/coverage
+            coverage report
+            coverage xml -o coverage/coverage.xml
+            coverage html -d coverage/html
+            cp .coverage coverage/.coverage
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+      - run:
+          name: "Notify codecov"
+          command: "codecov -f coverage/coverage.xml"
 workflows:
   run-tests-workflow:
     jobs:
@@ -166,8 +270,25 @@ workflows:
       - run-tests-39
       - run-tests-310
       - run-tests-311
-      - run-tests-312-cov
+      - run-tests-312
       - run-tests-313
       - run-tests-314
       - run-tests-315
-      #- run-tests-316 # 3.16 isn't quite ready for primetime yet
+      - run-tests-315-no-optional
+      - run-tests-315-windows
+      #- run-tests-315-macos # would be nice to have mac os tests, but unfortunately runners on circleci are extremely scarce
+      - run-tests-316-rc
+      - aggregate-coverage:
+          requires:
+            - run-tests-37
+            - run-tests-38
+            - run-tests-39
+            - run-tests-310
+            - run-tests-311
+            - run-tests-312
+            - run-tests-313
+            - run-tests-314
+            - run-tests-315
+            - run-tests-315-no-optional
+            - run-tests-315-windows
+            - run-tests-316-rc
