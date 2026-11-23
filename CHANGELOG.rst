@@ -4,9 +4,9 @@ version number. Breaking changes will be indicated by a change in the minor
 
 v2.4
 ----
-* Add enums for API parameters and return fields.
-* Consequently, remove some error checks for incorrect parameters. In the future, if you want to make sure you're
-  passing a correct parameter, use the appropriate enums.
+* POTENTIALLY BREAKING CHANGE: Add enums for API parameters and return fields. This could break some code if you previously used identity ("is") comparisons 
+  for return values. The recommended fix for this is to use equality ("==") comparisons instead.
+* Remove some error checks for incorrect parameters. In the future, if you want to make sure you're passing a correct parameter, use the appropriate enums.
 * Fixed some incorrectly documented parameters, especially in the admin API.
 * Cleaned up internal typing a little bit
 * Fix some small path bugs affecting windows users
