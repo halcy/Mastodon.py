@@ -2,6 +2,7 @@
 
 from mastodon.errors import MastodonIllegalArgumentError, MastodonVersionError
 from mastodon.utility import api_version
+from mastodon.enums import SearchResultType
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Search, SearchV2, Account, IdType
@@ -21,7 +22,7 @@ class Mastodon(Internals):
                 raise MastodonVersionError("Advanced search parameters require Mastodon 2.8.0+")
 
     @api_version("1.1.0", "2.8.0")
-    def search(self, q: str, resolve: bool = True, result_type: Optional[str] = None,
+    def search(self, q: str, resolve: bool = True, result_type: Optional[Union[SearchResultType, str]] = None,
                account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None,
                min_id: Optional[IdType] = None, max_id: Optional[IdType] = None,
                exclude_unreviewed: bool = True, limit: Optional[int] = None) -> Union[Search, SearchV2]:
@@ -77,7 +78,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/search', params)
 
     @api_version("2.4.1", "2.8.0")
-    def search_v2(self, q, resolve: bool = True, result_type: Optional[str] = None,
+    def search_v2(self, q, resolve: bool = True, result_type: Optional[Union[SearchResultType, str]] = None,
                account_id: Optional[Union[Account, IdType]] = None, offset: Optional[int] = None,
                min_id: Optional[IdType] = None, max_id: Optional[IdType] = None,
                exclude_unreviewed: bool = True, limit: Optional[int] = None) -> SearchV2:
@@ -90,8 +91,6 @@ class Mastodon(Internals):
 
         For more details documentation, please see `search()`
         """
-        if result_type is not None and not result_type in ["accounts", "hashtags", "statuses"]:
-            raise MastodonIllegalArgumentError("Invalid result_type. Must be one of 'accounts', 'hashtags', or 'statuses'.")
         self.__ensure_search_params_acceptable(account_id, offset, min_id, max_id)
         params = self.__generate_params(locals(), dateconv=True)
 

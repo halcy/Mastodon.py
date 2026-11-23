@@ -318,6 +318,168 @@ Every function on a huge CTRL-F-able page
    :no-index:
 .. autoclass:: mastodon.return_types.IdentityProof
    :no-index:
+.. autoclass:: mastodon.enums.StringEnum
+   :no-index:
+.. autoclass:: mastodon.enums.Visibility
+   :no-index:
+.. autoclass:: mastodon.enums.PostVisibility
+   :no-index:
+.. autoclass:: mastodon.enums.StatusVisibility
+   :no-index:
+.. autoclass:: mastodon.enums.DefaultPostVisibility
+   :no-index:
+.. autoclass:: mastodon.enums.ReblogVisibility
+   :no-index:
+.. autoclass:: mastodon.enums.QuotePolicy
+   :no-index:
+.. autoclass:: mastodon.enums.PostQuotePolicy
+   :no-index:
+.. autoclass:: mastodon.enums.DefaultQuotePolicy
+   :no-index:
+.. autoclass:: mastodon.enums.QuoteState
+   :no-index:
+.. autoclass:: mastodon.enums.ApprovalAudience
+   :no-index:
+.. autoclass:: mastodon.enums.QuoteApprovalAudience
+   :no-index:
+.. autoclass:: mastodon.enums.FeatureApprovalAudience
+   :no-index:
+.. autoclass:: mastodon.enums.ApprovalDecision
+   :no-index:
+.. autoclass:: mastodon.enums.QuoteApprovalDecision
+   :no-index:
+.. autoclass:: mastodon.enums.FeatureApprovalDecision
+   :no-index:
+.. autoclass:: mastodon.enums.FilterContext
+   :no-index:
+.. autoclass:: mastodon.enums.FilterAction
+   :no-index:
+.. autoclass:: mastodon.enums.NotificationType
+   :no-index:
+.. autoclass:: mastodon.enums.IndividualNotificationType
+   :no-index:
+.. autoclass:: mastodon.enums.GroupedNotificationType
+   :no-index:
+.. autoclass:: mastodon.enums.PushNotificationType
+   :no-index:
+.. autoclass:: mastodon.enums.GroupableNotificationType
+   :no-index:
+.. autoclass:: mastodon.enums.ListRepliesPolicy
+   :no-index:
+.. autoclass:: mastodon.enums.MediaAttachmentType
+   :no-index:
+.. autoclass:: mastodon.enums.PreviewCardType
+   :no-index:
+.. autoclass:: mastodon.enums.CollectionItemState
+   :no-index:
+.. autoclass:: mastodon.enums.TimelineAccess
+   :no-index:
+.. autoclass:: mastodon.enums.ReportCategory
+   :no-index:
+.. autoclass:: mastodon.enums.PushSubscriptionPolicy
+   :no-index:
+.. autoclass:: mastodon.enums.MediaExpansion
+   :no-index:
+.. autoclass:: mastodon.enums.AdminMeasureKey
+   :no-index:
+.. autoclass:: mastodon.enums.AdminDimensionKey
+   :no-index:
+.. autoclass:: mastodon.enums.RetentionFrequency
+   :no-index:
+.. autoclass:: mastodon.enums.DomainBlockSeverity
+   :no-index:
+.. autoclass:: mastodon.enums.AdminDomainBlockSeverity
+   :no-index:
+.. autoclass:: mastodon.enums.PublicDomainBlockSeverity
+   :no-index:
+.. autoclass:: mastodon.enums.IpBlockSeverity
+   :no-index:
+.. autoclass:: mastodon.enums.SuggestionReason
+   :no-index:
+.. autoclass:: mastodon.enums.SuggestionSource
+   :no-index:
+.. autoclass:: mastodon.enums.LegacySuggestionSource
+   :no-index:
+.. autoclass:: mastodon.enums.AccountCreationErrorCode
+   :no-index:
+.. autoclass:: mastodon.enums.CredentialAccountErrorCode
+   :no-index:
+.. autoclass:: mastodon.enums.NotificationPolicyAction
+   :no-index:
+.. autoclass:: mastodon.enums.RelationshipSeveranceType
+   :no-index:
+.. autoclass:: mastodon.enums.ModerationAction
+   :no-index:
+.. autoclass:: mastodon.enums.AdminAccountAction
+   :no-index:
+.. autoclass:: mastodon.enums.AccountWarningAction
+   :no-index:
+.. autoclass:: mastodon.enums.AppealState
+   :no-index:
+.. autoclass:: mastodon.enums.AsyncRefreshStatus
+   :no-index:
+.. autoclass:: mastodon.enums.AnnualReportStatus
+   :no-index:
+.. autoclass:: mastodon.enums.AnnualReportArchetype
+   :no-index:
+.. autoclass:: mastodon.enums.OAuthScope
+   :no-index:
+.. autoclass:: mastodon.enums.OAuthResponseType
+   :no-index:
+.. autoclass:: mastodon.enums.OAuthResponseMode
+   :no-index:
+.. autoclass:: mastodon.enums.OAuthGrantType
+   :no-index:
+.. autoclass:: mastodon.enums.OAuthTokenEndpointAuthMethod
+   :no-index:
+.. autoclass:: mastodon.enums.OAuthCodeChallengeMethod
+   :no-index:
+.. autoclass:: mastodon.enums.FederationProtocol
+   :no-index:
+.. autoclass:: mastodon.enums.NodeInfoService
+   :no-index:
+.. autoclass:: mastodon.enums.NodeInfoInboundService
+   :no-index:
+.. autoclass:: mastodon.enums.NodeInfoOutboundService
+   :no-index:
+.. autoclass:: mastodon.enums.SearchResultType
+   :no-index:
+.. autoclass:: mastodon.enums.AdminAccountOrigin
+   :no-index:
+.. autoclass:: mastodon.enums.AdminAccountStatus
+   :no-index:
+.. autoclass:: mastodon.enums.AdminAccountPermission
+   :no-index:
+.. autoclass:: mastodon.enums.NotificationAccountExpansion
+   :no-index:
+.. autoclass:: mastodon.enums.StatusContentType
+   :no-index:
+.. autoclass:: mastodon.enums.RateLimitMethod
+   :no-index:
+.. autoclass:: mastodon.enums.VersionCheckMode
+   :no-index:
+.. autoclass:: mastodon.enums.FeatureSet
+   :no-index:
+.. autoclass:: mastodon.enums.PaginationDirection
+   :no-index:
+.. autoclass:: mastodon.enums.Timeline
+   :no-index:
+.. autoclass:: mastodon.enums.MarkerTimeline
+   :no-index:
+.. autoclass:: mastodon.enums.TimelineAccessType
+   :no-index:
+.. autoclass:: mastodon.enums.DirectoryOrder
+   :no-index:
+.. autoclass:: mastodon.enums.NodeinfoSchema
+   :no-index:
+.. autoclass:: mastodon.enums.NodeinfoVersion
+   :no-index:
+.. autoclass:: mastodon.enums.StreamEventType
+   :no-index:
+.. autoclass:: mastodon.enums.StreamType
+   :no-index:
+.. autoclass:: mastodon.enums.Language
+   :no-index:
 .. automethod:: Mastodon.create_app
    :no-index:
 .. automethod:: Mastodon.app_verify_credentials

@@ -1,15 +1,17 @@
 import pytest
 import time
+from mastodon.enums import ListRepliesPolicy
 
 @pytest.fixture()
 def mastodon_list(api):
-    mastodon_list = api.list_create('ham burglars')
+    mastodon_list = api.list_create('ham burglars', replies_policy=ListRepliesPolicy.LIST)
     yield mastodon_list
     api.list_delete(mastodon_list)
 
 @pytest.mark.vcr()
 def test_list_create(api, mastodon_list):
     assert mastodon_list in api.lists()
+    assert mastodon_list.replies_policy is ListRepliesPolicy.LIST
 
 @pytest.mark.vcr()
 def test_list_update(api, mastodon_list):

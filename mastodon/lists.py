@@ -1,5 +1,6 @@
 # list.py - list endpoints
 from mastodon.utility import api_version
+from mastodon.enums import ListRepliesPolicy
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import NonPaginatableList, UserList, IdType, PaginatableList, Account
@@ -40,7 +41,7 @@ class Mastodon(Internals):
     # Writing data: Lists
     ###
     @api_version("2.1.0", "4.2.0")
-    def list_create(self, title: str, replies_policy: str = "list", exclusive: bool = False) -> UserList:
+    def list_create(self, title: str, replies_policy: Union[ListRepliesPolicy, str] = "list", exclusive: bool = False) -> UserList:
         """
         Create a new list with the given `title`.
 
@@ -55,7 +56,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/lists', params)
 
     @api_version("2.1.0", "4.2.0")
-    def list_update(self, id: Union[UserList, IdType], title: str, replies_policy: str = "list", exclusive: bool = False) -> UserList:
+    def list_update(self, id: Union[UserList, IdType], title: str, replies_policy: Union[ListRepliesPolicy, str] = "list", exclusive: bool = False) -> UserList:
         """
         Update info about a list, where "info" is really the lists `title`.
 

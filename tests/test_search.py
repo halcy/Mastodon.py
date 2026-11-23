@@ -1,6 +1,7 @@
 import pytest
 import vcr
 import sys
+from mastodon.enums import SearchResultType
 
 @pytest.mark.vcr()
 def test_search(api):    
@@ -10,7 +11,7 @@ def test_search(api):
     results = api.search('mastodonpy_test')
     assert isinstance(results, dict)
 
-    results = api.search('mastodonpy_test', result_type="statuses")
+    results = api.search('mastodonpy_test', result_type=SearchResultType.STATUSES)
     assert isinstance(results, dict)
     assert len(results["hashtags"]) == 0
     assert len(results["accounts"]) == 0

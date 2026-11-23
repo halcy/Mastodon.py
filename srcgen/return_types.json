@@ -764,8 +764,8 @@
         "description": "Source values useful for editing a user's profile.",
         "fields": {
             "privacy": {
-                "description": "The user's default visibility setting (\"private\", \"unlisted\" or \"public\")",
-                "field_type": "str",
+                "description": "The user's default visibility setting for new posts",
+                "field_type": "Union[DefaultPostVisibility, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -780,7 +780,8 @@
                     "unlisted": "Unlisted post",
                     "private": "Followers-only post",
                     "direct": "Direct post"
-                }
+                },
+                "field_enum": "DefaultPostVisibility"
             },
             "sensitive": {
                 "description": "Denotes whether user media should be marked sensitive by default",
@@ -812,9 +813,8 @@
             },
             "language": {
                 "description": "The default posting language for new statuses.",
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
                 "is_nullable": true,
                 "version_history": [
@@ -823,7 +823,8 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language"
             },
             "fields": {
                 "description": "List of up to four (by default) AccountFields, with user chosen account metadata.",
@@ -914,7 +915,7 @@
             },
             "quote_policy": {
                 "description": "The default quote policy to be used for new statuses.",
-                "field_type": "str",
+                "field_type": "Union[DefaultQuotePolicy, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -931,7 +932,8 @@
                     "public": "Anyone (except blocked accounts) can quote",
                     "followers": "Only followers and author can quote",
                     "nobody": "Only author can quote"
-                }
+                },
+                "field_enum": "DefaultQuotePolicy"
             }
         }
     },
@@ -975,12 +977,21 @@
             },
             "error_code": {
                 "description": "The code identifying why the account is not functional, or None if there is no error.",
-                "field_type": "str",
+                "field_type": "Union[CredentialAccountErrorCode, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
                 "version_history": [],
-                "enum": null
+                "enum": {
+                    "pending_confirmation": "Email confirmation is pending.",
+                    "pending_approval": "Moderator approval is pending.",
+                    "account_deleted": "The account was deleted.",
+                    "account_suspended": "The account was suspended.",
+                    "memorial": "The account is a memorial.",
+                    "login_disabled": "Login was disabled.",
+                    "2fa_required": "Two-factor authentication is required."
+                },
+                "field_enum": "CredentialAccountErrorCode"
             },
             "error": {
                 "description": "A localized explanation of why the account is not functional, or None if there is no error.",
@@ -1210,11 +1221,10 @@
             },
             "visibility": {
                 "description": "Toot visibility",
-                "field_type": "str",
+                "field_type": "Union[StatusVisibility, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "VisibilityEnum",
                 "version_history": [
                     [
                         "0.9.9",
@@ -1228,7 +1238,8 @@
                     "direct": "Visible only to people mentioned in the status",
                     "list": "Visible only to people on a manually curated list (pleroma-specific)",
                     "local": "Visible only to local followers (pleroma-specific)"
-                }
+                },
+                "field_enum": "StatusVisibility"
             },
             "mentions": {
                 "description": "A list of StatusMention this status includes",
@@ -1312,9 +1323,8 @@
             },
             "language": {
                 "description": "The language of the status, if specified by the server, as ISO 639-1 (two-letter) language code.",
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
                 "is_nullable": true,
                 "version_history": [
@@ -1322,7 +1332,8 @@
                         "1.4.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "Language"
             },
             "muted": {
                 "description": "Boolean denoting whether the user has muted this status by way of conversation muting",
@@ -1483,7 +1494,7 @@
         "fields": {
             "state": {
                 "description": "The state of the quote. Unknown values should be treated as `unauthorized`.",
-                "field_type": "str",
+                "field_type": "Union[QuoteState, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -1507,7 +1518,8 @@
                     "blocked_account": "The quote has been approved, but should not be displayed because the user has blocked the account being quoted. `quoted_status` is non-null.",
                     "blocked_domain": "The quote has been approved, but should not be displayed because the user has blocked the domain of the account being quoted. `quoted_status` is non-null.",
                     "muted_account": "The quote has been approved, but should not be displayed because the user has muted the account being quoted. `quoted_status` is non-null."
-                }
+                },
+                "field_enum": "QuoteState"
             },
             "quoted_status": {
                 "description": "The status being quoted, if the quote has been accepted. Null unless `state` is `accepted`, `blocked_account`, `blocked_domain`, or `muted_account`, or the wrapping Status entity was obtained by deleting the status.",
@@ -1560,7 +1572,7 @@
             },
             "state": {
                 "description": "The state of the quote. Unknown values should be treated as `unauthorized`.",
-                "field_type": "str",
+                "field_type": "Union[QuoteState, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -1584,7 +1596,8 @@
                     "blocked_account": "The quote has been approved, but should not be displayed because the user has blocked the account being quoted. This is one of the few cases where `quoted_status_id` is non-null.",
                     "blocked_domain": "The quote has been approved, but should not be displayed because the user has blocked the domain of the account being quoted. This is one of the few cases where `quoted_status_id` is non-null.",
                     "muted_account": "The quote has been approved, but should not be displayed because the user has muted the account being quoted. This is one of the few cases where `quoted_status_id` is non-null."
-                }
+                },
+                "field_enum": "QuoteState"
             }
         }
     },
@@ -1602,7 +1615,7 @@
             "automatic": {
                 "description": "Describes who is expected to be able to quote that status and have the quote automatically authorized. An empty list means that nobody is expected to be able to quote this post.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[QuoteApprovalAudience, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -1616,12 +1629,13 @@
                     "followers": "Followers are expected to be able to quote this status and have the quote be automatically accepted.",
                     "following": "People followed by the author are expected to be able to quote this status and have the quote be automatically accepted.",
                     "unsupported_policy": "The underlying quote policy is not supported by Mastodon."
-                }
+                },
+                "field_enum": "QuoteApprovalAudience"
             },
             "manual": {
                 "description": "Describes who is expected to have their quotes of this status be manually reviewed by the author before being accepted. An empty list means that nobody is expected to be able to quote this post.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[QuoteApprovalAudience, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -1635,11 +1649,12 @@
                     "followers": "Followers are expected to be able to quote this status, but have the quote be accepted only after manual review.",
                     "following": "People followed by the author are expected to be able to quote this status, but have the quote be accepted only after manual review.",
                     "unsupported_policy": "The underlying quote policy is not supported by Mastodon."
-                }
+                },
+                "field_enum": "QuoteApprovalAudience"
             },
             "current_user": {
                 "description": "Describes how this status' quote policy applies to the current user.",
-                "field_type": "str",
+                "field_type": "Union[QuoteApprovalDecision, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -1654,7 +1669,8 @@
                     "manual": "The requesting user is expected to be allowed to quote after manual review of the post by the quoted status' author.",
                     "denied": "The requesting user is not expected to be allowed to quote this post.",
                     "unknown": "The user is not covered by the quote policies supported by Mastodon. Should be treated as denied."
-                }
+                },
+                "field_enum": "QuoteApprovalDecision"
             }
         }
     },
@@ -2043,7 +2059,7 @@
             },
             "visibility": {
                 "description": "Visibility of the status",
-                "field_type": "str",
+                "field_type": "Union[PostVisibility, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
@@ -2053,7 +2069,13 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "public": "Public and discoverable.",
+                    "unlisted": "Public, but excluded from public discovery.",
+                    "private": "Followers only.",
+                    "direct": "Mentioned accounts only."
+                },
+                "field_enum": "PostVisibility"
             },
             "idempotency": {
                 "description": "Idempotency key for the scheduled status",
@@ -2128,9 +2150,8 @@
             },
             "language": {
                 "description": "The language that will be used for the status.",
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
                 "is_nullable": true,
                 "version_history": [
@@ -2139,7 +2160,8 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language"
             },
             "allowed_mentions": {
                 "description": "Undocumented. If you know what this does, please let me know.",
@@ -2186,7 +2208,7 @@
             },
             "quote_approval_policy": {
                 "description": "The quote approval policy to be used for this status once posted.",
-                "field_type": "str",
+                "field_type": "Union[PostQuotePolicy, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
@@ -2200,7 +2222,8 @@
                     "public": "Anyone (except blocked accounts) can quote",
                     "followers": "Only followers and author can quote",
                     "nobody": "Only author can quote"
-                }
+                },
+                "field_enum": "PostQuotePolicy"
             }
         }
     },
@@ -2314,7 +2337,7 @@
                 "enum": null
             },
             "emojis": {
-                "description": "List of CustomEmoji used in answer strings,",
+                "description": "List of CustomEmoji used in answer strings.",
                 "field_type": "NonPaginatableList",
                 "field_subtype": "CustomEmoji",
                 "is_optional": false,
@@ -2860,17 +2883,67 @@
             "scopes": {
                 "description": "The applications available scopes.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[OAuthScope, str]",
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "Scopes",
                 "version_history": [
                     [
                         "4.3.0",
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "read": "Read access, including granular read scopes.",
+                    "write": "Write access, including granular write scopes.",
+                    "follow": "Legacy relationship-management scope.",
+                    "push": "Manage push subscriptions.",
+                    "profile": "Read the authenticated user's minimal profile.",
+                    "read:accounts": "Read accounts.",
+                    "read:blocks": "Read account blocks.",
+                    "read:bookmarks": "Read bookmarks.",
+                    "read:collections": "Read featured collections.",
+                    "read:favourites": "Read favourites.",
+                    "read:filters": "Read filters.",
+                    "read:follows": "Read follow relationships.",
+                    "read:lists": "Read lists.",
+                    "read:mutes": "Read mutes.",
+                    "read:notifications": "Read notifications.",
+                    "read:reports": "Deprecated, unused report-read scope.",
+                    "read:search": "Search.",
+                    "read:statuses": "Read statuses.",
+                    "write:accounts": "Update accounts.",
+                    "write:blocks": "Manage account blocks.",
+                    "write:bookmarks": "Manage bookmarks.",
+                    "write:collections": "Manage featured collections.",
+                    "write:conversations": "Manage conversations.",
+                    "write:favourites": "Manage favourites.",
+                    "write:filters": "Manage filters.",
+                    "write:follows": "Manage follow relationships.",
+                    "write:lists": "Manage lists.",
+                    "write:media": "Upload and update media.",
+                    "write:mutes": "Manage mutes.",
+                    "write:notifications": "Manage notifications.",
+                    "write:reports": "Submit reports.",
+                    "write:statuses": "Publish and manage statuses.",
+                    "admin:read": "Read administrator data.",
+                    "admin:read:accounts": "Read administrator account data.",
+                    "admin:read:reports": "Read administrator reports.",
+                    "admin:read:domain_allows": "Read domain allows.",
+                    "admin:read:domain_blocks": "Read domain blocks.",
+                    "admin:read:ip_blocks": "Read IP blocks.",
+                    "admin:read:email_domain_blocks": "Read email-domain blocks.",
+                    "admin:read:canonical_email_blocks": "Read canonical-email blocks.",
+                    "admin:write": "Manage administrator data.",
+                    "admin:write:accounts": "Manage administrator account data.",
+                    "admin:write:reports": "Manage administrator reports.",
+                    "admin:write:domain_allows": "Manage domain allows.",
+                    "admin:write:domain_blocks": "Manage domain blocks.",
+                    "admin:write:ip_blocks": "Manage IP blocks.",
+                    "admin:write:email_domain_blocks": "Manage email-domain blocks.",
+                    "admin:write:canonical_email_blocks": "Manage canonical-email blocks.",
+                    "crypto": "Removed experimental encryption scope, present on older servers."
+                },
+                "field_enum": "OAuthScope"
             }
         }
     },
@@ -3068,10 +3141,9 @@
                 "enum": null
             },
             "languages": {
-                "description": "List of languages that the logged in user is following this user for (if any)",
+                "description": "List of languages that the logged in user is following this user for (if any).",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
+                "field_subtype": "Union[Language, str]",
                 "is_optional": false,
                 "is_nullable": true,
                 "version_history": [
@@ -3080,7 +3152,8 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language"
             },
             "requested_by": {
                 "description": "Boolean indicating whether the specified user has sent the logged-in user a follow request",
@@ -3159,10 +3232,9 @@
             "context": {
                 "description": "List of places where the filters are applied.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[FilterContext, str]",
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "FilterContextEnum",
                 "version_history": [
                     [
                         "2.4.3",
@@ -3179,7 +3251,8 @@
                     "public": "Puclic timelines",
                     "thread": "Expanded view of a status with replies",
                     "account": "Posts displayed when viewing a profile"
-                }
+                },
+                "field_enum": "FilterContext"
             },
             "expires_at": {
                 "description": "Expiry date for the filter",
@@ -3259,10 +3332,9 @@
             "context": {
                 "description": "List of places where the filters are applied.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[FilterContext, str]",
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "FilterContextEnum",
                 "version_history": [
                     [
                         "4.0.0",
@@ -3275,7 +3347,8 @@
                     "public": "Puclic timelines",
                     "thread": "Expanded view of a status with replies",
                     "account": "Posts displayed when viewing a profile"
-                }
+                },
+                "field_enum": "FilterContext"
             },
             "expires_at": {
                 "description": "Expiry date for the filter",
@@ -3308,11 +3381,10 @@
             },
             "filter_action": {
                 "description": "The action to be taken when a status matches this filter.",
-                "field_type": "str",
+                "field_type": "Union[FilterAction, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "FilterActionEnum",
                 "api_version": "v2",
                 "version_history": [
                     [
@@ -3322,8 +3394,10 @@
                 ],
                 "enum": {
                     "warn": "Display a note to the user that the status has been filtered, showing the title of the filter. The mastodon documentation suggests that absent any other information or if unknown values are encountered, this should be the default action to take.",
-                    "hide": "Hide the status from the user completely, as if it did not exist"
-                }
+                    "hide": "Hide the status from the user completely, as if it did not exist",
+                    "blur": "Hide or blur media with a filter warning."
+                },
+                "field_enum": "FilterAction"
             },
             "keywords": {
                 "description": "A list of keywords that will trigger this filter.",
@@ -3384,11 +3458,10 @@
             },
             "type": {
                 "description": "\"mention\", \"reblog\", \"favourite\", \"follow\", \"poll\" or \"follow_request\"",
-                "field_type": "str",
+                "field_type": "Union[IndividualNotificationType, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "NotificationTypeEnum",
                 "version_history": [
                     [
                         "0.9.9",
@@ -3444,7 +3517,8 @@
                     "quoted_update": "A status the logged-in user has quoted has been edited",
                     "added_to_collection": "Someone added the logged-in user to a Collection.",
                     "collection_update": "A Collection the logged-in user is featured in was updated."
-                }
+                },
+                "field_enum": "IndividualNotificationType"
             },
             "created_at": {
                 "description": "The time the notification was created",
@@ -3663,18 +3737,22 @@
             },
             "replies_policy": {
                 "description": "Which replies should be shown in the list.",
-                "field_type": "str",
+                "field_type": "Union[ListRepliesPolicy, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "RepliesPolicyEnum",
                 "version_history": [
                     [
                         "3.3.0",
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "followed": "Replies to any followed account.",
+                    "list": "Replies to accounts on the list.",
+                    "none": "No replies."
+                },
+                "field_enum": "ListRepliesPolicy"
             },
             "exclusive": {
                 "description": "Boolean indicating whether users on this list are removed from the home feed (appearing exclusively as part of the list). nb: This setting applies to posts at the time they are put into a feed.",
@@ -3719,7 +3797,7 @@
             },
             "type": {
                 "description": "Media type: 'image', 'video', 'gifv', 'audio' or 'unknown'.",
-                "field_type": "str",
+                "field_type": "Union[MediaAttachmentType, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -3739,7 +3817,8 @@
                     "gifv": "Looping, soundless animation",
                     "video": "Video clip",
                     "audio": "Audio track"
-                }
+                },
+                "field_enum": "MediaAttachmentType"
             },
             "url": {
                 "description": "The URL for the image in the local cache",
@@ -4266,7 +4345,7 @@
             },
             "type": {
                 "description": "Embed type: 'link', 'photo', 'video', or 'rich'",
-                "field_type": "str",
+                "field_type": "Union[PreviewCardType, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -4281,7 +4360,8 @@
                     "photo": "Photo OEmbed",
                     "video": "Video OEmbed",
                     "rich": "iframe OEmbed. Not currently accepted, so won't show up in practice."
-                }
+                },
+                "field_enum": "PreviewCardType"
             },
             "image": {
                 "description": "(optional) The image associated with the card.",
@@ -4425,9 +4505,8 @@
             },
             "language": {
                 "description": "Language of the embedded content",
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": true,
                 "is_nullable": false,
                 "version_history": [
@@ -4435,7 +4514,8 @@
                         "1.3.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "Language"
             },
             "embed_url": {
                 "description": "Used for photo embeds, instead of custom `html`.",
@@ -4877,9 +4957,8 @@
             },
             "language": {
                 "description": "The primary language of this Collection.",
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
                 "is_nullable": true,
                 "version_history": [
@@ -4888,7 +4967,8 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language"
             },
             "local": {
                 "description": "Whether the collection belongs to a local account.",
@@ -5046,7 +5126,7 @@
             },
             "state": {
                 "description": "The current state of the item.",
-                "field_type": "str",
+                "field_type": "Union[CollectionItemState, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -5061,7 +5141,8 @@
                     "accepted": "The account has consented to be featured in this Collection.",
                     "rejected": "The account has rejected the request to be added to this Collection.",
                     "revoked": "The account has revoked consent to be featured in this Collection (after accepting initially)."
-                }
+                },
+                "field_enum": "CollectionItemState"
             },
             "created_at": {
                 "description": "When the item was added to the Collection.",
@@ -5234,8 +5315,7 @@
             "languages": {
                 "description": "Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
+                "field_subtype": "Union[Language, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -5243,7 +5323,8 @@
                         "2.3.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "Language"
             },
             "registrations": {
                 "description": "A boolean indication whether registrations on this instance are open (True) or not (False). The v2 API variant instead provides a dict with more information about possible registration requirements here.",
@@ -5544,8 +5625,7 @@
             "languages": {
                 "description": "Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
+                "field_subtype": "Union[Language, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -5553,7 +5633,8 @@
                         "4.0.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "Language"
             },
             "configuration": {
                 "description": "Various instance configuration settings - especially various limits (character counts, media upload sizes, ...)",
@@ -6258,7 +6339,7 @@
             },
             "translations": {
                 "description": "A list of translations for the rule, as a dictionary with the key being ISO 639-1 (two-letter) language codes for available languages.",
-                "field_type": "AttribAccessDict[str, RuleTranslation]",
+                "field_type": "AttribAccessDict[Union[Language, str], RuleTranslation]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -6268,7 +6349,9 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language",
+                "field_enum_target": "keys"
             }
         }
     },
@@ -6862,7 +6945,7 @@
         "fields": {
             "local": {
                 "description": "Access restrictions for local posts in this feed.",
-                "field_type": "str",
+                "field_type": "Union[TimelineAccess, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -6876,11 +6959,12 @@
                     "public": "Access is available to both visitors and logged-in users.",
                     "authenticated": "Access requires authentication.",
                     "disabled": "Access is only possible for users with the View live and topic feeds permission."
-                }
+                },
+                "field_enum": "TimelineAccess"
             },
             "remote": {
                 "description": "Access restrictions for remote posts in this feed.",
-                "field_type": "str",
+                "field_type": "Union[TimelineAccess, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -6894,7 +6978,8 @@
                     "public": "Access is available to both visitors and logged-in users.",
                     "authenticated": "Access requires authentication.",
                     "disabled": "Access is only possible for users with the View live and topic feeds permission."
-                }
+                },
+                "field_enum": "TimelineAccess"
             }
         }
     },
@@ -6911,7 +6996,7 @@
         "fields": {
             "version": {
                 "description": "Version of the nodeinfo schema spec that was used for this response.",
-                "field_type": "str",
+                "field_type": "Union[NodeinfoVersion, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -6920,7 +7005,14 @@
                         "3.0.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "NodeinfoVersion",
+                "enum": {
+                    "1.0": "NodeInfo 1.0.",
+                    "1.1": "NodeInfo 1.1.",
+                    "2.0": "NodeInfo 2.0.",
+                    "2.1": "NodeInfo 2.1."
+                }
             },
             "software": {
                 "description": "Information about the server software being used on this instance.",
@@ -6938,7 +7030,7 @@
             "protocols": {
                 "description": "A list of strings specifying the federation protocols this instance supports. Typically, just \"activitypub\".",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[FederationProtocol, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -6946,7 +7038,20 @@
                         "3.0.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "FederationProtocol",
+                "enum": {
+                    "activitypub": "ActivityPub.",
+                    "buddycloud": "Buddycloud.",
+                    "dfrn": "Distributed Friends and Relations Network.",
+                    "diaspora": "Diaspora.",
+                    "libertree": "Libertree.",
+                    "ostatus": "OStatus.",
+                    "pumpio": "pump.io.",
+                    "tent": "Tent.",
+                    "xmpp": "XMPP.",
+                    "zot": "Zot."
+                }
             },
             "services": {
                 "description": "Services that this instance can retrieve messages from or send messages to.",
@@ -7055,7 +7160,7 @@
             "outbound": {
                 "description": "List of services that this instance can send messages to. On Mastodon, typically an empty list.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": null,
+                "field_subtype": "Union[NodeInfoOutboundService, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -7063,12 +7168,43 @@
                         "3.0.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "NodeInfoOutboundService",
+                "enum": {
+                    "atom1.0": "Atom 1.0.",
+                    "blogger": "Blogger.",
+                    "buddycloud": "Buddycloud.",
+                    "diaspora": "Diaspora.",
+                    "dreamwidth": "Dreamwidth.",
+                    "drupal": "Drupal.",
+                    "facebook": "Facebook.",
+                    "friendica": "Friendica.",
+                    "gnusocial": "GNU social.",
+                    "google": "Google.",
+                    "insanejournal": "InsaneJournal.",
+                    "libertree": "Libertree.",
+                    "linkedin": "LinkedIn.",
+                    "livejournal": "LiveJournal.",
+                    "mediagoblin": "MediaGoblin.",
+                    "myspace": "Myspace.",
+                    "pinterest": "Pinterest.",
+                    "pnut": "pnut.io.",
+                    "posterous": "Posterous.",
+                    "pumpio": "pump.io.",
+                    "redmatrix": "RedMatrix.",
+                    "rss2.0": "RSS 2.0.",
+                    "smtp": "SMTP mail.",
+                    "tent": "Tent.",
+                    "tumblr": "Tumblr.",
+                    "twitter": "Twitter.",
+                    "wordpress": "WordPress.",
+                    "xmpp": "XMPP."
+                }
             },
             "inbound": {
                 "description": "List of services that this instance can retrieve messages from. On Mastodon, typically an empty list.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": null,
+                "field_subtype": "Union[NodeInfoInboundService, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -7076,7 +7212,18 @@
                         "3.0.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "NodeInfoInboundService",
+                "enum": {
+                    "atom1.0": "Atom 1.0.",
+                    "gnusocial": "GNU social.",
+                    "imap": "IMAP mail.",
+                    "pnut": "pnut.io.",
+                    "pop3": "POP3 mail.",
+                    "pumpio": "pump.io.",
+                    "rss2.0": "RSS 2.0.",
+                    "twitter": "Twitter."
+                }
             }
         }
     },
@@ -7400,18 +7547,23 @@
             },
             "category": {
                 "description": "The category under which the report is classified.",
-                "field_type": "str",
+                "field_type": "Union[ReportCategory, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "ReportReasonEnum",
                 "version_history": [
                     [
                         "3.5.0",
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "spam": "Unwanted or repetitive content.",
+                    "legal": "Illegal content.",
+                    "violation": "Violation of a specific server rule.",
+                    "other": "Another reason."
+                },
+                "field_enum": "ReportCategory"
             },
             "forwarded": {
                 "description": "Whether a report was forwarded to a remote instance.",
@@ -7611,18 +7763,23 @@
             },
             "category": {
                 "description": "The category under which the report is classified.",
-                "field_type": "str",
+                "field_type": "Union[ReportCategory, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "ReportReasonEnum",
                 "version_history": [
                     [
                         "3.5.0",
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "spam": "Unwanted or repetitive content.",
+                    "legal": "Illegal content.",
+                    "violation": "Violation of a specific server rule.",
+                    "other": "Another reason."
+                },
+                "field_enum": "ReportCategory"
             },
             "forwarded": {
                 "description": "Whether a report was forwarded to a remote instance. Can be None.",
@@ -7744,7 +7901,7 @@
             },
             "policy": {
                 "description": "Which sources should generate webpushes.",
-                "field_type": "str",
+                "field_type": "Union[PushSubscriptionPolicy, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -7759,7 +7916,8 @@
                         "2.4.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "PushSubscriptionPolicy"
             },
             "standard": {
                 "description": "Boolean indicatign whether the push messages follow the standardized specifications (RFC8030+RFC8291+RFC8292). Else they follow a legacy version of the specifications (4th draft of RFC8291 and 1st draft of RFC8292).",
@@ -8023,7 +8181,7 @@
             },
             "notification_type": {
                 "description": "String indicating the type of notification.",
-                "field_type": "str",
+                "field_type": "Union[PushNotificationType, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -8043,14 +8201,16 @@
                     "status": " A watched user has posted a new status.",
                     "update": "A status the logged in user has reblogged has been edited.",
                     "admin_sign_up": "A new user has signed up on the instance.",
-                    "admin_report": "A user has been reported to the instance's administrators."
-                }
+                    "admin_report": "A user has been reported to the instance's administrators.",
+                    "quote": "An account quoted the user's status.",
+                    "quoted_update": "A status quoted by the user was edited."
+                },
+                "field_enum": "PushNotificationType"
             },
             "preferred_locale": {
-                "description": "The user's preferred locale",
-                "field_type": "str",
+                "description": "The user's preferred locale.",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -8058,7 +8218,8 @@
                         "2.4.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "Language"
             },
             "title": {
                 "description": "Title for the notification",
@@ -8089,7 +8250,7 @@
             "posting:default:visibility": {
                 "python_name": "posting_default_visibility",
                 "description": "Default visibility for new posts. Also found in CredentialAccountSource as `privacy`.",
-                "field_type": "str",
+                "field_type": "Union[DefaultPostVisibility, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -8104,7 +8265,8 @@
                     "unlisted": "Unlisted post",
                     "private": "Followers-only post",
                     "direct": "Direct post"
-                }
+                },
+                "field_enum": "DefaultPostVisibility"
             },
             "posting:default:sensitive": {
                 "python_name": "posting_default_sensitive",
@@ -8124,23 +8286,23 @@
             "posting:default:language": {
                 "python_name": "posting_default_language",
                 "description": "Default language for new posts. Also found in CredentialAccountSource as `language`.",
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": true,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "version_history": [
                     [
                         "2.8.0",
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language"
             },
             "reading:expand:media": {
                 "python_name": "reading_expand_media",
                 "description": "String indicating whether media attachments should be automatically displayed or blurred/hidden.",
-                "field_type": "str",
+                "field_type": "Union[MediaExpansion, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -8154,7 +8316,8 @@
                     "default": "Hide media marked as sensitive",
                     "show_all": "Always show all media by default, regardless of sensitivity",
                     "hide_all": "Always hide all media by default, regardless of sensitivity"
-                }
+                },
+                "field_enum": "MediaExpansion"
             },
             "reading:expand:spoilers": {
                 "python_name": "reading_expand_spoilers",
@@ -8188,7 +8351,7 @@
             "posting:default:quote_policy": {
                 "python_name": "posting_default_quote_policy",
                 "description": "Default quote policy for new posts. Also found in CredentialAccountSource as `quote_policy`.",
-                "field_type": "str",
+                "field_type": "Union[DefaultQuotePolicy, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -8202,7 +8365,8 @@
                     "public": "Anyone (except blocked accounts) can quote",
                     "followers": "Only followers and author can quote",
                     "nobody": "Only author can quote"
-                }
+                },
+                "field_enum": "DefaultQuotePolicy"
             }
         }
     },
@@ -8915,19 +9079,19 @@
                 "enum": null
             },
             "locale": {
-                "description": "For local users, the locale the user has set,",
-                "field_type": "str",
+                "description": "For local users, the locale the user has set.",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "TwoLetterLanguageCodeEnum",
                 "version_history": [
                     [
                         "2.9.1",
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": null,
+                "field_enum": "Language"
             },
             "invite_request": {
                 "description": "If the user requested an invite, the invite request comment of that user.",
@@ -9068,9 +9232,8 @@
         "fields": {
             "key": {
                 "description": "Name of the measure returned",
-                "field_type": "str",
+                "field_type": "Union[AdminMeasureKey, str]",
                 "field_subtype": null,
-                "field_structuretype": "AdminMeasureTypeEnum",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -9094,7 +9257,8 @@
                     "instance_statuses": "Total statuses originating from a remote domain within the time period",
                     "instance_follows": "Total accounts from a remote domain followed by a local user within the time period",
                     "instance_followers": "Total local accounts followed by accounts from a remote domain within the time period"
-                }
+                },
+                "field_enum": "AdminMeasureKey"
             },
             "unit": {
                 "description": "Unit for the measure, if available",
@@ -9222,7 +9386,7 @@
         "fields": {
             "key": {
                 "description": "Name of the dimension returned",
-                "field_type": "str",
+                "field_type": "Union[AdminDimensionKey, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -9232,7 +9396,18 @@
                         "added"
                     ]
                 ],
-                "enum": null
+                "enum": {
+                    "languages": "Languages of local statuses.",
+                    "sources": "Clients used to author local statuses.",
+                    "servers": "Remote servers by status count.",
+                    "space_usage": "Storage usage by component.",
+                    "software_versions": "Versions of server software components.",
+                    "tag_servers": "Servers using a tag.",
+                    "tag_languages": "Languages of statuses using a tag.",
+                    "instance_accounts": "Popular accounts from a domain.",
+                    "instance_languages": "Languages of statuses from a domain."
+                },
+                "field_enum": "AdminDimensionKey"
             },
             "data": {
                 "description": "A list of data AdminDimensionData objects",
@@ -9331,7 +9506,7 @@
             },
             "frequency": {
                 "description": "Time resolution (day or month) for the returned data",
-                "field_type": "str",
+                "field_type": "Union[RetentionFrequency, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -9340,7 +9515,12 @@
                         "3.5.0",
                         "added"
                     ]
-                ]
+                ],
+                "field_enum": "RetentionFrequency",
+                "enum": {
+                    "day": "Daily cohorts.",
+                    "month": "Monthly cohorts."
+                }
             },
             "data": {
                 "description": "List of AdminCohort objects",
@@ -9464,11 +9644,10 @@
             },
             "severity": {
                 "description": "The policy to be applied by this domain block.",
-                "field_type": "str",
+                "field_type": "Union[AdminDomainBlockSeverity, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "field_structuretype": "AdminDomainLimitEnum",
                 "version_history": [
                     [
                         "4.0.0",
@@ -9479,7 +9658,8 @@
                     "silence": "Users from this domain will be hidden from timelines, threads, and notifications, except for followed users.",
                     "suspend": "Incoming messages from this domain will be rejected and dropped entirely.",
                     "noop": "Do nothing to statuses. May be used to only media-reject or report-reject."
-                }
+                },
+                "field_enum": "AdminDomainBlockSeverity"
             },
             "reject_media": {
                 "description": "Whether to reject media attachments from this domain",
@@ -9853,11 +10033,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[IpBlockSeverity, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "IpBlockSeverity"
             },
             "comment": {
                 "description": "The recorded reason for this IP block.",
@@ -9959,11 +10139,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[PublicDomainBlockSeverity, str]",
                 "field_subtype": null,
-                "field_structuretype": "DomainLimitEnum",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "PublicDomainBlockSeverity"
             },
             "comment": {
                 "description": "An optional reason for the domain block.",
@@ -10286,7 +10466,11 @@
         "fields": {
             "source": {
                 "description": "The reason this account is being suggested.",
-                "enum": null,
+                "enum": {
+                    "staff": "Recommended by server staff.",
+                    "past_interactions": "The user previously interacted with the account.",
+                    "global": "Many recent interactions and active local followers."
+                },
                 "version_history": [
                     [
                         "3.4.0",
@@ -10297,12 +10481,12 @@
                         "deprecated"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[LegacySuggestionSource, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false,
-                "is_deprecated": true
+                "is_deprecated": true,
+                "field_enum": "LegacySuggestionSource"
             },
             "sources": {
                 "description": "The reasons this account is being suggested.",
@@ -10313,8 +10497,7 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": "SuggestionSourceEnum",
+                "field_subtype": "Union[SuggestionSource, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "enum": {
@@ -10323,7 +10506,8 @@
                     "most_interactions": "Account had many reblogs and favourites within the last 30 days",
                     "similar_to_recently_followed": "Acounts profile is similar in some way to the logged in users most recent follows",
                     "friends_of_friends": "Account is followed by people the logged in user follows."
-                }
+                },
+                "field_enum": "SuggestionSource"
             },
             "account": {
                 "description": "The account being recommended to follow.",
@@ -10377,11 +10561,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "Language"
             },
             "provider": {
                 "description": "The service that provided the machine translation.",
@@ -10580,9 +10764,8 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[AccountCreationErrorCode, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
                 "is_nullable": false,
                 "enum": {
@@ -10596,7 +10779,8 @@
                     "ERR_TOO_LONG": "an attribute is over the character limit",
                     "ERR_TOO_SHORT": "an attribute is under the character requirement",
                     "ERR_INCLUSION": "an attribute is not one of the allowed values, e.g. unsupported locale"
-                }
+                },
+                "field_enum": "AccountCreationErrorCode"
             },
             "description": {
                 "description": "A description of the issue as a localized string.",
@@ -10639,11 +10823,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[NotificationPolicyAction, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "NotificationPolicyAction"
             },
             "for_not_followers": {
                 "description": "Whether to accept, filter or drop notifications from accounts that are not following the user.",
@@ -10658,11 +10842,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[NotificationPolicyAction, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "NotificationPolicyAction"
             },
             "for_new_accounts": {
                 "description": "Whether to accept, filter or drop notifications from accounts created in the past 30 days.",
@@ -10677,11 +10861,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[NotificationPolicyAction, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "NotificationPolicyAction"
             },
             "for_private_mentions": {
                 "description": "Whether to accept, filter or drop notifications from private mentions.",
@@ -10696,11 +10880,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[NotificationPolicyAction, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "NotificationPolicyAction"
             },
             "for_limited_accounts": {
                 "description": "Whether to accept, filter or drop notifications from accounts that were limited by a moderator.",
@@ -10715,11 +10899,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[NotificationPolicyAction, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "NotificationPolicyAction"
             },
             "summary": {
                 "description": "A summary of the filtered notifications.",
@@ -10737,7 +10921,7 @@
             },
             "for_bots": {
                 "description": "Whether to accept, filter or drop eligible notifications from bot accounts that the user does not follow.",
-                "field_type": "str",
+                "field_type": "Union[NotificationPolicyAction, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -10746,7 +10930,8 @@
                     "accept": "Accept notifications.",
                     "filter": "Mark notifications as filtered.",
                     "drop": "Prevent creation of the notification object altogether."
-                }
+                },
+                "field_enum": "NotificationPolicyAction"
             }
         }
     },
@@ -10830,11 +11015,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[RelationshipSeveranceType, str]",
                 "field_subtype": null,
-                "field_structuretype": "RelationshipSeveranceEventType",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "RelationshipSeveranceType"
             },
             "purged": {
                 "description": "Whether the list of severed relationships is unavailable because the data has been purged.",
@@ -11198,11 +11383,11 @@
                         "added `added_to_collection` and `collection_update`"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[GroupedNotificationType, str]",
                 "field_subtype": null,
-                "field_structuretype": "NotificationTypeEnum",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "GroupedNotificationType"
             },
             "most_recent_notification_id": {
                 "description": "ID of the most recent notification in the group.",
@@ -11426,11 +11611,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[AccountWarningAction, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "AccountWarningAction"
             },
             "text": {
                 "description": "Message from the moderator to the target account.",
@@ -11576,11 +11761,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[AppealState, str]",
                 "field_subtype": null,
-                "field_structuretype": "AppealStateEnum",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "AppealState"
             }
         }
     },
@@ -11707,11 +11892,11 @@
                         "added"
                     ]
                 ],
-                "field_type": "str",
+                "field_type": "Union[Language, str]",
                 "field_subtype": null,
-                "field_structuretype": null,
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "Language"
             },
             "name": {
                 "description": "The name of the locale.",
@@ -11818,7 +12003,57 @@
             },
             "scopes_supported": {
                 "description": "List of scopes supported by the OAuth server.",
-                "enum": null,
+                "enum": {
+                    "read": "Read access, including granular read scopes.",
+                    "write": "Write access, including granular write scopes.",
+                    "follow": "Legacy relationship-management scope.",
+                    "push": "Manage push subscriptions.",
+                    "profile": "Read the authenticated user's minimal profile.",
+                    "read:accounts": "Read accounts.",
+                    "read:blocks": "Read account blocks.",
+                    "read:bookmarks": "Read bookmarks.",
+                    "read:collections": "Read featured collections.",
+                    "read:favourites": "Read favourites.",
+                    "read:filters": "Read filters.",
+                    "read:follows": "Read follow relationships.",
+                    "read:lists": "Read lists.",
+                    "read:mutes": "Read mutes.",
+                    "read:notifications": "Read notifications.",
+                    "read:reports": "Deprecated, unused report-read scope.",
+                    "read:search": "Search.",
+                    "read:statuses": "Read statuses.",
+                    "write:accounts": "Update accounts.",
+                    "write:blocks": "Manage account blocks.",
+                    "write:bookmarks": "Manage bookmarks.",
+                    "write:collections": "Manage featured collections.",
+                    "write:conversations": "Manage conversations.",
+                    "write:favourites": "Manage favourites.",
+                    "write:filters": "Manage filters.",
+                    "write:follows": "Manage follow relationships.",
+                    "write:lists": "Manage lists.",
+                    "write:media": "Upload and update media.",
+                    "write:mutes": "Manage mutes.",
+                    "write:notifications": "Manage notifications.",
+                    "write:reports": "Submit reports.",
+                    "write:statuses": "Publish and manage statuses.",
+                    "admin:read": "Read administrator data.",
+                    "admin:read:accounts": "Read administrator account data.",
+                    "admin:read:reports": "Read administrator reports.",
+                    "admin:read:domain_allows": "Read domain allows.",
+                    "admin:read:domain_blocks": "Read domain blocks.",
+                    "admin:read:ip_blocks": "Read IP blocks.",
+                    "admin:read:email_domain_blocks": "Read email-domain blocks.",
+                    "admin:read:canonical_email_blocks": "Read canonical-email blocks.",
+                    "admin:write": "Manage administrator data.",
+                    "admin:write:accounts": "Manage administrator account data.",
+                    "admin:write:reports": "Manage administrator reports.",
+                    "admin:write:domain_allows": "Manage domain allows.",
+                    "admin:write:domain_blocks": "Manage domain blocks.",
+                    "admin:write:ip_blocks": "Manage IP blocks.",
+                    "admin:write:email_domain_blocks": "Manage email-domain blocks.",
+                    "admin:write:canonical_email_blocks": "Manage canonical-email blocks.",
+                    "crypto": "Removed experimental encryption scope, present on older servers."
+                },
                 "version_history": [
                     [
                         "4.3.0",
@@ -11826,14 +12061,16 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": null,
+                "field_subtype": "Union[OAuthScope, str]",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "OAuthScope"
             },
             "response_types_supported": {
                 "description": "List of response types (i.e. what kind of parameters can the server get back to your callback) supported by the OAuth server.",
-                "enum": null,
+                "enum": {
+                    "code": "Return an authorization code."
+                },
                 "version_history": [
                     [
                         "4.3.0",
@@ -11841,14 +12078,18 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": null,
+                "field_subtype": "Union[OAuthResponseType, str]",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "OAuthResponseType"
             },
             "response_modes_supported": {
                 "description": "List of response modes (i.e. how does the server get callback parameters back to you) supported by the OAuth server.",
-                "enum": null,
+                "enum": {
+                    "query": "URI query parameters.",
+                    "fragment": "URI fragment parameters.",
+                    "form_post": "HTML form POST."
+                },
                 "version_history": [
                     [
                         "4.3.0",
@@ -11856,14 +12097,18 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": null,
+                "field_subtype": "Union[OAuthResponseMode, str]",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "OAuthResponseMode"
             },
             "grant_types_supported": {
                 "description": "List of grant types (i.e. authorization methods) supported by the OAuth server.",
-                "enum": null,
+                "enum": {
+                    "authorization_code": "Exchange an authorization code.",
+                    "client_credentials": "Obtain an application token.",
+                    "password": "Legacy resource-owner password grant."
+                },
                 "version_history": [
                     [
                         "4.3.0",
@@ -11871,14 +12116,17 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": null,
+                "field_subtype": "Union[OAuthGrantType, str]",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "OAuthGrantType"
             },
             "token_endpoint_auth_methods_supported": {
                 "description": "List of authentication methods supported by the token endpoint.",
-                "enum": null,
+                "enum": {
+                    "client_secret_basic": "HTTP Basic client authentication.",
+                    "client_secret_post": "Client credentials in the POST body."
+                },
                 "version_history": [
                     [
                         "4.3.0",
@@ -11886,14 +12134,16 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": null,
+                "field_subtype": "Union[OAuthTokenEndpointAuthMethod, str]",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "OAuthTokenEndpointAuthMethod"
             },
             "code_challenge_methods_supported": {
                 "description": "List of code challenge methods supported by the OAuth server.",
-                "enum": null,
+                "enum": {
+                    "S256": "Base64url-encoded SHA-256 challenge."
+                },
                 "version_history": [
                     [
                         "4.3.0",
@@ -11901,10 +12151,10 @@
                     ]
                 ],
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
-                "field_structuretype": null,
+                "field_subtype": "Union[OAuthCodeChallengeMethod, str]",
                 "is_optional": false,
-                "is_nullable": false
+                "is_nullable": false,
+                "field_enum": "OAuthCodeChallengeMethod"
             },
             "service_documentation": {
                 "description": "URL to the service documentation (e.g. the Mastodon API reference).",
@@ -12142,9 +12392,8 @@
             },
             "status": {
                 "description": "Status of the async refresh.",
-                "field_type": "str",
+                "field_type": "Union[AsyncRefreshStatus, str]",
                 "field_subtype": null,
-                "field_structuretype": "AsyncRefreshStatusEnum",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -12156,7 +12405,8 @@
                 "enum": {
                     "running": "A background job is still running to perform the async refresh",
                     "finished": "The background job performing this async refresh has finished"
-                }
+                },
+                "field_enum": "AsyncRefreshStatus"
             },
             "result_count": {
                 "description": "if specified, number of results already created/fetched as part of this async refresh.",
@@ -12602,7 +12852,7 @@
             "automatic": {
                 "description": "Who is expected to be able to feature the account and have this authorized automatically.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[FeatureApprovalAudience, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -12616,12 +12866,13 @@
                     "followers": "Followers may feature this account and have it accepted automatically.",
                     "following": "People followed by this account may feature it and have it accepted automatically.",
                     "unsupported_policy": "The underlying policy is not supported."
-                }
+                },
+                "field_enum": "FeatureApprovalAudience"
             },
             "manual": {
                 "description": "Who is expected to have attempts to feature this account reviewed manually.",
                 "field_type": "NonPaginatableList",
-                "field_subtype": "str",
+                "field_subtype": "Union[FeatureApprovalAudience, str]",
                 "is_optional": false,
                 "is_nullable": false,
                 "version_history": [
@@ -12635,11 +12886,12 @@
                     "followers": "Followers may request to feature this account, subject to manual review.",
                     "following": "People followed by this account may request to feature it, subject to manual review.",
                     "unsupported_policy": "The underlying policy is not supported."
-                }
+                },
+                "field_enum": "FeatureApprovalAudience"
             },
             "current_user": {
                 "description": "How this account's feature approval policy applies to the logged-in user.",
-                "field_type": "str",
+                "field_type": "Union[FeatureApprovalDecision, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -12655,7 +12907,8 @@
                     "denied": "The requesting user is not expected to be allowed to feature this account.",
                     "unknown": "The user is not covered by policies supported by the server and should be treated as denied.",
                     "missing": "The account has no supported policy and should be treated as denied."
-                }
+                },
+                "field_enum": "FeatureApprovalDecision"
             }
         }
     },
@@ -12879,7 +13132,7 @@
         "fields": {
             "state": {
                 "description": "The current generation state of the annual report.",
-                "field_type": "str",
+                "field_type": "Union[AnnualReportStatus, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -12894,7 +13147,8 @@
                     "generating": "The annual report is currently being generated.",
                     "eligible": "The annual report can be generated.",
                     "ineligible": "The annual report cannot be generated."
-                }
+                },
+                "field_enum": "AnnualReportStatus"
             }
         }
     },
@@ -13058,7 +13312,7 @@
         "fields": {
             "archetype": {
                 "description": "The archetype assigned from the accounts posting habits.",
-                "field_type": "str",
+                "field_type": "Union[AnnualReportArchetype, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -13074,7 +13328,8 @@
                     "pollster": "At least ten percent of the accounts standalone statuses contained polls.",
                     "replier": "The account replied more than twice as often as it posted standalone statuses.",
                     "oracle": "The account does not match one of the other archetypes."
-                }
+                },
+                "field_enum": "AnnualReportArchetype"
             },
             "top_statuses": {
                 "description": "The accounts most-boosted status. The other interaction categories are retained as null values for compatibility.",
@@ -13133,7 +13388,7 @@
         "fields": {
             "archetype": {
                 "description": "The archetype assigned from the accounts posting habits.",
-                "field_type": "str",
+                "field_type": "Union[AnnualReportArchetype, str]",
                 "field_subtype": null,
                 "is_optional": false,
                 "is_nullable": false,
@@ -13149,7 +13404,8 @@
                     "pollster": "At least ten percent of the accounts standalone statuses contained polls.",
                     "replier": "The account replied more than twice as often as it posted standalone statuses.",
                     "oracle": "The account does not match one of the other archetypes."
-                }
+                },
+                "field_enum": "AnnualReportArchetype"
             },
             "type_distribution": {
                 "description": "A breakdown of the accounts statuses by type.",

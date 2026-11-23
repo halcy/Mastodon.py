@@ -58,3 +58,14 @@ try:
 except ImportError:
     IMPL_HAS_WEBSOCKET = False
     websocket = None
+
+try:
+    from enum import StrEnum
+    StringEnum = StrEnum
+except ImportError:
+    from enum import Enum
+    class StringEnum(str, Enum):
+        __str__ = str.__str__
+        @staticmethod
+        def _generate_next_value_(name, start, count, last_values):
+            return name.lower()

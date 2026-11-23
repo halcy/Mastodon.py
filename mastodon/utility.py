@@ -17,6 +17,7 @@ from mastodon.versions import parse_version_string, max_version, api_version
 from typing import Optional, Union, Dict, Iterator, Tuple, List
 from mastodon.return_types import PaginatableList, PaginationInfo, PaginatableList, MediaAttachment
 from mastodon.types_base import Entity, try_cast
+from mastodon.enums import Language, PaginationDirection
 
 from ._url_regex import url_regex
 import unicodedata
@@ -25,7 +26,7 @@ _T = TypeVar("_T", bound=Entity)
 _Page = TypeVar("_Page", bound=Entity)
 
 class Mastodon(Internals):
-    def set_language(self, lang: str):
+    def set_language(self, lang: Union[Language, str]):
         """
         Set the locale Mastodon will use to generate responses. Valid parameters are all ISO 639-1 (two letter) or, for languages that do
         not have one, 639-3 (three letter) language codes. This affects some error messages (those related to validation) and trends.
@@ -281,7 +282,7 @@ class Mastodon(Internals):
 
         return all_pages
 
-    def get_pagination_info(self, page: Union[PaginatableList[Entity], Entity], pagination_direction: str) -> Optional[PaginationInfo]:
+    def get_pagination_info(self, page: Union[PaginatableList[Entity], Entity], pagination_direction: Union[PaginationDirection, str]) -> Optional[PaginationInfo]:
         """
         Extracts pagination information from a paginated response.
 
@@ -296,7 +297,7 @@ class Mastodon(Internals):
         else:
             return None
 
-    def pagination_iterator(self, start_page: Union[PaginatableList[_T], PaginationInfo], direction: str = "next", return_pagination_info: bool = False) -> Iterator[_T]:
+    def pagination_iterator(self, start_page: Union[PaginatableList[_T], PaginationInfo], direction: Union[PaginationDirection, str] = "next", return_pagination_info: bool = False) -> Iterator[_T]:
         """
         Returns an iterator that will yield all entries in a paginated request,
         starting from the given start_page (can also be just the PaginationInfo, in which case the
@@ -336,7 +337,7 @@ class Mastodon(Internals):
             else:
                 current_page = self.fetch_previous(current_page)
 
-    def pagination_page_iterator(self, start_page: Union[_Page, PaginationInfo], direction: str = "next",
+    def pagination_page_iterator(self, start_page: Union[_Page, PaginationInfo], direction: Union[PaginationDirection, str] = "next",
                                  return_pagination_info: bool = False) -> Iterator[Union[_Page, Tuple[_Page, Optional[PaginationInfo]]]]:
         """
         Yield complete pages, starting with start_page and fetching subsequent pages
@@ -399,5 +400,4 @@ class Mastodon(Internals):
             return text
 
         return grapheme.length(countable_text(text)) + grapheme.length(spoiler_text)
-
 

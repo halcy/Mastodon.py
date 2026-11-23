@@ -199,8 +199,8 @@ to make it possible to fully restore the original Mastodon.py object from the JS
     json_data = mastodon_object.to_json()
     restored_object = Entity.from_json(json_data)
 
-Read more in the documentation for the :ref:`to_json() <to_json()>` and 
-:ref:`from_json() <from_json()>` methods.
+Read more in the documentation for the :meth:`to_json() <mastodon.types_base.Entity.to_json>` and
+:meth:`from_json() <mastodon.types_base.Entity.from_json>` methods.
 
 Versioning
 ----------

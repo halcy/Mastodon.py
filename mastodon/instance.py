@@ -2,6 +2,7 @@
 from mastodon.errors import MastodonDeprecationWarning, MastodonIllegalArgumentError, MastodonNotFoundError
 from mastodon.utility import api_version
 from mastodon.compat import urlparse
+from mastodon.enums import DirectoryOrder, NodeinfoSchema
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Instance, InstanceV2, PaginatableList, NonPaginatableList, Activity, Nodeinfo, AttribAccessDict, Rule, Announcement, CustomEmoji, Account, IdType, ExtendedDescription, DomainBlock, SupportedLocale, TermsOfService
@@ -108,7 +109,7 @@ class Mastodon(Internals):
         return status in ["OK", "success"]
 
     @api_version("3.0.0", "3.0.0")
-    def instance_nodeinfo(self, schema: str = "http://nodeinfo.diaspora.software/ns/schema/2.0") -> Nodeinfo:
+    def instance_nodeinfo(self, schema: Union[NodeinfoSchema, str] = "http://nodeinfo.diaspora.software/ns/schema/2.0") -> Nodeinfo:
         """
         Retrieves the instance's nodeinfo information.
 
@@ -165,7 +166,7 @@ class Mastodon(Internals):
     ###
     @api_version("3.0.0", "3.0.0")
     def directory(self, offset: Optional[int] = None, limit: Optional[int] = None, 
-                  order: Optional[str] = None, local: Optional[bool] = None) -> PaginatableList[Account]:
+                  order: Optional[Union[DirectoryOrder, str]] = None, local: Optional[bool] = None) -> PaginatableList[Account]:
         """
         Fetch the contents of the profile directory, if enabled on the server.
 

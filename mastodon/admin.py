@@ -2,6 +2,7 @@
 
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
+from mastodon.enums import AdminAccountOrigin, AdminAccountStatus, AdminAccountPermission, AdminAccountAction, AdminDomainBlockSeverity, IpBlockSeverity, RetentionFrequency
 
 from mastodon.internals import Mastodon as Internals
 from typing import Optional, List, Union
@@ -14,9 +15,9 @@ class Mastodon(Internals):
     # Moderation API
     ###
     @api_version("2.9.1", "4.0.0")
-    def admin_accounts_v2(self, origin: Optional[str] = None, by_domain: Optional[str] = None, status: Optional[str] = None, username: Optional[str] = None, 
-                          display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, permissions: Optional[str] = None, 
-                          invited_by: Union[Account, IdType] = None, role_ids: Optional[List[IdType]] = None, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
+    def admin_accounts_v2(self, origin: Optional[Union[AdminAccountOrigin, str]] = None, by_domain: Optional[str] = None, status: Optional[Union[AdminAccountStatus, str]] = None, username: Optional[str] = None,
+                          display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, permissions: Optional[Union[AdminAccountPermission, str]] = None,
+                          invited_by: Optional[Union[Account, IdType]] = None, role_ids: Optional[List[IdType]] = None, max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, 
                           since_id: Optional[IdType] = None, limit: Optional[int] = None) -> List[AdminAccount]:
         """
         Fetches a list of accounts that match given criteria. By default, local accounts are returned.
@@ -42,15 +43,6 @@ class Mastodon(Internals):
         if invited_by is not None:
             invited_by = self.__unpack_id(invited_by)
 
-        if permissions is not None and not permissions in ["staff"]:
-            raise MastodonIllegalArgumentError("Permissions must be staff if passed")
-
-        if origin is not None and not origin in ["local", "remote"]:
-            raise MastodonIllegalArgumentError("Origin must be local or remote")
-
-        if status is not None and not status in ["active", "pending", "disabled", "silenced", "suspended"]:
-            raise MastodonIllegalArgumentError("Status must be local or active, pending, disabled, silenced or suspended")
-
         if not by_domain is None:
             by_domain = self.__deprotocolize(by_domain)
 
@@ -58,7 +50,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v2/admin/accounts', params)
 
     @api_version("2.9.1", "2.9.1")
-    def admin_accounts(self, remote: bool = False, by_domain: Optional[str] = None, status: str = 'active', username: Optional[str] = None, 
+    def admin_accounts(self, remote: bool = False, by_domain: Optional[str] = None, status: Union[AdminAccountStatus, str] = 'active', username: Optional[str] = None,
                        display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, staff_only: bool = False, 
                        max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, 
                        limit: Optional[int] = None) -> List[AdminAccount]:
@@ -84,7 +76,7 @@ class Mastodon(Internals):
         )
 
     @api_version("2.9.1", "2.9.1")
-    def admin_accounts_v1(self, remote: bool = False, by_domain: Optional[str] = None, status: str = 'active', username: Optional[str] = None, 
+    def admin_accounts_v1(self, remote: bool = False, by_domain: Optional[str] = None, status: Union[AdminAccountStatus, str] = 'active', username: Optional[str] = None,
                           display_name: Optional[str] = None, email: Optional[str] = None, ip: Optional[str] = None, staff_only: bool = False, 
                           max_id: Optional[IdType] = None, min_id: Optional[IdType] = None, since_id: Optional[IdType] = None, 
                           limit: Optional[int] = None) -> AdminAccount:
@@ -112,16 +104,10 @@ class Mastodon(Internals):
         if remote:
             params["remote"] = True
 
-        mod_statuses = ["active", "pending", "disabled", "silenced", "suspended"]
-        if not status in mod_statuses:
-            raise ValueError("Invalid moderation status requested.")
-
         if staff_only:
             params["staff"] = True
 
-        for mod_status in mod_statuses:
-            if status == mod_status:
-                params[status] = True
+        params[status] = True
 
         if not by_domain is None:
             by_domain = self.__deprotocolize(by_domain)
@@ -207,7 +193,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', f'/api/v1/admin/accounts/{id}/unsensitive')
 
     @api_version("2.9.1", "2.9.1")
-    def admin_account_moderate(self, id: Union[Account, AdminAccount, IdType], action: Optional[str] = None, report_id: Optional[Union[AdminReport, PrimitiveIdType]] = None, 
+    def admin_account_moderate(self, id: Union[Account, AdminAccount, IdType], action: Optional[Union[AdminAccountAction, str]] = None, report_id: Optional[Union[AdminReport, PrimitiveIdType]] = None,
                                warning_preset_id: Optional[PrimitiveIdType] = None, text: Optional[str] = None, send_email_notification: Optional[bool] = True) -> None:
         """
         Perform a moderation action on an account.
@@ -368,7 +354,7 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/admin/domain_blocks/', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_create_domain_block(self, domain: str, severity: Optional[str] = None, reject_media: Optional[bool] = None, 
+    def admin_create_domain_block(self, domain: str, severity: Optional[Union[AdminDomainBlockSeverity, str]] = None, reject_media: Optional[bool] = None,
                                   reject_reports: Optional[bool] = None, private_comment: Optional[str] = None, 
                                   public_comment: Optional[str] = None, obfuscate: Optional[bool] = None) -> AdminDomainBlock:
         """
@@ -377,7 +363,7 @@ class Mastodon(Internals):
         Valid severities are:
             * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user.
             * "suspend" - deny interactions with this instance going forward. This action is reversible.
-            * "limit" - generally used with reject_media=true to force reject media from an instance without silencing or suspending..
+            * "noop" - generally used with reject_media=true to reject media without silencing or suspending.
 
         If no action is specified, the domain is only silenced.
         `domain` is the domain to block. Note that using the top level domain will also imapct all subdomains. ie, example.com will also impact subdomain.example.com.
@@ -395,7 +381,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/domain_blocks/', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_update_domain_block(self, id, severity: Optional[str] = None, reject_media: Optional[bool] = None, reject_reports: Optional[bool] = None, 
+    def admin_update_domain_block(self, id, severity: Optional[Union[AdminDomainBlockSeverity, str]] = None, reject_media: Optional[bool] = None, reject_reports: Optional[bool] = None,
                                   private_comment: Optional[str] = None, public_comment: Optional[str] = None, obfuscate: Optional[bool] = None) -> AdminDomainBlock:
         """
         Modify existing moderation action on a domain. Requires scope `admin:write:domain_blocks`.
@@ -403,7 +389,7 @@ class Mastodon(Internals):
         Valid severities are:
             * "silence" - hide all posts from federated timelines and do not show notifications to local users from the remote instance's users unless they are following the remote user.
             * "suspend" - deny interactions with this instance going forward. This action is reversible.
-            * "limit" - generally used with reject_media=true to force reject media from an instance without silencing or suspending.
+            * "noop" - generally used with reject_media=true to reject media without silencing or suspending.
 
         If no action is specified, the domain is only silenced.
         `domain` is the domain to block. Note that using the top level domain will also imapct all subdomains. ie, example.com will also impact subdomain.example.com.
@@ -542,13 +528,10 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/dimensions', params, use_json=True)
 
     @api_version("3.5.0", "3.5.0")
-    def admin_retention(self, start_at: datetime, end_at: datetime, frequency: str = "day") -> NonPaginatableList[AdminRetention]:
+    def admin_retention(self, start_at: datetime, end_at: datetime, frequency: Union[RetentionFrequency, str] = "day") -> NonPaginatableList[AdminRetention]:
         """
         Gets user retention statistics (at `frequency` - "day" or "month" - granularity) between `start_at` and `end_at`.
         """
-        if not frequency in ["day", "month"]:
-            raise MastodonIllegalArgumentError("Frequency must be day or month")
-
         params = {
             "start_at": self.__consistent_isoformat_utc(start_at),
             "end_at": self.__consistent_isoformat_utc(end_at),
@@ -773,7 +756,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', f'/api/v1/admin/ip_blocks/{id}')
 
     @api_version("4.0.0", "4.0.0")
-    def admin_create_ip_block(self, ip: str, severity: str, comment: Optional[str] = None,
+    def admin_create_ip_block(self, ip: str, severity: Union[IpBlockSeverity, str], comment: Optional[str] = None,
                               expires_in: Optional[int] = None) -> AdminIpBlock:
         """
         Block an IP address or range from signups. Requires scope `admin:write:ip_blocks`.
@@ -792,7 +775,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', '/api/v1/admin/ip_blocks', params)
 
     @api_version("4.0.0", "4.0.0")
-    def admin_update_ip_block(self, id: Union[AdminIpBlock, IdType], ip: Optional[str] = None, severity: Optional[str] = None,
+    def admin_update_ip_block(self, id: Union[AdminIpBlock, IdType], ip: Optional[str] = None, severity: Optional[Union[IpBlockSeverity, str]] = None,
                               comment: Optional[str] = None, expires_in: Optional[int] = None) -> AdminIpBlock:
         """
         Update an existing IP block. Requires scope `admin:write:ip_blocks`.

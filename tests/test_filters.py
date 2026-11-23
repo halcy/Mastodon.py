@@ -1,6 +1,8 @@
 import pytest
 import time
 import vcr
+from mastodon.enums import FilterContext, FilterAction
+from mastodon.types_base import Entity
 
 @pytest.mark.vcr()
 def test_filter_create(api):
@@ -120,8 +122,8 @@ def test_filter_clientside(api, api2):
 def test_v2_filters_keywords(api2):
     new_filter = api2.create_filter_v2(
         title="Test Filter",
-        context=["home", "public"],
-        filter_action="warn",
+        context=[FilterContext.HOME, "public"],
+        filter_action=FilterAction.WARN,
         keywords_attributes=[
             {"keyword": "spam", "whole_word": True},
             {"keyword": "eggs", "whole_word": False}
@@ -130,6 +132,13 @@ def test_v2_filters_keywords(api2):
     assert new_filter is not None
     assert new_filter["title"] == "Test Filter"
     assert len(new_filter["keywords"]) == 2
+    assert new_filter.context[0] is FilterContext.HOME
+    assert new_filter.context[1] is FilterContext.PUBLIC
+    assert new_filter.filter_action is FilterAction.WARN
+    restored = Entity.from_json(new_filter.to_json())
+    assert restored.context == new_filter.context
+    assert restored.context[0] is FilterContext.HOME
+    assert restored.filter_action is FilterAction.WARN
 
     filter_id = new_filter["id"]
 
@@ -140,10 +149,11 @@ def test_v2_filters_keywords(api2):
         updated_filter = api2.update_filter_v2(
             filter_id,
             title="Updated Title",
-            filter_action="hide"
+            filter_action=FilterAction.HIDE
         )
         assert updated_filter["title"] == "Updated Title"
         assert updated_filter["filter_action"] == "hide"
+        assert updated_filter.filter_action is FilterAction.HIDE
 
         filter_keywords = api2.filter_keywords_v2(filter_id)
         assert len(filter_keywords) == 2

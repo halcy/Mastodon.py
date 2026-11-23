@@ -1,4 +1,15 @@
 import pytest
+from mastodon.enums import PostQuotePolicy, DefaultQuotePolicy
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "match_on": ["method", "path", "query", "body"],
+        # bug workaround for old recordings
+        "filter_post_data_parameters": ["valid_policies[]", "valid_policies%5B%5D"],
+    }
+
 
 @pytest.mark.vcr()
 def test_status_post_with_quote(api, status):
@@ -11,8 +22,8 @@ def test_status_post_with_quote(api, status):
 
 @pytest.mark.vcr()
 def test_status_post_with_quote_approval_policy(api):
-    api.account_update_credentials(default_quote_policy='nobody')
-    status = api.status_post('tehehe', quote_approval_policy='followers')
+    api.account_update_credentials(default_quote_policy=DefaultQuotePolicy.NOBODY)
+    status = api.status_post('tehehe', quote_approval_policy=PostQuotePolicy.FOLLOWERS)
     try:
         assert status
         assert status.quote_approval.current_user == 'automatic'
@@ -28,7 +39,7 @@ def test_status_quotes(api, status):
 def test_status_update_quote_approval_policy(api):
     api.account_update_credentials(default_quote_policy='followers')
     status = api.status_post('do not @ me', quote_approval_policy='followers')
-    updated = api.status_update_quote_approval_policy(status, quote_approval_policy='nobody')
+    updated = api.status_update_quote_approval_policy(status, quote_approval_policy=PostQuotePolicy.NOBODY)
     assert updated
     assert updated.quote_approval.current_user == 'automatic'
 

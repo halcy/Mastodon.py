@@ -1,6 +1,7 @@
 # notifications.py - notification endpoints
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
+from mastodon.enums import IndividualNotificationType, GroupedNotificationType, GroupableNotificationType, NotificationAccountExpansion, NotificationPolicyAction
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Notification, IdType, PaginatableList, Account, UnreadNotificationsCount, NotificationPolicy, NotificationRequest, GroupedNotificationsResults, NonPaginatableList
@@ -13,8 +14,8 @@ class Mastodon(Internals):
     @api_version("1.0.0", "4.6.0")
     def notifications(self, id: Optional[Union[Notification, IdType]] = None, account_id: Optional[Union[Account, IdType]] = None, max_id:  Optional[Union[Notification, IdType]] = None, 
                       min_id:  Optional[Union[Notification, IdType]] = None, since_id:  Optional[Union[Notification, IdType]] = None, limit: Optional[int] = None, 
-                      exclude_types: Optional[List[str]] = None, types: Optional[List[str]] = None, mentions_only: Optional[bool] = None,
-                      supported_types: Optional[List[str]] = None) -> Union[PaginatableList[Notification], Notification]:
+                      exclude_types: Optional[List[Union[IndividualNotificationType, str]]] = None, types: Optional[List[Union[IndividualNotificationType, str]]] = None, mentions_only: Optional[bool] = None,
+                      supported_types: Optional[List[Union[IndividualNotificationType, str]]] = None) -> Union[PaginatableList[Notification], Notification]:
         """
         Fetch notifications (mentions, favourites, reblogs, follows) for the logged-in
         user. Pass `account_id` to get only notifications originating from the given account.
@@ -111,9 +112,9 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v2/notifications/policy')
 
     @api_version("4.3.0", "4.3.0")
-    def update_notifications_policy(self, for_not_following: Optional[str] = None, for_not_followers: Optional[str] = None,
-                                    for_new_accounts: Optional[str] = None, for_private_mentions: Optional[str] = None,
-                                    for_limited_accounts: Optional[str] = None) -> NotificationPolicy:
+    def update_notifications_policy(self, for_not_following: Optional[Union[NotificationPolicyAction, str]] = None, for_not_followers: Optional[Union[NotificationPolicyAction, str]] = None,
+                                    for_new_accounts: Optional[Union[NotificationPolicyAction, str]] = None, for_private_mentions: Optional[Union[NotificationPolicyAction, str]] = None,
+                                    for_limited_accounts: Optional[Union[NotificationPolicyAction, str]] = None) -> NotificationPolicy:
         """
         Update the user's notification filtering policy. Requires scope `write:notifications`.
         
@@ -198,11 +199,11 @@ class Mastodon(Internals):
     @api_version("4.3.0", "4.6.0")
     def grouped_notifications(self, max_id: Optional[IdType] = None, since_id: Optional[IdType] = None,
                               min_id: Optional[IdType] = None, limit: Optional[int] = None,
-                              types: Optional[List[str]] = None, exclude_types: Optional[List[str]] = None,
+                              types: Optional[List[Union[GroupedNotificationType, str]]] = None, exclude_types: Optional[List[Union[GroupedNotificationType, str]]] = None,
                               account_id: Optional[Union[Account, IdType]] = None,
-                              expand_accounts: Optional[str] = "partial_avatars", grouped_types: Optional[List[str]] = None,
+                              expand_accounts: Optional[Union[NotificationAccountExpansion, str]] = "partial_avatars", grouped_types: Optional[List[Union[GroupableNotificationType, str]]] = None,
                               include_filtered: Optional[bool] = None,
-                              supported_types: Optional[List[str]] = None) -> GroupedNotificationsResults:
+                              supported_types: Optional[List[Union[GroupedNotificationType, str]]] = None) -> GroupedNotificationsResults:
         """
         Fetch grouped notifications for the user. Requires scope `read:notifications`.
 
@@ -226,7 +227,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v2/notifications', params, force_pagination=True)
 
     @api_version("4.3.0", "4.6.0")
-    def grouped_notification(self, group_key: str, supported_types: Optional[List[str]] = None) -> GroupedNotificationsResults:
+    def grouped_notification(self, group_key: str, supported_types: Optional[List[Union[GroupedNotificationType, str]]] = None) -> GroupedNotificationsResults:
         """
         Fetch details of a single grouped notification by its group key. Requires scope `read:notifications`.
 
@@ -252,9 +253,9 @@ class Mastodon(Internals):
 
     @api_version("4.3.0", "4.3.0")
     def unread_grouped_notifications_count(self, limit: Optional[int] = None,
-                                           types: Optional[List[str]] = None, exclude_types: Optional[List[str]] = None,
+                                           types: Optional[List[Union[GroupedNotificationType, str]]] = None, exclude_types: Optional[List[Union[GroupedNotificationType, str]]] = None,
                                            account_id: Optional[Union[Account, IdType]] = None,
-                                           grouped_types: Optional[List[str]] = None) -> int:
+                                           grouped_types: Optional[List[Union[GroupableNotificationType, str]]] = None) -> int:
         """
         Fetch the count of unread grouped notifications. Requires scope `read:notifications`.
 

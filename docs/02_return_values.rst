@@ -504,3 +504,343 @@ Deprecated types
 .. autoclass:: mastodon.return_types.IdentityProof
    :members:
 
+Enums
+=====
+
+..
+  This section is manually updated, unlike the section above. TODO maybe move the automatic one to an include file.
+
+.. py:module:: mastodon.enums
+
+These enums represent known strings returned by the Mastodon API.
+They cast to `str` when used in a string context, and wherever they are
+used, a string can also be used instead. When returned by the API,
+Mastodon.py will try to cast the return value to the appropriate enum type, 
+if possible, but if the enum does not have an approprate member, will return
+the string returned from the api as `str` instead to maintain the capability for
+forward compatibility.
+
+.. autoclass:: mastodon.enums.StringEnum
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.Visibility
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PostVisibility
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.StatusVisibility
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.DefaultPostVisibility
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.ReblogVisibility
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.QuotePolicy
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PostQuotePolicy
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.DefaultQuotePolicy
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.QuoteState
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.ApprovalAudience
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.QuoteApprovalAudience
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.FeatureApprovalAudience
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.ApprovalDecision
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.QuoteApprovalDecision
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.FeatureApprovalDecision
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.FilterContext
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.FilterAction
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NotificationType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.IndividualNotificationType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.GroupedNotificationType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PushNotificationType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.GroupableNotificationType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.ListRepliesPolicy
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.MediaAttachmentType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PreviewCardType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.CollectionItemState
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.TimelineAccess
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.ReportCategory
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PushSubscriptionPolicy
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.MediaExpansion
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminMeasureKey
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminDimensionKey
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.RetentionFrequency
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.DomainBlockSeverity
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminDomainBlockSeverity
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PublicDomainBlockSeverity
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.IpBlockSeverity
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.SuggestionReason
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.SuggestionSource
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.LegacySuggestionSource
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AccountCreationErrorCode
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.CredentialAccountErrorCode
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NotificationPolicyAction
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.RelationshipSeveranceType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.ModerationAction
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminAccountAction
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AccountWarningAction
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AppealState
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AsyncRefreshStatus
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AnnualReportStatus
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AnnualReportArchetype
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.OAuthScope
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.OAuthResponseType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.OAuthResponseMode
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.OAuthGrantType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.OAuthTokenEndpointAuthMethod
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.OAuthCodeChallengeMethod
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.FederationProtocol
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NodeInfoService
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NodeInfoInboundService
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NodeInfoOutboundService
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.SearchResultType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminAccountOrigin
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminAccountStatus
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.AdminAccountPermission
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NotificationAccountExpansion
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.StatusContentType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.RateLimitMethod
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.VersionCheckMode
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.FeatureSet
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.PaginationDirection
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.Timeline
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.MarkerTimeline
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.TimelineAccessType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.DirectoryOrder
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NodeinfoSchema
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.NodeinfoVersion
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.StreamEventType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.StreamType
+   :members:
+   :undoc-members:
+
+.. autoclass:: mastodon.enums.Language
+   :members:
+   :undoc-members:
+

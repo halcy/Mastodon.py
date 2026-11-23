@@ -3,6 +3,7 @@
 
 from mastodon.errors import MastodonVersionError, MastodonIllegalArgumentError
 from mastodon.utility import api_version
+from mastodon.enums import ReportCategory
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import NonPaginatableList, Report, Account, IdType, Status, Rule, Collection
@@ -29,7 +30,7 @@ class Mastodon(Internals):
     ###
     @api_version("1.1.0", "4.6.0")
     def report(self, account_id: Union[Account, IdType], status_ids: Optional[Union[Status, IdType]] = None, comment: Optional[str] = None, 
-               forward: bool = False, category: Optional[str] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None,
+               forward: bool = False, category: Optional[Union[ReportCategory, str]] = None, rule_ids: Optional[List[Union[Rule, IdType]]] = None,
                forward_to_domains: Optional[List[str]] = None,
                collection_ids: Optional[List[Union[Collection, IdType]]] = None) -> Report:
         """
@@ -49,9 +50,6 @@ class Mastodon(Internals):
         `collection_ids` can contain Collection IDs or Collection objects associated with
         the report. Collection objects are unpacked and only their IDs are sent.
         """
-        if category is not None and not category in ["spam", "violation", "other"]:
-            raise MastodonIllegalArgumentError("Invalid report category (must be spam, violation or other)")
-
         account_id = self.__unpack_id(account_id)
 
         if status_ids is not None:

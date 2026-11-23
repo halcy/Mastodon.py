@@ -4,6 +4,7 @@ import re
 
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
+from mastodon.enums import FilterContext, FilterAction
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Filter, FilterV2, Status, Notification, FilterKeyword, FilterStatus
@@ -32,7 +33,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', f'/api/v1/filters/{id}')
 
     @api_version("2.4.3", "2.4.3")
-    def filters_apply(self, objects: Union[PaginatableList[Status], PaginatableList[Notification]], filters: Union[NonPaginatableList[Filter], NonPaginatableList[FilterV2]], context: str) -> Union[PaginatableList[Status], PaginatableList[Notification]]:
+    def filters_apply(self, objects: Union[PaginatableList[Status], PaginatableList[Notification]], filters: Union[NonPaginatableList[Filter], NonPaginatableList[FilterV2]], context: Union[FilterContext, str]) -> Union[PaginatableList[Status], PaginatableList[Notification]]:
         """
         Helper function: Applies a list of filters to a list of either statuses
         or notifications and returns only those matched by none. This function will
@@ -72,7 +73,7 @@ class Mastodon(Internals):
     # Writing data: Keyword filters
     ###
     @api_version("2.4.3", "2.4.3")
-    def filter_create(self, phrase: str, context: str, irreversible: bool = False, whole_word: bool = True, expires_in: Optional[int] = None) -> Filter:
+    def filter_create(self, phrase: str, context: List[Union[FilterContext, str]], irreversible: bool = False, whole_word: bool = True, expires_in: Optional[int] = None) -> Filter:
         """
         Creates a new keyword filter. `phrase` is the phrase that should be
         filtered out, `context` specifies from where to filter the keywords.
@@ -91,14 +92,10 @@ class Mastodon(Internals):
         """
         params = self.__generate_params(locals())
 
-        for context_val in context:
-            if not context_val in ['home', 'notifications', 'public', 'thread']:
-                raise MastodonIllegalArgumentError('Invalid filter context.')
-
         return self.__api_request('POST', '/api/v1/filters', params)
 
     @api_version("2.4.3", "2.4.3")
-    def filter_update(self, id: Union[Filter, IdType], phrase: Optional[str] = None, context: Optional[str] = None, irreversible: Optional[bool] = None, whole_word: Optional[bool] = None, expires_in: Optional[int] = None) -> Filter:
+    def filter_update(self, id: Union[Filter, IdType], phrase: Optional[str] = None, context: Optional[List[Union[FilterContext, str]]] = None, irreversible: Optional[bool] = None, whole_word: Optional[bool] = None, expires_in: Optional[int] = None) -> Filter:
         """
         Updates the filter with the given `id`. Parameters are the same
         as in `filter_create()`.
@@ -139,8 +136,8 @@ class Mastodon(Internals):
     def create_filter_v2(
         self,
         title: str,
-        context: List[str],
-        filter_action: str,
+        context: List[Union[FilterContext, str]],
+        filter_action: Union[FilterAction, str],
         expires_in: Optional[int] = None,
         keywords_attributes: Optional[List[Dict[str, Union[str, bool]]]] = None
     ) -> FilterV2:
@@ -177,8 +174,8 @@ class Mastodon(Internals):
         self,
         filter_id: Union[FilterV2, IdType],
         title: Optional[str] = None,
-        context: Optional[List[str]] = None,
-        filter_action: Optional[str] = None,
+        context: Optional[List[Union[FilterContext, str]]] = None,
+        filter_action: Optional[Union[FilterAction, str]] = None,
         expires_in: Optional[int] = None,
         keywords_attributes: Optional[List[Dict[str, Union[str, bool, int]]]] = None
     ) -> FilterV2:

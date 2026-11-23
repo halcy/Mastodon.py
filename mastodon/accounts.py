@@ -5,6 +5,7 @@ import collections
 from mastodon.defaults import _DEFAULT_SCOPES, _SCOPE_SETS
 from mastodon.errors import MastodonIllegalArgumentError, MastodonAPIError, MastodonNotFoundError
 from mastodon.utility import api_version
+from mastodon.enums import DefaultPostVisibility, DefaultQuotePolicy, Language, OAuthScope
 
 from mastodon.internals import Mastodon as Internals
 
@@ -15,7 +16,7 @@ from datetime import datetime
 class Mastodon(Internals):
     @api_version("2.7.0", "2.7.0")
     def create_account(self, username: str, password: str, email: str, agreement: bool = False, reason: Optional[str] = None, 
-                        locale: str = "en", scopes: List[str] = _DEFAULT_SCOPES, to_file: Optional[str] = None, 
+                        locale: Union[Language, str] = "en", scopes: List[Union[OAuthScope, str]] = _DEFAULT_SCOPES, to_file: Optional[str] = None,
                         return_detailed_error: bool = False, date_of_birth: Optional[datetime] = None) -> Union[Optional[str], Tuple[Optional[str], AccountCreationError]]:
         """
         Creates a new user account with the given username, password and email. "agreement"
@@ -396,8 +397,8 @@ class Mastodon(Internals):
                                    discoverable: Optional[bool] = None, fields: Optional[List[Tuple[str, str]]] = None,
                                    hide_collections: Optional[bool] = None, indexable: Optional[bool] = None,
                                    attribution_domains: Optional[List[str]] = None,
-                                   default_privacy: Optional[str] = None, default_sensitive: Optional[bool] = None,
-                                   default_language: Optional[str] = None, default_quote_policy: Optional[str] = None,
+                                   default_privacy: Optional[Union[DefaultPostVisibility, str]] = None, default_sensitive: Optional[bool] = None,
+                                   default_language: Optional[Union[Language, str]] = None, default_quote_policy: Optional[Union[DefaultQuotePolicy, str]] = None,
                                    avatar_description: Optional[str] = None,
                                    header_description: Optional[str] = None) -> Account:
         """

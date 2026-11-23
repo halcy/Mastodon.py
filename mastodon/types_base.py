@@ -6,7 +6,7 @@ import dateutil
 import dateutil.parser
 from collections import OrderedDict
 from functools import lru_cache
-from mastodon.compat import PurePath
+from mastodon.compat import PurePath, StringEnum
 import sys
 import json
 import copy
@@ -402,6 +402,7 @@ def try_cast(t, value, retry = True, union_specializer = None):
     Base case casting function. Handles:
     * Casting to any AttribAccessDict subclass (directly, no special handling)
     * Casting to bool (with possible conversion from json bool strings)
+    * Casting known enum strings to members, preserving unknown strings unchanged
     * Casting to datetime (with possible conversion from all kinds of funny date formats because unfortunately this is the world we live in)
     * Casting to whatever t is
     * Trying once again to AttribAccessDict as a fallback
@@ -427,9 +428,22 @@ def try_cast(t, value, retry = True, union_specializer = None):
             # This will not work in 3.7 and 3.8, which is unfortunate, but them's the breaks of using
             # very old versions.
             if hasattr(t, '__args__') and len(t.__args__) > 1:
+                key_cast_type = t.__args__[0]
                 value_cast_type = t.__args__[1]
-                for key, val in value.items():
-                    value[key] = try_cast_recurse(value_cast_type, val, union_specializer)
+                entries = [
+                    (try_cast_recurse(key_cast_type, key, union_specializer),
+                     try_cast_recurse(value_cast_type, val, union_specializer))
+                    for key, val in value.items()
+                ]
+                value.clear()
+                for key, val in entries:
+                    value[key] = val
+        elif real_issubclass(t, StringEnum):
+            if isinstance(value, str):
+                try:
+                    value = t(value)
+                except ValueError:
+                    pass  # Servers may return values this library does not know yet.
         elif real_issubclass(t, bool):
             if isinstance(value, str):
                 if value.lower() == 'true':

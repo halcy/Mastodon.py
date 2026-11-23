@@ -2,6 +2,59 @@ from __future__ import annotations # python< 3.9 compat
 from datetime import datetime
 from typing import Union, Optional, Tuple, List, IO, Dict
 from mastodon.types_base import AttribAccessDict, EmptyResponse, IdType, MaybeSnowflakeIdType, PaginationInfo, PrimitiveIdType, EntityList, PaginatableList, NonPaginatableList, PathOrFile, WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, try_cast_recurse, try_cast, real_issubclass
+from mastodon.enums import (
+    AccountCreationErrorCode,
+    AccountWarningAction,
+    AdminDimensionKey,
+    AdminDomainBlockSeverity,
+    AdminMeasureKey,
+    AnnualReportArchetype,
+    AnnualReportStatus,
+    AppealState,
+    AsyncRefreshStatus,
+    CollectionItemState,
+    CredentialAccountErrorCode,
+    DefaultPostVisibility,
+    DefaultQuotePolicy,
+    FeatureApprovalAudience,
+    FeatureApprovalDecision,
+    FederationProtocol,
+    FilterAction,
+    FilterContext,
+    GroupedNotificationType,
+    IndividualNotificationType,
+    IpBlockSeverity,
+    Language,
+    LegacySuggestionSource,
+    ListRepliesPolicy,
+    MediaAttachmentType,
+    MediaExpansion,
+    NodeInfoInboundService,
+    NodeInfoOutboundService,
+    NodeinfoVersion,
+    NotificationPolicyAction,
+    OAuthCodeChallengeMethod,
+    OAuthGrantType,
+    OAuthResponseMode,
+    OAuthResponseType,
+    OAuthScope,
+    OAuthTokenEndpointAuthMethod,
+    PostQuotePolicy,
+    PostVisibility,
+    PreviewCardType,
+    PublicDomainBlockSeverity,
+    PushNotificationType,
+    PushSubscriptionPolicy,
+    QuoteApprovalAudience,
+    QuoteApprovalDecision,
+    QuoteState,
+    RelationshipSeveranceType,
+    ReportCategory,
+    RetentionFrequency,
+    StatusVisibility,
+    SuggestionSource,
+    TimelineAccess,
+)
 
 class Account(AttribAccessDict):
     """
@@ -476,9 +529,10 @@ class CredentialAccountSource(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Account/
     """
 
-    privacy: "str"
+    privacy: "Union[DefaultPostVisibility, str]"
     """
-    The user's default visibility setting ("private", "unlisted" or "public").
+    The user's default visibility setting for new posts.
+    Known values: :class:`mastodon.enums.DefaultPostVisibility`. Unknown strings are also accepted.
 
     Version history:
       * 1.5.0: added
@@ -500,10 +554,10 @@ class CredentialAccountSource(AttribAccessDict):
       * 1.5.0: added
     """
 
-    language: "Optional[str]"
+    language: "Optional[Union[Language, str]]"
     """
     The default posting language for new statuses. (nullable)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 2.4.2: added
@@ -557,9 +611,10 @@ class CredentialAccountSource(AttribAccessDict):
       * 4.4.0: added
     """
 
-    quote_policy: "str"
+    quote_policy: "Union[DefaultQuotePolicy, str]"
     """
     The default quote policy to be used for new statuses.
+    Known values: :class:`mastodon.enums.DefaultQuotePolicy`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
@@ -602,9 +657,10 @@ class CredentialAccountState(AttribAccessDict):
     Version history:
     """
 
-    error_code: "Optional[str]"
+    error_code: "Optional[Union[CredentialAccountErrorCode, str]]"
     """
     The code identifying why the account is not functional, or None if there is no error. (nullable)
+    Known values: :class:`mastodon.enums.CredentialAccountErrorCode`. Unknown strings are also accepted.
 
     Version history:
     """
@@ -754,10 +810,10 @@ class Status(AttribAccessDict):
       * 1.0.0: added
     """
 
-    visibility: "str"
+    visibility: "Union[StatusVisibility, str]"
     """
     Toot visibility.
-    Should contain (as text): VisibilityEnum
+    Known values: :class:`mastodon.enums.StatusVisibility`. Unknown strings are also accepted.
 
     Version history:
       * 0.9.9: added
@@ -811,10 +867,10 @@ class Status(AttribAccessDict):
       * 0.9.9: added
     """
 
-    language: "Optional[str]"
+    language: "Optional[Union[Language, str]]"
     """
     The language of the status, if specified by the server, as ISO 639-1 (two-letter) language code. (nullable)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 1.4.0: added
@@ -924,9 +980,10 @@ class Quote(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Quote/
     """
 
-    state: "str"
+    state: "Union[QuoteState, str]"
     """
     The state of the quote. Unknown values should be treated as `unauthorized`.
+    Known values: :class:`mastodon.enums.QuoteState`. Unknown strings are also accepted.
 
     Version history:
       * 4.4.0: added
@@ -967,9 +1024,10 @@ class ShallowQuote(AttribAccessDict):
       * 4.5.7: `quoted_status_id` is set to the status ID regardless of `state` when the entity is returned as part of status deletion
     """
 
-    state: "str"
+    state: "Union[QuoteState, str]"
     """
     The state of the quote. Unknown values should be treated as `unauthorized`.
+    Known values: :class:`mastodon.enums.QuoteState`. Unknown strings are also accepted.
 
     Version history:
       * 4.4.0: added
@@ -992,25 +1050,28 @@ class QuoteApproval(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/QuoteApproval/
     """
 
-    automatic: "NonPaginatableList[str]"
+    automatic: "NonPaginatableList[Union[QuoteApprovalAudience, str]]"
     """
     Describes who is expected to be able to quote that status and have the quote automatically authorized. An empty list means that nobody is expected to be able to quote this post.
+    Known values: :class:`mastodon.enums.QuoteApprovalAudience`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
     """
 
-    manual: "NonPaginatableList[str]"
+    manual: "NonPaginatableList[Union[QuoteApprovalAudience, str]]"
     """
     Describes who is expected to have their quotes of this status be manually reviewed by the author before being accepted. An empty list means that nobody is expected to be able to quote this post.
+    Known values: :class:`mastodon.enums.QuoteApprovalAudience`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
     """
 
-    current_user: "str"
+    current_user: "Union[QuoteApprovalDecision, str]"
     """
     Describes how this status' quote policy applies to the current user.
+    Known values: :class:`mastodon.enums.QuoteApprovalDecision`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
@@ -1281,9 +1342,10 @@ class ScheduledStatusParams(AttribAccessDict):
       * 2.7.0: added
     """
 
-    visibility: "Optional[str]"
+    visibility: "Optional[Union[PostVisibility, str]]"
     """
     Visibility of the status. (nullable)
+    Known values: :class:`mastodon.enums.PostVisibility`. Unknown strings are also accepted.
 
     Version history:
       * 2.7.0: added
@@ -1329,10 +1391,10 @@ class ScheduledStatusParams(AttribAccessDict):
       * 2.8.0: added
     """
 
-    language: "Optional[str]"
+    language: "Optional[Union[Language, str]]"
     """
     The language that will be used for the status. (nullable)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 2.7.0: added
@@ -1362,9 +1424,10 @@ class ScheduledStatusParams(AttribAccessDict):
       * 4.4.0: added
     """
 
-    quote_approval_policy: "Optional[str]"
+    quote_approval_policy: "Optional[Union[PostQuotePolicy, str]]"
     """
     The quote approval policy to be used for this status once posted. (nullable)
+    Known values: :class:`mastodon.enums.PostQuotePolicy`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
@@ -1444,7 +1507,7 @@ class Poll(AttribAccessDict):
 
     emojis: "NonPaginatableList[CustomEmoji]"
     """
-    List of CustomEmoji used in answer strings,.
+    List of CustomEmoji used in answer strings.
 
     Version history:
       * 2.8.0: added
@@ -1806,10 +1869,10 @@ class Application(AttribAccessDict):
       * 4.3.0: added
     """
 
-    scopes: "NonPaginatableList[str]"
+    scopes: "NonPaginatableList[Union[OAuthScope, str]]"
     """
     The applications available scopes.
-    Should contain (as text): Scopes
+    Known values: :class:`mastodon.enums.OAuthScope`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -1935,10 +1998,10 @@ class Relationship(AttribAccessDict):
       * 3.3.0: added
     """
 
-    languages: "Optional[NonPaginatableList[str]]"
+    languages: "Optional[NonPaginatableList[Union[Language, str]]]"
     """
     List of languages that the logged in user is following this user for (if any). (nullable)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -1994,10 +2057,10 @@ class Filter(AttribAccessDict):
       * 2.4.3: added
     """
 
-    context: "NonPaginatableList[str]"
+    context: "NonPaginatableList[Union[FilterContext, str]]"
     """
     List of places where the filters are applied.
-    Should contain (as text): FilterContextEnum
+    Known values: :class:`mastodon.enums.FilterContext`. Unknown strings are also accepted.
 
     Version history:
       * 2.4.3: added
@@ -2052,10 +2115,10 @@ class FilterV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    context: "NonPaginatableList[str]"
+    context: "NonPaginatableList[Union[FilterContext, str]]"
     """
     List of places where the filters are applied.
-    Should contain (as text): FilterContextEnum
+    Known values: :class:`mastodon.enums.FilterContext`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -2077,10 +2140,10 @@ class FilterV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    filter_action: "str"
+    filter_action: "Union[FilterAction, str]"
     """
     The action to be taken when a status matches this filter.
-    Should contain (as text): FilterActionEnum
+    Known values: :class:`mastodon.enums.FilterAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -2126,10 +2189,10 @@ class Notification(AttribAccessDict):
       * 0.9.9: added
     """
 
-    type: "str"
+    type: "Union[IndividualNotificationType, str]"
     """
     "mention", "reblog", "favourite", "follow", "poll" or "follow_request".
-    Should contain (as text): NotificationTypeEnum
+    Known values: :class:`mastodon.enums.IndividualNotificationType`. Unknown strings are also accepted.
 
     Version history:
       * 0.9.9: added
@@ -2280,10 +2343,10 @@ class UserList(AttribAccessDict):
       * 2.1.0: added
     """
 
-    replies_policy: "str"
+    replies_policy: "Union[ListRepliesPolicy, str]"
     """
     Which replies should be shown in the list.
-    Should contain (as text): RepliesPolicyEnum
+    Known values: :class:`mastodon.enums.ListRepliesPolicy`. Unknown strings are also accepted.
 
     Version history:
       * 3.3.0: added
@@ -2321,9 +2384,10 @@ class MediaAttachment(AttribAccessDict):
       * 0.6.0: added
     """
 
-    type: "str"
+    type: "Union[MediaAttachmentType, str]"
     """
     Media type: 'image', 'video', 'gifv', 'audio' or 'unknown'.
+    Known values: :class:`mastodon.enums.MediaAttachmentType`. Unknown strings are also accepted.
 
     Version history:
       * 0.6.0: added
@@ -2702,9 +2766,10 @@ class PreviewCard(AttribAccessDict):
       * 1.0.0: added
     """
 
-    type: "str"
+    type: "Union[PreviewCardType, str]"
     """
     Embed type: 'link', 'photo', 'video', or 'rich'.
+    Known values: :class:`mastodon.enums.PreviewCardType`. Unknown strings are also accepted.
 
     Version history:
       * 1.3.0: added
@@ -2791,10 +2856,10 @@ class PreviewCard(AttribAccessDict):
       * 3.2.0: added
     """
 
-    language: "Optional[str]"
+    language: "Optional[Union[Language, str]]"
     """
     Language of the embedded content. (optional)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 1.3.0: added
@@ -3095,10 +3160,10 @@ class Collection(AttribAccessDict):
       * 4.6.0: added
     """
 
-    language: "Optional[str]"
+    language: "Optional[Union[Language, str]]"
     """
     The primary language of this Collection. (nullable)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
@@ -3203,9 +3268,10 @@ class CollectionItem(AttribAccessDict):
       * 4.6.0: added
     """
 
-    state: "str"
+    state: "Union[CollectionItemState, str]"
     """
     The current state of the item.
+    Known values: :class:`mastodon.enums.CollectionItemState`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
@@ -3314,10 +3380,10 @@ class Instance(AttribAccessDict):
       * 1.6.1: added
     """
 
-    languages: "NonPaginatableList[str]"
+    languages: "NonPaginatableList[Union[Language, str]]"
     """
     Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 2.3.0: added
@@ -3532,10 +3598,10 @@ class InstanceV2(AttribAccessDict):
       * 4.0.0: added
     """
 
-    languages: "NonPaginatableList[str]"
+    languages: "NonPaginatableList[Union[Language, str]]"
     """
     Array of ISO 639-1 (two-letter) language codes the instance has chosen to advertise.
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -4052,9 +4118,10 @@ class Rule(AttribAccessDict):
       * 4.3.0: added
     """
 
-    translations: "AttribAccessDict[str, RuleTranslation]"
+    translations: "AttribAccessDict[Union[Language, str], RuleTranslation]"
     """
     A list of translations for the rule, as a dictionary with the key being ISO 639-1 (two-letter) language codes for available languages.
+    Known key values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 4.4.0: added
@@ -4495,17 +4562,19 @@ class InstanceTimelinesAccessFeedConfiguration(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance/
     """
 
-    local: "str"
+    local: "Union[TimelineAccess, str]"
     """
     Access restrictions for local posts in this feed.
+    Known values: :class:`mastodon.enums.TimelineAccess`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
     """
 
-    remote: "str"
+    remote: "Union[TimelineAccess, str]"
     """
     Access restrictions for remote posts in this feed.
+    Known values: :class:`mastodon.enums.TimelineAccess`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
@@ -4527,9 +4596,10 @@ class Nodeinfo(AttribAccessDict):
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
-    version: "str"
+    version: "Union[NodeinfoVersion, str]"
     """
     Version of the nodeinfo schema spec that was used for this response.
+    Known values: :class:`mastodon.enums.NodeinfoVersion`. Unknown strings are also accepted.
 
     Version history:
       * 3.0.0: added
@@ -4543,9 +4613,10 @@ class Nodeinfo(AttribAccessDict):
       * 3.0.0: added
     """
 
-    protocols: "NonPaginatableList[str]"
+    protocols: "NonPaginatableList[Union[FederationProtocol, str]]"
     """
     A list of strings specifying the federation protocols this instance supports. Typically, just "activitypub".
+    Known values: :class:`mastodon.enums.FederationProtocol`. Unknown strings are also accepted.
 
     Version history:
       * 3.0.0: added
@@ -4631,17 +4702,19 @@ class NodeinfoServices(AttribAccessDict):
     See also (Mastodon API documentation): https://github.com/jhass/nodeinfo
     """
 
-    outbound: "NonPaginatableList"
+    outbound: "NonPaginatableList[Union[NodeInfoOutboundService, str]]"
     """
     List of services that this instance can send messages to. On Mastodon, typically an empty list.
+    Known values: :class:`mastodon.enums.NodeInfoOutboundService`. Unknown strings are also accepted.
 
     Version history:
       * 3.0.0: added
     """
 
-    inbound: "NonPaginatableList"
+    inbound: "NonPaginatableList[Union[NodeInfoInboundService, str]]"
     """
     List of services that this instance can retrieve messages from. On Mastodon, typically an empty list.
+    Known values: :class:`mastodon.enums.NodeInfoInboundService`. Unknown strings are also accepted.
 
     Version history:
       * 3.0.0: added
@@ -4885,10 +4958,10 @@ class Report(AttribAccessDict):
       * 2.9.1: added
     """
 
-    category: "str"
+    category: "Union[ReportCategory, str]"
     """
     The category under which the report is classified.
-    Should contain (as text): ReportReasonEnum
+    Known values: :class:`mastodon.enums.ReportCategory`. Unknown strings are also accepted.
 
     Version history:
       * 3.5.0: added
@@ -5014,10 +5087,10 @@ class AdminReport(AttribAccessDict):
       * 2.9.1: added
     """
 
-    category: "str"
+    category: "Union[ReportCategory, str]"
     """
     The category under which the report is classified.
-    Should contain (as text): ReportReasonEnum
+    Known values: :class:`mastodon.enums.ReportCategory`. Unknown strings are also accepted.
 
     Version history:
       * 3.5.0: added
@@ -5093,9 +5166,10 @@ class WebPushSubscription(AttribAccessDict):
       * 4.0.0: added admin.report
     """
 
-    policy: "str"
+    policy: "Union[PushSubscriptionPolicy, str]"
     """
     Which sources should generate webpushes.
+    Known values: :class:`mastodon.enums.PushSubscriptionPolicy`. Unknown strings are also accepted.
 
     Version history:
       * 2.4.0: added
@@ -5270,18 +5344,19 @@ class PushNotification(AttribAccessDict):
       * 2.4.0: added
     """
 
-    notification_type: "str"
+    notification_type: "Union[PushNotificationType, str]"
     """
     String indicating the type of notification.
+    Known values: :class:`mastodon.enums.PushNotificationType`. Unknown strings are also accepted.
 
     Version history:
       * 2.4.0: added
     """
 
-    preferred_locale: "str"
+    preferred_locale: "Union[Language, str]"
     """
     The user's preferred locale.
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 2.4.0: added
@@ -5311,9 +5386,10 @@ class Preferences(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Preferences/
     """
 
-    posting_default_visibility: "str"
+    posting_default_visibility: "Union[DefaultPostVisibility, str]"
     """
     Default visibility for new posts. Also found in CredentialAccountSource as `privacy`.
+    Known values: :class:`mastodon.enums.DefaultPostVisibility`. Unknown strings are also accepted.
 
     Version history:
       * 2.8.0: added
@@ -5327,18 +5403,19 @@ class Preferences(AttribAccessDict):
       * 2.8.0: added
     """
 
-    posting_default_language: "Optional[str]"
+    posting_default_language: "Optional[Union[Language, str]]"
     """
     Default language for new posts. Also found in CredentialAccountSource as `language`. (nullable)
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 2.8.0: added
     """
 
-    reading_expand_media: "str"
+    reading_expand_media: "Union[MediaExpansion, str]"
     """
     String indicating whether media attachments should be automatically displayed or blurred/hidden.
+    Known values: :class:`mastodon.enums.MediaExpansion`. Unknown strings are also accepted.
 
     Version history:
       * 2.8.0: added
@@ -5360,9 +5437,10 @@ class Preferences(AttribAccessDict):
       * 2.8.0: added
     """
 
-    posting_default_quote_policy: "str"
+    posting_default_quote_policy: "Union[DefaultQuotePolicy, str]"
     """
     Default quote policy for new posts. Also found in CredentialAccountSource as `quote_policy`.
+    Known values: :class:`mastodon.enums.DefaultQuotePolicy`. Unknown strings are also accepted.
 
     Version history:
       * 4.5.0: added
@@ -5841,10 +5919,10 @@ class AdminAccount(AttribAccessDict):
       * 2.9.1: added
     """
 
-    locale: "str"
+    locale: "Union[Language, str]"
     """
-    For local users, the locale the user has set,.
-    Should contain (as text): TwoLetterLanguageCodeEnum
+    For local users, the locale the user has set.
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 2.9.1: added
@@ -5946,10 +6024,10 @@ class AdminMeasure(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Measure/
     """
 
-    key: "str"
+    key: "Union[AdminMeasureKey, str]"
     """
     Name of the measure returned.
-    Should contain (as text): AdminMeasureTypeEnum
+    Known values: :class:`mastodon.enums.AdminMeasureKey`. Unknown strings are also accepted.
 
     Version history:
       * 3.5.0: added
@@ -6043,9 +6121,10 @@ class AdminDimension(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Admin_Dimension/
     """
 
-    key: "str"
+    key: "Union[AdminDimensionKey, str]"
     """
     Name of the dimension returned.
+    Known values: :class:`mastodon.enums.AdminDimensionKey`. Unknown strings are also accepted.
 
     Version history:
       * 3.5.0: added
@@ -6123,9 +6202,10 @@ class AdminRetention(AttribAccessDict):
       * 3.5.0: added
     """
 
-    frequency: "str"
+    frequency: "Union[RetentionFrequency, str]"
     """
     Time resolution (day or month) for the returned data.
+    Known values: :class:`mastodon.enums.RetentionFrequency`. Unknown strings are also accepted.
 
     Version history:
       * 3.5.0: added
@@ -6219,10 +6299,10 @@ class AdminDomainBlock(AttribAccessDict):
       * 4.0.0: added
     """
 
-    severity: "str"
+    severity: "Union[AdminDomainBlockSeverity, str]"
     """
     The policy to be applied by this domain block.
-    Should contain (as text): AdminDomainLimitEnum
+    Known values: :class:`mastodon.enums.AdminDomainBlockSeverity`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -6468,9 +6548,10 @@ class AdminIpBlock(AttribAccessDict):
       * 4.0.0: added
     """
 
-    severity: "str"
+    severity: "Union[IpBlockSeverity, str]"
     """
     The associated policy with this IP block.
+    Known values: :class:`mastodon.enums.IpBlockSeverity`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -6532,10 +6613,10 @@ class DomainBlock(AttribAccessDict):
       * 4.0.0: added
     """
 
-    severity: "str"
+    severity: "Union[PublicDomainBlockSeverity, str]"
     """
     The level to which the domain is blocked.
-    Should contain (as text): DomainLimitEnum
+    Known values: :class:`mastodon.enums.PublicDomainBlockSeverity`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -6768,21 +6849,22 @@ class Suggestion(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Suggestion
     """
 
-    source: "str"
+    source: "Union[LegacySuggestionSource, str]"
     """
     THIS FIELD IS DEPRECATED. IT IS RECOMMENDED THAT YOU DO NOT USE IT.
 
     The reason this account is being suggested.
+    Known values: :class:`mastodon.enums.LegacySuggestionSource`. Unknown strings are also accepted.
 
     Version history:
       * 3.4.0: added
       * 4.3.0: deprecated
     """
 
-    sources: "NonPaginatableList[str]"
+    sources: "NonPaginatableList[Union[SuggestionSource, str]]"
     """
     The reasons this account is being suggested.
-    Should contain (as text): SuggestionSourceEnum
+    Known values: :class:`mastodon.enums.SuggestionSource`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -6820,9 +6902,10 @@ class Translation(AttribAccessDict):
       * 4.0.0: added
     """
 
-    detected_source_language: "str"
+    detected_source_language: "Union[Language, str]"
     """
     The language of the source text, as auto-detected by the machine translation provider.
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 4.0.0: added
@@ -6956,9 +7039,10 @@ class AccountCreationErrorDetailsField(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/accounts/#create
     """
 
-    error: "str"
+    error: "Union[AccountCreationErrorCode, str]"
     """
     A machine readable string giving an error category.
+    Known values: :class:`mastodon.enums.AccountCreationErrorCode`. Unknown strings are also accepted.
 
     Version history:
       * 3.4.0: added
@@ -6988,41 +7072,46 @@ class NotificationPolicy(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/NotificationPolicy
     """
 
-    for_not_following: "str"
+    for_not_following: "Union[NotificationPolicyAction, str]"
     """
     Whether to accept, filter or drop notifications from accounts the user is not following.
+    Known values: :class:`mastodon.enums.NotificationPolicyAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    for_not_followers: "str"
+    for_not_followers: "Union[NotificationPolicyAction, str]"
     """
     Whether to accept, filter or drop notifications from accounts that are not following the user.
+    Known values: :class:`mastodon.enums.NotificationPolicyAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    for_new_accounts: "str"
+    for_new_accounts: "Union[NotificationPolicyAction, str]"
     """
     Whether to accept, filter or drop notifications from accounts created in the past 30 days.
+    Known values: :class:`mastodon.enums.NotificationPolicyAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    for_private_mentions: "str"
+    for_private_mentions: "Union[NotificationPolicyAction, str]"
     """
     Whether to accept, filter or drop notifications from private mentions.
+    Known values: :class:`mastodon.enums.NotificationPolicyAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    for_limited_accounts: "str"
+    for_limited_accounts: "Union[NotificationPolicyAction, str]"
     """
     Whether to accept, filter or drop notifications from accounts that were limited by a moderator.
+    Known values: :class:`mastodon.enums.NotificationPolicyAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -7036,9 +7125,10 @@ class NotificationPolicy(AttribAccessDict):
       * 4.3.0: added
     """
 
-    for_bots: "str"
+    for_bots: "Union[NotificationPolicyAction, str]"
     """
     Whether to accept, filter or drop eligible notifications from bot accounts that the user does not follow.
+    Known values: :class:`mastodon.enums.NotificationPolicyAction`. Unknown strings are also accepted.
 
     Version history:
     """
@@ -7099,10 +7189,10 @@ class RelationshipSeveranceEvent(AttribAccessDict):
       * 4.3.0: added
     """
 
-    type: "str"
+    type: "Union[RelationshipSeveranceType, str]"
     """
     Type of event.
-    Should contain (as text): RelationshipSeveranceEventType
+    Known values: :class:`mastodon.enums.RelationshipSeveranceType`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -7308,10 +7398,10 @@ class NotificationGroup(AttribAccessDict):
       * 4.3.0: added
     """
 
-    type: "str"
+    type: "Union[GroupedNotificationType, str]"
     """
     The type of event that resulted in the notifications.
-    Should contain (as text): NotificationTypeEnum
+    Known values: :class:`mastodon.enums.GroupedNotificationType`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -7440,9 +7530,10 @@ class AccountWarning(AttribAccessDict):
       * 4.3.0: added
     """
 
-    action: "str"
+    action: "Union[AccountWarningAction, str]"
     """
     Action taken against the account.
+    Known values: :class:`mastodon.enums.AccountWarningAction`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -7536,10 +7627,10 @@ class Appeal(AttribAccessDict):
       * 4.3.0: added
     """
 
-    state: "str"
+    state: "Union[AppealState, str]"
     """
     State of the appeal.
-    Should contain (as text): AppealStateEnum
+    Known values: :class:`mastodon.enums.AppealState`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -7625,9 +7716,10 @@ class SupportedLocale(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/Instance
     """
 
-    code: "str"
+    code: "Union[Language, str]"
     """
     The locale code.
+    Known values: :class:`mastodon.enums.Language`. Unknown strings are also accepted.
 
     Version history:
       * 4.2.0: added
@@ -7702,49 +7794,55 @@ class OAuthServerInfo(AttribAccessDict):
       * 4.4.0: added
     """
 
-    scopes_supported: "NonPaginatableList[str]"
+    scopes_supported: "NonPaginatableList[Union[OAuthScope, str]]"
     """
     List of scopes supported by the OAuth server.
+    Known values: :class:`mastodon.enums.OAuthScope`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    response_types_supported: "NonPaginatableList[str]"
+    response_types_supported: "NonPaginatableList[Union[OAuthResponseType, str]]"
     """
     List of response types (i.e. what kind of parameters can the server get back to your callback) supported by the OAuth server.
+    Known values: :class:`mastodon.enums.OAuthResponseType`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    response_modes_supported: "NonPaginatableList[str]"
+    response_modes_supported: "NonPaginatableList[Union[OAuthResponseMode, str]]"
     """
     List of response modes (i.e. how does the server get callback parameters back to you) supported by the OAuth server.
+    Known values: :class:`mastodon.enums.OAuthResponseMode`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    grant_types_supported: "NonPaginatableList[str]"
+    grant_types_supported: "NonPaginatableList[Union[OAuthGrantType, str]]"
     """
     List of grant types (i.e. authorization methods) supported by the OAuth server.
+    Known values: :class:`mastodon.enums.OAuthGrantType`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    token_endpoint_auth_methods_supported: "NonPaginatableList[str]"
+    token_endpoint_auth_methods_supported: "NonPaginatableList[Union[OAuthTokenEndpointAuthMethod, str]]"
     """
     List of authentication methods supported by the token endpoint.
+    Known values: :class:`mastodon.enums.OAuthTokenEndpointAuthMethod`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
     """
 
-    code_challenge_methods_supported: "NonPaginatableList[str]"
+    code_challenge_methods_supported: "NonPaginatableList[Union[OAuthCodeChallengeMethod, str]]"
     """
     List of code challenge methods supported by the OAuth server.
+    Known values: :class:`mastodon.enums.OAuthCodeChallengeMethod`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added
@@ -7907,10 +8005,10 @@ class AsyncRefresh(AttribAccessDict):
       * 4.4.0: added
     """
 
-    status: "str"
+    status: "Union[AsyncRefreshStatus, str]"
     """
     Status of the async refresh.
-    Should contain (as text): AsyncRefreshStatusEnum
+    Known values: :class:`mastodon.enums.AsyncRefreshStatus`. Unknown strings are also accepted.
 
     Version history:
       * 4.4.0: added
@@ -8208,25 +8306,28 @@ class FeatureApproval(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/FeatureApproval/
     """
 
-    automatic: "NonPaginatableList[str]"
+    automatic: "NonPaginatableList[Union[FeatureApprovalAudience, str]]"
     """
     Who is expected to be able to feature the account and have this authorized automatically.
+    Known values: :class:`mastodon.enums.FeatureApprovalAudience`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
     """
 
-    manual: "NonPaginatableList[str]"
+    manual: "NonPaginatableList[Union[FeatureApprovalAudience, str]]"
     """
     Who is expected to have attempts to feature this account reviewed manually.
+    Known values: :class:`mastodon.enums.FeatureApprovalAudience`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
     """
 
-    current_user: "str"
+    current_user: "Union[FeatureApprovalDecision, str]"
     """
     How this account's feature approval policy applies to the logged-in user.
+    Known values: :class:`mastodon.enums.FeatureApprovalDecision`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
@@ -8421,9 +8522,10 @@ class AnnualReportState(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/methods/annual_reports/#get-state
     """
 
-    state: "str"
+    state: "Union[AnnualReportStatus, str]"
     """
     The current generation state of the annual report.
+    Known values: :class:`mastodon.enums.AnnualReportStatus`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
@@ -8544,9 +8646,10 @@ class AnnualReportDataV2(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
     """
 
-    archetype: "str"
+    archetype: "Union[AnnualReportArchetype, str]"
     """
     The archetype assigned from the accounts posting habits.
+    Known values: :class:`mastodon.enums.AnnualReportArchetype`. Unknown strings are also accepted.
 
     Version history:
       * 4.6.0: added
@@ -8592,9 +8695,10 @@ class AnnualReportDataV1(AttribAccessDict):
     See also (Mastodon API documentation): https://docs.joinmastodon.org/entities/AnnualReport/
     """
 
-    archetype: "str"
+    archetype: "Union[AnnualReportArchetype, str]"
     """
     The archetype assigned from the accounts posting habits.
+    Known values: :class:`mastodon.enums.AnnualReportArchetype`. Unknown strings are also accepted.
 
     Version history:
       * 4.3.0: added

@@ -14,7 +14,8 @@ except:
 
 from mastodon.errors import MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
 from mastodon.return_types import AttribAccessDict, Status, Notification, IdType, Conversation, Announcement, StreamReaction, try_cast_recurse
-from typing import Optional, Any
+from mastodon.enums import StreamEventType
+from typing import Optional, Any, Union
 
 from requests.exceptions import ChunkedEncodingError, ReadTimeout, ConnectionError
 
@@ -233,7 +234,7 @@ class StreamListener(object):
         that the connection is still open."""
         pass
     
-    def on_any_event(self, name: str, data: Optional[Any] = None, for_stream: Optional[str] = None):
+    def on_any_event(self, name: Union[StreamEventType, str], data: Optional[Any] = None, for_stream: Optional[str] = None):
         """A generic event handler that is called for every event received.
         The name contains the event name and data contains the content of the event.
 
@@ -347,7 +348,8 @@ class StreamListener(object):
         )
 
     def _dispatch_event(self, name, raw_payload, for_stream, payload_present):
-        cast_type = self.__EVENT_NAME_TO_TYPE.get(name, AttribAccessDict)
+        name = try_cast_recurse(StreamEventType, name)
+        cast_type = self.__EVENT_NAME_TO_TYPE.get(name.replace('.', '_'), AttribAccessDict)
         if cast_type is None and (not payload_present or raw_payload in (None, 'undefined')):
             payload = None
         else:

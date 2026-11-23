@@ -4,6 +4,7 @@ import warnings
 
 from mastodon.errors import MastodonIllegalArgumentError, MastodonNotFoundError, MastodonWarning
 from mastodon.utility import api_version
+from mastodon.enums import Timeline
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Status, IdType, PaginatableList, UserList
@@ -15,7 +16,7 @@ class Mastodon(Internals):
     # Reading data: Timelines
     ##
     @api_version("1.0.0", "3.1.4")
-    def timeline(self, timeline: str = "home", max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None, 
+    def timeline(self, timeline: Union[Timeline, str] = "home", max_id: Optional[Union[Status, IdType, datetime]] = None, min_id: Optional[Union[Status, IdType, datetime]] = None,
                  since_id: Optional[Union[Status, IdType, datetime]] = None, limit: Optional[int] = None, only_media: bool = False, local: bool = False, 
                  remote: bool = False) -> PaginatableList[Status]:
         """ 

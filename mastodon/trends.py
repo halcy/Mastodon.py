@@ -1,6 +1,7 @@
 # trends.py - trend-related endpoints
 
 from mastodon.utility import api_version
+from mastodon.enums import Language
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Tag, Status, PreviewCard, PaginatableList, NonPaginatableList
@@ -20,7 +21,7 @@ class Mastodon(Internals):
         return self.trending_tags(limit=limit)
 
     @api_version("3.5.0", "3.5.0")
-    def trending_tags(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[str] = None) -> PaginatableList[Tag]:
+    def trending_tags(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[Union[Language, str]] = None) -> PaginatableList[Tag]:
         """
         Fetch trending-hashtag information, if the instance provides such information.
 
@@ -48,7 +49,7 @@ class Mastodon(Internals):
             return self.__api_request('GET', '/api/v1/trends', params, lang_override=lang, offset_pagination=True)
 
     @api_version("3.5.0", "3.5.0")
-    def trending_statuses(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[str] = None) -> PaginatableList[Status]:
+    def trending_statuses(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[Union[Language, str]] = None) -> PaginatableList[Status]:
         """
         Fetch trending-status information, if the instance provides such information.
 
@@ -67,7 +68,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', '/api/v1/trends/statuses', params, lang_override=lang, offset_pagination=True)
 
     @api_version("3.5.0", "3.5.0")
-    def trending_links(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[str] = None) -> PaginatableList[PreviewCard]:
+    def trending_links(self, limit: Optional[int] = None, offset: Optional[int] = None, lang: Optional[Union[Language, str]] = None) -> PaginatableList[PreviewCard]:
         """
         Fetch trending-link information, if the instance provides such information.
 

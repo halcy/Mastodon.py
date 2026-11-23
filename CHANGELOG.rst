@@ -2,6 +2,14 @@ A note on versioning: This librarys major version will grow with the APIs
 version number. Breaking changes will be indicated by a change in the minor
 (or major) version number, and will generally be avoided.  
 
+v2.4
+----
+* Add enums for API parameters and return fields.
+* Consequently, remove some error checks for incorrect parameters. In the future, if you want to make sure you're
+  passing a correct parameter, use the appropriate enums.
+* Fixed some incorrectly documented parameters, especially in the admin API.
+* Cleaned up internal typing a little bit
+
 v2.3.3
 ------
 * Document Collections endpoints in the accounts API reference.

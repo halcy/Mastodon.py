@@ -2,6 +2,7 @@ import pytest
 import time
 from datetime import datetime, timedelta
 from mastodon import MastodonIllegalArgumentError
+from mastodon.enums import AdminAccountOrigin, AdminAccountPermission, AdminDomainBlockSeverity
 import hashlib
 
 @pytest.mark.vcr()
@@ -32,7 +33,7 @@ def test_admin_accounts_v1(api2):
 
 @pytest.mark.vcr()
 def test_admin_accounts_v2(api2):
-    accounts = api2.admin_accounts_v2(permissions="staff", origin="local")
+    accounts = api2.admin_accounts_v2(permissions=AdminAccountPermission.STAFF, origin=AdminAccountOrigin.LOCAL)
     
     assert accounts
     assert len(accounts) > 0
@@ -43,17 +44,8 @@ def test_admin_accounts_v2(api2):
     assert(account_admin)
     assert(account_admin.id == account_self.id)
 
-    accounts = api2.admin_accounts_v2(permissions="staff", origin="remote")
+    accounts = api2.admin_accounts_v2(permissions=AdminAccountPermission.STAFF, origin=AdminAccountOrigin.REMOTE)
     assert len(accounts) == 0
-    
-    with pytest.raises(MastodonIllegalArgumentError):
-        accounts = api2.admin_accounts_v2(permissions="stave")
-
-    with pytest.raises(MastodonIllegalArgumentError):
-        accounts = api2.admin_accounts_v2(origin="global")
-
-    with pytest.raises(MastodonIllegalArgumentError):
-        accounts = api2.admin_accounts_v2(status="sick")
 
 @pytest.mark.vcr(match_on=['path'])
 def test_admin_moderation(api3, api2):
@@ -173,10 +165,11 @@ def test_admin_accountrequests(api2):
 
 @pytest.mark.vcr()
 def test_admin_domain_blocks(api2):
-    block = api2.admin_create_domain_block(domain = "chitter.xyz", public_comment="sicko behaviour", severity="suspend")
+    block = api2.admin_create_domain_block(domain = "chitter.xyz", public_comment="sicko behaviour", severity=AdminDomainBlockSeverity.SUSPEND)
     assert isinstance(api2.admin_domain_blocks(), list)
     block2 = api2.admin_domain_blocks(block)
     assert block.severity == "suspend"
+    assert block.severity is AdminDomainBlockSeverity.SUSPEND
     assert block.public_comment == "sicko behaviour"
     assert block.severity == block2.severity
     block3 = api2.admin_update_domain_block(block, severity="silence", private_comment="jk ilu <3")
@@ -230,13 +223,6 @@ def test_admin_stats(api2):
         datetime(2020, 10, 10) - timedelta(days=10), 
         datetime(2020, 10, 10)
     )
-
-    with pytest.raises(MastodonIllegalArgumentError):
-        api2.admin_retention(
-            datetime(2020, 10, 10) - timedelta(days=10), 
-            datetime(2020, 10, 10),
-            frequency="dayz"
-        )
 
 @pytest.mark.vcr()
 def test_admin_canonical_email_block(api2):

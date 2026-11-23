@@ -6,6 +6,7 @@ import base64
 
 from mastodon.errors import MastodonIllegalArgumentError, MastodonVersionError
 from mastodon.utility import api_version
+from mastodon.enums import PostVisibility, ReblogVisibility, PostQuotePolicy, Language, StatusContentType
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Status, IdType, ScheduledStatus, PreviewCard, Context, NonPaginatableList, Account,\
@@ -113,12 +114,17 @@ class Mastodon(Internals):
     ###
     # Writing data: Statuses
     ###
+    @staticmethod
+    def __normalize_visibility(visibility: str) -> str:
+        normalized = visibility.lower()
+        return normalized if normalized in tuple(PostVisibility) else visibility
+
     def __status_internal(self, status: Optional[str], in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
-                    sensitive: Optional[bool] = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
-                    idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
+                    sensitive: Optional[bool] = False, visibility: Optional[Union[PostVisibility, str]] = None, spoiler_text: Optional[str] = None, language: Optional[Union[Language, str]] = None,
+                    idempotency_key: Optional[str] = None, content_type: Optional[Union[StatusContentType, str]] = None, scheduled_at: Optional[datetime] = None,
                     poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, edit: bool = False,
                     strict_content_type: bool = False, media_attributes: Optional[List[Dict[str, Any]]] = None,
-                    quoted_status_id: Optional[Union[Status, IdType]] = None, quote_approval_policy: Optional[str] = None) -> Union[Status, ScheduledStatus]:
+                    quoted_status_id: Optional[Union[Status, IdType]] = None, quote_approval_policy: Optional[Union[PostQuotePolicy, str]] = None) -> Union[Status, ScheduledStatus]:
         """
         Internal statuses poster helper
         """
@@ -130,21 +136,11 @@ class Mastodon(Internals):
         if quoted_status_id is not None:
             quoted_status_id = self.__unpack_id(quoted_status_id)
 
-        if quote_approval_policy is not None:
-            valid_policies = ['public', 'followers', 'nobody']
-            if quote_approval_policy not in valid_policies:
-                raise MastodonIllegalArgumentError(f'Invalid quote_approval_policy. Valid values are {valid_policies}')
-
         if content_type is not None:
             if self.feature_set != "pleroma":
                 if strict_content_type:
                     raise MastodonIllegalArgumentError('content_type is only available with feature set pleroma')
                 
-            # It would be better to read this from nodeinfo and cache, but this is easier
-            if not content_type in ["text/plain", "text/html", "text/markdown", "text/bbcode"]:
-                if strict_content_type:
-                    raise MastodonIllegalArgumentError('Invalid content type specified')
-
         if in_reply_to_id is not None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
 
@@ -153,14 +149,10 @@ class Mastodon(Internals):
 
         params_initial = locals()
 
-        # Validate visibility parameter
-        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
         if params_initial['visibility'] is None:
             del params_initial['visibility']
         else:
-            params_initial['visibility'] = params_initial['visibility'].lower()
-            if params_initial['visibility'] not in valid_visibilities:
-                raise ValueError(f'Invalid visibility value! Acceptable values are {valid_visibilities}')
+            params_initial['visibility'] = self.__normalize_visibility(params_initial['visibility'])
 
         if params_initial['language'] is None:
             del params_initial['language']
@@ -208,10 +200,10 @@ class Mastodon(Internals):
 
     @api_version("1.0.0", "4.6.0")
     def status_post(self, status: str, in_reply_to_id: Optional[Union[Status, IdType]] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
-                    sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
-                    idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
+                    sensitive: bool = False, visibility: Optional[Union[PostVisibility, str]] = None, spoiler_text: Optional[str] = None, language: Optional[Union[Language, str]] = None,
+                    idempotency_key: Optional[str] = None, content_type: Optional[Union[StatusContentType, str]] = None, scheduled_at: Optional[datetime] = None,
                     poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, strict_content_type: bool = False,
-                    quoted_status_id: Optional[Union[Status, IdType]] = None, quote_approval_policy: Optional[str] = None) -> Union[Status, ScheduledStatus]:
+                    quoted_status_id: Optional[Union[Status, IdType]] = None, quote_approval_policy: Optional[Union[PostQuotePolicy, str]] = None) -> Union[Status, ScheduledStatus]:
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
@@ -353,7 +345,7 @@ class Mastodon(Internals):
     def status_update(self, id: Union[Status, IdType], status: str, spoiler_text: Optional[str] = None, 
                       sensitive: Optional[bool] = None, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None, 
                       poll: Optional[Union[Poll, IdType]] = None, media_attributes: Optional[List[Dict[str, Any]]] = None,
-                      quote_approval_policy: Optional[str] = None) -> Status:
+                      quote_approval_policy: Optional[Union[PostQuotePolicy, str]] = None) -> Status:
         """
         Edit a status. The meanings of the fields are largely the same as in :ref:`status_post() <status_post()>`,
         though not every field can be edited. The `status` parameter is mandatory.
@@ -399,11 +391,11 @@ class Mastodon(Internals):
 
     @api_version("1.0.0", "4.5.0")
     def status_reply(self, to_status: Union[Status, IdType], status: str, media_ids: Optional[List[Union[MediaAttachment, IdType]]] = None,
-                    sensitive: bool = False, visibility: Optional[str] = None, spoiler_text: Optional[str] = None, language: Optional[str] = None, 
-                    idempotency_key: Optional[str] = None, content_type: Optional[str] = None, scheduled_at: Optional[datetime] = None, 
+                    sensitive: bool = False, visibility: Optional[Union[PostVisibility, str]] = None, spoiler_text: Optional[str] = None, language: Optional[Union[Language, str]] = None,
+                    idempotency_key: Optional[str] = None, content_type: Optional[Union[StatusContentType, str]] = None, scheduled_at: Optional[datetime] = None,
                     poll: Optional[Union[Poll, IdType]] = None, quote_id: Optional[Union[Status, IdType]] = None, untag: bool = False, 
                     strict_content_type: bool = False, quoted_status_id: Optional[Union[Status, IdType]] = None,
-                    quote_approval_policy: Optional[str] = None) -> Status:
+                    quote_approval_policy: Optional[Union[PostQuotePolicy, str]] = None) -> Status:
         """
         Helper function - acts like status_post, but prepends the name of all
         the users that are being replied to the status text and retains
@@ -471,7 +463,7 @@ class Mastodon(Internals):
         return self.__api_request('DELETE', f'/api/v1/statuses/{id}', params)
 
     @api_version("1.0.0", "2.0.0")
-    def status_reblog(self, id: Union[Status, IdType], visibility: Optional[str] = None) -> Status:
+    def status_reblog(self, id: Union[Status, IdType], visibility: Optional[Union[ReblogVisibility, str]] = None) -> Status:
         """
         Reblog / boost a status.
 
@@ -481,11 +473,8 @@ class Mastodon(Internals):
         Returns a new Status that wraps around the reblogged status.
         """
         params = self.__generate_params(locals(), ['id'])
-        valid_visibilities = ['private', 'public', 'unlisted', 'direct']
         if 'visibility' in params:
-            params['visibility'] = params['visibility'].lower()
-            if params['visibility'] not in valid_visibilities:
-                raise ValueError(f'Invalid visibility value! Acceptable values are {valid_visibilities}')
+            params['visibility'] = self.__normalize_visibility(params['visibility'])
 
         id = self.__unpack_id(id)
         return self.__api_request('POST', f'/api/v1/statuses/{id}/reblog', params)
@@ -609,7 +598,7 @@ class Mastodon(Internals):
     # Translation
     ##
     @api_version("4.0.0", "4.0.0")
-    def status_translate(self, id: Union[Status, IdType], lang: Optional[str] = None) -> Translation:
+    def status_translate(self, id: Union[Status, IdType], lang: Optional[Union[Language, str]] = None) -> Translation:
         """
         Translate the status content into some language.
 
@@ -654,7 +643,7 @@ class Mastodon(Internals):
         return self.__api_request('POST', f'/api/v1/statuses/{id}/quotes/{quoting_status_id}/revoke')
 
     @api_version("4.5.0", "4.5.0")
-    def status_update_quote_approval_policy(self, id: Union[Status, IdType], quote_approval_policy: str) -> Status:
+    def status_update_quote_approval_policy(self, id: Union[Status, IdType], quote_approval_policy: Union[PostQuotePolicy, str]) -> Status:
         """
         Update the quote approval policy of a status without going through the full edit flow.
 

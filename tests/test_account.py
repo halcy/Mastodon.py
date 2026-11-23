@@ -4,6 +4,7 @@ import re
 import time
 
 from mastodon.errors import MastodonDeprecationWarning
+from mastodon.enums import DefaultPostVisibility, Language
 import warnings
 
 @pytest.mark.vcr()
@@ -189,9 +190,9 @@ def test_account_update_credentials_source_and_privacy(api):
         account = api.account_update_credentials(
             hide_collections=True,
             indexable=True,
-            default_privacy='unlisted',
+            default_privacy=DefaultPostVisibility.UNLISTED,
             default_sensitive=True,
-            default_language='en',
+            default_language=Language.EN,
         )
         assert account
         assert account.hide_collections == True
@@ -199,6 +200,8 @@ def test_account_update_credentials_source_and_privacy(api):
         assert account.source.privacy == 'unlisted'
         assert account.source.sensitive == True
         assert account.source.language == 'en'
+        assert account.source.privacy is DefaultPostVisibility.UNLISTED
+        assert account.source.language is Language.EN
     finally:
         api.account_update_credentials(
             hide_collections=original.hide_collections,

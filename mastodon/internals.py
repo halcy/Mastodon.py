@@ -4,7 +4,7 @@ from datetime import timezone, datetime, timedelta
 from urllib.parse import parse_qs
 from contextlib import closing
 import mimetypes
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union, Literal, overload
 import uuid
 import dateutil.parser
 import time
@@ -16,7 +16,7 @@ import base64
 import os
 import inspect
 import warnings
-from mastodon.types_base import IdType, PaginationInfo
+from mastodon.types_base import IdType, PaginationInfo, PrimitiveIdType
 
 from mastodon.versions import parse_version_string
 from mastodon.errors import MastodonIOError, MastodonFileNotFoundError, MastodonNetworkError, MastodonIllegalArgumentError, MastodonRatelimitError, MastodonNotFoundError, \
@@ -29,13 +29,14 @@ from mastodon.return_types import *
 from mastodon.streaming import SSEStreamHandle
 from mastodon.streaming_websocket import WebSocketStreamHandle
 from mastodon.types_base import EmptyResponse
+from mastodon.enums import TimelineAccessType
 
 ###
 # Internal helpers, dragons probably
 # timeline_is_available is exported and can be used, it is here for import circularity reasons
 ###
 class Mastodon():
-    def timeline_is_available(self, timeline: str = "public", local: bool = False, remote: bool = False, 
+    def timeline_is_available(self, timeline: Union[TimelineAccessType, str] = "public", local: bool = False, remote: bool = False,
                               with_auth: bool = False, fail_hard: bool = False) -> bool:
         """
         Determine whether a given public timeline feed variant is available on this instance.
@@ -684,7 +685,23 @@ class Mastodon():
 
         return params
 
-    def __unpack_id(self, id, dateconv = False, listify = False, field = "id") -> Optional[Union[IdType, List[IdType]]]:
+
+    @overload
+    def __unpack_id(self, id: PrimitiveIdType, dateconv: bool = False, listify: Literal[False] = False, field: str = "id") -> PrimitiveIdType: ...
+
+    @overload
+    def __unpack_id(self, id: IdType, dateconv: bool = False, listify: Literal[False] = False, field: str = "id") -> IdType: ...
+
+    @overload
+    def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool = False, *, listify: Literal[True], field: str = "id") -> List[IdType]: ...
+
+    @overload
+    def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool, listify: Literal[True], field: str = "id") -> List[IdType]: ...
+
+    @overload
+    def __unpack_id(self, id: Union[IdType, AttribAccessDict], dateconv: bool = False, listify: bool = False, field: str = "id") -> Union[IdType, List[IdType]]: ...
+
+    def __unpack_id(self, id: Optional[Union[IdType, AttribAccessDict, List[Union[IdType, AttribAccessDict]]]], dateconv: bool = False, listify: bool = False, field: str = "id") -> Optional[Union[IdType, List[IdType]]]:
         """
         Internal object-to-id converter
 

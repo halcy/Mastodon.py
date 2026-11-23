@@ -1,5 +1,7 @@
 import pytest
 from mastodon.Mastodon import MastodonAPIError, MastodonNotFoundError
+from mastodon.enums import PostVisibility, ReblogVisibility, StatusVisibility
+from mastodon.types_base import Entity
 import datetime
 try:
     import zoneinfo
@@ -100,11 +102,11 @@ def test_status_reblogged_by(api, status3, api3):
 
 @pytest.mark.vcr()
 def test_status_reblog_visibility(api, status3, api3):
-    status = api.status_post("bwooh! secret", visibility='private')
-    reblog_result = api.status_reblog(status['id'], visibility = 'unlisted')
-    assert reblog_result.visibility == 'private'
-    reblog_result = api3.status_reblog(status3, visibility = 'unlisted')
-    assert reblog_result.visibility == 'unlisted'
+    status = api.status_post("bwooh! secret", visibility=PostVisibility.PRIVATE)
+    reblog_result = api.status_reblog(status['id'], visibility=ReblogVisibility.UNLISTED)
+    assert reblog_result.visibility is StatusVisibility.PRIVATE
+    reblog_result = api3.status_reblog(status3, visibility=ReblogVisibility.UNLISTED)
+    assert reblog_result.visibility is StatusVisibility.UNLISTED
 
 @pytest.mark.vcr()
 def test_status_favourited_by(status, api):
@@ -127,12 +129,16 @@ def test_toot(api):
 def test_status_post(api, visibility, spoiler_text):
     status = api.status_post(
             'Toot!',
-            visibility=visibility,
+            visibility=PostVisibility(visibility) if visibility and visibility != 'foobar' else visibility,
             spoiler_text=spoiler_text)
     try:
         assert status
         if visibility:
             assert status['visibility'] == visibility
+            assert status.visibility is StatusVisibility(visibility)
+            restored = Entity.from_json(status.to_json())
+            assert restored.visibility is status.visibility
+            assert str(restored.visibility) == visibility
         if spoiler_text:
             assert status['spoiler_text'] == spoiler_text
     finally:
@@ -339,4 +345,3 @@ def test_status_delete_media(api, status):
             api.status_delete(status_with_media['id'])
         except:
             pass
-

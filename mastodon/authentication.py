@@ -16,13 +16,14 @@ from mastodon.utility import Mastodon as Utility
 from typing import List, Optional, Union, Tuple
 from mastodon.return_types import Application, AttribAccessDict, OAuthServerInfo, OAuthUserInfo
 from mastodon.compat import PurePath
+from mastodon.enums import OAuthScope, Language, RateLimitMethod, VersionCheckMode, FeatureSet
 
 class Mastodon(Internals):
     ###
     # Registering apps
     ###
     @staticmethod
-    def create_app(client_name: str, scopes: List[str] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None, 
+    def create_app(client_name: str, scopes: List[Union[OAuthScope, str]] = _DEFAULT_SCOPES, redirect_uris: Optional[Union[str, List[str]]] = None, website: Optional[str] = None,
                    to_file: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, request_timeout: float = _DEFAULT_TIMEOUT, 
                    session: Optional[requests.Session] = None, user_agent: str = _DEFAULT_USER_AGENT) -> Tuple[str, str]:
         """
@@ -92,9 +93,9 @@ class Mastodon(Internals):
     ###
     def __init__(self, client_id: Optional[Union[str, PurePath]] = None, client_secret: Optional[str] = None, 
                  access_token: Optional[Union[str, PurePath]] = None, api_base_url: Optional[str] = None, debug_requests: bool = False,
-                 ratelimit_method: str = "wait", ratelimit_pacefactor: float = 1.1, request_timeout: float = _DEFAULT_TIMEOUT, 
-                 mastodon_version: Optional[str] = None, version_check_mode: str = "none", session: Optional[requests.Session] = None, 
-                 feature_set: str = "mainline", user_agent: str = _DEFAULT_USER_AGENT, lang: Optional[str] = None):
+                 ratelimit_method: Union[RateLimitMethod, str] = "wait", ratelimit_pacefactor: float = 1.1, request_timeout: float = _DEFAULT_TIMEOUT,
+                 mastodon_version: Optional[str] = None, version_check_mode: Union[VersionCheckMode, str] = "none", session: Optional[requests.Session] = None,
+                 feature_set: Union[FeatureSet, str] = "mainline", user_agent: str = _DEFAULT_USER_AGENT, lang: Optional[Union[Language, str]] = None):
         """
         Create a new API wrapper instance based on the given `client_secret` and `client_id` on the
         instance given by `api_base_url`. If you give a `client_id` and it is not a file, you must
@@ -284,8 +285,8 @@ class Mastodon(Internals):
         self.__instance_v2_cache = None
 
     def auth_request_url(self, client_id: Optional[Union[str, PurePath]] = None, redirect_uris: str = "urn:ietf:wg:oauth:2.0:oob", 
-                         scopes: List[str] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None, 
-                         lang: Optional[str] = None, skip_server_info = False, allow_http: bool = False) -> str:
+                         scopes: List[Union[OAuthScope, str]] =_DEFAULT_SCOPES, force_login: bool = False, state: Optional[str] = None,
+                         lang: Optional[Union[Language, str]] = None, skip_server_info = False, allow_http: bool = False) -> str:
         """
         Returns the URL that a client needs to request an OAuth grant from the server.
 
@@ -380,7 +381,7 @@ class Mastodon(Internals):
         return self.__api_request('GET', oauth_url, do_ratelimiting=False, base_url_override="")
     
     def log_in(self, username: Optional[str] = None, password: Optional[str] = None, code: Optional[str] = None, 
-               redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[str] = _DEFAULT_SCOPES, 
+               redirect_uri: str = "urn:ietf:wg:oauth:2.0:oob", refresh_token: Optional[str] = None, scopes: List[Union[OAuthScope, str]] = _DEFAULT_SCOPES,
                to_file: Optional[Union[str, PurePath]] = None, allow_http: bool = False) -> str:
         """
         Get the access token for a user, either via OAuth code flow, or (deprecated) password flow.
@@ -537,5 +538,4 @@ class Mastodon(Internals):
         Fetch information about the current application.
         """
         return self.__api_request('GET', '/api/v1/apps/verify_credentials')
-
 

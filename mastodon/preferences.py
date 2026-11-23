@@ -8,6 +8,7 @@ from mastodon.utility import api_version
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import Preferences, Marker, Status, IdType
 from mastodon.types_base import AttribAccessDict, try_cast_recurse
+from mastodon.enums import MarkerTimeline
 from typing import Union, List, Dict
 
 class Mastodon(Internals):
@@ -26,7 +27,7 @@ class Mastodon(Internals):
     # Reading data: Read markers
     ##
     @api_version("3.0.0", "3.0.0")
-    def markers_get(self, timeline: Union[str, List[str]] = ["home"]) -> Dict[str, Marker]:
+    def markers_get(self, timeline: Union[MarkerTimeline, str, List[Union[MarkerTimeline, str]]] = ["home"]) -> Dict[Union[MarkerTimeline, str], Marker]:
         """
         Get the last-read-location markers for the specified timelines. Valid timelines
         are `home` (the home timeline) and `notifications` (the notifications timeline,
@@ -42,14 +43,14 @@ class Mastodon(Internals):
         result = self.__api_request('GET', '/api/v1/markers', params)
         result_real = AttribAccessDict()
         for key, value in result.items():
-            result_real[key] = try_cast_recurse(Marker, value)
+            result_real[try_cast_recurse(MarkerTimeline, key)] = try_cast_recurse(Marker, value)
         return result_real
 
     ##
     # Writing data: Read markers
     ##
     @api_version("3.0.0", "3.0.0")
-    def markers_set(self, timelines: Union[str, List[str]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> Dict[str, Marker]:
+    def markers_set(self, timelines: Union[MarkerTimeline, str, List[Union[MarkerTimeline, str]]], last_read_ids: Union[Status, IdType, List[Status], List[IdType]]) -> Dict[Union[MarkerTimeline, str], Marker]:
         """
         Set the "last read" marker(s) for the given timeline(s) to the given id(s)
 
@@ -76,5 +77,5 @@ class Mastodon(Internals):
         result = self.__api_request('POST', '/api/v1/markers', params, use_json=True)
         result_real = AttribAccessDict()
         for key, value in result.items():
-            result_real[key] = try_cast_recurse(Marker, value)
+            result_real[try_cast_recurse(MarkerTimeline, key)] = try_cast_recurse(Marker, value)
         return result_real

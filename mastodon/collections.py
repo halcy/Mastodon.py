@@ -4,6 +4,7 @@ from mastodon.return_types import Account, Collection, CollectionItem, Collectio
     IdType, WrappedCollection, WrappedCollectionItem
 from mastodon.types_base import EmptyResponse
 from mastodon.utility import api_version
+from mastodon.enums import Language
 
 from typing import List, Optional, Union
 
@@ -11,7 +12,7 @@ from typing import List, Optional, Union
 class Mastodon(Internals):
     @api_version("4.6.0", "4.6.0")
     def collection_create(self, name: str, description: Optional[str] = None,
-                          language: Optional[str] = None, tag_name: Optional[str] = None,
+                          language: Optional[Union[Language, str]] = None, tag_name: Optional[str] = None,
                           sensitive: bool = False, discoverable: bool = False,
                           account_ids: Optional[List[Union[Account, IdType]]] = None) -> WrappedCollection:
         """
@@ -22,6 +23,7 @@ class Mastodon(Internals):
         `language` is the optional associated language for the new collection as a ISO 639-1 two-letter or
         if a two letter code isn't available, 639-3 three-letter language code. `tag_name` gives an optional
         hashtag to associated with the Collection.
+        :class:`~mastodon.enums.Language` members and arbitrary strings are accepted.
 
         `sensitive` indicates whether the new collection contains sensitive content, `discoverable` indicates
         whether the new collection is discoverable by other users through discovery functionality (or otherwise,
@@ -70,7 +72,7 @@ class Mastodon(Internals):
 
     @api_version("4.6.0", "4.6.0")
     def collection_update(self, id: Union[Collection, IdType], name: Optional[str] = None,
-                          description: Optional[str] = None, language: Optional[str] = None,
+                          description: Optional[str] = None, language: Optional[Union[Language, str]] = None,
                           tag_name: Optional[str] = None, sensitive: Optional[bool] = None,
                           discoverable: Optional[bool] = None) -> WrappedCollection:
         """

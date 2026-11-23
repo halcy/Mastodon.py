@@ -3,10 +3,13 @@
 import json
 import threading
 import time
+from typing import Union
 
 from mastodon.streaming import StreamHandle
 from mastodon.compat import IMPL_HAS_WEBSOCKET, websocket
 from mastodon.errors import MastodonAPIError, MastodonIllegalArgumentError, MastodonMalformedEventError, MastodonNetworkError, MastodonReadTimeout
+from mastodon.enums import StreamType
+from mastodon.types_base import try_cast_recurse
 
 
 def _open_websocket(url, headers, timeout):
@@ -36,9 +39,11 @@ def _translate_websocket_error(error):
 class WebSocketSubscription:
     """One subscription carried by a shared WebSocket connection."""
 
-    def __init__(self, websocket, stream, params, listener):
+    stream: Union[StreamType, str]
+
+    def __init__(self, websocket, stream: Union[StreamType, str], params, listener):
         self.websocket = websocket
-        self.stream = stream
+        self.stream = try_cast_recurse(StreamType, stream)
         self.params = dict(params)
         self.listener = listener
         self.active = True
@@ -133,7 +138,7 @@ class WebSocketStreamHandle(StreamHandle):
                 raise
             raise translated from error
 
-    def subscribe(self, stream, listener=None, **params):  # TODO maybe we dont want this
+    def subscribe(self, stream: Union[StreamType, str], listener=None, **params):  # TODO maybe we dont want this
         """Subscribe to a stream and return a :class:`~mastodon.WebSocketSubscription`.
 
         Valid stream names as of Mastodon version 4.7.3 are:
@@ -184,7 +189,7 @@ class WebSocketStreamHandle(StreamHandle):
             raise
         return subscription
 
-    def unsubscribe(self, stream, **params):
+    def unsubscribe(self, stream: Union[StreamType, str], **params):
         """Unsubscribe using the same stream name and parameters as for subscribe()."""
         key = self._subscription_key(stream, params)
         with self._lock:

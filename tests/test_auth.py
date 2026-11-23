@@ -1,6 +1,7 @@
 import pytest
 from mastodon.Mastodon import MastodonIllegalArgumentError
 from mastodon import Mastodon
+from mastodon.enums import OAuthScope
 try:
     from urllib.parse import urlparse, parse_qs
 except ImportError:
@@ -9,7 +10,10 @@ import vcr
 
 @pytest.mark.vcr()
 def test_auth_request_url(api):
-    url = api.auth_request_url(allow_http=True)
+    url = api.auth_request_url(
+        scopes=[OAuthScope.READ, OAuthScope.WRITE, OAuthScope.FOLLOW, OAuthScope.PUSH],
+        allow_http=True,
+    )
     url2 = api.auth_request_url(skip_server_info=True, allow_http=True)
     assert url == url2
     parse = urlparse(url)

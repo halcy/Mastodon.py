@@ -6,12 +6,13 @@ import json
 
 from mastodon.errors import MastodonIllegalArgumentError
 from mastodon.utility import api_version
+from mastodon.enums import PushSubscriptionPolicy
 from mastodon.compat import IMPL_HAS_CRYPTO, ec, serialization, default_backend
 from mastodon.compat import IMPL_HAS_ECE, http_ece
 
 from mastodon.internals import Mastodon as Internals
 from mastodon.return_types import WebpushCryptoParamsPubkey, WebpushCryptoParamsPrivkey, WebPushSubscription, PushNotification, try_cast_recurse
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 class Mastodon(Internals):
     ###
@@ -34,7 +35,7 @@ class Mastodon(Internals):
                               favourite_events: Optional[bool] = None, reblog_events: Optional[bool] = None,
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
                               follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
-                              policy: str = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
+                              policy: Union[PushSubscriptionPolicy, str] = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
                               admin_report_events: Optional[bool] = None, quote_events: Optional[bool] = None,
                               quoted_update_events: Optional[bool] = None, standard: bool = None) -> WebPushSubscription:
         """
@@ -68,9 +69,6 @@ class Mastodon(Internals):
         Pass `standard=True` to use the standard webpush subscription format, instead of the pre-release RFC format
         mastodon was using before.
         """
-        if not policy in ['all', 'none', 'follower', 'followed']:
-            raise MastodonIllegalArgumentError("Valid values for policy are 'all', 'none', 'follower' or 'followed'.")
-
         endpoint = Mastodon.__protocolize(endpoint)
 
         push_pubkey_b64 = base64.b64encode(encrypt_params['pubkey'])
@@ -129,7 +127,7 @@ class Mastodon(Internals):
                               favourite_events: Optional[bool] = None, reblog_events: Optional[bool] = None,
                               mention_events: Optional[bool] = None, poll_events: Optional[bool] = None,
                               follow_request_events: Optional[bool] = None, status_events: Optional[bool] = None, 
-                              policy: Optional[str] = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
+                              policy: Optional[Union[PushSubscriptionPolicy, str]] = 'all', update_events: Optional[bool] = None, admin_sign_up_events: Optional[bool] = None,
                               admin_report_events: Optional[bool] = None, quote_events: Optional[bool] = None,
                               quoted_update_events: Optional[bool] = None) -> WebPushSubscription:
         """
