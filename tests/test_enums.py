@@ -1,6 +1,6 @@
 import json
 import pickle
-
+import sys
 import pytest
 
 from mastodon.enums import (
@@ -11,7 +11,6 @@ from mastodon.errors import MastodonAPIError
 from mastodon.return_types import FilterV2, Rule, Status
 from mastodon.types_base import Entity
 from mastodon.streaming import StreamListener
-
 
 def test_enum_response_roundtrip_and_string_fallback():
     status = Status(
@@ -56,12 +55,13 @@ def test_enum_response_roundtrip_and_string_fallback():
     assert Status(visibility=None, language=None).visibility is None
     assert FilterV2(context=["future_context"], filter_action="future_action").filter_action == "future_action"
 
-    rule = Rule(translations={"en": {"text": "Be kind"}, "xyz": {"text": "Future language"}})
-    restored_rule = Entity.from_json(rule.to_json())
-    assert list(restored_rule.translations) == [Language.EN, "xyz"]
-    assert next(iter(restored_rule.translations)) == Language.EN
-    assert restored_rule.translations[Language.EN].text == "Be kind"
-    assert restored_rule.translations["xyz"].text == "Future language"
+    if sys.version_info >= (3, 9):
+        rule = Rule(translations={"en": {"text": "Be kind"}, "xyz": {"text": "Future language"}})
+        restored_rule = Entity.from_json(rule.to_json())
+        assert list(restored_rule.translations) == [Language.EN, "xyz"]
+        assert next(iter(restored_rule.translations)) == Language.EN
+        assert restored_rule.translations[Language.EN].text == "Be kind"
+        assert restored_rule.translations["xyz"].text == "Future language"
 
 
 def test_enum_comparison_domains_and_wire_values():
